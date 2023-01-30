@@ -1,4 +1,7 @@
 import Head from "next/head";
+import Navbar from "../src/component/shared/Navbar/Navbar";
+import Footer from "../src/component/shared/Footer/Footer";
+import { Box } from "@mui/material";
 
 const drawerWidth = 240;
 export default function App(props) {
@@ -10,7 +13,13 @@ export default function App(props) {
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
-      <main></main>
+      <main>
+        {/* <Box sx={{background: "#32557f", width: "150px", height: "75px"}}>
+            
+          </Box> */}
+        <Navbar />
+        <Footer />
+      </main>
     </div>
   );
 }
