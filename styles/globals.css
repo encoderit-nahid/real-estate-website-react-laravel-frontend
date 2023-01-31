@@ -2,10 +2,46 @@ html,
 body {
   padding: 0;
   margin: 0;
-
-    font-family: "Lato";
-  
+  font-family: "Lato";
 }
+
+/* .section {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+
+} */
+
+.box {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+
+}
+
+.box1 {
+  background-color: #7450F0;
+  clip-path: circle(38.5% at 82% 0);
+}
+
+
+
+/* .circle{
+  background-color: red;
+  clip-path: circle(200px at 0 0);
+} */
+/* .box::before{
+  content: '';
+  position: absolute;
+  top: -40px; right: -40px;
+  background:green;
+  height: 200px ;
+  width: 200px;
+  border-radius:100%;
+  box-shadow:red 0 0 0 500px;
+} */
+
 /* 
 a {
   color: inherit;

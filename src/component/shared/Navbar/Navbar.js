@@ -19,7 +19,7 @@ import BaseButton from "../../reuseable/button/BaseButton";
 
 const pages = ["search Real estate", "I am broker", "I am Owner", "blog"];
 
-function Navbar() {
+function Navbar({ shape }) {
   const [anchorElNav, setAnchorElNav] = React.useState(null);
   const [anchorElUser, setAnchorElUser] = React.useState(null);
 
@@ -45,6 +45,7 @@ function Navbar() {
         backgroundColor: "transparent",
         color: "#1A1859",
         boxShadow: "none",
+        paddingRight: 10,
       }}
     >
       <Container maxWidth="xl">
@@ -165,7 +166,7 @@ function Navbar() {
                 onClick={handleCloseNavMenu}
                 sx={{
                   my: 2,
-                  color: "#1A1859",
+                  color: `${shape ? "#ffffff" : "#1A1859"}`,
                   display: "block",
                   textTransform: "none",
                   fontSize: "16px",
@@ -174,7 +175,7 @@ function Navbar() {
                 {page}
               </Button>
             ))}
-            <BaseButton name={"Login"} />
+            <BaseButton name={"Login"} shape={shape} fontSize={"12px"} />
           </Grid>
         </Toolbar>
       </Container>

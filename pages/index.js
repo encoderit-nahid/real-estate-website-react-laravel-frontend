@@ -1,9 +1,12 @@
 import Head from "next/head";
 import Navbar from "../src/component/shared/Navbar/Navbar";
 import Footer from "../src/component/shared/Footer/Footer";
-import { Box } from "@mui/material";
+import shapeIcon from "../public/Images/eclipseShape.png";
+import { Box, Grid } from "@mui/material";
+import FulfillDream from "../src/component/home/fullfill/FulfillDream";
+import SideContent from "../src/component/home/FullfillSideContent/SideContent";
+import SellSideContent from "../src/component/home/wantToSellSideContent/SellSideContent";
 
-const drawerWidth = 240;
 export default function App(props) {
   return (
     <div>
@@ -13,12 +16,59 @@ export default function App(props) {
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
-      <main>
-        {/* <Box sx={{background: "#32557f", width: "150px", height: "75px"}}>
-            
-          </Box> */}
-        <Navbar />
-        <Footer />
+      <main className="section">
+        <Grid
+          className="box box1"
+          sx={{
+            display: {
+              xs: "none",
+              sm: "none",
+              md: "none",
+              xl: "inline",
+              lg: "inline",
+            },
+          }}
+        ></Grid>
+        <Navbar shape={true} />
+        <Grid container spacing={2} sx={{ paddingRight: 10 }}>
+          <Grid item xs={12} sm={12} md={12} xl={6} lg={6}>
+            <FulfillDream />
+          </Grid>
+          <Grid
+            item
+            xs={12}
+            sm={12}
+            md={12}
+            xl={6}
+            lg={6}
+            sx={{
+              display: {
+                xs: "none",
+                sm: "none",
+                md: "none",
+                xl: "inline",
+                lg: "inline",
+              },
+            }}
+          >
+            <SideContent />
+          </Grid>
+        </Grid>
+        <Grid
+          container
+          spacing={2}
+          sx={{
+            backgroundColor: "#F9F9FB",
+            marginTop: 1,
+            // clipPath: "polygon(50% 0%, 100% 100%, 0% 100%)",
+            // clipPath: "circle(15em at 10% 40%)",
+          }}
+          className="shape-circle"
+        >
+          <Grid item xs={6}>
+            <SellSideContent />
+          </Grid>
+        </Grid>
       </main>
     </div>
   );
