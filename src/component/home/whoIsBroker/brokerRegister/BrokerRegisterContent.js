@@ -1,12 +1,12 @@
 import React from "react";
 import { Box, Grid, Typography } from "@mui/material";
-import trackImage from "../../../../public/Images/track.png";
-import digitalImage from "../../../../public/Images/digital.png";
-import fastImage from "../../../../public/Images/fast.png";
+import technologyImage from "../../../../../public/Images/technology.png";
+import clientsImage from "../../../../../public/Images/clients.png";
+import earnImage from "../../../../../public/Images/earn.png";
 import Image from "next/image";
-import BaseButton from "../../reuseable/button/BaseButton";
+import BaseButton from "../../../reuseable/button/BaseButton";
 
-function WantToSell() {
+function BrokerRegisterContent() {
   return (
     <Grid
       container
@@ -19,16 +19,16 @@ function WantToSell() {
         container
         spacing={1}
         sx={{
-          backgroundColor: "#ffffff",
+          backgroundColor: "#F9F9FB",
           borderRadius: "6px",
           paddingX: 4,
           paddingY: 2.5,
         }}
       >
         <Grid item xs={12} sm={12} md={4} lg={3} xl={3}>
-          <Image src={trackImage} alt="track" />
+          <Image src={technologyImage} alt="track" />
         </Grid>
-        <Grid item xs={12} sm={12} md={8} lg={9} xl={9}>
+        <Grid item xs={12} sm={12} md={4} lg={9} xl={9}>
           <Grid
             container
             direction="column"
@@ -45,8 +45,9 @@ function WantToSell() {
               variant="p"
               sx={{ fontSize: "18px", fontWeight: "400", color: "#7C7C99" }}
             >
-              Announcements, schedules of visits and proposals all in the palm
-              of your hands.
+              We offer the best technologies, the most complete and agile advice
+              on the market and the highest commission, the broker gets up to
+              70% of the total commission.
             </Typography>
           </Grid>
         </Grid>
@@ -56,7 +57,7 @@ function WantToSell() {
         container
         spacing={1}
         sx={{
-          backgroundColor: "#ffffff",
+          backgroundColor: "#F9F9FB",
           borderRadius: "6px",
           paddingX: 4,
           paddingY: 2.5,
@@ -64,9 +65,9 @@ function WantToSell() {
         }}
       >
         <Grid item xs={12} sm={12} md={4} lg={3} xl={3}>
-          <Image src={digitalImage} alt="track" />
+          <Image src={clientsImage} alt="track" />
         </Grid>
-        <Grid item xs={12} sm={12} md={8} lg={9} xl={9}>
+        <Grid item xs={12} sm={12} md={4} lg={9} xl={9}>
           <Grid
             container
             direction="column"
@@ -83,8 +84,9 @@ function WantToSell() {
               variant="p"
               sx={{ fontSize: "18px", fontWeight: "400", color: "#7C7C99" }}
             >
-              Announcements, schedules of visits and proposals all in the palm
-              of your hands.
+              We offer the best technologies, the most complete and agile advice
+              on the market and the highest commission, the broker gets up to
+              70% of the total commission.
             </Typography>
           </Grid>
         </Grid>
@@ -93,7 +95,7 @@ function WantToSell() {
         container
         spacing={1}
         sx={{
-          backgroundColor: "#ffffff",
+          backgroundColor: "#F9F9FB",
           borderRadius: "6px",
           paddingX: 4,
           paddingY: 2.5,
@@ -101,9 +103,9 @@ function WantToSell() {
         }}
       >
         <Grid item xs={12} sm={12} md={4} lg={3} xl={3}>
-          <Image src={fastImage} alt="track" />
+          <Image src={earnImage} alt="track" />
         </Grid>
-        <Grid itemxs={12} sm={12} md={8} lg={9} xl={9}>
+        <Grid item xs={12} sm={12} md={4} lg={9} xl={9}>
           <Grid
             container
             direction="column"
@@ -120,14 +122,15 @@ function WantToSell() {
               variant="p"
               sx={{ fontSize: "18px", fontWeight: "400", color: "#7C7C99" }}
             >
-              Announcements, schedules of visits and proposals all in the palm
-              of your hands.
+              We offer the best technologies, the most complete and agile advice
+              on the market and the highest commission, the broker gets up to
+              70% of the total commission.
             </Typography>
           </Grid>
         </Grid>
       </Grid>
       <BaseButton
-        name={"Advertise"}
+        name={"Register"}
         width={"100%"}
         fontSize={"24px"}
         margin={"4vh 0 0 0"}
@@ -136,4 +139,4 @@ function WantToSell() {
   );
 }
 
-export default WantToSell;
+export default BrokerRegisterContent;

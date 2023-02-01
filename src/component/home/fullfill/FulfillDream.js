@@ -33,10 +33,25 @@ function FulfillDream() {
             xl: "72px",
           },
           fontWeight: "800",
-          wordBreak: "break-all",
         }}
       >
-        Fulfill your Dream!
+        Fulfill your
+      </Typography>
+      <Typography
+        variant="h1"
+        sx={{
+          color: "#1A1859",
+          fontSize: {
+            xs: "56px",
+            sm: "56px",
+            md: "56px",
+            lg: "72px",
+            xl: "72px",
+          },
+          fontWeight: "800",
+        }}
+      >
+        Dream!
       </Typography>
       <TextField
         fullWidth

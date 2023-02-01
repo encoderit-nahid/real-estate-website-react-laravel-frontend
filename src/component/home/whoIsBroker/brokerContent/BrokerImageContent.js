@@ -1,10 +1,10 @@
 import React from "react";
-import WantImage from "../../../../public/Images/Want.png";
-import shapeImage from "../../../../public/Images/image_shape.png";
+import BrokerImage from "../../../../../public/Images/who_broker.png";
+import shapeImage from "../../../../../public/Images/Image_shape_blue.png";
 import { Grid, Box } from "@mui/material";
 import Image from "next/image";
 
-function SellSideContent() {
+function BrokerImageContent() {
   return (
     <Grid
       container
@@ -17,13 +17,9 @@ function SellSideContent() {
         marginLeft: { xs: 0, sm: 0, md: 0, lg: 2, xl: 2 },
       }}
     >
-      <Box
-        sx={{
-          position: { xl: "absolute", lg: "absolute" },
-        }}
-      >
-        <Image src={WantImage} alt="WantImage" />
-      </Box>
+      <Grid sx={{ position: { xl: "absolute", lg: "absolute" } }}>
+        <Image src={BrokerImage} alt="WantImage" />
+      </Grid>
       <Grid
         sx={{
           display: {
@@ -34,8 +30,8 @@ function SellSideContent() {
             lg: "inline",
           },
           position: "relative",
-          top: "24vh",
-          left: "14vh",
+          top: "-24vh",
+          left: "-14vh",
         }}
       >
         <Image src={shapeImage} alt="WantImage" />
@@ -44,4 +40,4 @@ function SellSideContent() {
   );
 }
 
-export default SellSideContent;
+export default BrokerImageContent;
