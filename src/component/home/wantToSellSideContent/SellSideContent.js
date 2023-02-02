@@ -1,5 +1,6 @@
 import React from "react";
 import WantImage from "../../../../public/Images/Want.png";
+import mobileWant from "../../../../public/Images/mobileWant.png";
 import shapeImage from "../../../../public/Images/image_shape.png";
 import { Grid, Box } from "@mui/material";
 import Image from "next/image";
@@ -20,9 +21,30 @@ function SellSideContent() {
       <Box
         sx={{
           position: { xl: "absolute", lg: "absolute" },
+          display: {
+            xl: "inline",
+            lg: "inline",
+            md: "none",
+            xs: "none",
+            sm: "none",
+          },
         }}
       >
         <Image src={WantImage} alt="WantImage" />
+      </Box>
+      <Box
+        sx={{
+          display: {
+            xl: "none",
+            lg: "none",
+            md: "inline",
+            xs: "inline",
+            sm: "inline",
+          },
+          position: "absolute",
+        }}
+      >
+        <Image src={mobileWant} alt="WantImage" />
       </Box>
       <Grid
         sx={{

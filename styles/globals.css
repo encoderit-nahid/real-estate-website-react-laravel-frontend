@@ -22,7 +22,7 @@ body {
 
 .box1 {
   background-color: #7450F0;
-  clip-path: circle(38.5% at 82% 0);
+  clip-path: ellipse(43% 47% at 86% 13%);
 }
 
 

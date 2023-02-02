@@ -11,7 +11,7 @@ export default function BestDealSvgBackground(props) {
       y="0px"
       width="100%"
       viewBox="0 0 1280 678"
-      enable-background="new 0 0 1280 678"
+      enableBackground="new 0 0 1280 678"
       xmlSpace="preserve"
     >
       <path

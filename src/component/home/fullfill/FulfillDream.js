@@ -19,7 +19,7 @@ function FulfillDream() {
       direction="column"
       justifyContent="center"
       alignItems="flex-start"
-      sx={{ ml: 3, mt: 15 }}
+      sx={{ ml: 3, mt: { xs: 3, sm: 3, md: 15, lg: 15, xl: 15 } }}
     >
       <Typography
         variant="h1"

@@ -13,7 +13,7 @@ function BrokerRegisterContent() {
       direction="column"
       justifyContent="center"
       alignItems="center"
-      sx={{ marginTop: 1 }}
+      sx={{ marginTop: 1, marginLeft: {xs:"0.5vh",sm:"0.5vh",md:0,lg:0,xl:0} }}
     >
       <Grid
         container
@@ -23,6 +23,7 @@ function BrokerRegisterContent() {
           borderRadius: "6px",
           paddingX: 4,
           paddingY: 2.5,
+          position: { xs: "relative", sm: "relative" },
         }}
       >
         <Grid item xs={12} sm={12} md={4} lg={3} xl={3}>

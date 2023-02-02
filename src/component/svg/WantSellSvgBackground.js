@@ -11,7 +11,7 @@ export default function WantSellSvgBackground(props) {
       y="0px"
       width="100%"
       viewBox="0 0 1273 879"
-      enable-background="new 0 0 1273 879"
+      enableBackground="new 0 0 1273 879"
       xmlSpace="preserve"
     >
       <path

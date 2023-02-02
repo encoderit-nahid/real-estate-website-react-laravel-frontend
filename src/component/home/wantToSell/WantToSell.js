@@ -13,7 +13,10 @@ function WantToSell() {
       direction="column"
       justifyContent="center"
       alignItems="center"
-      sx={{ marginTop: 1 }}
+      sx={{
+        marginTop: 1,
+        marginLeft: { xs: "0.5vh", sm: "0.5vh", md: 0, lg: 0, xl: 0 },
+      }}
     >
       <Grid
         container
@@ -21,8 +24,10 @@ function WantToSell() {
         sx={{
           backgroundColor: "#ffffff",
           borderRadius: "6px",
-          paddingX: 4,
+          paddingX: { xs: 0, sm: 0, md: 0, lg: 4, xl: 4 },
           paddingY: 2.5,
+          position: "relative",
+          // marginLeft: { xs: "0.5vh", sm: "0.5vh" },
         }}
       >
         <Grid item xs={12} sm={12} md={4} lg={3} xl={3}>
