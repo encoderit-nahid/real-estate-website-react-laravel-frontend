@@ -24,6 +24,29 @@ import BestDealSvgBackground from "../src/component/svg/BestDealSvgBackground";
 import HouseCard from "../src/component/reuseable/HouseCard/HouseCard";
 import MobileSideContent from "../src/component/home/FullfillSideContent/mobileSideContent";
 import BrokerImageContentMobile from "../src/component/home/whoIsBroker/brokerContent/BrokerImageContentMobile";
+import whoBroker from "../public/Images/who_broker.png";
+import whoBrokerMobile from "../public/Images/who_broker_mobile.png";
+import technologyImage from "../public/Images/technology.png";
+import clientsImage from "../public/Images/clients.png";
+import earnImage from "../public/Images/earn.png";
+
+const brokerData = [
+  {
+    name: "High technology and low bureaucracy",
+    info: "Digital and simplified sales process, which provides agility and transparency, allowing you to focus on your customer.",
+    imageSrc: technologyImage,
+  },
+  {
+    name: "Clients and full assistance",
+    info: "Simple ad system combined with complete assistance in the end-to-end buying and selling process. From announcement to public deed.",
+    imageSrc: clientsImage,
+  },
+  {
+    name: "earn more",
+    info: "We offer the best technologies, the most complete and agile advice on the market and the highest commission, the broker gets up to 70% of the total commission.",
+    imageSrc: earnImage,
+  },
+];
 
 export default function App(props) {
   const svgString = encodeURIComponent(
@@ -218,10 +241,13 @@ export default function App(props) {
                   },
                 }}
               >
-                <BrokerImageContentMobile />
+                <BrokerImageContentMobile imageSrc={whoBrokerMobile} />
               </Grid>
               <Grid item xs={12} sm={12} md={12} xl={6} lg={6}>
-                <BrokerRegisterContent />
+                <BrokerRegisterContent
+                  contentData={brokerData}
+                  buttonVisible={true}
+                />
               </Grid>
               <Grid
                 item
@@ -241,7 +267,7 @@ export default function App(props) {
                 }}
               >
                 {/* <WantToSell /> */}
-                <BrokerImageContent />
+                <BrokerImageContent imageSrc={whoBroker} />
               </Grid>
             </Grid>
           </Container>

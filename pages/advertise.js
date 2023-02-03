@@ -31,31 +31,51 @@ import BecomeBroker from "../src/component/IAmBroker/BecomeBroker/BecomeBroker";
 import CalulateComission from "../src/component/IAmBroker/MaxmizeResult/CalulateComission";
 import ComissionResult from "../src/component/IAmBroker/MaxmizeResult/ComissionResult";
 import BrokerFacilities from "../src/component/IAmBroker/BrokerFacilities/BrokerFacilities";
-import brokerHelpImage from "../public/Images/broker_help.png";
+import advertiseImage from "../public/Images/advertise.png";
+import wantImage from "../public/Images/Want.png";
+import wantImageMobile from "../public/Images/mobileWant.png";
+import trackImage from "../public/Images/track.png";
+import digitalImage from "../public/Images/digital.png";
+import fastImage from "../public/Images/fast.png";
 
-
-const becomeBrokerData = [
+const advertiseData = [
   {
-    name: "free of bureaucracy",
-    info: "You will receive qualified Leads not only from your properties, but from all in your region, as well as scheduling visits, proposals, directly in your control panel.",
+    name: "Practicality",
+    info: "Advertise your property and find out about everything that happens through the application.",
   },
   {
-    name: "Highest commission on the market",
-    info: "You receive 70% of the commission negotiated with the property owner (raising and commission).",
+    name: "100% digital",
+    info: "100% digital buying and selling process (scheduling visits, proposals, contracts, certificates, public deed)",
   },
   {
-    name: "Autonomy",
-    info: "At Lokkan you are the owner of your business, you don't have a boss, you don't have to pay for the phone, ads, lawyers, documents and you still receive the highest commission on the market.",
+    name: "Documentation and digital signature",
+    info: "Contract, registrations, certificates, consultations (SERASA, SPC - seller) with a click. Elaboration and signature of the deed digitally (without having to go to the notary).",
   },
   {
-    name: "Access to the entire property database",
-    info: "You will have access to Lokkan's property database, which is made up of properties registered by owner, launches by land developers, builders and developers in several cities.",
+    name: "Fast selling process",
+    info: "Receive the down payment right after the analysis of the documents. Fastest sales process on the market.",
   },
 ];
 
+const PracticalData = [
+  {
+    name: "track everything online",
+    info: "Announcements, schedules of visits and proposals all in the palm of your hands",
+    imageSrc: trackImage,
+  },
+  {
+    name: "100% digital processes",
+    info: "Signing of contracts, issuance of certificates, documents and even public deed of purchase and sale, all digitally, without leaving home",
+    imageSrc: digitalImage,
+  },
+  {
+    name: "Fast sale!",
+    info: "Fastest sales process on the market",
+    imageSrc: fastImage,
+  },
+];
 
-
-export default function Broker(props) {
+export default function Advertise(props) {
   const svgString = encodeURIComponent(
     renderToStaticMarkup(<WantSellSvgBackground />)
   );
@@ -71,34 +91,39 @@ export default function Broker(props) {
         <Navbar shape={false} />
         <Grid
           container
-          spacing={2}
+          spacing={6}
           sx={{
             paddingRight: { xs: 5, sm: 5, md: 10, xl: 10, lg: 10 },
-            marginTop: 2,
+            marginTop: { xs: 2, sm: 2, md: 2, lg: 2, xl: 4 },
           }}
         >
           <Grid item xs={12} sm={12} md={12} xl={6} lg={6}>
             <BrokerHelp
-              name="Help revolutionize the real estate market"
-              content="By connecting to the network, you will have the most modern and
-            technological real estate platform in Brazil. The only platform that
-            offers the 100% digital buying and selling process, from scheduling a
-            visit, proposal to the public deed, without leaving home. Eliminating
-            bureaucracy and providing more time so you can dedicate yourself to what
-            matters, the customer"
-              fieldItem={false}
-              buttonName="Be a Partner!"
+              name="The best experience for you!"
+              content="We reduce bureaucracy and digitize the process of buying and selling real estate, from scheduling visits, proposals, contracts, certificates, documents to the public deed, everything 100% digital, without leaving home"
+              fieldItem={true}
+              buttonName="I want to advertise"
             />
           </Grid>
           <Grid item xs={12} sm={12} md={12} xl={6} lg={6}>
-            <BrokerHelpContent imageSrc={brokerHelpImage} />
+            <Grid
+              container
+              direction="row"
+              justifyContent="center"
+              alignItems="flex-end"
+              sx={{ height: { xs: 0, sm: 0, md: 0, lg: "55vh", xl: 0 } }}
+            >
+              <BrokerHelpContent imageSrc={advertiseImage} />
+            </Grid>
           </Grid>
         </Grid>
         <Box
           sx={{
-            // backgroundColor: "#F9F9FB",
-            paddingTop: { xs: 0, sm: 0, md: 10, lg: 10, xl: 10 },
-            // paddingBottom: 5,
+            backgroundColor: "#F9F9FB",
+            paddingTop: { xs: 0, sm: 0, md: 5, lg: 5, xl: 5 },
+            marginTop: { xs: 25, sm: 25, md: 15, lg: 15, xl: 15 },
+
+            paddingBottom: { xs: 2, sm: 2, md: 20, lg: 20, xl: 20 },
             // clipPath:
             //   "polygon(0 0, 13% 5%, 30% 10%, 53% 13%, 71% 10%, 100% 0, 100% 85%, 100% 100%, 85% 100%, 15% 100%, 0 100%, 0% 85%)",
             // clipPath: "circle(15em at 10% 40%)",
@@ -125,12 +150,13 @@ export default function Broker(props) {
                   lg: "40px",
                   xl: "40px",
                 },
+                pt: { xs: 2, sm: 2, md: 0, lg: 0, xl: 0 },
                 pb: { xs: 2, sm: 2, md: 5, lg: 5, xl: 5 },
                 color: "#1A1859",
                 fontWeight: "800",
               }}
             >
-              Become a super broker
+              Lokkan for your property
             </Typography>
           </Grid>
           <Container
@@ -148,38 +174,25 @@ export default function Broker(props) {
               </Grid>
               <Grid item xs={12} sm={12} md={12} xl={6} lg={6}>
                 <BecomeBroker
-                  contentData={becomeBrokerData}
-                  buttonVisible={true}
+                  contentData={advertiseData}
+                  buttonVisible={false}
                 />
               </Grid>
             </Grid>
           </Container>
         </Box>
-        <Box
-          sx={{
-            paddingTop: { xs: 5, sm: 5, md: 10, lg: 10, xl: 10 },
-            paddingBottom: 10,
 
-            backgroundImage: {
-              xs: `url(${mobileGray.src})`,
-              sm: `url(${mobileGray.src})`,
-              md: `url("data:image/svg+xml,${svgString}")`,
-              lg: `url("data:image/svg+xml,${svgString}")`,
-              xl: `url("data:image/svg+xml,${svgString}")`,
-            },
-            backgroundRepeat: "no-repeat",
-            backgroundSize: "cover",
-          }}
-        >
+        <Box>
           <Grid
             container
             direction="row"
             justifyContent="center"
             alignItems="center"
             sx={{
-              //   mt: { xs: 8, sm: 8, md: 0, xl: 0, lg: 0 },
-              pb: { xs: 1, sm: 1, md: 5, xl: 5, lg: 5 },
+              pb: { xs: 2, sm: 2, md: 5, lg: 5, xl: 5 },
+              pt: { xs: 2, sm: 2, md: 6, lg: 6, xl: 6 },
               px: { xs: "2.5vh", sm: "2.5vh" },
+              mb: { xs: 10, sm: 10, md: 0, lg: 0, xl: 0 },
             }}
           >
             <Typography
@@ -192,67 +205,66 @@ export default function Broker(props) {
                   lg: "40px",
                   xl: "40px",
                 },
-                pb: { xs: 0, sm: 0, md: 5, xl: 5, lg: 5 },
-                mt: { xs: 0, sm: 0, md: 10, xl: 10, lg: 10 },
+
                 color: "#1A1859",
                 fontWeight: "800",
               }}
             >
-              Maximize your results
+              Practical, simple and easy
             </Typography>
           </Grid>
-          <Container
-            maxWidth="lg"
-            sx={{
-              //   mt: { xs: 8, sm: 8, md: 0, xl: 0, lg: 0 },
-              background: "#FFFFFF",
-              borderRadius: "6px",
-              boxShadow: "0px 8px 24px rgba(3, 2, 39, 0.07)",
-              py: 4,
-            }}
-          >
+          <Container maxWidth="lg">
             <Grid
               container
               spacing={2}
 
               // className="shape-circle"
             >
-              <Grid item xs={12} sm={12} md={12} xl={6} lg={6}>
-                <CalulateComission />
+              <Grid
+                item
+                xs={12}
+                sm={12}
+                md={12}
+                xl={6}
+                lg={6}
+                sx={{
+                  display: {
+                    xl: "none",
+                    lg: "none",
+                    md: "inline",
+                    xs: "inline",
+                    sm: "inline",
+                  },
+                }}
+              >
+                <BrokerImageContentMobile imageSrc={wantImageMobile} />
               </Grid>
               <Grid item xs={12} sm={12} md={12} xl={6} lg={6}>
-                <ComissionResult />
+                <BrokerRegisterContent
+                  contentData={PracticalData}
+                  buttonVisible={false}
+                />
               </Grid>
-            </Grid>
-          </Container>
-
-          <Container
-            maxWidth="lg"
-            sx={{ marginTop: { xs: 5, sm: 5, md: 15, xl: 15, lg: 15 } }}
-          >
-            <Grid container spacing={2}>
-              {[0, 1, 2].map((data, index) => (
-                <Grid key={index} item xs={12} sm={12} md={6} xl={4} lg={4}>
-                  <BrokerFacilities
-                    text={
-                      "Work wherever you are and with flexible hours and total autonomy"
-                    }
-                  />
-                </Grid>
-              ))}
-            </Grid>
-          </Container>
-          <Container maxWidth="lg" sx={{ marginTop: 5 }}>
-            <Grid container spacing={2}>
-              {[0, 1].map((data, index) => (
-                <Grid key={index} item xs={12} sm={12} md={6} xl={6} lg={6}>
-                  <BrokerFacilities
-                    text={
-                      "Get access to the property database, with third-party properties, launches by land developers, builders and developers in several cities"
-                    }
-                  />
-                </Grid>
-              ))}
+              <Grid
+                item
+                xs={12}
+                sm={12}
+                md={12}
+                xl={6}
+                lg={6}
+                sx={{
+                  display: {
+                    xl: "inline",
+                    lg: "inline",
+                    md: "none",
+                    xs: "none",
+                    sm: "none",
+                  },
+                }}
+              >
+                {/* <WantToSell /> */}
+                <BrokerImageContent imageSrc={wantImage} />
+              </Grid>
             </Grid>
           </Container>
         </Box>

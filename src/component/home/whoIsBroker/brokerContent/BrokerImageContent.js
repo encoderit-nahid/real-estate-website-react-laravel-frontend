@@ -4,7 +4,7 @@ import shapeImage from "../../../../../public/Images/Image_shape_blue.png";
 import { Grid, Box } from "@mui/material";
 import Image from "next/image";
 
-function BrokerImageContent() {
+function BrokerImageContent({ imageSrc }) {
   return (
     <Grid
       container
@@ -18,7 +18,7 @@ function BrokerImageContent() {
       }}
     >
       <Grid sx={{ position: { xl: "absolute", lg: "absolute" } }}>
-        <Image src={BrokerImage} alt="WantImage" />
+        <Image src={imageSrc} alt="WantImage" />
       </Grid>
       <Grid
         sx={{

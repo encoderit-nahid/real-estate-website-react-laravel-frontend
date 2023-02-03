@@ -1,8 +1,8 @@
-import { Grid, Typography } from "@mui/material";
+import { Grid, InputAdornment, TextField, Typography } from "@mui/material";
 import React from "react";
 import BaseButton from "../../reuseable/button/BaseButton";
 
-function BrokerHelp() {
+function BrokerHelp({ name, content, buttonName, fieldItem }) {
   return (
     <Grid
       container
@@ -26,7 +26,7 @@ function BrokerHelp() {
           color: "#1A1859",
         }}
       >
-        Help revolutionize the real estate market
+        {name}
       </Typography>
       {/* <Typography
         variant="p"
@@ -53,15 +53,30 @@ function BrokerHelp() {
           color: "#1A1859",
         }}
       >
-        By connecting to the network, you will have the most modern and
-        technological real estate platform in Brazil. The only platform that
-        offers the 100% digital buying and selling process, from scheduling a
-        visit, proposal to the public deed, without leaving home. Eliminating
-        bureaucracy and providing more time so you can dedicate yourself to what
-        matters, the customer!
+        {content}
       </Typography>
+      {fieldItem && (
+        <TextField
+          fullWidth
+          id="outlined-basic"
+          label="Zip Code"
+          placeholder="Zip Code"
+          size="medium"
+          variant="outlined"
+          sx={{ mt: 4 }}
+          InputProps={{
+            startAdornment: (
+              <InputAdornment position="start">
+                <Typography variant="p" sx={{ color: "#7450F0" }}>
+                  Eg: 00000-000
+                </Typography>
+              </InputAdornment>
+            ),
+          }}
+        />
+      )}
       <BaseButton
-        name="Be a Partner"
+        name={buttonName}
         width={"100%"}
         fontSize={"24px"}
         margin={"4vh 0 0 0"}

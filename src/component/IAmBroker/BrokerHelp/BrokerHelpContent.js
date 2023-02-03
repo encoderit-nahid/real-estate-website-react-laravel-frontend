@@ -3,7 +3,7 @@ import brokerHelpImage from "../../../../public/Images/broker_help.png";
 import { Box, Grid } from "@mui/material";
 import Image from "next/image";
 
-function BrokerHelpContent() {
+function BrokerHelpContent({ imageSrc }) {
   return (
     <Grid
       container
@@ -11,7 +11,7 @@ function BrokerHelpContent() {
       justifyContent="flex-end"
       alignItems="flex-start"
     >
-      <Image src={brokerHelpImage} alt="brokerHelp" />
+      <Image src={imageSrc} alt="brokerHelp" />
     </Grid>
   );
 }

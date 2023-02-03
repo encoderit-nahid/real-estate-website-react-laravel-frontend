@@ -82,14 +82,15 @@ function WantToSell() {
               variant="p"
               sx={{ fontSize: "24px", fontWeight: "700", color: "#1A1859" }}
             >
-              track everything online
+              100% digital processes
             </Typography>
             <Typography
               variant="p"
               sx={{ fontSize: "18px", fontWeight: "400", color: "#7C7C99" }}
             >
-              Announcements, schedules of visits and proposals all in the palm
-              of your hands.
+              Signing of contracts, issuance of certificates, documents and even
+              public deed of purchase and sale, all digitally, without leaving
+              home.
             </Typography>
           </Grid>
         </Grid>
@@ -108,7 +109,7 @@ function WantToSell() {
         <Grid item xs={12} sm={12} md={4} lg={3} xl={3}>
           <Image src={fastImage} alt="track" />
         </Grid>
-        <Grid itemxs={12} sm={12} md={8} lg={9} xl={9}>
+        <Grid item xs={12} sm={12} md={8} lg={9} xl={9}>
           <Grid
             container
             direction="column"
@@ -119,14 +120,13 @@ function WantToSell() {
               variant="p"
               sx={{ fontSize: "24px", fontWeight: "700", color: "#1A1859" }}
             >
-              track everything online
+              Fast sale!
             </Typography>
             <Typography
               variant="p"
               sx={{ fontSize: "18px", fontWeight: "400", color: "#7C7C99" }}
             >
-              Announcements, schedules of visits and proposals all in the palm
-              of your hands.
+              Fastest sales process on the market.
             </Typography>
           </Grid>
         </Grid>
