@@ -7,9 +7,18 @@ import check from "../../../../public/Images/check.png";
 import Image from "next/image";
 import Footer from "../../shared/Footer/Footer";
 
-function HouseCard() {
+function HouseCard({ shadow, marginTop }) {
   return (
-    <Box sx={{ backgroundColor: "#FFFFFF", borderRadius: "8px", pb: 3 }}>
+    <Box
+      sx={{
+        backgroundColor: "#FFFFFF",
+        borderRadius: "8px",
+        pb: 3,
+        boxShadow: shadow,
+        marginTop: marginTop,
+       
+      }}
+    >
       <Box sx={{ width: "100%" }}>
         <Image src={houseImage} layout="responsive" alt="house" />
       </Box>

@@ -9,6 +9,8 @@ import {
   Container,
   ImageList,
   ImageListItem,
+  Divider,
+  Button,
 } from "@mui/material";
 import FulfillDream from "../src/component/home/fullfill/FulfillDream";
 import SideContent from "../src/component/home/FullfillSideContent/SideContent";
@@ -38,6 +40,14 @@ import digitalImage from "../public/Images/digital.png";
 import fastImage from "../public/Images/fast.png";
 import PropertyList from "../src/component/IAmOwner/propertyList/PropertyList";
 import dynamic from "next/dynamic";
+import Pagination from "@mui/material/Pagination";
+import Stack from "@mui/material/Stack";
+import SearchComponent from "../src/component/reuseable/SearchComponent/SearchComponent";
+
+import FilterAltOutlinedIcon from "@mui/icons-material/FilterAltOutlined";
+import Autocomplete from "@mui/material/Autocomplete";
+import TextField from "@mui/material/TextField";
+
 const BaseGoogleMap = dynamic(
   () => import("../src/component/IAmOwner/map/BaseGoogleMap"),
   {
@@ -95,16 +105,117 @@ export default function Advertise(props) {
       </Head>
 
       <main className="section">
-        <Navbar shape={false} />
-        <Grid container sx={{ px: 3, py: 2, background: "#F9F9FB" }}>
-          <Grid item xs={8}>
+        <Navbar shape={false} paddingY={"1vh"} />
+        <Grid
+          container
+          spacing={2}
+          sx={{ px: 3, py: 2, background: "#F9F9FB" }}
+        >
+          <Grid item xs={12} sm={12} md={12} lg={8} xl={8}>
+            <SearchComponent marginY="6vh" />
+            <Divider
+              sx={{
+                background: "#F9F9FB",
+                boxShadow: "0px 4px 4px rgba(0, 0, 0, 0.25)",
+              }}
+            />
+            <Grid
+              container
+              direction="column"
+              justifyContent="flex-start"
+              alignItems="flex-start"
+              sx={{ marginY: 2 }}
+            >
+              <Typography
+                variant="p"
+                sx={{ fontSize: "24px", fontWeight: "600", color: "#1A1859" }}
+              >
+                Property for sale in Sao Paulo, SP
+              </Typography>
+              <Typography
+                variant="p"
+                sx={{ fontSize: "16px", fontWeight: "400", color: "#4B4B66" }}
+              >
+                1,431 properties found
+              </Typography>
+            </Grid>
+            <Box sx={{ borderBottom: "1px dashed #D3D3DF" }}></Box>
+            <Grid
+              container
+              direction="row"
+              justifyContent="space-between"
+              alignItems="center"
+              sx={{ marginTop: 2 }}
+            >
+              <Button
+                sx={{
+                  fontSize: "14px",
+                  fontWeight: 600,
+                  textTransform: "none",
+                  lineHeight: "17px",
+                  background: "#0E97F7",
+                  boxShadow: "0px 4px 24px rgba(26, 85, 181, 0.3)",
+                  borderRadius: "4px",
+                  color: "#ffffff",
+                  display: "flex",
+                }}
+              >
+                <FilterAltOutlinedIcon />
+                <Typography variant="p">filter</Typography>
+              </Button>
+
+              <Autocomplete
+                disablePortal
+                sx={{
+                  width: {
+                    xs: "50%",
+                    sm: "50%",
+                    md: "50%",
+                    lg: "20%",
+                    xl: "20%",
+                  },
+                }}
+                size="small"
+                id="combo-box-demo"
+                options={top100Films}
+                renderInput={(params) => (
+                  <TextField {...params} label="Most Relevant" />
+                )}
+              />
+            </Grid>
             <PropertyList />
+            <Stack spacing={2} sx={{ marginTop: 4 }}>
+              <Pagination count={10} variant="outlined" shape="rounded" />
+            </Stack>
           </Grid>
-          <Grid item xs={4}>
-            {/* <BaseGoogleMap /> */}
+          <Grid
+            item
+            xl={4}
+            lg={4}
+            sx={{
+              display: {
+                xs: "none",
+                sm: "none",
+                md: "none",
+                lg: "inline",
+                xl: "inline",
+              },
+            }}
+          >
+            <BaseGoogleMap />
           </Grid>
         </Grid>
       </main>
     </div>
   );
 }
+
+const top100Films = [
+  { label: "The Shawshank Redemption", year: 1994 },
+  { label: "The Godfather", year: 1972 },
+  { label: "The Godfather: Part II", year: 1974 },
+  { label: "The Dark Knight", year: 2008 },
+  { label: "12 Angry Men", year: 1957 },
+  { label: "Schindler's List", year: 1993 },
+  { label: "Pulp Fiction", year: 1994 },
+];

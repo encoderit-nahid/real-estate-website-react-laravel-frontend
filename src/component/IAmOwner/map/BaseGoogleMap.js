@@ -1,116 +1,108 @@
 import React, { useEffect, useMemo } from "react";
 
 import { useState, useCallback } from "react";
-import { GoogleMap, Marker, useJsApiLoader } from "@react-google-maps/api";
 
-function BaseGoogleMap() {
-  const [innerValue, setInnerValue] = useState(5);
-  const [center, setCenter] = useState(() => {
-    // if (innerValue?.geometry?.location) return innerValue?.geometry?.location;
-    return { lat: 23.7724, lng: 90.4225 };
-  });
+import {
+  GoogleMap,
+  MarkerF,
+  MarkerClustererF,
+  useLoadScript,
+} from "@react-google-maps/api";
 
-  const [markers, setMarkers] = useState([]);
-  const [geocoder, setGeocoder] = useState(null);
+const GoogleMapOptions = {
+  tilt: 0,
+  zoomControl: false,
+  streetViewControl: false,
+  disableDefaultUI: true,
+  gestureHandling: "greedy",
+};
 
-  const [map, setMap] = React.useState(null);
-  const [isInteracted, setIsInteracted] = React.useState(false);
-  const [defaultZoom] = useState(15);
-  const [mapZoom, setMapZoom] = useState(map?.getZoom());
+const BaseMap = () => {
+  const handleOnLoad = (map) => {
+    const bounds = new google.maps.LatLngBounds();
+    markers.forEach(({ position }) => bounds.extend(position));
+    map.fitBounds(bounds);
+  };
 
-  //google_map_load
-  const onLoad = useCallback(
-    (map) => {
-      const geocoder = new window.google.maps.Geocoder();
-      const bounds = new window.google.maps.LatLngBounds(center);
-
-      map.fitBounds(bounds);
-
-      setMap(map);
-      setGeocoder(geocoder);
-    },
-    [center]
+  return (
+    <GoogleMap
+      onLoad={handleOnLoad}
+      mapContainerStyle={{ height: "225vh" }}
+      options={GoogleMapOptions}
+    >
+      <MarkerF position={{ lat: 53, lng: 9 }} />
+      <MarkerClustererF>
+        {(clusterer) => (
+          <>
+            {markers.map((marker) => (
+              <MarkerF
+                key={marker.id}
+                position={marker.position}
+                clusterer={clusterer}
+              />
+            ))}
+          </>
+        )}
+      </MarkerClustererF>
+    </GoogleMap>
   );
+};
 
-  //for_zoom
-  const onInterract = useCallback(() => {
-    if (!isInteracted) {
-      setIsInteracted(true);
-    }
-  }, [isInteracted]);
+const Map = React.memo(BaseMap);
 
-  useEffect(() => {
-    if (!isInteracted && mapZoom) {
-      map?.setZoom(defaultZoom);
-    }
-  }, [isInteracted, defaultZoom, map, mapZoom]);
-
-  const onUnmount = useCallback((map) => {
-    setMap(null);
-  }, []);
-
-  const { isLoaded } = useJsApiLoader({
-    id: "google-map-script",
+const BaseGoogleMap = () => {
+  const { isLoaded } = useLoadScript({
     googleMapsApiKey: "AIzaSyBCjayEj5DRcHr0fSxVadApgBG3nE7jgyg",
   });
 
-  //pick_google_map_location
-  const onPickLocation = () => {
-    onChange(innerValue);
-  };
-
-  const pickupMaker = useCallback(
-    (event) => {
-      onInterract();
-      setMarkers([]);
-      geocoder.geocode({ latLng: event.latLng }, (results, status) => {
-        if (status === window?.google.maps.GeocoderStatus.OK) {
-          const address = results[0];
-          const position = {
-            lat: address?.geometry?.location?.lat(),
-            lng: address?.geometry?.location?.lng(),
-          };
-          setCenter(position);
-          setMarkers((m) => [...m, { position }]);
-          setInnerValue(address);
-        }
-      });
-    },
-    [geocoder, onInterract]
-  );
-  return (
-    <GoogleMap
-      id="searchbox-example"
-      mapContainerStyle={{
-        height: "500px",
-        width: "100%",
-      }}
-      defaultCenter={center}
-      center={center}
-      //   onClick={pickupMaker}
-      onLoad={onLoad}
-      onUnmount={onUnmount}
-      onZoomChanged={() => {
-        setMapZoom(() => map?.getZoom() || defaultZoom);
-      }}
-      onResize={onInterract}
-      onDragStart={onInterract}
-      onTilesLoaded={() => {
-        setMarkers((m) => [...m, { position: currentPosition }]);
-        onInterract();
-      }}
-    >
-      {markers.map((marker, index) => (
-        <Marker
-          draggable
-          clickable
-          key={index}
-          position={marker.position}
-          onDragEnd={pickupMaker}
-        />
-      ))}
-    </GoogleMap>
-  );
-}
+  return isLoaded ? <Map /> : null;
+};
 
 export default BaseGoogleMap;
+
+const markers = [
+  {
+    id: 1,
+    position: { lat: 53, lng: 9 },
+  },
+  {
+    id: 2,
+    position: { lat: 53.1, lng: 9.1 },
+  },
+  {
+    id: 3,
+    position: { lat: 53.2, lng: 9.2 },
+  },
+  {
+    id: 4,
+    position: { lat: 53.4, lng: 9.3 },
+  },
+  {
+    id: 5,
+    position: { lat: 53.6, lng: 9.25 },
+  },
+  {
+    id: 6,
+    position: { lat: 53.4, lng: 9.6 },
+  },
+  {
+    id: 7,
+    position: { lat: 53.4, lng: 9.4 },
+  },
+  {
+    id: 8,
+    position: { lat: 53.9, lng: 9.3 },
+  },
+  {
+    id: 9,
+    position: { lat: 53.876, lng: 9.17 },
+  },
+  {
+    id: 10,
+    position: { lat: 53.345, lng: 9.23 },
+  },
+  {
+    id: 11,
+    position: { lat: 53.276, lng: 9.34 },
+  },
+];

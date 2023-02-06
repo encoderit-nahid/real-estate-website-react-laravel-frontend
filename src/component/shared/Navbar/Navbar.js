@@ -19,7 +19,7 @@ import BaseButton from "../../reuseable/button/BaseButton";
 
 const pages = ["search Real estate", "I am broker", "I am Owner", "blog"];
 
-function Navbar({ shape }) {
+function Navbar({ shape, paddingY }) {
   const [anchorElNav, setAnchorElNav] = React.useState(null);
   const [anchorElUser, setAnchorElUser] = React.useState(null);
 
@@ -46,6 +46,7 @@ function Navbar({ shape }) {
         color: "#1A1859",
         boxShadow: "none",
         paddingRight: 10,
+        paddingY: paddingY,
       }}
     >
       <Container maxWidth="xl">
