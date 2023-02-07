@@ -12,6 +12,50 @@ import {
 import orionImage from "../public/Images/orion_view.svg";
 import Image from "next/image";
 import TabView from "../src/component/PropertyView/tab/TabView";
+import AmountView from "../src/component/PropertyView/amount/AmountView";
+import Features from "../src/component/PropertyView/feature/Features";
+import AboutProperty from "../src/component/PropertyView/AboutProperty/AboutProperty";
+import Negotiate from "../src/component/PropertyView/Negotiate/Negotiate";
+import HouseCard from "../src/component/reuseable/HouseCard/HouseCard";
+import Footer from "../src/component/shared/Footer/Footer";
+import SliderView from "../src/component/PropertyView/slider/SliderView";
+import SlideImage from "../src/component/PropertyView/slideImage/SlideImage";
+
+const aboutProperty = [
+  "Heater",
+  "Dependency",
+  "Balcony",
+  "Service area",
+  "Air conditioner",
+  "Source",
+  "Coif",
+  "Cabinets",
+  "Wardrobe",
+  "Stove",
+];
+
+const aboutCondo = [
+  "sports court",
+  "playground",
+  "Electric fence",
+  "Internal TV circuit",
+  "Ordinance",
+  "individual gas",
+  "service entrance",
+  "Service elevator",
+  "Employee locker room",
+  "Academy",
+  "heated pool",
+  "Party room",
+];
+
+const surroundings = [
+  "hospitals",
+  "pharmacies",
+  "Markets",
+  "Laundries",
+  "Museum",
+];
 
 export default function Advertise(props) {
   return (
@@ -51,6 +95,77 @@ export default function Advertise(props) {
             <TabView />
           </Grid>
         </Box>
+        <Box sx={{ mx: 3, my: 4 }}>
+          <Grid container spacing={2}>
+            <Grid item xs={10}>
+              <SliderView />
+            </Grid>
+            <Grid item xs={2}>
+              <SlideImage />
+            </Grid>
+          </Grid>
+        </Box>
+        <Box sx={{ mx: 3 }}>
+          <Grid
+            container
+            direction="row"
+            alignItems="center"
+            sx={{
+              height: "40vh",
+              background: "#0E97F7",
+              px: 20,
+              mt: 1,
+            }}
+          >
+            <AmountView />
+          </Grid>
+        </Box>
+        <Box sx={{ mx: 3, mt: 4 }}>
+          <Grid container spacing={2}>
+            <Grid item xs={9}>
+              <Features />
+              <AboutProperty name="About the property" array={aboutProperty} />
+              <AboutProperty name="About the condo" array={aboutCondo} />
+              <AboutProperty name="surroundings" array={surroundings} />
+            </Grid>
+            <Grid item xs={3}>
+              <Negotiate />
+            </Grid>
+          </Grid>
+        </Box>
+        <Box>
+          <ImageList
+            // container
+            // spacing={3}
+            cols={5}
+            sx={{
+              gridAutoFlow: "column",
+              gridTemplateColumns:
+                "repeat(auto-fill,minmax(140px,1fr)) !important",
+              gridAutoColumns: "minmax(140px, 1fr)",
+              pl: 3,
+            }}
+          >
+            {[0, 1, 2, 3, 4, 5, 6].map((data, index) => (
+              <ImageListItem
+                key={index}
+                cols={2}
+                sx={{
+                  width: {
+                    xl: "90%",
+                    lg: "90%",
+                    md: "70%",
+                    sm: "70%",
+                    xs: "70%",
+                  },
+                }}
+              >
+                <HouseCard shadow={"0px 4px 18px rgba(0, 0, 0, 0.1)"} />
+              </ImageListItem>
+            ))}
+          </ImageList>
+        </Box>
+        <Footer />
       </main>
     </div>
   );
