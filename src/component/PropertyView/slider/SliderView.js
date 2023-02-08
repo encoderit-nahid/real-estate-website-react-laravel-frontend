@@ -6,6 +6,12 @@ import Typography from "@mui/material/Typography";
 import Box from "@mui/material/Box";
 import Image from "next/image";
 import home from "../../../../public/Images/Rectangle 1814.svg";
+import photos from "../../../../public/Images/photos.svg";
+import AutoAwesomeMotionOutlinedIcon from "@mui/icons-material/AutoAwesomeMotionOutlined";
+import RedoOutlinedIcon from "@mui/icons-material/RedoOutlined";
+import CabinOutlinedIcon from "@mui/icons-material/CabinOutlined";
+import MapOutlinedIcon from "@mui/icons-material/MapOutlined";
+import SignpostOutlinedIcon from "@mui/icons-material/SignpostOutlined";
 
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
@@ -62,6 +68,7 @@ function SliderView() {
         // value={value}
         onChange={handleChange}
         aria-label="Vertical tabs example"
+        // sx={{ width: "20%" }}
         // sx={{ borderRight: 1, borderColor: "divider" }}
       >
         <Tab
@@ -72,9 +79,8 @@ function SliderView() {
             fontWeight: "400",
             px: 3,
             py: 2,
-            mt: 1,
             textTransform: "none",
-            width: `${value === 0 ? "20vh" : "15vh"}`,
+            width: `${value === 2 ? "20vh" : "20vh"}`,
             boxShadow: `${
               value === 0 ? "0px 4px 24px rgba(69, 38, 177, 0.13)" : ""
             }`,
@@ -88,12 +94,24 @@ function SliderView() {
             borderBottom: `${value === 0 ? "2px solid #F9F9FB" : ""}`,
             borderTop: `${value === 0 ? "2px solid #F9F9FB" : ""}`,
           }}
+          icon={
+            <AutoAwesomeMotionOutlinedIcon
+              sx={{ color: `${value === 0 ? "#0E97F7" : ""}` }}
+            />
+          }
+          // icon={<Image src={photos} alt="photos" />}
+          iconPosition="start"
           {...a11yProps(0)}
         />
         <Tab
           sx={{
+            fontSize: "14px",
+            color: "#4B4B66",
+            fontWeight: "400",
+            px: 3,
+            py: 2,
             textTransform: "none",
-            width: `${value === 1 ? "20vh" : "15vh"}`,
+            width: `${value === 2 ? "20vh" : "20vh"}`,
             boxShadow: `${
               value === 1 ? "0px 4px 24px rgba(69, 38, 177, 0.13)" : ""
             }`,
@@ -108,12 +126,23 @@ function SliderView() {
             borderTop: `${value === 1 ? "2px solid #F9F9FB" : ""}`,
           }}
           label="360 vision"
+          icon={
+            <RedoOutlinedIcon
+              sx={{ color: `${value === 1 ? "#0E97F7" : ""}` }}
+            />
+          }
+          iconPosition="start"
           {...a11yProps(1)}
         />
         <Tab
           sx={{
+            fontSize: "14px",
+            color: "#4B4B66",
+            fontWeight: "400",
+            px: 3,
+            py: 2,
             textTransform: "none",
-            width: `${value === 2 ? "20vh" : "15vh"}`,
+            width: `${value === 2 ? "20vh" : "20vh"}`,
             boxShadow: `${
               value === 2 ? "0px 4px 24px rgba(69, 38, 177, 0.13)" : ""
             }`,
@@ -127,13 +156,24 @@ function SliderView() {
             borderBottom: `${value === 2 ? "2px solid #F9F9FB" : ""}`,
             borderTop: `${value === 2 ? "2px solid #F9F9FB" : ""}`,
           }}
+          icon={
+            <CabinOutlinedIcon
+              sx={{ color: `${value === 2 ? "#0E97F7" : ""}` }}
+            />
+          }
+          iconPosition="start"
           label="Condominium"
           {...a11yProps(2)}
         />
         <Tab
           sx={{
+            fontSize: "14px",
+            color: "#4B4B66",
+            fontWeight: "400",
+            px: 3,
+            py: 2,
             textTransform: "none",
-            width: `${value === 3 ? "20vh" : "15vh"}`,
+            width: `${value === 3 ? "20vh" : "20vh"}`,
             boxShadow: `${
               value === 3 ? "0px 4px 24px rgba(69, 38, 177, 0.13)" : ""
             }`,
@@ -148,12 +188,23 @@ function SliderView() {
             borderTop: `${value === 3 ? "2px solid #F9F9FB" : ""}`,
           }}
           label="Location"
+          icon={
+            <MapOutlinedIcon
+              sx={{ color: `${value === 3 ? "#0E97F7" : ""}` }}
+            />
+          }
+          iconPosition="start"
           {...a11yProps(3)}
         />
         <Tab
           sx={{
+            fontSize: "14px",
+            color: "#4B4B66",
+            fontWeight: "400",
+            px: 3,
+            py: 2,
             textTransform: "none",
-            width: `${value === 4 ? "20vh" : "15vh"}`,
+            width: `${value === 4 ? "20vh" : "20vh"}`,
             boxShadow: `${
               value === 4 ? "0px 4px 24px rgba(69, 38, 177, 0.13)" : ""
             }`,
@@ -167,6 +218,12 @@ function SliderView() {
             borderBottom: `${value === 4 ? "2px solid #F9F9FB" : ""}`,
             borderTop: `${value === 4 ? "2px solid #F9F9FB" : ""}`,
           }}
+          icon={
+            <SignpostOutlinedIcon
+              sx={{ color: `${value === 4 ? "#0E97F7" : ""}` }}
+            />
+          }
+          iconPosition="start"
           label="Street view"
           {...a11yProps(4)}
         />

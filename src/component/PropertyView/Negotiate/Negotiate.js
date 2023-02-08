@@ -1,7 +1,7 @@
 import React from "react";
 import { Button, Grid, Typography, Box } from "@mui/material";
 
-function Negotiate() {
+function Negotiate({ handleProposalOpen }) {
   return (
     <Box
       sx={{
@@ -91,6 +91,7 @@ function Negotiate() {
             fontWeight: "600",
             textTransform: "none",
           }}
+          onClick={handleProposalOpen}
         >
           Negotiate
         </Button>
@@ -106,7 +107,7 @@ function Negotiate() {
             textTransform: "none",
           }}
         >
-          Standard
+          Schedule visit
         </Button>
       </Grid>
     </Box>

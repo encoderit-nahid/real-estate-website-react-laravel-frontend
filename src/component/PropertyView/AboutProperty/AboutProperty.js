@@ -14,7 +14,16 @@ function AboutProperty({ name, array }) {
       </Typography>
       <Grid container sx={{ mt: 2 }}>
         {array?.map((data, index) => (
-          <Grid item xs={2} key={index} sx={{ pb: 5 }}>
+          <Grid
+            item
+            xs={6}
+            sm={6}
+            md={6}
+            lg={2}
+            xl={2}
+            key={index}
+            sx={{ pb: 5 }}
+          >
             <Image src={checkRound} height={14} width={14} alt="bed" />
             <Typography
               variant="p"

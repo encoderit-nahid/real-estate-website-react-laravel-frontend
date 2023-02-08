@@ -75,6 +75,8 @@ function TabView() {
           onChange={handleChange}
           aria-label="basic tabs example"
           indicatorColor="transparent"
+          variant="scrollable"
+          scrollButtons={false}
         >
           <AntTab
             sx={{ borderRight: 1, paddingX: 4 }}

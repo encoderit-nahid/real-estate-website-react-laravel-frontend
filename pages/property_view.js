@@ -20,6 +20,12 @@ import HouseCard from "../src/component/reuseable/HouseCard/HouseCard";
 import Footer from "../src/component/shared/Footer/Footer";
 import SliderView from "../src/component/PropertyView/slider/SliderView";
 import SlideImage from "../src/component/PropertyView/slideImage/SlideImage";
+import SliderViewMobile from "../src/component/PropertyView/SliderViewMobile/SliderViewMobile";
+import sliderView from "../public/Images/sliderView.png";
+import sliderViewSmall from "../public/Images/sliderViewSmall.png";
+import BaseModal from "../src/component/reuseable/baseModal/BaseModal";
+import ProposalModal from "../src/component/PropertyView/ProposalModal/ProposalModal";
+import { useState } from "react";
 
 const aboutProperty = [
   "Heater",
@@ -57,7 +63,12 @@ const surroundings = [
   "Museum",
 ];
 
-export default function Advertise(props) {
+export default function PropertyView(props) {
+  //add_proposal_modal
+  const [proposalOpen, setProposalOpen] = useState(false);
+  const handleProposalOpen = () => setProposalOpen(true);
+  const handleProposalClose = () => setProposalOpen(false);
+
   return (
     <div>
       <Head>
@@ -75,8 +86,20 @@ export default function Advertise(props) {
             justifyContent="flex-start"
             alignItems="flex-start"
           >
-            <Button sx={{ display: "flex", color: "#1A1859" }}>
+            <Button
+              sx={{
+                display: {
+                  xs: "grid",
+                  sm: "grid",
+                  md: "flex",
+                  lg: "flex",
+                  xl: "flex",
+                },
+                color: "#1A1859",
+              }}
+            >
               <Image src={orionImage} alt="orionImage" />
+
               <Typography
                 variant="p"
                 sx={{ fontSize: "24px", fontWeight: 700, color: "#1A1859" }}
@@ -95,25 +118,108 @@ export default function Advertise(props) {
             <TabView />
           </Grid>
         </Box>
-        <Box sx={{ mx: 3, my: 4 }}>
-          <Grid container spacing={2}>
-            <Grid item xs={10}>
+        <Box
+          sx={{
+            ml: { xs: 1, sm: 3, md: 3, lg: 3, xl: 3 },
+            mr: { xs: 1, sm: 3, md: 3, lg: 3, xl: 3 },
+            my: 4,
+          }}
+        >
+          <Grid
+            container
+            sx={{
+              display: {
+                xs: "inline",
+                sm: "inline",
+                md: "none",
+                lg: "none",
+                xl: "none",
+              },
+            }}
+          >
+            <Grid item xs={12}>
+              <SliderViewMobile />
+            </Grid>
+            <Grid item xs={12}>
+              <Image src={sliderView} alt="sliderView" />
+            </Grid>
+          </Grid>
+          <Grid container spacing={1}>
+            {[0, 1, 2, 3].map((data, index) => (
+              <Grid
+                item
+                key={index}
+                xs={3}
+                sx={{
+                  display: {
+                    xs: "inline",
+                    sm: "inline",
+                    md: "none",
+                    lg: "none",
+                    xl: "none",
+                  },
+                }}
+              >
+                <Image src={sliderViewSmall} alt="sliderView" />
+              </Grid>
+            ))}
+          </Grid>
+          <Grid
+            container
+            spacing={2}
+            // sx={{
+            //   display: {
+            //     xs: "none",
+            //     sm: "none",
+            //     md: "inline",
+            //     lg: "inline",
+            //     xl: "inline",
+            //   },
+            // }}
+          >
+            <Grid
+              item
+              xs={10}
+              sx={{
+                display: {
+                  xs: "none",
+                  sm: "none",
+                  md: "inline",
+                  lg: "inline",
+                  xl: "inline",
+                },
+              }}
+            >
               <SliderView />
             </Grid>
-            <Grid item xs={2}>
+            <Grid
+              item
+              xs={2}
+              sx={{
+                display: {
+                  xs: "none",
+                  sm: "none",
+                  md: "inline",
+                  lg: "inline",
+                  xl: "inline",
+                },
+              }}
+            >
               <SlideImage />
             </Grid>
           </Grid>
         </Box>
-        <Box sx={{ mx: 3 }}>
+        <Box sx={{ mx: { xs: 1, sm: 3, md: 3, lg: 3, xl: 3 } }}>
           <Grid
             container
             direction="row"
             alignItems="center"
             sx={{
-              height: "40vh",
+              height: "45vh",
               background: "#0E97F7",
-              px: 20,
+              px: { xs: 2, sm: 2, md: 2, lg: 20, xl: 20 },
+              pt: { xs: 2, sm: 2, md: 2, lg: 0, xl: 0 },
+              // pb: { xs: 0.5, sm: 0.5, md: 0, lg: 0, xl: 0 },
               mt: 1,
             }}
           >
@@ -122,14 +228,14 @@ export default function Advertise(props) {
         </Box>
         <Box sx={{ mx: 3, mt: 4 }}>
           <Grid container spacing={2}>
-            <Grid item xs={9}>
+            <Grid item xs={12} sm={12} md={12} lg={9} xl={9}>
               <Features />
               <AboutProperty name="About the property" array={aboutProperty} />
               <AboutProperty name="About the condo" array={aboutCondo} />
               <AboutProperty name="surroundings" array={surroundings} />
             </Grid>
-            <Grid item xs={3}>
-              <Negotiate />
+            <Grid item xs={12} sm={12} md={12} lg={3} xl={3}>
+              <Negotiate handleProposalOpen={handleProposalOpen} />
             </Grid>
           </Grid>
         </Box>
@@ -155,8 +261,8 @@ export default function Advertise(props) {
                     xl: "90%",
                     lg: "90%",
                     md: "70%",
-                    sm: "70%",
-                    xs: "70%",
+                    sm: "90%",
+                    xs: "90%",
                   },
                 }}
               >
@@ -166,6 +272,10 @@ export default function Advertise(props) {
           </ImageList>
         </Box>
         <Footer />
+
+        <BaseModal isShowing={proposalOpen} isClose={handleProposalClose}>
+          <ProposalModal handleProposalClose={handleProposalClose} />
+        </BaseModal>
       </main>
     </div>
   );
