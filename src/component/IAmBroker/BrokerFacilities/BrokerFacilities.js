@@ -3,7 +3,7 @@ import Image from "next/image";
 import React from "react";
 import timeColor from "../../../../public/Images/time_color.png";
 
-function BrokerFacilities({ text }) {
+function BrokerFacilities({ data }) {
   return (
     <Grid
       container
@@ -17,7 +17,7 @@ function BrokerFacilities({ text }) {
         justifyContent="center"
         alignItems="center"
       >
-        <Image height={40} width={43} src={timeColor} alt="timeColor" />
+        <Image height={40} width={43} src={data?.image} alt="color" />
       </Grid>
       <Grid
         container
@@ -33,7 +33,7 @@ function BrokerFacilities({ text }) {
             color: "#1A1859",
           }}
         >
-          Flexibility
+          {data?.name}
         </Typography>
       </Grid>
 
@@ -53,7 +53,7 @@ function BrokerFacilities({ text }) {
             lineHeight: "22px",
           }}
         >
-          {text}
+          {data?.content}
         </Typography>
       </Grid>
     </Grid>

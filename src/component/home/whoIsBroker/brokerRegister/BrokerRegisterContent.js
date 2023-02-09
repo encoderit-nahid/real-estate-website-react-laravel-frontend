@@ -11,7 +11,13 @@ function BrokerRegisterContent({ contentData, buttonVisible }) {
     <Grid
       container
       direction="column"
-      justifyContent="center"
+      justifyContent={{
+        xs: "center",
+        sm: "center",
+        md: "center",
+        lg: "flex-start",
+        xl: "flex-start",
+      }}
       alignItems="center"
       sx={{
         marginTop: 1,

@@ -8,7 +8,12 @@ function BrokerHelpContent({ imageSrc }) {
     <Grid
       container
       direction="row"
-      justifyContent="flex-end"
+      justifyContent={{
+        xs: "flex-end",
+        sm: "flex-end",
+        md: "center",
+        lg: "flex-end",
+      }}
       alignItems="flex-start"
     >
       <Image src={imageSrc} alt="brokerHelp" />

@@ -15,7 +15,7 @@ function WantToSell() {
       alignItems="center"
       sx={{
         marginTop: 1,
-        marginLeft: { xs: "0.5vh", sm: "0.5vh", md: 0, lg: 0, xl: 0 },
+        marginLeft: { xs: "0.6vh", sm: "0.6vh", md: 0, lg: 0, xl: 0 },
       }}
     >
       <Grid

@@ -6,11 +6,18 @@ import {
   InputAdornment,
   TextField,
   Typography,
+  styled,
 } from "@mui/material";
 import React from "react";
 import BaseButton from "../../reuseable/button/BaseButton";
 import homeImage from "../../../../public/Images/home.png";
 import Image from "next/image";
+
+// const AutoComplete = styled(Autocomplete)`
+//   & .MuiInputBase-input {
+//     height: {xl:0.9rem,lg:0.9rem};
+//   }
+// `;
 
 function FulfillDream() {
   return (
@@ -35,7 +42,7 @@ function FulfillDream() {
           fontWeight: "800",
         }}
       >
-        Fulfill your
+        Make your
       </Typography>
       <Typography
         variant="h1"
@@ -58,10 +65,15 @@ function FulfillDream() {
         id="outlined-basic"
         label="Location"
         placeholder="Search by street, neighborhood or city"
-        size="medium"
         variant="outlined"
-        sx={{ mt: 4 }}
+        sx={{
+          mt: 4,
+          width: { xs: "90%", sm: "90%", md: "90%", xl: "90%", lg: "75%" },
+        }}
         InputProps={{
+          // style: {
+          //   height: "6.4vh",
+          // },
           endAdornment: (
             <InputAdornment position="end">
               <Image src={homeImage} alt="homeImage" />
@@ -72,15 +84,17 @@ function FulfillDream() {
       <Autocomplete
         fullWidth
         disablePortal
-        size="medium"
         id="combo-box-demo"
-        sx={{ mt: 4 }}
+        sx={{
+          mt: 4,
+          width: { xs: "90%", sm: "90%", md: "90%", xl: "90%", lg: "75%" },
+        }}
         options={top100Films}
         renderInput={(params) => <TextField {...params} label="value up to" />}
       />
       <BaseButton
         name={"search real estate"}
-        width={"100%"}
+        width={{ xs: "90%", sm: "90%", md: "90%", xl: "90%", lg: "75%" }}
         fontSize={"24px"}
         margin={"4vh 0 0 0"}
       />

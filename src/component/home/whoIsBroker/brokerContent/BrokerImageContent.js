@@ -9,7 +9,13 @@ function BrokerImageContent({ imageSrc }) {
     <Grid
       container
       direction="row"
-      justifyContent="center"
+      justifyContent={{
+        xs: "center",
+        sm: "center",
+        md: "center",
+        lg: "flex-start",
+        xl: "flex-start",
+      }}
       alignItems="center"
       sx={{
         paddingTop: { xs: 0, sm: 0, md: 0, lg: 30, xl: 30 },
@@ -31,7 +37,7 @@ function BrokerImageContent({ imageSrc }) {
           },
           position: "relative",
           top: "-24vh",
-          left: "-14vh",
+          left: "-3vh",
         }}
       >
         <Image src={shapeImage} alt="WantImage" />

@@ -59,7 +59,7 @@ function Features() {
           </Typography>
         </Box>
 
-        <Box sx={{ pl: 2 }}>
+        <Box sx={{ pl: 2, pr: 2 }}>
           <Image src={building} alt="bed" />
           <Typography
             variant="p"
@@ -73,7 +73,7 @@ function Features() {
             6th floor
           </Typography>
         </Box>
-        <Box sx={{ pl: 2 }}>
+        <Box>
           <Image src={bath} alt="bath" />
           <Typography
             variant="p"

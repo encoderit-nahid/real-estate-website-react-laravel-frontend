@@ -10,15 +10,31 @@ function SideContent() {
     <Grid
       container
       direction="row"
-      justifyContent="flex-end"
+      justifyContent={{
+        xs: "flex-end",
+        sm: "flex-end",
+        md: "center",
+        lg: "flex-end",
+      }}
       alignItems="center"
     >
-      <Box sx={{ position: "absolute" }}>
+      <Box
+        sx={{
+          position: "absolute",
+          // mb: { xs: 0, sm: 0, md: 0, lg: 45, xl: 0 },
+        }}
+      >
         <Image src={backgroundLaptop} alt="backgroundLaptop" />
       </Box>
-      <Box sx={{ position: "relative", mt: 15 }}>
+      <Box
+        sx={{
+          display: { lg: "flex", xl: "inline" },
+          position: "relative",
+          mt: 15,
+        }}
+      >
         <Image src={Laptop} alt="Laptop" />
-        <Image src={Tree} alt="Tree" />
+        <Image height={400} width={200} src={Tree} alt="Tree" />
       </Box>
     </Grid>
   );

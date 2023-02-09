@@ -24,6 +24,12 @@ body {
   background-color: #7450F0;
   clip-path: ellipse(43% 47% at 86% 13%);
 }
+.base-map{
+  padding-top: 0!important;
+}
+.broker{
+  padding-left: 0!important;
+}
 
 /* .MuiButtonBase-root .MuiTab-root .Mui-selected{
   color: transparent !important;

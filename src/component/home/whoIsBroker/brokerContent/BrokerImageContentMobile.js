@@ -14,7 +14,7 @@ function BrokerImageContentMobile({ imageSrc }) {
       sx={{
         paddingTop: { xs: 0, sm: 0, md: 0, lg: 30, xl: 30 },
         paddingBottom: { xs: 0, sm: 0, md: 0, lg: 20, xl: 20 },
-        marginLeft: { xs: 0, sm: 0, md: 0, lg: 2, xl: 2 },
+        // marginLeft: { xs: 0, sm: 0, md: 0, lg: 2, xl: 2 },
       }}
     >
       <Box

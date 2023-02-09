@@ -109,7 +109,7 @@ export default function Advertise(props) {
         <Grid
           container
           spacing={2}
-          sx={{ px: 3, py: 2, background: "#F9F9FB" }}
+          sx={{ px: 3, pb: 2, background: "#F9F9FB" }}
         >
           <Grid item xs={12} sm={12} md={12} lg={8} xl={8}>
             <SearchComponent marginY="6vh" />
@@ -171,7 +171,7 @@ export default function Advertise(props) {
                     xs: "50%",
                     sm: "50%",
                     md: "50%",
-                    lg: "20%",
+                    lg: "25%",
                     xl: "20%",
                   },
                 }}
@@ -184,12 +184,13 @@ export default function Advertise(props) {
               />
             </Grid>
             <PropertyList />
-            <Stack spacing={2} sx={{ marginTop: 4 }}>
-              <Pagination count={10} variant="outlined" shape="rounded" />
+            <Stack spacing={2} sx={{ marginY: 8 }}>
+              <Pagination count={5} variant="outlined" shape="rounded" />
             </Stack>
           </Grid>
           <Grid
             item
+            className="base-map"
             xl={4}
             lg={4}
             sx={{

@@ -107,7 +107,7 @@ export default function App(props) {
             xs={12}
             sm={12}
             sx={{
-              marginLeft: 5,
+              marginLeft: { xs: 2, sm: 2, md: 5, lg: 5, xl: 5 },
 
               display: {
                 xl: "none",
@@ -146,7 +146,7 @@ export default function App(props) {
             justifyContent="center"
             alignItems="center"
             sx={{
-              mt: { xs: 8, sm: 8, md: 0, xl: 0, lg: 0 },
+              mt: { xs: 8, sm: 8, md: 8, xl: 0, lg: 0 },
               pb: 5,
               px: { xs: "2.5vh", sm: "2.5vh" },
             }}
@@ -170,15 +170,16 @@ export default function App(props) {
           </Grid>
           <Container
             maxWidth="lg"
-            sx={{ mt: { xs: 8, sm: 8, md: 0, xl: 0, lg: 0 } }}
+            sx={{ mt: { xs: 8, sm: 8, md: 8, xl: 0, lg: 0 }, paddingLeft: 0 }}
           >
             <Grid
               container
-              spacing={2}
+              spacing={1}
+              sx={{ ml: { xs: 0, sm: 0, md: 0, lg: 2, xl: 2 } }}
 
               // className="shape-circle"
             >
-              <Grid item xs={12} sm={12} md={12} xl={6} lg={6}>
+              <Grid item xs={12} sm={12} md={12} xl={5} lg={5}>
                 <SellSideContent />
               </Grid>
               <Grid item xs={12} sm={12} md={12} xl={6} lg={6}>
@@ -195,7 +196,7 @@ export default function App(props) {
             justifyContent="center"
             alignItems="center"
             sx={{
-              pb: { xs: 2, sm: 2, md: 5, lg: 5, xl: 5 },
+              pb: { xs: 4, sm: 4, md: 5, lg: 5, xl: 5 },
               pt: { xs: 2, sm: 2, md: 6, lg: 6, xl: 6 },
               px: { xs: "2.5vh", sm: "2.5vh" },
             }}
@@ -217,14 +218,18 @@ export default function App(props) {
               For anyone who is a broker
             </Typography>
           </Grid>
-          <Container maxWidth="lg">
+          <Container maxWidth="lg" sx={{ paddingLeft: 0 }}>
             <Grid
               container
               spacing={2}
-
+              sx={{
+                mt: { xs: 10, sm: 10, md: 9, xl: 0, lg: 0 },
+                ml: { xs: 0, sm: 0, md: 0, lg: 2, xl: 2 },
+              }}
               // className="shape-circle"
             >
               <Grid
+                className="broker"
                 item
                 xs={12}
                 sm={12}
@@ -243,7 +248,19 @@ export default function App(props) {
               >
                 <BrokerImageContentMobile imageSrc={whoBrokerMobile} />
               </Grid>
-              <Grid item xs={12} sm={12} md={12} xl={6} lg={6}>
+              <Grid
+                item
+                xs={12}
+                sm={12}
+                md={12}
+                xl={6}
+                lg={6}
+                className="broker"
+                sx={{
+                  ml: { xs: 1.1, sm: 1.1, md: 0, lg: 0, xl: 0 },
+                  mr: { xs: 0.9, sm: 0.9, md: 0, lg: 0, xl: 0 },
+                }}
+              >
                 <BrokerRegisterContent
                   contentData={brokerData}
                   buttonVisible={true}
@@ -319,10 +336,11 @@ export default function App(props) {
             backgroundSize: "cover",
           }}
         >
-          <Container maxWidth="lg">
+          <Container maxWidth="xl">
             <ImageList
               // container
               // spacing={3}
+
               cols={3}
               gap={4}
               sx={{
@@ -332,17 +350,16 @@ export default function App(props) {
                 gridAutoColumns: "minmax(110px, 1fr)",
 
                 // px: 3,
-                pl: 3,
               }}
             >
-              {[0, 1, 2].map((data, index) => (
+              {[0, 1, 2, 3].map((data, index) => (
                 <ImageListItem
                   key={index}
                   cols={3}
                   sx={{
                     width: {
-                      xl: "90%",
-                      lg: "90%",
+                      xl: "95%",
+                      lg: "95%",
                       md: "70%",
                       sm: "70%",
                       xs: "70%",

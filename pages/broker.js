@@ -32,7 +32,45 @@ import CalulateComission from "../src/component/IAmBroker/MaxmizeResult/Calulate
 import ComissionResult from "../src/component/IAmBroker/MaxmizeResult/ComissionResult";
 import BrokerFacilities from "../src/component/IAmBroker/BrokerFacilities/BrokerFacilities";
 import brokerHelpImage from "../public/Images/broker_help.png";
+import usersColor from "../public/Images/users-colored.png";
+import dealColor from "../public/Images/deal-coloerd.png";
+import houseColor from "../public/Images/house-colored.png";
+import moneyColor from "../public/Images/money-colored.png";
+import timeColor from "../public/Images/time-colored.png";
 
+const facilitiesData = [
+  {
+    name: "ready customers",
+    content: "Get customers who are ready to close deals",
+    image: usersColor,
+  },
+  {
+    name: "highest commission",
+    content:
+      "Receive the highest commission on the market, keep up to 70% of the full amount",
+    image: moneyColor,
+  },
+  {
+    name: "Flexibility",
+    content: "Work wherever you are and with flexible hours and total autonomy",
+    image: timeColor,
+  },
+];
+
+const facilitiesBottomData = [
+  {
+    name: "Properties",
+    content:
+      "Get access to the property database, with third-party properties, launches by land developers, builders and developers in several cities",
+    image: houseColor,
+  },
+  {
+    name: "Good Business",
+    content:
+      "Receive customers who have already negotiated price and payment method and are ready to close the deal",
+    image: dealColor,
+  },
+];
 
 const becomeBrokerData = [
   {
@@ -52,8 +90,6 @@ const becomeBrokerData = [
     info: "You will have access to Lokkan's property database, which is made up of properties registered by owner, launches by land developers, builders and developers in several cities.",
   },
 ];
-
-
 
 export default function Broker(props) {
   const svgString = encodeURIComponent(
@@ -134,7 +170,7 @@ export default function Broker(props) {
             </Typography>
           </Grid>
           <Container
-            maxWidth="lg"
+            maxWidth="xl"
             sx={{ mt: { xs: 8, sm: 8, md: 0, xl: 0, lg: 0 } }}
           >
             <Grid
@@ -143,10 +179,10 @@ export default function Broker(props) {
 
               // className="shape-circle"
             >
-              <Grid item xs={12} sm={12} md={12} xl={6} lg={6}>
+              <Grid item xs={12} sm={12} md={6} xl={6} lg={6}>
                 <BecomeBrokerContent />
               </Grid>
-              <Grid item xs={12} sm={12} md={12} xl={6} lg={6}>
+              <Grid item xs={12} sm={12} md={6} xl={6} lg={6}>
                 <BecomeBroker
                   contentData={becomeBrokerData}
                   buttonVisible={true}
@@ -192,8 +228,8 @@ export default function Broker(props) {
                   lg: "40px",
                   xl: "40px",
                 },
-                pb: { xs: 0, sm: 0, md: 5, xl: 5, lg: 5 },
-                mt: { xs: 0, sm: 0, md: 10, xl: 10, lg: 10 },
+                pb: { xs: 0, sm: 0, md: 3, xl: 3, lg: 3 },
+                mt: { xs: 0, sm: 0, md: 10, xl: 11, lg: 10 },
                 color: "#1A1859",
                 fontWeight: "800",
               }}
@@ -208,7 +244,7 @@ export default function Broker(props) {
               background: "#FFFFFF",
               borderRadius: "6px",
               boxShadow: "0px 8px 24px rgba(3, 2, 39, 0.07)",
-              py: 4,
+              py: 2.5,
             }}
           >
             <Grid
@@ -227,30 +263,22 @@ export default function Broker(props) {
           </Container>
 
           <Container
-            maxWidth="lg"
+            maxWidth="xl"
             sx={{ marginTop: { xs: 5, sm: 5, md: 15, xl: 15, lg: 15 } }}
           >
             <Grid container spacing={2}>
-              {[0, 1, 2].map((data, index) => (
+              {facilitiesData?.map((data, index) => (
                 <Grid key={index} item xs={12} sm={12} md={6} xl={4} lg={4}>
-                  <BrokerFacilities
-                    text={
-                      "Work wherever you are and with flexible hours and total autonomy"
-                    }
-                  />
+                  <BrokerFacilities data={data} />
                 </Grid>
               ))}
             </Grid>
           </Container>
-          <Container maxWidth="lg" sx={{ marginTop: 5 }}>
+          <Container maxWidth="xl" sx={{ marginTop: 5 }}>
             <Grid container spacing={2}>
-              {[0, 1].map((data, index) => (
+              {facilitiesBottomData?.map((data, index) => (
                 <Grid key={index} item xs={12} sm={12} md={6} xl={6} lg={6}>
-                  <BrokerFacilities
-                    text={
-                      "Get access to the property database, with third-party properties, launches by land developers, builders and developers in several cities"
-                    }
-                  />
+                  <BrokerFacilities data={data} />
                 </Grid>
               ))}
             </Grid>

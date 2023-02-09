@@ -27,7 +27,7 @@ const BaseMap = () => {
   return (
     <GoogleMap
       onLoad={handleOnLoad}
-      mapContainerStyle={{ height: "225vh" }}
+      mapContainerStyle={{ height: "245vh" }}
       options={GoogleMapOptions}
     >
       <MarkerF position={{ lat: 53, lng: 9 }} />

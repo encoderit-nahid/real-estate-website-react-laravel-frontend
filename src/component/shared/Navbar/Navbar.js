@@ -46,34 +46,23 @@ function Navbar({ shape, paddingY }) {
         color: "#1A1859",
         boxShadow: "none",
         paddingRight: 10,
+
         paddingY: paddingY,
       }}
     >
-      <Container maxWidth="xl">
+      <Container maxWidth="xxl">
         <Toolbar disableGutters>
-          {/* <AdbIcon sx={{ display: { xs: "none", md: "flex" }, mr: 1 }} />
-          <Typography
-            variant="h6"
-            noWrap
-            component="a"
-            href="/"
-            sx={{
-              mr: 2,
-              display: { xs: "none", md: "flex" },
-              fontFamily: "monospace",
-              fontWeight: 700,
-              letterSpacing: ".3rem",
-              color: "inherit",
-              textDecoration: "none",
-            }}
-          >
-            LOGO
-          </Typography> */}
-          <Box sx={{ display: { xs: "none", md: "flex" } }}>
+          <Box sx={{ display: { xs: "none", md: "none", lg: "flex" } }}>
             <Image src={logoIcon} height={25} width={110} alt="logo" />
           </Box>
 
-          <Box sx={{ flexGrow: 1, display: { xs: "flex", md: "none" }, mr: 1 }}>
+          <Box
+            sx={{
+              flexGrow: 1,
+              display: { xs: "flex", md: "flex", lg: "none" },
+              mr: 1,
+            }}
+          >
             <IconButton
               size="large"
               aria-label="account of current user"
@@ -99,7 +88,7 @@ function Navbar({ shape, paddingY }) {
               open={Boolean(anchorElNav)}
               onClose={handleCloseNavMenu}
               sx={{
-                display: { xs: "block", md: "none" },
+                display: { xs: "block", md: "block", lg: "none" },
               }}
             >
               {pages.map((page) => (
@@ -117,7 +106,7 @@ function Navbar({ shape, paddingY }) {
             direction="row"
             justifyContent="center"
             alignItems="center"
-            sx={{ display: { xs: "flex", md: "none" }, mr: 1 }}
+            sx={{ display: { xs: "flex", md: "flex", lg: "none" }, mr: 1 }}
           >
             <Image src={logoIcon} height={25} width={100} alt="logo" />
           </Grid>
@@ -158,7 +147,7 @@ function Navbar({ shape, paddingY }) {
             justifyContent="flex-end"
             alignItems="center"
             sx={{
-              display: { xs: "none", md: "flex" },
+              display: { xs: "none", md: "none", lg: "flex" },
             }}
           >
             {pages.map((page) => (

@@ -24,7 +24,7 @@ function BecomeBrokerContent() {
           display: {
             xl: "inline",
             lg: "inline",
-            md: "none",
+            md: "inline",
             xs: "none",
             sm: "none",
           },
@@ -37,7 +37,7 @@ function BecomeBrokerContent() {
           display: {
             xl: "none",
             lg: "none",
-            md: "inline",
+            md: "none",
             xs: "inline",
             sm: "inline",
           },

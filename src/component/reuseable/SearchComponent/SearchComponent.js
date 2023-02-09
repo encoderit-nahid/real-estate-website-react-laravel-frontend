@@ -29,7 +29,7 @@ function SearchComponent({ marginY }) {
           boxShadow: "none",
           border: "1px solid #D3D3DF",
           borderRadius: "4px",
-          width: { xs: "100%", sm: "100%", md: "100%", xl: "80%", lg: "80%" },
+          width: { xs: "100%", sm: "100%", md: "80%", xl: "80%", lg: "80%" },
         }}
       >
         <Grid sx={{ paddingRight: 2, width: "100%" }}>
@@ -52,11 +52,11 @@ function SearchComponent({ marginY }) {
         <Box
           sx={{
             backgroundColor: "#00C1B4",
-            padding: "0.8vh",
+            padding: "1vh",
             borderRadius: "0px 4px 4px 0px",
             boxShadow: "0px 4px 34px rgba(0, 0, 0, 0.08)",
             border: "1px solid #00C1B4",
-            width: { xs: "25%", sm: "25%", md: "25%", lg: "15%", xl: "15%" },
+            width: { xs: "25%", sm: "25%", md: "15%", lg: "15%", xl: "15%" },
             textAlign: "center",
           }}
         >

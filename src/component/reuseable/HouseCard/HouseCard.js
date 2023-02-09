@@ -16,7 +16,6 @@ function HouseCard({ shadow, marginTop }) {
         pb: 3,
         boxShadow: shadow,
         marginTop: marginTop,
-       
       }}
     >
       <Box sx={{ width: "100%" }}>
@@ -49,9 +48,14 @@ function HouseCard({ shadow, marginTop }) {
         </Typography>
         <Typography
           variant="p"
-          sx={{ fontSize: "16px", fontWeight: "400", color: "#0E97F7" }}
+          sx={{ fontSize: "24px", fontWeight: "800", color: "#0E97F7" }}
         >
-          BRL950,000.00
+          <span
+            style={{ fontSize: "16px", fontWeight: "400", color: "#0E97F7" }}
+          >
+            BRL
+          </span>
+          950,000.00
         </Typography>
       </Grid>
       <Grid
@@ -65,12 +69,17 @@ function HouseCard({ shadow, marginTop }) {
           <Image src={bed} alt="bed" />
           <Typography
             variant="p"
-            sx={{ fontSize: "14px", fontWeight: "400", color: "#7C7C99" }}
+            sx={{
+              fontSize: "14px",
+              fontWeight: "400",
+              color: "#7C7C99",
+              ml: "0.5vh",
+            }}
           >
             2 bedrooms
           </Typography>
         </Box>
-        <Box sx={{ pl: 1 }}>
+        <Box sx={{ pl: 1, pr: 1 }}>
           <Image src={rule} alt="rule" />
           <Typography
             variant="p"
@@ -78,16 +87,22 @@ function HouseCard({ shadow, marginTop }) {
               fontSize: "14px",
               fontWeight: "400",
               color: "#7C7C99",
+              ml: "0.5vh",
             }}
           >
             103m²
           </Typography>
         </Box>
-        <Box sx={{ pl: 1 }}>
+        <Box>
           <Image src={check} alt="rule" />
           <Typography
             variant="p"
-            sx={{ fontSize: "14px", fontWeight: "400", color: "#7C7C99" }}
+            sx={{
+              fontSize: "14px",
+              fontWeight: "400",
+              color: "#7C7C99",
+              ml: "0.5vh",
+            }}
           >
             Financing
           </Typography>
