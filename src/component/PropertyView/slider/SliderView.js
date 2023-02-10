@@ -68,7 +68,7 @@ function SliderView() {
         // value={value}
         onChange={handleChange}
         aria-label="Vertical tabs example"
-        // sx={{ width: "20%" }}
+        sx={{ width: { md: "35%", lg: "25%", xl: "20%", xxl: "15%" } }}
         // sx={{ borderRight: 1, borderColor: "divider" }}
       >
         <Tab

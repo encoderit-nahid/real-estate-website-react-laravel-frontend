@@ -103,7 +103,7 @@ function AmountView() {
           </Typography>
         </Grid>
       </Grid>
-      <Grid item xs={3}>
+      <Grid item xs={6} sm={6} md={6} xl={3} lg={3}>
         <Grid
           container
           direction="column"
@@ -135,7 +135,7 @@ function AmountView() {
               minWidth: "195px",
             }}
           >
-            Standard
+            Schedule visit
           </Button>
         </Grid>
       </Grid>

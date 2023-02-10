@@ -24,7 +24,7 @@ import SliderViewMobile from "../src/component/PropertyView/SliderViewMobile/Sli
 import sliderView from "../public/Images/sliderView.png";
 import sliderViewSmall from "../public/Images/sliderViewSmall.png";
 import BaseModal from "../src/component/reuseable/baseModal/BaseModal";
-import ProposalModal from "../src/component/PropertyView/ProposalModal/ProposalModal";
+import ProposalModal from "../src/component/PropertyView/ProposalStepperComponent/ProposalModal";
 import { useState } from "react";
 
 const aboutProperty = [
@@ -140,8 +140,8 @@ export default function PropertyView(props) {
             <Grid item xs={12}>
               <SliderViewMobile />
             </Grid>
-            <Grid item xs={12}>
-              <Image src={sliderView} alt="sliderView" />
+            <Grid item xs={12} sx={{ mb: 1 }}>
+              <Image src={sliderView} layout="responsive" alt="sliderView" />
             </Grid>
           </Grid>
           <Grid container spacing={1}>
@@ -215,9 +215,16 @@ export default function PropertyView(props) {
             direction="row"
             alignItems="center"
             sx={{
-              height: "45vh",
+              height: {
+                xs: "60vh",
+                sm: "60vh",
+                md: "60vh",
+                lg: "40vh",
+                xl: "40vh",
+              },
               background: "#0E97F7",
-              px: { xs: 2, sm: 2, md: 2, lg: 20, xl: 20 },
+
+              px: { xs: 2, sm: 2, md: 2, lg: 2, xl: 20 },
               pt: { xs: 2, sm: 2, md: 2, lg: 0, xl: 0 },
               // pb: { xs: 0.5, sm: 0.5, md: 0, lg: 0, xl: 0 },
               mt: 1,
@@ -250,6 +257,7 @@ export default function PropertyView(props) {
                 "repeat(auto-fill,minmax(140px,1fr)) !important",
               gridAutoColumns: "minmax(140px, 1fr)",
               pl: 3,
+              pb: 4,
             }}
           >
             {[0, 1, 2, 3, 4, 5, 6].map((data, index) => (
