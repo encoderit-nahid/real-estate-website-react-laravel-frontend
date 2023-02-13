@@ -8,10 +8,24 @@ function BlogCardUpper() {
   return (
     <Grid
       container
+      spacing={1}
       sx={{
         background: "#ffffff",
         boxShadow: "0px 4px 34px rgba(0, 0, 0, 0.08)",
         borderRadius: "8px",
+        display: {
+          xs: "none",
+          sm: "none",
+          md: "none",
+          lg: "inline-flex",
+        },
+        width: {
+          xs: "100%",
+          sm: "100%",
+          md: "100%",
+          lg: "120%",
+          xl: "100%",
+        },
       }}
     >
       <Grid item xs={4}>

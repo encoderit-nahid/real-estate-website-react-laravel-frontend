@@ -12,6 +12,9 @@ import {
   Paper,
   Tabs,
   Tab,
+  Divider,
+  Stack,
+  Pagination,
 } from "@mui/material";
 import orionImage from "../public/Images/orion_view.svg";
 import Image from "next/image";
@@ -31,6 +34,9 @@ import BaseModal from "../src/component/reuseable/baseModal/BaseModal";
 import ProposalModal from "../src/component/PropertyView/ProposalStepperComponent/ProposalModal";
 import { useState } from "react";
 import BlogCardUpper from "../src/component/blog/blogCardUpper/BlogCardUpper";
+import BlogHighlightsCard from "../src/component/blog/blogHighlightsCard/BlogHighlightsCard";
+import SmallBlogCard from "../src/component/blog/smallBlogCard/SmallBlogCard";
+import MostAccess from "../src/component/blog/mostAccessed/MostAccess";
 
 const aboutProperty = [
   "Heater",
@@ -103,8 +109,22 @@ export default function PropertyView(props) {
           <Typography
             variant="p"
             sx={{
-              fontSize: "32px",
-              fontWeight: "800",
+              fontSize: {
+                xs: "24px",
+                sm: "24px",
+                md: "24px",
+                lg: "32px",
+                xl: "32px",
+              },
+              fontWeight: {
+                xs: "700",
+                sm: "700",
+                md: "700",
+                lg: "800",
+                xl: "800",
+              },
+              px: { xs: 2, sm: 2, md: 0, lg: 0, xl: 0 },
+              textAlign: "center",
               lineHeight: "38px",
               color: "#ffffff",
             }}
@@ -114,6 +134,7 @@ export default function PropertyView(props) {
           <Typography
             variant="p"
             sx={{
+              px: { xs: 2, sm: 2, md: 0, lg: 0, xl: 0 },
               fontSize: "16px",
               fontWeight: "600",
               lineHeight: "19px",
@@ -127,7 +148,6 @@ export default function PropertyView(props) {
           <Paper
             component="form"
             sx={{
-              // p: "2px 4px",
               mt: 2,
               display: "flex",
               alignItems: "center",
@@ -136,18 +156,16 @@ export default function PropertyView(props) {
               //   border: "1px solid #D3D3DF",
               borderRadius: "4px",
               width: {
-                xs: "100%",
-                sm: "100%",
+                xs: "90%",
+                sm: "90%",
                 md: "70%",
                 xl: "30%",
                 lg: "30%",
               },
+              mx: { xs: 2, sm: 2, md: 0, lg: 0, xl: 0 },
             }}
           >
             <Grid sx={{ paddingRight: 2, width: "100%" }}>
-              {/* <IconButton sx={{ p: "10px" }} aria-label="menu">
-          <MenuIcon />
-        </IconButton> */}
               <InputBase
                 fullWidth
                 sx={{ ml: 1, flex: 1 }}
@@ -169,7 +187,7 @@ export default function PropertyView(props) {
                 boxShadow: "0px 4px 34px rgba(0, 0, 0, 0.08)",
 
                 width: {
-                  xs: "25%",
+                  xs: "35%",
                   sm: "25%",
                   md: "15%",
                   lg: "30%",
@@ -182,135 +200,211 @@ export default function PropertyView(props) {
             </Box>
           </Paper>
 
-          <Tabs
-            onChange={handleChange}
-            aria-label="basic tabs example"
-            sx={{ mt: 5 }}
+          <Box
+            sx={{ maxWidth: { xs: 320, sm: 480, md: 500, lg: 1000, xl: 1200 } }}
           >
-            <Tab
+            <Tabs
+              onChange={handleChange}
+              aria-label="basic tabs example"
               sx={{
-                fontSize: `${value === 0 ? "18px" : "16px"}`,
-                color: "#ffffff",
-                fontWeight: `${value === 0 ? "800" : "600"}`,
-                px: 3,
-                py: 2,
-                mr: 4,
-                textTransform: "none",
-                width: `${value === 0 ? "20vh" : "20vh"}`,
-
-                border: `${value === 0 ? " 2px solid #FFFFFF" : ""}`,
-                borderRadius: `${value === 0 ? "4px" : ""}`,
+                mt: 5,
               }}
-              label="All"
-            />
-            <Tab
-              sx={{
-                fontSize: `${value === 1 ? "18px" : "16px"}`,
-                color: "#ffffff",
-                fontWeight: `${value === 1 ? "800" : "600"}`,
-                px: 3,
-                py: 2,
-                mr: 4,
-                textTransform: "none",
-                width: `${value === 1 ? "20vh" : "20vh"}`,
-
-                border: `${value === 1 ? " 2px solid #FFFFFF" : ""}`,
-                borderRadius: `${value === 1 ? "4px" : ""}`,
+              variant="scrollable"
+              value={value}
+              TabIndicatorProps={{
+                style: {
+                  backgroundColor: "#ffffff",
+                },
               }}
-              label="Category"
-            />
-            <Tab
-              sx={{
-                fontSize: `${value === 2 ? "18px" : "16px"}`,
-                color: "#ffffff",
-                fontWeight: `${value === 2 ? "800" : "600"}`,
-                px: 3,
-                py: 2,
-                mr: 4,
-                textTransform: "none",
-                width: `${value === 2 ? "20vh" : "20vh"}`,
+            >
+              <Tab
+                sx={{
+                  "&.Mui-selected": {
+                    borderBottom: "1px solid #fffff",
+                    color: "#ffffff",
+                  },
+                  fontSize: `${value === 0 ? "18px" : "16px"}`,
+                  color: "#ffffff",
+                  fontWeight: `${value === 0 ? "800" : "600"}`,
+                  px: 3,
+                  py: 2,
+                  mr: 4,
+                  textTransform: "none",
+                  width: `${value === 0 ? "20vh" : "20vh"}`,
 
-                border: `${value === 2 ? " 2px solid #FFFFFF" : ""}`,
-                borderRadius: `${value === 2 ? "4px" : ""}`,
-              }}
-              label="Category"
-            />
-            <Tab
-              sx={{
-                fontSize: `${value === 3 ? "18px" : "16px"}`,
-                color: "#ffffff",
-                fontWeight: `${value === 3 ? "800" : "600"}`,
-                px: 3,
-                py: 2,
-                mr: 4,
-                textTransform: "none",
-                width: `${value === 3 ? "20vh" : "20vh"}`,
+                  border: `${value === 0 ? " 2px solid #FFFFFF" : ""}`,
+                  borderRadius: `${value === 0 ? "4px" : ""}`,
+                }}
+                label="All"
+              />
+              <Tab
+                sx={{
+                  "&.Mui-selected": {
+                    borderBottom: "1px solid #fffff",
+                    color: "#ffffff",
+                  },
+                  fontSize: `${value === 1 ? "18px" : "16px"}`,
+                  color: "#ffffff",
+                  fontWeight: `${value === 1 ? "800" : "600"}`,
+                  px: 3,
+                  py: 2,
+                  mr: 4,
+                  textTransform: "none",
+                  width: `${value === 1 ? "20vh" : "20vh"}`,
 
-                border: `${value === 3 ? " 2px solid #FFFFFF" : ""}`,
-                borderRadius: `${value === 3 ? "4px" : ""}`,
-              }}
-              label="Category"
-            />
-            <Tab
-              sx={{
-                fontSize: `${value === 4 ? "18px" : "16px"}`,
-                color: "#ffffff",
-                fontWeight: `${value === 4 ? "800" : "600"}`,
-                px: 3,
-                py: 2,
-                mr: 4,
-                textTransform: "none",
-                width: `${value === 4 ? "20vh" : "20vh"}`,
+                  border: `${value === 1 ? " 2px solid #FFFFFF" : ""}`,
+                  borderRadius: `${value === 1 ? "4px" : ""}`,
+                }}
+                label="Category"
+              />
+              <Tab
+                sx={{
+                  "&.Mui-selected": {
+                    borderBottom: "1px solid #fffff",
+                    color: "#ffffff",
+                  },
+                  fontSize: `${value === 2 ? "18px" : "16px"}`,
+                  color: "#ffffff",
+                  fontWeight: `${value === 2 ? "800" : "600"}`,
+                  px: 3,
+                  py: 2,
+                  mr: 4,
+                  textTransform: "none",
+                  width: `${value === 2 ? "20vh" : "20vh"}`,
 
-                border: `${value === 4 ? " 2px solid #FFFFFF" : ""}`,
-                borderRadius: `${value === 4 ? "4px" : ""}`,
-              }}
-              label="Category"
-            />
-            <Tab
-              sx={{
-                fontSize: `${value === 5 ? "18px" : "16px"}`,
-                color: "#ffffff",
-                fontWeight: `${value === 5 ? "800" : "600"}`,
-                px: 3,
-                py: 2,
-                mr: 4,
-                textTransform: "none",
-                width: `${value === 5 ? "20vh" : "20vh"}`,
+                  border: `${value === 2 ? " 2px solid #FFFFFF" : ""}`,
+                  borderRadius: `${value === 2 ? "4px" : ""}`,
+                }}
+                label="Category"
+              />
+              <Tab
+                sx={{
+                  "&.Mui-selected": {
+                    borderBottom: "1px solid #fffff",
+                    color: "#ffffff",
+                  },
+                  fontSize: `${value === 3 ? "18px" : "16px"}`,
+                  color: "#ffffff",
+                  fontWeight: `${value === 3 ? "800" : "600"}`,
+                  px: 3,
+                  py: 2,
+                  mr: 4,
+                  textTransform: "none",
+                  width: `${value === 3 ? "20vh" : "20vh"}`,
 
-                border: `${value === 5 ? " 2px solid #FFFFFF" : ""}`,
-                borderRadius: `${value === 5 ? "4px" : ""}`,
-              }}
-              label="Category"
-            />
-          </Tabs>
-          <Box sx={{ position: "absolute" }}></Box>
+                  border: `${value === 3 ? " 2px solid #FFFFFF" : ""}`,
+                  borderRadius: `${value === 3 ? "4px" : ""}`,
+                }}
+                label="Category"
+              />
+              <Tab
+                sx={{
+                  "&.Mui-selected": {
+                    borderBottom: "1px solid #fffff",
+                    color: "#ffffff",
+                  },
+                  fontSize: `${value === 4 ? "18px" : "16px"}`,
+                  color: "#ffffff",
+                  fontWeight: `${value === 4 ? "800" : "600"}`,
+                  px: 3,
+                  py: 2,
+                  mr: 4,
+                  textTransform: "none",
+                  width: `${value === 4 ? "20vh" : "20vh"}`,
+
+                  border: `${value === 4 ? " 2px solid #FFFFFF" : ""}`,
+                  borderRadius: `${value === 4 ? "4px" : ""}`,
+                }}
+                label="Category"
+              />
+              <Tab
+                sx={{
+                  "&.Mui-selected": {
+                    borderBottom: "1px solid #fffff",
+                    color: "#ffffff",
+                  },
+                  fontSize: `${value === 5 ? "18px" : "16px"}`,
+                  color: "#ffffff",
+                  fontWeight: `${value === 5 ? "800" : "600"}`,
+                  px: 3,
+                  py: 2,
+                  mr: 4,
+                  textTransform: "none",
+                  width: `${value === 5 ? "20vh" : "20vh"}`,
+
+                  border: `${value === 5 ? " 2px solid #FFFFFF" : ""}`,
+                  borderRadius: `${value === 5 ? "4px" : ""}`,
+                }}
+                label="Category"
+              />
+            </Tabs>
+          </Box>
+          <Box
+            sx={{
+              position: "absolute",
+            }}
+          ></Box>
         </Grid>
 
-        {/* <Grid
-          container
-          direction="column"
-          justifyContent="center"
-          alignItems="center"
-          sx={{
-            height: "60vh",
-          }}
-        > */}
         <Box
           sx={{
             px: 25,
             position: "relative",
-            top: -80,
+            top: -60,
           }}
         >
           <BlogCardUpper />
         </Box>
-        {/* </Grid> */}
-        <Footer />
 
-        <BaseModal isShowing={proposalOpen} isClose={handleProposalClose}>
-          <ProposalModal handleProposalClose={handleProposalClose} />
-        </BaseModal>
+        <Box sx={{ mb: 2, px: 2 }}>
+          <Typography
+            variant="p"
+            sx={{
+              fontSize: "12px",
+              fontWeight: "400",
+              lineHeight: "28px",
+              color: "#7450F0",
+            }}
+          >
+            Highlights
+          </Typography>
+          <Divider sx={{ color: "#D3D3DF" }} />
+        </Box>
+        <Box sx={{ mx: 2, mb: 4 }}>
+          <Grid container spacing={1}>
+            {[0, 1, 2].map((data, index) => (
+              <Grid item xs={12} sm={12} md={12} lg={4} xl={4} key={index}>
+                <BlogHighlightsCard />
+              </Grid>
+            ))}
+          </Grid>
+        </Box>
+        <Box sx={{ mb: 2, px: 2 }}>
+          <Divider sx={{ color: "#D3D3DF" }} />
+        </Box>
+        <Grid
+          container
+          spacing={1}
+          sx={{ mt: 2, pl: { xs: 1, sm: 2, md: 2, lg: 2, xl: 2 } }}
+        >
+          <Grid item xs={12} sm={12} md={12} lg={9} xl={9}>
+            <Grid container spacing={1}>
+              {[0, 1, 2, 3, 4, 5, 6, 7].map((data, index) => (
+                <Grid key={index} item xs={12} sm={12} md={12} lg={6} xl={6}>
+                  {/* <BlogCardUpper /> */}
+                  <SmallBlogCard />
+                </Grid>
+              ))}
+            </Grid>
+          </Grid>
+          <Grid item xs={12} sm={12} md={12} lg={3} xl={3}>
+            <MostAccess />
+          </Grid>
+        </Grid>
+        <Stack spacing={2} sx={{ marginY: 8 }}>
+          <Pagination count={5} variant="outlined" shape="rounded" />
+        </Stack>
+        <Footer />
       </main>
     </div>
   );
