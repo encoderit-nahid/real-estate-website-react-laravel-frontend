@@ -7,7 +7,7 @@ function CategoryUpperContent() {
     <Box
       sx={{
         px: 2,
-        py: 3,
+        py: 5,
         background: "#ffffff",
         boxShadow: "0px 4px 34px rgba(0, 0, 0, 0.08)",
         borderRadius: "8px",

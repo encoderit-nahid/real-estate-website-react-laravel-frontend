@@ -1,7 +1,15 @@
 import { Button } from "@mui/material";
 import React from "react";
 
-function BaseButton({ name, margin, padding, shape, width, fontSize }) {
+function BaseButton({
+  name,
+  margin,
+  padding,
+  shape,
+  width,
+  fontSize,
+  handleFunction,
+}) {
   return (
     <Button
       sx={{
@@ -18,6 +26,7 @@ function BaseButton({ name, margin, padding, shape, width, fontSize }) {
         padding: padding,
         width: width,
       }}
+      onClick={handleFunction}
     >
       {name}
     </Button>

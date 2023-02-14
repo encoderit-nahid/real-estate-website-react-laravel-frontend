@@ -3,6 +3,7 @@ import AppBar from "@mui/material/AppBar";
 import Box from "@mui/material/Box";
 import Grid from "@mui/material/Grid";
 import Toolbar from "@mui/material/Toolbar";
+
 import IconButton from "@mui/material/IconButton";
 import Typography from "@mui/material/Typography";
 import Menu from "@mui/material/Menu";
@@ -16,6 +17,9 @@ import AdbIcon from "@mui/icons-material/Adb";
 import logoIcon from "../../../../public/Images/logo.png";
 import Image from "next/image";
 import BaseButton from "../../reuseable/button/BaseButton";
+import { useState } from "react";
+import BaseModal from "../../reuseable/baseModal/BaseModal";
+import LoginModal from "../../login/loginModal/LoginModal";
 
 const pages = ["search Real estate", "I am broker", "I am Owner", "blog"];
 
@@ -37,6 +41,11 @@ function Navbar({ shape, paddingY }) {
   const handleCloseUserMenu = () => {
     setAnchorElUser(null);
   };
+
+  //add_login_modal
+  const [loginOpen, setLoginOpen] = useState(false);
+  const handleLoginOpen = () => setLoginOpen(true);
+  const handleLoginClose = () => setLoginOpen(false);
 
   return (
     <AppBar
@@ -98,7 +107,11 @@ function Navbar({ shape, paddingY }) {
                   </Typography>
                 </MenuItem>
               ))}
-              <BaseButton name={"Login"} margin={"0 0 0 1vh"} />
+              <BaseButton
+                name={"Login"}
+                margin={"0 0 0 1vh"}
+                handleFunction={handleLoginOpen}
+              />
             </Menu>
           </Box>
           <Grid
@@ -165,9 +178,21 @@ function Navbar({ shape, paddingY }) {
                 {page}
               </Button>
             ))}
-            <BaseButton name={"Login"} shape={shape} fontSize={"12px"} />
+            <BaseButton
+              name={"Login"}
+              handleFunction={handleLoginOpen}
+              shape={shape}
+              fontSize={"12px"}
+            />
           </Grid>
         </Toolbar>
+        <BaseModal isShowing={loginOpen} isClose={handleLoginClose}>
+          <Tooltip title="Something">
+            <>
+              <LoginModal handleLoginClose={handleLoginClose} />
+            </>
+          </Tooltip>
+        </BaseModal>
       </Container>
     </AppBar>
   );

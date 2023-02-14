@@ -1,4 +1,11 @@
-import { Box, Grid } from "@mui/material";
+import {
+  Box,
+  Container,
+  Grid,
+  ImageList,
+  ImageListItem,
+  Typography,
+} from "@mui/material";
 import React from "react";
 import Navbar from "../src/component/shared/Navbar/Navbar";
 import Footer from "../src/component/shared/Footer/Footer";
@@ -12,6 +19,13 @@ import blogFacebook from "../public/Images/blogFacebook.png";
 import category_small from "../public/Images/category_small.png";
 import Image from "next/image";
 import CategoryUpperContent from "../src/component/category/categoryUpperContent/CategoryUpperContent";
+import CategoryImageContent from "../src/component/category/categoryImageContent/CategoryImageContent";
+import blue_facebook from "../public/Images/blue_facebook.png";
+import blue_twitter from "../public/Images/blue_twitter.png";
+import blue_linkedin from "../public/Images/blue_linkedin.png";
+import blue_whatsapp from "../public/Images/blue_whatsapp.png";
+import CategorySubscribe from "../src/component/category/categorySubscribe/CategorySubscribe";
+import BlogHighlightsCard from "../src/component/blog/blogHighlightsCard/BlogHighlightsCard";
 
 function Category() {
   return (
@@ -31,7 +45,7 @@ function Category() {
           alignItems="center"
           sx={{
             height: { xs: "40vh", sm: "40vh", md: "60vh" },
-            width: { xs: "120%", sm: "120%", md: "100%" },
+            // width: { xs: "120%", sm: "120%", md: "100%" },
             backgroundImage: {
               xs: `url(${categoryImage.src})`,
               sm: `url(${categoryImage.src})`,
@@ -49,7 +63,14 @@ function Category() {
         </Grid>
         <Grid
           container
-          direction="column"
+          direction={{
+            xs: "row",
+            sm: "row",
+            md: "row",
+            lg: "column",
+            xl: "column",
+          }}
+          gap={{ xs: 1, sm: 1, md: 1, lg: 0, xl: 0 }}
           justifyContent="flex-start"
           alignItems="flex-start"
           sx={{ pl: 5, pt: 2 }}
@@ -69,61 +90,70 @@ function Category() {
         </Grid>
         <Box
           sx={{
-            px: 25,
+            px: { xs: 2, sm: 2, md: 2, lg: 25, xl: 25 },
             position: { lg: "relative", xl: "relative" },
             top: -240,
           }}
         >
           <CategoryUpperContent />
-        </Box>
-
-        {/* <Box sx={{ mb: 2, px: 2 }}>
-          <Typography
-            variant="p"
-            sx={{
-              fontSize: "12px",
-              fontWeight: "400",
-              lineHeight: "28px",
-              color: "#7450F0",
-            }}
-          >
-            Highlights
-          </Typography>
-          <Divider sx={{ color: "#D3D3DF" }} />
-        </Box>
-        <Box sx={{ mx: 2, mb: 4 }}>
-          <Grid container spacing={1}>
-            {[0, 1, 2].map((data, index) => (
-              <Grid item xs={12} sm={12} md={12} lg={4} xl={4} key={index}>
-                <BlogHighlightsCard />
-              </Grid>
-            ))}
-          </Grid>
-        </Box>
-        <Box sx={{ mb: 2, px: 2 }}>
-          <Divider sx={{ color: "#D3D3DF" }} />
+          <CategoryImageContent />
+          <CategorySubscribe />
         </Box>
         <Grid
           container
-          spacing={1}
-          sx={{ mt: 2, pl: { xs: 1, sm: 2, md: 2, lg: 2, xl: 2 } }}
+          direction="column"
+          justifyContent="flex-start"
+          alignItems="center"
+          sx={{ mt: { xs: 2, sm: 2, md: 1, lg: 0, xl: 0 } }}
         >
-          <Grid item xs={12} sm={12} md={12} lg={9} xl={9}>
-            <Grid container spacing={1}>
-              {[0, 1, 2, 3, 4, 5, 6, 7].map((data, index) => (
-                <Grid key={index} item xs={12} sm={12} md={12} lg={6} xl={6}>
-                  <SmallBlogCard />
-                </Grid>
-              ))}
-            </Grid>
-          </Grid>
-          <Grid item xs={12} sm={12} md={12} lg={3} xl={3}>
-            <MostAccess />
-          </Grid>
+          <Typography
+            variant="p"
+            sx={{
+              fontSize: "16px",
+              fontWeight: "600",
+              lineHeight: "19px",
+              color: "#1A1859",
+            }}
+          >
+            Related Post
+          </Typography>
         </Grid>
-        <Stack spacing={2} sx={{ marginY: 8 }}>
-          <Pagination count={5} variant="outlined" shape="rounded" />
-        </Stack> */}
+        <Container maxWidth="xxl">
+          <ImageList
+            // container
+            // spacing={3}
+
+            cols={3}
+            gap={4}
+            sx={{
+              gridAutoFlow: "column",
+              gridTemplateColumns:
+                "repeat(auto-fill,minmax(110px,1fr)) !important",
+              gridAutoColumns: "minmax(110px, 1fr)",
+              pb: 3,
+              // px: 3,
+            }}
+          >
+            {[0, 1, 2, 3, 4].map((data, index) => (
+              <ImageListItem
+                key={index}
+                cols={3}
+                sx={{
+                  width: {
+                    xl: "95%",
+                    lg: "95%",
+                    md: "70%",
+                    sm: "70%",
+                    xs: "70%",
+                  },
+                }}
+              >
+                <BlogHighlightsCard />
+              </ImageListItem>
+            ))}
+          </ImageList>
+        </Container>
+
         <Footer />
       </main>
     </div>
