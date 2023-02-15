@@ -16,6 +16,7 @@ import proposeImage from "../../../../public/Images/proposal_modal.png";
 import ProposalStep from "../proposalStep/ProposalStep";
 import BuyerStep from "../BuyerStep/BuyerStep";
 import submitProposal from "../../../../public/Images/submit_proposal.png";
+import BaseStepper from "../../reuseable/baseStepper/BaseStepper";
 
 const steps = ["Proposal Values", "Buyer's Data"];
 
@@ -104,7 +105,7 @@ function ProposalModal({ handleProposalClose }) {
           </Button>
         </Grid>
 
-        <Stepper activeStep={activeStep} sx={{ marginTop: 2 }}>
+        {/* <Stepper activeStep={activeStep} sx={{ marginTop: 2 }}>
           {steps.map((label, index) => {
             const stepProps = {};
             const labelProps = {};
@@ -122,7 +123,13 @@ function ProposalModal({ handleProposalClose }) {
               </Step>
             );
           })}
-        </Stepper>
+        </Stepper> */}
+        <BaseStepper
+          steps={steps}
+          activeStep={activeStep}
+          isStepSkipped={isStepSkipped}
+          marginTop={"2vh"}
+        />
         {activeStep === steps.length ? (
           <React.Fragment>
             <Typography sx={{ mt: 2, mb: 1 }}>

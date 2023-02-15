@@ -8,6 +8,9 @@ import {
 } from "@mui/material";
 import Head from "next/head";
 import registerImage from "../public/Images/register.png";
+import GoogleIcon from "@mui/icons-material/Google";
+import FacebookOutlinedIcon from "@mui/icons-material/FacebookOutlined";
+import ArrowBackIosNewOutlinedIcon from "@mui/icons-material/ArrowBackIosNewOutlined";
 import Image from "next/image";
 
 export default function Registration(props) {
@@ -20,9 +23,9 @@ export default function Registration(props) {
       </Head>
 
       <main className="section">
-        <Box sx={{ px: 5, height: "100vh" }}>
+        <Box sx={{ px: 5 }}>
           <Grid container spacing={1}>
-            <Grid item xs={4}>
+            <Grid item xs={12} sm={12} md={12} lg={4} xl={4}>
               <Grid
                 container
                 direction="column"
@@ -30,24 +33,27 @@ export default function Registration(props) {
                 alignItems="flex-start"
                 sx={{ py: 4 }}
               >
-                <Typography
-                  variant="p"
-                  sx={{
-                    color: "#7450F0",
-                    fontSize: "14px",
-                    fontWeight: "600",
-                    lineHeight: "17px",
-                  }}
-                >
-                  {"<"} cancel registration
-                </Typography>
+                <Button sx={{ textTransform: "none" }}>
+                  <ArrowBackIosNewOutlinedIcon sx={{ color: "#7450F0" }} />
+                  <Typography
+                    variant="p"
+                    sx={{
+                      color: "#7450F0",
+                      fontSize: "14px",
+                      fontWeight: "600",
+                      lineHeight: "17px",
+                    }}
+                  >
+                    Cancel Registration
+                  </Typography>
+                </Button>
                 <Container maxWidth="xs">
                   <Grid
                     container
                     direction="row"
                     justifyContent="flex-start"
                     alignItems="flex-start"
-                    sx={{ mt: 3, mb: 1 }}
+                    sx={{ mt: 8, mb: 1 }}
                   >
                     <Typography
                       variant="p"
@@ -168,41 +174,213 @@ export default function Registration(props) {
                   </Grid>
                   <Grid
                     container
-                    direction="row"
-                    justifyContent="flex-start"
-                    alignItems="flex-start"
-                    gap={2}
+                    // direction="row"
+                    // justifyContent="flex-start"
+                    // alignItems="flex-start"
+                    // gap={2}
+                    spacing={1}
                   >
-                    <Button
-                      sx={{
-                        background: "#0362F0",
-                        borderRadius: "152px",
-                        color: "#ffffff",
-                        textTransform: "none",
-                        px: 2,
-                        py: 1,
-                      }}
-                    >
-                      Physical Person
-                    </Button>
-                    <Button
-                      sx={{
-                        background: "#F2F5F6",
-                        borderRadius: "152px",
-                        color: "#002152",
-                        textTransform: "none",
-                        px: 2,
-                        py: 1,
-                      }}
-                    >
-                      Broker
-                    </Button>
+                    <Grid item xs={6}>
+                      <Button
+                        sx={{
+                          width: "100%",
+                          background: "#0362F0",
+                          borderRadius: "152px",
+                          color: "#ffffff",
+                          fontSize: {
+                            xs: "12px",
+                            sm: "13px",
+                            md: "16px",
+                            lg: "13px",
+                            xl: "16px",
+                          },
+                          fontWeight: "400",
+                          lineHeight: "22px",
+                          textTransform: "none",
+                          px: { xs: 0, sm: 2, md: 2, lg: 2, xl: 2 },
+                          py: 1,
+                          "&:hover": {
+                            width: "100%",
+                            background: "#0362F0",
+                            borderRadius: "152px",
+                            color: "#ffffff",
+                            fontSize: {
+                              xs: "12px",
+                              sm: "13px",
+                              md: "16px",
+                              lg: "13px",
+                              xl: "16px",
+                            },
+                            fontWeight: "400",
+                            lineHeight: "22px",
+                            textTransform: "none",
+                            px: { xs: 0, sm: 2, md: 2, lg: 2, xl: 2 },
+                            py: 1,
+                          },
+                        }}
+                      >
+                        Physical Person
+                      </Button>
+                    </Grid>
+                    <Grid item xs={6}>
+                      <Button
+                        sx={{
+                          width: "100%",
+                          background: "#F2F5F6",
+                          borderRadius: "152px",
+                          color: "#002152",
+                          fontSize: {
+                            xs: "12px",
+                            sm: "13px",
+                            md: "16px",
+                            lg: "13px",
+                            xl: "16px",
+                          },
+                          fontWeight: "400",
+                          lineHeight: "22px",
+                          textTransform: "none",
+                          px: { xs: 0, sm: 2, md: 2, lg: 2, xl: 2 },
+                          py: 1,
+                          "&:hover": {
+                            width: "100%",
+                            background: "#F2F5F6",
+                            borderRadius: "152px",
+                            color: "#002152",
+                            fontSize: {
+                              xs: "12px",
+                              sm: "13px",
+                              md: "16px",
+                              lg: "13px",
+                              xl: "16px",
+                            },
+                            fontWeight: "400",
+                            lineHeight: "22px",
+                            textTransform: "none",
+                            px: { xs: 0, sm: 2, md: 2, lg: 2, xl: 2 },
+                            py: 1,
+                          },
+                        }}
+                      >
+                        Broker
+                      </Button>
+                    </Grid>
+                  </Grid>
+                  <Button
+                    fullWidth
+                    sx={{
+                      background:
+                        "linear-gradient(270deg, #1DEECB 1.2%, #00C1B4 98.7%)",
+                      boxShadow: "0px 4px 34px rgba(0, 0, 0, 0.08)",
+                      borderRadius: "4px",
+                      color: "#ffffff",
+                      fontSize: "16px",
+                      lineHeight: "22px",
+                      fontWeight: "600",
+                      mt: 3,
+                      textTransform: "none",
+                      py: 1,
+                    }}
+                  >
+                    register
+                  </Button>
+                  <Grid
+                    container
+                    direction="row"
+                    justifyContent="center"
+                    alignItems="center"
+                    sx={{ height: "8vh" }}
+                  >
+                    Or
+                  </Grid>
+                  <Grid container spacing={1}>
+                    <Grid item xs={12} sm={12} md={12} lg={6} xl={6}>
+                      <Button
+                        sx={{
+                          display: "flex",
+                          background: "#DC4C3F",
+                          borderRadius: "4px",
+                          textTransform: "none",
+                          px: 2,
+                          py: 1,
+                          width: "100%",
+                          "&:hover": {
+                            background: "#DC4C3F",
+                            borderRadius: "4px",
+                            textTransform: "none",
+                            px: 2,
+                            py: 1,
+                            width: "100%",
+                          },
+                        }}
+                      >
+                        <GoogleIcon sx={{ color: "#ffffff" }} />
+                        <Typography
+                          sx={{
+                            color: "#ffffff",
+                            fontSize: {
+                              xs: "12px",
+                              sm: "12px",
+                              md: "12px",
+                              lg: "12px",
+                              xl: "12px",
+                              xxl: "14px",
+                            },
+                            lineHeight: "17px",
+                            fontWeight: "400",
+                          }}
+                        >
+                          Login with Gmail
+                        </Typography>
+                      </Button>
+                    </Grid>
+                    <Grid item xs={12} sm={12} md={12} lg={6} xl={6}>
+                      <Button
+                        sx={{
+                          display: "flex",
+                          background: "#4469B0",
+                          borderRadius: "4px",
+                          textTransform: "none",
+                          px: 2,
+                          py: 1,
+                          width: "100%",
+                          "&:hover": {
+                            background: "#4469B0",
+                            borderRadius: "4px",
+                            textTransform: "none",
+                            px: 2,
+                            py: 1,
+                            width: "100%",
+                          },
+                        }}
+                      >
+                        <FacebookOutlinedIcon sx={{ color: "#ffffff" }} />
+                        <Typography
+                          sx={{
+                            color: "#ffffff",
+                            fontSize: {
+                              xs: "12px",
+                              sm: "12px",
+                              md: "12px",
+                              lg: "12px",
+                              xl: "12px",
+                              xxl: "14px",
+                            },
+                            lineHeight: "17px",
+                            fontWeight: "400",
+                          }}
+                        >
+                          Login with Facebook
+                        </Typography>
+                      </Button>
+                    </Grid>
                   </Grid>
                 </Container>
               </Grid>
             </Grid>
-            <Grid item xs={8}>
-              <Image src={registerImage} alt="register" />
+            <Grid item xs={12} sm={12} md={12} lg={8} xl={8}>
+              <Box>
+                <Image src={registerImage} alt="register" />
+              </Box>
             </Grid>
           </Grid>
         </Box>
