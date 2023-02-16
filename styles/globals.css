@@ -31,6 +31,9 @@ body {
   padding-left: 0!important;
 }
 
+.propertyImage{
+  height: 40vh !important;
+}
 
 /* .MuiButtonBase-root .MuiTab-root .Mui-selected{
   color: transparent !important;
