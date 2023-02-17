@@ -1,6 +1,6 @@
 import Head from "next/head";
 import Image from "next/image";
-import { Button, Container, Grid, Typography } from "@mui/material";
+import { Button, Container, Grid, Tooltip, Typography } from "@mui/material";
 import { Box } from "@mui/material";
 import ResponsiveDrawer from "../src/component/sharedProposal/ResponsiveDrawer/ResponsiveDrawer";
 import logo from "../public/Images/logo.png";
@@ -10,6 +10,7 @@ import { Fragment, useState } from "react";
 import ProposalValueStep from "../src/component/properties/ProposalValueStep/ProposalValueStep";
 import BuyerDataStep from "../src/component/properties/BuyerDataStep/BuyerDataStep";
 import BaseModal from "../src/component/reuseable/baseModal/BaseModal";
+import ProposalSentModal from "../src/component/properties/ProposalSentModal/ProposalSentModal";
 
 const drawerWidth = 240;
 
@@ -116,12 +117,6 @@ export default function Properties(props) {
                   All steps completed - you&apos;re finished
                 </Typography> */}
 
-                      <BaseModal
-                        isShowing={sentModalOpen}
-                        isClose={handleClose}
-                      >
-                        
-                      </BaseModal>
                       {/* <Box sx={{ display: "flex", flexDirection: "row", pt: 2 }}>
               <Box sx={{ flex: "1 1 auto" }} />
               <Button onClick={handleReset}>Reset</Button>
@@ -197,7 +192,11 @@ export default function Properties(props) {
               )} */}
 
                       <Button
-                        onClick={handleNext}
+                        onClick={
+                          activeStep === steps.length - 1
+                            ? handleOpen
+                            : handleNext
+                        }
                         sx={{
                           background: "#7450F0",
                           borderRadius: "4px",
@@ -231,6 +230,13 @@ export default function Properties(props) {
                   </Fragment>
                 )}
               </Box>
+              <BaseModal isShowing={sentModalOpen} isClose={handleClose}>
+                <Tooltip title="Something">
+                  <>
+                    <ProposalSentModal handleClose={handleClose} />
+                  </>
+                </Tooltip>
+              </BaseModal>
             </Container>
           </Box>
         </Box>

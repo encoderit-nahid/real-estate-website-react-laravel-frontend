@@ -51,7 +51,7 @@ function LeftBar(props) {
     {
       icon: <CampaignOutlinedIcon />,
       label: "properties",
-      route: "properties",
+      route: "my_properties",
     },
     {
       icon: <ArticleOutlinedIcon />,

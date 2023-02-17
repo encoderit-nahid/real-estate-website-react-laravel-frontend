@@ -42,7 +42,7 @@ const NavBar = (props) => {
           sx={{
             width: { sm: `calc(100% - ${drawerWidth}px)` },
             ml: { sm: `${drawerWidth}px` },
-            backgroundColor: `#FFFFFF`,
+            background: "#F2F5F6",
             color: "#D6D7E3",
             boxShadow: "none",
             borderRadius: "12px 12px 0 0",

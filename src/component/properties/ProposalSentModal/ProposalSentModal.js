@@ -3,7 +3,7 @@ import Image from "next/image";
 import React from "react";
 import submitProposal from "../../../../public/Images/submit_proposal.png";
 
-function ProposalSentModal() {
+function ProposalSentModal({ handleClose }) {
   const style = {
     position: "absolute",
     top: "50%",
@@ -52,6 +52,7 @@ function ProposalSentModal() {
           </Typography>
         </Grid>
         <Button
+          onClick={handleClose}
           fullWidth
           sx={{
             mt: 1,
