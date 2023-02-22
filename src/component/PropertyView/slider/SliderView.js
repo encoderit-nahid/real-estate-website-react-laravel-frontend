@@ -12,6 +12,7 @@ import RedoOutlinedIcon from "@mui/icons-material/RedoOutlined";
 import CabinOutlinedIcon from "@mui/icons-material/CabinOutlined";
 import MapOutlinedIcon from "@mui/icons-material/MapOutlined";
 import SignpostOutlinedIcon from "@mui/icons-material/SignpostOutlined";
+import ReactPannellum, { getConfig } from "react-pannellum";
 
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
@@ -51,6 +52,15 @@ function SliderView() {
 
   const handleChange = (event, newValue) => {
     setValue(newValue);
+  };
+
+  const config = {
+    autoLoad: true,
+  };
+  const style = {
+    width: "850px",
+    height: "450px",
+    // background: "#000000",
   };
   return (
     <Box
@@ -232,7 +242,14 @@ function SliderView() {
         <Image src={home} alt="home" />
       </TabPanel>
       <TabPanel value={value} index={1}>
-        <Image src={home} alt="home" />
+        {/* <Image src={home} alt="home" /> */}
+        <ReactPannellum
+          id="1"
+          sceneId="firstScene"
+          imageSource="https://as1.ftcdn.net/v2/jpg/01/14/52/38/1000_F_114523814_pDNUyVDPNcZRzSdaq98JbOPOkDvnJFqz.jpg"
+          config={config}
+          // style={style}
+        />
       </TabPanel>
       <TabPanel value={value} index={2}>
         <Image src={home} alt="home" />

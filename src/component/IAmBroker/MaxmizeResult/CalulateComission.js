@@ -9,8 +9,18 @@ import {
 import React from "react";
 import impulseImage from "../../../../public/Images/impulse.png";
 import Image from "next/image";
+import { useState } from "react";
 
 function CalulateComission() {
+  const [value, setValue] = useState("");
+  console.log(value.length);
+  const [valid, setValid] = useState(false);
+  console.log({ valid });
+  const handleValidation = (e) => {
+    setValid(/^\d{3,}$/.test(e.target.value));
+    console.log(e.target.value);
+    setValue(e.target.value);
+  };
   return (
     <Grid
       container
@@ -50,6 +60,7 @@ function CalulateComission() {
         label="Sale Value"
         placeholder="Sale Value"
         size="medium"
+        type="number"
         variant="outlined"
         sx={{ mt: 4 }}
         InputProps={{
@@ -69,7 +80,12 @@ function CalulateComission() {
         placeholder="Comission"
         size="medium"
         variant="outlined"
+        type="number"
         sx={{ mt: 4 }}
+        value={value}
+        onChange={(e) => handleValidation(e)}
+        error={!valid && value.length > 0 ? true : false}
+        required={true}
         InputProps={{
           startAdornment: (
             <InputAdornment position="start">

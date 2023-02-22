@@ -7,10 +7,36 @@ import {
   Typography,
 } from "@mui/material";
 import Image from "next/image";
-import React from "react";
+import React, { useState } from "react";
 import buyerProfile from "../../../../public/Images/buyer_profile.png";
 
 function BuyerStep() {
+  //zip_code
+  const [zipCodeValue, setZipCodeValue] = useState("");
+  const [zipCodeValid, setZipCodeValid] = useState(false);
+  const handleZipCodeValidation = (e) => {
+    setZipCodeValid(/^[0-9]{5}-[0-9]{3}$/.test(e.target.value));
+    setZipCodeValue(e.target.value);
+  };
+
+  //rg
+  const [rgValue, setRGValue] = useState("");
+  const [rgValid, setRGValid] = useState(false);
+  const handleRGValidation = (e) => {
+    setRGValid(/^W(\d(\d(\d[A-Z]?)?)?$)/.test(e.target.value));
+    setRGValue(e.target.value);
+  };
+
+  //cpf
+  const [cpfValue, setCPFValue] = useState("");
+  const [cpfValid, setCPFValid] = useState(false);
+  const handleCPFValidation = (e) => {
+    setCPFValid(
+      /[0-9]{3}\.?[0-9]{3}\.?[0-9]{3}\-?[0-9]{2}/.test(e.target.value)
+    );
+    setCPFValue(e.target.value);
+  };
+
   return (
     <Box sx={{ mt: 3 }}>
       <Grid
@@ -64,6 +90,10 @@ function BuyerStep() {
             id="outlined-basic"
             placeholder="RG"
             variant="outlined"
+            value={rgValue}
+            onChange={(e) => handleRGValidation(e)}
+            error={!rgValid && rgValue.length > 0 ? true : false}
+            required={true}
           />
         </Grid>
         <Grid item xs={12} sm={12} md={6} lg={6} xl={6}>
@@ -73,6 +103,10 @@ function BuyerStep() {
             id="outlined-basic"
             placeholder="CPF"
             variant="outlined"
+            value={cpfValue}
+            onChange={(e) => handleCPFValidation(e)}
+            error={!cpfValid && cpfValue.length > 0 ? true : false}
+            required={true}
           />
         </Grid>
       </Grid>
@@ -99,6 +133,10 @@ function BuyerStep() {
             id="outlined-basic"
             placeholder="Zip code"
             variant="outlined"
+            value={zipCodeValue}
+            onChange={(e) => handleZipCodeValidation(e)}
+            error={!zipCodeValid && zipCodeValue.length > 0 ? true : false}
+            required={true}
           />
         </Grid>
         <Grid item xs={12} sm={12} md={4} lg={4} xl={4}>

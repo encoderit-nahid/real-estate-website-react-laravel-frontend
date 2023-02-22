@@ -40,6 +40,14 @@ body {
   padding-left: 0 !important;
 }
 
+@media only screen and (min-width: 1200px) {
+.pnlm-container{
+  width: 800px !important;
+  height: 450px !important;
+}
+}
+
+
 
 /* .MuiButtonBase-root .MuiTab-root .Mui-selected{
   color: transparent !important;

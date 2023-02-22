@@ -1,8 +1,18 @@
 import { Grid, InputAdornment, TextField, Typography } from "@mui/material";
 import React from "react";
 import BaseButton from "../../reuseable/button/BaseButton";
+import { useState } from "react";
 
 function BrokerHelp({ name, content, buttonName, fieldItem }) {
+  const [value, setValue] = useState("");
+  console.log(value.length);
+  const [valid, setValid] = useState(false);
+  console.log({ valid });
+  const handleValidation = (e) => {
+    setValid(/^[0-9]{5}-[0-9]{3}$/.test(e.target.value));
+    console.log(e.target.value);
+    setValue(e.target.value);
+  };
   return (
     <Grid
       container
@@ -60,9 +70,14 @@ function BrokerHelp({ name, content, buttonName, fieldItem }) {
           fullWidth
           id="outlined-basic"
           label="Zip Code"
+          name="zip_code"
           placeholder="Zip Code"
           size="medium"
           variant="outlined"
+          value={value}
+          onChange={(e) => handleValidation(e)}
+          error={!valid && value.length > 0 ? true : false}
+          required={true}
           sx={{ mt: 4 }}
           InputProps={{
             startAdornment: (

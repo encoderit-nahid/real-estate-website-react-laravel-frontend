@@ -1,5 +1,7 @@
 import "../styles/globals.css";
 import "@fontsource/lato";
+
+
 import { createTheme, CssBaseline, ThemeProvider } from "@mui/material";
 
 function MyApp({ Component, pageProps }) {
