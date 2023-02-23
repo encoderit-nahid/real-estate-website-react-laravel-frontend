@@ -2,6 +2,7 @@ import { Box, Button, Grid, Typography } from "@mui/material";
 import React from "react";
 import cardMedia from "../../../../public/Images/CardMedia.png";
 import Image from "next/image";
+import Link from "next/link";
 
 function ReleaseCard() {
   return (
@@ -10,7 +11,6 @@ function ReleaseCard() {
         background: "#ffffff",
         boxShadow: "0px 4px 8px rgba(0, 33, 82, 0.08)",
         borderRadius: "8px",
-        mt: 4,
       }}
     >
       <Box sx={{ width: "100%" }}>
@@ -62,21 +62,37 @@ function ReleaseCard() {
           4 properties sold
         </Typography>
 
-        <Button
-          sx={{
-            textTransform: "none",
-            border: "1px solid #002152",
-            borderRadius: "4px",
-            color: "#002152",
-            fontSize: "16px",
-            fontWeight: "600",
-            width: { xs: "92%", sm: "92%", md: "92%", lg: "85%", xl: "92%" },
-            mx: 2,
-            my: 2,
-          }}
-        >
-          View properties
-        </Button>
+        <Link href="/view_properties">
+          <a
+            style={{
+              textDecoration: "none",
+              listStyle: "none",
+              width: "100%",
+            }}
+          >
+            <Button
+              sx={{
+                textTransform: "none",
+                border: "1px solid #002152",
+                borderRadius: "4px",
+                color: "#002152",
+                fontSize: "16px",
+                fontWeight: "600",
+                width: {
+                  xs: "92%",
+                  sm: "92%",
+                  md: "92%",
+                  lg: "85%",
+                  xl: "92%",
+                },
+                mx: 2,
+                my: 2,
+              }}
+            >
+              View properties
+            </Button>
+          </a>
+        </Link>
       </Grid>
     </Box>
   );

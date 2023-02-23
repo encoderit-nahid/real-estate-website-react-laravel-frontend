@@ -8,10 +8,14 @@ function handleClick(event) {
   console.info("You clicked a breadcrumb.");
 }
 
-export default function BasicBreadcrumbs({ BreadcrumbsData, lastStageData }) {
+export default function BasicBreadcrumbs({
+  BreadcrumbsData,
+  lastStageData,
+  style,
+}) {
   return (
     <div role="presentation" onClick={handleClick}>
-      <Breadcrumbs aria-label="breadcrumb">
+      <Breadcrumbs aria-label="breadcrumb" sx={style}>
         {BreadcrumbsData?.map((data, index) => (
           <Link
             key={index}

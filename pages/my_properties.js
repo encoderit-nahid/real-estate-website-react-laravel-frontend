@@ -10,6 +10,8 @@ import { Button, Container, Grid } from "@mui/material";
 import { useState } from "react";
 import Releases from "../src/component/properties/Releases/Releases";
 import ThirdTab from "../src/component/properties/Third/ThirdTab";
+import NewRegistration from "../src/component/properties/NewRegistration/NewRegistration";
+import notifyImage from "../public/Images/notify.png";
 
 const drawerWidth = 240;
 
@@ -71,9 +73,31 @@ export default function Properties(props) {
               minHeight: "100vh",
               width: { sm: `calc(100% - ${drawerWidth}px)` },
               paddingX: { xs: 0, sm: 0, md: 6, lg: 6, xl: 6 },
-              paddingY: { xs: 6, sm: 6, md: 6, lg: 6, xl: 3 },
+              paddingTop: { xs: 6, sm: 6, md: 6, lg: 8, xl: 3 },
+              paddingBottom: { xs: 3, sm: 3, md: 3, lg: 4, xl: 3 },
             }}
           >
+            <Grid
+              container
+              direction="row"
+              justifyContent="space-between"
+              alignItems="flex-start"
+            >
+              <Typography
+                variant="p"
+                sx={{
+                  color: "#002152",
+                  fontSize: "24px",
+                  fontWeight: "700",
+                  lineHeight: "32px",
+                  ml: { xs: 4, sm: 4, md: 0, lg: 0, xl: 0 },
+                  mt: { xs: 1, sm: 1, md: 0, lg: 0, xl: 0 },
+                }}
+              >
+                My Properties
+              </Typography>
+              <Image src={notifyImage} alt="notify" />
+            </Grid>
             <Container maxWidth="xl">
               <Box sx={{ width: "100%" }}>
                 <Box sx={{ borderBottom: 1, borderColor: "divider" }}>
@@ -165,7 +189,7 @@ export default function Properties(props) {
                   <ThirdTab />
                 </TabPanel>
                 <TabPanel value={value} index={2}>
-                  Item Three
+                  <NewRegistration />
                 </TabPanel>
               </Box>
             </Container>
