@@ -203,7 +203,7 @@ export default function Advertise(props) {
               },
             }}
           >
-            <BaseGoogleMap />
+            <BaseGoogleMap height={"245vh"} />
           </Grid>
         </Grid>
       </main>

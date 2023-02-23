@@ -10,6 +10,7 @@ import loginImage from "../../../../public/Images/login.png";
 import React from "react";
 import Image from "next/image";
 import BaseButton from "../../reuseable/button/BaseButton";
+import Link from "next/link";
 
 const style = {
   position: "absolute",
@@ -160,7 +161,17 @@ function LoginModal() {
         >
           Register now!
         </Typography>
-        <BaseButton width={"100%"} name="Register" />
+        <Link href="/registration">
+          <a
+            style={{
+              textDecoration: "none",
+              listStyle: "none",
+              width: "100%",
+            }}
+          >
+            <BaseButton width={"100%"} name="Register" />
+          </a>
+        </Link>
       </Grid>
     </Box>
   );

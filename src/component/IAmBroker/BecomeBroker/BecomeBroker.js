@@ -5,6 +5,7 @@ import digitalImage from "../../../../public/Images/digital.png";
 import fastImage from "../../../../public/Images/fast.png";
 import Image from "next/image";
 import BaseButton from "../../reuseable/button/BaseButton";
+import Link from "next/link";
 
 function BecomeBroker({ contentData, buttonVisible }) {
   return (
@@ -50,12 +51,22 @@ function BecomeBroker({ contentData, buttonVisible }) {
           justifyContent="flex-start"
           alignItems="center"
         >
-          <BaseButton
-            name={"Be a Partner"}
-            width={"70%"}
-            fontSize={"24px"}
-            margin={"4vh 0 0 0"}
-          />
+          <Link href="/registration">
+            <a
+              style={{
+                textDecoration: "none",
+                listStyle: "none",
+                width: "100%",
+              }}
+            >
+              <BaseButton
+                name={"Be a Partner"}
+                width={"70%"}
+                fontSize={"24px"}
+                margin={"4vh 0 0 0"}
+              />
+            </a>
+          </Link>
         </Grid>
       )}
     </Grid>

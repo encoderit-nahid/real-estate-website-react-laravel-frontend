@@ -20,8 +20,15 @@ import BaseButton from "../../reuseable/button/BaseButton";
 import { useState } from "react";
 import BaseModal from "../../reuseable/baseModal/BaseModal";
 import LoginModal from "../../login/loginModal/LoginModal";
+import Link from "next/link";
 
 const pages = ["search Real estate", "I am broker", "I am Owner", "blog"];
+const pagesData = [
+  { name: "search real estate", page: "owner" },
+  { name: "I am broker", page: "broker" },
+  { name: "I am Owner", page: "owner" },
+  { name: "blog", page: "blog" },
+];
 
 function Navbar({ shape, paddingY }) {
   const [anchorElNav, setAnchorElNav] = React.useState(null);
@@ -100,12 +107,22 @@ function Navbar({ shape, paddingY }) {
                 display: { xs: "block", md: "block", lg: "none" },
               }}
             >
-              {pages.map((page) => (
-                <MenuItem key={page} onClick={handleCloseNavMenu}>
-                  <Typography textAlign="center" sx={{ color: "#1A1859" }}>
-                    {page}
-                  </Typography>
-                </MenuItem>
+              {pagesData?.map((data, index) => (
+                <Link href={`/${data.page}`} key={index}>
+                  <a
+                    style={{
+                      textDecoration: "none",
+                      listStyle: "none",
+                      width: "100%",
+                    }}
+                  >
+                    <MenuItem onClick={handleCloseNavMenu}>
+                      <Typography textAlign="center" sx={{ color: "#1A1859" }}>
+                        {data?.name}
+                      </Typography>
+                    </MenuItem>
+                  </a>
+                </Link>
               ))}
               <BaseButton
                 name={"Login"}
@@ -163,20 +180,28 @@ function Navbar({ shape, paddingY }) {
               display: { xs: "none", md: "none", lg: "flex" },
             }}
           >
-            {pages.map((page) => (
-              <Button
-                key={page}
-                onClick={handleCloseNavMenu}
-                sx={{
-                  my: 2,
-                  color: `${shape ? "#ffffff" : "#1A1859"}`,
-                  display: "block",
-                  textTransform: "none",
-                  fontSize: "16px",
-                }}
-              >
-                {page}
-              </Button>
+            {pagesData?.map((data, index) => (
+              <Link href={`/${data.page}`} key={index}>
+                <a
+                  style={{
+                    textDecoration: "none",
+                    listStyle: "none",
+                  }}
+                >
+                  <Button
+                    onClick={handleCloseNavMenu}
+                    sx={{
+                      my: 2,
+                      color: `${shape ? "#ffffff" : "#1A1859"}`,
+                      display: "block",
+                      textTransform: "none",
+                      fontSize: "16px",
+                    }}
+                  >
+                    {data?.name}
+                  </Button>
+                </a>
+              </Link>
             ))}
             <BaseButton
               name={"Login"}

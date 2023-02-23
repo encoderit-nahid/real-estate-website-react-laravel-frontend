@@ -2,6 +2,7 @@ import { Grid, InputAdornment, TextField, Typography } from "@mui/material";
 import React from "react";
 import BaseButton from "../../reuseable/button/BaseButton";
 import { useState } from "react";
+import Link from "next/link";
 
 function BrokerHelp({ name, content, buttonName, fieldItem }) {
   const [value, setValue] = useState("");
@@ -90,12 +91,23 @@ function BrokerHelp({ name, content, buttonName, fieldItem }) {
           }}
         />
       )}
-      <BaseButton
-        name={buttonName}
-        width={"100%"}
-        fontSize={"24px"}
-        margin={"4vh 0 0 0"}
-      />
+
+      <Link href="/registration">
+        <a
+          style={{
+            textDecoration: "none",
+            listStyle: "none",
+            width: "100%",
+          }}
+        >
+          <BaseButton
+            name={buttonName}
+            width={"100%"}
+            fontSize={"24px"}
+            margin={"4vh 0 0 0"}
+          />
+        </a>
+      </Link>
     </Grid>
   );
 }

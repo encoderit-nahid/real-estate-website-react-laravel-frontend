@@ -13,6 +13,8 @@ import CabinOutlinedIcon from "@mui/icons-material/CabinOutlined";
 import MapOutlinedIcon from "@mui/icons-material/MapOutlined";
 import SignpostOutlinedIcon from "@mui/icons-material/SignpostOutlined";
 import ReactPannellum, { getConfig } from "react-pannellum";
+import BaseGoogleMap from "../../IAmOwner/map/BaseGoogleMap";
+import { Grid } from "@mui/material";
 
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
@@ -258,7 +260,10 @@ function SliderView() {
         <Image src={home} alt="home" />
       </TabPanel>
       <TabPanel value={value} index={4}>
-        <Image src={home} alt="home" />
+        {/* <Typography variant="p" sx={{ visibility: "hidden", width: "100%" }}>
+          dfsfffffffffffffffffffffffdsfffffffffffffffffffffffffffffffffffdsdsdsdsdsdsdsdsdsdsdsdsdsdsdsdsfsdfsdfsd
+        </Typography> */}
+        <BaseGoogleMap height={"59vh"} width={"55vw"} />
       </TabPanel>
     </Box>
   );

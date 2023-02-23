@@ -12,6 +12,7 @@ import GoogleIcon from "@mui/icons-material/Google";
 import FacebookOutlinedIcon from "@mui/icons-material/FacebookOutlined";
 import ArrowBackIosNewOutlinedIcon from "@mui/icons-material/ArrowBackIosNewOutlined";
 import Image from "next/image";
+import Link from "next/link";
 
 export default function Registration(props) {
   return (
@@ -33,20 +34,30 @@ export default function Registration(props) {
                 alignItems="flex-start"
                 sx={{ py: 4 }}
               >
-                <Button sx={{ textTransform: "none" }}>
-                  <ArrowBackIosNewOutlinedIcon sx={{ color: "#7450F0" }} />
-                  <Typography
-                    variant="p"
-                    sx={{
-                      color: "#7450F0",
-                      fontSize: "14px",
-                      fontWeight: "600",
-                      lineHeight: "17px",
+                <Link href="/">
+                  <a
+                    style={{
+                      textDecoration: "none",
+                      listStyle: "none",
+                      width: "100%",
                     }}
                   >
-                    Cancel Registration
-                  </Typography>
-                </Button>
+                    <Button sx={{ textTransform: "none" }}>
+                      <ArrowBackIosNewOutlinedIcon sx={{ color: "#7450F0" }} />
+                      <Typography
+                        variant="p"
+                        sx={{
+                          color: "#7450F0",
+                          fontSize: "14px",
+                          fontWeight: "600",
+                          lineHeight: "17px",
+                        }}
+                      >
+                        Cancel Registration
+                      </Typography>
+                    </Button>
+                  </a>
+                </Link>
                 <Container maxWidth="xs">
                   <Grid
                     container
@@ -265,24 +276,34 @@ export default function Registration(props) {
                       </Button>
                     </Grid>
                   </Grid>
-                  <Button
-                    fullWidth
-                    sx={{
-                      background:
-                        "linear-gradient(270deg, #1DEECB 1.2%, #00C1B4 98.7%)",
-                      boxShadow: "0px 4px 34px rgba(0, 0, 0, 0.08)",
-                      borderRadius: "4px",
-                      color: "#ffffff",
-                      fontSize: "16px",
-                      lineHeight: "22px",
-                      fontWeight: "600",
-                      mt: 3,
-                      textTransform: "none",
-                      py: 1,
-                    }}
-                  >
-                    register
-                  </Button>
+                  <Link href="/broker_registration">
+                    <a
+                      style={{
+                        textDecoration: "none",
+                        listStyle: "none",
+                        width: "100%",
+                      }}
+                    >
+                      <Button
+                        fullWidth
+                        sx={{
+                          background:
+                            "linear-gradient(270deg, #1DEECB 1.2%, #00C1B4 98.7%)",
+                          boxShadow: "0px 4px 34px rgba(0, 0, 0, 0.08)",
+                          borderRadius: "4px",
+                          color: "#ffffff",
+                          fontSize: "16px",
+                          lineHeight: "22px",
+                          fontWeight: "600",
+                          mt: 3,
+                          textTransform: "none",
+                          py: 1,
+                        }}
+                      >
+                        register
+                      </Button>
+                    </a>
+                  </Link>
                   <Grid
                     container
                     direction="row"

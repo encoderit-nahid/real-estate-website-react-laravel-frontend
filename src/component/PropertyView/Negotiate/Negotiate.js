@@ -1,5 +1,7 @@
 import React from "react";
-import { Button, Grid, Typography, Box } from "@mui/material";
+import { Button, Grid, Typography, Box, TextField } from "@mui/material";
+import negotiateImage from "../../../../public/Images/negotiate.png";
+import Image from "next/image";
 
 function Negotiate({ handleProposalOpen }) {
   return (
@@ -95,13 +97,129 @@ function Negotiate({ handleProposalOpen }) {
         >
           Negotiate
         </Button>
+        <Box
+          sx={{
+            mt: 4,
+            boxSizing: "border-box",
+            backgroundColor: "#F9F9FB",
+            border: "1px solid #D3D3DF",
+            height: "30vh",
+            width: "100%",
+            borderRadius: "4px",
+          }}
+        >
+          <Grid
+            container
+            direction="row"
+            justifyContent="flex-start"
+            alignItems="flex-start"
+            sx={{ mt: 2 }}
+          >
+            <Image src={negotiateImage} alt="negotiate" />
+            <Box
+              sx={{
+                background: "#3E50D8",
+                borderRadius: "0 20px 20px 20px",
+                py: 1,
+                px: 2,
+                width: "70%",
+              }}
+            >
+              <Typography
+                variant="p"
+                sx={{
+                  fontSize: "14px",
+                  fontWeight: "400",
+                  lineHeight: "18px",
+                  color: "#ffffff",
+                }}
+              >
+                There is no proposal or schedule yet
+              </Typography>
+            </Box>
+          </Grid>
+        </Box>
+      </Grid>
+      <Grid
+        container
+        direction="column"
+        justifyContent="flex-start"
+        alignItems="flex-start"
+        sx={{ px: 4, py: 1 }}
+      >
+        <Typography
+          variant="p"
+          sx={{
+            fontSize: "12px",
+            fontWeight: "400",
+            lineHeight: "32px",
+          }}
+        >
+          Proposal
+        </Typography>
+        <TextField
+          fullWidth
+          size="small"
+          type="number"
+          id="outlined-basic"
+          placeholder="BRL"
+          variant="outlined"
+        />
+        <Button
+          fullWidth
+          variant="outlined"
+          sx={{ textTransform: "none", mt: 1 }}
+        >
+          Include Conditions
+        </Button>
+        <Button
+          fullWidth
+          sx={{
+            background: "#00C1B4",
+            boxShadow: "0px 4px 34px rgba(0, 0, 0, 0.08)",
+            borderRadius: "4px",
+            color: "#ffffff",
+            fontSize: "16px",
+            lineHeight: "22px",
+            fontWeight: "600",
+            mt: 1,
+            textTransform: "none",
+
+            py: 1,
+            "&:hover": {
+              background: "#00C1B4",
+              boxShadow: "0px 4px 34px rgba(0, 0, 0, 0.08)",
+              borderRadius: "4px",
+              color: "#ffffff",
+              fontSize: "16px",
+              lineHeight: "22px",
+              fontWeight: "600",
+              mt: 1,
+              textTransform: "none",
+
+              py: 1,
+            },
+          }}
+          onClick={handleProposalOpen}
+        >
+          Submit proposals
+        </Button>
+      </Grid>
+      <Box sx={{ border: "1px dashed #D3D3DF" }}></Box>
+      <Grid
+        container
+        direction="row"
+        justifyContent="space-between"
+        alignItems="center"
+        sx={{ px: 4, py: 1 }}
+      >
         <Button
           variant="contained"
           color="secondary"
           fullWidth
           sx={{
             mt: 1,
-            px: 4,
+
             fontSize: "16px",
             fontWeight: "600",
             textTransform: "none",

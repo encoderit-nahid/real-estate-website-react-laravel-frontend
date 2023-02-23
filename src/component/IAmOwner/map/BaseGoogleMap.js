@@ -17,7 +17,7 @@ const GoogleMapOptions = {
   gestureHandling: "greedy",
 };
 
-const BaseMap = () => {
+const BaseMap = ({ height, width }) => {
   const handleOnLoad = (map) => {
     const bounds = new google.maps.LatLngBounds();
     markers.forEach(({ position }) => bounds.extend(position));
@@ -27,7 +27,7 @@ const BaseMap = () => {
   return (
     <GoogleMap
       onLoad={handleOnLoad}
-      mapContainerStyle={{ height: "245vh" }}
+      mapContainerStyle={{ height: height, width: width }}
       options={GoogleMapOptions}
     >
       <MarkerF position={{ lat: 53, lng: 9 }} />
@@ -50,12 +50,12 @@ const BaseMap = () => {
 
 const Map = React.memo(BaseMap);
 
-const BaseGoogleMap = () => {
+const BaseGoogleMap = ({ height, width }) => {
   const { isLoaded } = useLoadScript({
     googleMapsApiKey: "AIzaSyBCjayEj5DRcHr0fSxVadApgBG3nE7jgyg",
   });
 
-  return isLoaded ? <Map /> : null;
+  return isLoaded ? <Map height={height} width={width} /> : null;
 };
 
 export default BaseGoogleMap;

@@ -5,6 +5,7 @@ import digitalImage from "../../../../public/Images/digital.png";
 import fastImage from "../../../../public/Images/fast.png";
 import Image from "next/image";
 import BaseButton from "../../reuseable/button/BaseButton";
+import Link from "next/link";
 
 function WantToSell() {
   return (
@@ -131,12 +132,16 @@ function WantToSell() {
           </Grid>
         </Grid>
       </Grid>
-      <BaseButton
-        name={"Advertise"}
-        width={"100%"}
-        fontSize={"24px"}
-        margin={"4vh 0 0 0"}
-      />
+      <Link href="/advertise">
+        <a style={{ textDecoration: "none", listStyle: "none", width: "100%" }}>
+          <BaseButton
+            name={"Advertise"}
+            width={"100%"}
+            fontSize={"24px"}
+            margin={"4vh 0 0 0"}
+          />
+        </a>
+      </Link>
     </Grid>
   );
 }

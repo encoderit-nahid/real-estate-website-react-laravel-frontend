@@ -5,6 +5,7 @@ import clientsImage from "../../../../../public/Images/clients.png";
 import earnImage from "../../../../../public/Images/earn.png";
 import Image from "next/image";
 import BaseButton from "../../../reuseable/button/BaseButton";
+import Link from "next/link";
 
 function BrokerRegisterContent({ contentData, buttonVisible }) {
   return (
@@ -141,12 +142,18 @@ function BrokerRegisterContent({ contentData, buttonVisible }) {
         </Grid>
       </Grid> */}
       {buttonVisible && (
-        <BaseButton
-          name={"Register"}
-          width={"100%"}
-          fontSize={"24px"}
-          // margin={"4vh 0 0 0"}
-        />
+        <Link href="/broker">
+          <a
+            style={{ textDecoration: "none", listStyle: "none", width: "100%" }}
+          >
+            <BaseButton
+              name={"Register"}
+              width={"100%"}
+              fontSize={"24px"}
+              // margin={"4vh 0 0 0"}
+            />
+          </a>
+        </Link>
       )}
     </Grid>
   );

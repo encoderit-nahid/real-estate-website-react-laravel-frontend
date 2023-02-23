@@ -12,6 +12,7 @@ import React from "react";
 import BaseButton from "../../reuseable/button/BaseButton";
 import homeImage from "../../../../public/Images/home.png";
 import Image from "next/image";
+import Link from "next/link";
 
 // const AutoComplete = styled(Autocomplete)`
 //   & .MuiInputBase-input {
@@ -92,12 +93,16 @@ function FulfillDream() {
         options={top100Films}
         renderInput={(params) => <TextField {...params} label="value up to" />}
       />
-      <BaseButton
-        name={"search real estate"}
-        width={{ xs: "90%", sm: "90%", md: "90%", xl: "90%", lg: "75%" }}
-        fontSize={"24px"}
-        margin={"4vh 0 0 0"}
-      />
+      <Link href="/owner">
+        <a style={{ textDecoration: "none", listStyle: "none", width: "100%" }}>
+          <BaseButton
+            name={"search real estate"}
+            width={{ xs: "90%", sm: "90%", md: "90%", xl: "90%", lg: "75%" }}
+            fontSize={"24px"}
+            margin={"4vh 0 0 0"}
+          />
+        </a>
+      </Link>
     </Grid>
   );
 }
