@@ -11,6 +11,11 @@ import ProposalValueStep from "../src/component/properties/ProposalValueStep/Pro
 import BuyerDataStep from "../src/component/properties/BuyerDataStep/BuyerDataStep";
 import BaseModal from "../src/component/reuseable/baseModal/BaseModal";
 import ProposalSentModal from "../src/component/properties/ProposalSentModal/ProposalSentModal";
+import Address from "../src/component/new property/Address/Address";
+import ValuesAndDescription from "../src/component/new property/ValuesAndDescription/ValuesAndDescription";
+import PhotosAndVideos from "../src/component/new property/PhotosAndVideos/PhotosAndVideos";
+import Features from "../src/component/new property/Features/Features";
+import Owner from "../src/component/new property/Owner/owner";
 
 const drawerWidth = 240;
 
@@ -19,8 +24,14 @@ const BreadCrumbsData = [
   { stage: "My properties", route: "" },
 ];
 
-const steps = ["Proposal Values", "Buyer Data"];
-export default function IncludeProposal(props) {
+const steps = [
+  "Address",
+  "Values and description",
+  "Features",
+  "Photos and videos",
+  "Owner",
+];
+export default function NewProperty(props) {
   const [activeStep, setActiveStep] = useState(0);
   const [skipped, setSkipped] = useState(new Set());
 
@@ -100,7 +111,7 @@ export default function IncludeProposal(props) {
               >
                 <BasicBreadcrumbs
                   BreadcrumbsData={BreadCrumbsData}
-                  lastStageData={"Proposal"}
+                  lastStageData={"New property"}
                 />
               </Grid>
               <Box sx={{ mt: 3 }}>
@@ -126,12 +137,24 @@ export default function IncludeProposal(props) {
                 ) : (
                   <Fragment>
                     {activeStep === 0 ? (
-                      <ProposalValueStep handleNext={handleNext} />
-                    ) : (
-                      <BuyerDataStep
+                      <Address handleNext={handleNext} />
+                    ) : activeStep === 1 ? (
+                      <ValuesAndDescription
                         handleNext={handleNext}
                         handleBack={handleBack}
                       />
+                    ) : activeStep === 2 ? (
+                      <Features
+                        handleNext={handleNext}
+                        handleBack={handleBack}
+                      />
+                    ) : activeStep === 3 ? (
+                      <PhotosAndVideos
+                        handleNext={handleNext}
+                        handleBack={handleBack}
+                      />
+                    ) : (
+                      <Owner handleNext={handleNext} handleBack={handleBack} />
                     )}
                     <Grid
                       container
