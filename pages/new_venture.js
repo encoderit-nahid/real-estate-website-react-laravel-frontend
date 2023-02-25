@@ -321,16 +321,17 @@ export default function NewVenture(props) {
                               sx={{
                                 background: "#F44336",
                                 color: "#ffffff",
-                                borderRadius: "25%",
+                                borderRadius: "50%",
                                 height: "3vh",
                                 width: "3vh",
+                                paddingY:"3px"
                               }}
                               onClick={() => handleDelete(index)}
                             />
                           </Grid>
                           <Image
                             src={file.preview}
-                            height={100}
+                            height={70}
                             width={100}
                             layout="responsive"
                             alt="file"

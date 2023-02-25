@@ -15,7 +15,8 @@ import Address from "../src/component/new property/Address/Address";
 import ValuesAndDescription from "../src/component/new property/ValuesAndDescription/ValuesAndDescription";
 import PhotosAndVideos from "../src/component/new property/PhotosAndVideos/PhotosAndVideos";
 import Features from "../src/component/new property/Features/Features";
-import Owner from "../src/component/new property/Owner/owner";
+import Owner from "../src/component/new property/Owner/Owner";
+import PropertySubmittedModal from "../src/component/new property/PropertySubmittedModal/PropertySubmittedModal";
 
 const drawerWidth = 240;
 
@@ -213,6 +214,40 @@ export default function NewProperty(props) {
                   Skip
                 </Button>
               )} */}
+              {
+                activeStep === steps.length - 1 && (
+                  <Button
+                  sx={{
+                    background: "#DBE1E5",
+                    borderRadius: "4px",
+                    px: 2,
+                    py: 1,
+                    mr:1,
+                    color: "#002152",
+                    fontSize: "16px",
+                    fontWeight: "600",
+                    lineHeight: "22px",
+                    textTransform: "none",
+                   
+                    "&:hover": {
+                      background: "#DBE1E5",
+                      borderRadius: "4px",
+                      px: 2,
+                      py: 1,
+                      color: "#002152",
+                      fontSize: "16px",
+                      fontWeight: "600",
+                      lineHeight: "22px",
+                      textTransform: "none",
+                      mr:1
+                    },
+                  }}
+                  >
+                    Save as draft
+                  </Button>
+                )
+
+              }
 
                       <Button
                         onClick={
@@ -246,7 +281,7 @@ export default function NewProperty(props) {
                         }}
                       >
                         {activeStep === steps.length - 1
-                          ? "Submit Proposal"
+                          ? "Submit Approval"
                           : "Next"}
                       </Button>
                     </Grid>
@@ -256,7 +291,7 @@ export default function NewProperty(props) {
               <BaseModal isShowing={sentModalOpen} isClose={handleClose}>
                 <Tooltip title="Something">
                   <>
-                    <ProposalSentModal handleClose={handleClose} />
+                    <PropertySubmittedModal handleClose={handleClose} />
                   </>
                 </Tooltip>
               </BaseModal>

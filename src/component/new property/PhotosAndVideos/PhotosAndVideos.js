@@ -185,21 +185,23 @@ function PhotosAndVideos() {
                   direction="row"
                   justifyContent="flex-end"
                   alignItems="flex-start"
+                 
                 >
                   <DeleteOutlineOutlinedIcon
                     sx={{
                       background: "#F44336",
                       color: "#ffffff",
-                      borderRadius: "25%",
+                      borderRadius: "50%",
                       height: "3vh",
                       width: "3vh",
+                      paddingY:"3px"
                     }}
                     onClick={() => handleDelete(index)}
                   />
                 </Grid>
                 <Image
                   src={file.preview}
-                  height={100}
+                  height={70}
                   width={100}
                   layout="responsive"
                   alt="file"
@@ -243,7 +245,14 @@ function PhotosAndVideos() {
         sx={{ mt: 1 }}
       >
         <TextField
-          sx={{ width: "50%" }}
+          sx={{ width: "50%",
+        
+          '& .MuiOutlinedInput-root': {  // - The Input-root, inside the TextField-root
+            '& fieldset': {  
+                borderRadius:"4px 0px 0px 4px",          // - The <fieldset> inside the Input-root
+                borderRight: 'none',   // - Set the Input border
+            },
+        }}}
           size="medium"
           id="outlined-basic"
           placeholder="paste the url of the video"
@@ -253,11 +262,11 @@ function PhotosAndVideos() {
           sx={{
             backgroundColor: "#DBE1E5",
             py: 2,
-            borderRadius: "4px",
+            borderRadius:"0px 4px 4px 0px",
             "&:hover": {
               backgroundColor: "#DBE1E5",
               py: 2,
-              borderRadius: "4px",
+              borderRadius:"0px 4px 4px 0px",
             },
           }}
         >
