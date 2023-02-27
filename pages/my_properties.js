@@ -12,6 +12,7 @@ import Releases from "../src/component/properties/Releases/Releases";
 import ThirdTab from "../src/component/properties/Third/ThirdTab";
 import NewRegistration from "../src/component/properties/NewRegistration/NewRegistration";
 import notifyImage from "../public/Images/notify.png";
+import Link from "next/link";
 
 const drawerWidth = 240;
 
@@ -138,48 +139,69 @@ export default function Properties(props) {
                     gap={2}
                     sx={{ mt: 3 }}
                   >
-                    <Button
-                      sx={{
-                        textTransform: "none",
-                        background: "#0362F0",
-                        borderRadius: "4px",
-                        color: "#ffffff",
-                        fontSize: "16px",
-                        fontWeight: "600",
-                        px: 4,
-                        py: 1,
-                        width: {
-                          xs: "100%",
-                          sm: "100%",
-                          md: "30%",
-                          lg: "30%",
-                          xl: "20%",
-                        },
-                      }}
-                    >
-                      New property
-                    </Button>
-                    <Button
-                      sx={{
-                        textTransform: "none",
-                        border: "1px solid #002152",
-                        borderRadius: "4px",
-                        color: "#002152",
-                        fontSize: "16px",
-                        fontWeight: "600",
-                        px: 4,
-                        py: 1,
-                        width: {
-                          xs: "100%",
-                          sm: "100%",
-                          md: "30%",
-                          lg: "30%",
-                          xl: "20%",
-                        },
-                      }}
-                    >
-                      New venture
-                    </Button>
+                    <Link href="/new_property">
+                      {/* <a
+                        style={{
+                          textDecoration: "none",
+                          listStyle: "none",
+                          width: "100%",
+                        }}
+                      > */}
+                      <Button
+                        sx={{
+                          textTransform: "none",
+                          background: "#0362F0",
+                          borderRadius: "4px",
+                          color: "#ffffff",
+                          fontSize: "16px",
+                          fontWeight: "600",
+                          px: 4,
+                          py: 1,
+                          width: {
+                            xs: "100%",
+                            sm: "100%",
+                            md: "30%",
+                            lg: "30%",
+                            xl: "20%",
+                          },
+                        }}
+                      >
+                        New property
+                      </Button>
+                      {/* </a> */}
+                    </Link>
+
+                    <Link href="/new_venture">
+                      {/* <a
+                        style={{
+                          textDecoration: "none",
+                          listStyle: "none",
+                          width: "100%",
+                        }}
+                      > */}
+                      <Button
+                        sx={{
+                          textTransform: "none",
+                          border: "1px solid #002152",
+                          borderRadius: "4px",
+                          color: "#002152",
+                          fontSize: "16px",
+                          fontWeight: "600",
+                          px: 4,
+                          py: 1,
+                          width: {
+                            xs: "100%",
+                            sm: "100%",
+                            md: "30%",
+                            lg: "30%",
+                            xl: "20%",
+                          },
+                        }}
+                      >
+                        New venture
+                      </Button>
+                      {/* </a> */}
+                    </Link>
                   </Grid>
                 </Container>
                 <TabPanel value={value} index={0}>

@@ -2,6 +2,7 @@ import { Box, Button, Grid, LinearProgress, Typography } from "@mui/material";
 import React from "react";
 import rentImage from "../../../../public/Images/rentImage.png";
 import Image from "next/image";
+import Link from "next/link";
 
 function RentCard() {
   const [progress, setProgress] = React.useState(87);
@@ -182,17 +183,16 @@ function RentCard() {
               created on: 08/19/2020
             </Typography>
             <Box sx={{ mt: 1, mb: { xs: 0, sm: 0, md: 0, lg: 2, xl: 2 } }}>
-              <Button
-                sx={{
-                  color: "#FFFFFF",
-                  fontSize: "14px",
-                  lineHeight: "18px",
-                  fontWeight: "600",
-                  background: "#7450F0",
-                  borderRadius: "4px",
-                  padding: "8px 20px",
-                  textTransform: "none",
-                  "&:hover": {
+              <Link href="/include_proposal">
+                {/* <a
+                  style={{
+                    textDecoration: "none",
+                    listStyle: "none",
+                    width: "100%",
+                  }}
+                > */}
+                <Button
+                  sx={{
                     color: "#FFFFFF",
                     fontSize: "14px",
                     lineHeight: "18px",
@@ -201,11 +201,22 @@ function RentCard() {
                     borderRadius: "4px",
                     padding: "8px 20px",
                     textTransform: "none",
-                  },
-                }}
-              >
-                Include proposal
-              </Button>
+                    "&:hover": {
+                      color: "#FFFFFF",
+                      fontSize: "14px",
+                      lineHeight: "18px",
+                      fontWeight: "600",
+                      background: "#7450F0",
+                      borderRadius: "4px",
+                      padding: "8px 20px",
+                      textTransform: "none",
+                    },
+                  }}
+                >
+                  Include proposal
+                </Button>
+                {/* </a> */}
+              </Link>
               <Button
                 sx={{
                   color: "#002152",
