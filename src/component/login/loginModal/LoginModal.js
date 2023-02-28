@@ -102,22 +102,33 @@ function LoginModal() {
           placeholder="Email"
           variant="outlined"
         />
-        <Button
-          fullWidth
-          sx={{
-            background: "linear-gradient(270deg, #1DEECB 1.2%, #00C1B4 98.7%)",
-            boxShadow: "0px 4px 34px rgba(0, 0, 0, 0.08)",
-            borderRadius: "4px",
-            color: "#ffffff",
-            fontSize: "16px",
-            lineHeight: "22px",
-            fontWeight: "600",
-            mt: 2,
-            textTransform: "none",
-          }}
-        >
-          To enter
-        </Button>
+        <Link href="/my_properties">
+          <a
+            style={{
+              textDecoration: "none",
+              listStyle: "none",
+              width: "100%",
+            }}
+          >
+            <Button
+              fullWidth
+              sx={{
+                background:
+                  "linear-gradient(270deg, #1DEECB 1.2%, #00C1B4 98.7%)",
+                boxShadow: "0px 4px 34px rgba(0, 0, 0, 0.08)",
+                borderRadius: "4px",
+                color: "#ffffff",
+                fontSize: "16px",
+                lineHeight: "22px",
+                fontWeight: "600",
+                mt: 2,
+                textTransform: "none",
+              }}
+            >
+              To enter
+            </Button>
+          </a>
+        </Link>
         <Grid
           container
           direction="row"

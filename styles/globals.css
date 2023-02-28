@@ -47,6 +47,10 @@ body {
 }
 }
 
+.step-complete .MuiStepLabel-iconContainer .Mui-completed{
+  color: #16a34a !important;
+}
+
 
 
 /* .MuiButtonBase-root .MuiTab-root .Mui-selected{
