@@ -223,7 +223,7 @@ function AcceptedCard() {
           </Button>
         </Grid>
         <Grid item xs={12} sm={12} md={12} lg={6} xl={6}>
-          <Link href="/include_proposal">
+          <Link href="/property_journey">
             <Button
               fullWidth
               sx={{

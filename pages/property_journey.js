@@ -27,7 +27,9 @@ import PhotosAndVideos from "../src/component/new property/PhotosAndVideos/Photo
 import Features from "../src/component/new property/Features/Features";
 import Owner from "../src/component/new property/Owner/Owner";
 import PropertySubmittedModal from "../src/component/new property/PropertySubmittedModal/PropertySubmittedModal";
-import Contract from "../src/component/proposals/contract/Contract";
+import Contract from "../src/component/proposals/propertyJourney/Admin/contract/Contract";
+import CertificatesAndDocuments from "../src/component/proposals/propertyJourney/Admin/certificatesAndDocuments/CertificatesAndDocuments";
+import PreAnalise from "../src/component/proposals/propertyJourney/Admin/preAnalise/PreAnalise";
 
 const drawerWidth = 240;
 
@@ -230,9 +232,9 @@ export default function PropertyJourney(props) {
                       //     handleNext={handleNext}
                       //     handleBack={handleBack}
                       //   />
-                      <h1>Certificates and documents</h1>
-                    ) : activeStep === 3 ? (
-                      <h1>Pre Analysis</h1>
+                      <CertificatesAndDocuments />
+                    ) : activeStep === 4 ? (
+                      <PreAnalise />
                     ) : (
                       <h1>Digital notery</h1>
                     )}
@@ -251,7 +253,7 @@ export default function PropertyJourney(props) {
                         pt: 2,
                       }}
                     >
-                      {activeStep !== 0 && (
+                      {activeStep > 2 && (
                         <Button
                           color="inherit"
                           // disabled={activeStep === 0}
