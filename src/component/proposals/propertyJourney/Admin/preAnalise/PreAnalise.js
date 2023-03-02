@@ -23,8 +23,9 @@ import CloudUploadOutlinedIcon from "@mui/icons-material/CloudUploadOutlined";
 import CertificateModal from "../certificateModal/CertificateModal";
 import CheckCircleOutlineIcon from "@mui/icons-material/CheckCircleOutline";
 import CloudDownloadOutlinedIcon from "@mui/icons-material/CloudDownloadOutlined";
+import HighlightOffIcon from "@mui/icons-material/HighlightOff";
 
-function PreAnalise() {
+function PreAnalise({ handleNext }) {
   //   const [contractModalOpen, setContractModalOpen] = React.useState(false);
   //   const handleOpen = () => setContractModalOpen(true);
   //   const handleClose = () => setContractModalOpen(false);
@@ -32,7 +33,7 @@ function PreAnalise() {
   //   const [progress, setProgress] = React.useState(40);
 
   return (
-    <Box sx={{ mt: 4 }}>
+    <Box sx={{ mt: 4, mb: 2 }}>
       <Grid
         container
         direction="row"
@@ -124,7 +125,7 @@ function PreAnalise() {
                       <Typography
                         sx={{
                           color: "#6C7A84",
-                          fontSize: "12px",
+                          fontSize: "14px",
                           lineHeight: "22px",
                           fontWeight: "400",
                         }}
@@ -136,7 +137,7 @@ function PreAnalise() {
                       <Typography
                         sx={{
                           color: "#6C7A84",
-                          fontSize: "12px",
+                          fontSize: "14px",
                           lineHeight: "22px",
                           fontWeight: "400",
                         }}
@@ -148,7 +149,7 @@ function PreAnalise() {
                       <Typography
                         sx={{
                           color: "#6C7A84",
-                          fontSize: "12px",
+                          fontSize: "14px",
                           lineHeight: "22px",
                           fontWeight: "400",
                         }}
@@ -327,6 +328,297 @@ function PreAnalise() {
                 </Grid>
               </Grid>
             </Box>
+
+            {[0, 1].map((data, index) => (
+              <Box
+                key={index}
+                sx={{
+                  background: "#FFFFFF",
+                  border: "1px solid #DBE1E5",
+                  borderRadius: "8px",
+                  px: 2,
+                  py: 2,
+                  mt: 2,
+                }}
+              >
+                <Grid
+                  container
+                  direction="column"
+                  justifyContent="flex-start"
+                  alignItems="flex-start"
+                >
+                  <Box>
+                    <Typography
+                      variant="p"
+                      sx={{
+                        color: "#1A1859",
+                        fontSize: "16px",
+                        lineHeight: "22px",
+                        fontWeight: "400",
+                      }}
+                    >
+                      Updated certificate of registration of the property.
+                    </Typography>
+                  </Box>
+                  <Box sx={{ width: "100%", py: 1 }}>
+                    <Grid container spacing={1}>
+                      <Grid item xs={12} sm={12} md={12} lg={5}>
+                        <Typography
+                          sx={{
+                            color: "#6C7A84",
+                            fontSize: "14px",
+                            lineHeight: "22px",
+                            fontWeight: "400",
+                          }}
+                        >
+                          Delivery: 06/13/2021,14:36
+                        </Typography>
+                      </Grid>
+                      <Grid item xs={12} sm={12} md={12} lg={3}>
+                        <Typography
+                          sx={{
+                            color: "#6C7A84",
+                            fontSize: "14px",
+                            lineHeight: "22px",
+                            fontWeight: "400",
+                          }}
+                        >
+                          Size: 1MB
+                        </Typography>
+                      </Grid>
+                      <Grid item xs={12} sm={12} md={12} lg={4}>
+                        <Typography
+                          sx={{
+                            color: "#6C7A84",
+                            fontSize: "14px",
+                            lineHeight: "22px",
+                            fontWeight: "400",
+                          }}
+                        >
+                          Format: PDF
+                        </Typography>
+                      </Grid>
+                    </Grid>
+                  </Box>
+
+                  <Grid container spacing={1}>
+                    <Grid item xs={12} sm={12} md={12} lg={3}>
+                      <Box
+                        sx={{
+                          background: "#E6F0FF",
+                          width: "100%",
+                          display: "flex",
+                          flexDirection: "column",
+                          justifyContent: "center",
+                          alignItems: "center",
+                          px: 3,
+                          py: 3.4,
+                        }}
+                      >
+                        <Image
+                          height={50}
+                          width={50}
+                          src={analise}
+                          alt="analise"
+                        />
+                        <Typography
+                          variant="p"
+                          sx={{
+                            color: "#7450F0",
+                            fontWeight: "400",
+                            fontSize: "10px",
+                            lineHeight: "14px",
+                          }}
+                        >
+                          lukka
+                        </Typography>
+                        <Typography
+                          variant="p"
+                          sx={{
+                            color: "#1A1859",
+                            fontWeight: "400",
+                            fontSize: "14px",
+                            lineHeight: "24px",
+                          }}
+                        >
+                          6 items to review
+                        </Typography>
+                      </Box>
+                    </Grid>
+                    <Grid item xs={12} sm={12} md={12} lg={9}>
+                      <Box
+                        sx={{
+                          background: "#FFF7E6",
+                          borderRadius: "4px",
+                          px: 2,
+                          py: { xs: 1, sm: 1, md: 1, lg: 2.6, xl: 1 },
+                          width: "100%",
+                        }}
+                      >
+                        <Grid
+                          container
+                          direction="row"
+                          justifyContent="flex-start"
+                          alignItems="flex-start"
+                        >
+                          <Typography
+                            variant="p"
+                            sx={{
+                              color: "#1A1859",
+                              fontWeight: "400",
+                              fontSize: "14px",
+                              lineHeight: "22px",
+                            }}
+                          >
+                            Analysis result:
+                          </Typography>
+                        </Grid>
+                        <Grid container spacing={1} sx={{ mt: 1 }}>
+                          {[0, 1, 2, 3, 4, 5].map((data, index) => (
+                            <Grid
+                              item
+                              xs={12}
+                              sm={12}
+                              md={12}
+                              lg={6}
+                              key={index}
+                              className="analysis-card"
+                            >
+                              <Button
+                                sx={{
+                                  display: "flex",
+                                  textTransform: "none",
+                                  py: 0.5,
+                                  px: 0.5,
+                                  mt: 0,
+                                  mb: 0,
+                                }}
+                              >
+                                <HighlightOffIcon sx={{ color: "#664400" }} />
+                                <Typography
+                                  variant="p"
+                                  sx={{
+                                    color: "#664400",
+                                    fontSize: "12px",
+                                    fontWeight: "400",
+                                    lineHeight: "22px",
+                                  }}
+                                >
+                                  Mortgage, page 2
+                                </Typography>
+                              </Button>
+                            </Grid>
+                          ))}
+                        </Grid>
+                      </Box>
+                    </Grid>
+                  </Grid>
+                  <Grid container spacing={1} sx={{ mt: 1 }}>
+                    <Grid item xs={12} sm={12} md={12} lg={3}>
+                      <Button
+                        varinat="outlined"
+                        fullWidth
+                        sx={{
+                          display: "flex",
+                          border: "1px solid #000F1A",
+                          color: "#ffffff",
+                          textTransform: "none",
+                          py: 0.5,
+                          px: 2,
+                          mt: { xs: 0, sm: 0, md: 0, lg: 1, xl: 0 },
+                          "&: hover": {
+                            border: "1px soli d#000F1A",
+                            color: "#ffffff",
+                            textTransform: "none",
+                            py: 0.5,
+                            px: 2,
+                          },
+                        }}
+                      >
+                        <CloudDownloadOutlinedIcon sx={{ color: "#000F1A" }} />
+                        <Typography
+                          variant="p"
+                          sx={{
+                            color: "#000F1A",
+                            fontSize: "14px",
+                            lineHeight: "18px",
+                            fontWeight: "600",
+                          }}
+                        >
+                          To go down
+                        </Typography>
+                      </Button>
+                    </Grid>
+                    <Grid item xs={12} sm={12} md={12} lg={3}>
+                      <Button
+                        varinat="outlined"
+                        fullWidth
+                        sx={{
+                          display: "flex",
+                          border: "1px solid #000F1A",
+                          color: "#ffffff",
+                          textTransform: "none",
+                          py: 0.5,
+                          px: 2,
+                          mt: { xs: 0, sm: 0, md: 0, lg: 1, xl: 0 },
+                          "&: hover": {
+                            border: "1px solid #000F1A",
+                            color: "#ffffff",
+                            textTransform: "none",
+                            py: 0.5,
+                            px: 2,
+                          },
+                        }}
+                      >
+                        <VisibilityOutlinedIcon sx={{ color: "#000F1A" }} />
+                        <Typography
+                          variant="p"
+                          sx={{
+                            color: "#000F1A",
+                            fontSize: "14px",
+                            lineHeight: "18px",
+                            fontWeight: "600",
+                          }}
+                        >
+                          To view
+                        </Typography>
+                      </Button>
+                    </Grid>
+                    <Grid item xs={12} sm={12} md={12} lg={6}>
+                      <Button
+                        fullWidth
+                        variant="outlined"
+                        sx={{
+                          background: "#7450F0",
+                          border: "1px solid #7450F0",
+                          color: "#ffffff",
+                          fontSize: "16px",
+                          lineHeight: "22px",
+                          fontWeight: "600",
+                          textTransform: "none",
+                          py: 0.5,
+                          px: 1,
+                          mt: { xs: 0, sm: 0, md: 0, lg: 1, xl: 0 },
+                          "&: hover": {
+                            background: "#7450F0",
+                            border: "1px solid #7450F0",
+                            color: "#ffffff",
+                            fontSize: "16px",
+                            lineHeight: "22px",
+                            fontWeight: "600",
+                            textTransform: "none",
+                            py: 0.5,
+                            px: 2,
+                          },
+                        }}
+                      >
+                        Validate documnet
+                      </Button>
+                    </Grid>
+                  </Grid>
+                </Grid>
+              </Box>
+            ))}
           </Grid>
         </Grid>
       </Box>

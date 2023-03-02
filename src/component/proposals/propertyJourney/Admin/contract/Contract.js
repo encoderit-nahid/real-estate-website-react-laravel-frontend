@@ -16,12 +16,18 @@ import generate from "../../../../../../public/Images/generate.png";
 import BaseModal from "../../../../reuseable/baseModal/BaseModal";
 import ContractModal from "../contractModal/ContractModal";
 import SaleCard from "../../../../reuseable/saleCard/SaleCard";
+import ContractPdfModal from "../../ContractPdfModal/ContractPdfModal";
 
 function Contract() {
   //contract_modal_open
   const [contractModalOpen, setContractModalOpen] = React.useState(false);
   const handleOpen = () => setContractModalOpen(true);
   const handleClose = () => setContractModalOpen(false);
+
+  //pdf_open
+  const [contractPdfOpen, setContractPdfOpen] = React.useState(false);
+  const handlePdfOpen = () => setContractPdfOpen(true);
+  const handlePdfClose = () => setContractPdfOpen(false);
 
   const [progress, setProgress] = React.useState(40);
 
@@ -207,6 +213,7 @@ function Contract() {
                 </Grid>
                 <Grid item xs={12} sm={12} md={12} lg={6}>
                   <Button
+                    onClick={handlePdfOpen}
                     fullWidth
                     sx={{
                       background: "#0362F0",
@@ -245,6 +252,13 @@ function Contract() {
         <Tooltip title="Something">
           <>
             <ContractModal />
+          </>
+        </Tooltip>
+      </BaseModal>
+      <BaseModal isShowing={contractPdfOpen} isClose={handlePdfClose}>
+        <Tooltip title="Something">
+          <>
+            <ContractPdfModal handleClose={handlePdfClose} />
           </>
         </Tooltip>
       </BaseModal>

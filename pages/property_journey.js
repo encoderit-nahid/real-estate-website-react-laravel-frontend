@@ -30,6 +30,7 @@ import PropertySubmittedModal from "../src/component/new property/PropertySubmit
 import Contract from "../src/component/proposals/propertyJourney/Admin/contract/Contract";
 import CertificatesAndDocuments from "../src/component/proposals/propertyJourney/Admin/certificatesAndDocuments/CertificatesAndDocuments";
 import PreAnalise from "../src/component/proposals/propertyJourney/Admin/preAnalise/PreAnalise";
+import DigitalNotary from "../src/component/proposals/propertyJourney/Admin/digitalNotary/DigitalNotary";
 
 const drawerWidth = 240;
 
@@ -163,6 +164,7 @@ export default function PropertyJourney(props) {
                     return (
                       <Step
                         key={label}
+                        onClick={() => setActiveStep(index)}
                         {...stepProps}
                         sx={{
                           background: `${
@@ -192,7 +194,18 @@ export default function PropertyJourney(props) {
                         }}
                       >
                         <StepLabel className="step-complete" {...labelProps}>
-                          {label}
+                          <Box
+                            sx={{
+                              display: {
+                                xs: "none",
+                                sm: "none",
+                                md: "none",
+                                lg: "inline",
+                              },
+                            }}
+                          >
+                            {label}
+                          </Box>
                         </StepLabel>
                       </Step>
                     );
@@ -232,13 +245,13 @@ export default function PropertyJourney(props) {
                       //     handleNext={handleNext}
                       //     handleBack={handleBack}
                       //   />
-                      <CertificatesAndDocuments />
+                      <CertificatesAndDocuments handleNext={handleNext} />
                     ) : activeStep === 4 ? (
-                      <PreAnalise />
+                      <PreAnalise handleNext={handleNext} />
                     ) : (
-                      <h1>Digital notery</h1>
+                      <DigitalNotary />
                     )}
-                    <Grid
+                    {/* <Grid
                       container
                       direction="row"
                       justifyContent={{
@@ -273,9 +286,9 @@ export default function PropertyJourney(props) {
                         >
                           Come back
                         </Button>
-                      )}
+                      )} */}
 
-                      {/* {isStepOptional(activeStep) && (
+                    {/* {isStepOptional(activeStep) && (
                 <Button
                   sx={{
                     mr: 1,
@@ -295,7 +308,7 @@ export default function PropertyJourney(props) {
                   Skip
                 </Button>
               )} */}
-                      {activeStep === steps.length - 1 && (
+                    {/* {activeStep === steps.length - 1 && (
                         <Button
                           sx={{
                             background: "#DBE1E5",
@@ -325,9 +338,9 @@ export default function PropertyJourney(props) {
                         >
                           Save as draft
                         </Button>
-                      )}
+                      )} */}
 
-                      <Button
+                    {/* <Button
                         onClick={
                           activeStep === steps.length - 1
                             ? handleOpen
@@ -361,8 +374,8 @@ export default function PropertyJourney(props) {
                         {activeStep === steps.length - 1
                           ? "Submit Approval"
                           : "Next"}
-                      </Button>
-                    </Grid>
+                      </Button> */}
+                    {/* </Grid> */}
                   </Fragment>
                 )}
               </Box>

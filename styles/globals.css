@@ -51,6 +51,14 @@ body {
   color: #16a34a !important;
 }
 
+.analysis-card{
+  padding-top: 0!important;
+}
+.react-pdf__Page__canvas{
+  width: 100% !important;
+  height: 100% !important;
+}
+
 
 
 /* .MuiButtonBase-root .MuiTab-root .Mui-selected{

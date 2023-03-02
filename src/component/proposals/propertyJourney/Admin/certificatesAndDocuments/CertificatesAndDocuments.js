@@ -22,7 +22,7 @@ import VisibilityOutlinedIcon from "@mui/icons-material/VisibilityOutlined";
 import CloudUploadOutlinedIcon from "@mui/icons-material/CloudUploadOutlined";
 import CertificateModal from "../certificateModal/CertificateModal";
 
-function CertificatesAndDocuments() {
+function CertificatesAndDocuments({ handleNext }) {
   //contract_modal_open
   const [contractModalOpen, setContractModalOpen] = React.useState(false);
   const handleOpen = () => setContractModalOpen(true);
@@ -265,6 +265,34 @@ function CertificatesAndDocuments() {
                   </Box>
                 </Grid>
               ))}
+            </Grid>
+            <Grid
+              container
+              direction="row"
+              justifyContent="flex-end"
+              alignItems="flex-start"
+            >
+              <Button
+                onClick={handleNext}
+                sx={{
+                  background: "#34BE84",
+                  color: "#ffffff",
+                  fontSize: "16px",
+                  lineHeight: "22px",
+                  textTransform: "none",
+                  mt: 5,
+                  px: 2,
+                  "&: hover": {
+                    background: "#34BE84",
+                    color: "#ffffff",
+                    fontSize: "16px",
+                    lineHeight: "22px",
+                    px: 2,
+                  },
+                }}
+              >
+                Request documents
+              </Button>
             </Grid>
           </Grid>
         </Grid>
