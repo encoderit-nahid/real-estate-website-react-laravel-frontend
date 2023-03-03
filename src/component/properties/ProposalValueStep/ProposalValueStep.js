@@ -12,9 +12,6 @@ import Image from "next/image";
 import proposeImage from "../../../../public/Images/proposal_modal.png";
 
 function ProposalValueStep() {
-  const [cash, setCash] = useState(true);
-  const [installment, setInstallment] = useState(false);
-
   return (
     <Box sx={{ mt: 4 }}>
       <PropertyCard />
@@ -81,6 +78,7 @@ function ProposalValueStep() {
               id="outlined-basic"
               placeholder="BRL Total Amount"
               variant="outlined"
+              type="number"
             />
             <TextareaAutosize
               aria-label="minimum height"
@@ -110,6 +108,7 @@ function ProposalValueStep() {
                   id="outlined-basic"
                   placeholder="BRL Total Amount"
                   variant="outlined"
+                  type="number"
                 />
               </Grid>
               <Grid item xs={12} sm={12} md={12} lg={6}>
@@ -118,6 +117,7 @@ function ProposalValueStep() {
                   id="outlined-basic"
                   placeholder="R$ Cash Value"
                   variant="outlined"
+                  type="number"
                 />
               </Grid>
             </Grid>
@@ -128,6 +128,7 @@ function ProposalValueStep() {
                   id="outlined-basic"
                   placeholder="R$ Term Value"
                   variant="outlined"
+                  type="number"
                 />
               </Grid>
               <Grid item xs={12} sm={12} md={12} lg={6}>
@@ -136,6 +137,7 @@ function ProposalValueStep() {
                   id="outlined-basic"
                   placeholder="Number of Installments"
                   variant="outlined"
+                  type="number"
                 />
               </Grid>
             </Grid>

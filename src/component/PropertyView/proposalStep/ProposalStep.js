@@ -1,4 +1,5 @@
 import {
+  Box,
   Button,
   Grid,
   TextField,
@@ -7,9 +8,11 @@ import {
 } from "@mui/material";
 import Image from "next/image";
 import proposeImage from "../../../../public/Images/proposal_modal.png";
-import React from "react";
+import React, { useState } from "react";
 
 function ProposalStep() {
+  const [cash, setCash] = useState(true);
+  const [installment, setInstallment] = useState(false);
   return (
     <Typography sx={{ mt: 2, mb: 1 }}>
       <Button sx={{ display: "flex" }}>
@@ -42,6 +45,16 @@ function ProposalStep() {
             backgroundColor: "#F2F5F6",
             color: "#002152",
             borderRadius: "56px",
+            "&: hover": {
+              padding: "3px 6px",
+              backgroundColor: "#0362F0",
+              color: "#ffffff",
+              borderRadius: "56px",
+            },
+          }}
+          onClick={() => {
+            setInstallment(false);
+            setCash(true);
           }}
         >
           In Cash
@@ -54,17 +67,58 @@ function ProposalStep() {
             color: "#002152",
             borderRadius: "56px",
             ml: 1,
+            "&: hover": {
+              padding: "3px 6px",
+              backgroundColor: "#0362F0",
+              color: "#ffffff",
+              borderRadius: "56px",
+            },
+          }}
+          onClick={() => {
+            setInstallment(true);
+            setCash(false);
           }}
         >
           Installments
         </Button>
       </Grid>
+
       <TextField
         fullWidth
         id="outlined-basic"
         placeholder="BRL Total Amount"
         variant="outlined"
+        type="number"
       />
+
+      {installment && (
+        <Box>
+          <TextField
+            fullWidth
+            id="outlined-basic"
+            placeholder="R$ Cash value"
+            variant="outlined"
+            type="number"
+            sx={{ mt: 2 }}
+          />
+          <TextField
+            fullWidth
+            id="outlined-basic"
+            placeholder="R$  Term value"
+            variant="outlined"
+            type="number"
+            sx={{ mt: 2 }}
+          />
+          <TextField
+            fullWidth
+            id="outlined-basic"
+            placeholder="Number of installments"
+            variant="outlined"
+            type="number"
+            sx={{ mt: 2 }}
+          />
+        </Box>
+      )}
       <TextareaAutosize
         aria-label="minimum height"
         minRows={4}

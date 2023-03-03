@@ -227,6 +227,7 @@ function CounterProposalModal({ handleCounterProposalClose }) {
             sx={{ width: "100%" }}
             id="outlined-basic"
             size="small"
+            type="number"
             placeholder="Value of the counter proposal"
             label="Value of the counter proposal"
             variant="outlined"
@@ -249,6 +250,7 @@ function CounterProposalModal({ handleCounterProposalClose }) {
                 sx={{ width: "100%" }}
                 id="outlined-basic"
                 size="small"
+                type="number"
                 placeholder="Value of the counter proposal"
                 label="Value of the counter proposal"
                 variant="outlined"
@@ -261,6 +263,7 @@ function CounterProposalModal({ handleCounterProposalClose }) {
                 fullWidth
                 id="outlined-basic"
                 size="small"
+                type="number"
                 placeholder="Cash Value"
                 label="Cash Value"
                 variant="outlined"
@@ -271,6 +274,7 @@ function CounterProposalModal({ handleCounterProposalClose }) {
                 fullWidth
                 id="outlined-basic"
                 size="small"
+                type="number"
                 placeholder="Amount Paid in Installments"
                 label="Amount Paid in Installments"
                 variant="outlined"
@@ -283,6 +287,7 @@ function CounterProposalModal({ handleCounterProposalClose }) {
                 sx={{ width: "100%" }}
                 id="outlined-basic"
                 size="small"
+                type="number"
                 placeholder="Number of Installments"
                 label="Value of the counter proposal"
                 variant="outlined"

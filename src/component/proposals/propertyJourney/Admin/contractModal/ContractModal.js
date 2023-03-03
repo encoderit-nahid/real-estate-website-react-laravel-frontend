@@ -214,6 +214,7 @@ function ContractModal({ handleClose }) {
               mr: 1,
             },
           }}
+          onClick={handleClose}
         >
           Cancel
         </Button>

@@ -58,7 +58,27 @@ body {
   width: 100% !important;
   height: 100% !important;
 }
-
+.MuiCalendarPicker-root{
+  width: 100% !important;
+}
+.MuiDayPicker-slideTransition{
+  min-height: 200px!important;
+}
+.MuiPickersCalendarHeader-root{
+  padding-right: 0!important;
+  margin-right: 2vh!important;
+  margin-left: 2vh!important;
+  
+}
+.MuiPickersDay-root{
+  background: #f9f9fb !important;
+}
+.MuiPickersDay-root.Mui-selected{
+  background-color: #1976d2!important;
+}
+.MuiPickersCalendarHeader-label{
+  font-size: 13px!important;
+}
 
 
 /* .MuiButtonBase-root .MuiTab-root .Mui-selected{

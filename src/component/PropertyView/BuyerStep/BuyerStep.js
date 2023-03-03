@@ -94,6 +94,7 @@ function BuyerStep() {
             onChange={(e) => handleRGValidation(e)}
             error={!rgValid && rgValue.length > 0 ? true : false}
             required={true}
+            type="number"
           />
         </Grid>
         <Grid item xs={12} sm={12} md={6} lg={6} xl={6}>
@@ -107,6 +108,7 @@ function BuyerStep() {
             onChange={(e) => handleCPFValidation(e)}
             error={!cpfValid && cpfValue.length > 0 ? true : false}
             required={true}
+            type="number"
           />
         </Grid>
       </Grid>
@@ -137,6 +139,7 @@ function BuyerStep() {
             onChange={(e) => handleZipCodeValidation(e)}
             error={!zipCodeValid && zipCodeValue.length > 0 ? true : false}
             required={true}
+            type="number"
           />
         </Grid>
         <Grid item xs={12} sm={12} md={4} lg={4} xl={4}>
@@ -155,6 +158,7 @@ function BuyerStep() {
             id="outlined-basic"
             placeholder="Number"
             variant="outlined"
+            type="number"
           />
         </Grid>
       </Grid>

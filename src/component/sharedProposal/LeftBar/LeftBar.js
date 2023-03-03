@@ -120,9 +120,11 @@ function LeftBar(props) {
             justifyContent="center"
             alignItems="center"
           >
-            <Box>
-              <Image height={30} width={120} src={logo} alt="logo" />
-            </Box>
+            <Link href="/">
+              <Box>
+                <Image height={30} width={120} src={logo} alt="logo" />
+              </Box>
+            </Link>
             <Box sx={{ mt: 2 }}>
               <Avatar />
             </Box>

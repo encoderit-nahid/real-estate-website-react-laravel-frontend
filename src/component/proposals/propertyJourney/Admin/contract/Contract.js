@@ -251,7 +251,7 @@ function Contract() {
       <BaseModal isShowing={contractModalOpen} isClose={handleClose}>
         <Tooltip title="Something">
           <>
-            <ContractModal />
+            <ContractModal handleClose={handleClose} />
           </>
         </Tooltip>
       </BaseModal>

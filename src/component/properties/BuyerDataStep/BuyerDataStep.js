@@ -102,6 +102,7 @@ function BuyerDataStep() {
               id="outlined-basic"
               placeholder="RG"
               variant="outlined"
+              type="number"
             />
           </Grid>
           <Grid item xs={12} sm={12} md={6} lg={6} xl={6}>
@@ -111,6 +112,7 @@ function BuyerDataStep() {
               id="outlined-basic"
               placeholder="CPF"
               variant="outlined"
+              type="number"
             />
           </Grid>
         </Grid>
@@ -155,6 +157,7 @@ function BuyerDataStep() {
               id="outlined-basic"
               placeholder="Number"
               variant="outlined"
+              type="number"
             />
           </Grid>
         </Grid>

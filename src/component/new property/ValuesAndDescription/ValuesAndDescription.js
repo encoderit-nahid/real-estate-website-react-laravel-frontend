@@ -35,6 +35,7 @@ function ValuesAndDescription() {
             id="outlined-basic"
             placeholder="BRL Rent"
             variant="outlined"
+            type="number"
           />
         </Grid>
         <Grid item xs={6}>
@@ -44,6 +45,7 @@ function ValuesAndDescription() {
             id="outlined-basic"
             placeholder="R$ condominium"
             variant="outlined"
+            type="number"
           />
         </Grid>
       </Grid>
@@ -55,6 +57,7 @@ function ValuesAndDescription() {
             id="outlined-basic"
             placeholder="IPTU BRL"
             variant="outlined"
+            type="number"
           />
         </Grid>
       </Grid>
@@ -88,6 +91,7 @@ function ValuesAndDescription() {
             id="outlined-basic"
             placeholder="m² Land area"
             variant="outlined"
+            type="number"
           />
         </Grid>
         <Grid item xs={12} sm={12} md={12} lg={5}>
@@ -97,6 +101,7 @@ function ValuesAndDescription() {
             id="outlined-basic"
             placeholder="m²Size of the property"
             variant="outlined"
+            type="number"
           />
         </Grid>
         <Grid item xs={12} sm={12} md={12} lg={2}>
@@ -106,6 +111,7 @@ function ValuesAndDescription() {
             id="outlined-basic"
             placeholder="number of rooms"
             variant="outlined"
+            type="number"
           />
         </Grid>
       </Grid>
@@ -117,6 +123,7 @@ function ValuesAndDescription() {
             id="outlined-basic"
             placeholder="number of suites"
             variant="outlined"
+            type="number"
           />
         </Grid>
         <Grid item xs={12} sm={12} md={12} lg={2}>
@@ -126,6 +133,7 @@ function ValuesAndDescription() {
             id="outlined-basic"
             placeholder="number of bathrooms"
             variant="outlined"
+            type="number"
           />
         </Grid>
         <Grid item xs={12} sm={12} md={12} lg={5}>
@@ -135,6 +143,7 @@ function ValuesAndDescription() {
             id="outlined-basic"
             placeholder="Number of parking spaces"
             variant="outlined"
+            type="number"
           />
         </Grid>
       </Grid>
@@ -167,6 +176,7 @@ function ValuesAndDescription() {
             id="outlined-basic"
             placeholder="Registration number"
             variant="outlined"
+            type="number"
           />
         </Grid>
       </Grid>

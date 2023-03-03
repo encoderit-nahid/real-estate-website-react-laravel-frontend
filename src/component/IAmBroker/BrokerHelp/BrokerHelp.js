@@ -74,6 +74,7 @@ function BrokerHelp({ name, content, buttonName, fieldItem }) {
           name="zip_code"
           placeholder="Zip Code"
           size="medium"
+          type="number"
           variant="outlined"
           value={value}
           onChange={(e) => handleValidation(e)}

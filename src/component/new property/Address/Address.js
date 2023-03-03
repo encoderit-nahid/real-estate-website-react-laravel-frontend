@@ -619,6 +619,7 @@ function Address() {
             size="medium"
             id="outlined-basic"
             placeholder="Zip code"
+            type="number"
             variant="outlined"
           />
         </Grid>
@@ -637,6 +638,7 @@ function Address() {
             size="medium"
             id="outlined-basic"
             placeholder="Number"
+            type="number"
             variant="outlined"
           />
         </Grid>

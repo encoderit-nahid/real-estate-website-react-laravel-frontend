@@ -26,7 +26,7 @@ const pages = ["search Real estate", "I am broker", "I am Owner", "blog"];
 const pagesData = [
   { name: "search real estate", page: "owner" },
   { name: "I am broker", page: "broker" },
-  { name: "I am Owner", page: "owner" },
+  { name: "I am Owner", page: "advertise" },
   { name: "blog", page: "blog" },
 ];
 
@@ -68,9 +68,11 @@ function Navbar({ shape, paddingY }) {
     >
       <Container maxWidth="xxl">
         <Toolbar disableGutters>
-          <Box sx={{ display: { xs: "none", md: "none", lg: "flex" } }}>
-            <Image src={logoIcon} height={25} width={110} alt="logo" />
-          </Box>
+          <Link href="/">
+            <Box sx={{ display: { xs: "none", md: "none", lg: "flex" } }}>
+              <Image src={logoIcon} height={25} width={110} alt="logo" />
+            </Box>
+          </Link>
 
           <Box
             sx={{

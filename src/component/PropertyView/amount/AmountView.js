@@ -1,7 +1,7 @@
 import { Box, Button, Grid, Typography } from "@mui/material";
 import React from "react";
 
-function AmountView() {
+function AmountView({ setNegotiate, setSchedule }) {
   return (
     <Grid
       container
@@ -119,11 +119,26 @@ function AmountView() {
               fontWeight: "600",
               textTransform: "none",
               minWidth: "195px",
+              background: "#0E97F7",
+              borderRadius: "4px",
+              "&: hover": {
+                px: 4,
+                fontSize: "16px",
+                fontWeight: "600",
+                textTransform: "none",
+                minWidth: "195px",
+                background: "#0E97F7",
+                borderRadius: "4px",
+              },
+            }}
+            onClick={() => {
+              setNegotiate(true);
+              setSchedule(false);
             }}
           >
             Negotiate
           </Button>
-       
+
           <Button
             variant="contained"
             color="secondary"
@@ -134,6 +149,21 @@ function AmountView() {
               fontWeight: "600",
               textTransform: "none",
               minWidth: "195px",
+              background: "#7450F0",
+              borderRadius: "4px",
+              "&: hover": {
+                px: 4,
+                fontSize: "16px",
+                fontWeight: "600",
+                textTransform: "none",
+                minWidth: "195px",
+                background: "#7450F0",
+                borderRadius: "4px",
+              },
+            }}
+            onClick={() => {
+              setSchedule(true);
+              setNegotiate(false);
             }}
           >
             Schedule visit

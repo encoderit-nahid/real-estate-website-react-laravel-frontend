@@ -203,6 +203,7 @@ function PersonalData({ handleNext }) {
             fullWidth
             size="small"
             id="outlined-basic"
+            type="number"
             // placeholder="Social Name"
             variant="outlined"
             sx={{ mb: 1 }}
@@ -232,6 +233,7 @@ function PersonalData({ handleNext }) {
             fullWidth
             size="small"
             id="outlined-basic"
+            type="number"
             // placeholder="Social Name"
             variant="outlined"
             sx={{ mb: 1 }}
@@ -265,6 +267,7 @@ function PersonalData({ handleNext }) {
             id="outlined-basic"
             // placeholder="Social Name"
             variant="outlined"
+            type="number"
             sx={{ mb: 1 }}
           />
         </Grid>

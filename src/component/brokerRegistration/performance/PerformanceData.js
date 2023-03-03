@@ -1,7 +1,13 @@
 import { Box, Button, Grid, Typography } from "@mui/material";
 import React from "react";
 
-function PerformanceData({ handleNext, handleBack }) {
+function PerformanceData({
+  handleNext,
+  handleBack,
+  handleOpen,
+  activeStep,
+  steps,
+}) {
   return (
     <Box sx={{ mt: 4 }}>
       <Grid
@@ -250,7 +256,9 @@ function PerformanceData({ handleNext, handleBack }) {
           </Grid>
           <Grid item xs={6} sm={6} md={6}>
             <Button
-              onClick={handleNext}
+              onClick={
+                activeStep === steps.length - 1 ? handleOpen : handleNext
+              }
               fullWidth
               sx={{
                 background: "linear-gradient(90deg, #20BAF6 0%, #7450F0 100%)",

@@ -48,6 +48,7 @@ function AddressData({ handleBack, handleNext }) {
             fullWidth
             size="small"
             id="outlined-basic"
+            type="number"
             // placeholder="Social Name"
             variant="outlined"
             sx={{ mb: 1 }}
@@ -109,6 +110,7 @@ function AddressData({ handleBack, handleNext }) {
             fullWidth
             size="small"
             id="outlined-basic"
+            type="number"
             // placeholder="Social Name"
             variant="outlined"
             sx={{ mb: 1 }}
