@@ -52,7 +52,7 @@ function ContractModal({ handleClose }) {
     left: "50%",
     // top:{xs:"80%"},
     transform: "translate(-50%, -50%)",
-    width: { xs: "60%", sm: "60%", md: "60%", lg: "35%", xl: "35%" },
+    width: { xs: "70%", sm: "70%", md: "70%", lg: "35%", xl: "35%" },
     bgcolor: "#ffffff",
     // border: "2px solid #000",
     boxShadow: "none",

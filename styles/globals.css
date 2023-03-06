@@ -79,6 +79,16 @@ body {
 .MuiPickersCalendarHeader-label{
   font-size: 13px!important;
 }
+.MuiFormControlLabel-label{
+  color: #34be84 !important;
+}
+.MuiButtonBase-root-MuiSwitch-switchBase.Mui-checked{
+  color: #34be84 !important;
+  font-weight: 600!important;
+}
+.Mui-checked+.MuiSwitch-track{
+  background-color: #6C7A84!important;
+}
 
 
 /* .MuiButtonBase-root .MuiTab-root .Mui-selected{

@@ -54,7 +54,7 @@ function CertificateModal({ handleClose }) {
     left: "50%",
     // top:{xs:"80%"},
     transform: "translate(-50%, -50%)",
-    width: { xs: "60%", sm: "60%", md: "60%", lg: "35%", xl: "35%" },
+    width: { xs: "70%", sm: "70%", md: "70%", lg: "35%", xl: "35%" },
     bgcolor: "#ffffff",
     // border: "2px solid #000",
     boxShadow: "none",
@@ -129,7 +129,7 @@ function CertificateModal({ handleClose }) {
           <Box>
             <Image src={certificate} alt="certificate" />
           </Box>
-          <Box sx={{ pl: { xs: 0, sm: 0, md: 0, lg: 2, xl: 2 } }}>
+          <Box sx={{ pl: { xs: 2, sm: 2, md: 2, lg: 2, xl: 2 } }}>
             <Typography
               variant="p"
               sx={{
@@ -247,6 +247,7 @@ function CertificateModal({ handleClose }) {
               mr: 1,
             },
           }}
+          onClick={handleClose}
         >
           Cancel
         </Button>

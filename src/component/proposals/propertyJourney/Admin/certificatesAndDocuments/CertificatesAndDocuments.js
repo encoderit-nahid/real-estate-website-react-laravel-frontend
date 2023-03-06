@@ -300,7 +300,7 @@ function CertificatesAndDocuments({ handleNext }) {
       <BaseModal isShowing={contractModalOpen} isClose={handleClose}>
         <Tooltip title="Something">
           <>
-            <CertificateModal />
+            <CertificateModal handleClose={handleClose}/>
           </>
         </Tooltip>
       </BaseModal>
