@@ -92,7 +92,7 @@ const PracticalData = [
   },
 ];
 
-export default function Advertise(props) {
+export default function Owner(props) {
   const svgString = encodeURIComponent(
     renderToStaticMarkup(<WantSellSvgBackground />)
   );

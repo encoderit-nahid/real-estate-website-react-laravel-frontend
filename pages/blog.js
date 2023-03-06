@@ -74,7 +74,7 @@ const surroundings = [
   "Museum",
 ];
 
-export default function PropertyView(props) {
+export default function Blog(props) {
   //add_proposal_modal
   const [proposalOpen, setProposalOpen] = useState(false);
   const handleProposalOpen = () => setProposalOpen(true);

@@ -49,7 +49,7 @@ function a11yProps(index) {
   };
 }
 
-export default function Properties(props) {
+export default function MyProperties(props) {
   const [value, setValue] = useState(0);
 
   const handleChange = (event, newValue) => {

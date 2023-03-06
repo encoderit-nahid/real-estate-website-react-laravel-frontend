@@ -12,6 +12,8 @@ import Image from "next/image";
 import proposeImage from "../../../../public/Images/proposal_modal.png";
 
 function ProposalValueStep() {
+  const [cash, setCash] = useState(true);
+  const [installment, setInstallment] = useState(false);
   return (
     <Box sx={{ mt: 4 }}>
       <PropertyCard />

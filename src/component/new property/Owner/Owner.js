@@ -43,6 +43,14 @@ function Owner() {
     );
     setCPFSpouseValue(e.target.value);
   };
+
+  //rg
+  const [rgValue, setRGValue] = useState("");
+  const [rgValid, setRGValid] = useState(false);
+  const handleRGValidation = (e) => {
+    setRGValid(/^W(\d(\d(\d[A-Z]?)?)?$)/.test(e.target.value));
+    setRGValue(e.target.value);
+  };
   return (
     <Box sx={{ mt: 4 }}>
       <Grid
@@ -131,6 +139,10 @@ function Owner() {
             placeholder="RG"
             variant="outlined"
             type="number"
+            value={rgValue}
+            onChange={(e) => handleRGValidation(e)}
+            error={!rgValid && rgValue.length > 0 ? true : false}
+            required={true}
           />
         </Grid>
         <Grid item xs={12} sm={12} md={6} lg={6} xl={6}>
