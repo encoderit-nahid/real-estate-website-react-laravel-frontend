@@ -14,7 +14,11 @@ function ComissionResult({ fullCommission, yourCommission }) {
         variant="p"
         sx={{ fontSize: "48px", fontWeight: "800", color: "#7450F0" }}
       >
-        BRL {`${fullCommission}.000`}
+        BRL{" "}
+        {`${fullCommission.toLocaleString("pt-BR", {
+          style: "currency",
+          currency: "BRL",
+        })}`}
       </Typography>
       <Typography
         variant="p"
@@ -26,7 +30,11 @@ function ComissionResult({ fullCommission, yourCommission }) {
         variant="p"
         sx={{ fontSize: "48px", fontWeight: "800", color: "#1A1859" }}
       >
-        BRL {`${yourCommission}.000`}
+        BRL{" "}
+        {`${yourCommission.toLocaleString("pt-BR", {
+          style: "currency",
+          currency: "BRL",
+        })}`}
       </Typography>
       <Typography
         variant="p"

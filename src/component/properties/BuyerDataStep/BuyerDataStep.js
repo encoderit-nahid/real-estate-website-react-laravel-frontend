@@ -7,12 +7,33 @@ import {
   Typography,
 } from "@mui/material";
 import Image from "next/image";
-import React from "react";
+import React, { useState } from "react";
 import PropertyCard from "../PropertyCard/PropertyCard";
 import proposeImage from "../../../../public/Images/proposal_modal.png";
 import buyerProfile from "../../../../public/Images/buyer_profile.png";
 
 function BuyerDataStep() {
+  //zip_code
+  const [value, setValue] = useState("");
+  console.log(value.length);
+  const [valid, setValid] = useState(false);
+  console.log({ valid });
+  const handleValidation = (e) => {
+    setValid(/^[0-9]{5}-[0-9]{3}$/.test(e.target.value));
+    console.log(e.target.value);
+    setValue(e.target.value);
+  };
+
+  //cpf
+  const [cpfValue, setCPFValue] = useState("");
+  const [cpfValid, setCPFValid] = useState(false);
+  const handleCPFValidation = (e) => {
+    setCPFValid(
+      /[0-9]{3}\.?[0-9]{3}\.?[0-9]{3}\-?[0-9]{2}/.test(e.target.value)
+    );
+    setCPFValue(e.target.value);
+  };
+
   return (
     <Box sx={{ mt: 4 }}>
       <PropertyCard />
@@ -111,6 +132,10 @@ function BuyerDataStep() {
               size="medium"
               id="outlined-basic"
               placeholder="CPF"
+              value={cpfValue}
+              onChange={(e) => handleCPFValidation(e)}
+              error={!cpfValid && cpfValue.length > 0 ? true : false}
+              required={true}
               variant="outlined"
               type="number"
             />
@@ -139,6 +164,10 @@ function BuyerDataStep() {
               id="outlined-basic"
               placeholder="Zip code"
               variant="outlined"
+              value={value}
+              onChange={(e) => handleValidation(e)}
+              error={!valid && value.length > 0 ? true : false}
+              required={true}
             />
           </Grid>
           <Grid item xs={12} sm={12} md={4} lg={4} xl={4}>

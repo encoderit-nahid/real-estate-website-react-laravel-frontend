@@ -1,6 +1,6 @@
 import { Box, Button, Grid, TextField, Typography } from "@mui/material";
 import Image from "next/image";
-import React from "react";
+import React, { useState } from "react";
 import buildingImage from "../../../../public/Images/buildingRed.png";
 import AddOutlinedIcon from "@mui/icons-material/AddOutlined";
 
@@ -30,6 +30,15 @@ const PropertyFeature = [
   "furnish",
 ];
 function Features() {
+  const [value, setValue] = useState("");
+  console.log(value.length);
+  const [valid, setValid] = useState(false);
+  console.log({ valid });
+  const handleValidation = (e) => {
+    setValid(/^[0-9]{5}-[0-9]{3}$/.test(e.target.value));
+    console.log(e.target.value);
+    setValue(e.target.value);
+  };
   return (
     <Box sx={{ mt: 4 }}>
       <Grid
@@ -125,6 +134,10 @@ function Features() {
           size="medium"
           id="outlined-basic"
           placeholder="Zip code"
+          value={value}
+          onChange={(e) => handleValidation(e)}
+          error={!valid && value.length > 0 ? true : false}
+          required={true}
           variant="outlined"
         />
         <Button

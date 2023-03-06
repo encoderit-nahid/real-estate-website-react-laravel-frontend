@@ -1,7 +1,15 @@
 import { Box, Button, Grid, TextField, Typography } from "@mui/material";
-import React from "react";
+import React, { useState } from "react";
 
 function AddressData({ handleBack, handleNext }) {
+  const [value, setValue] = useState("");
+  const [valid, setValid] = useState(false);
+  console.log({ valid });
+  const handleValidation = (e) => {
+    setValid(/^[0-9]{5}-[0-9]{3}$/.test(e.target.value));
+    console.log(e.target.value);
+    setValue(e.target.value);
+  };
   return (
     <Box sx={{ mt: 4 }}>
       <Grid
@@ -49,6 +57,10 @@ function AddressData({ handleBack, handleNext }) {
             size="small"
             id="outlined-basic"
             type="number"
+            value={value}
+            onChange={(e) => handleValidation(e)}
+            error={!valid && value.length > 0 ? true : false}
+            required={true}
             // placeholder="Social Name"
             variant="outlined"
             sx={{ mb: 1 }}

@@ -50,6 +50,16 @@ function Address() {
   const [files, setFiles] = useState([]);
   console.log(files);
 
+  const [value, setValue] = useState("");
+  console.log(value.length);
+  const [valid, setValid] = useState(false);
+  console.log({ valid });
+  const handleValidation = (e) => {
+    setValid(/^[0-9]{5}-[0-9]{3}$/.test(e.target.value));
+    console.log(e.target.value);
+    setValue(e.target.value);
+  };
+
   const onDrop = (acceptedFiles) => {
     console.log(acceptedFiles);
     acceptedFiles.map((file) =>
@@ -621,6 +631,10 @@ function Address() {
             placeholder="Zip code"
             type="number"
             variant="outlined"
+            value={value}
+            onChange={(e) => handleValidation(e)}
+            error={!valid && value.length > 0 ? true : false}
+            required={true}
           />
         </Grid>
         <Grid item xs={12} sm={12} md={12} lg={6}>

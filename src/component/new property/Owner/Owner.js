@@ -9,8 +9,40 @@ import {
 import Image from "next/image";
 import React from "react";
 import buyerProfile from "../../../../public/Images/buyer_profile.png";
+import { useState } from "react";
 
 function Owner() {
+  const [value, setValue] = useState("");
+  console.log(value.length);
+
+  //zip_code
+  const [valid, setValid] = useState(false);
+  console.log({ valid });
+  const handleValidation = (e) => {
+    setValid(/^[0-9]{5}-[0-9]{3}$/.test(e.target.value));
+    console.log(e.target.value);
+    setValue(e.target.value);
+  };
+
+  //cpf
+  const [cpfValue, setCPFValue] = useState("");
+  const [cpfValid, setCPFValid] = useState(false);
+  const handleCPFValidation = (e) => {
+    setCPFValid(
+      /[0-9]{3}\.?[0-9]{3}\.?[0-9]{3}\-?[0-9]{2}/.test(e.target.value)
+    );
+    setCPFValue(e.target.value);
+  };
+
+  //cpf_spouse
+  const [cpfSpouseValue, setCPFSpouseValue] = useState("");
+  const [cpfSpouseValid, setCPFSpouseValid] = useState(false);
+  const handleCPFSpouseValidation = (e) => {
+    setCPFSpouseValid(
+      /[0-9]{3}\.?[0-9]{3}\.?[0-9]{3}\-?[0-9]{2}/.test(e.target.value)
+    );
+    setCPFSpouseValue(e.target.value);
+  };
   return (
     <Box sx={{ mt: 4 }}>
       <Grid
@@ -109,6 +141,10 @@ function Owner() {
             type="number"
             placeholder="CPF"
             variant="outlined"
+            value={cpfValue}
+            onChange={(e) => handleCPFValidation(e)}
+            error={!cpfValid && cpfValue.length > 0 ? true : false}
+            required={true}
           />
         </Grid>
       </Grid>
@@ -157,6 +193,10 @@ function Owner() {
             placeholder="CPF"
             variant="outlined"
             type="number"
+            value={cpfSpouseValue}
+            onChange={(e) => handleCPFSpouseValidation(e)}
+            error={!cpfSpouseValid && cpfSpouseValue.length > 0 ? true : false}
+            required={true}
           />
         </Grid>
       </Grid>
@@ -183,6 +223,10 @@ function Owner() {
             id="outlined-basic"
             placeholder="Zip code"
             variant="outlined"
+            value={value}
+            onChange={(e) => handleValidation(e)}
+            error={!valid && value.length > 0 ? true : false}
+            required={true}
             type="number"
           />
         </Grid>
