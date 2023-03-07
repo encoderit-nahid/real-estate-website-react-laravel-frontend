@@ -21,14 +21,20 @@ import SaleCard from "../../../../reuseable/saleCard/SaleCard";
 import VisibilityOutlinedIcon from "@mui/icons-material/VisibilityOutlined";
 import CloudUploadOutlinedIcon from "@mui/icons-material/CloudUploadOutlined";
 import CertificateModal from "../certificateModal/CertificateModal";
+import CheckCircleOutlineIcon from "@mui/icons-material/CheckCircleOutline";
+import DigitalNotaryPdfModal from "../digitalNotaryPdfModal/DigitalNotaryPdfModal";
+import DigitalNotaryModal from "../digitalNotaryModal/DigitalNotaryModal";
 
-function DigitalNotary() {
-  //contract_modal_open
-  const [contractModalOpen, setContractModalOpen] = React.useState(false);
-  const handleOpen = () => setContractModalOpen(true);
-  const handleClose = () => setContractModalOpen(false);
-
-  const [progress, setProgress] = React.useState(40);
+function DigitalNotary({ handleNext }) {
+  //digital_notary_modal_open
+  const [digitalNotaryModalOpen, setDigitalNotaryModalOpen] =
+    React.useState(false);
+  const handleOpen = () => setDigitalNotaryModalOpen(true);
+  const handleClose = () => setDigitalNotaryModalOpen(false);
+  //pdf_open
+  const [digitalNotaryPdfOpen, setDigitalNotaryPdfOpen] = React.useState(false);
+  const handlePdfOpen = () => setDigitalNotaryPdfOpen(true);
+  const handlePdfClose = () => setDigitalNotaryPdfOpen(false);
 
   return (
     <Box sx={{ mt: 4 }}>
@@ -71,13 +77,148 @@ function DigitalNotary() {
                 Requested documents (1/4):
               </Typography>
             </Box>
+            <Grid container spacing={2}>
+              {[0, 1, 2, 3, 4, 5].map((data, index) => (
+                <Grid key={index} item xs={12} sm={12} md={12} lg={6}>
+                  <Box
+                    sx={{
+                      border: "1px solid #34BE84",
+                      borderRadius: "8px",
+                      px: 2,
+                      py: 2,
+                      mt: 1,
+                    }}
+                  >
+                    <Grid
+                      container
+                      direction="column"
+                      justifyContent="flex-start"
+                      alignItems="flex-start"
+                    >
+                      <Box>
+                        <Button
+                          sx={{
+                            display: "flex",
+                            textTransform: "none",
+                            background: "#E0F2FE",
+                            borderRadius: "2px",
+                            padding: "2px 8px",
+                            color: " #0362F0",
+                            fontSize: "14px",
+                            lineHeight: "18px",
+                            fontWeight: "400",
+                            mr: 1,
+                          }}
+                        >
+                          <CheckCircleOutlineIcon sx={{ color: "#114B32" }} />
+                          <Typography
+                            varianat="p"
+                            sx={{
+                              color: "#114B32",
+                              fontSize: "14px",
+                              lineHeight: "18px",
+                              fontWeight: "400",
+                            }}
+                          >
+                            Validated document
+                          </Typography>
+                        </Button>
+                      </Box>
+                      <Box>
+                        <Typography
+                          variant="p"
+                          sx={{
+                            color: "#1A1859",
+                            fontSize: "14px",
+                            lineHeight: "18px",
+                            fontWeight: "400",
+                          }}
+                        >
+                          State tax regularity certificate - State CDN
+                        </Typography>
+                      </Box>
+                    </Grid>
+                    <Grid
+                      container
+                      direction="row"
+                      justifyContent="flex-end"
+                      alignItems="flex-end"
+                      sx={{ mt: 1 }}
+                    >
+                      <Button
+                        sx={{
+                          background: "#DBE1E5",
+                          color: "#002152",
+                          fontWeight: "600",
+                          fontSize: "14px",
+                          lineHeight: "18px",
+                          textTransform: "none",
+                          "&:hover": {
+                            background: "#DBE1E5",
+                            color: "#002152",
+                            fontWeight: "600",
+                            fontSize: "14px",
+                            lineHeight: "18px",
+                          },
+                        }}
+                        onClick={handlePdfOpen}
+                      >
+                        Details
+                      </Button>
+                    </Grid>
+                  </Box>
+                </Grid>
+              ))}
+            </Grid>
+            <Grid
+              container
+              direction="row"
+              justifyContent="flex-end"
+              alignItems="flex-end"
+              sx={{ mt: 3, mb: 1 }}
+            >
+              <Button
+                onClick={handleOpen}
+                sx={{
+                  background: "#7450F0",
+                  color: "#ffffff",
+                  fontWeight: "600",
+                  fontSize: "14px",
+                  lineHeight: "18px",
+                  textTransform: "none",
+                  "&:hover": {
+                    background: "#7450F0",
+                    color: "#ffffff",
+                    fontWeight: "600",
+                    fontSize: "14px",
+                    lineHeight: "18px",
+                  },
+                }}
+              >
+                Send documents
+              </Button>
+            </Grid>
           </Grid>
         </Grid>
       </Box>
-      <BaseModal isShowing={contractModalOpen} isClose={handleClose}>
+      <BaseModal isShowing={digitalNotaryModalOpen} isClose={handleClose}>
         <Tooltip title="Something">
           <>
-            <CertificateModal />
+            <DigitalNotaryModal
+              handleClose={handleClose}
+              handleNext={handleNext}
+            />
+          </>
+        </Tooltip>
+      </BaseModal>
+      <BaseModal isShowing={digitalNotaryPdfOpen} isClose={handlePdfClose}>
+        <Tooltip title="Something">
+          <>
+            <DigitalNotaryPdfModal
+              handleClose={handlePdfClose}
+              handlePdfOpen={handlePdfOpen}
+              handleNext={handleNext}
+            />
           </>
         </Tooltip>
       </BaseModal>

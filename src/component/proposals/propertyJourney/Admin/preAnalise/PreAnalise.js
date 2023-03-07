@@ -24,6 +24,7 @@ import CertificateModal from "../certificateModal/CertificateModal";
 import CheckCircleOutlineIcon from "@mui/icons-material/CheckCircleOutline";
 import CloudDownloadOutlinedIcon from "@mui/icons-material/CloudDownloadOutlined";
 import HighlightOffIcon from "@mui/icons-material/HighlightOff";
+import AnalysisPdfModal from "../AnalysisPdfModal/AnalysisPdfModal";
 
 function PreAnalise({ handleNext }) {
   //   const [contractModalOpen, setContractModalOpen] = React.useState(false);
@@ -31,6 +32,11 @@ function PreAnalise({ handleNext }) {
   //   const handleClose = () => setContractModalOpen(false);
 
   //   const [progress, setProgress] = React.useState(40);
+
+  //pdf_open
+  const [analysisPdfOpen, setAnalysisPdfOpen] = React.useState(false);
+  const handlePdfOpen = () => setAnalysisPdfOpen(true);
+  const handlePdfClose = () => setAnalysisPdfOpen(false);
 
   return (
     <Box sx={{ mt: 4, mb: 2 }}>
@@ -586,6 +592,7 @@ function PreAnalise({ handleNext }) {
                     </Grid>
                     <Grid item xs={12} sm={12} md={12} lg={6}>
                       <Button
+                        onClick={handlePdfOpen}
                         fullWidth
                         variant="outlined"
                         sx={{
@@ -622,6 +629,17 @@ function PreAnalise({ handleNext }) {
           </Grid>
         </Grid>
       </Box>
+      <BaseModal isShowing={analysisPdfOpen} isClose={handlePdfClose}>
+        <Tooltip title="Something">
+          <>
+            <AnalysisPdfModal
+              handleClose={handlePdfClose}
+              handlePdfOpen={handlePdfOpen}
+              handleNext={handleNext}
+            />
+          </>
+        </Tooltip>
+      </BaseModal>
       {/* <BaseModal isShowing={contractModalOpen} isClose={handleClose}>
         <Tooltip title="Something">
           <>

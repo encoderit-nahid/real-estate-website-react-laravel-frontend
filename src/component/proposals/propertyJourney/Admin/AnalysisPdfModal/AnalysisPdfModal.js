@@ -34,11 +34,13 @@ import ChevronRightIcon from "@mui/icons-material/ChevronRight";
 import ListItemButton from "@mui/material/ListItemButton";
 import ListItemIcon from "@mui/material/ListItemIcon";
 import InsertDriveFileOutlinedIcon from "@mui/icons-material/InsertDriveFileOutlined";
+import analiseImage from "../../../../../../public/Images/analise.png";
 import pdfImage from "../../../../../../public/Images/pdfImage.png";
 import InboxIcon from "@mui/icons-material/MoveToInbox";
 import MailIcon from "@mui/icons-material/Mail";
 import FormGroup from "@mui/material/FormGroup";
 import FormControlLabel from "@mui/material/FormControlLabel";
+import HighlightOffIcon from "@mui/icons-material/HighlightOff";
 import dynamic from "next/dynamic";
 const PDFViewer = dynamic(
   () => import("../../../../reuseable/PDFComponent/pdf-viewer"),
@@ -113,7 +115,7 @@ const style = {
   //   py: 1,
 };
 
-function ContractPdfModal({ handleClose, handlePdfOpen, handleNext }) {
+function AnalysisPdfModal({ handleClose, handlePdfOpen, handleNext }) {
   const theme = useTheme();
   const [open, setOpen] = React.useState(true);
 
@@ -124,33 +126,23 @@ function ContractPdfModal({ handleClose, handlePdfOpen, handleNext }) {
   const handleDrawerClose = () => {
     setOpen(false);
   };
-
   return (
     <Box sx={style}>
       {/* <Box sx={{ background: "#ffffff", border: "1px solid #DBE1E5" }}>
-        <Grid
-          container
-          direction="row"
-          justifyContent="space-between"
-          alignItems="center"
-          sx={{ mt: 2, px: 2 }}
-        >
-          <Box>
-            <Image src={logoIcon} height={25} width={110} alt="logo" />
-          </Box>
-          <Box>
-            <Button
-              variant="outlined"
-              sx={{
-                borderColor: "#002152",
-                fontSize: "16px",
-                fontWeight: "600",
-                color: "#002152",
-                textTransform: "none",
-                paddingX: 4,
-                paddingY: 0.6,
-                mr: 3,
-                "&:hover": {
+          <Grid
+            container
+            direction="row"
+            justifyContent="space-between"
+            alignItems="center"
+            sx={{ mt: 2, px: 2 }}
+          >
+            <Box>
+              <Image src={logoIcon} height={25} width={110} alt="logo" />
+            </Box>
+            <Box>
+              <Button
+                variant="outlined"
+                sx={{
                   borderColor: "#002152",
                   fontSize: "16px",
                   fontWeight: "600",
@@ -158,18 +150,27 @@ function ContractPdfModal({ handleClose, handlePdfOpen, handleNext }) {
                   textTransform: "none",
                   paddingX: 4,
                   paddingY: 0.6,
-                },
-              }}
-            >
-              Download
-            </Button>
-            <CloseIcon onClick={handleClose} />
-          </Box>
-        </Grid>
-        <div>
-          <PDFViewer />
-        </div>
-      </Box> */}
+                  mr: 3,
+                  "&:hover": {
+                    borderColor: "#002152",
+                    fontSize: "16px",
+                    fontWeight: "600",
+                    color: "#002152",
+                    textTransform: "none",
+                    paddingX: 4,
+                    paddingY: 0.6,
+                  },
+                }}
+              >
+                Download
+              </Button>
+              <CloseIcon onClick={handleClose} />
+            </Box>
+          </Grid>
+          <div>
+            <PDFViewer />
+          </div>
+        </Box> */}
       <Box sx={{ display: "flex" }}>
         <CssBaseline />
         <AppBar
@@ -196,14 +197,14 @@ function ContractPdfModal({ handleClose, handlePdfOpen, handleNext }) {
             </Box>
 
             {/* <IconButton
-              color="inherit"
-              aria-label="open drawer"
-              edge="end"
-              onClick={handleDrawerOpen}
-              sx={{ ...(open && { display: "none" }) }}
-            >
-              <MenuIcon />
-            </IconButton> */}
+                color="inherit"
+                aria-label="open drawer"
+                edge="end"
+                onClick={handleDrawerOpen}
+                sx={{ ...(open && { display: "none" }) }}
+              >
+                <MenuIcon />
+              </IconButton> */}
 
             {!open && (
               <Grid
@@ -427,48 +428,93 @@ function ContractPdfModal({ handleClose, handlePdfOpen, handleNext }) {
           </Button>
 
           <Divider />
-          <Box sx={{ mx: 2, my: 1 }}>
-            <Typography
-              variant="p"
-              sx={{
-                color: "#000F1A",
-                fontSize: "16px",
-                lineHeight: "22px",
-                fontWeight: "400",
-              }}
+          <Box sx={{ mx: 2, my: 1, background: "#E6F0FF" }}>
+            <Grid
+              container
+              direction="row"
+              justifyContent="flex-start"
+              alignItems="center"
+              sx={{ height: "10vh", px: 1 }}
             >
-              Include signers:
-            </Typography>
-            <TextField
-              fullWidth
-              size="medium"
-              id="outlined-basic"
-              placeholder="Name"
-              variant="outlined"
-              sx={{ mt: 1.5 }}
-            />
-            <TextField
-              fullWidth
-              size="medium"
-              id="outlined-basic"
-              placeholder="Email"
-              variant="outlined"
-              sx={{ mt: 1.5 }}
-            />
+              <Image src={analiseImage} alt="analise" />
+              <Typography
+                variant="p"
+                sx={{
+                  color: "#1A1859",
+                  fontSize: "14px",
+                  lineHeight: "22px",
+                  fontWeight: "400",
+                  ml: 0.5,
+                }}
+              >
+                6 items to review
+              </Typography>
+            </Grid>
+          </Box>
+          {[0, 1, 2].map((data, index) => (
+            <Box key={index} sx={{ mx: 2, my: 1 }}>
+              <Grid
+                container
+                direction="column"
+                justifyContent="flex-start"
+                alignItems="flex-start"
+              >
+                <Button
+                  sx={{
+                    display: "flex",
+                    textTransform: "none",
+                    py: 0.5,
+                    px: 0.5,
+                    mt: 0,
+                    mb: 0,
+                    background: "#FFF7E6",
+                  }}
+                >
+                  <HighlightOffIcon sx={{ color: "#664400" }} />
+                  <Typography
+                    variant="p"
+                    sx={{
+                      color: "#664400",
+                      fontSize: "12px",
+                      fontWeight: "400",
+                      lineHeight: "22px",
+                    }}
+                  >
+                    page 2
+                  </Typography>
+                </Button>
+                <Typography
+                  variant="p"
+                  sx={{
+                    color: "#6C7A84",
+                    fontSize: "16px",
+                    fontWeight: "400",
+                    lineHeight: "22px",
+                  }}
+                >
+                  (...) Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+                  Viverra.
+                </Typography>
+              </Grid>
+              <Divider />
+            </Box>
+          ))}
+          <Box sx={{ px: 2 }}>
             <Button
               fullWidth
               onClick={handleNext}
               sx={{
                 mt: 1.5,
-                background: "#7450F0",
+                background: "#34BE84",
                 borderRadius: "4px",
                 color: "#ffffff",
                 textTransform: "none",
                 fontSize: "16px",
                 lineHeight: "22px",
                 fontWeight: "600",
+
                 "&:hover": {
-                  background: "#7450F0",
+                  background: "#34BE84",
                   borderRadius: "4px",
                   color: "#ffffff",
                   textTransform: "none",
@@ -478,59 +524,8 @@ function ContractPdfModal({ handleClose, handlePdfOpen, handleNext }) {
                 },
               }}
             >
-              Add signatories
+              Validate documents
             </Button>
-            <Grid
-              container
-              direction="column"
-              justifyContent="flex-start"
-              alignItems="flex-start"
-              sx={{ mt: 3 }}
-            >
-              {[0, 1, 2].map((data, index) => (
-                <Box key={index}>
-                  <Typography
-                    variant="h1"
-                    sx={{
-                      color: "#1A1859",
-                      fontWeight: "400",
-                      fontSize: "16px",
-                      lineHeight: "22px",
-                    }}
-                  >
-                    Cameron Williamson
-                  </Typography>
-                  <Typography
-                    variant="h1"
-                    sx={{
-                      color: "#6C7A84",
-                      fontWeight: "400",
-                      fontSize: "16px",
-                      lineHeight: "22px",
-                    }}
-                  >
-                    alma.lawson@example.com
-                  </Typography>
-                  <FormGroup>
-                    <FormControlLabel
-                      control={
-                        <Switch
-                          defaultChecked
-                          sx={{
-                            "& .MuiSwitch-switchBase.Mui-checked": {
-                              color: "#34BE84",
-                            },
-                            // "& ."
-                          }}
-                        />
-                      }
-                      label="Signed"
-                    />
-                  </FormGroup>
-                  <Divider />
-                </Box>
-              ))}
-            </Grid>
           </Box>
         </Drawer>
       </Box>
@@ -538,4 +533,4 @@ function ContractPdfModal({ handleClose, handlePdfOpen, handleNext }) {
   );
 }
 
-export default ContractPdfModal;
+export default AnalysisPdfModal;

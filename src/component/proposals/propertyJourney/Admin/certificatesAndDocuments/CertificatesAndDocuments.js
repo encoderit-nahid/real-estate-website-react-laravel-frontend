@@ -30,6 +30,8 @@ function CertificatesAndDocuments({ handleNext }) {
 
   const [progress, setProgress] = React.useState(40);
 
+
+
   return (
     <Box sx={{ mt: 4 }}>
       <Grid
@@ -300,10 +302,11 @@ function CertificatesAndDocuments({ handleNext }) {
       <BaseModal isShowing={contractModalOpen} isClose={handleClose}>
         <Tooltip title="Something">
           <>
-            <CertificateModal handleClose={handleClose}/>
+            <CertificateModal handleClose={handleClose} />
           </>
         </Tooltip>
       </BaseModal>
+  
     </Box>
   );
 }

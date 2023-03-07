@@ -31,6 +31,7 @@ import Contract from "../src/component/proposals/propertyJourney/Admin/contract/
 import CertificatesAndDocuments from "../src/component/proposals/propertyJourney/Admin/certificatesAndDocuments/CertificatesAndDocuments";
 import PreAnalise from "../src/component/proposals/propertyJourney/Admin/preAnalise/PreAnalise";
 import DigitalNotary from "../src/component/proposals/propertyJourney/Admin/digitalNotary/DigitalNotary";
+import DigitalNotaryFinalContent from "../src/component/proposals/propertyJourney/Admin/digitalNotaryFinalContent/DigitalNotaryFinalContent";
 
 const drawerWidth = 240;
 
@@ -164,7 +165,7 @@ export default function PropertyJourney(props) {
                     return (
                       <Step
                         key={label}
-                        onClick={() => setActiveStep(index)}
+                        // onClick={() => setActiveStep(index)}
                         {...stepProps}
                         sx={{
                           background: `${
@@ -175,6 +176,7 @@ export default function PropertyJourney(props) {
                               : ""
                           }`,
                           clipPath: `${
+                            activeStep !== steps.length &&
                             index === activeStep - 1
                               ? "polygon(0 0, 100% 0, 97% 16%, 91% 55%, 100% 100%, 0 100%, 0% 80%, 0% 20%)"
                               : 0
@@ -182,10 +184,14 @@ export default function PropertyJourney(props) {
                           borderRadius: `${
                             index === 0
                               ? "100px 0 0 100px"
-                              : index === steps.length - 1
+                              : activeStep !== steps.length &&
+                                index === steps.length - 1
                               ? "100px 100px 100px 100px"
                               : activeStep === index
                               ? "100px"
+                              : activeStep === steps.length &&
+                                index === steps.length - 1
+                              ? "0 100px 100px 0"
                               : 0
                           }  `,
                           py: 1,
@@ -212,18 +218,7 @@ export default function PropertyJourney(props) {
                   })}
                 </Stepper>
                 {activeStep === steps.length ? (
-                  <Container maxWidth="xs">
-                    <Fragment>
-                      {/* <Typography sx={{ mt: 2, mb: 1 }}>
-                  All steps completed - you&apos;re finished
-                </Typography> */}
-
-                      {/* <Box sx={{ display: "flex", flexDirection: "row", pt: 2 }}>
-              <Box sx={{ flex: "1 1 auto" }} />
-              <Button onClick={handleReset}>Reset</Button>
-            </Box> */}
-                    </Fragment>
-                  </Container>
+                  <DigitalNotaryFinalContent />
                 ) : (
                   <Fragment>
                     {activeStep === 0 ? (
@@ -249,7 +244,7 @@ export default function PropertyJourney(props) {
                     ) : activeStep === 4 ? (
                       <PreAnalise handleNext={handleNext} />
                     ) : (
-                      <DigitalNotary />
+                      <DigitalNotary handleNext={handleNext} />
                     )}
                     {/* <Grid
                       container

@@ -18,7 +18,7 @@ export default function PDFViewer() {
   }
 
   return (
-    <div>
+    <div style={{ maxHeight: "70vh", overflowY: "scroll" }}>
       {/* <div>
         <label htmlFor="file">Load from file:</label>{" "}
         <input onChange={onFileChange} type="file" />
