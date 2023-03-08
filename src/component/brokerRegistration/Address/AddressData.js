@@ -1,5 +1,13 @@
-import { Box, Button, Grid, TextField, Typography } from "@mui/material";
+import {
+  Box,
+  Button,
+  FormControl,
+  Grid,
+  TextField,
+  Typography,
+} from "@mui/material";
 import React, { useState } from "react";
+import BaseOutlinedZipInput from "../../reuseable/baseOutlinedZipInput/BaseOutlinedZipInput";
 
 function AddressData({ handleBack, handleNext }) {
   const [value, setValue] = useState("");
@@ -52,7 +60,7 @@ function AddressData({ handleBack, handleNext }) {
               Zip Code
             </Typography>
           </Grid>
-          <TextField
+          {/* <TextField
             fullWidth
             size="small"
             id="outlined-basic"
@@ -64,7 +72,10 @@ function AddressData({ handleBack, handleNext }) {
             // placeholder="Social Name"
             variant="outlined"
             sx={{ mb: 1 }}
-          />
+          /> */}
+          <FormControl variant="outlined" sx={{ width: "100%", mb: 1 }}>
+            <BaseOutlinedZipInput placeholder={"Zip Code"} size={"small"} />
+          </FormControl>
         </Grid>
       </Grid>
 

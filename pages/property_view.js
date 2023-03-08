@@ -63,7 +63,12 @@ const surroundings = [
   "Museum",
 ];
 
-export default function PropertyView(props) {
+export default function PropertyView({
+  loginOpen,
+  setLoginOpen,
+  handleLoginOpen,
+  handleLoginClose,
+}) {
   //add_proposal_modal
   const [proposalOpen, setProposalOpen] = useState(false);
   const handleProposalOpen = () => setProposalOpen(true);
@@ -81,7 +86,14 @@ export default function PropertyView(props) {
       </Head>
 
       <main className="section">
-        <Navbar shape={false} paddingY={"1vh"} />
+        <Navbar
+          shape={false}
+          paddingY={"1vh"}
+          loginOpen={loginOpen}
+          setLoginOpen={setLoginOpen}
+          handleLoginClose={handleLoginClose}
+          handleLoginOpen={handleLoginOpen}
+        />
         <Box sx={{ ml: 3 }}>
           <Grid
             container

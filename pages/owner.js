@@ -92,7 +92,12 @@ const PracticalData = [
   },
 ];
 
-export default function Owner(props) {
+export default function Owner({
+  loginOpen,
+  setLoginOpen,
+  handleLoginOpen,
+  handleLoginClose,
+}) {
   const svgString = encodeURIComponent(
     renderToStaticMarkup(<WantSellSvgBackground />)
   );
@@ -105,7 +110,14 @@ export default function Owner(props) {
       </Head>
 
       <main className="section">
-        <Navbar shape={false} paddingY={"1vh"} />
+        <Navbar
+          shape={false}
+          paddingY={"1vh"}
+          loginOpen={loginOpen}
+          setLoginOpen={setLoginOpen}
+          handleLoginClose={handleLoginClose}
+          handleLoginOpen={handleLoginOpen}
+        />
         <Grid
           container
           spacing={2}

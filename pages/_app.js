@@ -1,8 +1,8 @@
 import "../styles/globals.css";
 import "@fontsource/lato";
 
-
 import { createTheme, CssBaseline, ThemeProvider } from "@mui/material";
+import { useState } from "react";
 
 function MyApp({ Component, pageProps }) {
   const theme = createTheme({
@@ -21,10 +21,21 @@ function MyApp({ Component, pageProps }) {
       },
     },
   });
+  //add_login_modal
+  const [loginOpen, setLoginOpen] = useState(false);
+  const handleLoginOpen = () => setLoginOpen(true);
+  const handleLoginClose = () => setLoginOpen(false);
+
   return (
     <ThemeProvider theme={theme}>
       <CssBaseline />
-      <Component {...pageProps} />
+      <Component
+        {...pageProps}
+        loginOpen={loginOpen}
+        setLoginOpen={setLoginOpen}
+        handleLoginClose={handleLoginClose}
+        handleLoginOpen={handleLoginOpen}
+      />
     </ThemeProvider>
   );
 }

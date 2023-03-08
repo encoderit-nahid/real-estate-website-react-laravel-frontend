@@ -1,8 +1,16 @@
-import { Box, Button, Grid, TextField, Typography } from "@mui/material";
+import {
+  Box,
+  Button,
+  FormControl,
+  Grid,
+  TextField,
+  Typography,
+} from "@mui/material";
 import Image from "next/image";
 import React, { useState } from "react";
 import buildingImage from "../../../../public/Images/buildingRed.png";
 import AddOutlinedIcon from "@mui/icons-material/AddOutlined";
+import BaseOutlinedZipInput from "../../reuseable/baseOutlinedZipInput/BaseOutlinedZipInput";
 
 const PropertyFeature = [
   "close to the metro",
@@ -129,17 +137,9 @@ function Features() {
         alignItems="flex-start"
         sx={{ mt: 3 }}
       >
-        <TextField
-          sx={{ width: "50%" }}
-          size="medium"
-          id="outlined-basic"
-          placeholder="Zip code"
-          value={value}
-          onChange={(e) => handleValidation(e)}
-          error={!valid && value.length > 0 ? true : false}
-          required={true}
-          variant="outlined"
-        />
+        <FormControl variant="outlined" sx={{ width: "50%" }}>
+          <BaseOutlinedZipInput placeholder={"Zip Code"} size={"medium"} />
+        </FormControl>
         <Button
           sx={{
             backgroundColor: "#0362F0",

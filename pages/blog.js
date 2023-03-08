@@ -74,7 +74,12 @@ const surroundings = [
   "Museum",
 ];
 
-export default function Blog(props) {
+export default function Blog({
+  loginOpen,
+  setLoginOpen,
+  handleLoginOpen,
+  handleLoginClose,
+}) {
   //add_proposal_modal
   const [proposalOpen, setProposalOpen] = useState(false);
   const handleProposalOpen = () => setProposalOpen(true);
@@ -95,7 +100,14 @@ export default function Blog(props) {
       </Head>
 
       <main className="section">
-        <Navbar shape={false} paddingY={"1vh"} />
+        <Navbar
+          shape={false}
+          paddingY={"1vh"}
+          loginOpen={loginOpen}
+          setLoginOpen={setLoginOpen}
+          handleLoginClose={handleLoginClose}
+          handleLoginOpen={handleLoginOpen}
+        />
         <Grid
           container
           direction="column"

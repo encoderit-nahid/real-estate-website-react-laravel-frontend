@@ -28,7 +28,12 @@ import CategorySubscribe from "../src/component/category/categorySubscribe/Categ
 import BlogHighlightsCard from "../src/component/blog/blogHighlightsCard/BlogHighlightsCard";
 import PrivacyContent from "../src/component/privacy/privacyContent/PrivacyContent";
 
-function Privacy() {
+function Privacy({
+  loginOpen,
+  setLoginOpen,
+  handleLoginOpen,
+  handleLoginClose,
+}) {
   return (
     <div>
       <Head>
@@ -38,7 +43,14 @@ function Privacy() {
       </Head>
 
       <main className="section">
-        <Navbar shape={false} paddingY={"1vh"} />
+        <Navbar
+          shape={false}
+          paddingY={"1vh"}
+          loginOpen={loginOpen}
+          setLoginOpen={setLoginOpen}
+          handleLoginClose={handleLoginClose}
+          handleLoginOpen={handleLoginOpen}
+        />
         <Grid
           container
           direction="column"

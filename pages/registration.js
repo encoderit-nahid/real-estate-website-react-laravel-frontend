@@ -14,7 +14,7 @@ import ArrowBackIosNewOutlinedIcon from "@mui/icons-material/ArrowBackIosNewOutl
 import Image from "next/image";
 import Link from "next/link";
 
-export default function Registration(props) {
+export default function Registration() {
   return (
     <div>
       <Head>

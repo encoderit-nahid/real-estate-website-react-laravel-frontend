@@ -30,7 +30,14 @@ const pagesData = [
   { name: "blog", page: "blog" },
 ];
 
-function Navbar({ shape, paddingY }) {
+function Navbar({
+  shape,
+  paddingY,
+  loginOpen,
+  setLoginOpen,
+  handleLoginOpen,
+  handleLoginClose,
+}) {
   const [anchorElNav, setAnchorElNav] = React.useState(null);
   const [anchorElUser, setAnchorElUser] = React.useState(null);
 
@@ -49,10 +56,10 @@ function Navbar({ shape, paddingY }) {
     setAnchorElUser(null);
   };
 
-  //add_login_modal
-  const [loginOpen, setLoginOpen] = useState(false);
-  const handleLoginOpen = () => setLoginOpen(true);
-  const handleLoginClose = () => setLoginOpen(false);
+  // //add_login_modal
+  // const [loginOpen, setLoginOpen] = useState(false);
+  // const handleLoginOpen = () => setLoginOpen(true);
+  // const handleLoginClose = () => setLoginOpen(false);
 
   return (
     <AppBar

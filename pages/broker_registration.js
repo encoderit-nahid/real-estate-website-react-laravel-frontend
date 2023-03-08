@@ -23,7 +23,12 @@ import BrokerRegistrationSentModal from "../src/component/brokerRegistration/Bro
 
 const steps = ["Personal Data", "Address", "Performance"];
 
-export default function BrokerRegistration(props) {
+export default function BrokerRegistration({
+  loginOpen,
+  setLoginOpen,
+  handleLoginOpen,
+  handleLoginClose,
+}) {
   const [activeStep, setActiveStep] = useState(0);
   const [skipped, setSkipped] = useState(new Set());
 
@@ -81,7 +86,13 @@ export default function BrokerRegistration(props) {
       </Head>
 
       <main className="section">
-        <Navbar shape={false} />
+        <Navbar
+          shape={false}
+          loginOpen={loginOpen}
+          setLoginOpen={setLoginOpen}
+          handleLoginClose={handleLoginClose}
+          handleLoginOpen={handleLoginOpen}
+        />
         <Box>
           <Container maxWidth="md">
             <BaseStepper

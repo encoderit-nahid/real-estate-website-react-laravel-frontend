@@ -92,7 +92,12 @@ const becomeBrokerData = [
   },
 ];
 
-export default function Broker(props) {
+export default function Broker({
+  loginOpen,
+  setLoginOpen,
+  handleLoginOpen,
+  handleLoginClose,
+}) {
   const svgString = encodeURIComponent(
     renderToStaticMarkup(<WantSellSvgBackground />)
   );
@@ -109,7 +114,13 @@ export default function Broker(props) {
       </Head>
 
       <main className="section">
-        <Navbar shape={false} />
+        <Navbar
+          shape={false}
+          loginOpen={loginOpen}
+          setLoginOpen={setLoginOpen}
+          handleLoginClose={handleLoginClose}
+          handleLoginOpen={handleLoginOpen}
+        />
         <Grid
           container
           spacing={2}

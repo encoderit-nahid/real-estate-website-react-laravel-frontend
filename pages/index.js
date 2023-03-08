@@ -48,7 +48,12 @@ const brokerData = [
   },
 ];
 
-export default function App(props) {
+export default function App({
+  loginOpen,
+  setLoginOpen,
+  handleLoginOpen,
+  handleLoginClose,
+}) {
   const svgString = encodeURIComponent(
     renderToStaticMarkup(<WantSellSvgBackground />)
   );
@@ -76,7 +81,13 @@ export default function App(props) {
             },
           }}
         ></Grid>
-        <Navbar shape={true} />
+        <Navbar
+          shape={true}
+          loginOpen={loginOpen}
+          setLoginOpen={setLoginOpen}
+          handleLoginClose={handleLoginClose}
+          handleLoginOpen={handleLoginOpen}
+        />
         <Grid
           container
           spacing={2}

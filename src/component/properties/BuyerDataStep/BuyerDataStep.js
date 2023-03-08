@@ -2,6 +2,7 @@ import {
   Autocomplete,
   Box,
   Button,
+  FormControl,
   Grid,
   TextField,
   Typography,
@@ -11,6 +12,9 @@ import React, { useState } from "react";
 import PropertyCard from "../PropertyCard/PropertyCard";
 import proposeImage from "../../../../public/Images/proposal_modal.png";
 import buyerProfile from "../../../../public/Images/buyer_profile.png";
+import BaseOutlinedZipInput from "../../reuseable/baseOutlinedZipInput/BaseOutlinedZipInput";
+import BaseOutlinedCpfInput from "../../reuseable/baseOutlinedCpfInput/BaseOutlinedCpfInput";
+import BaseOutlinedRgInput from "../../reuseable/baseOutlinedRgInput/BaseOutlinedRgInput";
 
 function BuyerDataStep() {
   //zip_code
@@ -125,32 +129,14 @@ function BuyerDataStep() {
         </Grid>
         <Grid container spacing={1} sx={{ mt: 1 }}>
           <Grid item xs={12} sm={12} md={6} lg={6} xl={6}>
-            <TextField
-              fullWidth
-              size="medium"
-              id="outlined-basic"
-              placeholder="RG"
-              variant="outlined"
-              type="number"
-              value={rgValue}
-              onChange={(e) => handleRGValidation(e)}
-              error={!rgValid && rgValue.length > 0 ? true : false}
-              required={true}
-            />
+            <FormControl variant="outlined" sx={{ width: "100%" }}>
+              <BaseOutlinedRgInput placeholder={"RG"} size={"medium"} />
+            </FormControl>
           </Grid>
           <Grid item xs={12} sm={12} md={6} lg={6} xl={6}>
-            <TextField
-              fullWidth
-              size="medium"
-              id="outlined-basic"
-              placeholder="CPF"
-              value={cpfValue}
-              onChange={(e) => handleCPFValidation(e)}
-              error={!cpfValid && cpfValue.length > 0 ? true : false}
-              required={true}
-              variant="outlined"
-              type="number"
-            />
+            <FormControl variant="outlined" sx={{ width: "100%" }}>
+              <BaseOutlinedCpfInput placeholder={"CPF"} size={"medium"} />
+            </FormControl>
           </Grid>
         </Grid>
         <Grid container sx={{ mt: 2 }}>
@@ -170,17 +156,9 @@ function BuyerDataStep() {
         </Grid>
         <Grid container spacing={1}>
           <Grid item xs={12} sm={12} md={4} lg={4} xl={4}>
-            <TextField
-              fullWidth
-              size="medium"
-              id="outlined-basic"
-              placeholder="Zip code"
-              variant="outlined"
-              value={value}
-              onChange={(e) => handleValidation(e)}
-              error={!valid && value.length > 0 ? true : false}
-              required={true}
-            />
+            <FormControl variant="outlined" sx={{ width: "100%" }}>
+              <BaseOutlinedZipInput placeholder={"Zip Code"} size={"medium"} />
+            </FormControl>
           </Grid>
           <Grid item xs={12} sm={12} md={4} lg={4} xl={4}>
             <TextField

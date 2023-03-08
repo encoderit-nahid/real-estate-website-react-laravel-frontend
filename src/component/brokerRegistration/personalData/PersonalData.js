@@ -2,6 +2,7 @@ import {
   Box,
   Button,
   Divider,
+  FormControl,
   Grid,
   TextField,
   Typography,
@@ -9,6 +10,8 @@ import {
 import accountIcon from "../../../../public/Images/account.png";
 import React, { useState } from "react";
 import Image from "next/image";
+import BaseOutlinedRgInput from "../../reuseable/baseOutlinedRgInput/BaseOutlinedRgInput";
+import BaseOutlinedCpfInput from "../../reuseable/baseOutlinedCpfInput/BaseOutlinedCpfInput";
 
 function PersonalData({ handleNext }) {
   //rg
@@ -236,15 +239,9 @@ function PersonalData({ handleNext }) {
               CPF<span style={{ color: "#E63333" }}>*</span>
             </Typography>
           </Grid>
-          <TextField
-            fullWidth
-            size="small"
-            id="outlined-basic"
-            type="number"
-            // placeholder="Social Name"
-            variant="outlined"
-            sx={{ mb: 1 }}
-          />
+          <FormControl variant="outlined" sx={{ width: "100%" }}>
+            <BaseOutlinedCpfInput placeholder={"CPF"} size={"small"} />
+          </FormControl>
         </Grid>
       </Grid>
       <Grid container spacing={1} sx={{ mt: 2 }}>
@@ -268,19 +265,12 @@ function PersonalData({ handleNext }) {
               RG<span style={{ color: "#E63333" }}>*</span>
             </Typography>
           </Grid>
-          <TextField
-            fullWidth
-            size="small"
-            id="outlined-basic"
-            // placeholder="Social Name"
+          <FormControl
             variant="outlined"
-            type="number"
-            sx={{ mb: 1 }}
-            value={rgValue}
-            onChange={(e) => handleRGValidation(e)}
-            error={!rgValid && rgValue.length > 0 ? true : false}
-            required={true}
-          />
+            sx={{ width: "100%", marginBottom: 1 }}
+          >
+            <BaseOutlinedRgInput placeholder={"RG"} size={"small"} />
+          </FormControl>
         </Grid>
         <Grid item xs={12} sm={12} md={6}>
           <Grid

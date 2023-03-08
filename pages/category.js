@@ -27,7 +27,12 @@ import blue_whatsapp from "../public/Images/blue_whatsapp.png";
 import CategorySubscribe from "../src/component/category/categorySubscribe/CategorySubscribe";
 import BlogHighlightsCard from "../src/component/blog/blogHighlightsCard/BlogHighlightsCard";
 
-function Category() {
+function Category({
+  loginOpen,
+  setLoginOpen,
+  handleLoginOpen,
+  handleLoginClose,
+}) {
   return (
     <div>
       <Head>
@@ -37,7 +42,14 @@ function Category() {
       </Head>
 
       <main className="section">
-        <Navbar shape={false} paddingY={"1vh"} />
+        <Navbar
+          shape={false}
+          paddingY={"1vh"}
+          loginOpen={loginOpen}
+          setLoginOpen={setLoginOpen}
+          handleLoginClose={handleLoginClose}
+          handleLoginOpen={handleLoginOpen}
+        />
         <Grid
           container
           direction="column"

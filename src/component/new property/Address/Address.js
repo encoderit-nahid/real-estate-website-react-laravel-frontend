@@ -3,6 +3,7 @@ import {
   Box,
   Button,
   Divider,
+  FormControl,
   Grid,
   TextField,
   Typography,
@@ -14,6 +15,8 @@ import DeleteOutlineOutlinedIcon from "@mui/icons-material/DeleteOutlineOutlined
 import { useDropzone } from "react-dropzone";
 import { useState } from "react";
 import { useMemo } from "react";
+import BaseOutlinedZipInput from "../../reuseable/baseOutlinedZipInput/BaseOutlinedZipInput";
+import Link from "next/link";
 
 const baseStyle = {
   flex: 1,
@@ -609,33 +612,34 @@ function Address() {
         )}
       />
       <Box sx={{ mt: 1 }}>
-        <Typography
-          variant="p"
-          sx={{
-            color: "#7450F0",
-            fontSize: "16px",
-            lineHeight: "22px",
-            fontWeight: "400",
-          }}
-        >
-          New venture
-        </Typography>
+        <Link href="/new_venture">
+          <a
+            style={{
+              textDecoration: "none",
+              listStyle: "none",
+              width: "100%",
+            }}
+          >
+            <Typography
+              variant="p"
+              sx={{
+                color: "#7450F0",
+                fontSize: "16px",
+                lineHeight: "22px",
+                fontWeight: "400",
+              }}
+            >
+              New venture
+            </Typography>
+          </a>
+        </Link>
         <Divider sx={{ mt: 1, background: "#DBE1E5" }} />
       </Box>
       <Grid container spacing={1} sx={{ mt: 3 }}>
         <Grid item xs={12} sm={12} md={12} lg={3}>
-          <TextField
-            fullWidth
-            size="medium"
-            id="outlined-basic"
-            placeholder="Zip code"
-            type="number"
-            variant="outlined"
-            value={value}
-            onChange={(e) => handleValidation(e)}
-            error={!valid && value.length > 0 ? true : false}
-            required={true}
-          />
+          <FormControl variant="outlined" sx={{ width: "100%" }}>
+            <BaseOutlinedZipInput placeholder={"Zip Code"} size={"medium"} />
+          </FormControl>
         </Grid>
         <Grid item xs={12} sm={12} md={12} lg={6}>
           <TextField

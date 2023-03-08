@@ -37,6 +37,7 @@ import wantImageMobile from "../public/Images/mobileWant.png";
 import trackImage from "../public/Images/track.png";
 import digitalImage from "../public/Images/digital.png";
 import fastImage from "../public/Images/fast.png";
+import { useState } from "react";
 
 const advertiseData = [
   {
@@ -75,7 +76,12 @@ const PracticalData = [
   },
 ];
 
-export default function Advertise(props) {
+export default function Advertise({
+  loginOpen,
+  setLoginOpen,
+  handleLoginOpen,
+  handleLoginClose,
+}) {
   const svgString = encodeURIComponent(
     renderToStaticMarkup(<WantSellSvgBackground />)
   );
@@ -88,7 +94,13 @@ export default function Advertise(props) {
       </Head>
 
       <main className="section">
-        <Navbar shape={false} />
+        <Navbar
+          shape={false}
+          loginOpen={loginOpen}
+          setLoginOpen={setLoginOpen}
+          handleLoginClose={handleLoginClose}
+          handleLoginOpen={handleLoginOpen}
+        />
         <Grid
           container
           spacing={6}
@@ -103,6 +115,10 @@ export default function Advertise(props) {
               content="We reduce bureaucracy and digitize the process of buying and selling real estate, from scheduling visits, proposals, contracts, certificates, documents to the public deed, everything 100% digital, without leaving home"
               fieldItem={true}
               buttonName="I want to advertise"
+              loginOpen={loginOpen}
+              setLoginOpen={setLoginOpen}
+              handleLoginClose={handleLoginClose}
+              handleLoginOpen={handleLoginOpen}
             />
           </Grid>
           <Grid item xs={12} sm={12} md={12} xl={6} lg={6}>

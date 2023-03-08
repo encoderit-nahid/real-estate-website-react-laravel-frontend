@@ -29,7 +29,7 @@ const style = {
   py: 6,
 };
 
-function LoginModal() {
+function LoginModal({ handleLoginClose }) {
   return (
     <Box sx={style}>
       <Grid
@@ -180,7 +180,11 @@ function LoginModal() {
               width: "100%",
             }}
           >
-            <BaseButton width={"100%"} name="Register" />
+            <BaseButton
+              width={"100%"}
+              name="Register"
+              handleFunction={handleLoginClose}
+            />
           </a>
         </Link>
       </Grid>
