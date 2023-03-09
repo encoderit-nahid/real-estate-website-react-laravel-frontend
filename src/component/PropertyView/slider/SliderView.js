@@ -257,7 +257,7 @@ function SliderView() {
         <Image src={home} alt="home" />
       </TabPanel>
       <TabPanel value={value} index={3}>
-        <Image src={home} alt="home" />
+        <BaseGoogleMap height={"59vh"} width={"55vw"} />
       </TabPanel>
       <TabPanel value={value} index={4}>
         {/* <Typography variant="p" sx={{ visibility: "hidden", width: "100%" }}>

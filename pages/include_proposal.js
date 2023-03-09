@@ -11,6 +11,7 @@ import ProposalValueStep from "../src/component/properties/ProposalValueStep/Pro
 import BuyerDataStep from "../src/component/properties/BuyerDataStep/BuyerDataStep";
 import BaseModal from "../src/component/reuseable/baseModal/BaseModal";
 import ProposalSentModal from "../src/component/properties/ProposalSentModal/ProposalSentModal";
+import Link from "next/link";
 
 const drawerWidth = 240;
 
@@ -168,6 +169,30 @@ export default function IncludeProposal(props) {
                         >
                           Come back
                         </Button>
+                      )}
+
+                      {activeStep === 0 && (
+                        <Link href="/my_properties">
+                          <Button
+                            color="inherit"
+                            // disabled={activeStep === 0}
+
+                            sx={{
+                              mr: 1,
+                              border: "1px solid #002152",
+                              borderRadius: "4px",
+                              px: 2,
+                              py: 1,
+                              color: "#002152",
+                              fontSize: "16px",
+                              fontWeight: "600",
+                              lineHeight: "22px",
+                              textTransform: "none",
+                            }}
+                          >
+                            Cancel
+                          </Button>
+                        </Link>
                       )}
 
                       {/* {isStepOptional(activeStep) && (

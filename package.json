@@ -14,6 +14,7 @@
     "@emotion/styled": "^11.10.4",
     "@fontsource/lato": "^4.5.10",
     "@georgedrpg/pannellum-react-next": "^1.2.5",
+    "@hookform/resolvers": "^2.9.11",
     "@mui/icons-material": "^5.10.6",
     "@mui/material": "^5.10.8",
     "@mui/styled-engine-sc": "^5.10.6",
@@ -26,6 +27,7 @@
     "react-dropzone": "^14.2.3",
     "react-hook-form": "^7.43.5",
     "react-imask": "^6.4.3",
+    "react-number-format": "^5.1.4",
     "react-pannellum": "^0.2.13",
     "react-pdf": "^6.2.2"
   },

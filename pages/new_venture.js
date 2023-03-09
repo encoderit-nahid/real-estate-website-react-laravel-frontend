@@ -17,6 +17,7 @@ import BasicBreadcrumbs from "../src/component/reuseable/baseBreadCrumb/BaseBrea
 import ventureImage from "../public/Images/certidoes.png";
 import DeleteOutlineOutlinedIcon from "@mui/icons-material/DeleteOutlineOutlined";
 import { useDropzone } from "react-dropzone";
+import Link from "next/link";
 
 const baseStyle = {
   flex: 1,
@@ -359,18 +360,10 @@ export default function NewVenture(props) {
                   alignItems="flex-end"
                   sx={{ mt: 2 }}
                 >
-                  <Button
-                    variant="outlined"
-                    sx={{
-                      borderColor: "#002152",
-                      fontSize: "16px",
-                      fontWeight: "600",
-                      color: "#002152",
-                      textTransform: "none",
-                      paddingX: 4,
-                      paddingY: 0.6,
-                      mr: 1,
-                      "&:hover": {
+                  <Link href="/my_properties">
+                    <Button
+                      variant="outlined"
+                      sx={{
                         borderColor: "#002152",
                         fontSize: "16px",
                         fontWeight: "600",
@@ -379,11 +372,21 @@ export default function NewVenture(props) {
                         paddingX: 4,
                         paddingY: 0.6,
                         mr: 1,
-                      },
-                    }}
-                  >
-                    Cancel
-                  </Button>
+                        "&:hover": {
+                          borderColor: "#002152",
+                          fontSize: "16px",
+                          fontWeight: "600",
+                          color: "#002152",
+                          textTransform: "none",
+                          paddingX: 4,
+                          paddingY: 0.6,
+                          mr: 1,
+                        },
+                      }}
+                    >
+                      Cancel
+                    </Button>
+                  </Link>
                   <Button
                     variant="outlined"
                     sx={{

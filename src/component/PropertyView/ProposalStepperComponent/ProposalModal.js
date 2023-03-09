@@ -273,7 +273,7 @@ function ProposalModal({ handleProposalClose }) {
                   },
                 }}
               >
-                {activeStep === steps.length - 1 ? "Submit Proposal" : "Next"}
+                {activeStep === steps.length - 1 ? "Submit Proposal" : "Submit"}
               </Button>
             </Grid>
           </React.Fragment>

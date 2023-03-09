@@ -24,6 +24,7 @@ import avatar from "../../../../public/Images/AvatarPendant.png";
 import { useState } from "react";
 import BaseModal from "../../reuseable/baseModal/BaseModal";
 import SendModal from "../toSendModal/SendModal";
+import BaseOutlinedCurrencyInput from "../../reuseable/baseOutlinedCurrencyInput/BaseOutlinedCurrencyInput";
 
 const style = {
   position: "absolute",
@@ -223,7 +224,7 @@ function CounterProposalModal({ handleCounterProposalClose }) {
       </Grid>
       {cash && (
         <Box sx={{ mx: 2, mt: 2 }}>
-          <TextField
+          {/* <TextField
             sx={{ width: "100%" }}
             id="outlined-basic"
             size="small"
@@ -231,6 +232,11 @@ function CounterProposalModal({ handleCounterProposalClose }) {
             placeholder="Value of the counter proposal"
             label="Value of the counter proposal"
             variant="outlined"
+          /> */}
+          <BaseOutlinedCurrencyInput
+            placeholder={"Value of the counter proposal"}
+            label={"Value of the counter proposal"}
+            size={"small"}
           />
           <TextField
             sx={{ width: "100%", mt: 2 }}
@@ -246,38 +252,26 @@ function CounterProposalModal({ handleCounterProposalClose }) {
         <Box sx={{ mx: 2 }}>
           <Grid container spacing={1}>
             <Grid item xs={12} sm={12} md={12} lg={12}>
-              <TextField
-                sx={{ width: "100%" }}
-                id="outlined-basic"
-                size="small"
-                type="number"
-                placeholder="Value of the counter proposal"
-                label="Value of the counter proposal"
-                variant="outlined"
+              <BaseOutlinedCurrencyInput
+                placeholder={"Value of the counter proposal"}
+                label={"Value of the counter proposal"}
+                size={"small"}
               />
             </Grid>
           </Grid>
           <Grid container spacing={1} sx={{ mt: 1 }}>
             <Grid item xs={12} sm={12} md={12} lg={6}>
-              <TextField
-                fullWidth
-                id="outlined-basic"
-                size="small"
-                type="number"
-                placeholder="Cash Value"
-                label="Cash Value"
-                variant="outlined"
+              <BaseOutlinedCurrencyInput
+                placeholder={"Cash Value"}
+                label={"Cash Value"}
+                size={"small"}
               />
             </Grid>
             <Grid item xs={12} sm={12} md={12} lg={6}>
-              <TextField
-                fullWidth
-                id="outlined-basic"
-                size="small"
-                type="number"
-                placeholder="Amount Paid in Installments"
-                label="Amount Paid in Installments"
-                variant="outlined"
+              <BaseOutlinedCurrencyInput
+                placeholder={"Amount Paid In Installments"}
+                label={"Amount Paid In Installments"}
+                size={"small"}
               />
             </Grid>
           </Grid>
@@ -288,8 +282,8 @@ function CounterProposalModal({ handleCounterProposalClose }) {
                 id="outlined-basic"
                 size="small"
                 type="number"
-                placeholder="Number of Installments"
-                label="Value of the counter proposal"
+                placeholder="Number Of Installments"
+                label="Number Of Installments"
                 variant="outlined"
               />
             </Grid>
@@ -316,6 +310,7 @@ function CounterProposalModal({ handleCounterProposalClose }) {
         sx={{ mt: 2, px: 2, pb: 3 }}
       >
         <Button
+          onClick={handleCounterProposalClose}
           variant="outlined"
           sx={{
             borderColor: "#002152",

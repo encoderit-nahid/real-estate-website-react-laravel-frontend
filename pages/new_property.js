@@ -17,6 +17,7 @@ import PhotosAndVideos from "../src/component/new property/PhotosAndVideos/Photo
 import Features from "../src/component/new property/Features/Features";
 import Owner from "../src/component/new property/Owner/Owner";
 import PropertySubmittedModal from "../src/component/new property/PropertySubmittedModal/PropertySubmittedModal";
+import Link from "next/link";
 
 const drawerWidth = 240;
 
@@ -192,6 +193,29 @@ export default function NewProperty(props) {
                         >
                           Come back
                         </Button>
+                      )}
+                      {activeStep === 0 && (
+                        <Link href="/my_properties">
+                          <Button
+                            color="inherit"
+                            // disabled={activeStep === 0}
+                            onClick={handleBack}
+                            sx={{
+                              mr: 1,
+                              border: "1px solid #002152",
+                              borderRadius: "4px",
+                              px: 2,
+                              py: 1,
+                              color: "#002152",
+                              fontSize: "16px",
+                              fontWeight: "600",
+                              lineHeight: "22px",
+                              textTransform: "none",
+                            }}
+                          >
+                            Cancel
+                          </Button>
+                        </Link>
                       )}
 
                       {/* {isStepOptional(activeStep) && (

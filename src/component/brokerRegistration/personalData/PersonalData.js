@@ -100,9 +100,11 @@ function PersonalData({ handleNext }) {
                 >
                   Profile picture
                 </Typography>
+
                 <Button
+                  variant="contained"
+                  component="label"
                   sx={{
-                    // mt: { xs: 0, sm: 0, md: 0, lg: 1.7, xl: 3.5, xxl: 1.7 },
                     mt: 1,
                     background: "#0362F0",
                     borderRadius: "4px",
@@ -111,9 +113,17 @@ function PersonalData({ handleNext }) {
                     color: "#ffffff",
                     lineHeight: "18px",
                     textTransform: "none",
+                    "&: hover": {
+                      background: "#0362F0",
+                      borderRadius: "4px",
+                      fontSize: "14px",
+                      fontWeight: "600",
+                      color: "#ffffff",
+                    },
                   }}
                 >
                   Select
+                  <input hidden accept="image/*" multiple type="file" />
                 </Button>
               </Grid>
             </Box>

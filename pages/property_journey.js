@@ -165,7 +165,7 @@ export default function PropertyJourney(props) {
                     return (
                       <Step
                         key={label}
-                        // onClick={() => setActiveStep(index)}
+                        onClick={() => setActiveStep(index)}
                         {...stepProps}
                         sx={{
                           background: `${
@@ -246,7 +246,7 @@ export default function PropertyJourney(props) {
                     ) : (
                       <DigitalNotary handleNext={handleNext} />
                     )}
-                    {/* <Grid
+                    <Grid
                       container
                       direction="row"
                       justifyContent={{
@@ -281,9 +281,9 @@ export default function PropertyJourney(props) {
                         >
                           Come back
                         </Button>
-                      )} */}
+                      )}
 
-                    {/* {isStepOptional(activeStep) && (
+                      {/* {isStepOptional(activeStep) && (
                 <Button
                   sx={{
                     mr: 1,
@@ -303,7 +303,7 @@ export default function PropertyJourney(props) {
                   Skip
                 </Button>
               )} */}
-                    {/* {activeStep === steps.length - 1 && (
+                      {/* {activeStep === steps.length - 1 && (
                         <Button
                           sx={{
                             background: "#DBE1E5",
@@ -335,7 +335,7 @@ export default function PropertyJourney(props) {
                         </Button>
                       )} */}
 
-                    {/* <Button
+                      <Button
                         onClick={
                           activeStep === steps.length - 1
                             ? handleOpen
@@ -369,8 +369,8 @@ export default function PropertyJourney(props) {
                         {activeStep === steps.length - 1
                           ? "Submit Approval"
                           : "Next"}
-                      </Button> */}
-                    {/* </Grid> */}
+                      </Button>
+                    </Grid>
                   </Fragment>
                 )}
               </Box>
