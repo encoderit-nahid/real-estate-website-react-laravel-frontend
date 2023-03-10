@@ -32,6 +32,7 @@ import CertificatesAndDocuments from "../src/component/proposals/propertyJourney
 import PreAnalise from "../src/component/proposals/propertyJourney/Admin/preAnalise/PreAnalise";
 import DigitalNotary from "../src/component/proposals/propertyJourney/Admin/digitalNotary/DigitalNotary";
 import DigitalNotaryFinalContent from "../src/component/proposals/propertyJourney/Admin/digitalNotaryFinalContent/DigitalNotaryFinalContent";
+import BrokerCertificateAndDocument from "../src/component/proposals/propertyJourney/Broker/BrokerCertificateAndDocuments/BrokerCertificateAndDocument";
 
 const drawerWidth = 240;
 
@@ -240,7 +241,8 @@ export default function PropertyJourney(props) {
                       //     handleNext={handleNext}
                       //     handleBack={handleBack}
                       //   />
-                      <CertificatesAndDocuments handleNext={handleNext} />
+                      // <CertificatesAndDocuments handleNext={handleNext} />
+                      <BrokerCertificateAndDocument handleNext={handleNext} />
                     ) : activeStep === 4 ? (
                       <PreAnalise handleNext={handleNext} />
                     ) : (

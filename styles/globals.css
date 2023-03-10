@@ -102,6 +102,12 @@ input[type=number] {
   -moz-appearance: textfield;
 }
 
+.rentImage{
+  padding-top: 0!important;
+  padding-left: 0!important;
+}
+
+
 
 
 /* .MuiButtonBase-root .MuiTab-root .Mui-selected{
