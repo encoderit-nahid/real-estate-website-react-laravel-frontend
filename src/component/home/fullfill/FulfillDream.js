@@ -93,7 +93,7 @@ function FulfillDream() {
         options={top100Films}
         renderInput={(params) => <TextField {...params} label="value up to" />}
       />
-      <Link href="/owner">
+      <Link href="/search_real_estate">
         <a style={{ textDecoration: "none", listStyle: "none", width: "100%" }}>
           <BaseButton
             name={"search real estate"}

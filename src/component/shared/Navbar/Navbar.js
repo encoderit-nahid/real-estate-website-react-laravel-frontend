@@ -24,7 +24,7 @@ import Link from "next/link";
 
 const pages = ["search Real estate", "I am broker", "I am Owner", "blog"];
 const pagesData = [
-  { name: "search real estate", page: "owner" },
+  { name: "search real estate", page: "search_real_estate" },
   { name: "I am broker", page: "broker" },
   { name: "I am Owner", page: "advertise" },
   { name: "blog", page: "blog" },
