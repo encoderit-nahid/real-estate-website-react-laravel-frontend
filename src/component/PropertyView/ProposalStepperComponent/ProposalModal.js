@@ -18,7 +18,7 @@ import BuyerStep from "../BuyerStep/BuyerStep";
 import submitProposal from "../../../../public/Images/submit_proposal.png";
 import BaseStepper from "../../reuseable/baseStepper/BaseStepper";
 
-const steps = ["Proposal Values", "Buyer's Data"];
+const steps = ["Proposal Values"];
 
 function ProposalModal({ handleProposalClose }) {
   const [activeStep, setActiveStep] = React.useState(0);
@@ -128,6 +128,7 @@ function ProposalModal({ handleProposalClose }) {
           steps={steps}
           activeStep={activeStep}
           isStepSkipped={isStepSkipped}
+          setActiveStep={setActiveStep}
           marginTop={"2vh"}
         />
         {activeStep === steps.length ? (
@@ -186,7 +187,7 @@ function ProposalModal({ handleProposalClose }) {
           </React.Fragment>
         ) : (
           <React.Fragment>
-            {activeStep === 0 ? <ProposalStep /> : <BuyerStep />}
+            {activeStep === 0 && <ProposalStep />}
             <Grid
               container
               direction="row"

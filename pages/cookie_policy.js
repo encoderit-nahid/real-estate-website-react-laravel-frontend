@@ -28,7 +28,7 @@ import CategorySubscribe from "../src/component/category/categorySubscribe/Categ
 import BlogHighlightsCard from "../src/component/blog/blogHighlightsCard/BlogHighlightsCard";
 import PrivacyContent from "../src/component/privacy/privacyContent/PrivacyContent";
 
-function CookiePolicy({
+export default function CookiePolicy({
   loginOpen,
   setLoginOpen,
   handleLoginOpen,
@@ -84,5 +84,3 @@ function CookiePolicy({
     </div>
   );
 }
-
-export default CookiePolicy;

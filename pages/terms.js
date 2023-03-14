@@ -28,7 +28,12 @@ import CategorySubscribe from "../src/component/category/categorySubscribe/Categ
 import BlogHighlightsCard from "../src/component/blog/blogHighlightsCard/BlogHighlightsCard";
 import PrivacyContent from "../src/component/privacy/privacyContent/PrivacyContent";
 
-function Terms({ loginOpen, setLoginOpen, handleLoginOpen, handleLoginClose }) {
+export default function Terms({
+  loginOpen,
+  setLoginOpen,
+  handleLoginOpen,
+  handleLoginClose,
+}) {
   return (
     <div>
       <Head>
@@ -79,5 +84,3 @@ function Terms({ loginOpen, setLoginOpen, handleLoginOpen, handleLoginClose }) {
     </div>
   );
 }
-
-export default Terms;

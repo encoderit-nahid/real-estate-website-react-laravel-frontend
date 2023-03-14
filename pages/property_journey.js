@@ -33,6 +33,8 @@ import PreAnalise from "../src/component/proposals/propertyJourney/Admin/preAnal
 import DigitalNotary from "../src/component/proposals/propertyJourney/Admin/digitalNotary/DigitalNotary";
 import DigitalNotaryFinalContent from "../src/component/proposals/propertyJourney/Admin/digitalNotaryFinalContent/DigitalNotaryFinalContent";
 import BrokerCertificateAndDocument from "../src/component/proposals/propertyJourney/Broker/BrokerCertificateAndDocuments/BrokerCertificateAndDocument";
+import Announce from "../src/component/proposals/propertyJourney/Admin/Announce/Announce";
+import Proposal from "../src/component/proposals/propertyJourney/Admin/Proposal/Proposal";
 
 const drawerWidth = 240;
 
@@ -224,13 +226,12 @@ export default function PropertyJourney(props) {
                   <Fragment>
                     {activeStep === 0 ? (
                       //   <Address handleNext={handleNext} />
-                      <h1>Announce</h1>
+                      <Announce handleNext={handleNext} />
                     ) : activeStep === 1 ? (
-                      //   <ValuesAndDescription
-                      //     handleNext={handleNext}
-                      //     handleBack={handleBack}
-                      //   />
-                      <h1>proposal</h1>
+                      <Proposal
+                        handleNext={handleNext}
+                        handleBack={handleBack}
+                      />
                     ) : activeStep === 2 ? (
                       <Contract
                         handleNext={handleNext}

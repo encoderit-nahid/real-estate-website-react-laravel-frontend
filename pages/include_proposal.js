@@ -110,6 +110,7 @@ export default function IncludeProposal(props) {
                   activeStep={activeStep}
                   isStepSkipped={isStepSkipped}
                   marginTop={"2vh"}
+                  setActiveStep={setActiveStep}
                 />
                 {activeStep === steps.length ? (
                   <Container maxWidth="xs">

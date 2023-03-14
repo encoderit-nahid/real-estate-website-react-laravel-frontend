@@ -8,7 +8,6 @@ import {
   ImageList,
   ImageListItem,
   Button,
-  Tooltip,
 } from "@mui/material";
 import orionImage from "../public/Images/orion_view.svg";
 import Image from "next/image";
@@ -27,6 +26,7 @@ import sliderViewSmall from "../public/Images/sliderViewSmall.png";
 import BaseModal from "../src/component/reuseable/baseModal/BaseModal";
 import ProposalModal from "../src/component/PropertyView/ProposalStepperComponent/ProposalModal";
 import { useState } from "react";
+import yellowImage from "../public/Images/yellow.png";
 
 const aboutProperty = [
   "Heater",
@@ -64,7 +64,7 @@ const surroundings = [
   "Museum",
 ];
 
-export default function PropertyView({
+export default function ProjectView({
   loginOpen,
   setLoginOpen,
   handleLoginOpen,
@@ -225,53 +225,72 @@ export default function PropertyView({
             </Grid>
           </Grid>
         </Box>
-        <Box sx={{ mx: { xs: 1, sm: 3, md: 3, lg: 3, xl: 3 } }}>
-          <Grid
-            container
-            direction="row"
-            alignItems="center"
-            sx={{
-              height: {
-                xs: "60vh",
-                sm: "60vh",
-                md: "60vh",
-                lg: "40vh",
-                xl: "40vh",
-              },
-              background: "#0E97F7",
 
-              px: { xs: 2, sm: 2, md: 2, lg: 2, xl: 20 },
-              pt: { xs: 2, sm: 2, md: 2, lg: 0, xl: 0 },
-              // pb: { xs: 0.5, sm: 0.5, md: 0, lg: 0, xl: 0 },
-              mt: 1,
-            }}
-          >
-            <AmountView
-              negotiate={negotiate}
-              setNegotiate={setNegotiate}
-              schedule={schedule}
-              setSchedule={setSchedule}
-            />
-          </Grid>
-        </Box>
-        <Box sx={{ mx: 3, mt: 4 }}>
-          <Grid container spacing={2}>
-            <Grid item xs={12} sm={12} md={12} lg={9} xl={9}>
-              <Features />
-              <AboutProperty name="About the property" array={aboutProperty} />
-              <AboutProperty name="About the condo" array={aboutCondo} />
-              <AboutProperty name="surroundings" array={surroundings} />
+        <Box
+          sx={{
+            mx: 3,
+            mt: 4,
+
+            background: "linear-gradient(90deg, #20BAF6 0%, #7450F0 100%);",
+          }}
+        >
+          <Container maxWidth="lg">
+            <Grid
+              container
+              spacing={2}
+              sx={{
+                height: { xs: "auto", sm: "auto", md: "auto", lg: "40vh" },
+                pt: 1,
+                pb: 1,
+              }}
+            >
+              <Grid item xs={12} sm={12} md={12} lg={2}>
+                <Box>
+                  <Image src={yellowImage} alt="yellowImage" />
+                </Box>
+              </Grid>
+              <Grid item xs={12} sm={12} md={12} lg={10}>
+                <Typography
+                  variant="h6"
+                  sx={{
+                    color: "#FFFFFF",
+                    fontWeight: "800",
+                    fontSize: "32px",
+                    lineHeight: "38px",
+                  }}
+                >
+                  Yellow Empreendimentos imobiliários
+                </Typography>
+                <Typography
+                  variant="h6"
+                  sx={{
+                    color: "#FFFFFF",
+                    fontWeight: "500",
+                    fontSize: "20px",
+                    lineHeight: "28px",
+                    mt: 2,
+                  }}
+                >
+                  📍AV. AFONSO MARIANO FAGUNDES, 417 SAÚDE, SÃO PAULO - SP
+                </Typography>
+                <Typography
+                  variant="h6"
+                  sx={{
+                    color: "#FFFFFF",
+                    fontWeight: "500",
+                    fontSize: "20px",
+                    lineHeight: "28px",
+                    mt: 4,
+                  }}
+                >
+                  Tudo que desperta a singularidade, num projeto único e no
+                  melhor bairro de São Paulo: Saúde. Conexões que, juntas,
+                  compõem um design único. Tudo o que você procuta em um
+                  apartamento na Saúde!
+                </Typography>
+              </Grid>
             </Grid>
-            <Grid item xs={12} sm={12} md={12} lg={3} xl={3}>
-              <Negotiate
-                negotiate={negotiate}
-                setNegotiate={setNegotiate}
-                schedule={schedule}
-                setSchedule={setSchedule}
-                handleProposalOpen={handleProposalOpen}
-              />
-            </Grid>
-          </Grid>
+          </Container>
         </Box>
         <Box>
           <ImageList
@@ -307,14 +326,6 @@ export default function PropertyView({
           </ImageList>
         </Box>
         <Footer />
-
-        <BaseModal isShowing={proposalOpen} isClose={handleProposalClose}>
-          <Tooltip title="Something">
-            <>
-              <ProposalModal handleProposalClose={handleProposalClose} />
-            </>
-          </Tooltip>
-        </BaseModal>
       </main>
     </div>
   );

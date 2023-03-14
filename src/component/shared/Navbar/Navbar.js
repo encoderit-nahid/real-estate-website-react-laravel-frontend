@@ -76,9 +76,21 @@ function Navbar({
       <Container maxWidth="xxl">
         <Toolbar disableGutters>
           <Link href="/">
-            <Box sx={{ display: { xs: "none", md: "none", lg: "flex" } }}>
-              <Image src={logoIcon} height={25} width={110} alt="logo" />
-            </Box>
+            <a
+              style={{
+                textDecoration: "none",
+                listStyle: "none",
+              }}
+            >
+              <Box
+                sx={{
+                  display: { xs: "none", md: "none", lg: "flex" },
+                  cursor: "pointer",
+                }}
+              >
+                <Image src={logoIcon} height={25} width={110} alt="logo" />
+              </Box>
+            </a>
           </Link>
 
           <Box

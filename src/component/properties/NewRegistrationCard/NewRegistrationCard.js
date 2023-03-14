@@ -2,6 +2,7 @@ import { Box, Button, Grid, LinearProgress, Typography } from "@mui/material";
 import React from "react";
 import rentImage from "../../../../public/Images/rentImage.png";
 import Image from "next/image";
+import Link from "next/link";
 
 function NewRegistrationCard() {
   const [progress, setProgress] = React.useState(87);
@@ -27,22 +28,25 @@ function NewRegistrationCard() {
           {/* <Box>
             <Image src={rentImage} layout="responsive" alt="rent" />
           </Box> */}
-          <Box
-            style={{
-              width: "100%",
-              height: "100%",
-              position: "relative",
-              //   display: { lg: "inline" },
-            }}
-          >
-            <Image
-              alt="rent"
-              src={rentImage}
-              layout="fill"
-              objectFit="cover"
-              style={{ borderRadius: "8px 0 0 8px" }}
-            />
-          </Box>
+          <Link href="/property_view">
+            <Box
+              style={{
+                width: "100%",
+                height: "100%",
+                position: "relative",
+                cursor: "pointer",
+                //   display: { lg: "inline" },
+              }}
+            >
+              <Image
+                alt="rent"
+                src={rentImage}
+                layout="fill"
+                objectFit="cover"
+                style={{ borderRadius: "8px 0 0 8px" }}
+              />
+            </Box>
+          </Link>
         </Grid>
 
         <Grid

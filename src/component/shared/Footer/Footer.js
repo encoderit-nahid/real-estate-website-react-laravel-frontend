@@ -51,10 +51,26 @@ function Footer() {
             alignItems="flex-start"
             sx={{ color: "#ffffff", fontSize: "14px" }}
           >
-            <Typography variant="p">Terms of use</Typography>
-            <Typography variant="p">Privacy Policy</Typography>
-            <Typography variant="p">users manual</Typography>
-            <Typography variant="p">cookie policy</Typography>
+            <Link href="/terms">
+              <Typography variant="p" sx={{ cursor: "pointer" }}>
+                Terms of use
+              </Typography>
+            </Link>
+            <Link href="/privacy">
+              <Typography variant="p" sx={{ cursor: "pointer" }}>
+                Privacy Policy
+              </Typography>
+            </Link>
+            <Link href="/user_manual">
+              <Typography variant="p" sx={{ cursor: "pointer" }}>
+                users manual
+              </Typography>
+            </Link>
+            <Link href="/cookie_policy">
+              <Typography variant="p" sx={{ cursor: "pointer" }}>
+                cookie policy
+              </Typography>
+            </Link>
           </Grid>
         </Grid>
 
@@ -66,10 +82,22 @@ function Footer() {
             alignItems="flex-start"
             sx={{ color: "#ffffff", fontSize: "14px" }}
           >
-            <Typography variant="p">My account</Typography>
-            <Typography variant="p">Advertise your property</Typography>
-            <Typography variant="p">be a consultant</Typography>
-            <Typography variant="p">blog</Typography>
+            <Typography variant="p" sx={{ cursor: "pointer" }}>
+              My account
+            </Typography>
+            <Link href="/advertise">
+              <Typography variant="p" sx={{ cursor: "pointer" }}>
+                Advertise your property
+              </Typography>
+            </Link>
+            <Typography variant="p" sx={{ cursor: "pointer" }}>
+              be a consultant
+            </Typography>
+            <Link href="/blog">
+              <Typography variant="p" sx={{ cursor: "pointer" }}>
+                blog
+              </Typography>
+            </Link>
           </Grid>
         </Grid>
 

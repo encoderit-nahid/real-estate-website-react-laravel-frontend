@@ -99,6 +99,7 @@ export default function BrokerRegistration({
               steps={steps}
               activeStep={activeStep}
               isStepSkipped={isStepSkipped}
+              setActiveStep={setActiveStep}
               marginTop={"2vh"}
             />
             {activeStep === steps.length ? (

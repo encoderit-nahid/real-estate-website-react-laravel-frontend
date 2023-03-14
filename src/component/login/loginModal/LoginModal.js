@@ -11,6 +11,7 @@ import React from "react";
 import Image from "next/image";
 import BaseButton from "../../reuseable/button/BaseButton";
 import Link from "next/link";
+import { useState } from "react";
 
 const style = {
   position: "absolute",
@@ -30,6 +31,16 @@ const style = {
 };
 
 function LoginModal({ handleLoginClose }) {
+  const [validEmail, setValidEmail] = useState(false);
+
+  const handleEmail = (e) => {
+    if (/.+@.+\.[A-Za-z]+$/.test(e.target.value)) {
+      setValidEmail(false);
+    } else {
+      setValidEmail(true);
+    }
+  };
+
   return (
     <Box sx={style}>
       <Grid
@@ -101,7 +112,19 @@ function LoginModal({ handleLoginClose }) {
           id="outlined-basic"
           placeholder="Email"
           variant="outlined"
+          onChange={(e) => handleEmail(e)}
+          sx={{
+            "& .MuiOutlinedInput-root": {
+              "&.Mui-focused fieldset": {
+                borderColor: `${validEmail ? "#dc2626" : ""}`,
+              },
+            },
+            // "& label.Mui-focused": {
+            //   color: borderColor,
+            // },
+          }}
         />
+
         <Link href="/my_properties">
           <a
             style={{

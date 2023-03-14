@@ -1,7 +1,13 @@
 import { Step, StepLabel, Stepper } from "@mui/material";
 import React from "react";
 
-function BaseStepper({ activeStep, steps, isStepSkipped, marginTop }) {
+function BaseStepper({
+  activeStep,
+  steps,
+  isStepSkipped,
+  marginTop,
+  setActiveStep,
+}) {
   return (
     <Stepper activeStep={activeStep} sx={{ marginTop: marginTop }}>
       {steps.map((label, index) => {
@@ -16,7 +22,7 @@ function BaseStepper({ activeStep, steps, isStepSkipped, marginTop }) {
           stepProps.completed = false;
         }
         return (
-          <Step key={label} {...stepProps}>
+          <Step key={label} {...stepProps} onClick={() => setActiveStep(index)}>
             <StepLabel {...labelProps}>{label}</StepLabel>
           </Step>
         );

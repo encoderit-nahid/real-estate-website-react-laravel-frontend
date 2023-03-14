@@ -27,7 +27,7 @@ import blue_whatsapp from "../public/Images/blue_whatsapp.png";
 import CategorySubscribe from "../src/component/category/categorySubscribe/CategorySubscribe";
 import BlogHighlightsCard from "../src/component/blog/blogHighlightsCard/BlogHighlightsCard";
 
-function Category({
+export default function Category({
   loginOpen,
   setLoginOpen,
   handleLoginOpen,
@@ -171,5 +171,3 @@ function Category({
     </div>
   );
 }
-
-export default Category;

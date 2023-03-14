@@ -396,7 +396,7 @@ export default function Blog({
         </Box>
         <Grid
           container
-          spacing={1}
+          spacing={2}
           sx={{ mt: 2, pl: { xs: 1, sm: 2, md: 2, lg: 2, xl: 2 } }}
         >
           <Grid item xs={12} sm={12} md={12} lg={9} xl={9}>

@@ -140,6 +140,7 @@ export default function Broker({
             matters, the customer"
               fieldItem={false}
               buttonName="Be a Partner!"
+              handleLoginOpen={handleLoginOpen}
             />
           </Grid>
           <Grid item xs={12} sm={12} md={12} xl={6} lg={6}>

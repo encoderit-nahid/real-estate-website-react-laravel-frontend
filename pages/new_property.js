@@ -121,6 +121,7 @@ export default function NewProperty(props) {
                   steps={steps}
                   activeStep={activeStep}
                   isStepSkipped={isStepSkipped}
+                  setActiveStep={setActiveStep}
                   marginTop={"2vh"}
                 />
                 {activeStep === steps.length ? (

@@ -1,5 +1,13 @@
 import React, { useState } from "react";
-import { Button, Grid, Typography, Box, TextField, Stack } from "@mui/material";
+import {
+  Button,
+  Grid,
+  Typography,
+  Box,
+  TextField,
+  Stack,
+  Tooltip,
+} from "@mui/material";
 import negotiateImage from "../../../../public/Images/negotiate.png";
 import Image from "next/image";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
@@ -7,6 +15,8 @@ import { CalendarPicker } from "@mui/x-date-pickers/CalendarPicker";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { TimePicker } from "@mui/x-date-pickers/TimePicker";
 import dayjs from "dayjs";
+import BaseModal from "../../reuseable/baseModal/BaseModal";
+import ScheduleModal from "../scheduleModal/ScheduleModal";
 
 function Negotiate({
   handleProposalOpen,
@@ -17,6 +27,13 @@ function Negotiate({
 }) {
   const [date, setDate] = React.useState(dayjs("2022-04-07"));
   const [value, setValue] = React.useState(dayjs("2020-01-01 12:00"));
+  const [conditionField, setConditionField] = useState(false);
+
+  const [scheduleModalOpen, setScheduleModalOpen] = useState(false);
+
+  const handleOpen = () => setScheduleModalOpen(true);
+  const handleClose = () => setScheduleModalOpen(false);
+
   return (
     <Box
       sx={{
@@ -197,12 +214,23 @@ function Negotiate({
             variant="outlined"
           />
           <Button
+            onClick={() => setConditionField(true)}
             fullWidth
             variant="outlined"
             sx={{ textTransform: "none", mt: 1 }}
           >
             Include Conditions
           </Button>
+          {conditionField && (
+            <TextField
+              fullWidth
+              sx={{ mt: 1 }}
+              size="small"
+              id="outlined-basic"
+              placeholder="Condition"
+              variant="outlined"
+            />
+          )}
           <Button
             fullWidth
             sx={{
@@ -337,6 +365,7 @@ function Negotiate({
             sx={{ px: 4, py: 1 }}
           >
             <Button
+              onClick={handleOpen}
               variant="contained"
               color="secondary"
               fullWidth
@@ -361,6 +390,13 @@ function Negotiate({
           </Grid>
         </Box>
       )}
+      <BaseModal isShowing={scheduleModalOpen} isClose={handleClose}>
+        <Tooltip title="Something">
+          <>
+            <ScheduleModal handleClose={handleClose} />
+          </>
+        </Tooltip>
+      </BaseModal>
     </Box>
   );
 }

@@ -121,9 +121,16 @@ function LeftBar(props) {
             alignItems="center"
           >
             <Link href="/">
-              <Box>
-                <Image height={30} width={120} src={logo} alt="logo" />
-              </Box>
+              <a
+                style={{
+                  textDecoration: "none",
+                  listStyle: "none",
+                }}
+              >
+                <Box sx={{ cursor: "pointer" }}>
+                  <Image height={30} width={120} src={logo} alt="logo" />
+                </Box>
+              </a>
             </Link>
             <Box sx={{ mt: 2 }}>
               <Avatar />
