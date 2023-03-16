@@ -40,6 +40,7 @@ import MailIcon from "@mui/icons-material/Mail";
 import FormGroup from "@mui/material/FormGroup";
 import FormControlLabel from "@mui/material/FormControlLabel";
 import dynamic from "next/dynamic";
+import BaseTextField from "../../../../reuseable/baseTextField/BaseTextField";
 const PDFViewer = dynamic(
   () => import("../../../../reuseable/PDFComponent/pdf-viewer"),
   {
@@ -439,20 +440,14 @@ function ContractPdfModal({ handleClose, handlePdfOpen, handleNext }) {
             >
               Include signers:
             </Typography>
-            <TextField
-              fullWidth
-              size="medium"
-              id="outlined-basic"
-              placeholder="Name"
-              variant="outlined"
+            <BaseTextField
+              size={"medium"}
+              placeholder={"Name"}
               sx={{ mt: 1.5 }}
             />
-            <TextField
-              fullWidth
-              size="medium"
-              id="outlined-basic"
-              placeholder="Email"
-              variant="outlined"
+            <BaseTextField
+              size={"medium"}
+              placeholder={"Email"}
               sx={{ mt: 1.5 }}
             />
             <Button

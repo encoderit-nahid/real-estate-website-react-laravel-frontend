@@ -25,6 +25,7 @@ import { useState } from "react";
 import BaseModal from "../../reuseable/baseModal/BaseModal";
 import SendModal from "../toSendModal/SendModal";
 import BaseOutlinedCurrencyInput from "../../reuseable/baseOutlinedCurrencyInput/BaseOutlinedCurrencyInput";
+import BaseTextField from "../../reuseable/baseTextField/BaseTextField";
 
 const style = {
   position: "absolute",
@@ -238,13 +239,11 @@ function CounterProposalModal({ handleCounterProposalClose }) {
             label={"Value of the counter proposal"}
             size={"small"}
           />
-          <TextField
+          <BaseTextField
             sx={{ width: "100%", mt: 2 }}
-            id="outlined-basic"
-            size="small"
-            placeholder="Comment"
-            label="Comment"
-            variant="outlined"
+            size={"small"}
+            placeholder={"Comment"}
+            label={"Comment"}
           />
         </Box>
       )}
@@ -277,26 +276,22 @@ function CounterProposalModal({ handleCounterProposalClose }) {
           </Grid>
           <Grid container spacing={1} sx={{ mt: 1 }}>
             <Grid item xs={12} sm={12} md={12} lg={12}>
-              <TextField
+              <BaseTextField
                 sx={{ width: "100%" }}
-                id="outlined-basic"
-                size="small"
-                type="number"
-                placeholder="Number Of Installments"
-                label="Number Of Installments"
-                variant="outlined"
+                size={"small"}
+                type={"number"}
+                placeholder={"Number Of Installments"}
+                label={"Number Of Installments"}
               />
             </Grid>
           </Grid>
           <Grid container spacing={1} sx={{ mt: 1 }}>
             <Grid item xs={12} sm={12} md={12} lg={12}>
-              <TextField
+              <BaseTextField
                 sx={{ width: "100%" }}
-                id="outlined-basic"
-                size="small"
-                placeholder="Comments"
-                label="Comments"
-                variant="outlined"
+                size={"small"}
+                placeholder={"Comments"}
+                label={"Comments"}
               />
             </Grid>
           </Grid>

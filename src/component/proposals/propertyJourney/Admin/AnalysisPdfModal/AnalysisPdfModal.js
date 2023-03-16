@@ -9,7 +9,6 @@ import {
   ListItemAvatar,
   ListItemText,
   Switch,
-  TextField,
   TextareaAutosize,
   Tooltip,
   Typography,

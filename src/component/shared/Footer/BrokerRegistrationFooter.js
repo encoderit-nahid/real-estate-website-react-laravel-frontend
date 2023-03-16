@@ -15,6 +15,7 @@ import instagram from "../../../../public/Images/instagram.png";
 import linkedin from "../../../../public/Images/linkedin.png";
 import { flexbox } from "@mui/system";
 import Link from "next/link";
+import BaseTextField from "../../reuseable/baseTextField/BaseTextField";
 
 function BrokerRegistrationFooter() {
   return (
@@ -105,12 +106,9 @@ function BrokerRegistrationFooter() {
             alignItems="flex-start"
             sx={{ color: "#ffffff", fontSize: "14px" }}
           >
-            <TextField
-              fullWidth
-              size="small"
-              id="outlined-basic"
-              placeholder="Email"
-              variant="outlined"
+            <BaseTextField
+              size={"small"}
+              placeholder={"Email"}
               sx={{
                 mb: 1,
                 fieldset: { borderColor: "#ffffff" },

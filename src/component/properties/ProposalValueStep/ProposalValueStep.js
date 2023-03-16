@@ -10,6 +10,7 @@ import React, { useState } from "react";
 import PropertyCard from "../PropertyCard/PropertyCard";
 import Image from "next/image";
 import proposeImage from "../../../../public/Images/proposal_modal.png";
+import BaseTextField from "../../reuseable/baseTextField/BaseTextField";
 
 function ProposalValueStep() {
   const [cash, setCash] = useState(true);
@@ -75,12 +76,10 @@ function ProposalValueStep() {
         </Grid>
         {cash && (
           <Box>
-            <TextField
+            <BaseTextField
               sx={{ width: "70%" }}
-              id="outlined-basic"
-              placeholder="BRL Total Amount"
-              variant="outlined"
-              type="number"
+              placeholder={"BRL Total Amount"}
+              type={"number"}
             />
             <TextareaAutosize
               aria-label="minimum height"
@@ -105,41 +104,23 @@ function ProposalValueStep() {
           <Box>
             <Grid container spacing={1}>
               <Grid item xs={12} sm={12} md={12} lg={6}>
-                <TextField
-                  fullWidth
-                  id="outlined-basic"
-                  placeholder="BRL Total Amount"
-                  variant="outlined"
-                  type="number"
+                <BaseTextField
+                  placeholder={"BRL Total Amount"}
+                  type={"number"}
                 />
               </Grid>
               <Grid item xs={12} sm={12} md={12} lg={6}>
-                <TextField
-                  fullWidth
-                  id="outlined-basic"
-                  placeholder="R$ Cash Value"
-                  variant="outlined"
-                  type="number"
-                />
+                <BaseTextField placeholder={"R$ Cash Value"} type="number" />
               </Grid>
             </Grid>
             <Grid container spacing={1} sx={{ mt: 2 }}>
               <Grid item xs={12} sm={12} md={12} lg={6}>
-                <TextField
-                  fullWidth
-                  id="outlined-basic"
-                  placeholder="R$ Term Value"
-                  variant="outlined"
-                  type="number"
-                />
+                <BaseTextField placeholder={"R$ Term Value"} type={"number"} />
               </Grid>
               <Grid item xs={12} sm={12} md={12} lg={6}>
-                <TextField
-                  fullWidth
-                  id="outlined-basic"
-                  placeholder="Number of Installments"
-                  variant="outlined"
-                  type="number"
+                <BaseTextField
+                  placeholder={"Number of Installments"}
+                  type={"number"}
                 />
               </Grid>
             </Grid>

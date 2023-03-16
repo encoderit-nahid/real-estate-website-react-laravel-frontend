@@ -17,6 +17,7 @@ import { useMemo } from "react";
 import BaseModal from "../../../../reuseable/baseModal/BaseModal";
 
 import DigitalNotaryDocumentSentModal from "../DigitalNotaryDocumentSentModal/DigitalNotaryDocumentSentModal";
+import BaseTextField from "../../../../reuseable/baseTextField/BaseTextField";
 
 function DigitalNotaryModal({ handleClose, handleNext }) {
   const styleModal = {
@@ -81,49 +82,37 @@ function DigitalNotaryModal({ handleClose, handleNext }) {
         <Box sx={{ mx: 2 }}>
           <Grid container>
             <Grid item xs={12}>
-              <TextField
-                fullWidth
-                size="small"
-                id="outlined-basic"
-                placeholder="Protocol No"
-                variant="outlined"
-                type="number"
+              <BaseTextField
+                size={"small"}
+                placeholder={"Protocol No"}
+                type={"number"}
               />
             </Grid>
           </Grid>
           <Grid container sx={{ mt: 1 }}>
             <Grid item xs={12}>
-              <TextField
-                fullWidth
-                size="small"
-                id="outlined-basic"
-                placeholder="Registry"
-                variant="outlined"
-                type="number"
+              <BaseTextField
+                size={"small"}
+                placeholder={"Registry"}
+                type={"number"}
               />
             </Grid>
           </Grid>
           <Grid container sx={{ mt: 1 }}>
             <Grid item xs={12}>
-              <TextField
-                fullWidth
-                size="small"
-                id="outlined-basic"
-                placeholder="Contact Phone"
-                variant="outlined"
-                type="number"
+              <BaseTextField
+                size={"small"}
+                placeholder={"Contact Phone"}
+                type={"number"}
               />
             </Grid>
           </Grid>
           <Grid container>
             <Grid item xs={12} sx={{ mt: 1 }}>
-              <TextField
-                fullWidth
-                size="small"
-                id="outlined-basic"
-                placeholder="Return Period"
-                variant="outlined"
-                type="number"
+              <BaseTextField
+                size={"small"}
+                placeholder={"Return Period"}
+                type={"number"}
               />
             </Grid>
           </Grid>

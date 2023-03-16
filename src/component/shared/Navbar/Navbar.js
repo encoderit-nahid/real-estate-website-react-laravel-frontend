@@ -217,6 +217,9 @@ function Navbar({
                       display: "block",
                       textTransform: "none",
                       fontSize: "16px",
+                      "&:hover": {
+                        background: "transparent",
+                      },
                     }}
                   >
                     {data?.name}

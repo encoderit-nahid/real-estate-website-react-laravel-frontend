@@ -17,6 +17,7 @@ import { useState } from "react";
 import { useMemo } from "react";
 import BaseOutlinedZipInput from "../../reuseable/baseOutlinedZipInput/BaseOutlinedZipInput";
 import Link from "next/link";
+import BaseTextField from "../../reuseable/baseTextField/BaseTextField";
 
 const baseStyle = {
   flex: 1,
@@ -642,54 +643,27 @@ function Address() {
           </FormControl>
         </Grid>
         <Grid item xs={12} sm={12} md={12} lg={6}>
-          <TextField
-            fullWidth
-            size="medium"
-            id="outlined-basic"
-            placeholder="Address"
-            variant="outlined"
-          />
+          <BaseTextField size={"medium"} placeholder={"Address"} />
         </Grid>
         <Grid item xs={12} sm={12} md={12} lg={3}>
-          <TextField
-            fullWidth
-            size="medium"
-            id="outlined-basic"
-            placeholder="Number"
-            type="number"
-            variant="outlined"
+          <BaseTextField
+            size={"medium"}
+            placeholder={"Number"}
+            type={"number"}
           />
         </Grid>
       </Grid>
       <Grid container spacing={1} sx={{ mt: 3 }}>
         <Grid item xs={12} sm={12} md={12} lg={4}>
-          <TextField
-            fullWidth
-            size="medium"
-            id="outlined-basic"
-            placeholder="Neighborhood"
-            variant="outlined"
-          />
+          <BaseTextField size={"medium"} placeholder={"Neighborhood"} />
         </Grid>
         <Grid item xs={12} sm={12} md={12} lg={8}>
-          <TextField
-            fullWidth
-            size="medium"
-            id="outlined-basic"
-            placeholder="Complement"
-            variant="outlined"
-          />
+          <BaseTextField size={"medium"} placeholder={"Complement"} />
         </Grid>
       </Grid>
       <Grid container spacing={1} sx={{ mt: 3 }}>
         <Grid item xs={12} sm={12} md={12} lg={6}>
-          <TextField
-            fullWidth
-            size="medium"
-            id="outlined-basic"
-            placeholder="City"
-            variant="outlined"
-          />
+          <BaseTextField size={"medium"} placeholder={"City"} />
         </Grid>
         <Grid item xs={12} sm={12} md={12} lg={6}>
           <Autocomplete

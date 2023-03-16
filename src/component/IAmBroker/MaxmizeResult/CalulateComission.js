@@ -1,15 +1,9 @@
-import {
-  Box,
-  Button,
-  Grid,
-  InputAdornment,
-  TextField,
-  Typography,
-} from "@mui/material";
+import { Box, Button, Grid, InputAdornment, Typography } from "@mui/material";
 import React from "react";
 import impulseImage from "../../../../public/Images/impulse.png";
 import Image from "next/image";
 import { useState } from "react";
+import BaseTextField from "../../reuseable/baseTextField/BaseTextField";
 
 function CalulateComission({ setFullCommission, setYourCommission }) {
   const [salevalue, setSaleValue] = useState(0);
@@ -69,15 +63,12 @@ function CalulateComission({ setFullCommission, setYourCommission }) {
           Simulate a sale here
         </Typography>
       </Grid>
-      <TextField
-        fullWidth
-        id="outlined-basic"
-        label="Sale Value"
-        placeholder="Sale Value"
-        size="medium"
-        type="number"
-        variant="outlined"
-        onChange={(e) => handleSaleValueChange(e)}
+      <BaseTextField
+        label={"Sale Value"}
+        placeholder={"Sale Value"}
+        size={"medium"}
+        type={"number"}
+        onChange={handleSaleValueChange}
         sx={{ mt: 4 }}
         InputProps={{
           startAdornment: (
@@ -89,17 +80,14 @@ function CalulateComission({ setFullCommission, setYourCommission }) {
           ),
         }}
       />
-      <TextField
-        fullWidth
-        id="outlined-basic"
-        label="Comission"
-        placeholder="Comission"
-        size="medium"
-        variant="outlined"
-        type="number"
+      <BaseTextField
+        label={"Comission"}
+        placeholder={"Comission"}
+        size={"medium"}
+        type={"number"}
         sx={{ mt: 4 }}
         // value={commission}
-        onChange={(e) => handleComissionChange(e)}
+        onChange={handleComissionChange}
         error={!valid && commission.length > 0 ? true : false}
         required={true}
         InputProps={{

@@ -13,6 +13,7 @@ import FacebookOutlinedIcon from "@mui/icons-material/FacebookOutlined";
 import ArrowBackIosNewOutlinedIcon from "@mui/icons-material/ArrowBackIosNewOutlined";
 import Image from "next/image";
 import Link from "next/link";
+import BaseTextField from "../src/component/reuseable/baseTextField/BaseTextField";
 
 export default function Registration() {
   return (
@@ -78,12 +79,10 @@ export default function Registration() {
                       Name<span style={{ color: "#E63333" }}>*</span>
                     </Typography>
                   </Grid>
-                  <TextField
+                  <BaseTextField
                     fullWidth
-                    size="small"
-                    id="outlined-basic"
-                    placeholder="Name"
-                    variant="outlined"
+                    size={"small"}
+                    placeholder={"Name"}
                   />
                   <Grid
                     container
@@ -104,12 +103,10 @@ export default function Registration() {
                       Email<span style={{ color: "#E63333" }}>*</span>
                     </Typography>
                   </Grid>
-                  <TextField
+                  <BaseTextField
                     fullWidth
-                    size="small"
-                    id="outlined-basic"
-                    placeholder="Email"
-                    variant="outlined"
+                    size={"small"}
+                    placeholder={"Email"}
                   />
                   <Grid
                     container
@@ -130,13 +127,11 @@ export default function Registration() {
                       Phone<span style={{ color: "#E63333" }}>*</span>
                     </Typography>
                   </Grid>
-                  <TextField
+                  <BaseTextField
                     fullWidth
-                    size="small"
-                    id="outlined-basic"
-                    placeholder="Phone"
-                    variant="outlined"
-                    type="number"
+                    size={"small"}
+                    placeholder={"Phone"}
+                    type={"number"}
                   />
                   <Grid
                     container
@@ -157,13 +152,11 @@ export default function Registration() {
                       Password<span style={{ color: "#E63333" }}>*</span>
                     </Typography>
                   </Grid>
-                  <TextField
+                  <BaseTextField
                     fullWidth
-                    size="small"
-                    id="outlined-basic"
-                    placeholder="Password"
-                    variant="outlined"
-                    type="password"
+                    size={"small"}
+                    placeholder={"Password"}
+                    type={"password"}
                   />
 
                   <Grid

@@ -242,9 +242,9 @@ export default function PropertyJourney(props) {
                       //     handleNext={handleNext}
                       //     handleBack={handleBack}
                       //   />
-                      // <CertificatesAndDocuments handleNext={handleNext} />
-                      <BrokerCertificateAndDocument handleNext={handleNext} />
-                    ) : activeStep === 4 ? (
+                      <CertificatesAndDocuments handleNext={handleNext} />
+                    ) : // <BrokerCertificateAndDocument handleNext={handleNext} />
+                    activeStep === 4 ? (
                       <PreAnalise handleNext={handleNext} />
                     ) : (
                       <DigitalNotary handleNext={handleNext} />

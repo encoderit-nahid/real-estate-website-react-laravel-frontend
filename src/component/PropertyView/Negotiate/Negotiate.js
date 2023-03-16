@@ -17,6 +17,7 @@ import { TimePicker } from "@mui/x-date-pickers/TimePicker";
 import dayjs from "dayjs";
 import BaseModal from "../../reuseable/baseModal/BaseModal";
 import ScheduleModal from "../scheduleModal/ScheduleModal";
+import BaseTextField from "../../reuseable/baseTextField/BaseTextField";
 
 function Negotiate({
   handleProposalOpen,
@@ -205,14 +206,7 @@ function Negotiate({
           >
             Proposal
           </Typography>
-          <TextField
-            fullWidth
-            size="small"
-            type="number"
-            id="outlined-basic"
-            placeholder="BRL"
-            variant="outlined"
-          />
+          <BaseTextField size={"small"} type={"number"} placeholder={"BRL"} />
           <Button
             onClick={() => setConditionField(true)}
             fullWidth
@@ -222,13 +216,10 @@ function Negotiate({
             Include Conditions
           </Button>
           {conditionField && (
-            <TextField
-              fullWidth
+            <BaseTextField
               sx={{ mt: 1 }}
-              size="small"
-              id="outlined-basic"
-              placeholder="Condition"
-              variant="outlined"
+              size={"small"}
+              placeholder={"Condition"}
             />
           )}
           <Button

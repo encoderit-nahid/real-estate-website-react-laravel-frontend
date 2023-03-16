@@ -8,6 +8,7 @@ import {
 } from "@mui/material";
 import React, { useState } from "react";
 import BaseOutlinedZipInput from "../../reuseable/baseOutlinedZipInput/BaseOutlinedZipInput";
+import BaseTextField from "../../reuseable/baseTextField/BaseTextField";
 
 function AddressData({ handleBack, handleNext }) {
   const [value, setValue] = useState("");
@@ -100,14 +101,7 @@ function AddressData({ handleBack, handleNext }) {
               Address<span style={{ color: "#E63333" }}>*</span>
             </Typography>
           </Grid>
-          <TextField
-            fullWidth
-            size="small"
-            id="outlined-basic"
-            // placeholder="Social Name"
-            variant="outlined"
-            sx={{ mb: 1 }}
-          />
+          <BaseTextField size={"small"} sx={{ mb: 1 }} />
         </Grid>
         <Grid item xs={12} sm={12} md={4}>
           <Grid
@@ -129,15 +123,7 @@ function AddressData({ handleBack, handleNext }) {
               Number<span style={{ color: "#E63333" }}>*</span>
             </Typography>
           </Grid>
-          <TextField
-            fullWidth
-            size="small"
-            id="outlined-basic"
-            type="number"
-            // placeholder="Social Name"
-            variant="outlined"
-            sx={{ mb: 1 }}
-          />
+          <BaseTextField size={"small"} type={"number"} sx={{ mb: 1 }} />
         </Grid>
       </Grid>
 
@@ -162,14 +148,7 @@ function AddressData({ handleBack, handleNext }) {
               Neighborhood<span style={{ color: "#E63333" }}>*</span>
             </Typography>
           </Grid>
-          <TextField
-            fullWidth
-            size="small"
-            id="outlined-basic"
-            // placeholder="Social Name"
-            variant="outlined"
-            sx={{ mb: 1 }}
-          />
+          <BaseTextField size={"small"} variant="outlined" sx={{ mb: 1 }} />
         </Grid>
       </Grid>
 
@@ -203,14 +182,7 @@ function AddressData({ handleBack, handleNext }) {
               </span>
             </Typography>
           </Grid>
-          <TextField
-            fullWidth
-            size="small"
-            id="outlined-basic"
-            // placeholder="Social Name"
-            variant="outlined"
-            sx={{ mb: 1 }}
-          />
+          <BaseTextField size={"small"} sx={{ mb: 1 }} />
         </Grid>
       </Grid>
 
@@ -235,14 +207,7 @@ function AddressData({ handleBack, handleNext }) {
               State<span style={{ color: "#E63333" }}>*</span>
             </Typography>
           </Grid>
-          <TextField
-            fullWidth
-            size="small"
-            id="outlined-basic"
-            // placeholder="Social Name"
-            variant="outlined"
-            sx={{ mb: 1 }}
-          />
+          <BaseTextField size={"small"} sx={{ mb: 1 }} />
         </Grid>
         <Grid item xs={12} sm={12} md={6}>
           <Grid
@@ -264,14 +229,7 @@ function AddressData({ handleBack, handleNext }) {
               City<span style={{ color: "#E63333" }}>*</span>
             </Typography>
           </Grid>
-          <TextField
-            fullWidth
-            size="small"
-            id="outlined-basic"
-            // placeholder="Social Name"
-            variant="outlined"
-            sx={{ mb: 1 }}
-          />
+          <BaseTextField size={"small"} sx={{ mb: 1 }} />
         </Grid>
       </Grid>
 

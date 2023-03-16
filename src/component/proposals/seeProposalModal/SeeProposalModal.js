@@ -8,7 +8,6 @@ import {
   ListItem,
   ListItemAvatar,
   ListItemText,
-  TextField,
   Tooltip,
   Typography,
 } from "@mui/material";
@@ -46,7 +45,6 @@ function SeeProposalModal({ handleSeeProposalClose }) {
   const [counterProposalOpen, setCounterProposalOpen] = useState(false);
   const handleCounterProposalOpen = () => setCounterProposalOpen(true);
   const handleCounterProposalClose = () => setCounterProposalOpen(false);
-
 
   return (
     <Box sx={style}>

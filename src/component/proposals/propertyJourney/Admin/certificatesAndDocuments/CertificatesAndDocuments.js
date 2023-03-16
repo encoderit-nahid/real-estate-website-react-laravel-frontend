@@ -2,7 +2,6 @@ import {
   Box,
   Button,
   Grid,
-  TextField,
   Typography,
   Tooltip,
   LinearProgress,
@@ -29,8 +28,6 @@ function CertificatesAndDocuments({ handleNext }) {
   const handleClose = () => setContractModalOpen(false);
 
   const [progress, setProgress] = React.useState(40);
-
-
 
   return (
     <Box sx={{ mt: 4 }}>
@@ -306,7 +303,6 @@ function CertificatesAndDocuments({ handleNext }) {
           </>
         </Tooltip>
       </BaseModal>
-  
     </Box>
   );
 }

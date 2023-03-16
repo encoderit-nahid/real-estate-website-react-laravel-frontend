@@ -13,6 +13,7 @@ import BaseButton from "../../reuseable/button/BaseButton";
 import homeImage from "../../../../public/Images/home.png";
 import Image from "next/image";
 import Link from "next/link";
+import BaseTextField from "../../reuseable/baseTextField/BaseTextField";
 
 // const AutoComplete = styled(Autocomplete)`
 //   & .MuiInputBase-input {
@@ -61,12 +62,10 @@ function FulfillDream() {
       >
         Dream!
       </Typography>
-      <TextField
+      <BaseTextField
         fullWidth
-        id="outlined-basic"
-        label="Location"
-        placeholder="Search by street, neighborhood or city"
-        variant="outlined"
+        label={"Location"}
+        placeholder={"Search by street, neighborhood or city"}
         sx={{
           mt: 4,
           width: { xs: "90%", sm: "90%", md: "90%", xl: "90%", lg: "75%" },

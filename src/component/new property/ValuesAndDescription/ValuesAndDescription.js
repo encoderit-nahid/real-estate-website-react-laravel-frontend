@@ -3,6 +3,7 @@ import Image from "next/image";
 import React from "react";
 import valueImage from "../../../../public/Images/proposal_modal.png";
 import ventureImage from "../../../../public/Images/certidoes.png";
+import BaseTextField from "../../reuseable/baseTextField/BaseTextField";
 
 function ValuesAndDescription() {
   return (
@@ -29,35 +30,26 @@ function ValuesAndDescription() {
       </Grid>
       <Grid container spacing={1} sx={{ mt: 2 }}>
         <Grid item xs={6}>
-          <TextField
-            fullWidth
-            size="medium"
-            id="outlined-basic"
-            placeholder="BRL Rent"
-            variant="outlined"
-            type="number"
+          <BaseTextField
+            size={"medium"}
+            placeholder={"BRL Rent"}
+            type={"number"}
           />
         </Grid>
         <Grid item xs={6}>
-          <TextField
-            fullWidth
-            size="medium"
-            id="outlined-basic"
-            placeholder="R$ condominium"
-            variant="outlined"
-            type="number"
+          <BaseTextField
+            size={"medium"}
+            placeholder={"R$ condominium"}
+            type={"number"}
           />
         </Grid>
       </Grid>
       <Grid container spacing={1} sx={{ mt: 2 }}>
         <Grid item xs={6}>
-          <TextField
-            fullWidth
-            size="medium"
-            id="outlined-basic"
-            placeholder="IPTU BRL"
-            variant="outlined"
-            type="number"
+          <BaseTextField
+            size={"medium"}
+            placeholder={"IPTU BRL"}
+            type={"number"}
           />
         </Grid>
       </Grid>
@@ -85,65 +77,47 @@ function ValuesAndDescription() {
 
       <Grid container spacing={1} sx={{ mt: 2 }}>
         <Grid item xs={12} sm={12} md={12} lg={5}>
-          <TextField
-            fullWidth
-            size="medium"
-            id="outlined-basic"
-            placeholder="m² Land area"
-            variant="outlined"
-            type="number"
+          <BaseTextField
+            size={"medium"}
+            placeholder={"m² Land area"}
+            type={"number"}
           />
         </Grid>
         <Grid item xs={12} sm={12} md={12} lg={5}>
-          <TextField
-            fullWidth
-            size="medium"
-            id="outlined-basic"
-            placeholder="m²Size of the property"
-            variant="outlined"
-            type="number"
+          <BaseTextField
+            size={"medium"}
+            placeholder={"m²Size of the property"}
+            type={"number"}
           />
         </Grid>
         <Grid item xs={12} sm={12} md={12} lg={2}>
-          <TextField
-            fullWidth
-            size="medium"
-            id="outlined-basic"
-            placeholder="number of rooms"
-            variant="outlined"
-            type="number"
+          <BaseTextField
+            size={"medium"}
+            placeholder={"number of rooms"}
+            type={"number"}
           />
         </Grid>
       </Grid>
       <Grid container spacing={1} sx={{ mt: 2 }}>
         <Grid item xs={12} sm={12} md={12} lg={5}>
-          <TextField
-            fullWidth
-            size="medium"
-            id="outlined-basic"
-            placeholder="number of suites"
-            variant="outlined"
-            type="number"
+          <BaseTextField
+            size={"medium"}
+            placeholder={"number of suites"}
+            type={"number"}
           />
         </Grid>
         <Grid item xs={12} sm={12} md={12} lg={2}>
-          <TextField
-            fullWidth
-            size="medium"
-            id="outlined-basic"
-            placeholder="number of bathrooms"
-            variant="outlined"
-            type="number"
+          <BaseTextField
+            size={"medium"}
+            placeholder={"number of bathrooms"}
+            type={"number"}
           />
         </Grid>
         <Grid item xs={12} sm={12} md={12} lg={5}>
-          <TextField
-            fullWidth
-            size="medium"
-            id="outlined-basic"
-            placeholder="Number of parking spaces"
-            variant="outlined"
-            type="number"
+          <BaseTextField
+            size={"medium"}
+            placeholder={"Number of parking spaces"}
+            type={"number"}
           />
         </Grid>
       </Grid>
@@ -161,22 +135,13 @@ function ValuesAndDescription() {
           />
         </Grid>
         <Grid item xs={12} sm={12} md={12} lg={2}>
-          <TextField
-            fullWidth
-            size="medium"
-            id="outlined-basic"
-            placeholder="Registry office"
-            variant="outlined"
-          />
+          <BaseTextField size={"medium"} placeholder={"Registry office"} />
         </Grid>
         <Grid item xs={12} sm={12} md={12} lg={5}>
-          <TextField
-            fullWidth
-            size="medium"
-            id="outlined-basic"
-            placeholder="Registration number"
-            variant="outlined"
-            type="number"
+          <BaseTextField
+            size={"medium"}
+            placeholder={"Registration number"}
+            type={"number"}
           />
         </Grid>
       </Grid>

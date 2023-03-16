@@ -18,6 +18,7 @@ import ventureImage from "../public/Images/certidoes.png";
 import DeleteOutlineOutlinedIcon from "@mui/icons-material/DeleteOutlineOutlined";
 import { useDropzone } from "react-dropzone";
 import Link from "next/link";
+import BaseTextField from "../src/component/reuseable/baseTextField/BaseTextField";
 
 const baseStyle = {
   flex: 1,
@@ -213,12 +214,10 @@ export default function NewVenture(props) {
                   alignItems="flex-start"
                   sx={{ mt: 4 }}
                 >
-                  <TextField
+                  <BaseTextField
                     fullWidth
-                    size="small"
-                    id="outlined-basic"
-                    placeholder="Enterprise name"
-                    variant="outlined"
+                    size={"small"}
+                    placeholder={"Enterprise name"}
                   />
                   <TextareaAutosize
                     aria-label="minimum height"

@@ -12,6 +12,7 @@ import React, { useState } from "react";
 import Image from "next/image";
 import BaseOutlinedRgInput from "../../reuseable/baseOutlinedRgInput/BaseOutlinedRgInput";
 import BaseOutlinedCpfInput from "../../reuseable/baseOutlinedCpfInput/BaseOutlinedCpfInput";
+import BaseTextField from "../../reuseable/baseTextField/BaseTextField";
 
 function PersonalData({ handleNext }) {
   //rg
@@ -149,12 +150,9 @@ function PersonalData({ handleNext }) {
               Full Name<span style={{ color: "#E63333" }}>*</span>
             </Typography>
           </Grid>
-          <TextField
-            fullWidth
-            size="small"
-            id="outlined-basic"
-            placeholder="Full Name"
-            variant="outlined"
+          <BaseTextField
+            size={"small"}
+            placeholder={"Full Name"}
             sx={{ mb: 2 }}
           />
           <Grid
@@ -185,12 +183,9 @@ function PersonalData({ handleNext }) {
               </span>
             </Typography>
           </Grid>
-          <TextField
-            fullWidth
-            size="small"
-            id="outlined-basic"
-            placeholder="Social Name"
-            variant="outlined"
+          <BaseTextField
+            size={"small"}
+            placeholder={"Social Name"}
             sx={{ mb: 1 }}
           />
         </Grid>
@@ -219,15 +214,7 @@ function PersonalData({ handleNext }) {
               CRECI number<span style={{ color: "#E63333" }}>*</span>
             </Typography>
           </Grid>
-          <TextField
-            fullWidth
-            size="small"
-            id="outlined-basic"
-            type="number"
-            // placeholder="Social Name"
-            variant="outlined"
-            sx={{ mb: 1 }}
-          />
+          <BaseTextField size={"small"} type={"number"} sx={{ mb: 1 }} />
         </Grid>
         <Grid item xs={12} sm={12} md={6}>
           <Grid
@@ -302,14 +289,7 @@ function PersonalData({ handleNext }) {
               Date of Birth<span style={{ color: "#E63333" }}>*</span>
             </Typography>
           </Grid>
-          <TextField
-            fullWidth
-            size="small"
-            id="outlined-basic"
-            // placeholder="Social Name"
-            variant="outlined"
-            sx={{ mb: 1 }}
-          />
+          <BaseTextField size={"small"} sx={{ mb: 1 }} />
         </Grid>
       </Grid>
       <Button

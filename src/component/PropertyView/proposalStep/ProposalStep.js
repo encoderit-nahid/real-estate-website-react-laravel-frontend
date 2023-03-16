@@ -9,6 +9,7 @@ import {
 import Image from "next/image";
 import proposeImage from "../../../../public/Images/proposal_modal.png";
 import React, { useState } from "react";
+import BaseTextField from "../../reuseable/baseTextField/BaseTextField";
 
 function ProposalStep() {
   const [cash, setCash] = useState(true);
@@ -83,38 +84,27 @@ function ProposalStep() {
         </Button>
       </Grid>
 
-      <TextField
-        fullWidth
-        id="outlined-basic"
-        placeholder="BRL Total Amount"
-        variant="outlined"
-        type="number"
+      <BaseTextField
+        placeholder={"BRL Total Amount"}
+        variant={"outlined"}
+        type={"number"}
       />
 
       {installment && (
         <Box>
-          <TextField
-            fullWidth
-            id="outlined-basic"
-            placeholder="R$ Cash value"
-            variant="outlined"
-            type="number"
+          <BaseTextField
+            placeholder={"R$ Cash value"}
+            type={"number"}
             sx={{ mt: 2 }}
           />
-          <TextField
-            fullWidth
-            id="outlined-basic"
-            placeholder="R$  Term value"
-            variant="outlined"
-            type="number"
+          <BaseTextField
+            placeholder={"R$  Term value"}
+            type={"number"}
             sx={{ mt: 2 }}
           />
-          <TextField
-            fullWidth
-            id="outlined-basic"
-            placeholder="Number of installments"
-            variant="outlined"
-            type="number"
+          <BaseTextField
+            placeholder={"Number of installments"}
+            type={"number"}
             sx={{ mt: 2 }}
           />
         </Box>

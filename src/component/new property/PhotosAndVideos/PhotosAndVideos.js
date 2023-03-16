@@ -14,6 +14,7 @@ import DeleteOutlineOutlinedIcon from "@mui/icons-material/DeleteOutlineOutlined
 import { useState } from "react";
 import { useMemo } from "react";
 import AddOutlinedIcon from "@mui/icons-material/AddOutlined";
+import BaseTextField from "../../reuseable/baseTextField/BaseTextField";
 
 const baseStyle = {
   flex: 1,
@@ -185,7 +186,6 @@ function PhotosAndVideos() {
                   direction="row"
                   justifyContent="flex-end"
                   alignItems="flex-start"
-                 
                 >
                   <DeleteOutlineOutlinedIcon
                     sx={{
@@ -194,7 +194,7 @@ function PhotosAndVideos() {
                       borderRadius: "50%",
                       height: "3vh",
                       width: "3vh",
-                      paddingY:"3px"
+                      paddingY: "3px",
                     }}
                     onClick={() => handleDelete(index)}
                   />
@@ -244,29 +244,30 @@ function PhotosAndVideos() {
         alignItems="flex-start"
         sx={{ mt: 1 }}
       >
-        <TextField
-          sx={{ width: "50%",
-        
-          '& .MuiOutlinedInput-root': {  // - The Input-root, inside the TextField-root
-            '& fieldset': {  
-                borderRadius:"4px 0px 0px 4px",          // - The <fieldset> inside the Input-root
-                borderRight: 'none',   // - Set the Input border
+        <BaseTextField
+          sx={{
+            width: "50%",
+
+            "& .MuiOutlinedInput-root": {
+              // - The Input-root, inside the TextField-root
+              "& fieldset": {
+                borderRadius: "4px 0px 0px 4px", // - The <fieldset> inside the Input-root
+                borderRight: "none", // - Set the Input border
+              },
             },
-        }}}
-          size="medium"
-          id="outlined-basic"
-          placeholder="paste the url of the video"
-          variant="outlined"
+          }}
+          size={"medium"}
+          placeholder={"paste the url of the video"}
         />
         <Button
           sx={{
             backgroundColor: "#DBE1E5",
             py: 2,
-            borderRadius:"0px 4px 4px 0px",
+            borderRadius: "0px 4px 4px 0px",
             "&:hover": {
               backgroundColor: "#DBE1E5",
               py: 2,
-              borderRadius:"0px 4px 4px 0px",
+              borderRadius: "0px 4px 4px 0px",
             },
           }}
         >

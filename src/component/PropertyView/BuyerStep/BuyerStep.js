@@ -13,6 +13,7 @@ import buyerProfile from "../../../../public/Images/buyer_profile.png";
 import BaseOutlinedZipInput from "../../reuseable/baseOutlinedZipInput/BaseOutlinedZipInput";
 import BaseOutlinedCpfInput from "../../reuseable/baseOutlinedCpfInput/BaseOutlinedCpfInput";
 import BaseOutlinedRgInput from "../../reuseable/baseOutlinedRgInput/BaseOutlinedRgInput";
+import BaseTextField from "../../reuseable/baseTextField/BaseTextField";
 
 function BuyerStep() {
   //zip_code
@@ -77,13 +78,7 @@ function BuyerStep() {
       </Grid>
       <Grid container sx={{ mt: 2 }}>
         <Grid item xs={12}>
-          <TextField
-            fullWidth
-            size="medium"
-            id="outlined-basic"
-            placeholder="Full Name"
-            variant="outlined"
-          />
+          <BaseTextField size={"medium"} placeholder={"Full Name"} />
         </Grid>
       </Grid>
       <Grid container spacing={1} sx={{ mt: 1 }}>
@@ -120,54 +115,27 @@ function BuyerStep() {
           </FormControl>
         </Grid>
         <Grid item xs={12} sm={12} md={4} lg={4} xl={4}>
-          <TextField
-            fullWidth
-            size="medium"
-            id="outlined-basic"
-            placeholder="Address"
-            variant="outlined"
-          />
+          <BaseTextField size={"medium"} placeholder={"Address"} />
         </Grid>
         <Grid item xs={12} sm={12} md={4} lg={4} xl={4}>
-          <TextField
-            fullWidth
-            size="medium"
-            id="outlined-basic"
-            placeholder="Number"
-            variant="outlined"
-            type="number"
+          <BaseTextField
+            size={"medium"}
+            placeholder={"Number"}
+            type={"number"}
           />
         </Grid>
       </Grid>
       <Grid container spacing={1} sx={{ mt: 1 }}>
         <Grid item xs={12} sm={12} md={6} lg={6} xl={6}>
-          <TextField
-            fullWidth
-            size="medium"
-            id="outlined-basic"
-            placeholder="Neighborhood"
-            variant="outlined"
-          />
+          <BaseTextField size={"medium"} placeholder={"Neighborhood"} />
         </Grid>
         <Grid item xs={12} sm={12} md={6} lg={6} xl={6}>
-          <TextField
-            fullWidth
-            size="medium"
-            id="outlined-basic"
-            placeholder="Complement"
-            variant="outlined"
-          />
+          <BaseTextField size={"medium"} placeholder={"Complement"} />
         </Grid>
       </Grid>
       <Grid container spacing={1} sx={{ mt: 1 }}>
         <Grid item xs={12} sm={12} md={6} lg={6} xl={6}>
-          <TextField
-            fullWidth
-            size="medium"
-            id="outlined-basic"
-            placeholder="City"
-            variant="outlined"
-          />
+          <BaseTextField size={"medium"} placeholder={"City"} />
         </Grid>
         <Grid item xs={12} sm={12} md={6} lg={6} xl={6}>
           <Autocomplete
