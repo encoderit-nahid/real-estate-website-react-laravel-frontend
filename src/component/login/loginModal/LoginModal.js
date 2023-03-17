@@ -18,6 +18,8 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import * as Yup from "yup";
 import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import NoEncryptionOutlinedIcon from "@mui/icons-material/NoEncryptionOutlined";
+import axios from "axios";
+import { signIn } from "next-auth/react";
 
 const style = {
   position: "absolute",
@@ -65,7 +67,16 @@ function LoginModal({ handleLoginClose }) {
   });
 
   const onSubmit = (data) => {
-    console.log(JSON.stringify(data, null, 2));
+    axios.post("http://127.0.0.1:8000/api/login", data)
+    .then((response) => {
+      console.log(response);
+
+      signIn("credentials", {
+        token: response.data.token,
+      });
+    });
+
+ 
   };
 
   const allValues = watch();

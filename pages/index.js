@@ -29,6 +29,7 @@ import whoBrokerMobile from "../public/Images/who_broker_mobile.png";
 import technologyImage from "../public/Images/technology.png";
 import clientsImage from "../public/Images/clients.png";
 import earnImage from "../public/Images/earn.png";
+import { useSession, signIn, signOut } from "next-auth/react"
 
 const brokerData = [
   {
@@ -60,6 +61,8 @@ export default function App({
   const svgDealsString = encodeURIComponent(
     renderToStaticMarkup(<BestDealSvgBackground />)
   );
+  const { data: session } = useSession()
+  console.log(session)
   return (
     <div>
       <Head>
