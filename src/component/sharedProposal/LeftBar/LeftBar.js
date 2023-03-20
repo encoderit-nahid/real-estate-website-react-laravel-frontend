@@ -35,6 +35,7 @@ import person from "../../../../public/Images/person.png";
 import { createTheme, CssBaseline, ThemeProvider } from "@mui/material";
 import { useEffect } from "react";
 import { useState } from "react";
+import { signIn, signOut } from "next-auth/react";
 
 function LeftBar(props) {
   const router = useRouter();
@@ -46,6 +47,11 @@ function LeftBar(props) {
       fontFamily: ["Lato", "Inter", "sans-serif"].join(","),
     },
   });
+
+  const handleLogout = () => {
+    router.push("/");
+    signOut();
+  };
 
   const data = [
     {
@@ -69,7 +75,7 @@ function LeftBar(props) {
       route: "brokers",
     },
     { icon: <HelpOutlineOutlinedIcon />, label: "FAQ", route: "faq" },
-    { icon: <InputOutlinedIcon />, label: "Leave", route: "leave" },
+    // { icon: <InputOutlinedIcon />, label: "Leave", route: "leave" },
   ];
 
   // const [selectedLabel, setSelectedLabel] = useState("properties");
@@ -171,7 +177,11 @@ function LeftBar(props) {
               <ListItemButton
                 className="btn-leftbar"
                 selected={selectedLabel === leftData.route}
-                onClick={(event) => handleListItemClick(event, index, leftData)}
+                onClick={
+                  index === 4
+                    ? handleLogout
+                    : (event) => handleListItemClick(event, index, leftData)
+                }
                 to={`/${leftData?.route}`}
                 sx={{
                   marginLeft: 2,
@@ -225,6 +235,53 @@ function LeftBar(props) {
               </ListItemButton>
             </Link>
           ))}
+
+          <ListItemButton
+            className="btn-leftbar"
+            // selected={selectedLabel === leftData.route}
+            onClick={handleLogout}
+            sx={{
+              marginLeft: 2,
+              mt: 1,
+
+              "&:hover": {
+                borderRight: "3px solid #7450F0",
+              },
+              "&.Mui-selected": {
+                borderRight: "3px solid #7450F0",
+              },
+            }}
+          >
+            <ListItemIcon
+              sx={{
+                color: `${"#9FAAB1"}`,
+                minWidth: 0,
+                paddingRight: 1,
+              }}
+            >
+              <InputOutlinedIcon />
+            </ListItemIcon>
+            <ListItemText
+              primary={
+                <Typography
+                  variant="p"
+                  sx={{
+                    listStyle: "none",
+                    textDecoration: "none",
+                    margin: 0,
+                    padding: 0,
+                    fontWeight: `${"400"}`,
+                    fontSize: "16px",
+                    color: `${"#9FAAB1"}`,
+                    lineHeight: "22px",
+                  }}
+                >
+                  Leave
+                </Typography>
+              }
+              sx={{ color: "#FFFFFF" }}
+            />
+          </ListItemButton>
         </List>
       </Grid>
     </ThemeProvider>
