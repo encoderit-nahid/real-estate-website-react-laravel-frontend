@@ -1,9 +1,12 @@
 import {
+  Alert,
   Box,
   Button,
+  CircularProgress,
   Divider,
   Grid,
   InputAdornment,
+  Snackbar,
   Typography,
 } from "@mui/material";
 import loginImage from "../../../../public/Images/login.png";
@@ -20,6 +23,7 @@ import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import NoEncryptionOutlinedIcon from "@mui/icons-material/NoEncryptionOutlined";
 import axios from "axios";
 import { signIn } from "next-auth/react";
+import { loginApi, userDetailsApi } from "../../../api";
 
 const style = {
   position: "absolute",
@@ -27,7 +31,7 @@ const style = {
   left: "50%",
   // top:{xs:"80%"},
   transform: "translate(-50%, -50%)",
-  width: { xs: "80%", sm: "80%", md: "60%", lg: "25%", xl: "25%" },
+  width: { xs: "80%", sm: "80%", md: "60%", lg: "35%", xl: "25%" },
   bgcolor: "#ffffff",
   // border: "2px solid #000",
   boxShadow: "none",
@@ -50,10 +54,22 @@ const validationSchema = Yup.object().shape({
 
 function LoginModal({ handleLoginClose }) {
   const [validEmail, setValidEmail] = useState(false);
-
+  const [loading, setLoading] = useState(false);
   const [showPass, setShowPass] = useState(false);
   const handleClickShowPassword = () => {
     setShowPass(!showPass);
+  };
+  const [snackbarOpen, setSnackbarOpen] = React.useState(false);
+
+  const handleClickSnackbar = () => {
+    setSnackbarOpen(true);
+  };
+
+  const handleCloseSnackbar = (event, reason) => {
+    if (reason === "clickaway") {
+      return;
+    }
+    setSnackbarOpen(false);
   };
 
   const {
@@ -66,17 +82,34 @@ function LoginModal({ handleLoginClose }) {
     resolver: yupResolver(validationSchema),
   });
 
-  const onSubmit = (data) => {
-    axios.post("http://127.0.0.1:8000/api/login", data)
-    .then((response) => {
-      console.log(response);
-
-      signIn("credentials", {
-        token: response.data.token,
-      });
-    });
-
- 
+  const onSubmit = async (data) => {
+    setLoading(true);
+    const [error, responseToken] = await loginApi(data);
+    if (!error) {
+      localStorage.setItem("token", responseToken?.data?.token);
+      const [error, response] = await userDetailsApi();
+      console.log(response.data.user);
+      setLoading(false);
+      if (!error) {
+        signIn("credentials", {
+          userId: response.data.user.id,
+          userEmail: response.data.user.email,
+          name: response.data.user.name,
+          phone: response.data.user.phone,
+          status: response.data.user.status,
+          role: response.data.user.roles[0].slug,
+          roleId: response.data.user.roles[0].id,
+          permissions: JSON.stringify(response.data.user.roles[0].permissions),
+          callbackUrl:
+            response.data.user.roles[0].slug === "buyer"
+              ? "/"
+              : "/my_properties",
+        });
+      }
+    } else {
+      handleClickSnackbar();
+      setLoading(false);
+    }
   };
 
   const allValues = watch();
@@ -239,7 +272,8 @@ function LoginModal({ handleLoginClose }) {
               textTransform: "none",
             }}
           >
-            To enter
+            {loading && <CircularProgress size={22} color="inherit" />}
+            {!loading && "To enter"}
           </Button>
           {/* </a>
           </Link> */}
@@ -304,6 +338,24 @@ function LoginModal({ handleLoginClose }) {
           </Link>
         </Grid>
       </form>
+      <Snackbar
+        open={snackbarOpen}
+        autoHideDuration={6000}
+        onClose={handleCloseSnackbar}
+        anchorOrigin={{
+          vertical: "top",
+          horizontal: "right",
+        }}
+        key={"top"}
+      >
+        <Alert
+          onClose={handleCloseSnackbar}
+          severity="error"
+          sx={{ width: "100%" }}
+        >
+          Invalid Email or Password!
+        </Alert>
+      </Snackbar>
     </Box>
   );
 }

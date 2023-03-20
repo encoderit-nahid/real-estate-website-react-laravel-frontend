@@ -21,6 +21,9 @@ import { useState } from "react";
 import BaseModal from "../../reuseable/baseModal/BaseModal";
 import LoginModal from "../../login/loginModal/LoginModal";
 import Link from "next/link";
+import { useSession, signIn, signOut } from "next-auth/react";
+import PersonOutlineOutlinedIcon from "@mui/icons-material/PersonOutlineOutlined";
+import { Popover } from "@mui/material";
 
 const pages = ["search Real estate", "I am broker", "I am Owner", "blog"];
 const pagesData = [
@@ -38,6 +41,7 @@ function Navbar({
   handleLoginOpen,
   handleLoginClose,
 }) {
+  const { data: session } = useSession();
   const [anchorElNav, setAnchorElNav] = React.useState(null);
   const [anchorElUser, setAnchorElUser] = React.useState(null);
 
@@ -55,6 +59,22 @@ function Navbar({
   const handleCloseUserMenu = () => {
     setAnchorElUser(null);
   };
+  const handleLogout = () => {
+    signOut();
+  };
+
+  const [anchorEl, setAnchorEl] = React.useState(null);
+
+  const handleClick = (event) => {
+    setAnchorEl(event.currentTarget);
+  };
+
+  const handleClose = () => {
+    setAnchorEl(null);
+  };
+
+  const open = Boolean(anchorEl);
+  const id = open ? "simple-popover" : undefined;
 
   // //add_login_modal
   // const [loginOpen, setLoginOpen] = useState(false);
@@ -146,7 +166,7 @@ function Navbar({
                 </Link>
               ))}
               <BaseButton
-                name={"Login"}
+                name={!session ? "Login" : "Log out"}
                 margin={"0 0 0 1vh"}
                 handleFunction={handleLoginOpen}
               />
@@ -227,12 +247,30 @@ function Navbar({
                 </a>
               </Link>
             ))}
-            <BaseButton
-              name={"Login"}
-              handleFunction={handleLoginOpen}
-              shape={shape}
-              fontSize={"12px"}
-            />
+            {session ? (
+              <Button
+                sx={{ display: "flex", textTransform: "none" }}
+                onClick={handleClick}
+              >
+                <PersonOutlineOutlinedIcon sx={{ color: "#1A1859" }} />
+                <Typography
+                  variant="p"
+                  sx={{
+                    color: `${"#1A1859"}`,
+                    fontSize: "16px",
+                  }}
+                >
+                  {session.user.name}
+                </Typography>
+              </Button>
+            ) : (
+              <BaseButton
+                name={"Login"}
+                handleFunction={!session ? handleLoginOpen : handleLogout}
+                shape={shape}
+                fontSize={"12px"}
+              />
+            )}
           </Grid>
         </Toolbar>
         <BaseModal isShowing={loginOpen} isClose={handleLoginClose}>
@@ -243,6 +281,20 @@ function Navbar({
           </Tooltip>
         </BaseModal>
       </Container>
+      <Popover
+        id={id}
+        open={open}
+        anchorEl={anchorEl}
+        onClose={handleClose}
+        anchorOrigin={{
+          vertical: "bottom",
+          horizontal: "left",
+        }}
+      >
+        <Typography sx={{ p: 2 }} onClick={handleLogout}>
+          Log out
+        </Typography>
+      </Popover>
     </AppBar>
   );
 }

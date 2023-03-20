@@ -3,9 +3,9 @@ import "@fontsource/lato";
 
 import { createTheme, CssBaseline, ThemeProvider } from "@mui/material";
 import { useState } from "react";
-import { SessionProvider } from "next-auth/react"
+import { SessionProvider } from "next-auth/react";
 
-function MyApp({ Component,  pageProps: { session, ...pageProps }, }) {
+function MyApp({ Component, pageProps: { session, ...pageProps } }) {
   const theme = createTheme({
     typography: {
       fontFamily: ["Lato", "sans-serif", "Inter"].join(","),
@@ -31,14 +31,14 @@ function MyApp({ Component,  pageProps: { session, ...pageProps }, }) {
     <ThemeProvider theme={theme}>
       <CssBaseline />
       <SessionProvider session={session} refetchInterval={5 * 60}>
-      <Component
-        {...pageProps}
-        loginOpen={loginOpen}
-        setLoginOpen={setLoginOpen}
-        handleLoginClose={handleLoginClose}
-        handleLoginOpen={handleLoginOpen}
-      />
-       </SessionProvider>
+        <Component
+          {...pageProps}
+          loginOpen={loginOpen}
+          setLoginOpen={setLoginOpen}
+          handleLoginClose={handleLoginClose}
+          handleLoginOpen={handleLoginOpen}
+        />
+      </SessionProvider>
     </ThemeProvider>
   );
 }

@@ -3,6 +3,7 @@ import {
   Button,
   Container,
   Grid,
+  InputAdornment,
   TextField,
   Typography,
 } from "@mui/material";
@@ -14,8 +15,44 @@ import ArrowBackIosNewOutlinedIcon from "@mui/icons-material/ArrowBackIosNewOutl
 import Image from "next/image";
 import Link from "next/link";
 import BaseTextField from "../src/component/reuseable/baseTextField/BaseTextField";
+import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
+import NoEncryptionOutlinedIcon from "@mui/icons-material/NoEncryptionOutlined";
+import React, { useState } from "react";
+import { useForm, Controller } from "react-hook-form";
+import { yupResolver } from "@hookform/resolvers/yup";
+import * as Yup from "yup";
+import BaseOutlinedPhoneInput from "../src/component/reuseable/baseOutlinedPhoneInput/BaseOutlinedPhoneInput";
+
+const validationSchema = Yup.object().shape({
+  name: Yup.string().required("Name is required"),
+  phone: Yup.string().required("Phone is required"),
+  email: Yup.string()
+    .required("Email is required")
+    .matches(/.+@.+\.[A-Za-z]+$/, "Email is invalid"),
+  password: Yup.string()
+    .required("Password is required")
+    .min(6, "Password must be at least 6 characters")
+    .max(40, "Password must not exceed 40 characters"),
+});
+
+const UserRoleData = [
+  {
+    name: "Buyer",
+    value: 4,
+  },
+  {
+    name: "Owner",
+    value: 3,
+  },
+];
 
 export default function Registration() {
+  const [activeBtn, setActiveBtn] = useState(4);
+  const [showPass, setShowPass] = React.useState(false);
+  const handleClickShowPassword = () => {
+    setShowPass(!showPass);
+  };
+
   return (
     <div>
       <Head>
@@ -127,12 +164,16 @@ export default function Registration() {
                       Phone<span style={{ color: "#E63333" }}>*</span>
                     </Typography>
                   </Grid>
-                  <BaseTextField
+                  <BaseOutlinedPhoneInput
+                    size={"small"}
+                    placeholder={"Phone"}
+                  />
+                  {/* <BaseTextField
                     fullWidth
                     size={"small"}
                     placeholder={"Phone"}
                     type={"number"}
-                  />
+                  /> */}
                   <Grid
                     container
                     direction="row"
@@ -156,7 +197,22 @@ export default function Registration() {
                     fullWidth
                     size={"small"}
                     placeholder={"Password"}
-                    type={"password"}
+                    type={showPass ? "text" : "password"}
+                    InputProps={{
+                      endAdornment: (
+                        <InputAdornment
+                          sx={{ cursor: "pointer" }}
+                          position="end"
+                          onClick={handleClickShowPassword}
+                        >
+                          {showPass ? (
+                            <NoEncryptionOutlinedIcon />
+                          ) : (
+                            <LockOutlinedIcon />
+                          )}
+                        </InputAdornment>
+                      ),
+                    }}
                   />
 
                   <Grid
@@ -186,56 +242,19 @@ export default function Registration() {
                     // gap={2}
                     spacing={1}
                   >
-                    <Grid item xs={6}>
-                      <Button
-                        sx={{
-                          width: "100%",
-                          background: "#0362F0",
-                          borderRadius: "152px",
-                          color: "#ffffff",
-                          fontSize: {
-                            xs: "12px",
-                            sm: "13px",
-                            md: "16px",
-                            lg: "13px",
-                            xl: "16px",
-                          },
-                          fontWeight: "400",
-                          lineHeight: "22px",
-                          textTransform: "none",
-                          px: { xs: 0, sm: 2, md: 2, lg: 2, xl: 2 },
-                          py: 1,
-                          "&:hover": {
-                            width: "100%",
-                            background: "#0362F0",
-                            borderRadius: "152px",
-                            color: "#ffffff",
-                            fontSize: {
-                              xs: "12px",
-                              sm: "13px",
-                              md: "16px",
-                              lg: "13px",
-                              xl: "16px",
-                            },
-                            fontWeight: "400",
-                            lineHeight: "22px",
-                            textTransform: "none",
-                            px: { xs: 0, sm: 2, md: 2, lg: 2, xl: 2 },
-                            py: 1,
-                          },
-                        }}
-                      >
-                        Physical Person
-                      </Button>
-                    </Grid>
-                    <Grid item xs={6}>
-                      <Link href="/broker_registration">
+                    {UserRoleData?.map((data, index) => (
+                      <Grid item xs={4} key={index}>
                         <Button
+                          onClick={() => setActiveBtn(data.value)}
                           sx={{
                             width: "100%",
-                            background: "#F2F5F6",
+                            background: `${
+                              activeBtn === data.value ? "#0362F0" : "#F2F5F6"
+                            }`,
                             borderRadius: "152px",
-                            color: "#002152",
+                            color: `${
+                              activeBtn === data.value ? "#ffffff" : "#002152"
+                            }`,
                             fontSize: {
                               xs: "12px",
                               sm: "13px",
@@ -250,9 +269,59 @@ export default function Registration() {
                             py: 1,
                             "&:hover": {
                               width: "100%",
-                              background: "#F2F5F6",
+                              background: "#0362F0",
                               borderRadius: "152px",
-                              color: "#002152",
+                              color: "#ffffff",
+                              fontSize: {
+                                xs: "12px",
+                                sm: "13px",
+                                md: "16px",
+                                lg: "13px",
+                                xl: "16px",
+                              },
+                              fontWeight: "400",
+                              lineHeight: "22px",
+                              textTransform: "none",
+                              px: { xs: 0, sm: 2, md: 2, lg: 2, xl: 2 },
+                              py: 1,
+                            },
+                          }}
+                        >
+                          {data.name}
+                        </Button>
+                      </Grid>
+                    ))}
+
+                    <Grid item xs={4}>
+                      <Link href="/broker_registration">
+                        <Button
+                          onClick={() => setActiveBtn(2)}
+                          sx={{
+                            width: "100%",
+                            background: `${
+                              activeBtn === 2 ? "#0362F0" : "#F2F5F6"
+                            }`,
+                            borderRadius: "152px",
+                            color: `${activeBtn === 2 ? "#ffffff" : "#002152"}`,
+                            borderRadius: "152px",
+
+                            fontSize: {
+                              xs: "12px",
+                              sm: "13px",
+                              md: "16px",
+                              lg: "13px",
+                              xl: "16px",
+                            },
+                            fontWeight: "400",
+                            lineHeight: "22px",
+                            textTransform: "none",
+                            px: { xs: 0, sm: 2, md: 2, lg: 2, xl: 2 },
+                            py: 1,
+                            "&:hover": {
+                              width: "100%",
+                              background: "#0362F0",
+                              borderRadius: "152px",
+                              color: "#ffffff",
                               fontSize: {
                                 xs: "12px",
                                 sm: "13px",
