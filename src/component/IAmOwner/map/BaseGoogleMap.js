@@ -52,7 +52,7 @@ const Map = React.memo(BaseMap);
 
 const BaseGoogleMap = ({ height, width }) => {
   const { isLoaded } = useLoadScript({
-    googleMapsApiKey: "AIzaSyBCjayEj5DRcHr0fSxVadApgBG3nE7jgyg",
+    googleMapsApiKey: "Eghdasjfhdskjfsdfrewfsdfds4rewere",
   });
 
   return isLoaded ? <Map height={height} width={width} /> : null;
