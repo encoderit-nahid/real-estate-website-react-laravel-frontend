@@ -19,6 +19,7 @@ import DeleteOutlineOutlinedIcon from "@mui/icons-material/DeleteOutlineOutlined
 import { useDropzone } from "react-dropzone";
 import Link from "next/link";
 import BaseTextField from "../src/component/reuseable/baseTextField/BaseTextField";
+import { getSession } from "next-auth/react";
 
 const baseStyle = {
   flex: 1,
@@ -434,3 +435,25 @@ const top100Films = [
   { label: "Schindler's List", year: 1993 },
   { label: "Pulp Fiction", year: 1994 },
 ];
+
+export async function getServerSideProps(context) {
+  //* Session for SSG
+  const session = await getSession(context);
+  //? If Not Logged In
+  if (!session) {
+    return {
+      redirect: {
+        destination: "/",
+      },
+      props: {
+        session: null,
+      },
+    };
+  }
+
+  return {
+    props: {
+      session: session,
+    },
+  };
+}

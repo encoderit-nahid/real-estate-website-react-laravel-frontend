@@ -35,10 +35,12 @@ import person from "../../../../public/Images/person.png";
 import { createTheme, CssBaseline, ThemeProvider } from "@mui/material";
 import { useEffect } from "react";
 import { useState } from "react";
-import { signIn, signOut } from "next-auth/react";
+import { useSession, signIn, signOut } from "next-auth/react";
 
 function LeftBar(props) {
   const router = useRouter();
+  const { data: session } = useSession();
+  console.log({ session });
   const { handleDrawerToggle, mobileOpen, drawerWidth, isDarkModeClose } =
     props;
   const { window } = props;
@@ -49,8 +51,9 @@ function LeftBar(props) {
   });
 
   const handleLogout = () => {
-    router.push("/");
-    signOut();
+    signOut({
+      callbackUrl: "/",
+    });
   };
 
   const data = [
@@ -75,7 +78,7 @@ function LeftBar(props) {
       route: "brokers",
     },
     { icon: <HelpOutlineOutlinedIcon />, label: "FAQ", route: "faq" },
-    // { icon: <InputOutlinedIcon />, label: "Leave", route: "leave" },
+    { icon: <InputOutlinedIcon />, label: "Leave", route: "leave" },
   ];
 
   // const [selectedLabel, setSelectedLabel] = useState("properties");
@@ -151,7 +154,7 @@ function LeftBar(props) {
                 mt: 2,
               }}
             >
-              Jerome Bell
+              {session?.user?.name}
             </Typography>
             <Typography
               variant="p"
@@ -163,7 +166,7 @@ function LeftBar(props) {
                 mt: 2,
               }}
             >
-              Jerome@example.com
+              {session?.user?.userEmail}
             </Typography>
           </Grid>
         </Box>
@@ -178,7 +181,7 @@ function LeftBar(props) {
                 className="btn-leftbar"
                 selected={selectedLabel === leftData.route}
                 onClick={
-                  index === 4
+                  index === 5
                     ? handleLogout
                     : (event) => handleListItemClick(event, index, leftData)
                 }
@@ -235,53 +238,6 @@ function LeftBar(props) {
               </ListItemButton>
             </Link>
           ))}
-
-          <ListItemButton
-            className="btn-leftbar"
-            // selected={selectedLabel === leftData.route}
-            onClick={handleLogout}
-            sx={{
-              marginLeft: 2,
-              mt: 1,
-
-              "&:hover": {
-                borderRight: "3px solid #7450F0",
-              },
-              "&.Mui-selected": {
-                borderRight: "3px solid #7450F0",
-              },
-            }}
-          >
-            <ListItemIcon
-              sx={{
-                color: `${"#9FAAB1"}`,
-                minWidth: 0,
-                paddingRight: 1,
-              }}
-            >
-              <InputOutlinedIcon />
-            </ListItemIcon>
-            <ListItemText
-              primary={
-                <Typography
-                  variant="p"
-                  sx={{
-                    listStyle: "none",
-                    textDecoration: "none",
-                    margin: 0,
-                    padding: 0,
-                    fontWeight: `${"400"}`,
-                    fontSize: "16px",
-                    color: `${"#9FAAB1"}`,
-                    lineHeight: "22px",
-                  }}
-                >
-                  Leave
-                </Typography>
-              }
-              sx={{ color: "#FFFFFF" }}
-            />
-          </ListItemButton>
         </List>
       </Grid>
     </ThemeProvider>

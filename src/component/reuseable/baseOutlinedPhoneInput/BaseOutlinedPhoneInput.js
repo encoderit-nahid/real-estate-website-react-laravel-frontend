@@ -18,24 +18,33 @@ const TextMaskCustom = React.forwardRef(function TextMaskCustom(props, ref) {
   );
 });
 
-function BaseOutlinedPhoneInput({ placeholder, label, size }) {
-  const [values, setValues] = React.useState({
-    textmask: "",
-  });
+function BaseOutlinedPhoneInput({
+  placeholder,
+  label,
+  value,
+  onChange,
+  size,
+  name,
+  error,
+}) {
+  // const [values, setValues] = React.useState({
+  //   textmask: "",
+  // });
 
-  const handleChange = (event) => {
-    setValues({
-      ...values,
-      [event.target.name]: event.target.value,
-    });
-  };
+  // const handleChange = (event) => {
+  //   setValues({
+  //     ...values,
+  //     [event.target.name]: event.target.value,
+  //   });
+  // };
 
   return (
     <OutlinedInput
       fullWidth
-      value={values.textmask}
-      onChange={handleChange}
-      name="textmask"
+      // value={values.textmask}
+      onChange={onChange}
+      name={name}
+      value={value}
       placeholder={placeholder}
       id="formatted-text-mask-input"
       inputComponent={TextMaskCustom}

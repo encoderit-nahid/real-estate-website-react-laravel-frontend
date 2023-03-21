@@ -27,6 +27,7 @@ import BaseModal from "../src/component/reuseable/baseModal/BaseModal";
 import ProposalModal from "../src/component/PropertyView/ProposalStepperComponent/ProposalModal";
 import { useState } from "react";
 import yellowImage from "../public/Images/yellow.png";
+import { getSession } from "next-auth/react";
 
 const aboutProperty = [
   "Heater",
@@ -329,4 +330,26 @@ export default function ProjectView({
       </main>
     </div>
   );
+}
+
+export async function getServerSideProps(context) {
+  //* Session for SSG
+  const session = await getSession(context);
+  //? If Not Logged In
+  if (!session) {
+    return {
+      redirect: {
+        destination: "/",
+      },
+      props: {
+        session: null,
+      },
+    };
+  }
+
+  return {
+    props: {
+      session: session,
+    },
+  };
 }

@@ -1,6 +1,7 @@
 import {
   Box,
   Button,
+  CircularProgress,
   Container,
   Grid,
   InputAdornment,
@@ -22,6 +23,8 @@ import { useForm, Controller } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as Yup from "yup";
 import BaseOutlinedPhoneInput from "../src/component/reuseable/baseOutlinedPhoneInput/BaseOutlinedPhoneInput";
+import { registrationApi, userDetailsApi } from "../src/api";
+import { signIn } from "next-auth/react";
 
 const validationSchema = Yup.object().shape({
   name: Yup.string().required("Name is required"),
@@ -47,10 +50,55 @@ const UserRoleData = [
 ];
 
 export default function Registration() {
+  const {
+    register,
+    watch,
+    control,
+    handleSubmit,
+    formState: { errors },
+  } = useForm({
+    resolver: yupResolver(validationSchema),
+  });
   const [activeBtn, setActiveBtn] = useState(4);
+  console.log({ activeBtn });
   const [showPass, setShowPass] = React.useState(false);
   const handleClickShowPassword = () => {
     setShowPass(!showPass);
+  };
+  const [loading, setLoading] = useState(false);
+  const allValues = watch();
+  console.log({ allValues });
+
+  const onSubmit = async (data) => {
+    setLoading(true);
+    console.log(data);
+    const allData = { ...data, role_id: activeBtn };
+    console.log({ allData });
+    const [error, responseToken] = await registrationApi(allData);
+    if (!error) {
+      localStorage.setItem("token", responseToken?.data?.token);
+      const [error, response] = await userDetailsApi();
+      console.log(response.data.user);
+      setLoading(false);
+      if (!error) {
+        signIn("credentials", {
+          userId: response.data.user.id,
+          userEmail: response.data.user.email,
+          name: response.data.user.name,
+          phone: response.data.user.phone,
+          status: response.data.user.status,
+          role: response.data.user.roles[0].slug,
+          roleId: response.data.user.roles[0].id,
+          permissions: JSON.stringify(response.data.user.roles[0].permissions),
+          callbackUrl:
+            response.data.user.roles[0].slug === "buyer"
+              ? "/"
+              : "/my_properties",
+        });
+      }
+    } else {
+      setLoading(false);
+    }
   };
 
   return (
@@ -97,279 +145,335 @@ export default function Registration() {
                   </a>
                 </Link>
                 <Container maxWidth="xs">
-                  <Grid
-                    container
-                    direction="row"
-                    justifyContent="flex-start"
-                    alignItems="flex-start"
-                    sx={{ mt: 8, mb: 1 }}
-                  >
-                    <Typography
-                      variant="p"
-                      sx={{
-                        color: "#253858",
-                        fontSize: "14px",
-                        fontWeight: "400",
-                        lineHeight: "16px",
-                      }}
+                  <form onSubmit={handleSubmit(onSubmit)}>
+                    <Grid
+                      container
+                      direction="row"
+                      justifyContent="flex-start"
+                      alignItems="flex-start"
+                      sx={{ mt: 8, mb: 1 }}
                     >
-                      Name<span style={{ color: "#E63333" }}>*</span>
+                      <Typography
+                        variant="p"
+                        sx={{
+                          color: "#253858",
+                          fontSize: "14px",
+                          fontWeight: "400",
+                          lineHeight: "16px",
+                        }}
+                      >
+                        Name<span style={{ color: "#E63333" }}>*</span>
+                      </Typography>
+                    </Grid>
+                    <Controller
+                      name="name"
+                      control={control}
+                      render={({ field }) => (
+                        <BaseTextField
+                          size={"small"}
+                          placeholder={"name"}
+                          onChange={(e) => {
+                            field.onChange(e.target.value);
+                          }}
+                          name={"name"}
+                          error={errors.email ? true : false}
+                        />
+                      )}
+                    />
+                    <Typography variant="inherit" color="textSecondary">
+                      {errors.name?.message}
                     </Typography>
-                  </Grid>
-                  <BaseTextField
-                    fullWidth
-                    size={"small"}
-                    placeholder={"Name"}
-                  />
-                  <Grid
-                    container
-                    direction="row"
-                    justifyContent="flex-start"
-                    alignItems="flex-start"
-                    sx={{ mt: 3, mb: 1 }}
-                  >
-                    <Typography
-                      variant="p"
-                      sx={{
-                        color: "#253858",
-                        fontSize: "14px",
-                        fontWeight: "400",
-                        lineHeight: "16px",
-                      }}
+                    <Grid
+                      container
+                      direction="row"
+                      justifyContent="flex-start"
+                      alignItems="flex-start"
+                      sx={{ mt: 3, mb: 1 }}
                     >
-                      Email<span style={{ color: "#E63333" }}>*</span>
+                      <Typography
+                        variant="p"
+                        sx={{
+                          color: "#253858",
+                          fontSize: "14px",
+                          fontWeight: "400",
+                          lineHeight: "16px",
+                        }}
+                      >
+                        Email<span style={{ color: "#E63333" }}>*</span>
+                      </Typography>
+                    </Grid>
+                    <Controller
+                      name="email"
+                      control={control}
+                      render={({ field }) => (
+                        <BaseTextField
+                          size={"small"}
+                          placeholder={"Email"}
+                          onChange={(e) => {
+                            field.onChange(e.target.value);
+                          }}
+                          name={"email"}
+                          error={errors.email ? true : false}
+                        />
+                      )}
+                    />
+                    <Typography variant="inherit" color="textSecondary">
+                      {errors.email?.message}
                     </Typography>
-                  </Grid>
-                  <BaseTextField
-                    fullWidth
-                    size={"small"}
-                    placeholder={"Email"}
-                  />
-                  <Grid
-                    container
-                    direction="row"
-                    justifyContent="flex-start"
-                    alignItems="flex-start"
-                    sx={{ mt: 3, mb: 1 }}
-                  >
-                    <Typography
-                      variant="p"
-                      sx={{
-                        color: "#253858",
-                        fontSize: "14px",
-                        fontWeight: "400",
-                        lineHeight: "16px",
-                      }}
+                    <Grid
+                      container
+                      direction="row"
+                      justifyContent="flex-start"
+                      alignItems="flex-start"
+                      sx={{ mt: 3, mb: 1 }}
                     >
-                      Phone<span style={{ color: "#E63333" }}>*</span>
+                      <Typography
+                        variant="p"
+                        sx={{
+                          color: "#253858",
+                          fontSize: "14px",
+                          fontWeight: "400",
+                          lineHeight: "16px",
+                        }}
+                      >
+                        Phone<span style={{ color: "#E63333" }}>*</span>
+                      </Typography>
+                    </Grid>
+                    <Controller
+                      name="phone"
+                      control={control}
+                      render={({ field }) => (
+                        <BaseOutlinedPhoneInput
+                          size={"small"}
+                          placeholder={"Phone"}
+                          onChange={(e) => {
+                            field.onChange(e.target.value);
+                          }}
+                          name={"phone"}
+                          value={field.value}
+                          error={errors.phone ? true : false}
+                        />
+                      )}
+                    />
+                    <Typography variant="inherit" color="textSecondary">
+                      {errors.phone?.message}
                     </Typography>
-                  </Grid>
-                  <BaseOutlinedPhoneInput
-                    size={"small"}
-                    placeholder={"Phone"}
-                  />
-                  {/* <BaseTextField
+
+                    {/* <BaseTextField
                     fullWidth
                     size={"small"}
                     placeholder={"Phone"}
                     type={"number"}
                   /> */}
-                  <Grid
-                    container
-                    direction="row"
-                    justifyContent="flex-start"
-                    alignItems="flex-start"
-                    sx={{ mt: 3, mb: 1 }}
-                  >
-                    <Typography
-                      variant="p"
-                      sx={{
-                        color: "#253858",
-                        fontSize: "14px",
-                        fontWeight: "400",
-                        lineHeight: "16px",
-                      }}
+                    <Grid
+                      container
+                      direction="row"
+                      justifyContent="flex-start"
+                      alignItems="flex-start"
+                      sx={{ mt: 3, mb: 1 }}
                     >
-                      Password<span style={{ color: "#E63333" }}>*</span>
-                    </Typography>
-                  </Grid>
-                  <BaseTextField
-                    fullWidth
-                    size={"small"}
-                    placeholder={"Password"}
-                    type={showPass ? "text" : "password"}
-                    InputProps={{
-                      endAdornment: (
-                        <InputAdornment
-                          sx={{ cursor: "pointer" }}
-                          position="end"
-                          onClick={handleClickShowPassword}
-                        >
-                          {showPass ? (
-                            <NoEncryptionOutlinedIcon />
-                          ) : (
-                            <LockOutlinedIcon />
-                          )}
-                        </InputAdornment>
-                      ),
-                    }}
-                  />
-
-                  <Grid
-                    container
-                    direction="row"
-                    justifyContent="flex-start"
-                    alignItems="flex-start"
-                    sx={{ mt: 3, mb: 1 }}
-                  >
-                    <Typography
-                      variant="p"
-                      sx={{
-                        color: "#253858",
-                        fontSize: "14px",
-                        fontWeight: "400",
-                        lineHeight: "16px",
-                      }}
-                    >
-                      Profile
-                    </Typography>
-                  </Grid>
-                  <Grid
-                    container
-                    // direction="row"
-                    // justifyContent="flex-start"
-                    // alignItems="flex-start"
-                    // gap={2}
-                    spacing={1}
-                  >
-                    {UserRoleData?.map((data, index) => (
-                      <Grid item xs={4} key={index}>
-                        <Button
-                          onClick={() => setActiveBtn(data.value)}
-                          sx={{
-                            width: "100%",
-                            background: `${
-                              activeBtn === data.value ? "#0362F0" : "#F2F5F6"
-                            }`,
-                            borderRadius: "152px",
-                            color: `${
-                              activeBtn === data.value ? "#ffffff" : "#002152"
-                            }`,
-                            fontSize: {
-                              xs: "12px",
-                              sm: "13px",
-                              md: "16px",
-                              lg: "13px",
-                              xl: "16px",
-                            },
-                            fontWeight: "400",
-                            lineHeight: "22px",
-                            textTransform: "none",
-                            px: { xs: 0, sm: 2, md: 2, lg: 2, xl: 2 },
-                            py: 1,
-                            "&:hover": {
-                              width: "100%",
-                              background: "#0362F0",
-                              borderRadius: "152px",
-                              color: "#ffffff",
-                              fontSize: {
-                                xs: "12px",
-                                sm: "13px",
-                                md: "16px",
-                                lg: "13px",
-                                xl: "16px",
-                              },
-                              fontWeight: "400",
-                              lineHeight: "22px",
-                              textTransform: "none",
-                              px: { xs: 0, sm: 2, md: 2, lg: 2, xl: 2 },
-                              py: 1,
-                            },
-                          }}
-                        >
-                          {data.name}
-                        </Button>
-                      </Grid>
-                    ))}
-
-                    <Grid item xs={4}>
-                      <Link href="/broker_registration">
-                        <Button
-                          onClick={() => setActiveBtn(2)}
-                          sx={{
-                            width: "100%",
-                            background: `${
-                              activeBtn === 2 ? "#0362F0" : "#F2F5F6"
-                            }`,
-                            borderRadius: "152px",
-                            color: `${activeBtn === 2 ? "#ffffff" : "#002152"}`,
-                            borderRadius: "152px",
-
-                            fontSize: {
-                              xs: "12px",
-                              sm: "13px",
-                              md: "16px",
-                              lg: "13px",
-                              xl: "16px",
-                            },
-                            fontWeight: "400",
-                            lineHeight: "22px",
-                            textTransform: "none",
-                            px: { xs: 0, sm: 2, md: 2, lg: 2, xl: 2 },
-                            py: 1,
-                            "&:hover": {
-                              width: "100%",
-                              background: "#0362F0",
-                              borderRadius: "152px",
-                              color: "#ffffff",
-                              fontSize: {
-                                xs: "12px",
-                                sm: "13px",
-                                md: "16px",
-                                lg: "13px",
-                                xl: "16px",
-                              },
-                              fontWeight: "400",
-                              lineHeight: "22px",
-                              textTransform: "none",
-                              px: { xs: 0, sm: 2, md: 2, lg: 2, xl: 2 },
-                              py: 1,
-                            },
-                          }}
-                        >
-                          Broker
-                        </Button>
-                      </Link>
-                    </Grid>
-                  </Grid>
-                  <Link href="/broker_registration">
-                    <a
-                      style={{
-                        textDecoration: "none",
-                        listStyle: "none",
-                        width: "100%",
-                      }}
-                    >
-                      <Button
-                        fullWidth
+                      <Typography
+                        variant="p"
                         sx={{
-                          background:
-                            "linear-gradient(270deg, #1DEECB 1.2%, #00C1B4 98.7%)",
-                          boxShadow: "0px 4px 34px rgba(0, 0, 0, 0.08)",
-                          borderRadius: "4px",
-                          color: "#ffffff",
-                          fontSize: "16px",
-                          lineHeight: "22px",
-                          fontWeight: "600",
-                          mt: 3,
-                          textTransform: "none",
-                          py: 1,
+                          color: "#253858",
+                          fontSize: "14px",
+                          fontWeight: "400",
+                          lineHeight: "16px",
                         }}
                       >
-                        register
-                      </Button>
-                    </a>
-                  </Link>
+                        Password<span style={{ color: "#E63333" }}>*</span>
+                      </Typography>
+                    </Grid>
+                    <Controller
+                      name="password"
+                      control={control}
+                      render={({ field }) => (
+                        <BaseTextField
+                          size={"small"}
+                          placeholder={"Password"}
+                          type={showPass ? "text" : "password"}
+                          name={"password"}
+                          // {...field}
+                          onChange={(e) => {
+                            field.onChange(e.target.value);
+                          }}
+                          // value={field.value}
+                          error={errors.password ? true : false}
+                          InputProps={{
+                            endAdornment: (
+                              <InputAdornment
+                                sx={{ cursor: "pointer" }}
+                                position="end"
+                                onClick={handleClickShowPassword}
+                              >
+                                {showPass ? (
+                                  <NoEncryptionOutlinedIcon />
+                                ) : (
+                                  <LockOutlinedIcon />
+                                )}
+                              </InputAdornment>
+                            ),
+                          }}
+                        />
+                      )}
+                    />
+                    <Typography variant="inherit" color="textSecondary">
+                      {errors.password?.message}
+                    </Typography>
+
+                    <Grid
+                      container
+                      direction="row"
+                      justifyContent="flex-start"
+                      alignItems="flex-start"
+                      sx={{ mt: 3, mb: 1 }}
+                    >
+                      <Typography
+                        variant="p"
+                        sx={{
+                          color: "#253858",
+                          fontSize: "14px",
+                          fontWeight: "400",
+                          lineHeight: "16px",
+                        }}
+                      >
+                        Profile
+                      </Typography>
+                    </Grid>
+                    <Grid
+                      container
+                      // direction="row"
+                      // justifyContent="flex-start"
+                      // alignItems="flex-start"
+                      // gap={2}
+                      spacing={1}
+                    >
+                      {UserRoleData?.map((data, index) => (
+                        <Grid item xs={4} key={index}>
+                          <Button
+                            onClick={() => setActiveBtn(data.value)}
+                            sx={{
+                              width: "100%",
+                              background: `${
+                                activeBtn === data.value ? "#0362F0" : "#F2F5F6"
+                              }`,
+                              borderRadius: "152px",
+                              color: `${
+                                activeBtn === data.value ? "#ffffff" : "#002152"
+                              }`,
+                              fontSize: {
+                                xs: "12px",
+                                sm: "13px",
+                                md: "16px",
+                                lg: "13px",
+                                xl: "16px",
+                              },
+                              fontWeight: "400",
+                              lineHeight: "22px",
+                              textTransform: "none",
+                              px: { xs: 0, sm: 2, md: 2, lg: 2, xl: 2 },
+                              py: 1,
+                              "&:hover": {
+                                width: "100%",
+                                background: "#0362F0",
+                                borderRadius: "152px",
+                                color: "#ffffff",
+                                fontSize: {
+                                  xs: "12px",
+                                  sm: "13px",
+                                  md: "16px",
+                                  lg: "13px",
+                                  xl: "16px",
+                                },
+                                fontWeight: "400",
+                                lineHeight: "22px",
+                                textTransform: "none",
+                                px: { xs: 0, sm: 2, md: 2, lg: 2, xl: 2 },
+                                py: 1,
+                              },
+                            }}
+                          >
+                            {data.name}
+                          </Button>
+                        </Grid>
+                      ))}
+
+                      <Grid item xs={4}>
+                        <Link href="/broker_registration">
+                          <Button
+                            onClick={() => setActiveBtn(2)}
+                            sx={{
+                              width: "100%",
+                              background: `${
+                                activeBtn === 2 ? "#0362F0" : "#F2F5F6"
+                              }`,
+                              borderRadius: "152px",
+                              color: `${
+                                activeBtn === 2 ? "#ffffff" : "#002152"
+                              }`,
+                              borderRadius: "152px",
+
+                              fontSize: {
+                                xs: "12px",
+                                sm: "13px",
+                                md: "16px",
+                                lg: "13px",
+                                xl: "16px",
+                              },
+                              fontWeight: "400",
+                              lineHeight: "22px",
+                              textTransform: "none",
+                              px: { xs: 0, sm: 2, md: 2, lg: 2, xl: 2 },
+                              py: 1,
+                              "&:hover": {
+                                width: "100%",
+                                background: "#0362F0",
+                                borderRadius: "152px",
+                                color: "#ffffff",
+                                fontSize: {
+                                  xs: "12px",
+                                  sm: "13px",
+                                  md: "16px",
+                                  lg: "13px",
+                                  xl: "16px",
+                                },
+                                fontWeight: "400",
+                                lineHeight: "22px",
+                                textTransform: "none",
+                                px: { xs: 0, sm: 2, md: 2, lg: 2, xl: 2 },
+                                py: 1,
+                              },
+                            }}
+                          >
+                            Broker
+                          </Button>
+                        </Link>
+                      </Grid>
+                    </Grid>
+
+                    <Button
+                      type="submit"
+                      fullWidth
+                      sx={{
+                        background:
+                          "linear-gradient(270deg, #1DEECB 1.2%, #00C1B4 98.7%)",
+                        boxShadow: "0px 4px 34px rgba(0, 0, 0, 0.08)",
+                        borderRadius: "4px",
+                        color: "#ffffff",
+                        fontSize: "16px",
+                        lineHeight: "22px",
+                        fontWeight: "600",
+                        mt: 3,
+                        textTransform: "none",
+                        py: 1,
+                      }}
+                    >
+                      {loading && (
+                        <CircularProgress size={22} color="inherit" />
+                      )}
+                      {!loading && "register"}
+                    </Button>
+                  </form>
                   <Grid
                     container
                     direction="row"

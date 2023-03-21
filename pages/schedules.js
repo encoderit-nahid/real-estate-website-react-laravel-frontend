@@ -17,6 +17,7 @@ import PermIdentityOutlinedIcon from "@mui/icons-material/PermIdentityOutlined";
 import EmailOutlinedIcon from "@mui/icons-material/EmailOutlined";
 import PhoneEnabledOutlinedIcon from "@mui/icons-material/PhoneEnabledOutlined";
 import Link from "next/link";
+import { getSession } from "next-auth/react";
 
 const drawerWidth = 240;
 
@@ -454,4 +455,26 @@ export default function Schedules(props) {
       </main>
     </div>
   );
+}
+
+export async function getServerSideProps(context) {
+  //* Session for SSG
+  const session = await getSession(context);
+  //? If Not Logged In
+  if (!session) {
+    return {
+      redirect: {
+        destination: "/",
+      },
+      props: {
+        session: null,
+      },
+    };
+  }
+
+  return {
+    props: {
+      session: session,
+    },
+  };
 }

@@ -17,6 +17,7 @@ import KeyboardDoubleArrowUpIcon from "@mui/icons-material/KeyboardDoubleArrowUp
 import Pendants from "../src/component/proposals/pendants/Pendants";
 import Accepted from "../src/component/proposals/accepted/Accepted";
 import Completed from "../src/component/proposals/completed/Completed";
+import { getSession } from "next-auth/react";
 
 const drawerWidth = 240;
 
@@ -229,4 +230,26 @@ export default function Proposals(props) {
       </main>
     </div>
   );
+}
+
+export async function getServerSideProps(context) {
+  //* Session for SSG
+  const session = await getSession(context);
+  //? If Not Logged In
+  if (!session) {
+    return {
+      redirect: {
+        destination: "/",
+      },
+      props: {
+        session: null,
+      },
+    };
+  }
+
+  return {
+    props: {
+      session: session,
+    },
+  };
 }

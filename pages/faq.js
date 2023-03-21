@@ -12,6 +12,7 @@ import Accordion from "@mui/material/Accordion";
 import AccordionDetails from "@mui/material/AccordionDetails";
 import AccordionSummary from "@mui/material/AccordionSummary";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
+import { getSession } from "next-auth/react";
 
 const drawerWidth = 240;
 
@@ -186,4 +187,26 @@ export default function Faq(props) {
       </main>
     </div>
   );
+}
+
+export async function getServerSideProps(context) {
+  //* Session for SSG
+  const session = await getSession(context);
+  //? If Not Logged In
+  if (!session) {
+    return {
+      redirect: {
+        destination: "/",
+      },
+      props: {
+        session: null,
+      },
+    };
+  }
+
+  return {
+    props: {
+      session: session,
+    },
+  };
 }

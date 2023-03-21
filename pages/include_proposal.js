@@ -12,6 +12,7 @@ import BuyerDataStep from "../src/component/properties/BuyerDataStep/BuyerDataSt
 import BaseModal from "../src/component/reuseable/baseModal/BaseModal";
 import ProposalSentModal from "../src/component/properties/ProposalSentModal/ProposalSentModal";
 import Link from "next/link";
+import { getSession } from "next-auth/react";
 
 const drawerWidth = 240;
 
@@ -269,4 +270,26 @@ export default function IncludeProposal(props) {
       </main>
     </div>
   );
+}
+
+export async function getServerSideProps(context) {
+  //* Session for SSG
+  const session = await getSession(context);
+  //? If Not Logged In
+  if (!session) {
+    return {
+      redirect: {
+        destination: "/",
+      },
+      props: {
+        session: null,
+      },
+    };
+  }
+
+  return {
+    props: {
+      session: session,
+    },
+  };
 }

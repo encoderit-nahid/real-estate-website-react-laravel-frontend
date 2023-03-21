@@ -18,6 +18,7 @@ import Features from "../src/component/new property/Features/Features";
 import Owner from "../src/component/new property/Owner/Owner";
 import PropertySubmittedModal from "../src/component/new property/PropertySubmittedModal/PropertySubmittedModal";
 import Link from "next/link";
+import { getSession } from "next-auth/react";
 
 const drawerWidth = 240;
 
@@ -323,4 +324,26 @@ export default function NewProperty(props) {
       </main>
     </div>
   );
+}
+
+export async function getServerSideProps(context) {
+  //* Session for SSG
+  const session = await getSession(context);
+  //? If Not Logged In
+  if (!session) {
+    return {
+      redirect: {
+        destination: "/",
+      },
+      props: {
+        session: null,
+      },
+    };
+  }
+
+  return {
+    props: {
+      session: session,
+    },
+  };
 }

@@ -29,6 +29,7 @@ import RentCard from "../src/component/reuseable/rentCard/RentCard";
 import FilterAltOutlinedIcon from "@mui/icons-material/FilterAltOutlined";
 import BaseOutlinedCurrencyInput from "../src/component/reuseable/baseOutlinedCurrencyInput/BaseOutlinedCurrencyInput";
 import CloseIcon from "@mui/icons-material/Close";
+import { getSession } from "next-auth/react";
 
 function valuetext(value) {
   return `${value}°C`;
@@ -1282,4 +1283,26 @@ export default function ViewProperties(props) {
       </main>
     </div>
   );
+}
+
+export async function getServerSideProps(context) {
+  //* Session for SSG
+  const session = await getSession(context);
+  //? If Not Logged In
+  if (!session) {
+    return {
+      redirect: {
+        destination: "/",
+      },
+      props: {
+        session: null,
+      },
+    };
+  }
+
+  return {
+    props: {
+      session: session,
+    },
+  };
 }

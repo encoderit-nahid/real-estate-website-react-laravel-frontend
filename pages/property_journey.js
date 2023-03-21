@@ -35,6 +35,7 @@ import DigitalNotaryFinalContent from "../src/component/proposals/propertyJourne
 import BrokerCertificateAndDocument from "../src/component/proposals/propertyJourney/Broker/BrokerCertificateAndDocuments/BrokerCertificateAndDocument";
 import Announce from "../src/component/proposals/propertyJourney/Admin/Announce/Announce";
 import Proposal from "../src/component/proposals/propertyJourney/Admin/Proposal/Proposal";
+import { getSession } from "next-auth/react";
 
 const drawerWidth = 240;
 
@@ -390,4 +391,26 @@ export default function PropertyJourney(props) {
       </main>
     </div>
   );
+}
+
+export async function getServerSideProps(context) {
+  //* Session for SSG
+  const session = await getSession(context);
+  //? If Not Logged In
+  if (!session) {
+    return {
+      redirect: {
+        destination: "/",
+      },
+      props: {
+        session: null,
+      },
+    };
+  }
+
+  return {
+    props: {
+      session: session,
+    },
+  };
 }

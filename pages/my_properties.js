@@ -13,6 +13,7 @@ import ThirdTab from "../src/component/properties/Third/ThirdTab";
 import NewRegistration from "../src/component/properties/NewRegistration/NewRegistration";
 import notifyImage from "../public/Images/notify.png";
 import Link from "next/link";
+import { getSession } from "next-auth/react";
 
 const drawerWidth = 240;
 
@@ -220,4 +221,26 @@ export default function MyProperties(props) {
       </main>
     </div>
   );
+}
+
+export async function getServerSideProps(context) {
+  //* Session for SSG
+  const session = await getSession(context);
+  //? If Not Logged In
+  if (!session) {
+    return {
+      redirect: {
+        destination: "/",
+      },
+      props: {
+        session: null,
+      },
+    };
+  }
+
+  return {
+    props: {
+      session: session,
+    },
+  };
 }
