@@ -18,28 +18,27 @@ const TextMaskCustom = React.forwardRef(function TextMaskCustom(props, ref) {
   );
 });
 
-function BaseOutlinedCpfInput({ placeholder, label, size }) {
-  const [values, setValues] = React.useState({
-    textmask: "",
-  });
-
-  const handleChange = (event) => {
-    setValues({
-      ...values,
-      [event.target.name]: event.target.value,
-    });
-  };
-
+function BaseOutlinedCpfInput({
+  placeholder,
+  label,
+  value,
+  onChange,
+  size,
+  name,
+  error,
+}) {
+  console.log(typeof error);
   return (
     <OutlinedInput
-      value={values.textmask}
-      onChange={handleChange}
-      name="textmask"
+      onChange={onChange}
+      name={name}
+      value={value}
       placeholder={placeholder}
       id="formatted-text-mask-input"
       inputComponent={TextMaskCustom}
       label={label}
       size={size}
+
       // startAdornment={
       //   <InputAdornment position="start">
       //     <Typography variant="p" sx={{ color: "#7450F0" }}>

@@ -18,13 +18,15 @@ import Link from "next/link";
 import BaseTextField from "../src/component/reuseable/baseTextField/BaseTextField";
 import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import NoEncryptionOutlinedIcon from "@mui/icons-material/NoEncryptionOutlined";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useForm, Controller } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as Yup from "yup";
 import BaseOutlinedPhoneInput from "../src/component/reuseable/baseOutlinedPhoneInput/BaseOutlinedPhoneInput";
 import { registrationApi, userDetailsApi } from "../src/api";
 import { signIn } from "next-auth/react";
+
+
 
 const validationSchema = Yup.object().shape({
   name: Yup.string().required("Name is required"),
@@ -60,6 +62,7 @@ export default function Registration() {
     resolver: yupResolver(validationSchema),
   });
   const [activeBtn, setActiveBtn] = useState(4);
+  const [disableBtn, setDisableBtn] = useState(true);
   console.log({ activeBtn });
   const [showPass, setShowPass] = React.useState(false);
   const handleClickShowPassword = () => {
@@ -68,6 +71,35 @@ export default function Registration() {
   const [loading, setLoading] = useState(false);
   const allValues = watch();
   console.log({ allValues });
+
+  useEffect(() => {
+    if (
+      allValues.email &&
+      allValues.phone &&
+      allValues.password &&
+      allValues.name
+    ) {
+      setDisableBtn(false);
+    }
+
+    if (
+      allValues.email === "" ||
+      allValues.phone === "" ||
+      allValues.password === "" ||
+      allValues.name === ""
+    ) {
+      setDisableBtn(true);
+    }
+  }, [allValues]);
+
+  useEffect(() => {
+    if (activeBtn === 2) {
+      localStorage.setItem(
+        "broker_registration",
+        JSON.stringify({ ...allValues, role_id: activeBtn })
+      );
+    }
+  }, [activeBtn, allValues]);
 
   const onSubmit = async (data) => {
     setLoading(true);
@@ -401,6 +433,7 @@ export default function Registration() {
                       <Grid item xs={4}>
                         <Link href="/broker_registration">
                           <Button
+                            disabled={disableBtn}
                             onClick={() => setActiveBtn(2)}
                             sx={{
                               width: "100%",

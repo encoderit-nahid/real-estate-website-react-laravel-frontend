@@ -231,7 +231,7 @@ function PerformanceData({
             </Grid>
           ))}
         </Grid>
-        <Grid container spacing={1} sx={{ mt: 4, mb: 5 }}>
+        {/* <Grid container spacing={1} sx={{ mt: 4, mb: 5 }}>
           <Grid item xs={6} sm={6} md={6}>
             <Button
               color="inherit"
@@ -289,7 +289,7 @@ function PerformanceData({
               Continue
             </Button>
           </Grid>
-        </Grid>
+        </Grid> */}
       </Grid>
     </Box>
   );

@@ -13,8 +13,12 @@ import Image from "next/image";
 import BaseOutlinedRgInput from "../../reuseable/baseOutlinedRgInput/BaseOutlinedRgInput";
 import BaseOutlinedCpfInput from "../../reuseable/baseOutlinedCpfInput/BaseOutlinedCpfInput";
 import BaseTextField from "../../reuseable/baseTextField/BaseTextField";
+import { Controller } from "react-hook-form";
+import BaseDateField from "../../reuseable/baseDateField/BaseDateField";
+import { formatISO } from "date-fns";
 
-function PersonalData({ handleNext }) {
+function PersonalData({ handleNext, control, errors }) {
+  console.log("dob", errors.full_name);
   //rg
   const [rgValue, setRGValue] = useState("");
   const [rgValid, setRGValid] = useState(false);
@@ -150,17 +154,34 @@ function PersonalData({ handleNext }) {
               Full Name<span style={{ color: "#E63333" }}>*</span>
             </Typography>
           </Grid>
-          <BaseTextField
-            size={"small"}
-            placeholder={"Full Name"}
-            sx={{ mb: 2 }}
+          <Controller
+            name="full_name"
+            control={control}
+            render={({ field }) => (
+              <BaseTextField
+                size={"small"}
+                placeholder={"Full Name"}
+                // sx={{ mb: 2 }}
+                onChange={(e) => {
+                  field.onChange(e.target.value);
+                }}
+                name={"full_name"}
+              />
+            )}
           />
+          <Typography
+            variant="inherit"
+            color="textSecondary"
+            sx={{ color: "#b91c1c" }}
+          >
+            {errors.full_name?.message}
+          </Typography>
           <Grid
             container
             direction="row"
             justifyContent="flex-start"
             alignItems="flex-start"
-            sx={{ mb: 1 }}
+            sx={{ mb: 1, mt: 1 }}
           >
             <Typography
               variant="p"
@@ -183,10 +204,20 @@ function PersonalData({ handleNext }) {
               </span>
             </Typography>
           </Grid>
-          <BaseTextField
-            size={"small"}
-            placeholder={"Social Name"}
-            sx={{ mb: 1 }}
+          <Controller
+            name="social_name"
+            control={control}
+            render={({ field }) => (
+              <BaseTextField
+                size={"small"}
+                placeholder={"Social Name"}
+                sx={{ mb: 1 }}
+                onChange={(e) => {
+                  field.onChange(e.target.value);
+                }}
+                name={"social_name"}
+              />
+            )}
           />
         </Grid>
       </Grid>
@@ -214,7 +245,28 @@ function PersonalData({ handleNext }) {
               CRECI number<span style={{ color: "#E63333" }}>*</span>
             </Typography>
           </Grid>
-          <BaseTextField size={"small"} type={"number"} sx={{ mb: 1 }} />
+          <Controller
+            name="creci_number"
+            control={control}
+            render={({ field }) => (
+              <BaseTextField
+                size={"small"}
+                type={"number"}
+                placeholder={"CRECI Number"}
+                onChange={(e) => {
+                  field.onChange(e.target.value);
+                }}
+                name={"creci_number"}
+              />
+            )}
+          />
+          <Typography
+            variant="inherit"
+            color="textSecondary"
+            sx={{ color: "#b91c1c" }}
+          >
+            {errors?.creci_number?.message}
+          </Typography>
         </Grid>
         <Grid item xs={12} sm={12} md={6}>
           <Grid
@@ -237,7 +289,29 @@ function PersonalData({ handleNext }) {
             </Typography>
           </Grid>
           <FormControl variant="outlined" sx={{ width: "100%" }}>
-            <BaseOutlinedCpfInput placeholder={"CPF"} size={"small"} />
+            <Controller
+              name="cpf_number"
+              control={control}
+              render={({ field }) => (
+                <BaseOutlinedCpfInput
+                  placeholder={"CPF"}
+                  size={"small"}
+                  onChange={(e) => {
+                    field.onChange(e.target.value);
+                  }}
+                  name={"cpf_number"}
+                  value={field.value}
+                  // error={errors.cpf_number ? true : false}
+                />
+              )}
+            />
+            <Typography
+              variant="inherit"
+              color="textSecondary"
+              sx={{ color: "#b91c1c" }}
+            >
+              {errors.cpf_number?.message}
+            </Typography>
           </FormControl>
         </Grid>
       </Grid>
@@ -266,7 +340,29 @@ function PersonalData({ handleNext }) {
             variant="outlined"
             sx={{ width: "100%", marginBottom: 1 }}
           >
-            <BaseOutlinedRgInput placeholder={"RG"} size={"small"} />
+            <Controller
+              name="rg_number"
+              control={control}
+              render={({ field }) => (
+                <BaseOutlinedRgInput
+                  placeholder={"RG"}
+                  size={"small"}
+                  onChange={(e) => {
+                    field.onChange(e.target.value);
+                  }}
+                  name={"RG_number"}
+                  value={field.value}
+                  // error={errors?.rg_number ? true : false}
+                />
+              )}
+            />
+            <Typography
+              variant="inherit"
+              color="textSecondary"
+              sx={{ color: "#b91c1c" }}
+            >
+              {errors?.rg_number?.message}
+            </Typography>
           </FormControl>
         </Grid>
         <Grid item xs={12} sm={12} md={6}>
@@ -289,10 +385,34 @@ function PersonalData({ handleNext }) {
               Date of Birth<span style={{ color: "#E63333" }}>*</span>
             </Typography>
           </Grid>
-          <BaseTextField size={"small"} sx={{ mb: 1 }} />
+          <Controller
+            name="dob"
+            control={control}
+            defaultValue={formatISO(new Date())}
+            render={({ field }) => (
+              <BaseDateField
+                placeholder={"Date of Birth"}
+                size={"small"}
+                onChange={(value) => {
+                  field.onChange(formatISO(value));
+                }}
+                sx={{ mb: 1 }}
+                name={"dob"}
+                value={field.value}
+                // error={errors.dob ? true : false}
+              />
+            )}
+          />
+          <Typography
+            variant="inherit"
+            color="textSecondary"
+            sx={{ color: "#b91c1c" }}
+          >
+            {errors?.dob?.message}
+          </Typography>
         </Grid>
       </Grid>
-      <Button
+      {/* <Button
         onClick={handleNext}
         fullWidth
         sx={{
@@ -322,7 +442,7 @@ function PersonalData({ handleNext }) {
         }}
       >
         Continue
-      </Button>
+      </Button> */}
     </Box>
   );
 }

@@ -20,8 +20,26 @@ import stepFinish from "../public/Images/step_finish.png";
 import BrokerRegistrationFooter from "../src/component/shared/Footer/BrokerRegistrationFooter";
 import BaseModal from "../src/component/reuseable/baseModal/BaseModal";
 import BrokerRegistrationSentModal from "../src/component/brokerRegistration/BrokerRegistrationSendModal/BrokerRegistrationSendModal";
+import { useForm, Controller } from "react-hook-form";
+import { yupResolver } from "@hookform/resolvers/yup";
+import * as Yup from "yup";
 
 const steps = ["Personal Data", "Address", "Performance"];
+
+const validationSchema = Yup.object().shape({
+  image: Yup.mixed().required("Profile Image is Required"),
+  full_name: Yup.string().required("Full Name is required"),
+  creci_number: Yup.string().required("CRECI number is required"),
+  cpf_number: Yup.string().required("CPF number is required"),
+  rg_number: Yup.string().required("RG number is required"),
+  dob: Yup.string().required("Date of Birth number is required"),
+  zip_code: Yup.string().required("Zip code number is required"),
+  address: Yup.string().required("Address is required"),
+  number: Yup.number().required("Number is required"),
+  neighbourhood: Yup.string().required("Neighbourhood is required"),
+  state: Yup.string().required("State is required"),
+  city: Yup.string().required("City is required"),
+});
 
 export default function BrokerRegistration({
   loginOpen,
@@ -77,6 +95,26 @@ export default function BrokerRegistration({
   const [sentModalOpen, setSentModalOpen] = useState(false);
   const handleOpen = () => setSentModalOpen(true);
   const handleClose = () => setSentModalOpen(false);
+
+  const {
+    register,
+    watch,
+    control,
+    handleSubmit,
+    formState: { errors },
+  } = useForm({
+    resolver: yupResolver(validationSchema),
+  });
+
+  const allValues = watch();
+  console.log({ allValues });
+
+  const onSubmit = async (data) => {
+    console.log("hello");
+    console.log(data);
+    setSentModalOpen(true);
+  };
+
   return (
     <div>
       <Head>
@@ -102,121 +140,124 @@ export default function BrokerRegistration({
               setActiveStep={setActiveStep}
               marginTop={"2vh"}
             />
+
             {activeStep === steps.length ? (
               <Container maxWidth="xs">
                 <Fragment></Fragment>
               </Container>
             ) : (
               <Fragment>
-                {activeStep === 0 ? (
-                  <PersonalData handleNext={handleNext} />
-                ) : activeStep === 1 ? (
-                  <AddressData
-                    handleNext={handleNext}
-                    handleBack={handleBack}
-                  />
-                ) : (
-                  <PerformanceData
-                    handleNext={handleNext}
-                    handleBack={handleBack}
-                    handleOpen={handleOpen}
-                    activeStep={activeStep}
-                    steps={steps}
-                  />
-                )}
-                <Grid
-                  container
-                  direction="row"
-                  justifyContent={{
-                    xs: "flex-start",
-                    sm: "flex-start",
-                    md: "flex-start",
-                    lg: "flex-end",
-                    xl: "flex-end",
-                  }}
-                  alignItems="center"
-                  sx={{
-                    // display: "flex",
-                    // flexDirection: "row",
-
-                    pt: 2,
-                  }}
-                >
-                  {/* {activeStep !== 0 && (
-                    <Button
-                      color="inherit"
-                      // disabled={activeStep === 0}
-                      onClick={handleBack}
-                      sx={{
-                        mr: 1,
-                        border: "1px solid #002152",
-                        borderRadius: "4px",
-                        px: 2,
-                        py: 1,
-                        color: "#002152",
-                        fontSize: "16px",
-                        fontWeight: "600",
-                        lineHeight: "22px",
-                        textTransform: "none",
-                      }}
-                    >
-                      Come back
-                    </Button>
-                  )} */}
-
-                  {/* {isStepOptional(activeStep) && (
-                <Button
-                  sx={{
-                    mr: 1,
-                    border: "1px solid #002152",
-                    borderRadius: "4px",
-                    px: 2,
-                    py: 1,
-                    color: "#002152",
-                    fontSize: "16px",
-                    fontWeight: "600",
-                    lineHeight: "22px",
-                    textTransform: "none",
-                  }}
-                  color="inherit"
-                  onClick={handleSkip}
-                >
-                  Skip
-                </Button>
-              )} */}
-
-                  {/* <Button
-                    onClick={handleNext}
-                    sx={{
-                      background: "#7450F0",
-                      borderRadius: "4px",
-                      px: 2,
-                      py: 1,
-                      color: "#ffffff",
-                      fontSize: "16px",
-                      fontWeight: "600",
-                      lineHeight: "22px",
-                      textTransform: "none",
-                      boxShadow: "0px 4px 8px rgba(81, 51, 182, 0.32)",
-                      "&:hover": {
-                        background: "#7450F0",
-                        borderRadius: "4px",
-                        px: 2,
-                        py: 1,
-                        color: "#ffffff",
-                        fontSize: "16px",
-                        fontWeight: "600",
-                        lineHeight: "22px",
-                        textTransform: "none",
-                        boxShadow: "0px 4px 8px rgba(81, 51, 182, 0.32)",
-                      },
-                    }}
-                  >
-                    {activeStep === steps.length - 1
-                      ? "Submit Proposal"
-                      : "Next"}
-                  </Button> */}
-                </Grid>
+                <form onSubmit={handleSubmit(onSubmit)}>
+                  {activeStep === 0 ? (
+                    <PersonalData
+                      handleNext={handleNext}
+                      control={control}
+                      errors={errors}
+                    />
+                  ) : activeStep === 1 ? (
+                    <AddressData
+                      handleNext={handleNext}
+                      handleBack={handleBack}
+                    />
+                  ) : (
+                    <PerformanceData
+                      handleNext={handleNext}
+                      handleBack={handleBack}
+                      handleOpen={handleOpen}
+                      activeStep={activeStep}
+                      steps={steps}
+                    />
+                  )}
+                  <Grid container spacing={1} sx={{ mt: 2, mb: 5 }}>
+                    <Grid item xs={6} sm={6} md={6}>
+                      <Button
+                        color="inherit"
+                        disabled={activeStep === 0}
+                        onClick={handleBack}
+                        sx={{
+                          //   mr: 1,
+                          //   border: "1px solid #002152",
+                          //   borderRadius: "4px",
+                          background: "#ffffff",
+                          px: 2,
+                          py: 1,
+                          color: "#4B4B66",
+                          fontSize: "16px",
+                          fontWeight: "600",
+                          lineHeight: "22px",
+                          textTransform: "none",
+                        }}
+                      >
+                        Come back
+                      </Button>
+                    </Grid>
+                    <Grid item xs={6} sm={6} md={6}>
+                      {activeStep === 2 ? (
+                        <Button
+                          type="submit"
+                          fullWidth
+                          sx={{
+                            background: "#00C1B4",
+                            boxShadow: "0px 4px 34px rgba(0, 0, 0, 0.08)",
+                            borderRadius: "4px",
+                            color: "#ffffff",
+                            fontSize: "16px",
+                            lineHeight: "22px",
+                            fontWeight: "600",
+                            //   mt: 3,
+                            textTransform: "none",
+                            py: 1,
+                            "&:hover": {
+                              background: "#00C1B4",
+                              boxShadow: "0px 4px 34px rgba(0, 0, 0, 0.08)",
+                              borderRadius: "4px",
+                              color: "#ffffff",
+                              fontSize: "16px",
+                              lineHeight: "22px",
+                              fontWeight: "600",
+                              // mt: 3,
+                              textTransform: "none",
+                              py: 1,
+                            },
+                          }}
+                        >
+                          Continue
+                        </Button>
+                      ) : (
+                        <Button
+                          onClick={handleNext}
+                          fullWidth
+                          sx={{
+                            background: "#00C1B4",
+                            boxShadow: "0px 4px 34px rgba(0, 0, 0, 0.08)",
+                            borderRadius: "4px",
+                            color: "#ffffff",
+                            fontSize: "16px",
+                            lineHeight: "22px",
+                            fontWeight: "600",
+                            //   mt: 3,
+                            textTransform: "none",
+                            py: 1,
+                            "&:hover": {
+                              background: "#00C1B4",
+                              boxShadow: "0px 4px 34px rgba(0, 0, 0, 0.08)",
+                              borderRadius: "4px",
+                              color: "#ffffff",
+                              fontSize: "16px",
+                              lineHeight: "22px",
+                              fontWeight: "600",
+                              // mt: 3,
+                              textTransform: "none",
+                              py: 1,
+                            },
+                          }}
+                        >
+                          Continue
+                        </Button>
+                      )}
+                    </Grid>
+                  </Grid>
+                </form>
               </Fragment>
             )}
           </Container>
