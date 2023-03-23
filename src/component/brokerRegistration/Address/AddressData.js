@@ -9,8 +9,17 @@ import {
 import React, { useState } from "react";
 import BaseOutlinedZipInput from "../../reuseable/baseOutlinedZipInput/BaseOutlinedZipInput";
 import BaseTextField from "../../reuseable/baseTextField/BaseTextField";
+import { Controller } from "react-hook-form";
+import BaseAutocomplete from "../../reuseable/baseAutocomplete/BaseAutocomplete";
 
-function AddressData({ handleBack, handleNext }) {
+function AddressData({
+  handleBack,
+  handleNext,
+  control,
+  errors,
+  allValues,
+  allStateData,
+}) {
   const [value, setValue] = useState("");
   const [valid, setValid] = useState(false);
   console.log({ valid });
@@ -58,7 +67,7 @@ function AddressData({ handleBack, handleNext }) {
                 lineHeight: "16px",
               }}
             >
-              Zip Code
+              Zip Code<span style={{ color: "#E63333" }}>*</span>
             </Typography>
           </Grid>
           {/* <TextField
@@ -75,12 +84,34 @@ function AddressData({ handleBack, handleNext }) {
             sx={{ mb: 1 }}
           /> */}
           <FormControl variant="outlined" sx={{ width: "100%", mb: 1 }}>
-            <BaseOutlinedZipInput placeholder={"Zip Code"} size={"small"} />
+            <Controller
+              name="zip_code"
+              control={control}
+              render={({ field }) => (
+                <BaseOutlinedZipInput
+                  placeholder={"Zip Code"}
+                  size={"small"}
+                  onChange={(e) => {
+                    field.onChange(e.target.value);
+                  }}
+                  name={"zip_code"}
+                  value={field.value}
+                  // error={errors.cpf_number ? true : false}
+                />
+              )}
+            />
+            <Typography
+              variant="inherit"
+              color="textSecondary"
+              sx={{ color: "#b91c1c" }}
+            >
+              {errors.zip_code?.message}
+            </Typography>
           </FormControl>
         </Grid>
       </Grid>
 
-      <Grid container spacing={1} sx={{ mt: 2 }}>
+      <Grid container spacing={1} sx={{ mt: 2, mb: 1 }}>
         <Grid item xs={12} sm={12} md={8}>
           <Grid
             container
@@ -101,9 +132,31 @@ function AddressData({ handleBack, handleNext }) {
               Address<span style={{ color: "#E63333" }}>*</span>
             </Typography>
           </Grid>
-          <BaseTextField size={"small"} sx={{ mb: 1 }} />
+          <Controller
+            name="address"
+            control={control}
+            defaultValue={""}
+            render={({ field }) => (
+              <BaseTextField
+                size={"small"}
+                placeholder={"Address"}
+                onChange={(e) => {
+                  field.onChange(e.target.value);
+                }}
+                name={"address"}
+                value={field.value}
+              />
+            )}
+          />
+          <Typography
+            variant="inherit"
+            color="textSecondary"
+            sx={{ color: "#b91c1c" }}
+          >
+            {errors.address?.message}
+          </Typography>
         </Grid>
-        <Grid item xs={12} sm={12} md={4}>
+        <Grid item xs={12} sm={12} md={4} sx={{ mb: 1 }}>
           <Grid
             container
             direction="row"
@@ -123,11 +176,34 @@ function AddressData({ handleBack, handleNext }) {
               Number<span style={{ color: "#E63333" }}>*</span>
             </Typography>
           </Grid>
-          <BaseTextField size={"small"} type={"number"} sx={{ mb: 1 }} />
+          <Controller
+            name="number"
+            control={control}
+            defaultValue={""}
+            render={({ field }) => (
+              <BaseTextField
+                size={"small"}
+                placeholder={"Number"}
+                onChange={(e) => {
+                  field.onChange(e.target.value);
+                }}
+                name={"number"}
+                type={"number"}
+                value={field.value}
+              />
+            )}
+          />
+          <Typography
+            variant="inherit"
+            color="textSecondary"
+            sx={{ color: "#b91c1c" }}
+          >
+            {errors.number?.message}
+          </Typography>
         </Grid>
       </Grid>
 
-      <Grid container spacing={1} sx={{ mt: 2 }}>
+      <Grid container spacing={1} sx={{ mt: 2, mb: 1 }}>
         <Grid item xs={12}>
           <Grid
             container
@@ -145,14 +221,36 @@ function AddressData({ handleBack, handleNext }) {
                 lineHeight: "16px",
               }}
             >
-              Neighborhood<span style={{ color: "#E63333" }}>*</span>
+              Neighbourhood<span style={{ color: "#E63333" }}>*</span>
             </Typography>
           </Grid>
-          <BaseTextField size={"small"} variant="outlined" sx={{ mb: 1 }} />
+          <Controller
+            name="neighbourhood"
+            control={control}
+            defaultValue={""}
+            render={({ field }) => (
+              <BaseTextField
+                size={"small"}
+                placeholder={"Neighbourhood"}
+                onChange={(e) => {
+                  field.onChange(e.target.value);
+                }}
+                name={"neighbourhood"}
+                value={field.value}
+              />
+            )}
+          />
+          <Typography
+            variant="inherit"
+            color="textSecondary"
+            sx={{ color: "#b91c1c" }}
+          >
+            {errors.neighbourhood?.message}
+          </Typography>
         </Grid>
       </Grid>
 
-      <Grid container spacing={1} sx={{ mt: 2 }}>
+      <Grid container spacing={1} sx={{ mt: 2, mb: 1 }}>
         <Grid item xs={12}>
           <Grid
             container
@@ -182,11 +280,26 @@ function AddressData({ handleBack, handleNext }) {
               </span>
             </Typography>
           </Grid>
-          <BaseTextField size={"small"} sx={{ mb: 1 }} />
+          <Controller
+            name="add_on"
+            control={control}
+            defaultValue={""}
+            render={({ field }) => (
+              <BaseTextField
+                size={"small"}
+                placeholder={"Add on"}
+                onChange={(e) => {
+                  field.onChange(e.target.value);
+                }}
+                name={"add_on"}
+                value={field.value}
+              />
+            )}
+          />
         </Grid>
       </Grid>
 
-      <Grid container spacing={1} sx={{ mt: 2 }}>
+      <Grid container spacing={1} sx={{ mt: 2, mb: 1 }}>
         <Grid item xs={12} sm={12} md={6}>
           <Grid
             container
@@ -207,7 +320,30 @@ function AddressData({ handleBack, handleNext }) {
               State<span style={{ color: "#E63333" }}>*</span>
             </Typography>
           </Grid>
-          <BaseTextField size={"small"} sx={{ mb: 1 }} />
+          <Controller
+            name="state"
+            control={control}
+            defaultValue={allStateData[0]}
+            render={({ field }) => (
+              <BaseAutocomplete
+                //   sx={{ margin: "0.6vh 0" }}
+                options={allStateData || []}
+                getOptionLabel={(option) => option.name || ""}
+                isOptionEqualToValue={(option, value) => option.id === value.id}
+                size={"small"}
+                placeholder={"State"}
+                onChange={(e, v, r, d) => field.onChange(v)}
+                value={field.value}
+              />
+            )}
+          />
+          <Typography
+            variant="inherit"
+            color="textSecondary"
+            sx={{ color: "#b91c1c" }}
+          >
+            {errors.state?.message}
+          </Typography>
         </Grid>
         <Grid item xs={12} sm={12} md={6}>
           <Grid
@@ -229,7 +365,27 @@ function AddressData({ handleBack, handleNext }) {
               City<span style={{ color: "#E63333" }}>*</span>
             </Typography>
           </Grid>
-          <BaseTextField size={"small"} sx={{ mb: 1 }} />
+          <Controller
+            name="city"
+            control={control}
+            render={({ field }) => (
+              <BaseTextField
+                size={"small"}
+                placeholder={"City"}
+                onChange={(e) => {
+                  field.onChange(e.target.value);
+                }}
+                name={"city"}
+              />
+            )}
+          />
+          <Typography
+            variant="inherit"
+            color="textSecondary"
+            sx={{ color: "#b91c1c" }}
+          >
+            {errors.city?.message}
+          </Typography>
         </Grid>
       </Grid>
 

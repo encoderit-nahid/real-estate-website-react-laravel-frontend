@@ -43,3 +43,13 @@ export const userDetailsApi = async () => {
     return [error, null];
   }
 };
+
+//find_state
+export const stateApi = async () => {
+  try {
+    const response = await apiInstance.get(`state`);
+    return [false, response];
+  } catch (error) {
+    return [error, null];
+  }
+};

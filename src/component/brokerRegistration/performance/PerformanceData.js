@@ -7,6 +7,12 @@ function PerformanceData({
   handleOpen,
   activeStep,
   steps,
+  preferenceData,
+  aboutLokkanData,
+  actingPreferenceBtn,
+  setActingPreferenceBtn,
+  aboutLokkanBtn,
+  setAboutLokkanBtn,
 }) {
   return (
     <Box sx={{ mt: 4 }}>
@@ -54,14 +60,19 @@ function PerformanceData({
           </Typography>
         </Grid>
         <Grid container spacing={1} sx={{ mt: 2 }}>
-          {["Location", "Sales", "Both"].map((data, index) => (
+          {preferenceData.map((data, index) => (
             <Grid key={index} item xs={12} sm={12} md={4}>
               <Button
+                onClick={() => setActingPreferenceBtn(data)}
                 sx={{
                   width: "100%",
-                  background: `${index === 0 ? "#0362F0" : "#F2F5F6"}`,
+                  background: `${
+                    actingPreferenceBtn === data ? "#0362F0" : "#F2F5F6"
+                  }`,
                   borderRadius: "152px",
-                  color: `${index === 0 ? "#ffffff" : "#002152"}`,
+                  color: `${
+                    actingPreferenceBtn === data ? "#ffffff" : "#002152"
+                  }`,
                   fontSize: "16px",
                   //   fontSize: {
                   //     xs: "12px",
@@ -136,14 +147,17 @@ function PerformanceData({
           </Typography>
         </Grid>
         <Grid container spacing={1} sx={{ mt: 2 }}>
-          {["Refer a friend", "Facebook", "Instagram"].map((data, index) => (
+          {aboutLokkanData?.map((data, index) => (
             <Grid key={index} item xs={12} sm={12} md={4}>
               <Button
+                onClick={() => setAboutLokkanBtn(data)}
                 sx={{
                   width: "100%",
-                  background: `${index === 0 ? "#0362F0" : "#F2F5F6"}`,
+                  background: `${
+                    aboutLokkanBtn === data ? "#0362F0" : "#F2F5F6"
+                  }`,
                   borderRadius: "152px",
-                  color: `${index === 0 ? "#ffffff" : "#002152"}`,
+                  color: `${aboutLokkanBtn === data ? "#ffffff" : "#002152"}`,
                   fontSize: "16px",
                   //   fontSize: {
                   //     xs: "12px",
@@ -183,54 +197,7 @@ function PerformanceData({
             </Grid>
           ))}
         </Grid>
-        <Grid container spacing={1} sx={{ mt: 2 }}>
-          {["Linkedin", "News", "Partnerships"].map((data, index) => (
-            <Grid key={index} item xs={12} sm={12} md={4}>
-              <Button
-                sx={{
-                  width: "100%",
-                  background: `${index === 0 ? "#0362F0" : "#F2F5F6"}`,
-                  borderRadius: "152px",
-                  color: `${index === 0 ? "#ffffff" : "#002152"}`,
-                  //   fontSize: {
-                  //     xs: "12px",
-                  //     sm: "13px",
-                  //     md: "16px",
-                  //     lg: "13px",
-                  //     xl: "16px",
-                  //   },
-                  fontSize: "16px",
-                  fontWeight: "400",
-                  lineHeight: "22px",
-                  textTransform: "none",
-                  px: { xs: 0, sm: 2, md: 2, lg: 2, xl: 2 },
-                  py: 1,
-                  "&:hover": {
-                    width: "100%",
-                    background: "#0362F0",
-                    borderRadius: "152px",
-                    color: "#ffffff",
-                    fontSize: "16px",
-                    // fontSize: {
-                    //   xs: "12px",
-                    //   sm: "13px",
-                    //   md: "16px",
-                    //   lg: "13px",
-                    //   xl: "16px",
-                    // },
-                    fontWeight: "400",
-                    lineHeight: "22px",
-                    textTransform: "none",
-                    px: { xs: 0, sm: 2, md: 2, lg: 2, xl: 2 },
-                    py: 1,
-                  },
-                }}
-              >
-                {data}
-              </Button>
-            </Grid>
-          ))}
-        </Grid>
+
         {/* <Grid container spacing={1} sx={{ mt: 4, mb: 5 }}>
           <Grid item xs={6} sm={6} md={6}>
             <Button

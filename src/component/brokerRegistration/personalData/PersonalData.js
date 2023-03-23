@@ -8,7 +8,7 @@ import {
   Typography,
 } from "@mui/material";
 import accountIcon from "../../../../public/Images/account.png";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Image from "next/image";
 import BaseOutlinedRgInput from "../../reuseable/baseOutlinedRgInput/BaseOutlinedRgInput";
 import BaseOutlinedCpfInput from "../../reuseable/baseOutlinedCpfInput/BaseOutlinedCpfInput";
@@ -17,7 +17,7 @@ import { Controller } from "react-hook-form";
 import BaseDateField from "../../reuseable/baseDateField/BaseDateField";
 import { formatISO } from "date-fns";
 
-function PersonalData({ handleNext, control, errors }) {
+function PersonalData({ handleNext, control, errors, allValues }) {
   console.log("dob", errors.full_name);
   //rg
   const [rgValue, setRGValue] = useState("");
@@ -26,6 +26,23 @@ function PersonalData({ handleNext, control, errors }) {
     setRGValid(/^W(\d(\d(\d[A-Z]?)?)?$)/.test(e.target.value));
     setRGValue(e.target.value);
   };
+
+  const [preview, setPreview] = useState();
+  console.log({ preview });
+  // create a preview as a side effect, whenever selected file is changed
+  useEffect(() => {
+    if (!allValues.image) {
+      setPreview(undefined);
+      return;
+    }
+
+    const objectUrl = URL.createObjectURL(allValues.image);
+    setPreview(objectUrl);
+
+    // free memory when ever this component is unmounted
+    return () => URL.revokeObjectURL(objectUrl);
+  }, [allValues.image]);
+
   return (
     <Box sx={{ mt: 4 }}>
       <Grid
@@ -92,7 +109,12 @@ function PersonalData({ handleNext, control, errors }) {
                 alignItems="center"
               >
                 <Box>
-                  <Image src={accountIcon} alt="account" />
+                  <Image
+                    src={preview != null ? preview : accountIcon}
+                    alt="account"
+                    width={25}
+                    height={25}
+                  />
                 </Box>
                 <Typography
                   variant="p"
@@ -128,9 +150,33 @@ function PersonalData({ handleNext, control, errors }) {
                   }}
                 >
                   Select
-                  <input hidden accept="image/*" multiple type="file" />
+                  <Controller
+                    name="image"
+                    control={control}
+                    render={({ field }) => {
+                      return (
+                        <input
+                          name="image"
+                          hidden
+                          accept="image/*"
+                          type="file"
+                          // value={field.value}
+                          onChange={(e) => {
+                            field.onChange(e.target.files[0]);
+                          }}
+                        />
+                      );
+                    }}
+                  />
                 </Button>
               </Grid>
+              <Typography
+                variant="inherit"
+                color="textSecondary"
+                sx={{ color: "#b91c1c", mt: 4.5 }}
+              >
+                {errors.image?.message}
+              </Typography>
             </Box>
           </Box>
         </Grid>
@@ -157,6 +203,7 @@ function PersonalData({ handleNext, control, errors }) {
           <Controller
             name="full_name"
             control={control}
+            defaultValue={""}
             render={({ field }) => (
               <BaseTextField
                 size={"small"}
@@ -166,6 +213,7 @@ function PersonalData({ handleNext, control, errors }) {
                   field.onChange(e.target.value);
                 }}
                 name={"full_name"}
+                value={field.value}
               />
             )}
           />
@@ -207,6 +255,7 @@ function PersonalData({ handleNext, control, errors }) {
           <Controller
             name="social_name"
             control={control}
+            defaultValue={""}
             render={({ field }) => (
               <BaseTextField
                 size={"small"}
@@ -215,6 +264,7 @@ function PersonalData({ handleNext, control, errors }) {
                 onChange={(e) => {
                   field.onChange(e.target.value);
                 }}
+                value={field.value}
                 name={"social_name"}
               />
             )}
@@ -248,6 +298,7 @@ function PersonalData({ handleNext, control, errors }) {
           <Controller
             name="creci_number"
             control={control}
+            defaultValue={""}
             render={({ field }) => (
               <BaseTextField
                 size={"small"}
@@ -256,6 +307,7 @@ function PersonalData({ handleNext, control, errors }) {
                 onChange={(e) => {
                   field.onChange(e.target.value);
                 }}
+                value={field.value}
                 name={"creci_number"}
               />
             )}
@@ -394,9 +446,9 @@ function PersonalData({ handleNext, control, errors }) {
                 placeholder={"Date of Birth"}
                 size={"small"}
                 onChange={(value) => {
-                  field.onChange(formatISO(value));
+                  field.onChange(value);
                 }}
-                sx={{ mb: 1 }}
+                // sx={{ mb: 1 }}
                 name={"dob"}
                 value={field.value}
                 // error={errors.dob ? true : false}

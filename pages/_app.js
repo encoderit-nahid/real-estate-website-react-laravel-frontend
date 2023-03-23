@@ -4,6 +4,8 @@ import "@fontsource/lato";
 import { createTheme, CssBaseline, ThemeProvider } from "@mui/material";
 import { useState } from "react";
 import { SessionProvider } from "next-auth/react";
+import { Provider } from "react-redux";
+import { configureStore } from "../src/redux/store";
 
 function MyApp({ Component, pageProps: { session, ...pageProps } }) {
   const theme = createTheme({
@@ -31,13 +33,15 @@ function MyApp({ Component, pageProps: { session, ...pageProps } }) {
     <ThemeProvider theme={theme}>
       <CssBaseline />
       <SessionProvider session={session} refetchInterval={5 * 60}>
-        <Component
-          {...pageProps}
-          loginOpen={loginOpen}
-          setLoginOpen={setLoginOpen}
-          handleLoginClose={handleLoginClose}
-          handleLoginOpen={handleLoginOpen}
-        />
+        <Provider store={configureStore()}>
+          <Component
+            {...pageProps}
+            loginOpen={loginOpen}
+            setLoginOpen={setLoginOpen}
+            handleLoginClose={handleLoginClose}
+            handleLoginOpen={handleLoginOpen}
+          />
+        </Provider>
       </SessionProvider>
     </ThemeProvider>
   );
