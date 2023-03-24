@@ -25,12 +25,11 @@ import { useSession, signIn, signOut } from "next-auth/react";
 import PersonOutlineOutlinedIcon from "@mui/icons-material/PersonOutlineOutlined";
 import { Popover } from "@mui/material";
 
-const pages = ["search Real estate", "I am broker", "I am Owner", "blog"];
 const pagesData = [
   { name: "search real estate", page: "search_real_estate" },
   { name: "I am broker", page: "broker" },
   { name: "I am Owner", page: "advertise" },
-  { name: "blog", page: "blog" },
+  // { name: "blog", page: "blog" },
 ];
 
 function Navbar({

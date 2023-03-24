@@ -19,8 +19,8 @@ export const loginApi = async (body) => {
   try {
     const responseToken = await apiInstance.post(`login`, body);
     return [false, responseToken];
-  } catch (error) {
-    return [error, null];
+  } catch (errorToken) {
+    return [errorToken, null];
   }
 };
 
@@ -29,8 +29,8 @@ export const registrationApi = async (body) => {
   try {
     const responseToken = await apiInstance.post(`register`, body);
     return [false, responseToken];
-  } catch (error) {
-    return [error, null];
+  } catch (errorToken) {
+    return [errorToken, null];
   }
 };
 
@@ -48,6 +48,16 @@ export const userDetailsApi = async () => {
 export const stateApi = async () => {
   try {
     const response = await apiInstance.get(`state`);
+    return [false, response];
+  } catch (error) {
+    return [error, null];
+  }
+};
+
+//best_deals_state
+export const bestDealsApi = async () => {
+  try {
+    const response = await apiInstance.get(`/property/best-deals`);
     return [false, response];
   } catch (error) {
     return [error, null];

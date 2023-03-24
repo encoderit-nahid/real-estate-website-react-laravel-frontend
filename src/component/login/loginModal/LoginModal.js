@@ -60,6 +60,7 @@ function LoginModal({ handleLoginClose }) {
     setShowPass(!showPass);
   };
   const [snackbarOpen, setSnackbarOpen] = React.useState(false);
+  const [message, setMessage] = useState("");
 
   const handleClickSnackbar = () => {
     setSnackbarOpen(true);
@@ -84,11 +85,13 @@ function LoginModal({ handleLoginClose }) {
 
   const onSubmit = async (data) => {
     setLoading(true);
-    const [error, responseToken] = await loginApi(data);
-    if (!error) {
+    const [errorToken, responseToken] = await loginApi(data);
+    console.log(errorToken);
+    if (!errorToken) {
       localStorage.setItem("token", responseToken?.data?.token);
       const [error, response] = await userDetailsApi();
       console.log(response.data.user);
+
       setLoading(false);
       if (!error) {
         signIn("credentials", {
@@ -109,6 +112,7 @@ function LoginModal({ handleLoginClose }) {
     } else {
       handleClickSnackbar();
       setLoading(false);
+      setMessage(errorToken?.response?.data?.message);
     }
   };
 
@@ -353,7 +357,7 @@ function LoginModal({ handleLoginClose }) {
           severity="error"
           sx={{ width: "100%" }}
         >
-          Invalid Email or Password!
+          {message && message}
         </Alert>
       </Snackbar>
     </Box>

@@ -30,6 +30,9 @@ import technologyImage from "../public/Images/technology.png";
 import clientsImage from "../public/Images/clients.png";
 import earnImage from "../public/Images/earn.png";
 import { useSession, signIn, signOut } from "next-auth/react";
+import { _baseURL } from "../consts";
+import { bestDealsApi } from "../src/api";
+import { useEffect } from "react";
 
 const brokerData = [
   {
@@ -54,6 +57,7 @@ export default function App({
   setLoginOpen,
   handleLoginOpen,
   handleLoginClose,
+  data,
 }) {
   const svgString = encodeURIComponent(
     renderToStaticMarkup(<WantSellSvgBackground />)
@@ -64,6 +68,8 @@ export default function App({
   const { data: session } = useSession();
   // console.log(session && JSON.parse(session?.user?.permissions));
   console.log(session);
+  console.log(data);
+
   return (
     <div>
       <Head>
@@ -368,9 +374,9 @@ export default function App({
                 // px: 3,
               }}
             >
-              {[0, 1, 2, 3].map((data, index) => (
+              {data?.property?.map((stateInfo, index) => (
                 <ImageListItem
-                  key={index}
+                  key={stateInfo.id}
                   cols={3}
                   sx={{
                     width: {
@@ -382,7 +388,7 @@ export default function App({
                     },
                   }}
                 >
-                  <HouseCard />
+                  <HouseCard propertyInfo={stateInfo} />
                 </ImageListItem>
               ))}
             </ImageList>
@@ -392,4 +398,20 @@ export default function App({
       </main>
     </div>
   );
+}
+
+export async function getServerSideProps(context) {
+  const base_url = process.env.NEXT_PUBLIC_API_URL;
+  const res = await fetch(`${base_url}/api/property/best-deals`);
+  const data = await res.json();
+
+  if (!data) {
+    return {
+      notFound: true,
+    };
+  }
+
+  return {
+    props: { data }, // will be passed to the page component as props
+  };
 }

@@ -8,7 +8,10 @@ import {
   Container,
   Grid,
   Tooltip,
+  Snackbar,
   Typography,
+  Alert,
+  CircularProgress,
 } from "@mui/material";
 import BaseStepper from "../src/component/reuseable/baseStepper/BaseStepper";
 import { Fragment, useEffect, useState } from "react";
@@ -105,6 +108,19 @@ export default function BrokerRegistration({
     setActiveStep(0);
   };
 
+  const [snackbarOpen, setSnackbarOpen] = useState(false);
+
+  const handleClickSnackbar = () => {
+    setSnackbarOpen(true);
+  };
+
+  const handleCloseSnackbar = (event, reason) => {
+    if (reason === "clickaway") {
+      return;
+    }
+    setSnackbarOpen(false);
+  };
+
   const [sentModalOpen, setSentModalOpen] = useState(false);
   const handleOpen = () => setSentModalOpen(true);
   const handleClose = () => setSentModalOpen(false);
@@ -113,22 +129,33 @@ export default function BrokerRegistration({
     preferenceData[0]
   );
   const [aboutLokkanBtn, setAboutLokkanBtn] = useState(aboutLokkanData[0]);
+  const [loading, setLoading] = useState(false);
   const {
     register,
     watch,
     control,
     handleSubmit,
+    setValue,
     formState: { errors },
+    setError,
   } = useForm({
     resolver: yupResolver(validationSchema),
   });
 
   const allValues = watch();
   console.log({ allValues });
+  console.log({ errors });
+
+  useEffect(() => {
+    if (Object.keys(errors).length > 0) {
+      handleClickSnackbar();
+    }
+  }, [errors]);
 
   // console.log(previousFieldData);
 
   const onSubmit = async (data) => {
+    setLoading(true);
     const previousFieldData = JSON.parse(
       localStorage.getItem("broker_registration")
     );
@@ -139,10 +166,12 @@ export default function BrokerRegistration({
       additional_info: {
         full_name: data.full_name,
         creci_number: data.creci_number,
-        cpf_number: data.cpf_number,
-        rg_number: data.rg_number,
+        cpf: data.cpf_number,
+        rg: data.rg_number,
         dob: data.dob,
         social_name: data.social_name,
+        broker_type: actingPreferenceBtn,
+        referred_from: aboutLokkanBtn,
       },
       address: {
         zip_code: data.zip_code,
@@ -164,19 +193,18 @@ export default function BrokerRegistration({
     const formData = serialize(requireData, { indices: true });
     const [error, responseToken] = await registrationApi(formData);
     console.log({ responseToken });
+    setLoading(false);
     if (!error) {
       setSentModalOpen(true);
-      if (!error) {
-      }
+    } else {
+      const errors = error?.response?.data?.errors ?? {};
+      Object.entries(errors).forEach(([name, messages]) => {
+        setError(name, { type: "manual", message: messages[0] });
+      });
+
+      setLoading(false);
     }
   };
-
-  useEffect(() => {
-    dispatch(findStateData());
-  }, [dispatch]);
-
-  const allStateData = useSelector((state) => state.state.stateData);
-  console.log({ allStateData });
 
   return (
     <div>
@@ -225,7 +253,8 @@ export default function BrokerRegistration({
                       control={control}
                       errors={errors}
                       allValues={allValues}
-                      allStateData={allStateData}
+                      setValue={setValue}
+                      // allStateData={allStateData}
                     />
                   ) : (
                     <PerformanceData
@@ -242,31 +271,31 @@ export default function BrokerRegistration({
                       setAboutLokkanBtn={setAboutLokkanBtn}
                     />
                   )}
-                  <Grid container spacing={1} sx={{ mt: 2, mb: 5 }}>
-                    <Grid item xs={6} sm={6} md={6}>
-                      <Button
-                        color="inherit"
-                        disabled={activeStep === 0}
-                        onClick={handleBack}
-                        sx={{
-                          //   mr: 1,
-                          //   border: "1px solid #002152",
-                          //   borderRadius: "4px",
-                          background: "#ffffff",
-                          px: 2,
-                          py: 1,
-                          color: "#4B4B66",
-                          fontSize: "16px",
-                          fontWeight: "600",
-                          lineHeight: "22px",
-                          textTransform: "none",
-                        }}
-                      >
-                        Come back
-                      </Button>
-                    </Grid>
-                    <Grid item xs={6} sm={6} md={6}>
-                      {activeStep === 2 ? (
+                  {activeStep === 2 && (
+                    <Grid container spacing={1} sx={{ mt: 2, mb: 5 }}>
+                      <Grid item xs={6} sm={6} md={6}>
+                        <Button
+                          color="inherit"
+                          disabled={activeStep === 0}
+                          onClick={handleBack}
+                          sx={{
+                            //   mr: 1,
+                            //   border: "1px solid #002152",
+                            //   borderRadius: "4px",
+                            background: "#ffffff",
+                            px: 2,
+                            py: 1,
+                            color: "#4B4B66",
+                            fontSize: "16px",
+                            fontWeight: "600",
+                            lineHeight: "22px",
+                            textTransform: "none",
+                          }}
+                        >
+                          Come back
+                        </Button>
+                      </Grid>
+                      <Grid item xs={6} sm={6} md={6}>
                         <Button
                           type="submit"
                           fullWidth
@@ -295,13 +324,55 @@ export default function BrokerRegistration({
                             },
                           }}
                         >
-                          Continue
+                          {loading && (
+                            <CircularProgress size={22} color="inherit" />
+                          )}
+                          {!loading && "register"}
                         </Button>
-                      ) : (
-                        <Button
-                          onClick={handleNext}
-                          fullWidth
-                          sx={{
+                      </Grid>
+                    </Grid>
+                  )}
+                </form>
+                {activeStep !== 2 && (
+                  <Grid container spacing={1} sx={{ mt: 2, mb: 5 }}>
+                    <Grid item xs={6} sm={6} md={6}>
+                      <Button
+                        color="inherit"
+                        disabled={activeStep === 0}
+                        onClick={handleBack}
+                        sx={{
+                          //   mr: 1,
+                          //   border: "1px solid #002152",
+                          //   borderRadius: "4px",
+                          background: "#ffffff",
+                          px: 2,
+                          py: 1,
+                          color: "#4B4B66",
+                          fontSize: "16px",
+                          fontWeight: "600",
+                          lineHeight: "22px",
+                          textTransform: "none",
+                        }}
+                      >
+                        Come back
+                      </Button>
+                    </Grid>
+                    <Grid item xs={6} sm={6} md={6}>
+                      <Button
+                        onClick={handleNext}
+                        fullWidth
+                        sx={{
+                          background: "#00C1B4",
+                          boxShadow: "0px 4px 34px rgba(0, 0, 0, 0.08)",
+                          borderRadius: "4px",
+                          color: "#ffffff",
+                          fontSize: "16px",
+                          lineHeight: "22px",
+                          fontWeight: "600",
+                          //   mt: 3,
+                          textTransform: "none",
+                          py: 1,
+                          "&:hover": {
                             background: "#00C1B4",
                             boxShadow: "0px 4px 34px rgba(0, 0, 0, 0.08)",
                             borderRadius: "4px",
@@ -309,29 +380,35 @@ export default function BrokerRegistration({
                             fontSize: "16px",
                             lineHeight: "22px",
                             fontWeight: "600",
-                            //   mt: 3,
+                            // mt: 3,
                             textTransform: "none",
                             py: 1,
-                            "&:hover": {
-                              background: "#00C1B4",
-                              boxShadow: "0px 4px 34px rgba(0, 0, 0, 0.08)",
-                              borderRadius: "4px",
-                              color: "#ffffff",
-                              fontSize: "16px",
-                              lineHeight: "22px",
-                              fontWeight: "600",
-                              // mt: 3,
-                              textTransform: "none",
-                              py: 1,
-                            },
-                          }}
-                        >
-                          Continue
-                        </Button>
-                      )}
+                          },
+                        }}
+                      >
+                        Continue
+                      </Button>
                     </Grid>
                   </Grid>
-                </form>
+                )}
+                <Snackbar
+                  open={snackbarOpen}
+                  autoHideDuration={6000}
+                  onClose={handleCloseSnackbar}
+                  anchorOrigin={{
+                    vertical: "top",
+                    horizontal: "right",
+                  }}
+                  key={"top"}
+                >
+                  <Alert
+                    onClose={handleCloseSnackbar}
+                    severity="error"
+                    sx={{ width: "100%" }}
+                  >
+                    Fill up the required field!
+                  </Alert>
+                </Snackbar>
               </Fragment>
             )}
           </Container>

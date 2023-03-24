@@ -7,7 +7,7 @@ import check from "../../../../public/Images/check.png";
 import Image from "next/image";
 import Footer from "../../shared/Footer/Footer";
 
-function HouseCard({ shadow, marginTop }) {
+function HouseCard({ shadow, marginTop, propertyInfo }) {
   return (
     <Box
       sx={{
@@ -32,13 +32,13 @@ function HouseCard({ shadow, marginTop }) {
           variant="p"
           sx={{ fontSize: "18px", fontWeight: "700", color: "#1A1859" }}
         >
-          Carlos Vicari Street
+          {propertyInfo?.address?.address}
         </Typography>
         <Typography
           variant="p"
           sx={{ fontSize: "16px", fontWeight: "400", color: "#1A1859" }}
         >
-          White Water, Sao Paulo
+          {`${propertyInfo?.address?.city},${propertyInfo?.address?.state?.name}`}
         </Typography>
         <Typography
           variant="p"
@@ -55,7 +55,7 @@ function HouseCard({ shadow, marginTop }) {
           >
             BRL
           </span>
-          950,000.00
+          {`${propertyInfo?.brl_rent}.00`}
         </Typography>
       </Grid>
       <Grid
@@ -76,7 +76,7 @@ function HouseCard({ shadow, marginTop }) {
               ml: "0.5vh",
             }}
           >
-            2 bedrooms
+            {`${propertyInfo?.no_of_rooms} bedrooms`}
           </Typography>
         </Box>
         <Box sx={{ pl: 1, pr: 1 }}>
@@ -90,7 +90,7 @@ function HouseCard({ shadow, marginTop }) {
               ml: "0.5vh",
             }}
           >
-            103m²
+            {`${propertyInfo?.land_area}m²`}
           </Typography>
         </Box>
         <Box>
@@ -104,7 +104,7 @@ function HouseCard({ shadow, marginTop }) {
               ml: "0.5vh",
             }}
           >
-            Financing
+            {`${propertyInfo?.property_type}`}
           </Typography>
         </Box>
       </Grid>

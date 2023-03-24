@@ -1,10 +1,12 @@
 import {
+  Alert,
   Box,
   Button,
   CircularProgress,
   Container,
   Grid,
   InputAdornment,
+  Snackbar,
   TextField,
   Typography,
 } from "@mui/material";
@@ -25,8 +27,6 @@ import * as Yup from "yup";
 import BaseOutlinedPhoneInput from "../src/component/reuseable/baseOutlinedPhoneInput/BaseOutlinedPhoneInput";
 import { registrationApi, userDetailsApi } from "../src/api";
 import { signIn } from "next-auth/react";
-
-
 
 const validationSchema = Yup.object().shape({
   name: Yup.string().required("Name is required"),
@@ -56,21 +56,37 @@ export default function Registration() {
     register,
     watch,
     control,
+    setError,
     handleSubmit,
     formState: { errors },
   } = useForm({
     resolver: yupResolver(validationSchema),
   });
+
+  // console.log({ errors });
   const [activeBtn, setActiveBtn] = useState(4);
   const [disableBtn, setDisableBtn] = useState(true);
-  console.log({ activeBtn });
+  // console.log({ activeBtn });
   const [showPass, setShowPass] = React.useState(false);
   const handleClickShowPassword = () => {
     setShowPass(!showPass);
   };
+  const [snackbarOpen, setSnackbarOpen] = React.useState(false);
+  const [message, setMessage] = useState("");
+
+  const handleClickSnackbar = () => {
+    setSnackbarOpen(true);
+  };
+
+  const handleCloseSnackbar = (event, reason) => {
+    if (reason === "clickaway") {
+      return;
+    }
+    setSnackbarOpen(false);
+  };
   const [loading, setLoading] = useState(false);
   const allValues = watch();
-  console.log({ allValues });
+  // console.log({ allValues });
 
   useEffect(() => {
     if (
@@ -106,14 +122,14 @@ export default function Registration() {
     console.log(data);
     const allData = { ...data, role_id: activeBtn };
     console.log({ allData });
-    const [error, responseToken] = await registrationApi(allData);
-    if (!error) {
+    const [errorToken, responseToken] = await registrationApi(allData);
+    if (!errorToken) {
       localStorage.setItem("token", responseToken?.data?.token);
       const [error, response] = await userDetailsApi();
       console.log(response.data.user);
       setLoading(false);
       if (!error) {
-        signIn("credentials", {
+        return signIn("credentials", {
           userId: response.data.user.id,
           userEmail: response.data.user.email,
           name: response.data.user.name,
@@ -128,8 +144,16 @@ export default function Registration() {
               : "/my_properties",
         });
       }
+      //
     } else {
+      const errors = errorToken?.response?.data?.errors ?? {};
+      Object.entries(errors).forEach(([name, messages]) => {
+        setError(name, { type: "manual", message: messages[0] });
+      });
+
+      handleClickSnackbar();
       setLoading(false);
+      setMessage(errorToken?.response?.data?.message);
     }
   };
 
@@ -208,11 +232,15 @@ export default function Registration() {
                             field.onChange(e.target.value);
                           }}
                           name={"name"}
-                          error={errors.email ? true : false}
+                          // error={errors.email ? true : false}
                         />
                       )}
                     />
-                    <Typography variant="inherit" color="textSecondary">
+                    <Typography
+                      variant="inherit"
+                      color="textSecondary"
+                      sx={{ color: "#b91c1c" }}
+                    >
                       {errors.name?.message}
                     </Typography>
                     <Grid
@@ -245,11 +273,15 @@ export default function Registration() {
                             field.onChange(e.target.value);
                           }}
                           name={"email"}
-                          error={errors.email ? true : false}
+                          // error={errors.email ? true : false}
                         />
                       )}
                     />
-                    <Typography variant="inherit" color="textSecondary">
+                    <Typography
+                      variant="inherit"
+                      color="textSecondary"
+                      sx={{ color: "#b91c1c" }}
+                    >
                       {errors.email?.message}
                     </Typography>
                     <Grid
@@ -287,7 +319,11 @@ export default function Registration() {
                         />
                       )}
                     />
-                    <Typography variant="inherit" color="textSecondary">
+                    <Typography
+                      variant="inherit"
+                      color="textSecondary"
+                      sx={{ color: "#b91c1c" }}
+                    >
                       {errors.phone?.message}
                     </Typography>
 
@@ -330,7 +366,7 @@ export default function Registration() {
                             field.onChange(e.target.value);
                           }}
                           // value={field.value}
-                          error={errors.password ? true : false}
+                          // error={errors.password ? true : false}
                           InputProps={{
                             endAdornment: (
                               <InputAdornment
@@ -349,7 +385,11 @@ export default function Registration() {
                         />
                       )}
                     />
-                    <Typography variant="inherit" color="textSecondary">
+                    <Typography
+                      variant="inherit"
+                      color="textSecondary"
+                      sx={{ color: "#b91c1c" }}
+                    >
                       {errors.password?.message}
                     </Typography>
 
@@ -608,6 +648,24 @@ export default function Registration() {
             </Grid>
           </Grid>
         </Box>
+        <Snackbar
+          open={snackbarOpen}
+          autoHideDuration={6000}
+          onClose={handleCloseSnackbar}
+          anchorOrigin={{
+            vertical: "top",
+            horizontal: "right",
+          }}
+          key={"top"}
+        >
+          <Alert
+            onClose={handleCloseSnackbar}
+            severity="error"
+            sx={{ width: "100%" }}
+          >
+            {message && message}
+          </Alert>
+        </Snackbar>
       </main>
     </div>
   );

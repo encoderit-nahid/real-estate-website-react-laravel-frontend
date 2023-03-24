@@ -6,11 +6,13 @@ import {
   TextField,
   Typography,
 } from "@mui/material";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import BaseOutlinedZipInput from "../../reuseable/baseOutlinedZipInput/BaseOutlinedZipInput";
 import BaseTextField from "../../reuseable/baseTextField/BaseTextField";
 import { Controller } from "react-hook-form";
 import BaseAutocomplete from "../../reuseable/baseAutocomplete/BaseAutocomplete";
+import { useDispatch, useSelector } from "react-redux";
+import { findStateData } from "../../../redux/state/actions";
 
 function AddressData({
   handleBack,
@@ -18,16 +20,20 @@ function AddressData({
   control,
   errors,
   allValues,
-  allStateData,
+  setValue,
 }) {
-  const [value, setValue] = useState("");
-  const [valid, setValid] = useState(false);
-  console.log({ valid });
-  const handleValidation = (e) => {
-    setValid(/^[0-9]{5}-[0-9]{3}$/.test(e.target.value));
-    console.log(e.target.value);
-    setValue(e.target.value);
-  };
+  const dispatch = useDispatch();
+  useEffect(() => {
+    dispatch(findStateData());
+  }, [dispatch]);
+
+  const allStateData = useSelector((state) => state.state.stateData);
+  console.log({ allStateData });
+
+  useEffect(() => {
+    setValue("state", allStateData[0]);
+  }, [allStateData, setValue]);
+
   return (
     <Box sx={{ mt: 4 }}>
       <Grid
@@ -323,7 +329,7 @@ function AddressData({
           <Controller
             name="state"
             control={control}
-            defaultValue={allStateData[0]}
+            defaultValue={allStateData[0] || {}}
             render={({ field }) => (
               <BaseAutocomplete
                 //   sx={{ margin: "0.6vh 0" }}
@@ -368,6 +374,7 @@ function AddressData({
           <Controller
             name="city"
             control={control}
+            defaultValue={""}
             render={({ field }) => (
               <BaseTextField
                 size={"small"}
@@ -376,6 +383,7 @@ function AddressData({
                   field.onChange(e.target.value);
                 }}
                 name={"city"}
+                value={field.value}
               />
             )}
           />
@@ -388,63 +396,6 @@ function AddressData({
           </Typography>
         </Grid>
       </Grid>
-
-      {/* <Grid container spacing={1} sx={{ mt: 2, mb: 5 }}>
-        <Grid item xs={6} sm={6} md={6}>
-          <Button
-            color="inherit"
-            // disabled={activeStep === 0}
-            onClick={handleBack}
-            sx={{
-              //   mr: 1,
-              //   border: "1px solid #002152",
-              //   borderRadius: "4px",
-              background: "#ffffff",
-              px: 2,
-              py: 1,
-              color: "#4B4B66",
-              fontSize: "16px",
-              fontWeight: "600",
-              lineHeight: "22px",
-              textTransform: "none",
-            }}
-          >
-            Come back
-          </Button>
-        </Grid>
-        <Grid item xs={6} sm={6} md={6}>
-          <Button
-            onClick={handleNext}
-            fullWidth
-            sx={{
-              background: "#00C1B4",
-              boxShadow: "0px 4px 34px rgba(0, 0, 0, 0.08)",
-              borderRadius: "4px",
-              color: "#ffffff",
-              fontSize: "16px",
-              lineHeight: "22px",
-              fontWeight: "600",
-              //   mt: 3,
-              textTransform: "none",
-              py: 1,
-              "&:hover": {
-                background: "#00C1B4",
-                boxShadow: "0px 4px 34px rgba(0, 0, 0, 0.08)",
-                borderRadius: "4px",
-                color: "#ffffff",
-                fontSize: "16px",
-                lineHeight: "22px",
-                fontWeight: "600",
-                // mt: 3,
-                textTransform: "none",
-                py: 1,
-              },
-            }}
-          >
-            Continue
-          </Button>
-        </Grid>
-      </Grid> */}
     </Box>
   );
 }
