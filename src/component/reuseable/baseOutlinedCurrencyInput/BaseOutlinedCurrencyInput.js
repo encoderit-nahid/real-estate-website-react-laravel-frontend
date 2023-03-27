@@ -28,42 +28,29 @@ const NumericFormatCustom = React.forwardRef(function NumericFormatCustom(
   );
 });
 
-function BaseOutlinedCurrencyInput({ placeholder, label, size, borderColor }) {
-  const [values, setValues] = React.useState({
-    numberformat: "",
-  });
-
-  const handleChange = (event) => {
-    setValues({
-      ...values,
-      [event.target.name]: event.target.value,
-    });
-  };
-
+function BaseOutlinedCurrencyInput({
+  placeholder,
+  label,
+  value,
+  onChange,
+  size,
+  name,
+  sx,
+}) {
   return (
     <TextField
-      fullWidth
-      size={size}
-      label={label}
+      onChange={onChange}
+      name={name}
+      value={value}
       placeholder={placeholder}
-      value={values.numberformat}
-      onChange={handleChange}
-      name="numberformat"
-      id="formatted-numberformat-input"
+      id="formatted-text-mask-input"
+      label={label}
+      size={size}
       InputProps={{
         inputComponent: NumericFormatCustom,
       }}
       variant="outlined"
-      sx={{
-        "& .MuiOutlinedInput-root": {
-          "&.Mui-focused fieldset": {
-            borderColor: borderColor,
-          },
-        },
-        "& label.Mui-focused": {
-          color: borderColor,
-        },
-      }}
+      sx={sx}
     />
   );
 }

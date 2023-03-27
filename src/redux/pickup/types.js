@@ -1,6 +1,0 @@
-export const PICKUP_REQUEST = "PICKUP_REQUEST";
-export const PICKUP_SUCCESS = "PICKUP_SUCESS";
-export const PICKUP_FAILED = "PICKUP_FAILED";
-export const PICKUP_REMOVE = "PICKUP_REMOVE";
-export const PICKUP_UPDATE = "PICKUP_UPDATE";
-export const PICKUP_ADD = "PICKUP_ADD";

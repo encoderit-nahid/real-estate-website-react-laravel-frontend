@@ -376,24 +376,25 @@ export default function App({
               }}
             >
               {data?.property?.map((stateInfo, index) => (
-                 <Link    key={stateInfo.id} href={`/property_view/${stateInfo.id}`} as={`/property_view/${stateInfo.id}`}>
-                <ImageListItem
-               
-                  cols={3}
-                  sx={{
-                    width: {
-                      xl: "95%",
-                      lg: "95%",
-                      md: "70%",
-                      sm: "70%",
-                      xs: "70%",
-                    },
-                  }}
+                <Link
+                  key={stateInfo.id}
+                  href={`/property_view/${stateInfo.id}`}
+                  as={`/property_view/${stateInfo.id}`}
                 >
-                   
-                  <HouseCard propertyInfo={stateInfo} />
-                  
-                </ImageListItem>
+                  <ImageListItem
+                    cols={3}
+                    sx={{
+                      width: {
+                        xl: "95%",
+                        lg: "95%",
+                        md: "70%",
+                        sm: "70%",
+                        xs: "70%",
+                      },
+                    }}
+                  >
+                    <HouseCard propertyInfo={stateInfo} />
+                  </ImageListItem>
                 </Link>
               ))}
             </ImageList>

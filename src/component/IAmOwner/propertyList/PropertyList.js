@@ -3,11 +3,11 @@ import React from "react";
 import HouseCard from "../../reuseable/HouseCard/HouseCard";
 import Link from "next/link";
 
-function PropertyList() {
+function PropertyList({ propertyData }) {
   return (
     <Box>
       <Grid container spacing={1}>
-        {[0, 1, 2, 3, 4, 5, 6, 7, 8].map((data, index) => (
+        {propertyData?.properties?.data?.map((data, index) => (
           <Grid item xs={12} sm={12} md={6} lg={4} xl={4} key={index}>
             <Link href="/property_view">
               <a

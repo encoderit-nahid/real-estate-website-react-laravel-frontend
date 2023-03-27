@@ -8,12 +8,13 @@ import {
   Typography,
   styled,
 } from "@mui/material";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import BaseButton from "../../reuseable/button/BaseButton";
 import homeImage from "../../../../public/Images/home.png";
 import Image from "next/image";
 import Link from "next/link";
 import BaseTextField from "../../reuseable/baseTextField/BaseTextField";
+import BaseAutocomplete from "../../reuseable/baseAutocomplete/BaseAutocomplete";
 
 // const AutoComplete = styled(Autocomplete)`
 //   & .MuiInputBase-input {
@@ -21,7 +22,29 @@ import BaseTextField from "../../reuseable/baseTextField/BaseTextField";
 //   }
 // `;
 
+const omitEmpties = (obj) => {
+  return Object.entries(obj).reduce((carry, [key, value]) => {
+    if (![null, undefined, ""].includes(value)) {
+      carry[key] = value;
+    }
+    return carry;
+  }, {});
+};
+
 function FulfillDream() {
+  const [value, setValue] = useState(null);
+  console.log(value);
+  const [locationName, setLocationName] = useState(null);
+
+  const handleValueChange = (v) => {
+    setValue(v);
+  };
+
+  const handleLocationChange = (e) => {
+    console.log(e.target.value);
+    setLocationName(e.target.value);
+  };
+
   return (
     <Grid
       container
@@ -70,10 +93,8 @@ function FulfillDream() {
           mt: 4,
           width: { xs: "90%", sm: "90%", md: "90%", xl: "90%", lg: "75%" },
         }}
+        onChange={(e) => handleLocationChange(e)}
         InputProps={{
-          // style: {
-          //   height: "6.4vh",
-          // },
           endAdornment: (
             <InputAdornment position="end">
               <Image src={homeImage} alt="homeImage" />
@@ -81,18 +102,31 @@ function FulfillDream() {
           ),
         }}
       />
-      <Autocomplete
-        fullWidth
-        disablePortal
-        id="combo-box-demo"
+
+      <BaseAutocomplete
+        options={valueUpto || []}
+        getOptionLabel={(option) => option.label || ""}
         sx={{
           mt: 4,
           width: { xs: "90%", sm: "90%", md: "90%", xl: "90%", lg: "75%" },
         }}
-        options={valueUpto}
-        renderInput={(params) => <TextField {...params} label="value up to" />}
+        isOptionEqualToValue={(option, value) => option.value === value.value}
+        size={"medium"}
+        placeholder={"Value up to"}
+        onChange={(e, v, r, d) => handleValueChange(v)}
+        value={value}
       />
-      <Link href={{ pathname: '/search_real_estate', query: { location: 'badda',value:"10000",page:1 } }}>
+      <Link
+        href={{
+          pathname: "/search_real_estate",
+          query: omitEmpties({
+            location: locationName && locationName,
+            value_up_to: value && value.label,
+            page: 1,
+            per_page: 9,
+          }),
+        }}
+      >
         <a style={{ textDecoration: "none", listStyle: "none", width: "100%" }}>
           <BaseButton
             name={"search real estate"}
@@ -109,11 +143,11 @@ function FulfillDream() {
 export default FulfillDream;
 
 const valueUpto = [
-  { label: "5000"},
-  { label: "10000" },
-  { label: "15000" },
-  { label: "20000" },
-  { label: "25000" },
-  { label: "30000" },
-  { label: "35000" },
+  { label: "5000", id: 1 },
+  { label: "10000", id: 2 },
+  { label: "15000", id: 3 },
+  { label: "20000", id: 4 },
+  { label: "25000", id: 5 },
+  { label: "30000", id: 6 },
+  { label: "35000", id: 7 },
 ];

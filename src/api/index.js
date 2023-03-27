@@ -54,6 +54,16 @@ export const stateApi = async () => {
   }
 };
 
+//find_property_type
+export const propertyTypeApi = async () => {
+  try {
+    const response = await apiInstance.get(`property/property-type`);
+    return [false, response];
+  } catch (error) {
+    return [error, null];
+  }
+};
+
 //best_deals_state
 export const bestDealsApi = async () => {
   try {
