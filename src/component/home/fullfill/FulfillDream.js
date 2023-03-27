@@ -89,10 +89,10 @@ function FulfillDream() {
           mt: 4,
           width: { xs: "90%", sm: "90%", md: "90%", xl: "90%", lg: "75%" },
         }}
-        options={top100Films}
+        options={valueUpto}
         renderInput={(params) => <TextField {...params} label="value up to" />}
       />
-      <Link href="/search_real_estate">
+      <Link href={{ pathname: '/search_real_estate', query: { location: 'badda',value:"10000",page:1 } }}>
         <a style={{ textDecoration: "none", listStyle: "none", width: "100%" }}>
           <BaseButton
             name={"search real estate"}
@@ -108,12 +108,12 @@ function FulfillDream() {
 
 export default FulfillDream;
 
-const top100Films = [
-  { label: "The Shawshank Redemption", year: 1994 },
-  { label: "The Godfather", year: 1972 },
-  { label: "The Godfather: Part II", year: 1974 },
-  { label: "The Dark Knight", year: 2008 },
-  { label: "12 Angry Men", year: 1957 },
-  { label: "Schindler's List", year: 1993 },
-  { label: "Pulp Fiction", year: 1994 },
+const valueUpto = [
+  { label: "5000"},
+  { label: "10000" },
+  { label: "15000" },
+  { label: "20000" },
+  { label: "25000" },
+  { label: "30000" },
+  { label: "35000" },
 ];

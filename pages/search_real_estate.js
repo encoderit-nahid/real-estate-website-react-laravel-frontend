@@ -44,7 +44,7 @@ import dynamic from "next/dynamic";
 import Pagination from "@mui/material/Pagination";
 import Stack from "@mui/material/Stack";
 import SearchComponent from "../src/component/reuseable/SearchComponent/SearchComponent";
-
+import Router, { useRouter } from 'next/router'
 import FilterAltOutlinedIcon from "@mui/icons-material/FilterAltOutlined";
 import Autocomplete from "@mui/material/Autocomplete";
 import TextField from "@mui/material/TextField";
@@ -113,6 +113,20 @@ export default function SearchRealEstate({
   handleLoginOpen,
   handleLoginClose,
 }) {
+
+  const router = useRouter()
+  const [pageSize, setPageSize] = React.useState(3);
+  const [page, setPage] = React.useState(1);
+
+  const handlePageChange = (event, value) => {
+    setPage(value);
+    router.replace({
+      pathname: '/search_real_estate',
+      query: {...router.query, page: value },
+  })
+    // setData(datas.slice(firstIndex + pageSize * (value - 1), pageSize * value));
+  };
+
   const [state, setState] = useState({
     top: false,
     left: false,
@@ -1157,7 +1171,7 @@ export default function SearchRealEstate({
             </Grid>
             <PropertyList />
             <Stack spacing={2} sx={{ marginY: 8 }}>
-              <Pagination count={5} variant="outlined" shape="rounded" />
+              <Pagination count={5} page={page} onChange={handlePageChange} variant="outlined" shape="rounded" />
             </Stack>
           </Grid>
           <Grid
@@ -1192,3 +1206,20 @@ const top100Films = [
   { label: "Schindler's List", year: 1993 },
   { label: "Pulp Fiction", year: 1994 },
 ];
+
+export async function getServerSideProps(context) {
+  const location = context?.query?.location 
+  const value = context?.query?.value
+  const page = context?.query?.page
+  // Default value = "1"
+  
+  console.log("Location is: ", location);
+  console.log("value is: ", value);
+  console.log("page is: ", page)
+
+  return {
+    props: {
+      data : "saad"
+    }
+  }
+}

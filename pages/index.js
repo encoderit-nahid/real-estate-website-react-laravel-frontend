@@ -33,6 +33,7 @@ import { useSession, signIn, signOut } from "next-auth/react";
 import { _baseURL } from "../consts";
 import { bestDealsApi } from "../src/api";
 import { useEffect } from "react";
+import Link from "next/link";
 
 const brokerData = [
   {
@@ -375,8 +376,9 @@ export default function App({
               }}
             >
               {data?.property?.map((stateInfo, index) => (
+                 <Link    key={stateInfo.id} href={`/property_view/${stateInfo.id}`} as={`/property_view/${stateInfo.id}`}>
                 <ImageListItem
-                  key={stateInfo.id}
+               
                   cols={3}
                   sx={{
                     width: {
@@ -388,8 +390,11 @@ export default function App({
                     },
                   }}
                 >
+                   
                   <HouseCard propertyInfo={stateInfo} />
+                  
                 </ImageListItem>
+                </Link>
               ))}
             </ImageList>
           </Container>
