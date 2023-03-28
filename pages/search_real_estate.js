@@ -64,37 +64,43 @@ import Slider from "@mui/material/Slider";
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { findPropertyTypeData } from "../src/redux/propertyType/actions";
+import { findFeatureData } from "../src/redux/features/actions";
+import { serialize } from "object-to-formdata";
+
+const unflatten = require("flat").unflatten;
 
 function valuetext(value) {
   return `${value}°C`;
 }
 
-const CondominiumType = [
-  {
-    name: "Academy",
+const $params = {
+  encode(input) {
+    const searchParams = new URLSearchParams(window.location.search);
+
+    const formData = serialize(input, {
+      indices: true,
+      allowEmptyArrays: false,
+      booleansAsIntegers: true,
+    });
+
+    const inputSearchParams = new URLSearchParams(formData.entries());
+    for (const [key, value] of inputSearchParams.entries()) {
+      searchParams.set(key, value);
+    }
+
+    return searchParams;
   },
-  {
-    name: "Playground",
+  decode(input = new URLSearchParams(window.location.search)) {
+    return unflatten(
+      [...input.entries()].reduce((carry, [key, value]) => {
+        return {
+          ...carry,
+          [key.replace(/\[([^\]]+)\]/g, ".$1")]: value,
+        };
+      }, {})
+    );
   },
-  {
-    name: "Grren Area",
-  },
-  {
-    name: "24h concierge",
-  },
-  {
-    name: "Toy library",
-  },
-  {
-    name: "Sports court",
-  },
-  {
-    name: "Grill",
-  },
-  {
-    name: "Party room",
-  },
-];
+};
 
 export default function SearchRealEstate({
   loginOpen,
@@ -102,21 +108,38 @@ export default function SearchRealEstate({
   handleLoginOpen,
   handleLoginClose,
   propertyData,
+  query,
 }) {
   const dispatch = useDispatch();
   const router = useRouter();
   const [pageSize, setPageSize] = React.useState(3);
   const [page, setPage] = React.useState(1);
+  const [selectval, setSelectVal] = useState(null);
+  console.log({ query });
+
   console.log(propertyData);
+
+  const omitEmpties = (obj) => {
+    return Object.entries(obj).reduce((carry, [key, value]) => {
+      if (![null, undefined, "", []].includes(value)) {
+        carry[key] = value;
+      }
+      return carry;
+    }, {});
+  };
 
   useEffect(() => {
     dispatch(findPropertyTypeData());
+    dispatch(findFeatureData());
   }, [dispatch]);
 
   const propertyType = useSelector(
     (state) => state.propertyType.propertyTypeData
   );
   console.log({ propertyType });
+
+  const featureData = useSelector((state) => state.feature.featureData);
+  console.log({ featureData });
 
   const handlePageChange = (event, value) => {
     setPage(value);
@@ -138,7 +161,7 @@ export default function SearchRealEstate({
   } = useForm();
 
   const allValues = watch();
-
+  const [searchValue, setSearchValue] = useState(null);
   const [type, setType] = useState(1);
   const [bedrooms, setBedrooms] = useState(1);
   const [bathrooms, setBathrooms] = useState(1);
@@ -146,6 +169,37 @@ export default function SearchRealEstate({
   const [pets, setPets] = useState("Yes");
   const [closeToTheMetro, setCloseToTheMetro] = useState("Yes");
   const [availability, setAvailability] = useState("Immediate");
+  const [featuretypes, setFeatureTypes] = useState([]);
+
+  console.log(featuretypes);
+
+  useEffect(() => {
+    // console.log("ddd", $params.decode());
+    // setSelectValue($params.decode());
+    // const prevData = $params.decode();
+    // setSelectVal(prevData);
+
+    setType(parseInt($params?.decode()?.type) || 1);
+    setBedrooms(parseInt($params?.decode()?.bedroom) || 1);
+    setBathrooms(parseInt($params?.decode()?.bathroom) || 1);
+    setPets($params?.decode()?.pets || "Yes");
+    setFurnished($params?.decode()?.furnish || "Yes");
+    setCloseToTheMetro($params?.decode()?.metro || "Yes");
+    setFeatureTypes($params?.decode()?.tag || []);
+    // setValue("min_val", parseInt($params?.decode()?.min_val) || ""),
+    //   setValue("max_val", parseInt($params?.decode()?.max_val) || "");
+  }, [setValue]);
+
+  // console.log({ selectval });
+  // useEffect(() => {
+  //   if (selectval !== null) {
+  //     setValue("min_val", selectval.min_val),
+  //       setValue("max_val", selectval.max_val);
+  //     setType(selectval.type);
+  //   }
+  // }, [selectval, setValue]);
+
+  // console.log("d", $params.decode());
 
   const [state, setState] = useState({
     top: false,
@@ -166,6 +220,17 @@ export default function SearchRealEstate({
     setState({ ...state, [anchor]: open });
   };
 
+  const handleSearch = (e) => {
+    setSearchValue(e.target.value);
+  };
+
+  const handleSearchBtn = () => {
+    router.replace({
+      pathname: "/search_real_estate",
+      query: { ...router.query, all: searchValue },
+    });
+  };
+
   const [valueSlider, setValueSlider] = React.useState([20, 37]);
 
   const handleChange = (event, newValue) => {
@@ -184,6 +249,34 @@ export default function SearchRealEstate({
 
   const onSubmit = async (data) => {
     console.log(data);
+    const allFilterData = {
+      ...data,
+      type: type,
+      bedroom: bedrooms,
+      bathroom: bathrooms,
+      furnish: furnished,
+      pets: pets,
+      metro: closeToTheMetro,
+      tag: featuretypes,
+    };
+
+    const fd = serialize(allFilterData, {
+      indices: true,
+      allowEmptyArrays: false,
+      booleansAsIntegers: true,
+    });
+
+    const sp = new URLSearchParams(fd.entries());
+    const spEntries = Object.fromEntries(sp.entries());
+
+    console.log({
+      encoded: $params.encode(omitEmpties(allFilterData)).toString(),
+      decoded: $params.decode(),
+    });
+    router.replace({
+      pathname: "/search_real_estate",
+      query: $params.encode(omitEmpties(allFilterData)).toString(),
+    });
   };
 
   const list = (anchor) => (
@@ -314,6 +407,7 @@ export default function SearchRealEstate({
                         field.onChange(e.target.value);
                       }}
                       // label={"Minimum"}
+                      // type={"number"}
                       name={"min_value"}
                       value={field.value}
                       sx={{
@@ -338,6 +432,7 @@ export default function SearchRealEstate({
                     <BaseOutlinedCurrencyInput
                       size={"medium"}
                       placeholder={"Maximum"}
+                      // type={"number"}
                       onChange={(e) => {
                         field.onChange(e.target.value);
                       }}
@@ -817,341 +912,89 @@ export default function SearchRealEstate({
             </Grid>
           </Box>
           <Divider sx={{ mt: 1, mb: 1 }} />
-          <Box>
-            <Typography
-              variant="p"
-              sx={{
-                color: "#4B4B66",
-                fontSize: "16px",
-                fontWeight: "400",
-                lineHeight: "19px",
-              }}
-            >
-              Condominium
-            </Typography>
-            <Grid
-              container
-              direction="row"
-              justifyContent="flex-start"
-              alignItems="flex-start"
-              gap={1}
-              sx={{ mt: 2 }}
-            >
-              {CondominiumType.map((data, index) => (
-                // <Grid xs={6} sm={6} md={6} lg={3} xl={3} key={index}>
-                <Button
-                  key={index}
-                  sx={{
-                    background: `${index === 0 ? "#7450F0" : "transparent"}`,
-                    borderRadius: "56px",
-                    // width: "100%",
-                    color: `${index === 0 ? "#ffffff" : "#32414C"}`,
-                    border: `${index === 0 ? "" : "1px solid #9FAAB1"}`,
-                    fontSize: {
-                      xs: "12px",
-                      sm: "13px",
-                      md: "14px",
-                      lg: "13px",
-                      xl: "14px",
-                    },
-                    fontWeight: "400",
-                    lineHeight: "17px",
-                    textTransform: "none",
-                    px: { xs: 0, sm: 1, md: 1, lg: 1, xl: 1 },
-                    py: 1,
-                    "&:hover": {
-                      background: "#7450F0",
-                      borderRadius: "56px",
-                      color: "#ffffff",
-                    },
-                  }}
-                >
-                  {data.name}
-                </Button>
-                // </Grid>
-              ))}
-            </Grid>
-          </Box>
-          <Divider sx={{ mt: 1, mb: 1 }} />
-          <Box>
-            <Typography
-              variant="p"
-              sx={{
-                color: "#4B4B66",
-                fontSize: "16px",
-                fontWeight: "400",
-                lineHeight: "19px",
-              }}
-            >
-              Amenities
-            </Typography>
-            <Grid
-              container
-              direction="row"
-              justifyContent="flex-start"
-              alignItems="flex-start"
-              gap={1}
-              sx={{ mt: 2 }}
-            >
-              {CondominiumType.map((data, index) => (
-                // <Grid xs={6} sm={6} md={6} lg={3} xl={3} key={index}>
-                <Button
-                  key={index}
-                  sx={{
-                    background: `${index === 0 ? "#7450F0" : "transparent"}`,
-                    borderRadius: "56px",
-                    // width: "100%",
-                    color: `${index === 0 ? "#ffffff" : "#32414C"}`,
-                    border: `${index === 0 ? "" : "1px solid #9FAAB1"}`,
-                    fontSize: {
-                      xs: "12px",
-                      sm: "13px",
-                      md: "14px",
-                      lg: "13px",
-                      xl: "14px",
-                    },
-                    fontWeight: "400",
-                    lineHeight: "17px",
-                    textTransform: "none",
-                    px: { xs: 0, sm: 1, md: 1, lg: 1, xl: 1 },
-                    py: 1,
-                    "&:hover": {
-                      background: "#7450F0",
-                      borderRadius: "56px",
-                      color: "#ffffff",
-                    },
-                  }}
-                >
-                  {data.name}
-                </Button>
-                // </Grid>
-              ))}
-            </Grid>
-          </Box>
-          <Divider sx={{ mt: 1, mb: 1 }} />
-          <Box>
-            <Typography
-              variant="p"
-              sx={{
-                color: "#4B4B66",
-                fontSize: "16px",
-                fontWeight: "400",
-                lineHeight: "19px",
-              }}
-            >
-              Well-being
-            </Typography>
-            <Grid
-              container
-              direction="row"
-              justifyContent="flex-start"
-              alignItems="flex-start"
-              gap={1}
-              sx={{ mt: 2 }}
-            >
-              {CondominiumType.map((data, index) => (
-                // <Grid xs={6} sm={6} md={6} lg={3} xl={3} key={index}>
-                <Button
-                  key={index}
-                  sx={{
-                    background: `${index === 0 ? "#7450F0" : "transparent"}`,
-                    borderRadius: "56px",
-                    // width: "100%",
-                    color: `${index === 0 ? "#ffffff" : "#32414C"}`,
-                    border: `${index === 0 ? "" : "1px solid #9FAAB1"}`,
-                    fontSize: {
-                      xs: "12px",
-                      sm: "13px",
-                      md: "14px",
-                      lg: "13px",
-                      xl: "14px",
-                    },
-                    fontWeight: "400",
-                    lineHeight: "17px",
-                    textTransform: "none",
-                    px: { xs: 0, sm: 1, md: 1, lg: 1, xl: 1 },
-                    py: 1,
-                    "&:hover": {
-                      background: "#7450F0",
-                      borderRadius: "56px",
-                      color: "#ffffff",
-                    },
-                  }}
-                >
-                  {data.name}
-                </Button>
-                // </Grid>
-              ))}
-            </Grid>
-          </Box>
-          <Divider sx={{ mt: 1, mb: 1 }} />
-          <Box>
-            <Typography
-              variant="p"
-              sx={{
-                color: "#4B4B66",
-                fontSize: "16px",
-                fontWeight: "400",
-                lineHeight: "19px",
-              }}
-            >
-              Home appliances
-            </Typography>
-            <Grid
-              container
-              direction="row"
-              justifyContent="flex-start"
-              alignItems="flex-start"
-              gap={1}
-              sx={{ mt: 2 }}
-            >
-              {CondominiumType.map((data, index) => (
-                // <Grid xs={6} sm={6} md={6} lg={3} xl={3} key={index}>
-                <Button
-                  key={index}
-                  sx={{
-                    background: `${index === 0 ? "#7450F0" : "transparent"}`,
-                    borderRadius: "56px",
-                    // width: "100%",
-                    color: `${index === 0 ? "#ffffff" : "#32414C"}`,
-                    border: `${index === 0 ? "" : "1px solid #9FAAB1"}`,
-                    fontSize: {
-                      xs: "12px",
-                      sm: "13px",
-                      md: "14px",
-                      lg: "13px",
-                      xl: "14px",
-                    },
-                    fontWeight: "400",
-                    lineHeight: "17px",
-                    textTransform: "none",
-                    px: { xs: 0, sm: 1, md: 1, lg: 1, xl: 1 },
-                    py: 1,
-                    "&:hover": {
-                      background: "#7450F0",
-                      borderRadius: "56px",
-                      color: "#ffffff",
-                    },
-                  }}
-                >
-                  {data.name}
-                </Button>
-                // </Grid>
-              ))}
-            </Grid>
-          </Box>
-          <Divider sx={{ mt: 1, mb: 1 }} />
-          <Box>
-            <Typography
-              variant="p"
-              sx={{
-                color: "#4B4B66",
-                fontSize: "16px",
-                fontWeight: "400",
-                lineHeight: "19px",
-              }}
-            >
-              Rooms
-            </Typography>
-            <Grid
-              container
-              direction="row"
-              justifyContent="flex-start"
-              alignItems="flex-start"
-              gap={1}
-              sx={{ mt: 2 }}
-            >
-              {CondominiumType.map((data, index) => (
-                // <Grid xs={6} sm={6} md={6} lg={3} xl={3} key={index}>
-                <Button
-                  key={index}
-                  sx={{
-                    background: `${index === 0 ? "#7450F0" : "transparent"}`,
-                    borderRadius: "56px",
-                    // width: "100%",
-                    color: `${index === 0 ? "#ffffff" : "#32414C"}`,
-                    border: `${index === 0 ? "" : "1px solid #9FAAB1"}`,
-                    fontSize: {
-                      xs: "12px",
-                      sm: "13px",
-                      md: "14px",
-                      lg: "13px",
-                      xl: "14px",
-                    },
-                    fontWeight: "400",
-                    lineHeight: "17px",
-                    textTransform: "none",
-                    px: { xs: 0, sm: 1, md: 1, lg: 1, xl: 1 },
-                    py: 1,
-                    "&:hover": {
-                      background: "#7450F0",
-                      borderRadius: "56px",
-                      color: "#ffffff",
-                    },
-                  }}
-                >
-                  {data.name}
-                </Button>
-                // </Grid>
-              ))}
-            </Grid>
-          </Box>
-          <Divider sx={{ mt: 1, mb: 1 }} />
-          <Box>
-            <Typography
-              variant="p"
-              sx={{
-                color: "#4B4B66",
-                fontSize: "16px",
-                fontWeight: "400",
-                lineHeight: "19px",
-              }}
-            >
-              Accessibility
-            </Typography>
-            <Grid
-              container
-              direction="row"
-              justifyContent="flex-start"
-              alignItems="flex-start"
-              gap={1}
-              sx={{ mt: 2 }}
-            >
-              {CondominiumType.map((data, index) => (
-                // <Grid xs={6} sm={6} md={6} lg={3} xl={3} key={index}>
-                <Button
-                  key={index}
-                  sx={{
-                    background: `${index === 0 ? "#7450F0" : "transparent"}`,
-                    borderRadius: "56px",
-                    // width: "100%",
-                    color: `${index === 0 ? "#ffffff" : "#32414C"}`,
-                    border: `${index === 0 ? "" : "1px solid #9FAAB1"}`,
-                    fontSize: {
-                      xs: "12px",
-                      sm: "13px",
-                      md: "14px",
-                      lg: "13px",
-                      xl: "14px",
-                    },
-                    fontWeight: "400",
-                    lineHeight: "17px",
-                    textTransform: "none",
-                    px: { xs: 0, sm: 1, md: 1, lg: 1, xl: 1 },
-                    py: 1,
-                    "&:hover": {
-                      background: "#7450F0",
-                      borderRadius: "56px",
-                      color: "#ffffff",
-                    },
-                  }}
-                >
-                  {data.name}
-                </Button>
-                // </Grid>
-              ))}
-            </Grid>
-          </Box>
+          {Object.keys(featureData).map((key, index) => (
+            <Box key={index}>
+              <Typography
+                variant="p"
+                sx={{
+                  color: "#4B4B66",
+                  fontSize: "16px",
+                  fontWeight: "400",
+                  lineHeight: "19px",
+                }}
+              >
+                {(key === "condominium" ||
+                  key === "amenities" ||
+                  key === "wellbeing" ||
+                  key === "appliances" ||
+                  key === "rooms" ||
+                  key === "accessibility") &&
+                  key}
+              </Typography>
+              <Grid
+                container
+                direction="row"
+                justifyContent="flex-start"
+                alignItems="flex-start"
+                gap={1}
+                sx={{ mt: 2 }}
+              >
+                {(key === "condominium" ||
+                  key === "amenities" ||
+                  key === "wellbeing" ||
+                  key === "appliances" ||
+                  key === "rooms" ||
+                  key === "accessibility") &&
+                  featureData[key].map((data, index) => (
+                    <Button
+                      key={index}
+                      onClick={() => {
+                        setFeatureTypes((current) => [...current, data.id]);
+                      }}
+                      sx={{
+                        background: `${
+                          featuretypes?.includes(data.id)
+                            ? "#7450F0"
+                            : "transparent"
+                        }`,
+                        borderRadius: "56px",
+                        // width: "100%",
+                        color: `${
+                          featuretypes?.includes(data.id)
+                            ? "#ffffff"
+                            : "#32414C"
+                        }`,
+                        border: `${
+                          featuretypes?.includes(data.id)
+                            ? ""
+                            : "1px solid #9FAAB1"
+                        }`,
+                        fontSize: {
+                          xs: "12px",
+                          sm: "13px",
+                          md: "14px",
+                          lg: "13px",
+                          xl: "14px",
+                        },
+                        fontWeight: "400",
+                        lineHeight: "17px",
+                        textTransform: "none",
+                        px: { xs: 0, sm: 1, md: 1, lg: 1, xl: 1 },
+                        py: 1,
+                        "&:hover": {
+                          background: "#7450F0",
+                          borderRadius: "56px",
+                          color: "#ffffff",
+                        },
+                      }}
+                    >
+                      {data.name}
+                    </Button>
+                  ))}
+              </Grid>
+              <Divider sx={{ mt: 1, mb: 1 }} />
+            </Box>
+          ))}
         </Box>
         <Divider sx={{ mt: 2, mb: 1 }} />
         <Box
@@ -1243,7 +1086,11 @@ export default function SearchRealEstate({
           sx={{ px: 3, pb: 2, background: "#F9F9FB" }}
         >
           <Grid item xs={12} sm={12} md={12} lg={8} xl={8}>
-            <SearchComponent marginY="6vh" />
+            <SearchComponent
+              marginY="6vh"
+              handleSearch={handleSearch}
+              handleSearchBtn={handleSearchBtn}
+            />
             <Divider
               sx={{
                 background: "#F9F9FB",
@@ -1331,7 +1178,7 @@ export default function SearchRealEstate({
             <PropertyList propertyData={propertyData} />
             <Stack spacing={2} sx={{ marginY: 8 }}>
               <Pagination
-                count={Math.ceil(propertyData?.properties?.total / 9)}
+                count={Math.ceil(propertyData?.properties?.total / 9) || 4}
                 page={page}
                 onChange={handlePageChange}
                 variant="outlined"
@@ -1374,7 +1221,8 @@ const top100Films = [
 
 export async function getServerSideProps(context) {
   const base_url = process.env.NEXT_PUBLIC_API_URL;
-  // const location = context?.query?.location;
+  const queryValue = context.query;
+  // console.log({ tag });
   // const value_up_to = context?.query?.value_up_to;
   // const page = context?.query?.page;
   // const per_page = context?.query?.per_page;
@@ -1396,6 +1244,7 @@ export async function getServerSideProps(context) {
   return {
     props: {
       propertyData: data,
+      query: queryValue,
     },
   };
 }

@@ -10,7 +10,7 @@ import { Box, Grid, Typography } from "@mui/material";
 import searchIcon from "../../../../public/Images/search.png";
 import Image from "next/image";
 
-function SearchComponent({ marginY }) {
+function SearchComponent({ marginY, handleSearch, handleSearchBtn }) {
   return (
     <Grid
       container
@@ -47,6 +47,7 @@ function SearchComponent({ marginY }) {
                 fontSize: "20px",
               },
             }}
+            onChange={(e) => handleSearch(e)}
           />
         </Grid>
         <Box
@@ -59,6 +60,7 @@ function SearchComponent({ marginY }) {
             width: { xs: "25%", sm: "25%", md: "15%", lg: "15%", xl: "15%" },
             textAlign: "center",
           }}
+          onClick={handleSearchBtn}
         >
           <Image src={searchIcon} alt="search" />
         </Box>

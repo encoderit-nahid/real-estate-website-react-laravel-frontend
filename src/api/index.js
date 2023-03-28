@@ -64,6 +64,16 @@ export const propertyTypeApi = async () => {
   }
 };
 
+//find_features
+export const featuresApi = async () => {
+  try {
+    const response = await apiInstance.get(`feature/index`);
+    return [false, response];
+  } catch (error) {
+    return [error, null];
+  }
+};
+
 //best_deals_state
 export const bestDealsApi = async () => {
   try {

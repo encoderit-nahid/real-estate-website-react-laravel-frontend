@@ -35,6 +35,7 @@ function BaseOutlinedCurrencyInput({
   onChange,
   size,
   name,
+  type,
   sx,
 }) {
   return (
@@ -42,6 +43,7 @@ function BaseOutlinedCurrencyInput({
       onChange={onChange}
       name={name}
       value={value}
+      type={type}
       placeholder={placeholder}
       id="formatted-text-mask-input"
       label={label}
