@@ -10,6 +10,7 @@ function BaseAutocomplete({
   onChange,
   getOptionLabel,
   isOptionEqualToValue,
+  defaultValue,
 }) {
   return (
     <Autocomplete
@@ -22,6 +23,7 @@ function BaseAutocomplete({
       getOptionLabel={getOptionLabel}
       isOptionEqualToValue={isOptionEqualToValue}
       onChange={onChange}
+      defaultValue={defaultValue}
       value={value}
       renderInput={(params) => (
         <TextField {...params} placeholder={placeholder} />

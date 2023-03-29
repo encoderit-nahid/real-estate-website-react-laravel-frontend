@@ -66,6 +66,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { findPropertyTypeData } from "../src/redux/propertyType/actions";
 import { findFeatureData } from "../src/redux/features/actions";
 import { serialize } from "object-to-formdata";
+import BaseAutocomplete from "../src/component/reuseable/baseAutocomplete/BaseAutocomplete";
 
 const unflatten = require("flat").unflatten;
 
@@ -93,9 +94,12 @@ const $params = {
   decode(input = new URLSearchParams(window.location.search)) {
     return unflatten(
       [...input.entries()].reduce((carry, [key, value]) => {
+        const numValue = +value;
         return {
           ...carry,
-          [key.replace(/\[([^\]]+)\]/g, ".$1")]: value,
+          [key.replace(/\[([^\]]+)\]/g, ".$1")]: !isNaN(numValue)
+            ? numValue
+            : value,
         };
       }, {})
     );
@@ -170,24 +174,39 @@ export default function SearchRealEstate({
   const [closeToTheMetro, setCloseToTheMetro] = useState("Yes");
   const [availability, setAvailability] = useState("Immediate");
   const [featuretypes, setFeatureTypes] = useState([]);
+  const [valueSlider, setValueSlider] = React.useState([20, 37]);
+  const [areaSlider, setAreaSlider] = React.useState([20, 37]);
+  const [relevantValue, setRelevantValue] = useState(relevant[0]);
 
-  console.log(featuretypes);
+  console.log({ featuretypes });
 
   useEffect(() => {
-    // console.log("ddd", $params.decode());
-    // setSelectValue($params.decode());
-    // const prevData = $params.decode();
-    // setSelectVal(prevData);
+    if (valueSlider) {
+      setValue("min_value", valueSlider[0]);
+      setValue("max_value", valueSlider[1]);
+    }
+  }, [valueSlider, setValue]);
 
-    setType(parseInt($params?.decode()?.type) || 1);
-    setBedrooms(parseInt($params?.decode()?.bedroom) || 1);
-    setBathrooms(parseInt($params?.decode()?.bathroom) || 1);
-    setPets($params?.decode()?.pets || "Yes");
-    setFurnished($params?.decode()?.furnish || "Yes");
-    setCloseToTheMetro($params?.decode()?.metro || "Yes");
-    setFeatureTypes($params?.decode()?.tag || []);
-    // setValue("min_val", parseInt($params?.decode()?.min_val) || ""),
-    //   setValue("max_val", parseInt($params?.decode()?.max_val) || "");
+  useEffect(() => {
+    if (areaSlider) {
+      setValue("min_area", areaSlider[0]);
+      setValue("max_area", areaSlider[1]);
+    }
+  }, [areaSlider, setValue]);
+
+  useEffect(() => {
+    const searchParams = $params.decode();
+    setType(searchParams?.type || 1);
+    setBedrooms(searchParams?.bedroom || 1);
+    setBathrooms(searchParams?.bathroom || 1);
+    setPets(searchParams?.pets || "Yes");
+    setFurnished(searchParams?.furnish || "Yes");
+    setCloseToTheMetro(searchParams?.metro || "Yes");
+    setFeatureTypes(searchParams?.tag || []);
+    setValue("min_value", searchParams.min_value || 22);
+    setValue("max_value", searchParams.max_value || 37);
+    setValue("min_area", searchParams.min_area || 22);
+    setValue("max_area", searchParams.max_area || 37);
   }, [setValue]);
 
   // console.log({ selectval });
@@ -231,15 +250,11 @@ export default function SearchRealEstate({
     });
   };
 
-  const [valueSlider, setValueSlider] = React.useState([20, 37]);
-
   const handleChange = (event, newValue) => {
     setValueSlider(newValue);
     setValue("min_value", newValue[0]);
     setValue("max_value", newValue[1]);
   };
-
-  const [areaSlider, setAreaSlider] = React.useState([20, 37]);
 
   const handleAreaChange = (event, newValue) => {
     setAreaSlider(newValue);
@@ -279,6 +294,40 @@ export default function SearchRealEstate({
     });
   };
 
+  const handleCancelFilter = () => {
+    router.replace({
+      pathname: "/search_real_estate",
+      query: omitEmpties({
+        location: query?.location,
+        value_up_to: query?.value_up_to,
+        page: 1,
+        per_page: 9,
+      }),
+    });
+    setFeatureTypes([]);
+    setType(1);
+    setBedrooms(1);
+    setBathrooms(1);
+    setPets("Yes");
+    setFurnished("Yes");
+    setCloseToTheMetro("Yes");
+    setValue("min_value", 22);
+    setValue("max_value", 37);
+    setValue("min_area", 22);
+    setValue("max_area", 37);
+  };
+
+  const handleRelevantValueChange = (v) => {
+    setRelevantValue(v);
+    router.replace({
+      pathname: "/search_real_estate",
+      query: omitEmpties({
+        ...router.query,
+        relevant_filter: v?.value,
+      }),
+    });
+  };
+
   const list = (anchor) => (
     <Box
       sx={{ width: anchor === "top" || anchor === "bottom" ? "auto" : 450 }}
@@ -307,16 +356,6 @@ export default function SearchRealEstate({
           </Typography>
           <CloseIcon onClick={toggleDrawer(anchor, false)} />
         </Grid>
-        {/* <Box
-        sx={{
-          background: "#ffffff",
-          boxShadow: "0px 4px 8px rgba(0, 33, 82, 0.08)",
-          border: "1px solid #DBE1E5",
-          borderRadius: { xs: 0, sm: 0, md: 0, lg: "8px", xl: "8px" },
-          mt: 2,
-          mx: 2,
-        }}
-      ></Box> */}
 
         <Box sx={{ mx: 2, mt: 3 }}>
           <Box>
@@ -949,13 +988,25 @@ export default function SearchRealEstate({
                     <Button
                       key={index}
                       onClick={() => {
-                        setFeatureTypes((current) => [...current, data.id]);
+                        if (!featuretypes?.includes(data.id)) {
+                          setFeatureTypes((current) => [...current, data.id]);
+                        } else {
+                          const newArray = featuretypes?.filter(
+                            (value) => value !== data.id
+                          );
+                          setFeatureTypes(newArray);
+                        }
                       }}
                       sx={{
                         background: `${
                           featuretypes?.includes(data.id)
                             ? "#7450F0"
                             : "transparent"
+                          // console.log("feature", featuretypes)
+                          // console.log(
+                          //   "bool",
+                          //   featuretypes?.includes(data.id.toString())
+                          // )
                         }`,
                         borderRadius: "56px",
                         // width: "100%",
@@ -1013,7 +1064,7 @@ export default function SearchRealEstate({
           <Grid container spacing={3}>
             <Grid item xs={12} sm={12} md={12} lg={6}>
               <Button
-                onClick={toggleDrawer(anchor, false)}
+                onClick={handleCancelFilter}
                 fullWidth
                 variant="outlined"
                 sx={{
@@ -1156,7 +1207,7 @@ export default function SearchRealEstate({
                 {list("left")}
               </SwipeableDrawer>
 
-              <Autocomplete
+              {/* <Autocomplete
                 disablePortal
                 sx={{
                   width: {
@@ -1173,6 +1224,28 @@ export default function SearchRealEstate({
                 renderInput={(params) => (
                   <TextField {...params} label="Most Relevant" />
                 )}
+              /> */}
+
+              <BaseAutocomplete
+                options={relevant || []}
+                defaultValue={relevant[0]}
+                getOptionLabel={(option) => option.label || ""}
+                sx={{
+                  width: {
+                    xs: "50%",
+                    sm: "50%",
+                    md: "50%",
+                    lg: "25%",
+                    xl: "20%",
+                  },
+                }}
+                isOptionEqualToValue={(option, value) =>
+                  option.value === value.value
+                }
+                size={"small"}
+                placeholder={"Most Relevant"}
+                onChange={(e, v, r, d) => handleRelevantValueChange(v)}
+                value={relevantValue}
               />
             </Grid>
             <PropertyList propertyData={propertyData} />
@@ -1201,7 +1274,7 @@ export default function SearchRealEstate({
               },
             }}
           >
-            <BaseGoogleMap height={"245vh"} />
+            <BaseGoogleMap height={"245vh"} markersData={propertyData} />
           </Grid>
         </Grid>
       </main>
@@ -1209,14 +1282,11 @@ export default function SearchRealEstate({
   );
 }
 
-const top100Films = [
-  { label: "The Shawshank Redemption", year: 1994 },
-  { label: "The Godfather", year: 1972 },
-  { label: "The Godfather: Part II", year: 1974 },
-  { label: "The Dark Knight", year: 2008 },
-  { label: "12 Angry Men", year: 1957 },
-  { label: "Schindler's List", year: 1993 },
-  { label: "Pulp Fiction", year: 1994 },
+const relevant = [
+  { value: "most_relevant", label: "Most Relevant" },
+  { value: "latest", label: "Latest" },
+  { value: "cheapest", label: "Cheapest" },
+  { value: "most_expensive", label: "Most Expensive" },
 ];
 
 export async function getServerSideProps(context) {

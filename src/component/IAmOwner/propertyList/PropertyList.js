@@ -20,6 +20,7 @@ function PropertyList({ propertyData }) {
                 <HouseCard
                   shadow={"0px 4px 18px rgba(0, 0, 0, 0.1)"}
                   marginTop={"4vh"}
+                  propertyInfo={data}
                 />
               </a>
             </Link>

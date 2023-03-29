@@ -22,7 +22,7 @@ const featureFailed = (err) => {
 };
 
 const groupByType = (propertyType) =>
-  propertyType.reduce((group, product) => {
+  propertyType?.reduce((group, product) => {
     const { type } = product;
     group[type] = group[type] ?? [];
     group[type].push(product);
