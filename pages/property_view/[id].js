@@ -27,6 +27,7 @@ import sliderViewSmall from "../../public/Images/sliderViewSmall.png";
 import BaseModal from "../../src/component/reuseable/baseModal/BaseModal";
 import ProposalModal from "../../src/component/PropertyView/ProposalStepperComponent/ProposalModal";
 import { useState } from "react";
+import { useEffect } from "react";
 
 const aboutProperty = [
   "Heater",
@@ -69,7 +70,11 @@ export default function PropertyView({
   setLoginOpen,
   handleLoginOpen,
   handleLoginClose,
+  singlePropertyData,
+  tabArrayData,
 }) {
+  console.log({ singlePropertyData });
+  console.log({ tabArrayData });
   //add_proposal_modal
   const [proposalOpen, setProposalOpen] = useState(false);
   const handleProposalOpen = () => setProposalOpen(true);
@@ -77,6 +82,37 @@ export default function PropertyView({
 
   const [negotiate, setNegotiate] = useState(true);
   const [schedule, setSchedule] = useState(false);
+
+  const [upperTabValue, setUpperTabValue] = useState(tabArrayData[0].slug);
+  console.log({ upperTabValue });
+  const [sideTabValue, setSideTabValue] = useState("photos");
+  const [Images, setImages] = useState([]);
+  const [selectImage, setSelectImage] = useState(() => Images[0]?.file_path);
+
+  useEffect(() => {
+    if (Images.length > 0) {
+      setSelectImage(Images[0]?.file_path);
+    } else {
+      setSelectImage(Images[0]?.lofi);
+    }
+  }, [Images]);
+
+  useEffect(() => {
+    let showData = [];
+
+    if (sideTabValue === "photos") {
+      showData = singlePropertyData?.property?.attachments?.filter((data) =>
+        data.title.includes(upperTabValue)
+      );
+    }
+    if (sideTabValue === "vision_360") {
+      showData = singlePropertyData?.property?.attachments?.filter((data) =>
+        data.title.includes(`${upperTabValue}_{sideTabValue}`)
+      );
+    }
+    setImages(showData);
+    console.log({ showData });
+  }, [singlePropertyData, upperTabValue, sideTabValue]);
 
   return (
     <div>
@@ -131,7 +167,11 @@ export default function PropertyView({
             alignItems="flex-start"
             sx={{ marginTop: 1 }}
           >
-            <TabView />
+            <TabView
+              tabArray={tabArrayData}
+              upperTabValue={upperTabValue}
+              setUpperTabValue={setUpperTabValue}
+            />
           </Grid>
         </Box>
         <Box
@@ -206,7 +246,11 @@ export default function PropertyView({
                 },
               }}
             >
-              <SliderView />
+              <SliderView
+                sideTabValue={sideTabValue}
+                setSideTabValue={setSideTabValue}
+                selectImage={selectImage}
+              />
             </Grid>
             <Grid
               item
@@ -221,7 +265,7 @@ export default function PropertyView({
                 },
               }}
             >
-              <SlideImage />
+              <SlideImage Images={Images} setSelectImage={setSelectImage} />
             </Grid>
           </Grid>
         </Box>
@@ -319,17 +363,23 @@ export default function PropertyView({
     </div>
   );
 }
-49
-
+49;
 
 export async function getServerSideProps(context) {
   const { id } = context.query;
-  console.log("paramId", id)
-  // const res = await fetch(`https://restcountries.eu/rest/v2/name/${id}`);
-  // const country = await res.json();
+  const base_url = process.env.NEXT_PUBLIC_API_URL;
+  // console.log("paramId", id);
+  const res = await fetch(`${base_url}/api/property/show/${id}`);
+  const singlePropertyData = await res.json();
 
-  // console.log(`Fetched place: ${country.name}`);
-  return { props: {
-    data:'saad'
-  }};
+  // console.log("single", singlePropertyData);
+  return {
+    props: {
+      singlePropertyData: singlePropertyData,
+      tabArrayData:
+        singlePropertyData?.property?.property_detail?.photo_types?.filter(
+          (data) => data.slug.substr(data.slug.length - 3) !== "360"
+        ),
+    },
+  };
 }

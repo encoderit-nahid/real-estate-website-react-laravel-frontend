@@ -16,6 +16,7 @@ function HouseCard({ shadow, marginTop, propertyInfo }) {
         pb: 3,
         boxShadow: shadow,
         marginTop: marginTop,
+        cursor: "pointer",
       }}
     >
       <Box sx={{ width: "100%" }}>

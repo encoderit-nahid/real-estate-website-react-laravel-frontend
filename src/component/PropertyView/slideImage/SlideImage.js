@@ -10,8 +10,13 @@ import {
 } from "@mui/material";
 import Image from "next/image";
 import smallHome from "../../../../public/Images/Rectangle 1815.png";
+import { _baseURL } from "../../../../consts";
 
-function SlideImage() {
+function SlideImage({ Images, setSelectImage }) {
+  const handleImageSelect = (data) => {
+    console.log("file", data.file_path);
+    setSelectImage(data?.file_path);
+  };
   return (
     <Grid
       container
@@ -19,7 +24,17 @@ function SlideImage() {
       justifyContent="center"
       alignItems="center"
     >
-      <Box sx={{ mb: 2 }}>
+      {Images?.map((data, index) => (
+        <Box sx={{ mb: 2 }} key={index} onClick={() => handleImageSelect(data)}>
+          <Image
+            src={`${_baseURL}/storage/${data.file_path}`}
+            width={100}
+            height={100}
+            alt="image"
+          />
+        </Box>
+      ))}
+      {/* <Box sx={{ mb: 2 }}>
         <Image src={smallHome} alt="home" />
       </Box>
       <Box sx={{ mb: 2 }}>
@@ -27,10 +42,7 @@ function SlideImage() {
       </Box>
       <Box sx={{ mb: 2 }}>
         <Image src={smallHome} alt="home" />
-      </Box>
-      <Box sx={{ mb: 2 }}>
-        <Image src={smallHome} alt="home" />
-      </Box>
+      </Box> */}
     </Grid>
   );
 }

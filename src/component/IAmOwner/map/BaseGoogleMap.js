@@ -24,7 +24,7 @@ const GoogleMapOptions = {
 const BaseMap = ({ height, width, markersData }) => {
   const [map, setMap] = React.useState(null);
   const [isInteracted, setIsInteracted] = React.useState(false);
-  const [defaultZoom] = useState(15);
+  const [defaultZoom] = useState(12);
   const [mapZoom, setMapZoom] = useState(map?.getZoom());
   const [geocoder, setGeocoder] = useState(null);
 
@@ -127,17 +127,11 @@ const BaseMap = ({ height, width, markersData }) => {
           //   scale: 7,
           // }}
         >
-          {activeMarker === id ? (
-            // <InfoWindow onCloseClick={() => setActiveMarker(null)}>
-            //   <Box sx={{ mx: 2, my: 1 }}>{name}</Box>
-            // </InfoWindow>
-
+          {/* {activeMarker === id ? (
             <InfoWindow onCloseClick={() => setActiveMarker(null)}>
-              <div>
-                <h1>{address?.city}</h1>
-              </div>
+              <Box sx={{ mx: 2, my: 1 }}>{name}</Box>
             </InfoWindow>
-          ) : null}
+          ) : null} */}
         </MarkerF>
       ))}
     </GoogleMap>
