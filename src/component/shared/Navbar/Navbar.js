@@ -59,6 +59,7 @@ function Navbar({
     setAnchorElUser(null);
   };
   const handleLogout = () => {
+    localStorage.clear();
     signOut();
   };
 

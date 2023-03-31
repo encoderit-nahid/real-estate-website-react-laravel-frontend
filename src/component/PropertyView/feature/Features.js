@@ -9,7 +9,7 @@ import building from "../../../../public/Images//building.svg";
 import car from "../../../../public/Images/car.png";
 import BusinessOutlinedIcon from "@mui/icons-material/BusinessOutlined";
 
-function Features() {
+function Features({ singlePropertyData }) {
   return (
     <Grid
       container
@@ -41,7 +41,7 @@ function Features() {
               ml: 0.4,
             }}
           >
-            2 bedrooms
+            {`${singlePropertyData?.property?.no_of_rooms} bedrooms`}
           </Typography>
         </Box>
         <Box sx={{ pl: 2, mt: 0.5 }}>
@@ -55,7 +55,7 @@ function Features() {
               ml: 0.4,
             }}
           >
-            103m²
+            {`${singlePropertyData?.property?.property_area} m²`}
           </Typography>
         </Box>
 
@@ -84,7 +84,7 @@ function Features() {
               ml: 0.4,
             }}
           >
-            1 bathroom
+            {`${singlePropertyData?.property?.no_of_bathrooms} bathrooms`}
           </Typography>
         </Box>
         <Box sx={{ pl: 2, mt: 0.5 }}>
@@ -98,7 +98,7 @@ function Features() {
               ml: 0.4,
             }}
           >
-            1 parking space
+            {`${singlePropertyData?.property?.no_of_bathrooms} parking space`}
           </Typography>
         </Box>
       </Grid>

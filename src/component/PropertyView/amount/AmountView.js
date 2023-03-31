@@ -1,7 +1,7 @@
 import { Box, Button, Grid, Typography } from "@mui/material";
 import React from "react";
 
-function AmountView({ setNegotiate, setSchedule }) {
+function AmountView({ setNegotiate, setSchedule, singlePropertyData }) {
   return (
     <Grid
       container
@@ -41,7 +41,7 @@ function AmountView({ setNegotiate, setSchedule }) {
               color: "#1A1859",
             }}
           >
-            R$ 950,000.00
+            {`R$ ${singlePropertyData?.property?.brl_rent}`}
           </Typography>
         </Grid>
       </Grid>
@@ -70,7 +70,7 @@ function AmountView({ setNegotiate, setSchedule }) {
               color: "#1A1859",
             }}
           >
-            R$ 1,315.00
+            {`R$ ${singlePropertyData?.property?.condominium}`}
           </Typography>
         </Grid>
       </Grid>
@@ -99,7 +99,7 @@ function AmountView({ setNegotiate, setSchedule }) {
               color: "#1A1859",
             }}
           >
-            R$ 3,000.00
+            {`R$ ${singlePropertyData?.property?.brl_iptu}`}
           </Typography>
         </Grid>
       </Grid>

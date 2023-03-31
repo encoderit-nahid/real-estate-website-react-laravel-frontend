@@ -18,6 +18,8 @@ import dayjs from "dayjs";
 import BaseModal from "../../reuseable/baseModal/BaseModal";
 import ScheduleModal from "../scheduleModal/ScheduleModal";
 import BaseTextField from "../../reuseable/baseTextField/BaseTextField";
+import { useSession, signIn, signOut } from "next-auth/react";
+import BaseTextArea from "../../reuseable/baseTextArea/BaseTextArea";
 
 function Negotiate({
   handleProposalOpen,
@@ -25,15 +27,21 @@ function Negotiate({
   schedule,
   setNegotiate,
   setSchedule,
+  singlePropertyData,
+  handleLoginOpen,
 }) {
   const [date, setDate] = React.useState(dayjs("2022-04-07"));
   const [value, setValue] = React.useState(dayjs("2020-01-01 12:00"));
+  const [brlValue, setBrlValue] = useState("");
+  const [condition, setCondition] = useState("");
   const [conditionField, setConditionField] = useState(false);
-
+  const { data: session } = useSession();
   const [scheduleModalOpen, setScheduleModalOpen] = useState(false);
 
   const handleOpen = () => setScheduleModalOpen(true);
   const handleClose = () => setScheduleModalOpen(false);
+
+  console.log("check", { brl: brlValue, con: condition });
 
   return (
     <Box
@@ -62,7 +70,7 @@ function Negotiate({
           variant="p"
           sx={{ fontSize: "14px", fontWeight: "700", color: "#1A1859" }}
         >
-          R$950.000,00
+          {`R$ ${singlePropertyData?.property?.brl_rent}`}
         </Typography>
       </Grid>
       <Box sx={{ borderBottom: "1px dashed #D3D3DF" }}></Box>
@@ -83,7 +91,7 @@ function Negotiate({
           variant="p"
           sx={{ fontSize: "14px", fontWeight: "700", color: "#1A1859" }}
         >
-          R$1.315,00
+          {`R$ ${singlePropertyData?.property?.condominium}`}
         </Typography>
       </Grid>
       <Box sx={{ borderBottom: "1px dashed #D3D3DF" }}></Box>
@@ -104,7 +112,7 @@ function Negotiate({
           variant="p"
           sx={{ fontSize: "14px", fontWeight: "700", color: "#1A1859" }}
         >
-          R$3.000,00
+          {`R$ ${singlePropertyData?.property?.brl_iptu}`}
         </Typography>
       </Grid>
       <Grid
@@ -206,7 +214,16 @@ function Negotiate({
           >
             Proposal
           </Typography>
-          <BaseTextField size={"small"} type={"number"} placeholder={"BRL"} />
+          <BaseTextField
+            size={"small"}
+            type={"number"}
+            placeholder={"BRL"}
+            value={brlValue}
+            onChange={(e) => {
+              setBrlValue(e.target.value);
+              localStorage.setItem("brl", e.target.value);
+            }}
+          />
           <Button
             onClick={() => setConditionField(true)}
             fullWidth
@@ -216,12 +233,28 @@ function Negotiate({
             Include Conditions
           </Button>
           {conditionField && (
-            <BaseTextField
-              sx={{ mt: 1 }}
-              size={"small"}
+            <BaseTextArea
+              minRows={3}
+              onChange={(e) => {
+                setCondition(e.target.value);
+                localStorage.setItem("condition", e.target.value);
+              }}
+              style={{
+                marginTop: "1vh",
+                width: "100%",
+                // margin: "2vh 0",
+                color: "rgba(0, 0, 0, 0.87)",
+                fontSize: "17px",
+                outlineColor: "#1976d2",
+                border: `1px solid silver`,
+                borderRadius: "5px",
+                padding: "0.4vh 1.4vh",
+              }}
+              value={condition}
               placeholder={"Condition"}
             />
           )}
+
           <Button
             fullWidth
             sx={{
@@ -250,7 +283,7 @@ function Negotiate({
                 py: 1,
               },
             }}
-            onClick={handleProposalOpen}
+            onClick={!session ? handleLoginOpen : handleProposalOpen}
           >
             Submit proposals
           </Button>

@@ -7,7 +7,7 @@
 // module.exports = nextConfig
 
 module.exports = {
-  reactStrictMode: true,
+  // reactStrictMode: true,
   swcMinify: true,
   images: {
     remotePatterns: [

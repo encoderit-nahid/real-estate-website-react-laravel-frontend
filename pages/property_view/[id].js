@@ -26,8 +26,9 @@ import sliderView from "../../public/Images/sliderView.png";
 import sliderViewSmall from "../../public/Images/sliderViewSmall.png";
 import BaseModal from "../../src/component/reuseable/baseModal/BaseModal";
 import ProposalModal from "../../src/component/PropertyView/ProposalStepperComponent/ProposalModal";
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import { useEffect } from "react";
+import Link from "next/link";
 
 const aboutProperty = [
   "Heater",
@@ -86,7 +87,21 @@ export default function PropertyView({
   const [upperTabValue, setUpperTabValue] = useState(tabArrayData[0].slug);
   console.log({ upperTabValue });
   const [sideTabValue, setSideTabValue] = useState("photos");
-  const [Images, setImages] = useState([]);
+
+  const Images = useMemo(() => {
+    return singlePropertyData?.property?.attachments?.filter((data) => {
+      return sideTabValue === "vision_360"
+        ? data.title.includes(`${upperTabValue}_${sideTabValue}`)
+        : sideTabValue === "photos"
+        ? data.title === upperTabValue
+        : sideTabValue === "condominium"
+        ? data.title === sideTabValue
+        : null;
+    });
+  }, [singlePropertyData, upperTabValue, sideTabValue]);
+
+  console.log({ Images });
+
   const [selectImage, setSelectImage] = useState(() => Images[0]?.file_path);
 
   useEffect(() => {
@@ -97,22 +112,22 @@ export default function PropertyView({
     }
   }, [Images]);
 
-  useEffect(() => {
-    let showData = [];
+  // useEffect(() => {
+  //   let showData = [];
 
-    if (sideTabValue === "photos") {
-      showData = singlePropertyData?.property?.attachments?.filter((data) =>
-        data.title.includes(upperTabValue)
-      );
-    }
-    if (sideTabValue === "vision_360") {
-      showData = singlePropertyData?.property?.attachments?.filter((data) =>
-        data.title.includes(`${upperTabValue}_{sideTabValue}`)
-      );
-    }
-    setImages(showData);
-    console.log({ showData });
-  }, [singlePropertyData, upperTabValue, sideTabValue]);
+  //   if (sideTabValue === "photos") {
+  //     showData = singlePropertyData?.property?.attachments?.filter(
+  //       (data) => data.title === upperTabValue
+  //     );
+  //   }
+  //   if (sideTabValue === "vision_360") {
+  //     showData = singlePropertyData?.property?.attachments?.filter((data) =>
+  //       data.title.includes(`${upperTabValue}_${sideTabValue}`)
+  //     );
+  //   }
+  //   setImages(showData);
+  //   console.log({ showData });
+  // }, [singlePropertyData, upperTabValue, sideTabValue]);
 
   return (
     <div>
@@ -156,7 +171,7 @@ export default function PropertyView({
                 variant="p"
                 sx={{ fontSize: "24px", fontWeight: 700, color: "#1A1859" }}
               >
-                Rua Carlos Vicari | Água Branca São Paulo - SP
+                {`${singlePropertyData?.property?.address?.address} | ${singlePropertyData?.property?.address?.city}`}
               </Typography>
             </Button>
           </Grid>
@@ -250,6 +265,7 @@ export default function PropertyView({
                 sideTabValue={sideTabValue}
                 setSideTabValue={setSideTabValue}
                 selectImage={selectImage}
+                addressData={singlePropertyData?.property?.address}
               />
             </Grid>
             <Grid
@@ -295,13 +311,14 @@ export default function PropertyView({
               setNegotiate={setNegotiate}
               schedule={schedule}
               setSchedule={setSchedule}
+              singlePropertyData={singlePropertyData}
             />
           </Grid>
         </Box>
         <Box sx={{ mx: 3, mt: 4 }}>
           <Grid container spacing={2}>
             <Grid item xs={12} sm={12} md={12} lg={9} xl={9}>
-              <Features />
+              <Features singlePropertyData={singlePropertyData} />
               <AboutProperty name="About the property" array={aboutProperty} />
               <AboutProperty name="About the condo" array={aboutCondo} />
               <AboutProperty name="surroundings" array={surroundings} />
@@ -313,6 +330,8 @@ export default function PropertyView({
                 schedule={schedule}
                 setSchedule={setSchedule}
                 handleProposalOpen={handleProposalOpen}
+                singlePropertyData={singlePropertyData}
+                handleLoginOpen={handleLoginOpen}
               />
             </Grid>
           </Grid>
@@ -331,22 +350,31 @@ export default function PropertyView({
               pb: 4,
             }}
           >
-            {[0, 1, 2, 3, 4, 5, 6].map((data, index) => (
-              <ImageListItem
-                key={index}
-                cols={2}
-                sx={{
-                  width: {
-                    xl: "90%",
-                    lg: "90%",
-                    md: "70%",
-                    sm: "90%",
-                    xs: "90%",
-                  },
-                }}
+            {singlePropertyData?.properties?.map((stateInfo, index) => (
+              <Link
+                key={stateInfo.id}
+                href={`/property_view/${stateInfo.id}`}
+                as={`/property_view/${stateInfo.id}`}
               >
-                <HouseCard shadow={"0px 4px 18px rgba(0, 0, 0, 0.1)"} />
-              </ImageListItem>
+                <ImageListItem
+                  key={index}
+                  cols={2}
+                  sx={{
+                    width: {
+                      xl: "100%",
+                      lg: "90%",
+                      md: "70%",
+                      sm: "90%",
+                      xs: "90%",
+                    },
+                  }}
+                >
+                  <HouseCard
+                    shadow={"0px 4px 18px rgba(0, 0, 0, 0.1)"}
+                    propertyInfo={stateInfo}
+                  />
+                </ImageListItem>
+              </Link>
             ))}
           </ImageList>
         </Box>
@@ -355,7 +383,10 @@ export default function PropertyView({
         <BaseModal isShowing={proposalOpen} isClose={handleProposalClose}>
           <Tooltip title="Something">
             <>
-              <ProposalModal handleProposalClose={handleProposalClose} />
+              <ProposalModal
+                handleProposalClose={handleProposalClose}
+                singlePropertyId={singlePropertyData?.property?.id}
+              />
             </>
           </Tooltip>
         </BaseModal>

@@ -8,7 +8,6 @@ export const apiInstance = axios.create({
 });
 apiInstance.interceptors.request.use((config) => {
   const token = localStorage.getItem("token");
-  console.log({ token });
   if (token) config.headers["Authorization"] = `Bearer ${token}`;
 
   return config;
@@ -78,6 +77,16 @@ export const featuresApi = async () => {
 export const bestDealsApi = async () => {
   try {
     const response = await apiInstance.get(`/property/best-deals`);
+    return [false, response];
+  } catch (error) {
+    return [error, null];
+  }
+};
+
+//proposal_create
+export const createProposalApi = async (body) => {
+  try {
+    const response = await apiInstance.post(`proposal/store`, body);
     return [false, response];
   } catch (error) {
     return [error, null];

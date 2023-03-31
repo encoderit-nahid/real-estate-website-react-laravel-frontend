@@ -51,6 +51,7 @@ function LeftBar(props) {
   });
 
   const handleLogout = () => {
+    localStorage.clear();
     signOut({
       callbackUrl: "/",
     });

@@ -12,6 +12,7 @@ import {
   InfoWindow,
 } from "@react-google-maps/api";
 import { Box } from "@mui/material";
+import { _baseMAP } from "../../../../consts";
 
 const GoogleMapOptions = {
   tilt: 0,
@@ -142,7 +143,7 @@ const Map = React.memo(BaseMap);
 
 const BaseGoogleMap = ({ height, width, markersData }) => {
   const { isLoaded } = useLoadScript({
-    googleMapsApiKey: "AIzaSyCs3QGIJDm6opgMqe6AWhBOs6I_APA7xN8",
+    googleMapsApiKey: _baseMAP,
   });
 
   return isLoaded ? (
@@ -151,37 +152,3 @@ const BaseGoogleMap = ({ height, width, markersData }) => {
 };
 
 export default BaseGoogleMap;
-
-const markers = [
-  {
-    id: 1,
-    name: "Chicago, Illinois",
-    position: { lat: 41.881832, lng: -87.623177 },
-  },
-  {
-    id: 2,
-    name: "Denver, Colorado",
-    position: { lat: 39.739235, lng: -104.99025 },
-  },
-  {
-    id: 3,
-    name: "Los Angeles, California",
-    position: { lat: 34.052235, lng: -118.243683 },
-  },
-  {
-    id: 4,
-    name: "New York, New York",
-    position: { lat: 40.712776, lng: -74.005974 },
-  },
-
-  {
-    id: 5,
-    name: "New York, New York",
-    position: { lat: 41.712776, lng: -74.005999 },
-  },
-  {
-    id: 6,
-    name: "New York, New York",
-    position: { lat: 42.712776, lng: -74.0055543 },
-  },
-];

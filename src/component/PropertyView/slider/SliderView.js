@@ -16,6 +16,7 @@ import ReactPannellum, { getConfig } from "react-pannellum";
 import BaseGoogleMap from "../../IAmOwner/map/BaseGoogleMap";
 import { Grid } from "@mui/material";
 import { _baseURL } from "../../../../consts";
+import BaseStreetView from "../../reuseable/baseStreetView/BaseStreetView";
 
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
@@ -52,14 +53,33 @@ function a11yProps(index) {
   };
 }
 
-function SliderView({ sideTabValue, setSideTabValue, selectImage }) {
+function SliderView({
+  sideTabValue,
+  setSideTabValue,
+  selectImage,
+  addressData,
+}) {
   const [value, setValue] = React.useState(0);
-
-  console.log(selectImage);
 
   const handleChange = (event, newValue) => {
     setValue(+newValue);
   };
+
+  const markersData = {
+    properties: {
+      data: [
+        {
+          id: 1,
+          address: {
+            latitude: +addressData?.latitude,
+            longitude: addressData?.longitude,
+          },
+        },
+      ],
+    },
+  };
+
+  console.log({ markersData });
 
   const config = {
     autoLoad: true,
@@ -256,34 +276,93 @@ function SliderView({ sideTabValue, setSideTabValue, selectImage }) {
         />
       </Tabs>
       <TabPanel value={value} index={0}>
-        <Image
-          src={`${_baseURL}/storage/${selectImage}`}
-          alt="home"
-          width={400}
-          height={400}
-        />
+        {selectImage != null ? (
+          <Image
+            src={`${_baseURL}/storage/${selectImage}`}
+            alt="home"
+            width={800}
+            height={400}
+          />
+        ) : (
+          <Grid
+            container
+            direction="row"
+            justifyContent="center"
+            alignItems="center"
+            sx={{ height: "30vh", paddingLeft: "25vh" }}
+          >
+            <Typography
+              variant="p"
+              sx={{ color: " #7450F0", fontWeight: "600", fontSize: "20px" }}
+            >
+              No Image Found
+            </Typography>
+          </Grid>
+        )}
       </TabPanel>
       <TabPanel value={value} index={1}>
-        {/* <Image src={home} alt="home" /> */}
-        <ReactPannellum
-          id="1"
-          sceneId="firstScene"
-          imageSource="https://as1.ftcdn.net/v2/jpg/01/14/52/38/1000_F_114523814_pDNUyVDPNcZRzSdaq98JbOPOkDvnJFqz.jpg"
-          config={config}
-          // style={style}
-        />
+        {selectImage != null ? (
+          <ReactPannellum
+            id="1"
+            sceneId="firstScene"
+            imageSource={`${_baseURL}/storage/${selectImage}`}
+            config={config}
+            // style={style}
+          />
+        ) : (
+          <Grid
+            container
+            direction="row"
+            justifyContent="center"
+            alignItems="center"
+            sx={{ height: "30vh", paddingLeft: "25vh" }}
+          >
+            <Typography
+              variant="p"
+              sx={{ color: " #7450F0", fontWeight: "600", fontSize: "20px" }}
+            >
+              No Image Found
+            </Typography>
+          </Grid>
+        )}
       </TabPanel>
       <TabPanel value={value} index={2}>
-        <Image src={home} alt="home" />
+        {selectImage != null ? (
+          <Image
+            src={`${_baseURL}/storage/${selectImage}`}
+            alt="home"
+            width={800}
+            height={400}
+          />
+        ) : (
+          <Grid
+            container
+            direction="row"
+            justifyContent="center"
+            alignItems="center"
+            sx={{ height: "30vh", paddingLeft: "25vh" }}
+          >
+            <Typography
+              variant="p"
+              sx={{ color: " #7450F0", fontWeight: "600", fontSize: "20px" }}
+            >
+              No Image Found
+            </Typography>
+          </Grid>
+        )}
       </TabPanel>
       <TabPanel value={value} index={3}>
-        <BaseGoogleMap height={"59vh"} width={"55vw"} />
+        <BaseGoogleMap
+          height={"59vh"}
+          width={"55vw"}
+          markersData={markersData}
+        />
       </TabPanel>
       <TabPanel value={value} index={4}>
         {/* <Typography variant="p" sx={{ visibility: "hidden", width: "100%" }}>
           dfsfffffffffffffffffffffffdsfffffffffffffffffffffffffffffffffffdsdsdsdsdsdsdsdsdsdsdsdsdsdsdsdsfsdfsdfsd
         </Typography> */}
-        <BaseGoogleMap height={"59vh"} width={"55vw"} />
+        <BaseStreetView addressData={addressData} />
       </TabPanel>
     </Box>
   );
