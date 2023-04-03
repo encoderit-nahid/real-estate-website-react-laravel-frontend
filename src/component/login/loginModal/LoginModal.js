@@ -24,6 +24,7 @@ import NoEncryptionOutlinedIcon from "@mui/icons-material/NoEncryptionOutlined";
 import axios from "axios";
 import { signIn } from "next-auth/react";
 import { loginApi, userDetailsApi } from "../../../api";
+import { useRouter } from "next/router";
 
 const style = {
   position: "absolute",
@@ -55,6 +56,7 @@ const validationSchema = Yup.object().shape({
 function LoginModal({ handleLoginClose }) {
   const [validEmail, setValidEmail] = useState(false);
   const [loading, setLoading] = useState(false);
+  const router = useRouter();
   const [showPass, setShowPass] = useState(false);
   const handleClickShowPassword = () => {
     setShowPass(!showPass);
@@ -103,10 +105,10 @@ function LoginModal({ handleLoginClose }) {
           role: response.data.user.roles[0].slug,
           roleId: response.data.user.roles[0].id,
           permissions: JSON.stringify(response.data.user.roles[0].permissions),
-          callbackUrl:
-            response.data.user.roles[0].slug === "buyer"
-              ? "/"
-              : "/my_properties",
+          callbackUrl: router.asPath,
+          // response.data.user.roles[0].slug === "buyer"
+          //   ? router.asPath
+          //   : "/my_properties",
         });
       }
     } else {

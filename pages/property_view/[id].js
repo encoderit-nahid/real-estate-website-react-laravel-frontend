@@ -319,9 +319,14 @@ export default function PropertyView({
           <Grid container spacing={2}>
             <Grid item xs={12} sm={12} md={12} lg={9} xl={9}>
               <Features singlePropertyData={singlePropertyData} />
-              <AboutProperty name="About the property" array={aboutProperty} />
-              <AboutProperty name="About the condo" array={aboutCondo} />
-              <AboutProperty name="surroundings" array={surroundings} />
+
+              {Object.keys(singlePropertyData?.feature).map((key, index) => (
+                <AboutProperty
+                  key={index}
+                  name={key}
+                  array={singlePropertyData?.feature[key]}
+                />
+              ))}
             </Grid>
             <Grid item xs={12} sm={12} md={12} lg={3} xl={3}>
               <Negotiate
@@ -332,6 +337,7 @@ export default function PropertyView({
                 handleProposalOpen={handleProposalOpen}
                 singlePropertyData={singlePropertyData}
                 handleLoginOpen={handleLoginOpen}
+                singlePropertyId={singlePropertyData?.property?.id}
               />
             </Grid>
           </Grid>

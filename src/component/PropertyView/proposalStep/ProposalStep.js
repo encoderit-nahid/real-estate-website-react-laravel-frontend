@@ -9,7 +9,7 @@ import {
 } from "@mui/material";
 import Image from "next/image";
 import proposeImage from "../../../../public/Images/proposal_modal.png";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useForm, Controller } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as Yup from "yup";
@@ -65,6 +65,7 @@ function ProposalStep({
     watch,
     control,
     setError,
+    setValue,
     handleSubmit,
     formState: { errors },
   } = useForm({
@@ -74,8 +75,15 @@ function ProposalStep({
   });
 
   const [loading, setLoading] = useState(false);
+  const amount = localStorage.getItem("brl") || "";
+
+  // useEffect(() => {
+  //   amount && setValue("total_amount", amount);
+  // }, [amount, setValue]);
 
   const onSubmit = async (data) => {
+    const conditions = localStorage.getItem("condition") || null;
+    console.log(conditions);
     setLoading(true);
     const allData = {
       ...data,
@@ -83,7 +91,9 @@ function ProposalStep({
       payment_type: (cash && "cash") || (installment && "installment"),
       property_id: singlePropertyId,
       proposal_type: "general",
+      condition: conditions !== null && conditions,
     };
+
     console.log({ allData });
     const [error, response] = await createProposalApi(allData);
     setLoading(false);
@@ -95,6 +105,14 @@ function ProposalStep({
       }
       setActiveStep((prevActiveStep) => prevActiveStep + 1);
       setSkipped(newSkipped);
+      localStorage.removeItem("brl");
+      localStorage.removeItem("condition");
+    } else {
+      const errors = error?.response?.data?.errors ?? {};
+      console.log({ errors });
+      Object.entries(errors).forEach(([name, messages]) => {
+        setError(name, { type: "manual", message: messages[0] });
+      });
     }
   };
 
@@ -172,6 +190,7 @@ function ProposalStep({
           <Controller
             name="total_amount"
             control={control}
+            defaultValue={amount}
             render={({ field }) => (
               <BaseTextField
                 size={"small"}
@@ -179,6 +198,7 @@ function ProposalStep({
                 variant={"outlined"}
                 type={"number"}
                 name={"total_amount"}
+                value={field.value}
                 onChange={(e) => {
                   field.onChange(e.target.value);
                 }}
@@ -296,6 +316,13 @@ function ProposalStep({
               />
             )}
           />
+          {/* <Typography
+            variant="inherit"
+            color="textSecondary"
+            sx={{ color: "#b91c1c" }}
+          >
+            {errors?.observation?.message}
+          </Typography> */}
           <Grid
             container
             direction="row"
@@ -308,6 +335,14 @@ function ProposalStep({
               sx={{
                 background: "#7450F0",
                 borderRadius: "4px",
+                width: {
+                  xs: "50%",
+                  sm: "50%",
+                  md: "50%",
+                  lg: "50%",
+                  xl: "40%",
+                  xxl: "30%",
+                },
                 px: 2,
                 py: 1,
                 color: "#ffffff",

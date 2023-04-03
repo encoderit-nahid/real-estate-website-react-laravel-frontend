@@ -6,6 +6,7 @@ import rule from "../../../../public/Images/rule.png";
 import check from "../../../../public/Images/check.png";
 import Image from "next/image";
 import Footer from "../../shared/Footer/Footer";
+import { _baseURL } from "../../../../consts";
 
 function HouseCard({ shadow, marginTop, propertyInfo }) {
   return (
@@ -20,7 +21,13 @@ function HouseCard({ shadow, marginTop, propertyInfo }) {
       }}
     >
       <Box sx={{ width: "100%" }}>
-        <Image src={houseImage} layout="responsive" alt="house" />
+        {/* <Image src={houseImage} layout="responsive" alt="house" /> */}
+        <Image
+          src={`${_baseURL}/storage/${propertyInfo?.attachments[0]?.file_path}`}
+          width={500}
+          height={400}
+          alt="house"
+        />
       </Box>
       <Grid
         container

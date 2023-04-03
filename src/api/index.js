@@ -92,3 +92,13 @@ export const createProposalApi = async (body) => {
     return [error, null];
   }
 };
+
+//schedule_create
+export const createScheduleApi = async (body) => {
+  try {
+    const response = await apiInstance.post(`schedule/create`, body);
+    return [false, response];
+  } catch (error) {
+    return [error, null];
+  }
+};

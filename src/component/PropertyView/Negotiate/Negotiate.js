@@ -7,6 +7,7 @@ import {
   TextField,
   Stack,
   Tooltip,
+  CircularProgress,
 } from "@mui/material";
 import negotiateImage from "../../../../public/Images/negotiate.png";
 import Image from "next/image";
@@ -20,6 +21,11 @@ import ScheduleModal from "../scheduleModal/ScheduleModal";
 import BaseTextField from "../../reuseable/baseTextField/BaseTextField";
 import { useSession, signIn, signOut } from "next-auth/react";
 import BaseTextArea from "../../reuseable/baseTextArea/BaseTextArea";
+import { formatISO } from "date-fns";
+import { DateTimePicker } from "@mui/x-date-pickers";
+import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
+import { Controller } from "react-hook-form";
+import { createScheduleApi } from "../../../api";
 
 function Negotiate({
   handleProposalOpen,
@@ -29,19 +35,45 @@ function Negotiate({
   setSchedule,
   singlePropertyData,
   handleLoginOpen,
+  singlePropertyId,
 }) {
-  const [date, setDate] = React.useState(dayjs("2022-04-07"));
-  const [value, setValue] = React.useState(dayjs("2020-01-01 12:00"));
+  // const [date, setDate] = React.useState(dayjs("2022-04-07"));
+
+  const [value, setValue] = React.useState(new Date());
+  console.log(value);
   const [brlValue, setBrlValue] = useState("");
   const [condition, setCondition] = useState("");
   const [conditionField, setConditionField] = useState(false);
   const { data: session } = useSession();
   const [scheduleModalOpen, setScheduleModalOpen] = useState(false);
+  const [loading, setLoading] = useState(false);
 
-  const handleOpen = () => setScheduleModalOpen(true);
+  // const handleOpen = () => {
+  //   setScheduleModalOpen(true);
+  // };
   const handleClose = () => setScheduleModalOpen(false);
 
-  console.log("check", { brl: brlValue, con: condition });
+  const handleToSchedule = async () => {
+    setLoading(true);
+    const dateString = dayjs(value, "YYYY-MM-DD+h:mm").format("YYYY-MM-DD");
+    const timeString = dayjs(value, "YYYY-MM-DD+h:mm").format("hh:mm");
+    const allData = {
+      date: dateString,
+      time: timeString,
+      buyer_id: session?.user?.userId,
+      property_id: singlePropertyId,
+    };
+
+    console.log({ allData });
+    const [error, response] = await createScheduleApi(allData);
+    setLoading(false);
+    if (!error) {
+      setScheduleModalOpen(true);
+    } else {
+      const errors = error?.response?.data?.errors ?? {};
+      console.log({ errors });
+    }
+  };
 
   return (
     <Box
@@ -334,49 +366,25 @@ function Negotiate({
               border: "1px solid #D3D3DF",
               background: "#F9F9FB",
               borderRadius: "4px",
-              mx: 2,
+              mx: 4,
             }}
           >
-            <LocalizationProvider dateAdapter={AdapterDayjs}>
-              <Grid container sx={{ width: "100%" }}>
-                <Grid item xs={12}>
-                  <CalendarPicker
-                    date={date}
-                    onChange={(newDate) => setDate(newDate)}
-                  />
-                </Grid>
-              </Grid>
-            </LocalizationProvider>
-          </Box>
-          <Box>
-            <LocalizationProvider dateAdapter={AdapterDayjs}>
-              <Stack sx={{ mx: 2 }}>
-                <Grid container>
-                  <Grid item xs={12}>
-                    <Typography
-                      varinat="p"
-                      sx={{
-                        color: "#4B4B66",
-                        fontSize: "12px",
-                        fontWeight: "400",
-                        lineHeight: "24px",
-                      }}
-                    >
-                      Choose a time:
-                    </Typography>
-                  </Grid>
-                </Grid>
-                <TimePicker
-                  renderInput={(params) => (
-                    <TextField size="small" {...params} />
-                  )}
+            <LocalizationProvider dateAdapter={AdapterDateFns}>
+              <Stack spacing={3}>
+                <DateTimePicker
+                  inputFormat="dd/MM/yyyy hh:mm a"
                   value={value}
-                  // label="min/max time"
-                  onChange={(newValue) => {
-                    setValue(newValue);
-                  }}
-                  minTime={dayjs("2018-01-01T08:00")}
-                  maxTime={dayjs("2018-01-01T18:45")}
+                  onChange={(val) => setValue(val)}
+                  renderInput={(params) => (
+                    <TextField
+                      {...params}
+                      size="small"
+                      variant="outlined"
+                      InputProps={{
+                        ...params.InputProps,
+                      }}
+                    />
+                  )}
                 />
               </Stack>
             </LocalizationProvider>
@@ -389,7 +397,7 @@ function Negotiate({
             sx={{ px: 4, py: 1 }}
           >
             <Button
-              onClick={handleOpen}
+              onClick={!session ? handleLoginOpen : handleToSchedule}
               variant="contained"
               color="secondary"
               fullWidth
@@ -409,7 +417,8 @@ function Negotiate({
                 },
               }}
             >
-              To schedule
+              {loading && <CircularProgress size={22} color="inherit" />}
+              {!loading && "To Schedule"}
             </Button>
           </Grid>
         </Box>

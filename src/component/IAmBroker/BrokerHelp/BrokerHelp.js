@@ -1,10 +1,20 @@
 import { FormControl, Grid, InputLabel, Typography } from "@mui/material";
 import React from "react";
 import BaseButton from "../../reuseable/button/BaseButton";
-
 import BaseOutlinedZipInput from "../../reuseable/baseOutlinedZipInput/BaseOutlinedZipInput";
+import { useSession } from "next-auth/react";
+import { useRouter } from "next/router";
 
 function BrokerHelp({ name, content, buttonName, fieldItem, handleLoginOpen }) {
+  const { data: session } = useSession();
+  const router = useRouter();
+  const [value, setValue] = React.useState("");
+  console.log({ value });
+
+  const handleAdvertise = () => {
+    router.push("/new_property");
+    localStorage.setItem("Zip_code", value);
+  };
   return (
     <Grid
       container
@@ -65,6 +75,8 @@ function BrokerHelp({ name, content, buttonName, fieldItem, handleLoginOpen }) {
           <BaseOutlinedZipInput
             placeholder={"Eg: 00000-000"}
             label={"Zip Code"}
+            onChange={(e) => setValue(e.target.value)}
+            value={value}
           />
         </FormControl>
       )}
@@ -74,7 +86,7 @@ function BrokerHelp({ name, content, buttonName, fieldItem, handleLoginOpen }) {
         width={"100%"}
         fontSize={"24px"}
         margin={"3vh 0 0 0"}
-        handleFunction={handleLoginOpen}
+        handleFunction={!session ? handleLoginOpen : handleAdvertise}
       />
     </Grid>
   );

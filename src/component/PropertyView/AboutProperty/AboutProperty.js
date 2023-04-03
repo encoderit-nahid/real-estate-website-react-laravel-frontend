@@ -34,7 +34,7 @@ function AboutProperty({ name, array }) {
                 ml: 0.4,
               }}
             >
-              {data}
+              {data.name}
             </Typography>
           </Grid>
         ))}
