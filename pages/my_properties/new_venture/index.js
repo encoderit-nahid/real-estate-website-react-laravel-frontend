@@ -12,13 +12,13 @@ import {
   Typography,
 } from "@mui/material";
 import { Box } from "@mui/material";
-import ResponsiveDrawer from "../src/component/sharedProposal/ResponsiveDrawer/ResponsiveDrawer";
-import BasicBreadcrumbs from "../src/component/reuseable/baseBreadCrumb/BaseBreadCrumb";
-import ventureImage from "../public/Images/certidoes.png";
+import ResponsiveDrawer from "../../../src/component/sharedProposal/ResponsiveDrawer/ResponsiveDrawer";
+import BasicBreadcrumbs from "../../../src/component/reuseable/baseBreadCrumb/BaseBreadCrumb";
+import ventureImage from "../../../public/Images/certidoes.png";
 import DeleteOutlineOutlinedIcon from "@mui/icons-material/DeleteOutlineOutlined";
 import { useDropzone } from "react-dropzone";
 import Link from "next/link";
-import BaseTextField from "../src/component/reuseable/baseTextField/BaseTextField";
+import BaseTextField from "../../../src/component/reuseable/baseTextField/BaseTextField";
 import { getSession } from "next-auth/react";
 
 const baseStyle = {

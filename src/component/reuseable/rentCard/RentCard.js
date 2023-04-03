@@ -183,7 +183,7 @@ function RentCard() {
               created on: 08/19/2020
             </Typography>
             <Box sx={{ mt: 1, mb: { xs: 0, sm: 0, md: 0, lg: 2, xl: 2 } }}>
-              <Link href="/include_proposal">
+              <Link href="/my_properties/include_proposal">
                 {/* <a
                   style={{
                     textDecoration: "none",

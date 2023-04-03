@@ -6,12 +6,13 @@ import Link from "next/link";
 
 function ReleaseCard() {
   return (
-    <Link href="/project_view">
+    <Link href="/my_properties/project_view">
       <Box
         sx={{
           background: "#ffffff",
           boxShadow: "0px 4px 8px rgba(0, 33, 82, 0.08)",
           borderRadius: "8px",
+          cursor: "pointer",
         }}
       >
         <Box sx={{ width: "100%" }}>
@@ -63,7 +64,7 @@ function ReleaseCard() {
             4 properties sold
           </Typography>
 
-          <Link href="/view_properties">
+          <Link href="/my_properties/view_properties">
             <a
               style={{
                 textDecoration: "none",

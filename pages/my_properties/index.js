@@ -5,13 +5,13 @@ import Tabs from "@mui/material/Tabs";
 import Tab from "@mui/material/Tab";
 import Typography from "@mui/material/Typography";
 import Box from "@mui/material/Box";
-import ResponsiveDrawer from "../src/component/sharedProposal/ResponsiveDrawer/ResponsiveDrawer";
+import ResponsiveDrawer from "../../src/component/sharedProposal/ResponsiveDrawer/ResponsiveDrawer";
 import { Button, Container, Grid } from "@mui/material";
 import { useState } from "react";
-import Releases from "../src/component/properties/Releases/Releases";
-import ThirdTab from "../src/component/properties/Third/ThirdTab";
-import NewRegistration from "../src/component/properties/NewRegistration/NewRegistration";
-import notifyImage from "../public/Images/notify.png";
+import Releases from "../../src/component/properties/Releases/Releases";
+import ThirdTab from "../../src/component/properties/Third/ThirdTab";
+import NewRegistration from "../../src/component/properties/NewRegistration/NewRegistration";
+import notifyImage from "../../public/Images/notify.png";
 import Link from "next/link";
 import { getSession } from "next-auth/react";
 
@@ -140,7 +140,7 @@ export default function MyProperties(props) {
                     gap={2}
                     sx={{ mt: 3 }}
                   >
-                    <Link href="/new_property">
+                    <Link href="/my_properties/new_property">
                       {/* <a
                         style={{
                           textDecoration: "none",
@@ -172,7 +172,7 @@ export default function MyProperties(props) {
                       {/* </a> */}
                     </Link>
 
-                    <Link href="/new_venture">
+                    <Link href="/my_properties/new_venture">
                       {/* <a
                         style={{
                           textDecoration: "none",

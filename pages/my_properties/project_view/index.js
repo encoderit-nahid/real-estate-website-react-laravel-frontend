@@ -1,4 +1,4 @@
-import Navbar from "../src/component/shared/Navbar/Navbar";
+import Navbar from "../../../src/component/shared/Navbar/Navbar";
 import Head from "next/head";
 import {
   Box,
@@ -9,24 +9,24 @@ import {
   ImageListItem,
   Button,
 } from "@mui/material";
-import orionImage from "../public/Images/orion_view.svg";
+import orionImage from "../../../public/Images/orion_view.svg";
 import Image from "next/image";
-import TabView from "../src/component/PropertyView/tab/TabView";
-import AmountView from "../src/component/PropertyView/amount/AmountView";
-import Features from "../src/component/PropertyView/feature/Features";
-import AboutProperty from "../src/component/PropertyView/AboutProperty/AboutProperty";
-import Negotiate from "../src/component/PropertyView/Negotiate/Negotiate";
-import HouseCard from "../src/component/reuseable/HouseCard/HouseCard";
-import Footer from "../src/component/shared/Footer/Footer";
-import SliderView from "../src/component/PropertyView/slider/SliderView";
-import SlideImage from "../src/component/PropertyView/slideImage/SlideImage";
-import SliderViewMobile from "../src/component/PropertyView/SliderViewMobile/SliderViewMobile";
-import sliderView from "../public/Images/sliderView.png";
-import sliderViewSmall from "../public/Images/sliderViewSmall.png";
-import BaseModal from "../src/component/reuseable/baseModal/BaseModal";
-import ProposalModal from "../src/component/PropertyView/ProposalStepperComponent/ProposalModal";
+import TabView from "../../../src/component/PropertyView/tab/TabView";
+import AmountView from "../../../src/component/PropertyView/amount/AmountView";
+import Features from "../../../src/component/PropertyView/feature/Features";
+import AboutProperty from "../../../src/component/PropertyView/AboutProperty/AboutProperty";
+import Negotiate from "../../../src/component/PropertyView/Negotiate/Negotiate";
+import HouseCard from "../../../src/component/reuseable/HouseCard/HouseCard";
+import Footer from "../../../src/component/shared/Footer/Footer";
+import SliderView from "../../../src/component/PropertyView/slider/SliderView";
+import SlideImage from "../../../src/component/PropertyView/slideImage/SlideImage";
+import SliderViewMobile from "../../../src/component/PropertyView/SliderViewMobile/SliderViewMobile";
+import sliderView from "../../../public/Images/sliderView.png";
+import sliderViewSmall from "../../../public/Images/sliderViewSmall.png";
+import BaseModal from "../../../src/component/reuseable/baseModal/BaseModal";
+import ProposalModal from "../../../src/component/PropertyView/ProposalStepperComponent/ProposalModal";
 import { useState } from "react";
-import yellowImage from "../public/Images/yellow.png";
+import yellowImage from "../../../public/Images/yellow.png";
 import { getSession } from "next-auth/react";
 
 const aboutProperty = [

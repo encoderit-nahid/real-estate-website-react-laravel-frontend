@@ -5,7 +5,7 @@ import Tabs from "@mui/material/Tabs";
 import Tab from "@mui/material/Tab";
 import Typography from "@mui/material/Typography";
 import Box from "@mui/material/Box";
-import ResponsiveDrawer from "../src/component/sharedProposal/ResponsiveDrawer/ResponsiveDrawer";
+import ResponsiveDrawer from "../../../src/component/sharedProposal/ResponsiveDrawer/ResponsiveDrawer";
 import {
   Button,
   Container,
@@ -17,17 +17,17 @@ import {
   SwipeableDrawer,
 } from "@mui/material";
 import { useState } from "react";
-import Releases from "../src/component/properties/Releases/Releases";
-import ThirdTab from "../src/component/properties/Third/ThirdTab";
-import NewRegistration from "../src/component/properties/NewRegistration/NewRegistration";
-import notifyImage from "../public/Images/notify.png";
-import BasicBreadcrumbs from "../src/component/reuseable/baseBreadCrumb/BaseBreadCrumb";
+import Releases from "../../../src/component/properties/Releases/Releases";
+import ThirdTab from "../../../src/component/properties/Third/ThirdTab";
+import NewRegistration from "../../../src/component/properties/NewRegistration/NewRegistration";
+import notifyImage from "../../../public/Images/notify.png";
+import BasicBreadcrumbs from "../../../src/component/reuseable/baseBreadCrumb/BaseBreadCrumb";
 import ArrowBackIosNewOutlinedIcon from "@mui/icons-material/ArrowBackIosNewOutlined";
 import Link from "next/link";
-import searchIcon from "../public/Images/SearchBlack.png";
-import RentCard from "../src/component/reuseable/rentCard/RentCard";
+import searchIcon from "../../../public/Images/SearchBlack.png";
+import RentCard from "../../../src/component/reuseable/rentCard/RentCard";
 import FilterAltOutlinedIcon from "@mui/icons-material/FilterAltOutlined";
-import BaseOutlinedCurrencyInput from "../src/component/reuseable/baseOutlinedCurrencyInput/BaseOutlinedCurrencyInput";
+import BaseOutlinedCurrencyInput from "../../../src/component/reuseable/baseOutlinedCurrencyInput/BaseOutlinedCurrencyInput";
 import CloseIcon from "@mui/icons-material/Close";
 import { getSession } from "next-auth/react";
 
