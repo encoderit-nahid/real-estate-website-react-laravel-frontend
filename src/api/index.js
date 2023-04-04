@@ -102,3 +102,41 @@ export const createScheduleApi = async (body) => {
     return [error, null];
   }
 };
+
+//get_projects
+export const GetAllProjects = async (queryData) => {
+  try {
+    const response = await apiInstance.get(
+      `project/index?page=${queryData.page || 1}&per_page=${
+        queryData?.per_page || 9
+      }`,
+      {
+        page: queryData.page,
+        per_page: queryData.per_page,
+      }
+    );
+    return [false, response];
+  } catch (error) {
+    return [error, null];
+  }
+};
+
+//create_project
+export const createProjectApi = async (body) => {
+  try {
+    const response = await apiInstance.post(`project/store`, body);
+    return [false, response];
+  } catch (error) {
+    return [error, null];
+  }
+};
+
+//photo_type
+export const photoTypeApi = async () => {
+  try {
+    const response = await apiInstance.get(`property/photo-type`);
+    return [false, response];
+  } catch (error) {
+    return [error, null];
+  }
+};

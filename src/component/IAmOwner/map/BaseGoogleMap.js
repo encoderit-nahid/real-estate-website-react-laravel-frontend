@@ -73,8 +73,8 @@ const BaseMap = ({ height, width, markersData }) => {
   const [center, setCenter] = useState(() => {
     // if (innerValue?.geometry?.location) return innerValue?.geometry?.location;
     return {
-      lat: +markersData.properties.data[0].address.latitude,
-      lng: +markersData.properties.data[0].address.longitude,
+      lat: +markersData?.properties?.data[0]?.address?.latitude,
+      lng: +markersData?.properties?.data[0]?.address?.longitude,
     };
   });
 
@@ -84,8 +84,6 @@ const BaseMap = ({ height, width, markersData }) => {
     }
     setActiveMarker(marker);
   };
-
-  console.log("markers", markersData.properties.data[0].address);
 
   console.log("map", mapIcon);
   return (

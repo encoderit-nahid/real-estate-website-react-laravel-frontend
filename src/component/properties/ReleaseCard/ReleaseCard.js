@@ -4,7 +4,7 @@ import cardMedia from "../../../../public/Images/CardMedia.png";
 import Image from "next/image";
 import Link from "next/link";
 
-function ReleaseCard() {
+function ReleaseCard({ projectData }) {
   return (
     <Link href="/my_properties/project_view">
       <Box
@@ -35,7 +35,7 @@ function ReleaseCard() {
               py: 2,
             }}
           >
-            aston
+            {projectData?.name}
           </Typography>
           <Typography
             variant="p"
@@ -48,7 +48,7 @@ function ReleaseCard() {
               py: 1,
             }}
           >
-            10 properties registered
+            {`${projectData?.properties_count} properties registered`}
           </Typography>
           <Typography
             variant="p"
@@ -61,7 +61,7 @@ function ReleaseCard() {
               py: 1,
             }}
           >
-            4 properties sold
+            {`${projectData?.sold} properties sold`}
           </Typography>
 
           <Link href="/my_properties/view_properties">

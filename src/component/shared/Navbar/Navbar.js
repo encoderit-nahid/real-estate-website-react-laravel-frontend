@@ -291,9 +291,41 @@ function Navbar({
           horizontal: "left",
         }}
       >
-        <Typography sx={{ p: 2 }} onClick={handleLogout}>
+        <Typography
+          sx={{
+            px: 2,
+            py: 0.5,
+            cursor: "pointer",
+            "&:hover": {
+              background: "#e0f2fe",
+            },
+          }}
+          onClick={handleLogout}
+        >
           Log out
         </Typography>
+        <Link
+          href={{
+            pathname: "/my_properties",
+            query: {
+              page: 1,
+              per_page: 9,
+            },
+          }}
+        >
+          <Typography
+            sx={{
+              px: 2,
+              py: 0.5,
+              cursor: "pointer",
+              "&:hover": {
+                background: "#e0f2fe",
+              },
+            }}
+          >
+            Dashboard
+          </Typography>
+        </Link>
       </Popover>
     </AppBar>
   );

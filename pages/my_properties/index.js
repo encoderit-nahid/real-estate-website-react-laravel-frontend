@@ -14,6 +14,7 @@ import NewRegistration from "../../src/component/properties/NewRegistration/NewR
 import notifyImage from "../../public/Images/notify.png";
 import Link from "next/link";
 import { getSession } from "next-auth/react";
+import { useRouter } from "next/router";
 
 const drawerWidth = 240;
 
@@ -52,6 +53,10 @@ function a11yProps(index) {
 
 export default function MyProperties(props) {
   const [value, setValue] = useState(0);
+
+  const router = useRouter();
+  const { query } = router;
+  console.log({ query });
 
   const handleChange = (event, newValue) => {
     setValue(newValue);
@@ -206,7 +211,7 @@ export default function MyProperties(props) {
                   </Grid>
                 </Container>
                 <TabPanel value={value} index={0}>
-                  <Releases />
+                  <Releases queryData={query} />
                 </TabPanel>
                 <TabPanel value={value} index={1}>
                   <ThirdTab />
