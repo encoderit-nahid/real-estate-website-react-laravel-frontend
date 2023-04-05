@@ -3,8 +3,10 @@ import React from "react";
 import rentImage from "../../../../public/Images/rentImage.png";
 import Image from "next/image";
 import Link from "next/link";
+import { _baseURL } from "../../../../consts";
+import dayjs from "dayjs";
 
-function NewRegistrationCard() {
+function NewRegistrationCard({ propertyData }) {
   const [progress, setProgress] = React.useState(87);
   return (
     <Box
@@ -28,7 +30,10 @@ function NewRegistrationCard() {
           {/* <Box>
             <Image src={rentImage} layout="responsive" alt="rent" />
           </Box> */}
-          <Link href="/property_view">
+          <Link
+            href={`/property_view/${propertyData?.id}`}
+            as={`/property_view/${propertyData?.id}`}
+          >
             <Box
               style={{
                 width: "100%",
@@ -40,7 +45,7 @@ function NewRegistrationCard() {
             >
               <Image
                 alt="rent"
-                src={rentImage}
+                src={`${_baseURL}/storage/${propertyData?.attachments[0]?.file_path}`}
                 layout="fill"
                 objectFit="cover"
                 style={{ borderRadius: "8px 0 0 8px" }}
@@ -99,23 +104,25 @@ function NewRegistrationCard() {
                     fontWeight: "400",
                   }}
                 >
-                  rent
+                  {propertyData?.ad_type}
                 </Button>
-                <Button
-                  sx={{
-                    textTransform: "none",
-                    background: "#DDF8ED",
-                    borderRadius: "2px",
-                    padding: "2px 8px",
-                    color: "#229464",
-                    fontSize: "14px",
-                    lineHeight: "18px",
-                    fontWeight: "400",
-                    ml: "3px",
-                  }}
-                >
-                  published
-                </Button>
+                {propertyData?.status === "approved" && (
+                  <Button
+                    sx={{
+                      textTransform: "none",
+                      background: "#DDF8ED",
+                      borderRadius: "2px",
+                      padding: "2px 8px",
+                      color: "#229464",
+                      fontSize: "14px",
+                      lineHeight: "18px",
+                      fontWeight: "400",
+                      ml: "3px",
+                    }}
+                  >
+                    published
+                  </Button>
+                )}
               </Box>
               <Box sx={{ ml: { xs: 0, sm: 0, md: 0, lg: 1, xl: 3, xxl: 8 } }}>
                 <Typography
@@ -158,7 +165,7 @@ function NewRegistrationCard() {
                 mt: 1,
               }}
             >
-              BRL 3,100.00
+              {`BRL ${propertyData?.brl_rent}`}
             </Typography>
             <Typography
               variant="p"
@@ -171,7 +178,7 @@ function NewRegistrationCard() {
                 mr: 0.5,
               }}
             >
-              Rua do Bixiga, Bela Vista, São Paulo, São Paulo- CEP 01315020
+              {propertyData?.address?.address}
             </Typography>
             <Typography
               variant="p"
@@ -183,7 +190,9 @@ function NewRegistrationCard() {
                 mt: 0.5,
               }}
             >
-              created on: 08/19/2020
+              {`created on: ${dayjs(propertyData?.created_at).format(
+                "DD/MM/YYYY"
+              )}`}
             </Typography>
             <Box sx={{ mt: 1, mb: { xs: 0, sm: 0, md: 0, lg: 2, xl: 2 } }}>
               <Button

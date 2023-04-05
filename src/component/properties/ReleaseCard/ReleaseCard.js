@@ -3,6 +3,7 @@ import React from "react";
 import cardMedia from "../../../../public/Images/CardMedia.png";
 import Image from "next/image";
 import Link from "next/link";
+import { _baseURL } from "../../../../consts";
 
 function ReleaseCard({ projectData }) {
   return (
@@ -16,7 +17,12 @@ function ReleaseCard({ projectData }) {
         }}
       >
         <Box sx={{ width: "100%" }}>
-          <Image src={cardMedia} layout="responsive" alt="aston" />
+          <Image
+            src={`${_baseURL}/storage/${projectData?.attachments[0]?.file_path}`}
+            width={400}
+            height={300}
+            alt="aston"
+          />
         </Box>
         <Grid
           container
@@ -64,7 +70,17 @@ function ReleaseCard({ projectData }) {
             {`${projectData?.sold} properties sold`}
           </Typography>
 
-          <Link href="/my_properties/view_properties">
+          <Link
+            href={{
+              pathname: "/my_properties/view_properties",
+              query: {
+                status: "approved",
+                project_id: projectData?.id,
+                page: 1,
+                per_page: 9,
+              },
+            }}
+          >
             <a
               style={{
                 textDecoration: "none",

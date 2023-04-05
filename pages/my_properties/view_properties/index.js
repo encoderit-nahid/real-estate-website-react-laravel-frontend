@@ -12,11 +12,14 @@ import {
   Divider,
   Grid,
   InputBase,
+  Pagination,
   Paper,
+  Skeleton,
   Slider,
+  Stack,
   SwipeableDrawer,
 } from "@mui/material";
-import { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Releases from "../../../src/component/properties/Releases/Releases";
 import ThirdTab from "../../../src/component/properties/Third/ThirdTab";
 import NewRegistration from "../../../src/component/properties/NewRegistration/NewRegistration";
@@ -30,53 +33,52 @@ import FilterAltOutlinedIcon from "@mui/icons-material/FilterAltOutlined";
 import BaseOutlinedCurrencyInput from "../../../src/component/reuseable/baseOutlinedCurrencyInput/BaseOutlinedCurrencyInput";
 import CloseIcon from "@mui/icons-material/Close";
 import { getSession } from "next-auth/react";
+import { useDispatch, useSelector } from "react-redux";
+import { useRouter } from "next/router";
+import { findProjectPropertyData } from "../../../src/redux/projectProperty/actions";
+import { Controller, useForm } from "react-hook-form";
+import { findPropertyTypeData } from "../../../src/redux/propertyType/actions";
+import { findFeatureData } from "../../../src/redux/features/actions";
+import { serialize } from "object-to-formdata";
+import SearchComponent from "../../../src/component/reuseable/SearchComponent/SearchComponent";
 
 function valuetext(value) {
   return `${value}°C`;
 }
 
-const PropertyType = [
-  {
-    name: "Apartment",
-  },
-  {
-    name: "Condominium house",
-  },
-  {
-    name: "Home",
-  },
-  {
-    name: "Kitnet/Studio",
-  },
-];
+const unflatten = require("flat").unflatten;
 
-const CondominiumType = [
-  {
-    name: "Academy",
-  },
-  {
-    name: "Playground",
-  },
-  {
-    name: "Grren Area",
-  },
-  {
-    name: "24h concierge",
-  },
-  {
-    name: "Toy library",
-  },
-  {
-    name: "Sports court",
-  },
-  {
-    name: "Grill",
-  },
-  {
-    name: "Party room",
-  },
-];
+const $params = {
+  encode(input) {
+    const searchParams = new URLSearchParams(window.location.search);
 
+    const formData = serialize(input, {
+      indices: true,
+      allowEmptyArrays: false,
+      booleansAsIntegers: true,
+    });
+
+    const inputSearchParams = new URLSearchParams(formData.entries());
+    for (const [key, value] of inputSearchParams.entries()) {
+      searchParams.set(key, value);
+    }
+
+    return searchParams;
+  },
+  decode(input = new URLSearchParams(window.location.search)) {
+    return unflatten(
+      [...input.entries()].reduce((carry, [key, value]) => {
+        const numValue = +value;
+        return {
+          ...carry,
+          [key.replace(/\[([^\]]+)\]/g, ".$1")]: !isNaN(numValue)
+            ? numValue
+            : value,
+        };
+      }, {})
+    );
+  },
+};
 const drawerWidth = 240;
 
 const BreadCrumbsData = [
@@ -122,24 +124,110 @@ function a11yProps(index) {
   };
 }
 
-export default function ViewProperties(props) {
-  const [value, setValue] = useState(0);
+export default function ViewProperties({ projectPropertyData, query }) {
+  console.log({ projectPropertyData, query });
+  const dispatch = useDispatch();
+  const router = useRouter();
 
-  const handleChange = (event, newValue) => {
-    setValue(newValue);
+  const [page, setPage] = useState(1);
+  const [selectval, setSelectVal] = useState(null);
+  console.log({ query });
+
+  const omitEmpties = (obj) => {
+    return Object.entries(obj).reduce((carry, [key, value]) => {
+      if (![null, undefined, "", []].includes(value)) {
+        carry[key] = value;
+      }
+      return carry;
+    }, {});
   };
 
-  const [slidervalue, setSliderValue] = useState([15, 300]);
+  useEffect(() => {
+    dispatch(findPropertyTypeData());
+    dispatch(findFeatureData());
+  }, [dispatch]);
 
-  const handleSliderChange = (event, newValue) => {
-    setSliderValue(newValue);
+  const propertyType = useSelector(
+    (state) => state.propertyType.propertyTypeData
+  );
+  console.log({ propertyType });
+
+  const featureData = useSelector((state) => state.feature.featureData);
+  console.log({ featureData });
+
+  const handlePageChange = (event, value) => {
+    setPage(value);
+    router.replace({
+      pathname: "/search_real_estate",
+      query: { ...router.query, page: value },
+    });
+    // setData(datas.slice(firstIndex + pageSize * (value - 1), pageSize * value));
   };
 
-  const [sliderAreaValue, setSliderAreaValue] = useState([15, 300]);
+  const {
+    register,
+    watch,
+    control,
+    handleSubmit,
+    setValue,
+    formState: { errors },
+    setError,
+  } = useForm();
 
-  const handleSliderAreaChange = (event, newValue) => {
-    setSliderAreaValue(newValue);
-  };
+  const allValues = watch();
+  const [searchValue, setSearchValue] = useState(null);
+  const [type, setType] = useState(1);
+  const [bedrooms, setBedrooms] = useState(1);
+  const [bathrooms, setBathrooms] = useState(1);
+  const [furnished, setFurnished] = useState("Yes");
+  const [pets, setPets] = useState("Yes");
+  const [closeToTheMetro, setCloseToTheMetro] = useState("Yes");
+  const [availability, setAvailability] = useState("Immediate");
+  const [featuretypes, setFeatureTypes] = useState([]);
+  const [valueSlider, setValueSlider] = React.useState([20, 37]);
+  const [areaSlider, setAreaSlider] = React.useState([20, 37]);
+
+  console.log({ featuretypes });
+
+  useEffect(() => {
+    if (valueSlider) {
+      setValue("min_value", valueSlider[0]);
+      setValue("max_value", valueSlider[1]);
+    }
+  }, [valueSlider, setValue]);
+
+  useEffect(() => {
+    if (areaSlider) {
+      setValue("min_area", areaSlider[0]);
+      setValue("max_area", areaSlider[1]);
+    }
+  }, [areaSlider, setValue]);
+
+  useEffect(() => {
+    const searchParams = $params.decode();
+    setType(searchParams?.type || 1);
+    setBedrooms(searchParams?.bedroom || 1);
+    setBathrooms(searchParams?.bathroom || 1);
+    setPets(searchParams?.pets || "Yes");
+    setFurnished(searchParams?.furnish || "Yes");
+    setCloseToTheMetro(searchParams?.metro || "Yes");
+    setFeatureTypes(searchParams?.tag || []);
+    setValue("min_value", searchParams.min_value || 22);
+    setValue("max_value", searchParams.max_value || 37);
+    setValue("min_area", searchParams.min_area || 22);
+    setValue("max_area", searchParams.max_area || 37);
+  }, [setValue]);
+
+  // console.log({ selectval });
+  // useEffect(() => {
+  //   if (selectval !== null) {
+  //     setValue("min_val", selectval.min_val),
+  //       setValue("max_val", selectval.max_val);
+  //     setType(selectval.type);
+  //   }
+  // }, [selectval, setValue]);
+
+  // console.log("d", $params.decode());
 
   const [state, setState] = useState({
     top: false,
@@ -160,6 +248,83 @@ export default function ViewProperties(props) {
     setState({ ...state, [anchor]: open });
   };
 
+  const handleSearch = (e) => {
+    setSearchValue(e.target.value);
+  };
+
+  const handleSearchBtn = () => {
+    router.replace({
+      pathname: "/my_properties/view_properties",
+      query: { ...router.query, all: searchValue },
+    });
+  };
+
+  const handleChange = (event, newValue) => {
+    setValueSlider(newValue);
+    setValue("min_value", newValue[0]);
+    setValue("max_value", newValue[1]);
+  };
+
+  const handleAreaChange = (event, newValue) => {
+    setAreaSlider(newValue);
+    setValue("min_area", newValue[0]);
+    setValue("max_area", newValue[1]);
+  };
+
+  const onSubmit = async (data) => {
+    console.log(data);
+    const allFilterData = {
+      ...data,
+      type: type,
+      bedroom: bedrooms,
+      bathroom: bathrooms,
+      furnish: furnished,
+      pets: pets,
+      metro: closeToTheMetro,
+      tag: featuretypes,
+    };
+
+    const fd = serialize(allFilterData, {
+      indices: true,
+      allowEmptyArrays: false,
+      booleansAsIntegers: true,
+    });
+
+    const sp = new URLSearchParams(fd.entries());
+    const spEntries = Object.fromEntries(sp.entries());
+
+    console.log({
+      encoded: $params.encode(omitEmpties(allFilterData)).toString(),
+      decoded: $params.decode(),
+    });
+    router.replace({
+      pathname: "/my_properties/view_properties",
+      query: $params.encode(omitEmpties(allFilterData)).toString(),
+    });
+  };
+
+  const handleCancelFilter = () => {
+    router.replace({
+      pathname: "/my_properties/view_properties",
+      query: omitEmpties({
+        project_id: query?.project_id,
+        page: 1,
+        per_page: 9,
+      }),
+    });
+    setFeatureTypes([]);
+    setType(1);
+    setBedrooms(1);
+    setBathrooms(1);
+    setPets("Yes");
+    setFurnished("Yes");
+    setCloseToTheMetro("Yes");
+    setValue("min_value", 22);
+    setValue("max_value", 37);
+    setValue("min_area", 22);
+    setValue("max_area", 37);
+  };
+
   const list = (anchor) => (
     <Box
       sx={{ width: anchor === "top" || anchor === "bottom" ? "auto" : 450 }}
@@ -167,908 +332,784 @@ export default function ViewProperties(props) {
       // onClick={toggleDrawer(anchor, false)}
       // onKeyDown={toggleDrawer(anchor, false)}
     >
-      <Grid
-        container
-        direction="row"
-        justifyContent="space-between"
-        alignItems="center"
-        sx={{ mt: 2, px: 2 }}
-      >
-        <Typography
-          variant="p"
+      <form onSubmit={handleSubmit(onSubmit)}>
+        <Grid
+          container
+          direction="row"
+          justifyContent="space-between"
+          alignItems="center"
+          sx={{ mt: 2, px: 2 }}
+        >
+          <Typography
+            variant="p"
+            sx={{
+              color: "#1A1859",
+              fontSize: "24px",
+              lineHeight: "32px",
+              fontWeight: "700",
+            }}
+          >
+            Filters
+          </Typography>
+          <CloseIcon onClick={toggleDrawer(anchor, false)} />
+        </Grid>
+
+        <Box sx={{ mx: 2, mt: 3 }}>
+          <Box>
+            <Typography
+              variant="p"
+              sx={{
+                color: "#4B4B66",
+                fontSize: "16px",
+                fontWeight: "400",
+                lineHeight: "19px",
+              }}
+            >
+              Property Type
+            </Typography>
+            <Grid
+              container
+              direction="row"
+              justifyContent="flex-start"
+              alignItems="flex-start"
+              gap={1}
+              sx={{ mt: 2 }}
+            >
+              {propertyType?.map((data, index) => (
+                <Button
+                  key={index}
+                  onClick={() => setType(data.id)}
+                  sx={{
+                    background: `${
+                      data.id === type ? "#7450F0" : "transparent"
+                    }`,
+                    borderRadius: "56px",
+
+                    color: `${data.id === type ? "#ffffff" : "#32414C"}`,
+                    border: `${data.id === type ? "" : "1px solid #9FAAB1"}`,
+                    fontSize: {
+                      xs: "12px",
+                      sm: "13px",
+                      md: "14px",
+                      lg: "13px",
+                      xl: "14px",
+                    },
+                    fontWeight: "400",
+                    lineHeight: "17px",
+                    textTransform: "none",
+                    px: { xs: 0, sm: 1, md: 1, lg: 1, xl: 1 },
+                    py: 1,
+                    "&:hover": {
+                      background: "#7450F0",
+                      borderRadius: "56px",
+                      color: "#ffffff",
+                    },
+                  }}
+                >
+                  {data.name}
+                </Button>
+              ))}
+            </Grid>
+          </Box>
+          <Divider sx={{ mt: 1, mb: 1 }} />
+          <Box>
+            <Typography
+              variant="p"
+              sx={{
+                color: "#4B4B66",
+                fontSize: "16px",
+                fontWeight: "400",
+                lineHeight: "19px",
+              }}
+            >
+              Value
+            </Typography>
+            <Grid container spacing={2} sx={{ mt: 0.5 }}>
+              <Grid item xs={12} sm={12} md={12} lg={6} xl={6}>
+                {/* <BaseOutlinedCurrencyInput
+                  size={"medium"}
+                  placeholder={"Minimum"}
+                  label={"Minimum"}
+                  borderColor={"#7450F0"}
+                /> */}
+                <Controller
+                  name="min_value"
+                  control={control}
+                  render={({ field }) => (
+                    <BaseOutlinedCurrencyInput
+                      size={"medium"}
+                      placeholder={"Minimum"}
+                      onChange={(e) => {
+                        field.onChange(e.target.value);
+                      }}
+                      // label={"Minimum"}
+                      // type={"number"}
+                      name={"min_value"}
+                      value={field.value}
+                      sx={{
+                        "& .MuiOutlinedInput-root": {
+                          "&.Mui-focused fieldset": {
+                            borderColor: "#7450F0",
+                          },
+                        },
+                        "& label.Mui-focused": {
+                          color: "#7450F0",
+                        },
+                      }}
+                    />
+                  )}
+                />
+              </Grid>
+              <Grid item xs={12} sm={12} md={12} lg={6} xl={6}>
+                <Controller
+                  name="max_value"
+                  control={control}
+                  render={({ field }) => (
+                    <BaseOutlinedCurrencyInput
+                      size={"medium"}
+                      placeholder={"Maximum"}
+                      // type={"number"}
+                      onChange={(e) => {
+                        field.onChange(e.target.value);
+                      }}
+                      // label={"Maximum"}
+                      name={"max_value"}
+                      value={field.value}
+                      sx={{
+                        "& .MuiOutlinedInput-root": {
+                          "&.Mui-focused fieldset": {
+                            borderColor: "#7450F0",
+                          },
+                        },
+                        "& label.Mui-focused": {
+                          color: "#7450F0",
+                        },
+                      }}
+                    />
+                  )}
+                />
+              </Grid>
+            </Grid>
+
+            <Box sx={{ mt: 1 }}>
+              <Slider
+                getAriaLabel={() => "Temperature range"}
+                value={
+                  allValues.min_value && allValues?.max_value
+                    ? [allValues.min_value, allValues?.max_value]
+                    : valueSlider
+                }
+                size="small"
+                max={+allValues?.max_value + 1000 || 1000}
+                onChange={handleChange}
+                valueLabelDisplay="auto"
+                getAriaValueText={valuetext}
+                sx={{ color: "#7450F0" }}
+              />
+            </Box>
+          </Box>
+          <Divider sx={{ mt: 1, mb: 1 }} />
+          <Box>
+            <Grid container spacing={2}>
+              <Grid item xs={12} sm={12} md={12} lg={4} xl={4}>
+                <Typography
+                  variant="p"
+                  sx={{
+                    color: "#4B4B66",
+                    fontSize: "16px",
+                    fontWeight: "400",
+                    lineHeight: "19px",
+                  }}
+                >
+                  Bedrooms
+                </Typography>
+              </Grid>
+              <Grid item xs={12} sm={12} md={12} lg={8} xl={8}>
+                {[1, 2, 3, 4].map((data, index) => (
+                  // <Grid xs={6} sm={6} md={6} lg={3} xl={3} key={index}>
+                  <Button
+                    onClick={() => setBedrooms(data)}
+                    key={index}
+                    sx={{
+                      background: `${
+                        data === bedrooms ? "#7450F0" : "transparent"
+                      }`,
+                      borderRadius: "56px",
+                      // width: "100%",
+                      color: `${data === bedrooms ? "#ffffff" : "#32414C"}`,
+                      border: `${data === bedrooms ? "" : "1px solid #9FAAB1"}`,
+                      ml: 0.5,
+                      fontSize: {
+                        xs: "12px",
+                        sm: "13px",
+                        md: "14px",
+                        lg: "13px",
+                        xl: "14px",
+                      },
+                      fontWeight: "400",
+                      lineHeight: "17px",
+                      textTransform: "none",
+                      px: { xs: 0, sm: 1, md: 1, lg: 1, xl: 1 },
+                      py: 1,
+                      "&:hover": {
+                        background: "#7450F0",
+                        borderRadius: "56px",
+                        color: "#ffffff",
+                      },
+                    }}
+                  >
+                    {`${data}+`}
+                  </Button>
+                  // </Grid>
+                ))}
+              </Grid>
+            </Grid>
+          </Box>
+          <Divider sx={{ mt: 1, mb: 1 }} />
+          <Box>
+            <Grid container spacing={2}>
+              <Grid item xs={12} sm={12} md={12} lg={4} xl={4}>
+                <Typography
+                  variant="p"
+                  sx={{
+                    color: "#4B4B66",
+                    fontSize: "16px",
+                    fontWeight: "400",
+                    lineHeight: "19px",
+                  }}
+                >
+                  Bathrooms
+                </Typography>
+              </Grid>
+              <Grid item xs={12} sm={12} md={12} lg={8} xl={8}>
+                {[1, 2, 3, 4].map((data, index) => (
+                  // <Grid xs={6} sm={6} md={6} lg={3} xl={3} key={index}>
+                  <Button
+                    onClick={() => setBathrooms(data)}
+                    key={index}
+                    sx={{
+                      background: `${
+                        data === bathrooms ? "#7450F0" : "transparent"
+                      }`,
+                      borderRadius: "56px",
+                      // width: "100%",
+                      color: `${data === bathrooms ? "#ffffff" : "#32414C"}`,
+                      border: `${
+                        data === bathrooms ? "" : "1px solid #9FAAB1"
+                      }`,
+                      ml: 0.5,
+                      fontSize: {
+                        xs: "12px",
+                        sm: "13px",
+                        md: "14px",
+                        lg: "13px",
+                        xl: "14px",
+                      },
+                      fontWeight: "400",
+                      lineHeight: "17px",
+                      textTransform: "none",
+                      px: { xs: 0, sm: 1, md: 1, lg: 1, xl: 1 },
+                      py: 1,
+                      "&:hover": {
+                        background: "#7450F0",
+                        borderRadius: "56px",
+                        color: "#ffffff",
+                      },
+                    }}
+                  >
+                    {`${index + 1}+`}
+                  </Button>
+                  // </Grid>
+                ))}
+              </Grid>
+            </Grid>
+          </Box>
+          <Divider sx={{ mt: 1, mb: 1 }} />
+          <Box>
+            <Grid container spacing={2}>
+              <Grid item xs={12} sm={12} md={12} lg={4} xl={4}>
+                <Typography
+                  variant="p"
+                  sx={{
+                    color: "#4B4B66",
+                    fontSize: "16px",
+                    fontWeight: "400",
+                    lineHeight: "19px",
+                  }}
+                >
+                  Furnished
+                </Typography>
+              </Grid>
+              <Grid item xs={12} sm={12} md={12} lg={8} xl={8}>
+                {["Yes", "No", "Whatever"].map((data, index) => (
+                  // <Grid xs={6} sm={6} md={6} lg={3} xl={3} key={index}>
+                  <Button
+                    key={index}
+                    onClick={() => setFurnished(data)}
+                    sx={{
+                      background: `${
+                        data === furnished ? "#7450F0" : "transparent"
+                      }`,
+                      borderRadius: "56px",
+                      // width: "100%",
+                      color: `${data === furnished ? "#ffffff" : "#32414C"}`,
+                      border: `${
+                        data === furnished ? "" : "1px solid #9FAAB1"
+                      }`,
+                      ml: 0.5,
+                      fontSize: {
+                        xs: "12px",
+                        sm: "13px",
+                        md: "14px",
+                        lg: "13px",
+                        xl: "14px",
+                      },
+                      fontWeight: "400",
+                      lineHeight: "17px",
+                      textTransform: "none",
+                      px: { xs: 0, sm: 1, md: 1, lg: 1, xl: 1 },
+                      py: 1,
+                      "&:hover": {
+                        background: "#7450F0",
+                        borderRadius: "56px",
+                        color: "#ffffff",
+                      },
+                    }}
+                  >
+                    {data}
+                  </Button>
+                  // </Grid>
+                ))}
+              </Grid>
+            </Grid>
+          </Box>
+          <Divider sx={{ mt: 1, mb: 1 }} />
+          <Box>
+            <Grid container spacing={2}>
+              <Grid item xs={12} sm={12} md={12} lg={4} xl={4}>
+                <Typography
+                  variant="p"
+                  sx={{
+                    color: "#4B4B66",
+                    fontSize: "16px",
+                    fontWeight: "400",
+                    lineHeight: "19px",
+                  }}
+                >
+                  Do you accept pets?
+                </Typography>
+              </Grid>
+              <Grid item xs={12} sm={12} md={12} lg={8} xl={8}>
+                {["Yes", "No", "Whatever"].map((data, index) => (
+                  // <Grid xs={6} sm={6} md={6} lg={3} xl={3} key={index}>
+                  <Button
+                    key={index}
+                    onClick={() => setPets(data)}
+                    sx={{
+                      background: `${
+                        data === pets ? "#7450F0" : "transparent"
+                      }`,
+                      borderRadius: "56px",
+                      // width: "100%",
+                      color: `${data === pets ? "#ffffff" : "#32414C"}`,
+                      border: `${data === pets ? "" : "1px solid #9FAAB1"}`,
+                      ml: 0.5,
+                      fontSize: {
+                        xs: "12px",
+                        sm: "13px",
+                        md: "14px",
+                        lg: "13px",
+                        xl: "14px",
+                      },
+                      fontWeight: "400",
+                      lineHeight: "17px",
+                      textTransform: "none",
+                      px: { xs: 0, sm: 1, md: 1, lg: 1, xl: 1 },
+                      py: 1,
+                      "&:hover": {
+                        background: "#7450F0",
+                        borderRadius: "56px",
+                        color: "#ffffff",
+                      },
+                    }}
+                  >
+                    {data}
+                  </Button>
+                  // </Grid>
+                ))}
+              </Grid>
+            </Grid>
+          </Box>
+          <Divider sx={{ mt: 1, mb: 1 }} />
+          <Box>
+            <Typography
+              variant="p"
+              sx={{
+                color: "#4B4B66",
+                fontSize: "16px",
+                fontWeight: "400",
+                lineHeight: "19px",
+              }}
+            >
+              Area (m²)
+            </Typography>
+            <Grid container spacing={2} sx={{ mt: 0.5 }}>
+              <Grid item xs={12} sm={12} md={12} lg={6} xl={6}>
+                <Controller
+                  name="min_area"
+                  control={control}
+                  render={({ field }) => (
+                    <BaseOutlinedCurrencyInput
+                      size={"medium"}
+                      placeholder={"Minimum"}
+                      onChange={(e) => {
+                        field.onChange(e.target.value);
+                      }}
+                      name={"min_area"}
+                      value={field.value}
+                      sx={{
+                        "& .MuiOutlinedInput-root": {
+                          "&.Mui-focused fieldset": {
+                            borderColor: "#7450F0",
+                          },
+                        },
+                        "& label.Mui-focused": {
+                          color: "#7450F0",
+                        },
+                      }}
+                    />
+                  )}
+                />
+              </Grid>
+              <Grid item xs={12} sm={12} md={12} lg={6} xl={6}>
+                <Controller
+                  name="max_area"
+                  control={control}
+                  render={({ field }) => (
+                    <BaseOutlinedCurrencyInput
+                      size={"medium"}
+                      placeholder={"Maximum"}
+                      onChange={(e) => {
+                        field.onChange(e.target.value);
+                      }}
+                      name={"max_area"}
+                      value={field.value}
+                      sx={{
+                        "& .MuiOutlinedInput-root": {
+                          "&.Mui-focused fieldset": {
+                            borderColor: "#7450F0",
+                          },
+                        },
+                        "& label.Mui-focused": {
+                          color: "#7450F0",
+                        },
+                      }}
+                    />
+                  )}
+                />
+              </Grid>
+            </Grid>
+
+            <Box sx={{ mt: 1 }}>
+              <Slider
+                getAriaLabel={() => "Temperature range"}
+                value={
+                  allValues.min_area && allValues?.max_area
+                    ? [allValues.min_area, allValues?.max_area]
+                    : areaSlider
+                }
+                size="small"
+                max={+allValues?.max_area + 1000 || 1000}
+                onChange={handleAreaChange}
+                valueLabelDisplay="auto"
+                getAriaValueText={valuetext}
+                sx={{ color: "#7450F0" }}
+              />
+            </Box>
+          </Box>
+          <Divider sx={{ mt: 1, mb: 1 }} />
+          <Box>
+            <Grid container spacing={2}>
+              <Grid item xs={12} sm={12} md={12} lg={4} xl={4}>
+                <Typography
+                  variant="p"
+                  sx={{
+                    color: "#4B4B66",
+                    fontSize: "16px",
+                    fontWeight: "400",
+                    lineHeight: "19px",
+                  }}
+                >
+                  Close to the metro?
+                </Typography>
+              </Grid>
+              <Grid item xs={12} sm={12} md={12} lg={8} xl={8}>
+                {["Yes", "No", "Whatever"].map((data, index) => (
+                  // <Grid xs={6} sm={6} md={6} lg={3} xl={3} key={index}>
+                  <Button
+                    onClick={() => setCloseToTheMetro(data)}
+                    key={index}
+                    sx={{
+                      background: `${
+                        data === closeToTheMetro ? "#7450F0" : "transparent"
+                      }`,
+                      borderRadius: "56px",
+                      // width: "100%",
+                      color: `${
+                        data === closeToTheMetro ? "#ffffff" : "#32414C"
+                      }`,
+                      border: `${
+                        data === closeToTheMetro ? "" : "1px solid #9FAAB1"
+                      }`,
+                      ml: 0.5,
+                      fontSize: {
+                        xs: "12px",
+                        sm: "13px",
+                        md: "14px",
+                        lg: "13px",
+                        xl: "14px",
+                      },
+                      fontWeight: "400",
+                      lineHeight: "17px",
+                      textTransform: "none",
+                      px: { xs: 0, sm: 1, md: 1, lg: 1, xl: 1 },
+                      py: 1,
+                      "&:hover": {
+                        background: "#7450F0",
+                        borderRadius: "56px",
+                        color: "#ffffff",
+                      },
+                    }}
+                  >
+                    {data}
+                  </Button>
+                  // </Grid>
+                ))}
+              </Grid>
+            </Grid>
+          </Box>
+          <Divider sx={{ mt: 1, mb: 1 }} />
+          <Box>
+            <Grid container spacing={2}>
+              <Grid item xs={12} sm={12} md={12} lg={4} xl={4}>
+                <Typography
+                  variant="p"
+                  sx={{
+                    color: "#4B4B66",
+                    fontSize: "16px",
+                    fontWeight: "400",
+                    lineHeight: "19px",
+                  }}
+                >
+                  Availability
+                </Typography>
+              </Grid>
+              <Grid item xs={12} sm={12} md={12} lg={8} xl={8}>
+                {["Immediate", "Shortly", "Whatever"].map((data, index) => (
+                  // <Grid xs={6} sm={6} md={6} lg={3} xl={3} key={index}>
+                  <Button
+                    key={index}
+                    onClick={() => setAvailability(data)}
+                    sx={{
+                      background: `${
+                        data === availability ? "#7450F0" : "transparent"
+                      }`,
+                      borderRadius: "56px",
+                      // width: "100%",
+                      color: `${data === availability ? "#ffffff" : "#32414C"}`,
+                      border: `${
+                        data === availability ? "" : "1px solid #9FAAB1"
+                      }`,
+                      ml: 0.5,
+                      fontSize: {
+                        xs: "12px",
+                        sm: "13px",
+                        md: "14px",
+                        lg: "13px",
+                        xl: "14px",
+                      },
+                      fontWeight: "400",
+                      lineHeight: "17px",
+                      textTransform: "none",
+                      px: { xs: 0, sm: 1, md: 1, lg: 1, xl: 1 },
+                      py: 1,
+                      "&:hover": {
+                        background: "#7450F0",
+                        borderRadius: "56px",
+                        color: "#ffffff",
+                      },
+                    }}
+                  >
+                    {data}
+                  </Button>
+                  // </Grid>
+                ))}
+              </Grid>
+            </Grid>
+          </Box>
+          <Divider sx={{ mt: 1, mb: 1 }} />
+          {Object.keys(featureData).map((key, index) => (
+            <Box key={index}>
+              <Typography
+                variant="p"
+                sx={{
+                  color: "#4B4B66",
+                  fontSize: "16px",
+                  fontWeight: "400",
+                  lineHeight: "19px",
+                }}
+              >
+                {(key === "condominium" ||
+                  key === "amenities" ||
+                  key === "wellbeing" ||
+                  key === "appliances" ||
+                  key === "rooms" ||
+                  key === "accessibility") &&
+                  key}
+              </Typography>
+              <Grid
+                container
+                direction="row"
+                justifyContent="flex-start"
+                alignItems="flex-start"
+                gap={1}
+                sx={{ mt: 2 }}
+              >
+                {(key === "condominium" ||
+                  key === "amenities" ||
+                  key === "wellbeing" ||
+                  key === "appliances" ||
+                  key === "rooms" ||
+                  key === "accessibility") &&
+                  featureData[key].map((data, index) => (
+                    <Button
+                      key={index}
+                      onClick={() => {
+                        if (!featuretypes?.includes(data.id)) {
+                          setFeatureTypes((current) => [...current, data.id]);
+                        } else {
+                          const newArray = featuretypes?.filter(
+                            (value) => value !== data.id
+                          );
+                          setFeatureTypes(newArray);
+                        }
+                      }}
+                      sx={{
+                        background: `${
+                          featuretypes?.includes(data.id)
+                            ? "#7450F0"
+                            : "transparent"
+                          // console.log("feature", featuretypes)
+                          // console.log(
+                          //   "bool",
+                          //   featuretypes?.includes(data.id.toString())
+                          // )
+                        }`,
+                        borderRadius: "56px",
+                        // width: "100%",
+                        color: `${
+                          featuretypes?.includes(data.id)
+                            ? "#ffffff"
+                            : "#32414C"
+                        }`,
+                        border: `${
+                          featuretypes?.includes(data.id)
+                            ? ""
+                            : "1px solid #9FAAB1"
+                        }`,
+                        fontSize: {
+                          xs: "12px",
+                          sm: "13px",
+                          md: "14px",
+                          lg: "13px",
+                          xl: "14px",
+                        },
+                        fontWeight: "400",
+                        lineHeight: "17px",
+                        textTransform: "none",
+                        px: { xs: 0, sm: 1, md: 1, lg: 1, xl: 1 },
+                        py: 1,
+                        "&:hover": {
+                          background: "#7450F0",
+                          borderRadius: "56px",
+                          color: "#ffffff",
+                        },
+                      }}
+                    >
+                      {data.name}
+                    </Button>
+                  ))}
+              </Grid>
+              <Divider sx={{ mt: 1, mb: 1 }} />
+            </Box>
+          ))}
+        </Box>
+        <Divider sx={{ mt: 2, mb: 1 }} />
+        <Box
           sx={{
-            color: "#1A1859",
-            fontSize: "24px",
-            lineHeight: "32px",
-            fontWeight: "700",
+            // mx: 2,
+            // my: 2,
+
+            position: "sticky",
+            bottom: 0,
+            width: "100%",
+            background: "#ffffff",
+            px: 2,
+            py: 2,
           }}
         >
-          Filters
-        </Typography>
-        <CloseIcon onClick={toggleDrawer(anchor, false)} />
-      </Grid>
-      {/* <Box
-        sx={{
-          background: "#ffffff",
-          boxShadow: "0px 4px 8px rgba(0, 33, 82, 0.08)",
-          border: "1px solid #DBE1E5",
-          borderRadius: { xs: 0, sm: 0, md: 0, lg: "8px", xl: "8px" },
-          mt: 2,
-          mx: 2,
-        }}
-      ></Box> */}
-      <Box sx={{ mx: 2, mt: 3 }}>
-        <Box>
-          <Typography
-            variant="p"
-            sx={{
-              color: "#4B4B66",
-              fontSize: "16px",
-              fontWeight: "400",
-              lineHeight: "19px",
-            }}
-          >
-            Property Type
-          </Typography>
-          <Grid
-            container
-            direction="row"
-            justifyContent="flex-start"
-            alignItems="flex-start"
-            gap={1}
-            sx={{ mt: 2 }}
-          >
-            {PropertyType.map((data, index) => (
-              // <Grid xs={6} sm={6} md={6} lg={3} xl={3} key={index}>
+          <Grid container spacing={3}>
+            <Grid item xs={12} sm={12} md={12} lg={6}>
               <Button
-                key={index}
+                onClick={handleCancelFilter}
+                fullWidth
+                variant="outlined"
                 sx={{
-                  background: `${index === 0 ? "#7450F0" : "transparent"}`,
-                  borderRadius: "56px",
-                  // width: "100%",
-                  color: `${index === 0 ? "#ffffff" : "#32414C"}`,
-                  border: `${index === 0 ? "" : "1px solid #9FAAB1"}`,
-                  fontSize: {
-                    xs: "12px",
-                    sm: "13px",
-                    md: "14px",
-                    lg: "13px",
-                    xl: "14px",
-                  },
-                  fontWeight: "400",
-                  lineHeight: "17px",
-                  textTransform: "none",
-                  px: { xs: 0, sm: 1, md: 1, lg: 1, xl: 1 },
-                  py: 1,
-                  "&:hover": {
-                    background: "#7450F0",
-                    borderRadius: "56px",
-                    color: "#ffffff",
-                  },
-                }}
-              >
-                {data.name}
-              </Button>
-              // </Grid>
-            ))}
-          </Grid>
-        </Box>
-        <Divider sx={{ mt: 1, mb: 1 }} />
-        <Box>
-          <Typography
-            variant="p"
-            sx={{
-              color: "#4B4B66",
-              fontSize: "16px",
-              fontWeight: "400",
-              lineHeight: "19px",
-            }}
-          >
-            Value
-          </Typography>
-          <Grid container spacing={2} sx={{ mt: 0.5 }}>
-            <Grid item xs={12} sm={12} md={12} lg={6} xl={6}>
-              <BaseOutlinedCurrencyInput
-                size={"medium"}
-                placeholder={"Minimum"}
-                label={"Minimum"}
-                borderColor={"#7450F0"}
-              />
-            </Grid>
-            <Grid item xs={12} sm={12} md={12} lg={6} xl={6}>
-              <BaseOutlinedCurrencyInput
-                size={"medium"}
-                placeholder={"Maximum"}
-                label={"Maximum"}
-                borderColor={"#7450F0"}
-              />
-            </Grid>
-          </Grid>
-
-          <Box sx={{ mt: 1 }}>
-            <Slider
-              getAriaLabel={() => "Temperature range"}
-              value={slidervalue}
-              size="small"
-              max={1000}
-              onChange={handleSliderChange}
-              valueLabelDisplay="auto"
-              getAriaValueText={valuetext}
-              sx={{ color: "#7450F0" }}
-            />
-          </Box>
-        </Box>
-        <Divider sx={{ mt: 1, mb: 1 }} />
-        <Box>
-          <Grid container spacing={2}>
-            <Grid item xs={12} sm={12} md={12} lg={4} xl={4}>
-              <Typography
-                variant="p"
-                sx={{
-                  color: "#4B4B66",
-                  fontSize: "16px",
-                  fontWeight: "400",
-                  lineHeight: "19px",
-                }}
-              >
-                Bedrooms
-              </Typography>
-            </Grid>
-            <Grid item xs={12} sm={12} md={12} lg={8} xl={8}>
-              {[0, 1, 2, 3].map((data, index) => (
-                // <Grid xs={6} sm={6} md={6} lg={3} xl={3} key={index}>
-                <Button
-                  key={index}
-                  sx={{
-                    background: `${index === 0 ? "#7450F0" : "transparent"}`,
-                    borderRadius: "56px",
-                    // width: "100%",
-                    color: `${index === 0 ? "#ffffff" : "#32414C"}`,
-                    border: `${index === 0 ? "" : "1px solid #9FAAB1"}`,
-                    ml: 0.5,
-                    fontSize: {
-                      xs: "12px",
-                      sm: "13px",
-                      md: "14px",
-                      lg: "13px",
-                      xl: "14px",
-                    },
-                    fontWeight: "400",
-                    lineHeight: "17px",
-                    textTransform: "none",
-                    px: { xs: 0, sm: 1, md: 1, lg: 1, xl: 1 },
-                    py: 1,
-                    "&:hover": {
-                      background: "#7450F0",
-                      borderRadius: "56px",
-                      color: "#ffffff",
-                    },
-                  }}
-                >
-                  {`${index + 1}+`}
-                </Button>
-                // </Grid>
-              ))}
-            </Grid>
-          </Grid>
-        </Box>
-        <Divider sx={{ mt: 1, mb: 1 }} />
-        <Box>
-          <Grid container spacing={2}>
-            <Grid item xs={12} sm={12} md={12} lg={4} xl={4}>
-              <Typography
-                variant="p"
-                sx={{
-                  color: "#4B4B66",
-                  fontSize: "16px",
-                  fontWeight: "400",
-                  lineHeight: "19px",
-                }}
-              >
-                Bathrooms
-              </Typography>
-            </Grid>
-            <Grid item xs={12} sm={12} md={12} lg={8} xl={8}>
-              {[0, 1, 2, 3].map((data, index) => (
-                // <Grid xs={6} sm={6} md={6} lg={3} xl={3} key={index}>
-                <Button
-                  key={index}
-                  sx={{
-                    background: `${index === 0 ? "#7450F0" : "transparent"}`,
-                    borderRadius: "56px",
-                    // width: "100%",
-                    color: `${index === 0 ? "#ffffff" : "#32414C"}`,
-                    border: `${index === 0 ? "" : "1px solid #9FAAB1"}`,
-                    ml: 0.5,
-                    fontSize: {
-                      xs: "12px",
-                      sm: "13px",
-                      md: "14px",
-                      lg: "13px",
-                      xl: "14px",
-                    },
-                    fontWeight: "400",
-                    lineHeight: "17px",
-                    textTransform: "none",
-                    px: { xs: 0, sm: 1, md: 1, lg: 1, xl: 1 },
-                    py: 1,
-                    "&:hover": {
-                      background: "#7450F0",
-                      borderRadius: "56px",
-                      color: "#ffffff",
-                    },
-                  }}
-                >
-                  {`${index + 1}+`}
-                </Button>
-                // </Grid>
-              ))}
-            </Grid>
-          </Grid>
-        </Box>
-        <Divider sx={{ mt: 1, mb: 1 }} />
-        <Box>
-          <Grid container spacing={2}>
-            <Grid item xs={12} sm={12} md={12} lg={4} xl={4}>
-              <Typography
-                variant="p"
-                sx={{
-                  color: "#4B4B66",
-                  fontSize: "16px",
-                  fontWeight: "400",
-                  lineHeight: "19px",
-                }}
-              >
-                Furnished
-              </Typography>
-            </Grid>
-            <Grid item xs={12} sm={12} md={12} lg={8} xl={8}>
-              {["Yes", "No", "Whatever"].map((data, index) => (
-                // <Grid xs={6} sm={6} md={6} lg={3} xl={3} key={index}>
-                <Button
-                  key={index}
-                  sx={{
-                    background: `${index === 0 ? "#7450F0" : "transparent"}`,
-                    borderRadius: "56px",
-                    // width: "100%",
-                    color: `${index === 0 ? "#ffffff" : "#32414C"}`,
-                    border: `${index === 0 ? "" : "1px solid #9FAAB1"}`,
-                    ml: 0.5,
-                    fontSize: {
-                      xs: "12px",
-                      sm: "13px",
-                      md: "14px",
-                      lg: "13px",
-                      xl: "14px",
-                    },
-                    fontWeight: "400",
-                    lineHeight: "17px",
-                    textTransform: "none",
-                    px: { xs: 0, sm: 1, md: 1, lg: 1, xl: 1 },
-                    py: 1,
-                    "&:hover": {
-                      background: "#7450F0",
-                      borderRadius: "56px",
-                      color: "#ffffff",
-                    },
-                  }}
-                >
-                  {data}
-                </Button>
-                // </Grid>
-              ))}
-            </Grid>
-          </Grid>
-        </Box>
-        <Divider sx={{ mt: 1, mb: 1 }} />
-        <Box>
-          <Grid container spacing={2}>
-            <Grid item xs={12} sm={12} md={12} lg={4} xl={4}>
-              <Typography
-                variant="p"
-                sx={{
-                  color: "#4B4B66",
-                  fontSize: "16px",
-                  fontWeight: "400",
-                  lineHeight: "19px",
-                }}
-              >
-                Do you accept pets?
-              </Typography>
-            </Grid>
-            <Grid item xs={12} sm={12} md={12} lg={8} xl={8}>
-              {["Yes", "No", "Whatever"].map((data, index) => (
-                // <Grid xs={6} sm={6} md={6} lg={3} xl={3} key={index}>
-                <Button
-                  key={index}
-                  sx={{
-                    background: `${index === 0 ? "#7450F0" : "transparent"}`,
-                    borderRadius: "56px",
-                    // width: "100%",
-                    color: `${index === 0 ? "#ffffff" : "#32414C"}`,
-                    border: `${index === 0 ? "" : "1px solid #9FAAB1"}`,
-                    ml: 0.5,
-                    fontSize: {
-                      xs: "12px",
-                      sm: "13px",
-                      md: "14px",
-                      lg: "13px",
-                      xl: "14px",
-                    },
-                    fontWeight: "400",
-                    lineHeight: "17px",
-                    textTransform: "none",
-                    px: { xs: 0, sm: 1, md: 1, lg: 1, xl: 1 },
-                    py: 1,
-                    "&:hover": {
-                      background: "#7450F0",
-                      borderRadius: "56px",
-                      color: "#ffffff",
-                    },
-                  }}
-                >
-                  {data}
-                </Button>
-                // </Grid>
-              ))}
-            </Grid>
-          </Grid>
-        </Box>
-        <Divider sx={{ mt: 1, mb: 1 }} />
-        <Box>
-          <Typography
-            variant="p"
-            sx={{
-              color: "#4B4B66",
-              fontSize: "16px",
-              fontWeight: "400",
-              lineHeight: "19px",
-            }}
-          >
-            Area (m²)
-          </Typography>
-          <Grid container spacing={2} sx={{ mt: 0.5 }}>
-            <Grid item xs={12} sm={12} md={12} lg={6} xl={6}>
-              <BaseOutlinedCurrencyInput
-                size={"medium"}
-                placeholder={"Minimum"}
-                label={"Minimum"}
-                borderColor={"#7450F0"}
-              />
-            </Grid>
-            <Grid item xs={12} sm={12} md={12} lg={6} xl={6}>
-              <BaseOutlinedCurrencyInput
-                size={"medium"}
-                placeholder={"Maximum"}
-                label={"Maximum"}
-                borderColor={"#7450F0"}
-              />
-            </Grid>
-          </Grid>
-
-          <Box sx={{ mt: 1 }}>
-            <Slider
-              getAriaLabel={() => "Temperature range"}
-              value={sliderAreaValue}
-              size="small"
-              max={1000}
-              sx={{ color: "#7450F0" }}
-              onChange={handleSliderAreaChange}
-              valueLabelDisplay="auto"
-              getAriaValueText={valuetext}
-            />
-          </Box>
-        </Box>
-        <Divider sx={{ mt: 1, mb: 1 }} />
-        <Box>
-          <Grid container spacing={2}>
-            <Grid item xs={12} sm={12} md={12} lg={4} xl={4}>
-              <Typography
-                variant="p"
-                sx={{
-                  color: "#4B4B66",
-                  fontSize: "16px",
-                  fontWeight: "400",
-                  lineHeight: "19px",
-                }}
-              >
-                Close to the metro?
-              </Typography>
-            </Grid>
-            <Grid item xs={12} sm={12} md={12} lg={8} xl={8}>
-              {["Yes", "No", "Whatever"].map((data, index) => (
-                // <Grid xs={6} sm={6} md={6} lg={3} xl={3} key={index}>
-                <Button
-                  key={index}
-                  sx={{
-                    background: `${index === 0 ? "#7450F0" : "transparent"}`,
-                    borderRadius: "56px",
-                    // width: "100%",
-                    color: `${index === 0 ? "#ffffff" : "#32414C"}`,
-                    border: `${index === 0 ? "" : "1px solid #9FAAB1"}`,
-                    ml: 0.5,
-                    fontSize: {
-                      xs: "12px",
-                      sm: "13px",
-                      md: "14px",
-                      lg: "13px",
-                      xl: "14px",
-                    },
-                    fontWeight: "400",
-                    lineHeight: "17px",
-                    textTransform: "none",
-                    px: { xs: 0, sm: 1, md: 1, lg: 1, xl: 1 },
-                    py: 1,
-                    "&:hover": {
-                      background: "#7450F0",
-                      borderRadius: "56px",
-                      color: "#ffffff",
-                    },
-                  }}
-                >
-                  {data}
-                </Button>
-                // </Grid>
-              ))}
-            </Grid>
-          </Grid>
-        </Box>
-        <Divider sx={{ mt: 1, mb: 1 }} />
-        <Box>
-          <Grid container spacing={2}>
-            <Grid item xs={12} sm={12} md={12} lg={4} xl={4}>
-              <Typography
-                variant="p"
-                sx={{
-                  color: "#4B4B66",
-                  fontSize: "16px",
-                  fontWeight: "400",
-                  lineHeight: "19px",
-                }}
-              >
-                Availability
-              </Typography>
-            </Grid>
-            <Grid item xs={12} sm={12} md={12} lg={8} xl={8}>
-              {["Immediate", "Shortly", "Whatever"].map((data, index) => (
-                // <Grid xs={6} sm={6} md={6} lg={3} xl={3} key={index}>
-                <Button
-                  key={index}
-                  sx={{
-                    background: `${index === 0 ? "#7450F0" : "transparent"}`,
-                    borderRadius: "56px",
-                    // width: "100%",
-                    color: `${index === 0 ? "#ffffff" : "#32414C"}`,
-                    border: `${index === 0 ? "" : "1px solid #9FAAB1"}`,
-                    ml: 0.5,
-                    fontSize: {
-                      xs: "12px",
-                      sm: "13px",
-                      md: "14px",
-                      lg: "13px",
-                      xl: "14px",
-                    },
-                    fontWeight: "400",
-                    lineHeight: "17px",
-                    textTransform: "none",
-                    px: { xs: 0, sm: 1, md: 1, lg: 1, xl: 1 },
-                    py: 1,
-                    "&:hover": {
-                      background: "#7450F0",
-                      borderRadius: "56px",
-                      color: "#ffffff",
-                    },
-                  }}
-                >
-                  {data}
-                </Button>
-                // </Grid>
-              ))}
-            </Grid>
-          </Grid>
-        </Box>
-        <Divider sx={{ mt: 1, mb: 1 }} />
-        <Box>
-          <Typography
-            variant="p"
-            sx={{
-              color: "#4B4B66",
-              fontSize: "16px",
-              fontWeight: "400",
-              lineHeight: "19px",
-            }}
-          >
-            Condominium
-          </Typography>
-          <Grid
-            container
-            direction="row"
-            justifyContent="flex-start"
-            alignItems="flex-start"
-            gap={1}
-            sx={{ mt: 2 }}
-          >
-            {CondominiumType.map((data, index) => (
-              // <Grid xs={6} sm={6} md={6} lg={3} xl={3} key={index}>
-              <Button
-                key={index}
-                sx={{
-                  background: `${index === 0 ? "#7450F0" : "transparent"}`,
-                  borderRadius: "56px",
-                  // width: "100%",
-                  color: `${index === 0 ? "#ffffff" : "#32414C"}`,
-                  border: `${index === 0 ? "" : "1px solid #9FAAB1"}`,
-                  fontSize: {
-                    xs: "12px",
-                    sm: "13px",
-                    md: "14px",
-                    lg: "13px",
-                    xl: "14px",
-                  },
-                  fontWeight: "400",
-                  lineHeight: "17px",
-                  textTransform: "none",
-                  px: { xs: 0, sm: 1, md: 1, lg: 1, xl: 1 },
-                  py: 1,
-                  "&:hover": {
-                    background: "#7450F0",
-                    borderRadius: "56px",
-                    color: "#ffffff",
-                  },
-                }}
-              >
-                {data.name}
-              </Button>
-              // </Grid>
-            ))}
-          </Grid>
-        </Box>
-        <Divider sx={{ mt: 1, mb: 1 }} />
-        <Box>
-          <Typography
-            variant="p"
-            sx={{
-              color: "#4B4B66",
-              fontSize: "16px",
-              fontWeight: "400",
-              lineHeight: "19px",
-            }}
-          >
-            Amenities
-          </Typography>
-          <Grid
-            container
-            direction="row"
-            justifyContent="flex-start"
-            alignItems="flex-start"
-            gap={1}
-            sx={{ mt: 2 }}
-          >
-            {CondominiumType.map((data, index) => (
-              // <Grid xs={6} sm={6} md={6} lg={3} xl={3} key={index}>
-              <Button
-                key={index}
-                sx={{
-                  background: `${index === 0 ? "#7450F0" : "transparent"}`,
-                  borderRadius: "56px",
-                  // width: "100%",
-                  color: `${index === 0 ? "#ffffff" : "#32414C"}`,
-                  border: `${index === 0 ? "" : "1px solid #9FAAB1"}`,
-                  fontSize: {
-                    xs: "12px",
-                    sm: "13px",
-                    md: "14px",
-                    lg: "13px",
-                    xl: "14px",
-                  },
-                  fontWeight: "400",
-                  lineHeight: "17px",
-                  textTransform: "none",
-                  px: { xs: 0, sm: 1, md: 1, lg: 1, xl: 1 },
-                  py: 1,
-                  "&:hover": {
-                    background: "#7450F0",
-                    borderRadius: "56px",
-                    color: "#ffffff",
-                  },
-                }}
-              >
-                {data.name}
-              </Button>
-              // </Grid>
-            ))}
-          </Grid>
-        </Box>
-        <Divider sx={{ mt: 1, mb: 1 }} />
-        <Box>
-          <Typography
-            variant="p"
-            sx={{
-              color: "#4B4B66",
-              fontSize: "16px",
-              fontWeight: "400",
-              lineHeight: "19px",
-            }}
-          >
-            Well-being
-          </Typography>
-          <Grid
-            container
-            direction="row"
-            justifyContent="flex-start"
-            alignItems="flex-start"
-            gap={1}
-            sx={{ mt: 2 }}
-          >
-            {CondominiumType.map((data, index) => (
-              // <Grid xs={6} sm={6} md={6} lg={3} xl={3} key={index}>
-              <Button
-                key={index}
-                sx={{
-                  background: `${index === 0 ? "#7450F0" : "transparent"}`,
-                  borderRadius: "56px",
-                  // width: "100%",
-                  color: `${index === 0 ? "#ffffff" : "#32414C"}`,
-                  border: `${index === 0 ? "" : "1px solid #9FAAB1"}`,
-                  fontSize: {
-                    xs: "12px",
-                    sm: "13px",
-                    md: "14px",
-                    lg: "13px",
-                    xl: "14px",
-                  },
-                  fontWeight: "400",
-                  lineHeight: "17px",
-                  textTransform: "none",
-                  px: { xs: 0, sm: 1, md: 1, lg: 1, xl: 1 },
-                  py: 1,
-                  "&:hover": {
-                    background: "#7450F0",
-                    borderRadius: "56px",
-                    color: "#ffffff",
-                  },
-                }}
-              >
-                {data.name}
-              </Button>
-              // </Grid>
-            ))}
-          </Grid>
-        </Box>
-        <Divider sx={{ mt: 1, mb: 1 }} />
-        <Box>
-          <Typography
-            variant="p"
-            sx={{
-              color: "#4B4B66",
-              fontSize: "16px",
-              fontWeight: "400",
-              lineHeight: "19px",
-            }}
-          >
-            Home appliances
-          </Typography>
-          <Grid
-            container
-            direction="row"
-            justifyContent="flex-start"
-            alignItems="flex-start"
-            gap={1}
-            sx={{ mt: 2 }}
-          >
-            {CondominiumType.map((data, index) => (
-              // <Grid xs={6} sm={6} md={6} lg={3} xl={3} key={index}>
-              <Button
-                key={index}
-                sx={{
-                  background: `${index === 0 ? "#7450F0" : "transparent"}`,
-                  borderRadius: "56px",
-                  // width: "100%",
-                  color: `${index === 0 ? "#ffffff" : "#32414C"}`,
-                  border: `${index === 0 ? "" : "1px solid #9FAAB1"}`,
-                  fontSize: {
-                    xs: "12px",
-                    sm: "13px",
-                    md: "14px",
-                    lg: "13px",
-                    xl: "14px",
-                  },
-                  fontWeight: "400",
-                  lineHeight: "17px",
-                  textTransform: "none",
-                  px: { xs: 0, sm: 1, md: 1, lg: 1, xl: 1 },
-                  py: 1,
-                  "&:hover": {
-                    background: "#7450F0",
-                    borderRadius: "56px",
-                    color: "#ffffff",
-                  },
-                }}
-              >
-                {data.name}
-              </Button>
-              // </Grid>
-            ))}
-          </Grid>
-        </Box>
-        <Divider sx={{ mt: 1, mb: 1 }} />
-        <Box>
-          <Typography
-            variant="p"
-            sx={{
-              color: "#4B4B66",
-              fontSize: "16px",
-              fontWeight: "400",
-              lineHeight: "19px",
-            }}
-          >
-            Rooms
-          </Typography>
-          <Grid
-            container
-            direction="row"
-            justifyContent="flex-start"
-            alignItems="flex-start"
-            gap={1}
-            sx={{ mt: 2 }}
-          >
-            {CondominiumType.map((data, index) => (
-              // <Grid xs={6} sm={6} md={6} lg={3} xl={3} key={index}>
-              <Button
-                key={index}
-                sx={{
-                  background: `${index === 0 ? "#7450F0" : "transparent"}`,
-                  borderRadius: "56px",
-                  // width: "100%",
-                  color: `${index === 0 ? "#ffffff" : "#32414C"}`,
-                  border: `${index === 0 ? "" : "1px solid #9FAAB1"}`,
-                  fontSize: {
-                    xs: "12px",
-                    sm: "13px",
-                    md: "14px",
-                    lg: "13px",
-                    xl: "14px",
-                  },
-                  fontWeight: "400",
-                  lineHeight: "17px",
-                  textTransform: "none",
-                  px: { xs: 0, sm: 1, md: 1, lg: 1, xl: 1 },
-                  py: 1,
-                  "&:hover": {
-                    background: "#7450F0",
-                    borderRadius: "56px",
-                    color: "#ffffff",
-                  },
-                }}
-              >
-                {data.name}
-              </Button>
-              // </Grid>
-            ))}
-          </Grid>
-        </Box>
-        <Divider sx={{ mt: 1, mb: 1 }} />
-        <Box>
-          <Typography
-            variant="p"
-            sx={{
-              color: "#4B4B66",
-              fontSize: "16px",
-              fontWeight: "400",
-              lineHeight: "19px",
-            }}
-          >
-            Accessibility
-          </Typography>
-          <Grid
-            container
-            direction="row"
-            justifyContent="flex-start"
-            alignItems="flex-start"
-            gap={1}
-            sx={{ mt: 2 }}
-          >
-            {CondominiumType.map((data, index) => (
-              // <Grid xs={6} sm={6} md={6} lg={3} xl={3} key={index}>
-              <Button
-                key={index}
-                sx={{
-                  background: `${index === 0 ? "#7450F0" : "transparent"}`,
-                  borderRadius: "56px",
-                  // width: "100%",
-                  color: `${index === 0 ? "#ffffff" : "#32414C"}`,
-                  border: `${index === 0 ? "" : "1px solid #9FAAB1"}`,
-                  fontSize: {
-                    xs: "12px",
-                    sm: "13px",
-                    md: "14px",
-                    lg: "13px",
-                    xl: "14px",
-                  },
-                  fontWeight: "400",
-                  lineHeight: "17px",
-                  textTransform: "none",
-                  px: { xs: 0, sm: 1, md: 1, lg: 1, xl: 1 },
-                  py: 1,
-                  "&:hover": {
-                    background: "#7450F0",
-                    borderRadius: "56px",
-                    color: "#ffffff",
-                  },
-                }}
-              >
-                {data.name}
-              </Button>
-              // </Grid>
-            ))}
-          </Grid>
-        </Box>
-      </Box>
-      <Divider sx={{ mt: 2, mb: 1 }} />
-      <Box
-        sx={{
-          // mx: 2,
-          // my: 2,
-
-          position: "sticky",
-          bottom: 0,
-          width: "100%",
-          background: "#ffffff",
-          px: 2,
-          py: 2,
-        }}
-      >
-        <Grid container spacing={3}>
-          <Grid item xs={12} sm={12} md={12} lg={6}>
-            <Button
-              onClick={toggleDrawer(anchor, false)}
-              fullWidth
-              variant="outlined"
-              sx={{
-                borderColor: "#002152",
-                borderRadius: "4px",
-                color: "#002152",
-                fontSize: "16px",
-                fontWeight: "600",
-                lineHeight: "22px",
-                textTransform: "none",
-                "&:hover": {
                   borderColor: "#002152",
                   borderRadius: "4px",
                   color: "#002152",
-                },
-              }}
-            >
-              Cancel filter
-            </Button>
-          </Grid>
-          <Grid item xs={12} sm={12} md={12} lg={6}>
-            <Button
-              fullWidth
-              variant="contained"
-              sx={{
-                background: " #7450F0",
-                borderRadius: "4px",
-                color: "#ffffff",
-                fontSize: "16px",
-                fontWeight: "600",
-                lineHeight: "22px",
-                textTransform: "none",
-                "&:hover": {
+                  fontSize: "16px",
+                  fontWeight: "600",
+                  lineHeight: "22px",
+                  textTransform: "none",
+                  "&:hover": {
+                    borderColor: "#002152",
+                    borderRadius: "4px",
+                    color: "#002152",
+                  },
+                }}
+              >
+                Cancel filter
+              </Button>
+            </Grid>
+            <Grid item xs={12} sm={12} md={12} lg={6}>
+              <Button
+                fullWidth
+                variant="contained"
+                type="submit"
+                sx={{
                   background: " #7450F0",
                   borderRadius: "4px",
                   color: "#ffffff",
-                },
-              }}
-            >
-              Apply filter
-            </Button>
+                  fontSize: "16px",
+                  fontWeight: "600",
+                  lineHeight: "22px",
+                  textTransform: "none",
+                  "&:hover": {
+                    background: " #7450F0",
+                    borderRadius: "4px",
+                    color: "#ffffff",
+                  },
+                }}
+              >
+                Apply filter
+              </Button>
+            </Grid>
           </Grid>
-        </Grid>
-      </Box>
+        </Box>
+      </form>
     </Box>
   );
-
   return (
     <div>
       <Head>
@@ -1151,10 +1192,10 @@ export default function ViewProperties(props) {
                 xl={4}
                 sx={{ mx: { xs: 2, sm: 2, md: 0 } }}
               >
-                <Paper
+                {/* <Paper
                   component="form"
                   sx={{
-                    // p: "2px 4px",
+                   
                     display: "flex",
                     alignItems: "center",
                     // border: "1px solid red",
@@ -1172,9 +1213,7 @@ export default function ViewProperties(props) {
                   }}
                 >
                   <Grid sx={{ paddingRight: 2, width: "100%" }}>
-                    {/* <IconButton sx={{ p: "10px" }} aria-label="menu">
-          <MenuIcon />
-        </IconButton> */}
+                  
                     <InputBase
                       fullWidth
                       sx={{ ml: 1, flex: 1 }}
@@ -1195,7 +1234,11 @@ export default function ViewProperties(props) {
                   >
                     <Image src={searchIcon} alt="search" />
                   </Box>
-                </Paper>
+                </Paper> */}
+                <SearchComponent
+                  handleSearch={handleSearch}
+                  handleSearchBtn={handleSearchBtn}
+                />
               </Grid>
               <Grid item xs={12} sm={12} md={12} lg={2} xl={2}>
                 <Button
@@ -1262,7 +1305,7 @@ export default function ViewProperties(props) {
             </Grid>
             <Box sx={{ mt: 4, mx: { xs: 2, sm: 2, md: 0 } }}>
               <Grid container spacing={4}>
-                {[0, 1, 2].map((data, index) => (
+                {projectPropertyData?.map((data, index) => (
                   <Grid
                     key={index}
                     item
@@ -1273,10 +1316,20 @@ export default function ViewProperties(props) {
                     xl={6}
                     xxl={6}
                   >
-                    <RentCard />
+                    <RentCard propertyData={data} />
                   </Grid>
                 ))}
               </Grid>
+
+              <Stack spacing={2} sx={{ marginY: 8 }}>
+                <Pagination
+                  count={Math.ceil(projectPropertyData?.total / 9) || 1}
+                  page={page}
+                  onChange={handlePageChange}
+                  variant="outlined"
+                  shape="rounded"
+                />
+              </Stack>
             </Box>
           </Box>
         </Box>
@@ -1300,9 +1353,23 @@ export async function getServerSideProps(context) {
     };
   }
 
+  const base_url = process.env.NEXT_PUBLIC_API_URL;
+  const queryValue = context.query;
+
+  var url = new URL(`${base_url}/api/property/index`),
+    params = context.query;
+  Object.keys(params).forEach((key) =>
+    url.searchParams.append(key, params[key])
+  );
+  const res = await fetch(url);
+
+  const data = await res.json();
+  console.log({ data });
+
   return {
     props: {
-      session: session,
+      projectPropertyData: data?.properties?.data,
+      query: queryValue,
     },
   };
 }

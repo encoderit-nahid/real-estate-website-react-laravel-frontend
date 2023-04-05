@@ -109,11 +109,7 @@ export const GetAllProjects = async (queryData) => {
     const response = await apiInstance.get(
       `project/index?page=${queryData.page || 1}&per_page=${
         queryData?.per_page || 9
-      }`,
-      {
-        page: queryData.page,
-        per_page: queryData.per_page,
-      }
+      }`
     );
     return [false, response];
   } catch (error) {
@@ -135,6 +131,34 @@ export const createProjectApi = async (body) => {
 export const photoTypeApi = async () => {
   try {
     const response = await apiInstance.get(`property/photo-type`);
+    return [false, response];
+  } catch (error) {
+    return [error, null];
+  }
+};
+
+//property_type
+export const getPropertyApi = async (queryData) => {
+  try {
+    const response = await apiInstance.get(`property/index`, {
+      params: {
+        status: queryData?.status,
+        page: queryData?.page,
+        per_page: queryData?.per_page,
+      },
+    });
+    return [false, response];
+  } catch (error) {
+    return [error, null];
+  }
+};
+
+//project_property
+export const getProjectProperty = async (queryData) => {
+  try {
+    const response = await apiInstance.get(`property/index`, {
+      params: queryData,
+    });
     return [false, response];
   } catch (error) {
     return [error, null];

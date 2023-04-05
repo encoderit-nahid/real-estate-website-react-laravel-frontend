@@ -52,14 +52,28 @@ function a11yProps(index) {
 }
 
 export default function MyProperties(props) {
-  const [value, setValue] = useState(0);
-
   const router = useRouter();
   const { query } = router;
   console.log({ query });
 
+  const [value, setValue] = useState(+query?.value || 0);
+
   const handleChange = (event, newValue) => {
     setValue(newValue);
+    newValue === 1
+      ? router.replace({
+          pathname: "/my_properties",
+          query: { status: "third", page: 1, per_page: 9, value: newValue },
+        })
+      : newValue === 2
+      ? router.replace({
+          pathname: "/my_properties",
+          query: { status: "new", page: 1, per_page: 9, value: newValue },
+        })
+      : router.replace({
+          pathname: "/my_properties",
+          query: { page: 1, per_page: 9, value: newValue },
+        });
   };
   return (
     <div>
@@ -169,6 +183,11 @@ export default function MyProperties(props) {
                             md: "30%",
                             lg: "30%",
                             xl: "20%",
+                          },
+                          "&:hover": {
+                            background: "#0362F0",
+                            borderRadius: "4px",
+                            color: "#ffffff",
                           },
                         }}
                       >

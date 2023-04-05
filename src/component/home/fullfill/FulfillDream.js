@@ -120,6 +120,7 @@ function FulfillDream() {
         href={{
           pathname: "/search_real_estate",
           query: omitEmpties({
+            status: "approved",
             location: locationName && locationName,
             value_up_to: value && value.label,
             page: 1,

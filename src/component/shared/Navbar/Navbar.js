@@ -149,7 +149,17 @@ function Navbar({
               }}
             >
               {pagesData?.map((data, index) => (
-                <Link href={`/${data.page}`} key={index}>
+                <Link
+                  href={{
+                    pathname: `/${data.page}`,
+                    query: data.page === "search_real_estate" && {
+                      status: "approved",
+                      page: 1,
+                      per_page: 9,
+                    },
+                  }}
+                  key={index}
+                >
                   <a
                     style={{
                       textDecoration: "none",
@@ -222,7 +232,17 @@ function Navbar({
             }}
           >
             {pagesData?.map((data, index) => (
-              <Link href={`/${data.page}`} key={index}>
+              <Link
+                href={{
+                  pathname: `/${data.page}`,
+                  query: data.page === "search_real_estate" && {
+                    status: "approved",
+                    page: 1,
+                    per_page: 9,
+                  },
+                }}
+                key={index}
+              >
                 <a
                   style={{
                     textDecoration: "none",
