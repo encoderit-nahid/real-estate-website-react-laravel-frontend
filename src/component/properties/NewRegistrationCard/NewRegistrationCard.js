@@ -1,13 +1,45 @@
-import { Box, Button, Grid, LinearProgress, Typography } from "@mui/material";
+import {
+  Box,
+  Button,
+  CircularProgress,
+  Grid,
+  LinearProgress,
+  Typography,
+} from "@mui/material";
 import React from "react";
 import rentImage from "../../../../public/Images/rentImage.png";
 import Image from "next/image";
 import Link from "next/link";
 import { _baseURL } from "../../../../consts";
 import dayjs from "dayjs";
+import { useDispatch, useSelector } from "react-redux";
+import { ChangePropertyStatus } from "../../../redux/propertyStatus/actions";
+import { findPropertyData } from "../../../redux/property/actions";
 
-function NewRegistrationCard({ propertyData }) {
+function NewRegistrationCard({ propertyData, newProperty }) {
   const [progress, setProgress] = React.useState(87);
+  const dispatch = useDispatch();
+
+  const handleReject = (id) => {
+    dispatch(ChangePropertyStatus({ property_id: id, status: "rejected" }));
+    // dispatch(findPropertyData({ status: "new", page: 1, per_page: 9 }));
+  };
+
+  const handleApprove = (id) => {
+    dispatch(ChangePropertyStatus({ property_id: id, status: "approved" }));
+    // dispatch(findPropertyData({ status: "new", page: 1, per_page: 9 }));
+  };
+
+  const rejectLoading = useSelector(
+    (state) => state?.propertyStatus?.rejectLoading
+  );
+  console.log({ rejectLoading });
+  const approveLoading = useSelector(
+    (state) => state?.propertyStatus?.approveLoading
+  );
+
+  console.log({ approveLoading, rejectLoading });
+
   return (
     <Box
       sx={{
@@ -196,6 +228,7 @@ function NewRegistrationCard({ propertyData }) {
             </Typography>
             <Box sx={{ mt: 1, mb: { xs: 0, sm: 0, md: 0, lg: 2, xl: 2 } }}>
               <Button
+                onClick={() => handleReject(propertyData.id)}
                 variant="outlined"
                 sx={{
                   borderColor: "#F44336",
@@ -220,7 +253,10 @@ function NewRegistrationCard({ propertyData }) {
                   },
                 }}
               >
-                Reject
+                {rejectLoading && (
+                  <CircularProgress size={22} sx={{ color: "red" }} />
+                )}
+                {!rejectLoading && "Reject"}
               </Button>
               <Button
                 variant="contained"
@@ -250,6 +286,7 @@ function NewRegistrationCard({ propertyData }) {
                 Edit
               </Button>
               <Button
+                onClick={() => handleApprove(propertyData.id)}
                 variant="contained"
                 color="success"
                 sx={{
@@ -273,7 +310,10 @@ function NewRegistrationCard({ propertyData }) {
                   },
                 }}
               >
-                Approves
+                {approveLoading && (
+                  <CircularProgress size={22} color="inherit" />
+                )}
+                {!approveLoading && "Approve"}
               </Button>
             </Box>
           </Grid>

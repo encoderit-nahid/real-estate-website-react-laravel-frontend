@@ -8,7 +8,7 @@ import {
   Typography,
 } from "@mui/material";
 import Image from "next/image";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import PropertyCard from "../PropertyCard/PropertyCard";
 import proposeImage from "../../../../public/Images/proposal_modal.png";
 import buyerProfile from "../../../../public/Images/buyer_profile.png";
@@ -16,36 +16,29 @@ import BaseOutlinedZipInput from "../../reuseable/baseOutlinedZipInput/BaseOutli
 import BaseOutlinedCpfInput from "../../reuseable/baseOutlinedCpfInput/BaseOutlinedCpfInput";
 import BaseOutlinedRgInput from "../../reuseable/baseOutlinedRgInput/BaseOutlinedRgInput";
 import BaseTextField from "../../reuseable/baseTextField/BaseTextField";
+import { Controller } from "react-hook-form";
+import BaseAutocomplete from "../../reuseable/baseAutocomplete/BaseAutocomplete";
+import { useDispatch, useSelector } from "react-redux";
+import { findStateData } from "../../../redux/state/actions";
 
-function BuyerDataStep() {
-  //zip_code
-  const [value, setValue] = useState("");
-  console.log(value.length);
-  const [valid, setValid] = useState(false);
-  console.log({ valid });
-  const handleValidation = (e) => {
-    setValid(/^[0-9]{5}-[0-9]{3}$/.test(e.target.value));
-    console.log(e.target.value);
-    setValue(e.target.value);
-  };
+function BuyerDataStep({
+  setMaritalStatus,
+  maritalStatus,
+  control,
+  errors,
+  setValue,
+}) {
+  const dispatch = useDispatch();
+  useEffect(() => {
+    dispatch(findStateData());
+  }, [dispatch]);
 
-  //cpf
-  const [cpfValue, setCPFValue] = useState("");
-  const [cpfValid, setCPFValid] = useState(false);
-  const handleCPFValidation = (e) => {
-    setCPFValid(
-      /[0-9]{3}\.?[0-9]{3}\.?[0-9]{3}\-?[0-9]{2}/.test(e.target.value)
-    );
-    setCPFValue(e.target.value);
-  };
+  const allStateData = useSelector((state) => state.state.stateData);
+  console.log({ allStateData });
 
-  //rg
-  const [rgValue, setRGValue] = useState("");
-  const [rgValid, setRGValid] = useState(false);
-  const handleRGValidation = (e) => {
-    setRGValid(/^W(\d(\d(\d[A-Z]?)?)?$)/.test(e.target.value));
-    setRGValue(e.target.value);
-  };
+  useEffect(() => {
+    setValue("state", allStateData[0]);
+  }, [allStateData, setValue]);
 
   return (
     <Box sx={{ mt: 4 }}>
@@ -93,25 +86,42 @@ function BuyerDataStep() {
               Marital Status:
             </Typography>
           </Grid>
+
           <Button
+            onClick={() => setMaritalStatus("Married")}
             sx={{
               textTransform: "none",
-              padding: "3px 10px",
-              backgroundColor: "#0362F0",
-              color: "#ffffff",
+              padding: "3px 6px",
+              backgroundColor:
+                maritalStatus === "Married" ? "#0362F0" : "#F2F5F6",
+              color: maritalStatus === "Married" ? "#ffffff" : "#002152",
               borderRadius: "56px",
+              "&: hover": {
+                padding: "3px 6px",
+                backgroundColor: "#0362F0",
+                color: "#ffffff",
+                borderRadius: "56px",
+              },
             }}
           >
             Married
           </Button>
           <Button
+            onClick={() => setMaritalStatus("Single")}
             sx={{
               textTransform: "none",
-              padding: "3px 10px",
-              backgroundColor: "#F2F5F6",
-              color: "#002152",
+              padding: "3px 6px",
+              backgroundColor:
+                maritalStatus === "Single" ? "#0362F0" : "#F2F5F6",
+              color: maritalStatus === "Single" ? "#ffffff" : "#002152",
               borderRadius: "56px",
               ml: 1,
+              "&: hover": {
+                padding: "3px 6px",
+                backgroundColor: "#0362F0",
+                color: "#ffffff",
+                borderRadius: "56px",
+              },
             }}
           >
             Single
@@ -119,18 +129,85 @@ function BuyerDataStep() {
         </Grid>
         <Grid container sx={{ mt: 2 }}>
           <Grid item xs={12}>
-            <BaseTextField size={"medium"} placeholder={"Full Name"} />
+            <Controller
+              name="name"
+              control={control}
+              defaultValue={""}
+              render={({ field }) => (
+                <BaseTextField
+                  size={"medium"}
+                  placeholder={"Full Name"}
+                  // sx={{ mb: 2 }}
+                  onChange={(e) => {
+                    field.onChange(e.target.value);
+                  }}
+                  name={"name"}
+                  value={field.value}
+                />
+              )}
+            />
+            <Typography
+              variant="inherit"
+              color="textSecondary"
+              sx={{ color: "#b91c1c" }}
+            >
+              {errors.name?.message}
+            </Typography>
           </Grid>
         </Grid>
         <Grid container spacing={1} sx={{ mt: 1 }}>
           <Grid item xs={12} sm={12} md={6} lg={6} xl={6}>
             <FormControl variant="outlined" sx={{ width: "100%" }}>
-              <BaseOutlinedRgInput placeholder={"RG"} size={"medium"} />
+              <Controller
+                name="rg"
+                control={control}
+                render={({ field }) => (
+                  <BaseOutlinedRgInput
+                    placeholder={"RG"}
+                    size={"medium"}
+                    onChange={(e) => {
+                      field.onChange(e.target.value);
+                    }}
+                    name={"RG_number"}
+                    value={field.value}
+                    // error={errors?.rg_number ? true : false}
+                  />
+                )}
+              />
+              <Typography
+                variant="inherit"
+                color="textSecondary"
+                sx={{ color: "#b91c1c" }}
+              >
+                {errors?.rg?.message}
+              </Typography>
             </FormControl>
           </Grid>
           <Grid item xs={12} sm={12} md={6} lg={6} xl={6}>
             <FormControl variant="outlined" sx={{ width: "100%" }}>
-              <BaseOutlinedCpfInput placeholder={"CPF"} size={"medium"} />
+              <Controller
+                name="cpf"
+                control={control}
+                render={({ field }) => (
+                  <BaseOutlinedCpfInput
+                    placeholder={"CPF"}
+                    size={"medium"}
+                    onChange={(e) => {
+                      field.onChange(e.target.value);
+                    }}
+                    name={"cpf_number"}
+                    value={field.value}
+                    // error={errors.cpf_number ? true : false}
+                  />
+                )}
+              />
+              <Typography
+                variant="inherit"
+                color="textSecondary"
+                sx={{ color: "#b91c1c" }}
+              >
+                {errors.cpf?.message}
+              </Typography>
             </FormControl>
           </Grid>
         </Grid>
@@ -152,40 +229,180 @@ function BuyerDataStep() {
         <Grid container spacing={1}>
           <Grid item xs={12} sm={12} md={4} lg={4} xl={4}>
             <FormControl variant="outlined" sx={{ width: "100%" }}>
-              <BaseOutlinedZipInput placeholder={"Zip Code"} size={"medium"} />
+              <Controller
+                name="zip_code"
+                control={control}
+                render={({ field }) => (
+                  <BaseOutlinedZipInput
+                    placeholder={"Zip Code"}
+                    size={"medium"}
+                    onChange={(e) => {
+                      field.onChange(e.target.value);
+                    }}
+                    name={"zip_code"}
+                    value={field.value}
+                    // error={errors.cpf_number ? true : false}
+                  />
+                )}
+              />
+              <Typography
+                variant="inherit"
+                color="textSecondary"
+                sx={{ color: "#b91c1c" }}
+              >
+                {errors.zip_code?.message}
+              </Typography>
             </FormControl>
           </Grid>
           <Grid item xs={12} sm={12} md={4} lg={4} xl={4}>
-            <BaseTextField size={"medium"} placeholder={"Address"} />
+            <Controller
+              name="address"
+              control={control}
+              defaultValue={""}
+              render={({ field }) => (
+                <BaseTextField
+                  size={"medium"}
+                  placeholder={"Address"}
+                  onChange={(e) => {
+                    field.onChange(e.target.value);
+                  }}
+                  name={"address"}
+                  value={field.value}
+                />
+              )}
+            />
+            <Typography
+              variant="inherit"
+              color="textSecondary"
+              sx={{ color: "#b91c1c" }}
+            >
+              {errors.address?.message}
+            </Typography>
           </Grid>
           <Grid item xs={12} sm={12} md={4} lg={4} xl={4}>
-            <BaseTextField
-              size={"medium"}
-              placeholder={"Number"}
-              type={"number"}
+            <Controller
+              name="number"
+              control={control}
+              defaultValue={""}
+              render={({ field }) => (
+                <BaseTextField
+                  size={"medium"}
+                  placeholder={"Number"}
+                  onChange={(e) => {
+                    field.onChange(e.target.value);
+                  }}
+                  name={"number"}
+                  type={"number"}
+                  value={field.value}
+                />
+              )}
             />
+            <Typography
+              variant="inherit"
+              color="textSecondary"
+              sx={{ color: "#b91c1c" }}
+            >
+              {errors.number?.message}
+            </Typography>
           </Grid>
         </Grid>
         <Grid container spacing={1} sx={{ mt: 1 }}>
           <Grid item xs={12} sm={12} md={6} lg={6} xl={6}>
-            <BaseTextField size={"medium"} placeholder={"Neighborhood"} />
+            <Controller
+              name="neighbourhood"
+              control={control}
+              defaultValue={""}
+              render={({ field }) => (
+                <BaseTextField
+                  size={"medium"}
+                  placeholder={"Neighbourhood"}
+                  onChange={(e) => {
+                    field.onChange(e.target.value);
+                  }}
+                  name={"neighbourhood"}
+                  value={field.value}
+                />
+              )}
+            />
+            <Typography
+              variant="inherit"
+              color="textSecondary"
+              sx={{ color: "#b91c1c" }}
+            >
+              {errors.neighbourhood?.message}
+            </Typography>
           </Grid>
           <Grid item xs={12} sm={12} md={6} lg={6} xl={6}>
-            <BaseTextField size={"medium"} placeholder={"Complement"} />
+            <Controller
+              name="complement"
+              control={control}
+              defaultValue={""}
+              render={({ field }) => (
+                <BaseTextField
+                  size={"medium"}
+                  placeholder={"Complement"}
+                  onChange={(e) => {
+                    field.onChange(e.target.value);
+                  }}
+                  name={"complement"}
+                  value={field.value}
+                />
+              )}
+            />
+            <Typography
+              variant="inherit"
+              color="textSecondary"
+              sx={{ color: "#b91c1c" }}
+            >
+              {errors.complement?.message}
+            </Typography>
           </Grid>
         </Grid>
         <Grid container spacing={1} sx={{ mt: 1 }}>
           <Grid item xs={12} sm={12} md={6} lg={6} xl={6}>
-            <BaseTextField size={"medium"} placeholder={"City"} />
+            <Controller
+              name="city"
+              control={control}
+              defaultValue={""}
+              render={({ field }) => (
+                <BaseTextField
+                  size={"medium"}
+                  placeholder={"City"}
+                  onChange={(e) => {
+                    field.onChange(e.target.value);
+                  }}
+                  name={"city"}
+                  value={field.value}
+                />
+              )}
+            />
+            <Typography
+              variant="inherit"
+              color="textSecondary"
+              sx={{ color: "#b91c1c" }}
+            >
+              {errors.city?.message}
+            </Typography>
           </Grid>
           <Grid item xs={12} sm={12} md={6} lg={6} xl={6}>
-            <Autocomplete
-              fullWidth
-              disablePortal
-              size="medium"
-              id="combo-box-demo"
-              options={top100Films}
-              renderInput={(params) => <TextField {...params} label="State" />}
+            <Controller
+              name="state"
+              control={control}
+              defaultValue={""}
+              render={({ field }) => (
+                <BaseAutocomplete
+                  //   sx={{ margin: "0.6vh 0" }}
+                  options={allStateData || []}
+                  getOptionLabel={(option) => option.name || ""}
+                  isOptionEqualToValue={(option, value) =>
+                    option.id === value.id
+                  }
+                  size={"medium"}
+                  placeholder={"State"}
+                  onChange={(e, v, r, d) => field.onChange(v)}
+                  value={field.value}
+                />
+              )}
             />
           </Grid>
         </Grid>
@@ -195,13 +412,3 @@ function BuyerDataStep() {
 }
 
 export default BuyerDataStep;
-
-const top100Films = [
-  { label: "The Shawshank Redemption", year: 1994 },
-  { label: "The Godfather", year: 1972 },
-  { label: "The Godfather: Part II", year: 1974 },
-  { label: "The Dark Knight", year: 2008 },
-  { label: "12 Angry Men", year: 1957 },
-  { label: "Schindler's List", year: 1993 },
-  { label: "Pulp Fiction", year: 1994 },
-];

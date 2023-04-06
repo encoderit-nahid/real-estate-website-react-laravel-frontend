@@ -19,6 +19,14 @@ const PropertyReducer = (state = InitialState, action) => {
         loading: false,
       };
 
+    case Types.PROPERTY_REMOVE:
+      const afterFiltered = state?.propertyData?.data?.filter((property) => {
+        return property.id !== action.payload;
+      });
+      return {
+        propertyData: { ...state.propertyData, data: afterFiltered },
+      };
+
     case Types.PROPERTY_FAILED:
       return {
         propertyData: {},

@@ -130,7 +130,6 @@ export default function ViewProperties({ projectPropertyData, query }) {
   const router = useRouter();
 
   const [page, setPage] = useState(1);
-  const [selectval, setSelectVal] = useState(null);
   console.log({ query });
 
   const omitEmpties = (obj) => {

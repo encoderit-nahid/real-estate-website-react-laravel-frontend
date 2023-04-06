@@ -153,12 +153,22 @@ export const getPropertyApi = async (queryData) => {
   }
 };
 
-//project_property
-export const getProjectProperty = async (queryData) => {
+// //project_property
+// export const getProjectProperty = async (queryData) => {
+//   try {
+//     const response = await apiInstance.get(`property/index`, {
+//       params: queryData,
+//     });
+//     return [false, response];
+//   } catch (error) {
+//     return [error, null];
+//   }
+// };
+
+//property_status
+export const propertyStatusApi = async (body) => {
   try {
-    const response = await apiInstance.get(`property/index`, {
-      params: queryData,
-    });
+    const response = await apiInstance.post(`property/status`, body);
     return [false, response];
   } catch (error) {
     return [error, null];

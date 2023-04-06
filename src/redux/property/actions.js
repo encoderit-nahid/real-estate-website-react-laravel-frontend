@@ -21,6 +21,13 @@ const propertyFailed = (err) => {
   };
 };
 
+export const propertyRemove = (id) => {
+  return {
+    type: Types.PROPERTY_REMOVE,
+    payload: id,
+  };
+};
+
 //property action
 export const findPropertyData = (queryData) => async (dispatch) => {
   dispatch(propertyRequest());

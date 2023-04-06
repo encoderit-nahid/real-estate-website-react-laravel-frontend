@@ -6,6 +6,7 @@ import ProjectReducer from "./projects/reducer";
 import PhotoTypeReducer from "./photo/reducer";
 import PropertyReducer from "./property/reducer";
 import ProjectPropertyReducer from "./projectProperty/reducer";
+import PropertyStatusReducer from "./propertyStatus/reducer";
 
 const RootReducer = combineReducers({
   state: StateReducer,
@@ -14,7 +15,8 @@ const RootReducer = combineReducers({
   project: ProjectReducer,
   photoType: PhotoTypeReducer,
   property: PropertyReducer,
-  projectProperty: ProjectPropertyReducer,
+  propertyStatus: PropertyStatusReducer,
+
   // Auth: AuthReducer,
   // userDetails: UserReducer,
   // Orders: OrderReducer,

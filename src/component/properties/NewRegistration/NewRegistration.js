@@ -50,7 +50,10 @@ function NewRegistration() {
       <Grid container spacing={4}>
         {newProperty?.data?.map((data, index) => (
           <Grid key={index} item xs={12} sm={12} md={12} lg={6} xl={6} xxl={6}>
-            <NewRegistrationCard propertyData={data} />
+            <NewRegistrationCard
+              propertyData={data}
+              newProperty={newProperty}
+            />
           </Grid>
         ))}
       </Grid>
