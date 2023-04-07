@@ -6,6 +6,7 @@ import Link from "next/link";
 import { _baseURL } from "../../../../consts";
 
 function ReleaseCard({ projectData }) {
+  console.log("releasecard");
   return (
     <Link href="/my_properties/project_view">
       <Box
@@ -17,12 +18,12 @@ function ReleaseCard({ projectData }) {
         }}
       >
         <Box sx={{ width: "100%" }}>
-          <Image
+          {/* <Image
             src={`${_baseURL}/storage/${projectData?.attachments[0]?.file_path}`}
             width={400}
             height={300}
             alt="aston"
-          />
+          /> */}
         </Box>
         <Grid
           container

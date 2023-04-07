@@ -1,23 +1,44 @@
 import Head from "next/head";
 import Image from "next/image";
-import { Button, Container, Grid, Tooltip, Typography } from "@mui/material";
+import {
+  Button,
+  CircularProgress,
+  Container,
+  Grid,
+  Tooltip,
+  Typography,
+} from "@mui/material";
 import { Box } from "@mui/material";
 import ResponsiveDrawer from "../../../src/component/sharedProposal/ResponsiveDrawer/ResponsiveDrawer";
 import logo from "../../../public/Images/logo.png";
 import BasicBreadcrumbs from "../../../src/component/reuseable/baseBreadCrumb/BaseBreadCrumb";
 import BaseStepper from "../../../src/component/reuseable/baseStepper/BaseStepper";
-import { Fragment, useState } from "react";
+import { Fragment, useEffect, useState } from "react";
 import ProposalValueStep from "../../../src/component/properties/ProposalValueStep/ProposalValueStep";
 import BuyerDataStep from "../../../src/component/properties/BuyerDataStep/BuyerDataStep";
 import BaseModal from "../../../src/component/reuseable/baseModal/BaseModal";
 import ProposalSentModal from "../../../src/component/properties/ProposalSentModal/ProposalSentModal";
 import Link from "next/link";
-import { getSession } from "next-auth/react";
+import { getSession, useSession } from "next-auth/react";
 import { useForm, Controller } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as Yup from "yup";
+import { useRouter } from "next/router";
+import { proposalCreateApi } from "../../../src/api";
+import { useDispatch, useSelector } from "react-redux";
+import { findSinglePropertyData } from "../../../src/redux/singleProperty/actions";
+import { useMemo } from "react";
 
 const drawerWidth = 240;
+
+const omitEmpties = (obj) => {
+  return Object.entries(obj).reduce((carry, [key, value]) => {
+    if (![null, undefined, ""].includes(value)) {
+      carry[key] = value;
+    }
+    return carry;
+  }, {});
+};
 
 const validationSchemaCash = Yup.object().shape({
   total_amount: Yup.string().required("BRL amount is required"),
@@ -59,6 +80,25 @@ const BreadCrumbsData = [
 
 const steps = ["Proposal Values", "Buyer Data"];
 export default function IncludeProposal(props) {
+  const dispatch = useDispatch();
+  const { data: session } = useSession();
+  console.log({ session });
+  const { query } = useRouter();
+  console.log({ query });
+
+  useEffect(() => {
+    dispatch(findSinglePropertyData(query?.property_id));
+  }, [dispatch, query]);
+
+  const propertyData = useSelector(
+    (state) => state?.singleProperty?.singlePropertyData
+  );
+  console.log({ propertyData });
+
+  const srcImage = useMemo(() => {
+    return propertyData?.attachments?.filter((data) => data.title === "logo");
+  }, [propertyData]);
+
   const [cash, setCash] = useState(true);
   const [installment, setInstallment] = useState(false);
   const [maritalStatus, setMaritalStatus] = useState("Married");
@@ -132,7 +172,47 @@ export default function IncludeProposal(props) {
   const handleClose = () => setSentModalOpen(false);
 
   const onSubmit = async (data) => {
+    setLoading(true);
     console.log(data);
+    const requireData = omitEmpties({
+      user_id: session?.user?.userId,
+      property_id: query?.property_id,
+      payment_type: (cash && "cash") || (installment && "installment"),
+      proposal_type: "general",
+      total_amount: data?.total_amount,
+      cash_amount: data?.cash_amount,
+      payment_per_installment: data?.payment_per_installment,
+      no_of_installment: data?.no_of_installment,
+      proposal_buyer: {
+        name: data?.name,
+        marital_status: maritalStatus,
+        rg: data?.rg,
+        cpf: data?.cpf,
+        zip_code: data?.zip_code,
+        address: data?.address,
+        number: data?.number,
+        neighbourhood: data?.neighbourhood,
+        city: data?.city,
+        state: data?.state?.name,
+        complement: data?.complement,
+      },
+    });
+
+    console.log({ requireData });
+
+    const [error, response] = await proposalCreateApi(requireData);
+    console.log({ response });
+    setLoading(false);
+    if (!error) {
+      setSentModalOpen(true);
+    } else {
+      const errors = error?.response?.data?.errors ?? {};
+      Object.entries(errors).forEach(([name, messages]) => {
+        setError(name, { type: "manual", message: messages[0] });
+      });
+
+      setLoading(false);
+    }
   };
 
   return (
@@ -202,6 +282,8 @@ export default function IncludeProposal(props) {
                           setInstallment={setInstallment}
                           control={control}
                           errors={errors}
+                          propertyData={propertyData}
+                          srcImage={srcImage}
                         />
                       ) : (
                         <BuyerDataStep
@@ -253,21 +335,10 @@ export default function IncludeProposal(props) {
                               </Button>
                             </Grid>
                             <Grid item xs={6} sm={6} md={6}>
-                              <Button
-                                type="submit"
-                                sx={{
-                                  background: "#7450F0",
-                                  borderRadius: "4px",
-                                  px: 2,
-                                  py: 1,
-                                  color: "#ffffff",
-                                  fontSize: "16px",
-                                  fontWeight: "600",
-                                  lineHeight: "22px",
-                                  textTransform: "none",
-                                  boxShadow:
-                                    "0px 4px 8px rgba(81, 51, 182, 0.32)",
-                                  "&:hover": {
+                              <Box display="flex" justifyContent="flex-end">
+                                <Button
+                                  type="submit"
+                                  sx={{
                                     background: "#7450F0",
                                     borderRadius: "4px",
                                     px: 2,
@@ -277,13 +348,38 @@ export default function IncludeProposal(props) {
                                     fontWeight: "600",
                                     lineHeight: "22px",
                                     textTransform: "none",
+                                    width: {
+                                      xs: "100%",
+                                      sm: "100%",
+                                      md: "100%",
+                                      lg: "50%",
+                                    },
                                     boxShadow:
                                       "0px 4px 8px rgba(81, 51, 182, 0.32)",
-                                  },
-                                }}
-                              >
-                                Submit proposal
-                              </Button>
+                                    "&:hover": {
+                                      background: "#7450F0",
+                                      borderRadius: "4px",
+                                      px: 2,
+                                      py: 1,
+                                      color: "#ffffff",
+                                      fontSize: "16px",
+                                      fontWeight: "600",
+                                      lineHeight: "22px",
+                                      textTransform: "none",
+                                      boxShadow:
+                                        "0px 4px 8px rgba(81, 51, 182, 0.32)",
+                                    },
+                                  }}
+                                >
+                                  {loading && (
+                                    <CircularProgress
+                                      size={22}
+                                      color="inherit"
+                                    />
+                                  )}
+                                  {!loading && "Submit proposal"}
+                                </Button>
+                              </Box>
                             </Grid>
                           </Grid>
                         )}
@@ -314,21 +410,10 @@ export default function IncludeProposal(props) {
                               </Link>
                             </Grid>
                             <Grid item xs={6} sm={6} md={6}>
-                              <Button
-                                onClick={handleNext}
-                                sx={{
-                                  background: "#7450F0",
-                                  borderRadius: "4px",
-                                  px: 2,
-                                  py: 1,
-                                  color: "#ffffff",
-                                  fontSize: "16px",
-                                  fontWeight: "600",
-                                  lineHeight: "22px",
-                                  textTransform: "none",
-                                  boxShadow:
-                                    "0px 4px 8px rgba(81, 51, 182, 0.32)",
-                                  "&:hover": {
+                              <Box display="flex" justifyContent="flex-end">
+                                <Button
+                                  onClick={handleNext}
+                                  sx={{
                                     background: "#7450F0",
                                     borderRadius: "4px",
                                     px: 2,
@@ -340,11 +425,24 @@ export default function IncludeProposal(props) {
                                     textTransform: "none",
                                     boxShadow:
                                       "0px 4px 8px rgba(81, 51, 182, 0.32)",
-                                  },
-                                }}
-                              >
-                                Next
-                              </Button>
+                                    "&:hover": {
+                                      background: "#7450F0",
+                                      borderRadius: "4px",
+                                      px: 2,
+                                      py: 1,
+                                      color: "#ffffff",
+                                      fontSize: "16px",
+                                      fontWeight: "600",
+                                      lineHeight: "22px",
+                                      textTransform: "none",
+                                      boxShadow:
+                                        "0px 4px 8px rgba(81, 51, 182, 0.32)",
+                                    },
+                                  }}
+                                >
+                                  Next
+                                </Button>
+                              </Box>
                             </Grid>
                           </Grid>
                         )}

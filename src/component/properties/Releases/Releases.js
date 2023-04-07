@@ -8,6 +8,7 @@ import { findProjectsData } from "../../../redux/projects/actions";
 import { useRouter } from "next/router";
 
 function Releases({ queryData }) {
+  console.log("releases");
   console.log({ queryData });
   const dispatch = useDispatch();
   const router = useRouter();

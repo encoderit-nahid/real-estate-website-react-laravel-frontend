@@ -137,7 +137,7 @@ export const photoTypeApi = async () => {
   }
 };
 
-//property_type
+//property
 export const getPropertyApi = async (queryData) => {
   try {
     const response = await apiInstance.get(`property/index`, {
@@ -169,6 +169,26 @@ export const getPropertyApi = async (queryData) => {
 export const propertyStatusApi = async (body) => {
   try {
     const response = await apiInstance.post(`property/status`, body);
+    return [false, response];
+  } catch (error) {
+    return [error, null];
+  }
+};
+
+//include_proposal_create
+export const proposalCreateApi = async (body) => {
+  try {
+    const response = await apiInstance.post(`proposal/store`, body);
+    return [false, response];
+  } catch (error) {
+    return [error, null];
+  }
+};
+
+//getSingleProperty
+export const getSinglePropertyApi = async (id) => {
+  try {
+    const response = await apiInstance.get(`property/show/${id}`);
     return [false, response];
   } catch (error) {
     return [error, null];

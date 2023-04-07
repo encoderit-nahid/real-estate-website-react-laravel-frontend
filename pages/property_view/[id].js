@@ -320,13 +320,15 @@ export default function PropertyView({
             <Grid item xs={12} sm={12} md={12} lg={9} xl={9}>
               <Features singlePropertyData={singlePropertyData} />
 
-              {Object.keys(singlePropertyData?.feature).map((key, index) => (
-                <AboutProperty
-                  key={index}
-                  name={key}
-                  array={singlePropertyData?.feature[key]}
-                />
-              ))}
+              {Object.keys(singlePropertyData?.propertyFeature).map(
+                (key, index) => (
+                  <AboutProperty
+                    key={index}
+                    name={key}
+                    array={singlePropertyData?.propertyFeature[key]}
+                  />
+                )
+              )}
             </Grid>
             <Grid item xs={12} sm={12} md={12} lg={3} xl={3}>
               <Negotiate
@@ -356,7 +358,7 @@ export default function PropertyView({
               pb: 4,
             }}
           >
-            {singlePropertyData?.properties?.map((stateInfo, index) => (
+            {singlePropertyData?.similarProperties?.map((stateInfo, index) => (
               <Link
                 key={stateInfo.id}
                 href={`/property_view/${stateInfo.id}`}

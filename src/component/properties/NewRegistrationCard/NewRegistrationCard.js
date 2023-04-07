@@ -17,6 +17,7 @@ import { ChangePropertyStatus } from "../../../redux/propertyStatus/actions";
 import { findPropertyData } from "../../../redux/property/actions";
 
 function NewRegistrationCard({ propertyData, newProperty }) {
+  console.log("newCard");
   const [progress, setProgress] = React.useState(87);
   const dispatch = useDispatch();
 

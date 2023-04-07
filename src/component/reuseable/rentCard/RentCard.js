@@ -6,7 +6,17 @@ import Link from "next/link";
 import { _baseURL } from "../../../../consts";
 import dayjs from "dayjs";
 
+const omitEmpties = (obj) => {
+  return Object.entries(obj).reduce((carry, [key, value]) => {
+    if (![null, undefined, ""].includes(value)) {
+      carry[key] = value;
+    }
+    return carry;
+  }, {});
+};
+
 function RentCard({ propertyData }) {
+  console.log("thirdCard");
   const [progress, setProgress] = React.useState(87);
   return (
     <Box
@@ -189,7 +199,14 @@ function RentCard({ propertyData }) {
               )}`}
             </Typography>
             <Box sx={{ mt: 1, mb: { xs: 0, sm: 0, md: 0, lg: 2, xl: 2 } }}>
-              <Link href="/my_properties/include_proposal">
+              <Link
+                href={{
+                  pathname: "/my_properties/include_proposal",
+                  query: omitEmpties({
+                    property_id: propertyData?.id,
+                  }),
+                }}
+              >
                 {/* <a
                   style={{
                     textDecoration: "none",

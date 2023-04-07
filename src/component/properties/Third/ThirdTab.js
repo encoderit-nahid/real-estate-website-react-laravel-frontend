@@ -7,6 +7,7 @@ import { useEffect } from "react";
 import { findPropertyData } from "../../../redux/property/actions";
 
 function ThirdTab() {
+  console.log("third");
   const dispatch = useDispatch();
   const router = useRouter();
   const { query } = router;

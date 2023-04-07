@@ -56,6 +56,7 @@ export default function MyProperties(props) {
   const { query } = router;
   console.log({ query });
 
+  
   const [value, setValue] = useState(+query?.value || 0);
 
   const handleChange = (event, newValue) => {

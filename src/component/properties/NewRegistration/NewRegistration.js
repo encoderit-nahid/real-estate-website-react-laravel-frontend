@@ -7,6 +7,7 @@ import { findPropertyData } from "../../../redux/property/actions";
 import { useEffect } from "react";
 
 function NewRegistration() {
+  console.log("new");
   const dispatch = useDispatch();
   const router = useRouter();
   const { query } = router;

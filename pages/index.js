@@ -2,6 +2,7 @@ import Navbar from "../src/component/shared/Navbar/Navbar";
 import Footer from "../src/component/shared/Footer/Footer";
 import shapeIcon from "../public/Images/eclipseShape.png";
 import Head from "next/head";
+import dynamic from "next/dynamic";
 import {
   Box,
   Grid,

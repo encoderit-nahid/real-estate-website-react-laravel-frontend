@@ -9,11 +9,12 @@
 module.exports = {
   // reactStrictMode: true,
   swcMinify: true,
+  staticPageGenerationTimeout: 1000,
   images: {
     remotePatterns: [
       {
         protocol: "http",
-        hostname: "**",
+        hostname: "192.168.50.70",
       },
     ],
   },

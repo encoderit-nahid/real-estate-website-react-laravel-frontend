@@ -20,10 +20,12 @@ function ProposalValueStep({
   setInstallment,
   control,
   errors,
+  propertyData,
+  srcImage,
 }) {
   return (
     <Box sx={{ mt: 4 }}>
-      <PropertyCard />
+      <PropertyCard srcImage={srcImage} />
       <Box sx={{ mt: 2, mb: 1 }}>
         <Button sx={{ display: "flex" }}>
           <Image src={proposeImage} alt="proposeImage" />
