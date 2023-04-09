@@ -194,3 +194,13 @@ export const getSinglePropertyApi = async (id) => {
     return [error, null];
   }
 };
+
+//create_new_feature
+export const featureCreateApi = async (body) => {
+  try {
+    const response = await apiInstance.post(`feature/store`, body);
+    return [false, response];
+  } catch (error) {
+    return [error, null];
+  }
+};

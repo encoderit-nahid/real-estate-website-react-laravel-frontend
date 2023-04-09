@@ -1,16 +1,20 @@
 import {
   Box,
   Button,
+  CircularProgress,
   FormControl,
   Grid,
   TextField,
   Typography,
 } from "@mui/material";
 import Image from "next/image";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import buildingImage from "../../../../public/Images/buildingRed.png";
 import AddOutlinedIcon from "@mui/icons-material/AddOutlined";
 import BaseOutlinedZipInput from "../../reuseable/baseOutlinedZipInput/BaseOutlinedZipInput";
+import { useDispatch, useSelector } from "react-redux";
+import { featureDataCreate, findFeatureData } from "../../../redux/features/actions";
+import BaseTextField from "../../reuseable/baseTextField/BaseTextField";
 
 const PropertyFeature = [
   "close to the metro",
@@ -38,15 +42,32 @@ const PropertyFeature = [
   "furnish",
 ];
 function Features() {
-  const [value, setValue] = useState("");
-  console.log(value.length);
-  const [valid, setValid] = useState(false);
-  console.log({ valid });
-  const handleValidation = (e) => {
-    setValid(/^[0-9]{5}-[0-9]{3}$/.test(e.target.value));
-    console.log(e.target.value);
-    setValue(e.target.value);
-  };
+
+  const [featuretypes, setFeatureTypes] = useState([]);
+  const [item,setItem] = useState('')
+  const dispatch = useDispatch()
+  useEffect(() => {
+    dispatch(findFeatureData())
+  },[dispatch])
+  
+  const featureData = useSelector((state) => state.feature.featureData);
+  console.log({ featureData });
+  const {feature} = featureData
+  console.log({feature})
+
+  const loading = useSelector((state) => state.feature.loading);
+
+  const handleAddFeature = () => {
+    if(item.length > 0){
+      console.log(item)
+      dispatch(featureDataCreate({name:item,type:"feature"}))
+      dispatch(findFeatureData())
+    }
+  }
+
+  const FeatureAddLoading = useSelector((state) => state?.feature)
+  console.log({FeatureAddLoading})
+
   return (
     <Box sx={{ mt: 4 }}>
       <Grid
@@ -82,16 +103,40 @@ function Features() {
           Select property features:
         </Typography>
       </Box>
-      <Grid container spacing={1} sx={{ mt: 2 }}>
-        {PropertyFeature.map((data, index) => (
+      {loading ?
+       (
+        <Grid
+        container
+        sx={{ height: "60vh" }}
+        direction="row"
+        justifyContent="center"
+        alignItems="center"
+      >
+        <CircularProgress sx={{ color: "#22d3ee" }} />
+      </Grid>
+       )
+      :
+      (
+        <Grid container spacing={1} sx={{ mt: 2 }}>
+        {feature?.map((data, index) => (
           <Grid item xs={4} sm={4} md={4} lg={3} xl={3} key={index}>
             <Button
+                 onClick={() => {
+                  if (!featuretypes?.includes(data.id)) {
+                    setFeatureTypes((current) => [...current, data.id]);
+                  } else {
+                    const newArray = featuretypes?.filter(
+                      (value) => value !== data.id
+                    );
+                    setFeatureTypes(newArray);
+                  }
+                }}    
               sx={{
-                background: `${index === 0 ? "#7450F0" : "transparent"}`,
+                background: `${featuretypes?.includes(data.id) ? "#7450F0" : "transparent"}`,
                 borderRadius: "56px",
                 width: "100%",
-                color: `${index === 0 ? "#ffffff" : "#32414C"}`,
-                border: `${index === 0 ? "" : "1px solid #9FAAB1"}`,
+                color: `${featuretypes?.includes(data.id) ? "#ffffff" : "#32414C"}`,
+                border: `${featuretypes?.includes(data.id) ? "" : "1px solid #9FAAB1"}`,
                 fontSize: {
                   xs: "12px",
                   sm: "13px",
@@ -125,11 +170,12 @@ function Features() {
                 },
               }}
             >
-              {data}
+              {data?.name?.slice(0,25)}
             </Button>
           </Grid>
         ))}
       </Grid>
+      )}
       <Grid
         container
         direction="row"
@@ -137,10 +183,9 @@ function Features() {
         alignItems="flex-start"
         sx={{ mt: 3 }}
       >
-        <FormControl variant="outlined" sx={{ width: "50%" }}>
-          <BaseOutlinedZipInput placeholder={"Zip Code"} size={"medium"} />
-        </FormControl>
+        <BaseTextField sx={{width:"50%"}} placeholder={"Add feature"} onChange={(e)=> setItem(e.target.value)}/>
         <Button
+        onClick={handleAddFeature}
           sx={{
             backgroundColor: "#0362F0",
             py: 2,

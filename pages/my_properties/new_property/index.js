@@ -6,7 +6,7 @@ import ResponsiveDrawer from "../../../src/component/sharedProposal/ResponsiveDr
 import logo from "../../../public/Images/logo.png";
 import BasicBreadcrumbs from "../../../src/component/reuseable/baseBreadCrumb/BaseBreadCrumb";
 import BaseStepper from "../../../src/component/reuseable/baseStepper/BaseStepper";
-import { Fragment, useState } from "react";
+import { Fragment, useEffect, useState } from "react";
 import ProposalValueStep from "../../../src/component/properties/ProposalValueStep/ProposalValueStep";
 import BuyerDataStep from "../../../src/component/properties/BuyerDataStep/BuyerDataStep";
 import BaseModal from "../../../src/component/reuseable/baseModal/BaseModal";
@@ -19,6 +19,12 @@ import Owner from "../../../src/component/new property/Owner/Owner";
 import PropertySubmittedModal from "../../../src/component/new property/PropertySubmittedModal/PropertySubmittedModal";
 import Link from "next/link";
 import { getSession } from "next-auth/react";
+import { useForm, Controller, useFieldArray } from "react-hook-form";
+import { yupResolver } from "@hookform/resolvers/yup";
+import * as Yup from "yup";
+import { useDispatch, useSelector } from "react-redux";
+import { findProjectsData } from "../../../src/redux/projects/actions";
+import { findPropertyTypeData } from "../../../src/redux/propertyType/actions";
 
 const drawerWidth = 240;
 
@@ -34,9 +40,79 @@ const steps = [
   "Photos and videos",
   "Owner",
 ];
+
+const validationSchema = Yup.object().shape({
+  zip_code: Yup.string().required("Zip code is required"),
+  address: Yup.string().required("Address is required"),
+  number: Yup.string().required("Number is required"),
+  neighbourhood: Yup.string().required("Neighbourhood is required"),
+  complement: Yup.string().required("Complement is required"),
+  city: Yup.string().required("City is required"),
+  state: Yup.object().required("State is required"),
+  project_id: Yup.object().required("Enterprise Name is required"),
+  brl_rent: Yup.number().required("BRL rent is required"),
+  condominium:Yup.number().required("Condominium is required"),
+  brl_iptu:Yup.number().required("IPTU is required"),
+  land_area:Yup.number().required("Land area is required"),
+  property_area:Yup.number().required("Property area is required"),
+  no_of_rooms:Yup.number().required("No of rooms is required"),
+  no_of_suites:Yup.number().required("NO of suites is required"),
+  no_of_bathrooms:Yup.number().required("NO of bathrooms is required"),
+  no_of_parking_spaces:Yup.number().required("NO of parking spaces is required"),
+  documnentation: Yup.object().required("Documentation is required"),
+  registry:Yup.string().required("Registry office is required"),
+  registartion_number: Yup.number().required("Registration number office is required"),
+  owner_full_name: Yup.string().required("Owner Full Name is required"),
+  owner_rg: Yup.string().required("Owner Rg is required"),
+  owner_cpf: Yup.string().required("Owner cpf is required"),
+  owner_spouse_full_name: Yup.string().required("Owner spouse full name is required"),
+  owner_spouse_rg: Yup.string().required("Owner spouse RG is required"),
+  owner_spouse_cpf: Yup.string().required("Owner spouse CPF is required"),
+  owner_zip_code: Yup.string().required("Zip code is required"),
+  owner_address: Yup.string().required("Address is required"),
+  owner_number: Yup.string().required("Number is required"),
+  owner_neighbourhood: Yup.string().required("Neighbourhood is required"),
+  owner_complement: Yup.string().required("Complement is required"),
+  owner_city: Yup.string().required("City is required"),
+  owner_state: Yup.object().required("State is required"),
+  owner_documnentation: Yup.object().required("Documentation is required"),
+  owner_registry:Yup.string().required("Registry office is required"),
+  owner_registartion_number: Yup.string().required("Registration number office is required"),
+});
+
 export default function NewProperty(props) {
+ 
+  const {
+    register,
+    watch,
+    control,
+    setError,
+    setValue,
+    handleSubmit,
+    formState: { errors },
+  } = useForm({
+    resolver: yupResolver(
+     validationSchema
+    ),
+    defaultValues: {
+      videos: [
+        {
+         url:""
+        },
+      ],
+    },
+  });
+
+  const { fields, append, remove } = useFieldArray({
+    control,
+    name: "videos",
+  });
   const [activeStep, setActiveStep] = useState(0);
   const [skipped, setSkipped] = useState(new Set());
+  const [files, setFiles] = useState([]);
+  const [imageError, setImageError] = useState(false);
+  const [imageErrorMessage, setImageErrorMessage] = useState("");
+ 
 
   const isStepOptional = (step) => {
     return step === 1;
@@ -79,6 +155,10 @@ export default function NewProperty(props) {
   const handleReset = () => {
     setActiveStep(0);
   };
+
+  const onSubmit = async (data) => {
+    console.log(data)
+  }
 
   const [sentModalOpen, setSentModalOpen] = useState(false);
   const handleOpen = () => setSentModalOpen(true);
@@ -141,24 +221,39 @@ export default function NewProperty(props) {
                 ) : (
                   <Fragment>
                     {activeStep === 0 ? (
-                      <Address handleNext={handleNext} />
+                      <Address handleNext={handleNext}  control={control}
+                      errors={errors}  />
                     ) : activeStep === 1 ? (
                       <ValuesAndDescription
                         handleNext={handleNext}
                         handleBack={handleBack}
+                        control={control}
+                        errors={errors}
                       />
                     ) : activeStep === 2 ? (
                       <Features
                         handleNext={handleNext}
                         handleBack={handleBack}
+                        control={control}
+                        errors={errors}
                       />
                     ) : activeStep === 3 ? (
                       <PhotosAndVideos
                         handleNext={handleNext}
                         handleBack={handleBack}
+                        control={control}
+                        errors={errors}
+                        files={files}
+                        setFiles={setFiles}
+                        imageError={imageError}
+                        imageErrorMessage={imageErrorMessage}
+                        fields={fields}
+                        append={append}
+                        remove={remove}
                       />
                     ) : (
-                      <Owner handleNext={handleNext} handleBack={handleBack} />
+                      <Owner handleNext={handleNext} handleBack={handleBack}  control={control}
+                      errors={errors} />
                     )}
                     <Grid
                       container

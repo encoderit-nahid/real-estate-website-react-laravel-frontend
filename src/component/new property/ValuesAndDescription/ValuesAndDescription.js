@@ -4,8 +4,10 @@ import React from "react";
 import valueImage from "../../../../public/Images/proposal_modal.png";
 import ventureImage from "../../../../public/Images/certidoes.png";
 import BaseTextField from "../../reuseable/baseTextField/BaseTextField";
+import { Controller } from "react-hook-form";
+import BaseAutocomplete from "../../reuseable/baseAutocomplete/BaseAutocomplete";
 
-function ValuesAndDescription() {
+function ValuesAndDescription({control,errors}) {
   return (
     <Box sx={{ mt: 4 }}>
       <Grid
@@ -30,27 +32,86 @@ function ValuesAndDescription() {
       </Grid>
       <Grid container spacing={1} sx={{ mt: 2 }}>
         <Grid item xs={6}>
-          <BaseTextField
-            size={"medium"}
-            placeholder={"BRL Rent"}
-            type={"number"}
-          />
+      
+            <Controller
+              name="brl_rent"
+              control={control}
+              defaultValue={""}
+              render={({ field }) => (
+                <BaseTextField
+                size={"medium"}
+                placeholder={"BRL Rent"}
+                type={"number"}
+                  onChange={(e) => {
+                    field.onChange(e.target.value);
+                  }}
+                  name={"brl_rent"}
+                  value={field.value}
+                />
+              )}
+            />
+            <Typography
+              variant="inherit"
+              color="textSecondary"
+              sx={{ color: "#b91c1c" }}
+            >
+              {errors.brl_rent?.message}
+            </Typography>
         </Grid>
         <Grid item xs={6}>
-          <BaseTextField
-            size={"medium"}
-            placeholder={"R$ condominium"}
-            type={"number"}
-          />
+  
+            <Controller
+              name="condominium"
+              control={control}
+              defaultValue={""}
+              render={({ field }) => (
+                <BaseTextField
+                size={"medium"}
+                placeholder={"R$ condominium"}
+                type={"number"}
+                  onChange={(e) => {
+                    field.onChange(e.target.value);
+                  }}
+                  name={"condominium"}
+                  value={field.value}
+                />
+              )}
+            />
+            <Typography
+              variant="inherit"
+              color="textSecondary"
+              sx={{ color: "#b91c1c" }}
+            >
+              {errors.condominium?.message}
+            </Typography>
         </Grid>
       </Grid>
       <Grid container spacing={1} sx={{ mt: 2 }}>
         <Grid item xs={6}>
-          <BaseTextField
-            size={"medium"}
-            placeholder={"IPTU BRL"}
-            type={"number"}
-          />
+        <Controller
+              name="brl_iptu"
+              control={control}
+              defaultValue={""}
+              render={({ field }) => (
+                <BaseTextField
+                size={"medium"}
+                placeholder={"BRL IPTU"}
+                type={"number"}
+                  onChange={(e) => {
+                    field.onChange(e.target.value);
+                  }}
+                  name={"brl_iptu"}
+                  value={field.value}
+                />
+              )}
+            />
+            <Typography
+              variant="inherit"
+              color="textSecondary"
+              sx={{ color: "#b91c1c" }}
+            >
+              {errors.brl_iptu?.message}
+            </Typography>
         </Grid>
       </Grid>
       <Grid
@@ -77,72 +138,246 @@ function ValuesAndDescription() {
 
       <Grid container spacing={1} sx={{ mt: 2 }}>
         <Grid item xs={12} sm={12} md={12} lg={5}>
-          <BaseTextField
-            size={"medium"}
-            placeholder={"m² Land area"}
-            type={"number"}
-          />
+          
+           <Controller
+              name="land_area"
+              control={control}
+              defaultValue={""}
+              render={({ field }) => (
+                <BaseTextField
+                size={"medium"}
+                placeholder={"m² Land area"}
+                type={"number"}
+                  onChange={(e) => {
+                    field.onChange(e.target.value);
+                  }}
+                  name={"land_area"}
+                  value={field.value}
+                />
+              )}
+            />
+            <Typography
+              variant="inherit"
+              color="textSecondary"
+              sx={{ color: "#b91c1c" }}
+            >
+              {errors.land_area?.message}
+            </Typography>
         </Grid>
         <Grid item xs={12} sm={12} md={12} lg={5}>
-          <BaseTextField
-            size={"medium"}
-            placeholder={"m²Size of the property"}
-            type={"number"}
-          />
+    
+             <Controller
+              name="property_area"
+              control={control}
+              defaultValue={""}
+              render={({ field }) => (
+                <BaseTextField
+                size={"medium"}
+                placeholder={"m²Size of the property"}
+                type={"number"}
+                  onChange={(e) => {
+                    field.onChange(e.target.value);
+                  }}
+                  name={"property_area"}
+                  value={field.value}
+                />
+              )}
+            />
+            <Typography
+              variant="inherit"
+              color="textSecondary"
+              sx={{ color: "#b91c1c" }}
+            >
+              {errors.property_area?.message}
+            </Typography>
+          
         </Grid>
         <Grid item xs={12} sm={12} md={12} lg={2}>
-          <BaseTextField
-            size={"medium"}
-            placeholder={"number of rooms"}
-            type={"number"}
-          />
+      
+
+<Controller
+              name="no_of_rooms"
+              control={control}
+              defaultValue={""}
+              render={({ field }) => (
+                <BaseTextField
+                size={"medium"}
+                placeholder={"number of rooms"}
+                type={"number"}
+                  onChange={(e) => {
+                    field.onChange(e.target.value);
+                  }}
+                  name={"no_of_rooms"}
+                  value={field.value}
+                />
+              )}
+            />
+            <Typography
+              variant="inherit"
+              color="textSecondary"
+              sx={{ color: "#b91c1c" }}
+            >
+              {errors.no_of_rooms?.message}
+            </Typography>
         </Grid>
       </Grid>
       <Grid container spacing={1} sx={{ mt: 2 }}>
         <Grid item xs={12} sm={12} md={12} lg={5}>
-          <BaseTextField
-            size={"medium"}
+     
+          <Controller
+              name="no_of_suites"
+              control={control}
+              defaultValue={""}
+              render={({ field }) => (
+                <BaseTextField
+                size={"medium"}
             placeholder={"number of suites"}
             type={"number"}
-          />
+                  onChange={(e) => {
+                    field.onChange(e.target.value);
+                  }}
+                  name={"no_of_suites"}
+                  value={field.value}
+                />
+              )}
+            />
+            <Typography
+              variant="inherit"
+              color="textSecondary"
+              sx={{ color: "#b91c1c" }}
+            >
+              {errors.no_of_suites?.message}
+            </Typography>
         </Grid>
         <Grid item xs={12} sm={12} md={12} lg={2}>
-          <BaseTextField
-            size={"medium"}
+        
+           <Controller
+              name="no_of_bathrooms"
+              control={control}
+              defaultValue={""}
+              render={({ field }) => (
+                <BaseTextField
+                size={"medium"}
             placeholder={"number of bathrooms"}
             type={"number"}
-          />
+                  onChange={(e) => {
+                    field.onChange(e.target.value);
+                  }}
+                  name={"no_of_bathrooms"}
+                  value={field.value}
+                />
+              )}
+            />
+            <Typography
+              variant="inherit"
+              color="textSecondary"
+              sx={{ color: "#b91c1c" }}
+            >
+              {errors.no_of_bathrooms?.message}
+            </Typography>
         </Grid>
         <Grid item xs={12} sm={12} md={12} lg={5}>
-          <BaseTextField
-            size={"medium"}
-            placeholder={"Number of parking spaces"}
-            type={"number"}
-          />
+     
+             <Controller
+              name="no_of_parking_spaces"
+              control={control}
+              defaultValue={""}
+              render={({ field }) => (
+                <BaseTextField
+                size={"medium"}
+                placeholder={"Number of parking spaces"}
+                type={"number"}
+                  onChange={(e) => {
+                    field.onChange(e.target.value);
+                  }}
+                  name={"no_of_parking_spaces"}
+                  value={field.value}
+                />
+              )}
+            />
+            <Typography
+              variant="inherit"
+              color="textSecondary"
+              sx={{ color: "#b91c1c" }}
+            >
+              {errors.no_of_parking_spaces?.message}
+            </Typography>
         </Grid>
       </Grid>
       <Grid container spacing={1} sx={{ mt: 2 }}>
         <Grid item xs={12} sm={12} md={12} lg={5}>
-          <Autocomplete
-            sx={{ width: "100%" }}
-            disablePortal
-            size="medium"
-            id="combo-box-demo"
-            options={top100Films}
-            renderInput={(params) => (
-              <TextField {...params} label="Documentation" />
-            )}
-          />
+         
+                  <Controller
+              name="documentation"
+              control={control}
+              defaultValue={""}
+              render={({ field }) => (
+                <BaseAutocomplete
+                  //   sx={{ margin: "0.6vh 0" }}
+                  options={top100Films}
+                  getOptionLabel={(option) => option.label || ""}
+                  isOptionEqualToValue={(option, value) =>
+                    option.year === value.year
+                  }
+                  size={"medium"}
+                  placeholder={"Documentation"}
+                  onChange={(e, v, r, d) => field.onChange(v)}
+                  value={field.value}
+                />
+              )}
+            />
         </Grid>
         <Grid item xs={12} sm={12} md={12} lg={2}>
-          <BaseTextField size={"medium"} placeholder={"Registry office"} />
+          
+          <Controller
+              name="registry"
+              control={control}
+              defaultValue={""}
+              render={({ field }) => (
+                <BaseTextField
+                size={"medium"} placeholder={"Registry office"} 
+                  onChange={(e) => {
+                    field.onChange(e.target.value);
+                  }}
+                  name={"registry"}
+                  value={field.value}
+                />
+              )}
+            />
+            <Typography
+              variant="inherit"
+              color="textSecondary"
+              sx={{ color: "#b91c1c" }}
+            >
+              {errors.registry?.message}
+            </Typography>
         </Grid>
         <Grid item xs={12} sm={12} md={12} lg={5}>
-          <BaseTextField
-            size={"medium"}
-            placeholder={"Registration number"}
-            type={"number"}
-          />
+     
+              <Controller
+              name="registartion_number"
+              control={control}
+              defaultValue={""}
+              render={({ field }) => (
+                <BaseTextField
+                size={"medium"}
+                placeholder={"Registration number"}
+                type={"number"}
+                  onChange={(e) => {
+                    field.onChange(e.target.value);
+                  }}
+                  name={"registartion_number"}
+                  value={field.value}
+                />
+              )}
+            />
+            <Typography
+              variant="inherit"
+              color="textSecondary"
+              sx={{ color: "#b91c1c" }}
+            >
+              {errors.registartion_number?.message}
+            </Typography>
         </Grid>
       </Grid>
     </Box>

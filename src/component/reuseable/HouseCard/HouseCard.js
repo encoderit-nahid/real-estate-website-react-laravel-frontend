@@ -23,7 +23,7 @@ function HouseCard({ shadow, marginTop, propertyInfo }) {
       <Box sx={{ width: "100%" }}>
         {/* <Image src={houseImage} layout="responsive" alt="house" /> */}
         <Image
-          src={`${_baseURL}/storage/${propertyInfo?.attachments[0]?.file_path}`}
+          src={ propertyInfo?.attachments[0]?.file_path != null ? `${_baseURL}/storage/${propertyInfo?.attachments[0]?.file_path}` : houseImage}
           width={500}
           height={400}
           alt="house"

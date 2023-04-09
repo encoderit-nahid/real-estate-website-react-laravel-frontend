@@ -41,6 +41,10 @@ function NewRegistrationCard({ propertyData, newProperty }) {
 
   console.log({ approveLoading, rejectLoading });
 
+  const myLoader=({src})=>{
+    return `${_baseURL}/storage/${propertyData?.attachments[0]?.file_path}`;
+  }
+
   return (
     <Box
       sx={{
@@ -78,6 +82,7 @@ function NewRegistrationCard({ propertyData, newProperty }) {
             >
               <Image
                 alt="rent"
+                loader={myLoader}
                 src={`${_baseURL}/storage/${propertyData?.attachments[0]?.file_path}`}
                 layout="fill"
                 objectFit="cover"

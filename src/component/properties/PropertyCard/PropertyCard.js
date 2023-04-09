@@ -24,10 +24,11 @@ function PropertyCard({ srcImage }) {
             }}
           >
             <Image
-              height={150}
-              width={250}
-              src={`${_baseURL}/storage/${srcImage?.[0]?.file_path}`}
+              // height={150}
+              // width={250}
+              src={srcImage?.[0]?.file_path != null ?  `${_baseURL}/storage/${srcImage?.[0]?.file_path}` : propertyImage}
               alt="property"
+              layout="responsive"
             />
           </Box>
           <Box

@@ -7,6 +7,9 @@ import { _baseURL } from "../../../../consts";
 
 function ReleaseCard({ projectData }) {
   console.log("releasecard");
+  const myLoader=({src})=>{
+    return `${_baseURL}/storage/${projectData?.attachments[0]?.file_path}`;
+  }
   return (
     <Link href="/my_properties/project_view">
       <Box
@@ -18,12 +21,13 @@ function ReleaseCard({ projectData }) {
         }}
       >
         <Box sx={{ width: "100%" }}>
-          {/* <Image
+          <Image
+          loader={myLoader}
             src={`${_baseURL}/storage/${projectData?.attachments[0]?.file_path}`}
             width={400}
             height={300}
             alt="aston"
-          /> */}
+          />
         </Box>
         <Grid
           container

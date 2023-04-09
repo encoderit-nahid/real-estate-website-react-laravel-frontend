@@ -18,6 +18,10 @@ const omitEmpties = (obj) => {
 function RentCard({ propertyData }) {
   console.log("thirdCard");
   const [progress, setProgress] = React.useState(87);
+
+  const myLoader=({src})=>{
+    return `${_baseURL}/storage/${propertyData?.attachments[0]?.file_path}`;
+  }
   return (
     <Box
       sx={{
@@ -50,6 +54,7 @@ function RentCard({ propertyData }) {
           >
             <Image
               alt="rent"
+              loader={myLoader}
               src={`${_baseURL}/storage/${propertyData?.attachments[0]?.file_path}`}
               layout="fill"
               objectFit="cover"
