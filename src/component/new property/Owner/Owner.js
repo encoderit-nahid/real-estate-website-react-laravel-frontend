@@ -8,54 +8,26 @@ import {
   Typography,
 } from "@mui/material";
 import Image from "next/image";
-import React from "react";
+import React, { useEffect } from "react";
 import buyerProfile from "../../../../public/Images/buyer_profile.png";
 import { useState } from "react";
 import BaseOutlinedZipInput from "../../reuseable/baseOutlinedZipInput/BaseOutlinedZipInput";
 import BaseOutlinedCpfInput from "../../reuseable/baseOutlinedCpfInput/BaseOutlinedCpfInput";
 import BaseOutlinedRgInput from "../../reuseable/baseOutlinedRgInput/BaseOutlinedRgInput";
 import BaseTextField from "../../reuseable/baseTextField/BaseTextField";
+import { Controller } from "react-hook-form";
+import BaseAutocomplete from "../../reuseable/baseAutocomplete/BaseAutocomplete";
+import { useDispatch, useSelector } from "react-redux";
+import { findStateData } from "../../../redux/state/actions";
 
-function Owner() {
-  const [value, setValue] = useState("");
-  console.log(value.length);
+function Owner({ control, errors, maritalStatus, setMaritalStatus }) {
+  const dispatch = useDispatch();
+  useEffect(() => {
+    dispatch(findStateData());
+  }, [dispatch]);
+  const allStateData = useSelector((state) => state.state.stateData);
+  console.log({ allStateData });
 
-  //zip_code
-  const [valid, setValid] = useState(false);
-  console.log({ valid });
-  const handleValidation = (e) => {
-    setValid(/^[0-9]{5}-[0-9]{3}$/.test(e.target.value));
-    console.log(e.target.value);
-    setValue(e.target.value);
-  };
-
-  //cpf
-  const [cpfValue, setCPFValue] = useState("");
-  const [cpfValid, setCPFValid] = useState(false);
-  const handleCPFValidation = (e) => {
-    setCPFValid(
-      /[0-9]{3}\.?[0-9]{3}\.?[0-9]{3}\-?[0-9]{2}/.test(e.target.value)
-    );
-    setCPFValue(e.target.value);
-  };
-
-  //cpf_spouse
-  const [cpfSpouseValue, setCPFSpouseValue] = useState("");
-  const [cpfSpouseValid, setCPFSpouseValid] = useState(false);
-  const handleCPFSpouseValidation = (e) => {
-    setCPFSpouseValid(
-      /[0-9]{3}\.?[0-9]{3}\.?[0-9]{3}\-?[0-9]{2}/.test(e.target.value)
-    );
-    setCPFSpouseValue(e.target.value);
-  };
-
-  //rg
-  const [rgValue, setRGValue] = useState("");
-  const [rgValid, setRGValid] = useState(false);
-  const handleRGValidation = (e) => {
-    setRGValid(/^W(\d(\d(\d[A-Z]?)?)?$)/.test(e.target.value));
-    setRGValue(e.target.value);
-  };
   return (
     <Box sx={{ mt: 4 }}>
       <Grid
@@ -100,44 +72,110 @@ function Owner() {
             Marital Status:
           </Typography>
         </Grid>
-        <Button
-          sx={{
-            textTransform: "none",
-            padding: "3px 10px",
-            backgroundColor: "#0362F0",
-            color: "#ffffff",
-            borderRadius: "56px",
-          }}
-        >
-          Married
-        </Button>
-        <Button
-          sx={{
-            textTransform: "none",
-            padding: "3px 10px",
-            backgroundColor: "#F2F5F6",
-            color: "#002152",
-            borderRadius: "56px",
-            ml: 1,
-          }}
-        >
-          Single
-        </Button>
+        {["Married", "Single"].map((data, index) => (
+          <Button
+            key={index}
+            onClick={() => setMaritalStatus(data)}
+            sx={{
+              textTransform: "none",
+              padding: "3px 10px",
+
+              borderRadius: "56px",
+              ml: index === 1 ? 1 : 0,
+              background: maritalStatus === data ? "#0362F0" : "#F2F5F6",
+
+              color: maritalStatus === data ? "#ffffff" : "#002152",
+              "&:hover": {
+                background: "#0362F0",
+                color: "#ffffff",
+              },
+            }}
+          >
+            {data}
+          </Button>
+        ))}
       </Grid>
       <Grid container sx={{ mt: 2 }}>
         <Grid item xs={12}>
-          <BaseTextField size={"medium"} placeholder={"Full Name"} />
+          <Controller
+            name="owner_name"
+            control={control}
+            defaultValue={""}
+            render={({ field }) => (
+              <BaseTextField
+                size={"medium"}
+                placeholder={"Full Name*"}
+                // sx={{ mb: 2 }}
+                onChange={(e) => {
+                  field.onChange(e.target.value);
+                }}
+                name={"owner_name"}
+                value={field.value}
+              />
+            )}
+          />
+          <Typography
+            variant="inherit"
+            color="textSecondary"
+            sx={{ color: "#b91c1c" }}
+          >
+            {errors.owner_name?.message}
+          </Typography>
         </Grid>
       </Grid>
       <Grid container spacing={1} sx={{ mt: 1 }}>
         <Grid item xs={12} sm={12} md={6} lg={6} xl={6}>
           <FormControl variant="outlined" sx={{ width: "100%" }}>
-            <BaseOutlinedRgInput placeholder={"RG"} size={"medium"} />
+            <Controller
+              name="owner_rg"
+              control={control}
+              render={({ field }) => (
+                <BaseOutlinedRgInput
+                  placeholder={"RG*"}
+                  size={"medium"}
+                  onChange={(e) => {
+                    field.onChange(e.target.value);
+                  }}
+                  name={"owner_rg"}
+                  value={field.value}
+                  // error={errors?.rg_number ? true : false}
+                />
+              )}
+            />
+            <Typography
+              variant="inherit"
+              color="textSecondary"
+              sx={{ color: "#b91c1c" }}
+            >
+              {errors?.owner_rg?.message}
+            </Typography>
           </FormControl>
         </Grid>
         <Grid item xs={12} sm={12} md={6} lg={6} xl={6}>
           <FormControl variant="outlined" sx={{ width: "100%" }}>
-            <BaseOutlinedCpfInput placeholder={"CPF"} size={"medium"} />
+            <Controller
+              name="owner_cpf"
+              control={control}
+              render={({ field }) => (
+                <BaseOutlinedCpfInput
+                  placeholder={"CPF*"}
+                  size={"medium"}
+                  onChange={(e) => {
+                    field.onChange(e.target.value);
+                  }}
+                  name={"owner_cpf"}
+                  value={field.value}
+                  // error={errors.cpf_number ? true : false}
+                />
+              )}
+            />
+            <Typography
+              variant="inherit"
+              color="textSecondary"
+              sx={{ color: "#b91c1c" }}
+            >
+              {errors.owner_cpf?.message}
+            </Typography>
           </FormControl>
         </Grid>
       </Grid>
@@ -158,18 +196,85 @@ function Owner() {
       </Grid>
       <Grid container sx={{ mt: 2 }}>
         <Grid item xs={12}>
-          <BaseTextField size={"medium"} placeholder={"Full Name"} />
+          <Controller
+            name="owner_spouse_name"
+            control={control}
+            defaultValue={""}
+            render={({ field }) => (
+              <BaseTextField
+                size={"medium"}
+                placeholder={"Full Name*"}
+                // sx={{ mb: 2 }}
+                onChange={(e) => {
+                  field.onChange(e.target.value);
+                }}
+                name={"owner_spouse_name"}
+                value={field.value}
+              />
+            )}
+          />
+          <Typography
+            variant="inherit"
+            color="textSecondary"
+            sx={{ color: "#b91c1c" }}
+          >
+            {errors.owner_spouse_name?.message}
+          </Typography>
         </Grid>
       </Grid>
       <Grid container spacing={1} sx={{ mt: 1 }}>
         <Grid item xs={12} sm={12} md={6} lg={6} xl={6}>
           <FormControl variant="outlined" sx={{ width: "100%" }}>
-            <BaseOutlinedRgInput placeholder={"RG"} size={"medium"} />
+            <Controller
+              name="owner_spouse_rg"
+              control={control}
+              render={({ field }) => (
+                <BaseOutlinedRgInput
+                  placeholder={"RG*"}
+                  size={"medium"}
+                  onChange={(e) => {
+                    field.onChange(e.target.value);
+                  }}
+                  name={"owner_spouse_rg"}
+                  value={field.value}
+                  // error={errors?.rg_number ? true : false}
+                />
+              )}
+            />
+            <Typography
+              variant="inherit"
+              color="textSecondary"
+              sx={{ color: "#b91c1c" }}
+            >
+              {errors?.owner_spouse_rg?.message}
+            </Typography>
           </FormControl>
         </Grid>
         <Grid item xs={12} sm={12} md={6} lg={6} xl={6}>
           <FormControl variant="outlined" sx={{ width: "100%" }}>
-            <BaseOutlinedCpfInput placeholder={"CPF"} size={"medium"} />
+            <Controller
+              name="owner_spouse_cpf"
+              control={control}
+              render={({ field }) => (
+                <BaseOutlinedCpfInput
+                  placeholder={"CPF*"}
+                  size={"medium"}
+                  onChange={(e) => {
+                    field.onChange(e.target.value);
+                  }}
+                  name={"owner_spouse_cpf"}
+                  value={field.value}
+                  // error={errors.cpf_number ? true : false}
+                />
+              )}
+            />
+            <Typography
+              variant="inherit"
+              color="textSecondary"
+              sx={{ color: "#b91c1c" }}
+            >
+              {errors.owner_spouse_cpf?.message}
+            </Typography>
           </FormControl>
         </Grid>
       </Grid>
@@ -191,41 +296,186 @@ function Owner() {
       <Grid container spacing={1} sx={{ mt: 1 }}>
         <Grid item xs={12} sm={12} md={4} lg={4} xl={4}>
           <FormControl variant="outlined" sx={{ width: "100%" }}>
-            <BaseOutlinedZipInput placeholder={"Zip Code"} size={"medium"} />
+            <Controller
+              name="owner_zip_code"
+              control={control}
+              render={({ field }) => (
+                <BaseOutlinedZipInput
+                  placeholder={"Zip Code*"}
+                  size={"medium"}
+                  onChange={(e) => {
+                    field.onChange(e.target.value);
+                  }}
+                  name={"owner_zip_code"}
+                  value={field.value}
+                  // error={errors.cpf_number ? true : false}
+                />
+              )}
+            />
+            <Typography
+              variant="inherit"
+              color="textSecondary"
+              sx={{ color: "#b91c1c" }}
+            >
+              {errors.owner_zip_code?.message}
+            </Typography>
           </FormControl>
         </Grid>
         <Grid item xs={12} sm={12} md={4} lg={4} xl={4}>
-          <BaseTextField size={"medium"} placeholder={"Address"} />
+          <Controller
+            name="owner_address"
+            control={control}
+            defaultValue={""}
+            render={({ field }) => (
+              <BaseTextField
+                size={"medium"}
+                placeholder={"Address*"}
+                onChange={(e) => {
+                  field.onChange(e.target.value);
+                }}
+                name={"owner_address"}
+                value={field.value}
+              />
+            )}
+          />
+          <Typography
+            variant="inherit"
+            color="textSecondary"
+            sx={{ color: "#b91c1c" }}
+          >
+            {errors.owner_address?.message}
+          </Typography>
         </Grid>
         <Grid item xs={12} sm={12} md={4} lg={4} xl={4}>
-          <BaseTextField
-            size={"medium"}
-            placeholder={"Number"}
-            type={"number"}
+          <Controller
+            name="owner_number"
+            control={control}
+            defaultValue={""}
+            render={({ field }) => (
+              <BaseTextField
+                size={"medium"}
+                placeholder={"Number*"}
+                onChange={(e) => {
+                  field.onChange(e.target.value);
+                }}
+                name={"owner_number"}
+                type={"number"}
+                value={field.value}
+              />
+            )}
           />
+          <Typography
+            variant="inherit"
+            color="textSecondary"
+            sx={{ color: "#b91c1c" }}
+          >
+            {errors.owner_number?.message}
+          </Typography>
         </Grid>
       </Grid>
       <Grid container spacing={1} sx={{ mt: 1 }}>
         <Grid item xs={12} sm={12} md={6} lg={6} xl={6}>
-          <BaseTextField size={"medium"} placeholder={"Neighborhood"} />
+          <Controller
+            name="owner_neighbourhood"
+            control={control}
+            defaultValue={""}
+            render={({ field }) => (
+              <BaseTextField
+                size={"medium"}
+                placeholder={"Neighbourhood*"}
+                onChange={(e) => {
+                  field.onChange(e.target.value);
+                }}
+                name={"owner_neighbourhood"}
+                value={field.value}
+              />
+            )}
+          />
+          <Typography
+            variant="inherit"
+            color="textSecondary"
+            sx={{ color: "#b91c1c" }}
+          >
+            {errors.owner_neighbourhood?.message}
+          </Typography>
         </Grid>
         <Grid item xs={12} sm={12} md={6} lg={6} xl={6}>
-          <BaseTextField size={"medium"} placeholder={"Complement"} />
+          <Controller
+            name="owner_complement"
+            control={control}
+            defaultValue={""}
+            render={({ field }) => (
+              <BaseTextField
+                size={"medium"}
+                placeholder={"Complement"}
+                onChange={(e) => {
+                  field.onChange(e.target.value);
+                }}
+                name={"owner_complement"}
+                value={field.value}
+              />
+            )}
+          />
+          <Typography
+            variant="inherit"
+            color="textSecondary"
+            sx={{ color: "#b91c1c" }}
+          >
+            {errors.owner_complement?.message}
+          </Typography>
         </Grid>
       </Grid>
       <Grid container spacing={1} sx={{ mt: 1 }}>
         <Grid item xs={12} sm={12} md={6} lg={6} xl={6}>
-          <BaseTextField size={"medium"} placeholder={"City"} />
+          <Controller
+            name="owner_city"
+            control={control}
+            defaultValue={""}
+            render={({ field }) => (
+              <BaseTextField
+                size={"medium"}
+                placeholder={"City*"}
+                onChange={(e) => {
+                  field.onChange(e.target.value);
+                }}
+                name={"owner_city"}
+                value={field.value}
+              />
+            )}
+          />
+          <Typography
+            variant="inherit"
+            color="textSecondary"
+            sx={{ color: "#b91c1c" }}
+          >
+            {errors.owner_city?.message}
+          </Typography>
         </Grid>
         <Grid item xs={12} sm={12} md={6} lg={6} xl={6}>
-          <Autocomplete
-            fullWidth
-            disablePortal
-            size="medium"
-            id="combo-box-demo"
-            options={top100Films}
-            renderInput={(params) => <TextField {...params} label="State" />}
+          <Controller
+            name="owner_state"
+            control={control}
+            defaultValue={""}
+            render={({ field }) => (
+              <BaseAutocomplete
+                //   sx={{ margin: "0.6vh 0" }}
+                options={allStateData || []}
+                getOptionLabel={(option) => option.name || ""}
+                isOptionEqualToValue={(option, value) => option.id === value.id}
+                size={"medium"}
+                placeholder={"State*"}
+                onChange={(e, v, r, d) => field.onChange(v)}
+                value={field.value}
+              />
+            )}
           />
+          <Typography
+            variant="inherit"
+            color="textSecondary"
+            sx={{ color: "#b91c1c" }}
+          >
+            {errors.state?.message}
+          </Typography>
         </Grid>
       </Grid>
       <Grid container sx={{ mt: 2 }}>
@@ -245,26 +495,82 @@ function Owner() {
       </Grid>
       <Grid container spacing={1} sx={{ mt: 1 }}>
         <Grid item xs={12} sm={12} md={6} lg={4} xl={4}>
-          <Autocomplete
-            fullWidth
-            disablePortal
-            size="medium"
-            id="combo-box-demo"
-            options={top100Films}
-            renderInput={(params) => (
-              <TextField {...params} label="Type of document" />
+          <Controller
+            name="owner_documnentation"
+            control={control}
+            render={({ field }) => (
+              <BaseAutocomplete
+                //   sx={{ margin: "0.6vh 0" }}
+                options={top100Films || []}
+                getOptionLabel={(option) => option.label || ""}
+                isOptionEqualToValue={(option, value) =>
+                  option.year === value.year
+                }
+                size={"medium"}
+                placeholder={"Documents"}
+                onChange={(e, v, r, d) => field.onChange(v)}
+                value={field.value || null}
+              />
             )}
           />
+          <Typography
+            variant="inherit"
+            color="textSecondary"
+            sx={{ color: "#b91c1c" }}
+          >
+            {errors.owner_documentation?.message}
+          </Typography>
         </Grid>
         <Grid item xs={12} sm={12} md={6} lg={4} xl={4}>
-          <BaseTextField size={"medium"} placeholder={"Registry"} />
-        </Grid>
-        <Grid item xs={12} sm={12} md={6} lg={4} xl={4}>
-          <BaseTextField
-            size={"medium"}
-            placeholder={"Registration number"}
-            type="number"
+          <Controller
+            name="owner_registry"
+            control={control}
+            defaultValue={""}
+            render={({ field }) => (
+              <BaseTextField
+                size={"medium"}
+                placeholder={"Registry"}
+                onChange={(e) => {
+                  field.onChange(e.target.value);
+                }}
+                name={"owner_registry"}
+                value={field.value}
+              />
+            )}
           />
+          <Typography
+            variant="inherit"
+            color="textSecondary"
+            sx={{ color: "#b91c1c" }}
+          >
+            {errors.owner_registry?.message}
+          </Typography>
+        </Grid>
+        <Grid item xs={12} sm={12} md={6} lg={4} xl={4}>
+          <Controller
+            name="owner_registration_number"
+            control={control}
+            defaultValue={""}
+            render={({ field }) => (
+              <BaseTextField
+                size={"medium"}
+                placeholder={"Registartion Number"}
+                onChange={(e) => {
+                  field.onChange(e.target.value);
+                }}
+                name={"owner_registartion_number"}
+                type={"number"}
+                value={field.value}
+              />
+            )}
+          />
+          <Typography
+            variant="inherit"
+            color="textSecondary"
+            sx={{ color: "#b91c1c" }}
+          >
+            {errors.owner_registration_number?.message}
+          </Typography>
         </Grid>
       </Grid>
     </Box>
@@ -273,11 +579,8 @@ function Owner() {
 
 export default Owner;
 const top100Films = [
-  { label: "The Shawshank Redemption", year: 1994 },
-  { label: "The Godfather", year: 1972 },
-  { label: "The Godfather: Part II", year: 1974 },
-  { label: "The Dark Knight", year: 2008 },
-  { label: "12 Angry Men", year: 1957 },
-  { label: "Schindler's List", year: 1993 },
-  { label: "Pulp Fiction", year: 1994 },
+  { label: "Buyer's agent agreement", year: 1994 },
+  { label: "Purchase Agreement", year: 1972 },
+  { label: "Building Approval Plan", year: 1974 },
+  { label: " Land Receipts", year: 2008 },
 ];

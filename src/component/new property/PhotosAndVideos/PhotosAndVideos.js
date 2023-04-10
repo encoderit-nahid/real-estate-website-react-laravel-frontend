@@ -52,8 +52,18 @@ const rejectStyle = {
   borderColor: "#f2f",
 };
 
-function PhotosAndVideos({control,errors,files,setFiles,imageError,imageErrorMessage,fields,append,remove}) {
-  const dispatch = useDispatch()
+function PhotosAndVideos({
+  control,
+  errors,
+  files,
+  setFiles,
+  imageError,
+  imageErrorMessage,
+  fields,
+  append,
+  remove,
+}) {
+  const dispatch = useDispatch();
 
   useEffect(() => {
     dispatch(GetPhotoTypeData());
@@ -136,107 +146,99 @@ function PhotosAndVideos({control,errors,files,setFiles,imageError,imageErrorMes
             lineHeight: "22px",
           }}
         >
-          Images  of the property:
+          Images of the property:
         </Typography>
       </Box>
-     
+
       <Box {...getRootProps({ style })}>
-                      <input {...getInputProps()} />
-                      <Typography
-                        variant="p"
-                        sx={{
-                          color: "#6C7A84",
-                          fontSize: "14px",
-                          fontWeight: "400",
-                          lineHeight: "18px",
-                          mt: 1,
-                        }}
-                      >
-                        Drag and drop images here
-                      </Typography>
-                      <Typography
-                        variant="p"
-                        sx={{
-                          color: "#6C7A84",
-                          fontSize: "14px",
-                          fontWeight: "400",
-                          lineHeight: "18px",
-                          mt: 1,
-                        }}
-                      >
-                        or
-                      </Typography>
-                      <Button
-                        variant="contained"
-                        sx={{
-                          textTransform: "none",
-                          mt: 1,
-                          background: "#0362F0",
-                          color: "#ffffff",
-                          fontSize: "14px",
-                          fontWeight: "600",
-                          lineHeight: "18px",
-                        }}
-                      >
-                        select images
-                      </Button>
-                      {imageError && (
-                        <Typography
-                          variant="inherit"
-                          color="textSecondary"
-                          sx={{ color: "#b91c1c" }}
-                        >
-                          {imageErrorMessage}
-                        </Typography>
-                      )}
-                    </Box>
-                  
-                    {files.length > 0 && (
-                    <Grid container spacing={1} sx={{ mt: 3 }}>
-                      {files.map((file, index) => (
-                        <Grid
-                          item
-                          xs={12}
-                          sm={12}
-                          md={4}
-                          lg={3}
-                          xl={3}
-                          key={index}
-                        >
-                          <Box
-                            sx={{
-                              p: 2,
-                              boxSizing: "border-box",
-                              border: "1px solid #DBE1E5",
-                              borderRadius: "6px",
-                            }}
-                          >
-                            <Grid
-                              container
-                              direction="row"
-                              justifyContent="flex-end"
-                              alignItems="flex-start"
-                            >
-                              <DeleteOutlineOutlinedIcon
-                                sx={{
-                                  background: "#F44336",
-                                  color: "#ffffff",
-                                  borderRadius: "50%",
-                                  height: "3vh",
-                                  width: "3vh",
-                                  paddingY: "3px",
-                                }}
-                                onClick={() => handleDelete(index)}
-                              />
-                            </Grid>
-                            <Image
-                              src={file.preview}
-                              height={70}
-                              width={100}
-                              layout="responsive"
-                              alt="file"
-                            />
-                            {/* <Autocomplete
+        <input {...getInputProps()} />
+        <Typography
+          variant="p"
+          sx={{
+            color: "#6C7A84",
+            fontSize: "14px",
+            fontWeight: "400",
+            lineHeight: "18px",
+            mt: 1,
+          }}
+        >
+          Drag and drop images here
+        </Typography>
+        <Typography
+          variant="p"
+          sx={{
+            color: "#6C7A84",
+            fontSize: "14px",
+            fontWeight: "400",
+            lineHeight: "18px",
+            mt: 1,
+          }}
+        >
+          or
+        </Typography>
+        <Button
+          variant="contained"
+          sx={{
+            textTransform: "none",
+            mt: 1,
+            background: "#0362F0",
+            color: "#ffffff",
+            fontSize: "14px",
+            fontWeight: "600",
+            lineHeight: "18px",
+          }}
+        >
+          select images
+        </Button>
+        {imageError && (
+          <Typography
+            variant="inherit"
+            color="textSecondary"
+            sx={{ color: "#b91c1c" }}
+          >
+            {imageErrorMessage}
+          </Typography>
+        )}
+      </Box>
+
+      {files.length > 0 && (
+        <Grid container spacing={1} sx={{ mt: 3 }}>
+          {files.map((file, index) => (
+            <Grid item xs={12} sm={12} md={4} lg={3} xl={3} key={index}>
+              <Box
+                sx={{
+                  p: 2,
+                  boxSizing: "border-box",
+                  border: "1px solid #DBE1E5",
+                  borderRadius: "6px",
+                }}
+              >
+                <Grid
+                  container
+                  direction="row"
+                  justifyContent="flex-end"
+                  alignItems="flex-start"
+                >
+                  <DeleteOutlineOutlinedIcon
+                    sx={{
+                      background: "#F44336",
+                      color: "#ffffff",
+                      borderRadius: "50%",
+                      height: "3vh",
+                      width: "3vh",
+                      paddingY: "3px",
+                    }}
+                    onClick={() => handleDelete(index)}
+                  />
+                </Grid>
+                <Image
+                  src={file.preview}
+                  height={70}
+                  width={100}
+                  layout="responsive"
+                  alt="file"
+                />
+                {/* <Autocomplete
                               sx={{ mt: 2 }}
                               disablePortal
                               fullWidth
@@ -247,31 +249,31 @@ function PhotosAndVideos({control,errors,files,setFiles,imageError,imageErrorMes
                                 <TextField {...params} label="Convenient" />
                               )}
                             /> */}
-                            <Controller
-                              name={`title_${index}`}
-                              control={control}
-                              defaultValue={photoType[0] || {}}
-                              render={({ field }) => (
-                                <BaseAutocomplete
-                                  //   sx={{ margin: "0.6vh 0" }}
-                                  options={photoType || []}
-                                  getOptionLabel={(option) => option.name || ""}
-                                  sx={{ mt: 2 }}
-                                  isOptionEqualToValue={(option, value) =>
-                                    option.slug === value.slug
-                                  }
-                                  size={"small"}
-                                  placeholder={"Convenient"}
-                                  onChange={(e, v, r, d) => field.onChange(v)}
-                                  value={field.value}
-                                />
-                              )}
-                            />
-                          </Box>
-                        </Grid>
-                      ))}
-                    </Grid>
+                <Controller
+                  name={`title_${index}`}
+                  control={control}
+                  defaultValue={photoType[0] || {}}
+                  render={({ field }) => (
+                    <BaseAutocomplete
+                      //   sx={{ margin: "0.6vh 0" }}
+                      options={photoType || []}
+                      getOptionLabel={(option) => option.name || ""}
+                      sx={{ mt: 2 }}
+                      isOptionEqualToValue={(option, value) =>
+                        option.slug === value.slug
+                      }
+                      size={"small"}
+                      placeholder={"Convenient"}
+                      onChange={(e, v, r, d) => field.onChange(v)}
+                      value={field.value}
+                    />
                   )}
+                />
+              </Box>
+            </Grid>
+          ))}
+        </Grid>
+      )}
 
       <Box sx={{ mt: 5 }}>
         <Typography
@@ -283,84 +285,99 @@ function PhotosAndVideos({control,errors,files,setFiles,imageError,imageErrorMes
             lineHeight: "22px",
           }}
         >
-           videos of the property:
+          videos of the property:
         </Typography>
       </Box>
       {fields?.map((item, index) => (
-      <Grid
-      key={item.id}
-        container
-        direction="row"
-        justifyContent="flex-start"
-        alignItems="flex-start"
-        sx={{ mt: 1 }}
-      >
-  
-         <Controller
-                        name={`videos[${index}].url`}
-                      control={control}
-                      defaultValue={""}
-                      render={({ field }) => (
-                        <BaseTextField
-                        sx={{
-                          width: "50%",
-              
-                          "& .MuiOutlinedInput-root": {
-                            // - The Input-root, inside the TextField-root
-                            "& fieldset": {
-                              borderRadius: "4px 0px 0px 4px", // - The <fieldset> inside the Input-root
-                             // - Set the Input border
-                            },
-                          },
-                        }}
-                        size={"medium"}
-                        placeholder={"paste the url of the video"}
-                        onChange={field.onChange}
-                        />
-                      )}
-                    />
-                       {index === fields?.length - 1 && (
-        <Button
-          sx={{
-            backgroundColor: "#DBE1E5",
-            py: 2,
-            borderRadius: "0px 4px 4px 0px",
-            "&:hover": {
-              backgroundColor: "#DBE1E5",
-              py: 2,
-              borderRadius: "0px 4px 4px 0px",
-            },
-          }}
-          onClick={() =>
-            append({ url:"" })}
+        <Grid
+          key={item.id}
+          container
+          direction="row"
+          justifyContent="flex-start"
+          alignItems="flex-start"
+          sx={{ mt: 1 }}
         >
-          <AddOutlinedIcon sx={{ color: "#002152" }} 
-                              />
-        </Button>
-                       )}
-        {fields.length !== 1 && (
-                          <Button
-                          sx={{
-                            ml:1,
-                            backgroundColor: "#DBE1E5",
-                            py: 2,
-                            borderRadius: "0px 4px 4px 0px",
-                            "&:hover": {
-                              backgroundColor: "#DBE1E5",
-                              py: 2,
-                              borderRadius: "0px 4px 4px 0px",
-                            },
-                          }}
-                              onClick={() => {
-                                remove(index)}
-                              }
-                            >
-                    
-                              <CancelOutlinedIcon />
-                            </Button>
-                          )}
+          <Controller
+            name={`videos[${index}].url`}
+            control={control}
+            defaultValue={""}
+            render={({ field }) => (
+              <BaseTextField
+                sx={{
+                  width: "50%",
 
-      </Grid>
+                  "& .MuiOutlinedInput-root": {
+                    // - The Input-root, inside the TextField-root
+                    "& fieldset": {
+                      borderRadius: "4px 0px 0px 4px", // - The <fieldset> inside the Input-root
+                      // - Set the Input border
+                    },
+                  },
+                }}
+                size={"medium"}
+                placeholder={"paste the url of the video"}
+                onChange={field.onChange}
+              />
+            )}
+          />
+          <Controller
+            name={`videos[${index}].title`}
+            control={control}
+            defaultValue={photoType[0] || {}}
+            render={({ field }) => (
+              <BaseAutocomplete
+                //   sx={{ margin: "0.6vh 0" }}
+                options={photoType || []}
+                getOptionLabel={(option) => option.name || ""}
+                sx={{ width: "20%", ml: 1, mr: 1 }}
+                isOptionEqualToValue={(option, value) =>
+                  option.slug === value.slug
+                }
+                size={"medium"}
+                placeholder={"Convenient"}
+                onChange={(e, v, r, d) => field.onChange(v)}
+                value={field.value}
+              />
+            )}
+          />
+          {index === fields?.length - 1 && (
+            <Button
+              sx={{
+                backgroundColor: "#DBE1E5",
+                py: 2,
+                borderRadius: "0px 4px 4px 0px",
+                "&:hover": {
+                  backgroundColor: "#DBE1E5",
+                  py: 2,
+                  borderRadius: "0px 4px 4px 0px",
+                },
+              }}
+              onClick={() => append({ url: "", title: "" })}
+            >
+              <AddOutlinedIcon sx={{ color: "#002152" }} />
+            </Button>
+          )}
+          {fields.length !== 1 && (
+            <Button
+              sx={{
+                ml: 1,
+                backgroundColor: "#DBE1E5",
+                py: 2,
+                borderRadius: "0px 4px 4px 0px",
+                "&:hover": {
+                  backgroundColor: "#DBE1E5",
+                  py: 2,
+                  borderRadius: "0px 4px 4px 0px",
+                },
+              }}
+              onClick={() => {
+                remove(index);
+              }}
+            >
+              <CancelOutlinedIcon />
+            </Button>
+          )}
+        </Grid>
       ))}
     </Box>
   );

@@ -13,8 +13,13 @@ import buildingImage from "../../../../public/Images/buildingRed.png";
 import AddOutlinedIcon from "@mui/icons-material/AddOutlined";
 import BaseOutlinedZipInput from "../../reuseable/baseOutlinedZipInput/BaseOutlinedZipInput";
 import { useDispatch, useSelector } from "react-redux";
-import { featureDataCreate, findFeatureData } from "../../../redux/features/actions";
+
 import BaseTextField from "../../reuseable/baseTextField/BaseTextField";
+import {
+  featureDataCreate,
+  findButtonData,
+} from "../../../redux/featureWithoutGroup/actions";
+import { findFeatureData } from "../../../redux/features/actions";
 
 const PropertyFeature = [
   "close to the metro",
@@ -41,32 +46,29 @@ const PropertyFeature = [
   "fireplace",
   "furnish",
 ];
-function Features() {
-
-  const [featuretypes, setFeatureTypes] = useState([]);
-  const [item,setItem] = useState('')
-  const dispatch = useDispatch()
+function Features({ featuretypes, setFeatureTypes }) {
+  const [item, setItem] = useState("");
+  const dispatch = useDispatch();
   useEffect(() => {
-    dispatch(findFeatureData())
-  },[dispatch])
-  
-  const featureData = useSelector((state) => state.feature.featureData);
-  console.log({ featureData });
-  const {feature} = featureData
-  console.log({feature})
+    dispatch(findButtonData());
+  }, [dispatch]);
 
-  const loading = useSelector((state) => state.feature.loading);
+  const featureData = useSelector((state) => state.featureButton?.buttonData);
+
+  const loading = useSelector((state) => state.featureButton?.loading);
 
   const handleAddFeature = () => {
-    if(item.length > 0){
-      console.log(item)
-      dispatch(featureDataCreate({name:item,type:"feature"}))
-      dispatch(findFeatureData())
+    if (item.length > 0) {
+      console.log(item);
+      dispatch(featureDataCreate({ name: item, type: "feature" }));
+      dispatch(findButtonData());
     }
-  }
+  };
 
-  const FeatureAddLoading = useSelector((state) => state?.feature)
-  console.log({FeatureAddLoading})
+  const FeatureAddLoading = useSelector(
+    (state) => state?.featureButton?.buttonData
+  );
+  console.log({ FeatureAddLoading });
 
   return (
     <Box sx={{ mt: 4 }}>
@@ -103,25 +105,22 @@ function Features() {
           Select property features:
         </Typography>
       </Box>
-      {loading ?
-       (
+      {loading ? (
         <Grid
-        container
-        sx={{ height: "60vh" }}
-        direction="row"
-        justifyContent="center"
-        alignItems="center"
-      >
-        <CircularProgress sx={{ color: "#22d3ee" }} />
-      </Grid>
-       )
-      :
-      (
+          container
+          sx={{ height: "60vh" }}
+          direction="row"
+          justifyContent="center"
+          alignItems="center"
+        >
+          <CircularProgress sx={{ color: "#22d3ee" }} />
+        </Grid>
+      ) : (
         <Grid container spacing={1} sx={{ mt: 2 }}>
-        {feature?.map((data, index) => (
-          <Grid item xs={4} sm={4} md={4} lg={3} xl={3} key={index}>
-            <Button
-                 onClick={() => {
+          {featureData?.features?.map((data, index) => (
+            <Grid item xs={4} sm={4} md={4} lg={3} xl={3} key={index}>
+              <Button
+                onClick={() => {
                   if (!featuretypes?.includes(data.id)) {
                     setFeatureTypes((current) => [...current, data.id]);
                   } else {
@@ -130,31 +129,19 @@ function Features() {
                     );
                     setFeatureTypes(newArray);
                   }
-                }}    
-              sx={{
-                background: `${featuretypes?.includes(data.id) ? "#7450F0" : "transparent"}`,
-                borderRadius: "56px",
-                width: "100%",
-                color: `${featuretypes?.includes(data.id) ? "#ffffff" : "#32414C"}`,
-                border: `${featuretypes?.includes(data.id) ? "" : "1px solid #9FAAB1"}`,
-                fontSize: {
-                  xs: "12px",
-                  sm: "13px",
-                  md: "16px",
-                  lg: "13px",
-                  xl: "16px",
-                },
-                fontWeight: "400",
-                lineHeight: "22px",
-                textTransform: "none",
-                px: { xs: 0, sm: 2, md: 2, lg: 2, xl: 2 },
-                py: 1,
-                "&:hover": {
-                  background: "#7450F0",
+                }}
+                sx={{
+                  background: `${
+                    featuretypes?.includes(data.id) ? "#7450F0" : "transparent"
+                  }`,
                   borderRadius: "56px",
-                  color: "#ffffff",
-                  border: `${index === 0 ? "" : "1px solid #9FAAB1"}`,
                   width: "100%",
+                  color: `${
+                    featuretypes?.includes(data.id) ? "#ffffff" : "#32414C"
+                  }`,
+                  border: `${
+                    featuretypes?.includes(data.id) ? "" : "1px solid #9FAAB1"
+                  }`,
                   fontSize: {
                     xs: "12px",
                     sm: "13px",
@@ -167,14 +154,32 @@ function Features() {
                   textTransform: "none",
                   px: { xs: 0, sm: 2, md: 2, lg: 2, xl: 2 },
                   py: 1,
-                },
-              }}
-            >
-              {data?.name?.slice(0,25)}
-            </Button>
-          </Grid>
-        ))}
-      </Grid>
+                  "&:hover": {
+                    background: "#7450F0",
+                    borderRadius: "56px",
+                    color: "#ffffff",
+                    border: `${index === 0 ? "" : "1px solid #9FAAB1"}`,
+                    width: "100%",
+                    fontSize: {
+                      xs: "12px",
+                      sm: "13px",
+                      md: "16px",
+                      lg: "13px",
+                      xl: "16px",
+                    },
+                    fontWeight: "400",
+                    lineHeight: "22px",
+                    textTransform: "none",
+                    px: { xs: 0, sm: 2, md: 2, lg: 2, xl: 2 },
+                    py: 1,
+                  },
+                }}
+              >
+                {data?.name?.slice(0, 20)}
+              </Button>
+            </Grid>
+          ))}
+        </Grid>
       )}
       <Grid
         container
@@ -183,9 +188,13 @@ function Features() {
         alignItems="flex-start"
         sx={{ mt: 3 }}
       >
-        <BaseTextField sx={{width:"50%"}} placeholder={"Add feature"} onChange={(e)=> setItem(e.target.value)}/>
+        <BaseTextField
+          sx={{ width: "50%" }}
+          placeholder={"Add feature"}
+          onChange={(e) => setItem(e.target.value)}
+        />
         <Button
-        onClick={handleAddFeature}
+          onClick={handleAddFeature}
           sx={{
             backgroundColor: "#0362F0",
             py: 2,

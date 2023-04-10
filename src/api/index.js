@@ -204,3 +204,13 @@ export const featureCreateApi = async (body) => {
     return [error, null];
   }
 };
+
+//create_new_property
+export const propertyCreateApi = async (body) => {
+  try {
+    const response = await apiInstance.post(`property/store`, body);
+    return [false, response];
+  } catch (error) {
+    return [error, null];
+  }
+};

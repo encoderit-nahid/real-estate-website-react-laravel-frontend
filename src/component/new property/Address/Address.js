@@ -7,106 +7,112 @@ import {
   Grid,
   TextField,
   Typography,
-} from '@mui/material'
-import Image from 'next/image'
-import React, { useEffect } from 'react'
-import pinImage from '../../../../public/Images/pin.png'
-import DeleteOutlineOutlinedIcon from '@mui/icons-material/DeleteOutlineOutlined'
-import { useDropzone } from 'react-dropzone'
-import { useState } from 'react'
-import { useMemo } from 'react'
-import BaseOutlinedZipInput from '../../reuseable/baseOutlinedZipInput/BaseOutlinedZipInput'
-import Link from 'next/link'
-import BaseTextField from '../../reuseable/baseTextField/BaseTextField'
-import InsertDriveFileOutlinedIcon from '@mui/icons-material/InsertDriveFileOutlined'
-import { findPropertyTypeData } from '../../../redux/propertyType/actions'
-import { useDispatch, useSelector } from 'react-redux'
+} from "@mui/material";
+import Image from "next/image";
+import React, { useEffect } from "react";
+import pinImage from "../../../../public/Images/pin.png";
+import DeleteOutlineOutlinedIcon from "@mui/icons-material/DeleteOutlineOutlined";
+import { useDropzone } from "react-dropzone";
+import { useState } from "react";
+import { useMemo } from "react";
+import BaseOutlinedZipInput from "../../reuseable/baseOutlinedZipInput/BaseOutlinedZipInput";
+import Link from "next/link";
+import BaseTextField from "../../reuseable/baseTextField/BaseTextField";
+import InsertDriveFileOutlinedIcon from "@mui/icons-material/InsertDriveFileOutlined";
+import { findPropertyTypeData } from "../../../redux/propertyType/actions";
+import { useDispatch, useSelector } from "react-redux";
 import { findProjectsData } from "../../../redux/projects/actions";
-import { Controller } from 'react-hook-form'
-import BaseAutocomplete from '../../reuseable/baseAutocomplete/BaseAutocomplete'
-import { findStateData } from '../../../redux/state/actions'
+import { Controller } from "react-hook-form";
+import BaseAutocomplete from "../../reuseable/baseAutocomplete/BaseAutocomplete";
+import { findStateData } from "../../../redux/state/actions";
 
 const baseStyle = {
   flex: 1,
-  display: 'flex',
-  flexDirection: 'column',
-  alignItems: 'center',
-  padding: '50px',
+  display: "flex",
+  flexDirection: "column",
+  alignItems: "center",
+  padding: "50px",
   borderWidth: 2,
-  borderRadius: '4px',
-  borderColor: '#DBE1E5',
-  borderStyle: 'dashed',
-  backgroundColor: '#F2F5F6',
+  borderRadius: "4px",
+  borderColor: "#DBE1E5",
+  borderStyle: "dashed",
+  backgroundColor: "#F2F5F6",
 
-  color: '#c4c4c4',
-  outline: 'none',
-  transition: 'border .24s ease-in-out',
-  width: '70%',
-  marginTop: '2vh',
-}
+  color: "#c4c4c4",
+  outline: "none",
+  transition: "border .24s ease-in-out",
+  width: "70%",
+  marginTop: "2vh",
+};
 
 const activeStyle = {
-  borderColor: '#f2f',
-}
+  borderColor: "#f2f",
+};
 
 const acceptStyle = {
-  borderColor: '#f8f',
-}
+  borderColor: "#f8f",
+};
 
 const rejectStyle = {
-  borderColor: '#f2f',
-}
+  borderColor: "#f2f",
+};
 
-function Address({ control, errors}) {
-  const dispatch = useDispatch()
+function Address({
+  control,
+  errors,
+  adType,
+  setAdType,
+  propertyType,
+  setPropertyType,
+  property_detail_id,
+  setPropertyDetailId,
+  documents,
+  setDocuments,
+}) {
+  const dispatch = useDispatch();
 
   useEffect(() => {
     dispatch(findPropertyTypeData());
-    dispatch(findProjectsData({page:1,per_page:10}))
+    dispatch(findProjectsData({ page: 1, per_page: 10 }));
     dispatch(findStateData());
   }, [dispatch]);
 
-  const projectData = useSelector((state) => state?.project?.projectData?.data)
-  console.log({projectData})
+  const projectData = useSelector((state) => state?.project?.projectData?.data);
+  console.log({ projectData });
 
   const propertyDetail = useSelector(
     (state) => state?.propertyType?.propertyTypeData
   );
-  console.log('id',propertyDetail[0]?.id)
-  console.log({propertyDetail})
+  console.log("id", propertyDetail[0]?.id);
+  console.log({ propertyDetail });
 
   const allStateData = useSelector((state) => state.state.stateData);
   console.log({ allStateData });
-  const [files, setFiles] = useState([])
-  const [adType, setAdType] = useState('Rent')
-  const [propertyType, setPropertyType] = useState('Residence')
-  const[property_detail_id,setPropertyDetailId] = useState(1)
-  console.log({property_detail_id})
-  
-  console.log(files)
 
-  const [value, setValue] = useState('')
-  console.log(value.length)
-  const [valid, setValid] = useState(false)
-  console.log({ valid })
+  console.log({ property_detail_id });
+
+  const [value, setValue] = useState("");
+  console.log(value.length);
+  const [valid, setValid] = useState(false);
+  console.log({ valid });
   const handleValidation = (e) => {
-    setValid(/^[0-9]{5}-[0-9]{3}$/.test(e.target.value))
-    console.log(e.target.value)
-    setValue(e.target.value)
-  }
+    setValid(/^[0-9]{5}-[0-9]{3}$/.test(e.target.value));
+    console.log(e.target.value);
+    setValue(e.target.value);
+  };
 
   const onDrop = (acceptedFiles) => {
-    console.log(acceptedFiles)
+    console.log(acceptedFiles);
     acceptedFiles.map((file) =>
       Object.assign(file, {
         preview: URL.createObjectURL(file),
-      }),
-    )
+      })
+    );
 
-    const allFiles = [...files, ...acceptedFiles] //save all files here
-    console.log(allFiles)
-    setFiles(allFiles)
-  }
+    const allFiles = [...documents, ...acceptedFiles]; //save all files here
+    console.log(allFiles);
+    setDocuments(allFiles);
+  };
   const {
     getRootProps,
     getInputProps,
@@ -116,17 +122,18 @@ function Address({ control, errors}) {
   } = useDropzone({
     onDrop,
     accept: {
-      'application/pdf': [],
-      'application/vnd.openxmlformats-officedocument.wordprocessingml.document': [],
-      'application/msword': [],
+      "application/pdf": [],
+      "application/vnd.openxmlformats-officedocument.wordprocessingml.document":
+        [],
+      "application/msword": [],
     },
-  })
+  });
 
   const handleDelete = (index) => {
-    console.log(index)
-    const filterItem = files.filter((file, fileIndex) => fileIndex !== index)
-    setFiles(filterItem)
-  }
+    console.log(index);
+    const filterItem = files.filter((file, fileIndex) => fileIndex !== index);
+    setFiles(filterItem);
+  };
 
   const style = useMemo(
     () => ({
@@ -135,8 +142,8 @@ function Address({ control, errors}) {
       ...(isDragAccept ? acceptStyle : {}),
       ...(isDragReject ? rejectStyle : {}),
     }),
-    [isDragActive, isDragReject, isDragAccept],
-  )
+    [isDragActive, isDragReject, isDragAccept]
+  );
 
   return (
     <Box sx={{ mt: 4 }}>
@@ -150,10 +157,10 @@ function Address({ control, errors}) {
         <Typography
           variant="p"
           sx={{
-            color: '#002152',
-            fontSize: '24px',
-            fontWeight: '700',
-            lineHeight: '32px',
+            color: "#002152",
+            fontSize: "24px",
+            fontWeight: "700",
+            lineHeight: "32px",
             ml: 1,
           }}
         >
@@ -165,10 +172,10 @@ function Address({ control, errors}) {
         <Typography
           variant="p"
           sx={{
-            color: '#6C7A84',
-            fontSize: '14px',
-            fontWeight: '400',
-            lineHeight: '18px',
+            color: "#6C7A84",
+            fontSize: "14px",
+            fontWeight: "400",
+            lineHeight: "18px",
             mt: 1,
           }}
         >
@@ -177,10 +184,10 @@ function Address({ control, errors}) {
         <Typography
           variant="p"
           sx={{
-            color: '#6C7A84',
-            fontSize: '14px',
-            fontWeight: '400',
-            lineHeight: '18px',
+            color: "#6C7A84",
+            fontSize: "14px",
+            fontWeight: "400",
+            lineHeight: "18px",
             mt: 1,
           }}
         >
@@ -189,28 +196,28 @@ function Address({ control, errors}) {
         <Button
           variant="contained"
           sx={{
-            textTransform: 'none',
+            textTransform: "none",
             mt: 1,
-            background: '#0362F0',
-            color: '#ffffff',
-            fontSize: '14px',
-            fontWeight: '600',
-            lineHeight: '18px',
+            background: "#0362F0",
+            color: "#ffffff",
+            fontSize: "14px",
+            fontWeight: "600",
+            lineHeight: "18px",
           }}
         >
           select documents
         </Button>
       </Box>
-      {files.length > 0 && (
+      {documents.length > 0 && (
         <Grid container spacing={1} sx={{ mt: 3 }}>
           {files.map((file, index) => (
             <Grid item xs={12} sm={12} md={4} lg={3} xl={3} key={index}>
               <Box
                 sx={{
                   p: 2,
-                  boxSizing: 'border-box',
-                  border: '1px solid #DBE1E5',
-                  borderRadius: '6px',
+                  boxSizing: "border-box",
+                  border: "1px solid #DBE1E5",
+                  borderRadius: "6px",
                 }}
               >
                 <Grid
@@ -221,12 +228,12 @@ function Address({ control, errors}) {
                 >
                   <DeleteOutlineOutlinedIcon
                     sx={{
-                      background: '#F44336',
-                      color: '#ffffff',
-                      borderRadius: '50%',
-                      height: '3vh',
-                      width: '3vh',
-                      paddingY: '3px',
+                      background: "#F44336",
+                      color: "#ffffff",
+                      borderRadius: "50%",
+                      height: "3vh",
+                      width: "3vh",
+                      paddingY: "3px",
                     }}
                     onClick={() => handleDelete(index)}
                   />
@@ -234,7 +241,7 @@ function Address({ control, errors}) {
                 {/* <InsertDriveFileOutlinedIcon/> */}
                 <Typography
                   variant="p"
-                  sx={{ color: '#38bdf8', fontWeight: '600' }}
+                  sx={{ color: "#38bdf8", fontWeight: "600" }}
                 >
                   {file?.name?.slice(0, 15)}
                 </Typography>
@@ -254,10 +261,10 @@ function Address({ control, errors}) {
         <Typography
           variant="p"
           sx={{
-            color: '#002152',
-            fontSize: '24px',
-            fontWeight: '700',
-            lineHeight: '32px',
+            color: "#002152",
+            fontSize: "24px",
+            fontWeight: "700",
+            lineHeight: "32px",
             ml: 1,
           }}
         >
@@ -275,52 +282,52 @@ function Address({ control, errors}) {
             <Typography
               variant="p"
               sx={{
-                color: '#002152',
-                fontSize: '16px',
-                fontWeight: '400',
-                lineHeight: '22px',
+                color: "#002152",
+                fontSize: "16px",
+                fontWeight: "400",
+                lineHeight: "22px",
               }}
             >
               Ad type:
             </Typography>
             <Box sx={{ mt: 1 }}>
               <Grid container spacing={1}>
-                {['Rent', 'Sale'].map((data, index) => (
+                {["Rent", "Sale"].map((data, index) => (
                   <Grid item xs={6} key={index}>
                     <Button
                       onClick={() => setAdType(data)}
                       sx={{
-                        width: '100%',
-                        background: adType === data ? '#0362F0' : '#F2F5F6',
-                        borderRadius: '152px',
-                        color:   adType === data ? '#ffffff' : '#002152',
+                        width: "100%",
+                        background: adType === data ? "#0362F0" : "#F2F5F6",
+                        borderRadius: "152px",
+                        color: adType === data ? "#ffffff" : "#002152",
                         fontSize: {
-                          xs: '12px',
-                          sm: '13px',
-                          md: '16px',
-                          lg: '13px',
-                          xl: '16px',
+                          xs: "12px",
+                          sm: "13px",
+                          md: "16px",
+                          lg: "13px",
+                          xl: "16px",
                         },
-                        fontWeight: '400',
-                        lineHeight: '22px',
-                        textTransform: 'none',
+                        fontWeight: "400",
+                        lineHeight: "22px",
+                        textTransform: "none",
                         px: { xs: 0, sm: 2, md: 2, lg: 2, xl: 2 },
                         py: 1,
-                        '&:hover': {
-                          width: '100%',
-                          background: '#0362F0',
-                          borderRadius: '152px',
-                          color: '#ffffff',
+                        "&:hover": {
+                          width: "100%",
+                          background: "#0362F0",
+                          borderRadius: "152px",
+                          color: "#ffffff",
                           fontSize: {
-                            xs: '12px',
-                            sm: '13px',
-                            md: '16px',
-                            lg: '13px',
-                            xl: '16px',
+                            xs: "12px",
+                            sm: "13px",
+                            md: "16px",
+                            lg: "13px",
+                            xl: "16px",
                           },
-                          fontWeight: '400',
-                          lineHeight: '22px',
-                          textTransform: 'none',
+                          fontWeight: "400",
+                          lineHeight: "22px",
+                          textTransform: "none",
                           px: { xs: 0, sm: 2, md: 2, lg: 2, xl: 2 },
                           py: 1,
                         },
@@ -344,54 +351,53 @@ function Address({ control, errors}) {
             <Typography
               variant="p"
               sx={{
-                color: '#002152',
-                fontSize: '16px',
-                fontWeight: '400',
-                lineHeight: '22px',
+                color: "#002152",
+                fontSize: "16px",
+                fontWeight: "400",
+                lineHeight: "22px",
               }}
             >
               Property type:
             </Typography>
             <Box sx={{ mt: 1 }}>
               <Grid container spacing={1}>
-                {['Residence', 'Commercial'].map((data, index) => (
+                {["Residence", "Commercial"].map((data, index) => (
                   <Grid item xs={6} key={index}>
                     <Button
-                    onClick={
-                      () => setPropertyType(data)
-                    }
+                      onClick={() => setPropertyType(data)}
                       sx={{
-                        width: '100%',
-                        background: propertyType === data ? '#0362F0' : '#F2F5F6',
-                        borderRadius: '152px',
-                        color:   propertyType === data ? '#ffffff' : '#002152',
+                        width: "100%",
+                        background:
+                          propertyType === data ? "#0362F0" : "#F2F5F6",
+                        borderRadius: "152px",
+                        color: propertyType === data ? "#ffffff" : "#002152",
                         fontSize: {
-                          xs: '12px',
-                          sm: '13px',
-                          md: '16px',
-                          lg: '13px',
-                          xl: '16px',
+                          xs: "12px",
+                          sm: "13px",
+                          md: "16px",
+                          lg: "13px",
+                          xl: "16px",
                         },
-                        fontWeight: '400',
-                        lineHeight: '22px',
-                        textTransform: 'none',
+                        fontWeight: "400",
+                        lineHeight: "22px",
+                        textTransform: "none",
                         px: { xs: 0, sm: 2, md: 2, lg: 2, xl: 2 },
                         py: 1,
-                        '&:hover': {
-                          width: '100%',
-                          background: '#0362F0',
-                          borderRadius: '152px',
-                          color: '#ffffff',
+                        "&:hover": {
+                          width: "100%",
+                          background: "#0362F0",
+                          borderRadius: "152px",
+                          color: "#ffffff",
                           fontSize: {
-                            xs: '12px',
-                            sm: '13px',
-                            md: '16px',
-                            lg: '13px',
-                            xl: '16px',
+                            xs: "12px",
+                            sm: "13px",
+                            md: "16px",
+                            lg: "13px",
+                            xl: "16px",
                           },
-                          fontWeight: '400',
-                          lineHeight: '22px',
-                          textTransform: 'none',
+                          fontWeight: "400",
+                          lineHeight: "22px",
+                          textTransform: "none",
                           px: { xs: 0, sm: 2, md: 2, lg: 2, xl: 2 },
                           py: 1,
                         },
@@ -417,56 +423,60 @@ function Address({ control, errors}) {
             <Typography
               variant="p"
               sx={{
-                color: '#002152',
-                fontSize: '16px',
-                fontWeight: '400',
-                lineHeight: '22px',
+                color: "#002152",
+                fontSize: "16px",
+                fontWeight: "400",
+                lineHeight: "22px",
               }}
             >
               Property detail:
             </Typography>
             <Box sx={{ mt: 1 }}>
               <Grid container spacing={1}>
-                {propertyDetail?.map((data,index)=> (
-                    <Grid item xs={3} key={index}>
+                {propertyDetail?.map((data, index) => (
+                  <Grid item xs={3} key={index}>
                     <Button
-                    onClick={
-                      () => {
-                        setPropertyDetailId(data.id)
-                      }
-                    }
+                      onClick={() => {
+                        setPropertyDetailId(data.id);
+                      }}
                       sx={{
-                        width: '100%',
-                        background: property_detail_id === data.id ? '#0362F0' : '#F2F5F6',
-                        borderRadius: '152px',
-                        color:  property_detail_id === data.id ?'#ffffff' : '#002152',
+                        width: "100%",
+                        background:
+                          property_detail_id === data.id
+                            ? "#0362F0"
+                            : "#F2F5F6",
+                        borderRadius: "152px",
+                        color:
+                          property_detail_id === data.id
+                            ? "#ffffff"
+                            : "#002152",
                         fontSize: {
-                          xs: '12px',
-                          sm: '13px',
-                          md: '16px',
-                          lg: '13px',
-                          xl: '16px',
+                          xs: "12px",
+                          sm: "13px",
+                          md: "16px",
+                          lg: "13px",
+                          xl: "16px",
                         },
-                        fontWeight: '400',
-                        lineHeight: '22px',
-                        textTransform: 'none',
+                        fontWeight: "400",
+                        lineHeight: "22px",
+                        textTransform: "none",
                         px: { xs: 0, sm: 2, md: 2, lg: 2, xl: 2 },
                         py: 1,
-                        '&:hover': {
-                          width: '100%',
-                          background: '#0362F0',
-                          borderRadius: '152px',
-                          color: '#ffffff',
+                        "&:hover": {
+                          width: "100%",
+                          background: "#0362F0",
+                          borderRadius: "152px",
+                          color: "#ffffff",
                           fontSize: {
-                            xs: '12px',
-                            sm: '13px',
-                            md: '16px',
-                            lg: '13px',
-                            xl: '16px',
+                            xs: "12px",
+                            sm: "13px",
+                            md: "16px",
+                            lg: "13px",
+                            xl: "16px",
                           },
-                          fontWeight: '400',
-                          lineHeight: '22px',
-                          textTransform: 'none',
+                          fontWeight: "400",
+                          lineHeight: "22px",
+                          textTransform: "none",
                           px: { xs: 0, sm: 2, md: 2, lg: 2, xl: 2 },
                           py: 1,
                         },
@@ -476,32 +486,36 @@ function Address({ control, errors}) {
                     </Button>
                   </Grid>
                 ))}
-              
-              
               </Grid>
             </Box>
           </Grid>
         </Grid>
       </Grid>
+
       <Controller
-              name="project_id"
-              control={control}
-              defaultValue={""}
-              render={({ field }) => (
-                <BaseAutocomplete
-                sx={{ mt: 3, width: '70%' }}
-                  options={projectData || []}
-                  getOptionLabel={(option) => option.name || ""}
-                  isOptionEqualToValue={(option, value) =>
-                    option.id === value.id
-                  }
-                  size={"medium"}
-                  placeholder={"Select Enterprise Name"}
-                  onChange={(e, v, r, d) => field.onChange(v)}
-                  value={field.value}
-                />
-              )}
-            />
+        name="project_id"
+        control={control}
+        render={({ field }) => (
+          <BaseAutocomplete
+            sx={{ mt: 3, width: "70%" }}
+            options={projectData || []}
+            getOptionLabel={(option) => option.name || ""}
+            isOptionEqualToValue={(option, value) => option.id === value.id}
+            size={"medium"}
+            placeholder={"Select Enterprise Name*"}
+            onChange={(e, v, r, d) => field.onChange(v)}
+            value={field.value}
+          />
+        )}
+      />
+
+      <Typography
+        variant="inherit"
+        color="textSecondary"
+        sx={{ color: "#b91c1c" }}
+      >
+        {errors.project_id?.message}
+      </Typography>
       {/* <Autocomplete
         sx={{ mt: 3, width: '70%' }}
         disablePortal
@@ -516,219 +530,219 @@ function Address({ control, errors}) {
         <Link href="/new_venture">
           <a
             style={{
-              textDecoration: 'none',
-              listStyle: 'none',
-              width: '100%',
+              textDecoration: "none",
+              listStyle: "none",
+              width: "100%",
             }}
           >
             <Typography
               variant="p"
               sx={{
-                color: '#7450F0',
-                fontSize: '16px',
-                lineHeight: '22px',
-                fontWeight: '400',
+                color: "#7450F0",
+                fontSize: "16px",
+                lineHeight: "22px",
+                fontWeight: "400",
               }}
             >
               New venture
             </Typography>
           </a>
         </Link>
-        <Divider sx={{ mt: 1, background: '#DBE1E5' }} />
+        <Divider sx={{ mt: 1, background: "#DBE1E5" }} />
       </Box>
       <Grid container spacing={1} sx={{ mt: 3 }}>
         <Grid item xs={12} sm={12} md={12} lg={3}>
-        <FormControl variant="outlined" sx={{ width: "100%" }}>
-              <Controller
-                name="zip_code"
-                control={control}
-                render={({ field }) => (
-                  <BaseOutlinedZipInput
-                    placeholder={"Zip Code"}
-                    size={"medium"}
-                    onChange={(e) => {
-                      field.onChange(e.target.value);
-                    }}
-                    name={"zip_code"}
-                    value={field.value}
-                    // error={errors.cpf_number ? true : false}
-                  />
-                )}
-              />
-              <Typography
-                variant="inherit"
-                color="textSecondary"
-                sx={{ color: "#b91c1c" }}
-              >
-                {errors.zip_code?.message}
-              </Typography>
-            </FormControl>
+          <FormControl variant="outlined" sx={{ width: "100%" }}>
+            <Controller
+              name="zip_code"
+              control={control}
+              render={({ field }) => (
+                <BaseOutlinedZipInput
+                  placeholder={"Zip Code*"}
+                  size={"medium"}
+                  onChange={(e) => {
+                    field.onChange(e.target.value);
+                  }}
+                  name={"zip_code"}
+                  value={field.value}
+                  // error={errors.cpf_number ? true : false}
+                />
+              )}
+            />
+            <Typography
+              variant="inherit"
+              color="textSecondary"
+              sx={{ color: "#b91c1c" }}
+            >
+              {errors.zip_code?.message}
+            </Typography>
+          </FormControl>
         </Grid>
         <Grid item xs={12} sm={12} md={12} lg={6}>
-        <Controller
-              name="address"
-              control={control}
-              defaultValue={""}
-              render={({ field }) => (
-                <BaseTextField
-                  size={"medium"}
-                  placeholder={"Address"}
-                  onChange={(e) => {
-                    field.onChange(e.target.value);
-                  }}
-                  name={"address"}
-                  value={field.value}
-                />
-              )}
-            />
-            <Typography
-              variant="inherit"
-              color="textSecondary"
-              sx={{ color: "#b91c1c" }}
-            >
-              {errors.address?.message}
-            </Typography>
+          <Controller
+            name="address"
+            control={control}
+            defaultValue={""}
+            render={({ field }) => (
+              <BaseTextField
+                size={"medium"}
+                placeholder={"Address*"}
+                onChange={(e) => {
+                  field.onChange(e.target.value);
+                }}
+                name={"address"}
+                value={field.value}
+              />
+            )}
+          />
+          <Typography
+            variant="inherit"
+            color="textSecondary"
+            sx={{ color: "#b91c1c" }}
+          >
+            {errors.address?.message}
+          </Typography>
         </Grid>
         <Grid item xs={12} sm={12} md={12} lg={3}>
-        <Controller
-              name="number"
-              control={control}
-              defaultValue={""}
-              render={({ field }) => (
-                <BaseTextField
-                  size={"medium"}
-                  placeholder={"Number"}
-                  onChange={(e) => {
-                    field.onChange(e.target.value);
-                  }}
-                  name={"number"}
-                  type={"number"}
-                  value={field.value}
-                />
-              )}
-            />
-            <Typography
-              variant="inherit"
-              color="textSecondary"
-              sx={{ color: "#b91c1c" }}
-            >
-              {errors.number?.message}
-            </Typography>
+          <Controller
+            name="number"
+            control={control}
+            defaultValue={""}
+            render={({ field }) => (
+              <BaseTextField
+                size={"medium"}
+                placeholder={"Number*"}
+                onChange={(e) => {
+                  field.onChange(e.target.value);
+                }}
+                name={"number"}
+                type={"number"}
+                value={field.value}
+              />
+            )}
+          />
+          <Typography
+            variant="inherit"
+            color="textSecondary"
+            sx={{ color: "#b91c1c" }}
+          >
+            {errors.number?.message}
+          </Typography>
         </Grid>
       </Grid>
       <Grid container spacing={1} sx={{ mt: 3 }}>
         <Grid item xs={12} sm={12} md={12} lg={4}>
-        <Controller
-              name="neighbourhood"
-              control={control}
-              defaultValue={""}
-              render={({ field }) => (
-                <BaseTextField
-                  size={"medium"}
-                  placeholder={"Neighbourhood"}
-                  onChange={(e) => {
-                    field.onChange(e.target.value);
-                  }}
-                  name={"neighbourhood"}
-                  value={field.value}
-                />
-              )}
-            />
-            <Typography
-              variant="inherit"
-              color="textSecondary"
-              sx={{ color: "#b91c1c" }}
-            >
-              {errors.neighbourhood?.message}
-            </Typography>
+          <Controller
+            name="neighbourhood"
+            control={control}
+            defaultValue={""}
+            render={({ field }) => (
+              <BaseTextField
+                size={"medium"}
+                placeholder={"Neighbourhood*"}
+                onChange={(e) => {
+                  field.onChange(e.target.value);
+                }}
+                name={"neighbourhood"}
+                value={field.value}
+              />
+            )}
+          />
+          <Typography
+            variant="inherit"
+            color="textSecondary"
+            sx={{ color: "#b91c1c" }}
+          >
+            {errors.neighbourhood?.message}
+          </Typography>
         </Grid>
         <Grid item xs={12} sm={12} md={12} lg={8}>
-        <Controller
-              name="complement"
-              control={control}
-              defaultValue={""}
-              render={({ field }) => (
-                <BaseTextField
-                  size={"medium"}
-                  placeholder={"Complement"}
-                  onChange={(e) => {
-                    field.onChange(e.target.value);
-                  }}
-                  name={"complement"}
-                  value={field.value}
-                />
-              )}
-            />
-            <Typography
-              variant="inherit"
-              color="textSecondary"
-              sx={{ color: "#b91c1c" }}
-            >
-              {errors.complement?.message}
-            </Typography>
+          <Controller
+            name="complement"
+            control={control}
+            defaultValue={""}
+            render={({ field }) => (
+              <BaseTextField
+                size={"medium"}
+                placeholder={"Complement"}
+                onChange={(e) => {
+                  field.onChange(e.target.value);
+                }}
+                name={"complement"}
+                value={field.value}
+              />
+            )}
+          />
+          <Typography
+            variant="inherit"
+            color="textSecondary"
+            sx={{ color: "#b91c1c" }}
+          >
+            {errors.complement?.message}
+          </Typography>
         </Grid>
       </Grid>
       <Grid container spacing={1} sx={{ mt: 3 }}>
         <Grid item xs={12} sm={12} md={12} lg={6}>
-        <Controller
-              name="city"
-              control={control}
-              defaultValue={""}
-              render={({ field }) => (
-                <BaseTextField
-                  size={"medium"}
-                  placeholder={"City"}
-                  onChange={(e) => {
-                    field.onChange(e.target.value);
-                  }}
-                  name={"city"}
-                  value={field.value}
-                />
-              )}
-            />
-            <Typography
-              variant="inherit"
-              color="textSecondary"
-              sx={{ color: "#b91c1c" }}
-            >
-              {errors.city?.message}
-            </Typography>
+          <Controller
+            name="city"
+            control={control}
+            defaultValue={""}
+            render={({ field }) => (
+              <BaseTextField
+                size={"medium"}
+                placeholder={"City*"}
+                onChange={(e) => {
+                  field.onChange(e.target.value);
+                }}
+                name={"city"}
+                value={field.value}
+              />
+            )}
+          />
+          <Typography
+            variant="inherit"
+            color="textSecondary"
+            sx={{ color: "#b91c1c" }}
+          >
+            {errors.city?.message}
+          </Typography>
         </Grid>
         <Grid item xs={12} sm={12} md={12} lg={6}>
-        <Controller
-              name="state"
-              control={control}
-              defaultValue={""}
-              render={({ field }) => (
-                <BaseAutocomplete
-                  //   sx={{ margin: "0.6vh 0" }}
-                  options={allStateData || []}
-                  getOptionLabel={(option) => option.name || ""}
-                  isOptionEqualToValue={(option, value) =>
-                    option.id === value.id
-                  }
-                  size={"medium"}
-                  placeholder={"State"}
-                  onChange={(e, v, r, d) => field.onChange(v)}
-                  value={field.value}
-                />
-              )}
-            />
-
-
+          <Controller
+            name="state"
+            control={control}
+            // defaultValue={{}}
+            render={({ field }) => (
+              <BaseAutocomplete
+                //   sx={{ margin: "0.6vh 0" }}
+                options={allStateData || []}
+                getOptionLabel={(option) => option.name || ""}
+                isOptionEqualToValue={(option, value) => option.id === value.id}
+                size={"medium"}
+                placeholder={"State*"}
+                onChange={(e, v, r, d) => field.onChange(v)}
+                value={field.value || null}
+              />
+            )}
+          />
+          <Typography
+            variant="inherit"
+            color="textSecondary"
+            sx={{ color: "#b91c1c" }}
+          >
+            {errors.state?.message}
+          </Typography>
         </Grid>
       </Grid>
     </Box>
-  )
+  );
 }
 
-export default Address
+export default Address;
 const top100Films = [
-  { label: 'The Shawshank Redemption', year: 1994 },
-  { label: 'The Godfather', year: 1972 },
-  { label: 'The Godfather: Part II', year: 1974 },
-  { label: 'The Dark Knight', year: 2008 },
-  { label: '12 Angry Men', year: 1957 },
-  { label: "Schindler's List", year: 1993 },
-  { label: 'Pulp Fiction', year: 1994 },
-]
+  { label: "Buyer's agent agreement", year: 1994 },
+  { label: "Purchase Agreement", year: 1972 },
+  { label: "Building Approval Plan", year: 1974 },
+  { label: " Land Receipts", year: 2008 },
+];
