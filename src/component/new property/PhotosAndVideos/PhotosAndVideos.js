@@ -20,6 +20,8 @@ import { Controller } from "react-hook-form";
 import { useDispatch, useSelector } from "react-redux";
 import { GetPhotoTypeData } from "../../../redux/photo/actions";
 import CancelOutlinedIcon from "@mui/icons-material/CancelOutlined";
+import { _baseURL } from "../../../../consts";
+import { useRouter } from "next/router";
 
 const baseStyle = {
   flex: 1,
@@ -64,7 +66,7 @@ function PhotosAndVideos({
   remove,
 }) {
   const dispatch = useDispatch();
-
+  const { query } = useRouter();
   useEffect(() => {
     dispatch(GetPhotoTypeData());
   }, [dispatch]);
@@ -113,6 +115,10 @@ function PhotosAndVideos({
     }),
     [isDragActive, isDragReject, isDragAccept]
   );
+
+  const myLoader = ({ src }) => {
+    return `${_baseURL}/storage/${src}`;
+  };
 
   return (
     <Box sx={{ mt: 4 }}>
@@ -190,21 +196,19 @@ function PhotosAndVideos({
         >
           select images
         </Button>
-        {imageError && (
-          <Typography
-            variant="inherit"
-            color="textSecondary"
-            sx={{ color: "#b91c1c" }}
-          >
-            {imageErrorMessage}
-          </Typography>
-        )}
+        <Typography
+          variant="inherit"
+          color="textSecondary"
+          sx={{ color: "#b91c1c" }}
+        >
+          {errors?.images?.message}
+        </Typography>
       </Box>
 
-      {files.length > 0 && (
+      {files?.length > 0 && (
         <Grid container spacing={1} sx={{ mt: 3 }}>
-          {files.map((file, index) => (
-            <Grid item xs={12} sm={12} md={4} lg={3} xl={3} key={index}>
+          {files?.map((file, index) => (
+            <Grid item xs={12} sm={12} md={4} lg={3} xl={3} key={file.id}>
               <Box
                 sx={{
                   p: 2,
@@ -232,10 +236,11 @@ function PhotosAndVideos({
                   />
                 </Grid>
                 <Image
-                  src={file.preview}
+                  loader={myLoader}
+                  src={file?.preview || file?.file_path}
                   height={70}
                   width={100}
-                  layout="responsive"
+                  // layout="responsive"
                   alt="file"
                 />
                 {/* <Autocomplete
@@ -252,7 +257,7 @@ function PhotosAndVideos({
                 <Controller
                   name={`title_${index}`}
                   control={control}
-                  defaultValue={photoType[0] || {}}
+                  defaultValue={photoType[0] || file.photo_type}
                   render={({ field }) => (
                     <BaseAutocomplete
                       //   sx={{ margin: "0.6vh 0" }}
@@ -260,7 +265,7 @@ function PhotosAndVideos({
                       getOptionLabel={(option) => option.name || ""}
                       sx={{ mt: 2 }}
                       isOptionEqualToValue={(option, value) =>
-                        option.slug === value.slug
+                        option.id === value.id
                       }
                       size={"small"}
                       placeholder={"Convenient"}
@@ -317,6 +322,7 @@ function PhotosAndVideos({
                 size={"medium"}
                 placeholder={"paste the url of the video"}
                 onChange={field.onChange}
+                value={field.value}
               />
             )}
           />
@@ -352,7 +358,7 @@ function PhotosAndVideos({
                   borderRadius: "0px 4px 4px 0px",
                 },
               }}
-              onClick={() => append({ url: "", title: "" })}
+              onClick={() => append({ url: "", title: null })}
             >
               <AddOutlinedIcon sx={{ color: "#002152" }} />
             </Button>

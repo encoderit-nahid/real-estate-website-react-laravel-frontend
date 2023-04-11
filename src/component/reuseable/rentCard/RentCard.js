@@ -19,9 +19,9 @@ function RentCard({ propertyData }) {
   console.log("thirdCard");
   const [progress, setProgress] = React.useState(87);
 
-  const myLoader=({src})=>{
+  const myLoader = ({ src }) => {
     return `${_baseURL}/storage/${propertyData?.attachments[0]?.file_path}`;
-  }
+  };
   return (
     <Box
       sx={{
@@ -245,18 +245,16 @@ function RentCard({ propertyData }) {
                 </Button>
                 {/* </a> */}
               </Link>
-              <Button
-                sx={{
-                  color: "#002152",
-                  fontSize: "14px",
-                  lineHeight: "18px",
-                  fontWeight: "600",
-                  background: "#F2F5F6",
-                  borderRadius: "4px",
-                  //   padding: "8px 20px",
-                  textTransform: "none",
-                  ml: 1,
-                  "&:hover": {
+              <Link
+                href={{
+                  pathname: "/my_properties/new_property",
+                  query: omitEmpties({
+                    property_id: propertyData?.id,
+                  }),
+                }}
+              >
+                <Button
+                  sx={{
                     color: "#002152",
                     fontSize: "14px",
                     lineHeight: "18px",
@@ -266,11 +264,22 @@ function RentCard({ propertyData }) {
                     //   padding: "8px 20px",
                     textTransform: "none",
                     ml: 1,
-                  },
-                }}
-              >
-                Edit
-              </Button>
+                    "&:hover": {
+                      color: "#002152",
+                      fontSize: "14px",
+                      lineHeight: "18px",
+                      fontWeight: "600",
+                      background: "#F2F5F6",
+                      borderRadius: "4px",
+                      //   padding: "8px 20px",
+                      textTransform: "none",
+                      ml: 1,
+                    },
+                  }}
+                >
+                  Edit
+                </Button>
+              </Link>
             </Box>
           </Grid>
         </Grid>

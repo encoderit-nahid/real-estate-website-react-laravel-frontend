@@ -2,6 +2,7 @@ import { Box, Button, Grid, Typography } from "@mui/material";
 import Image from "next/image";
 import React from "react";
 import submitProperty from "../../../../public/Images/animation_500_koervb1n 2.png";
+import Link from "next/link";
 
 function PropertySubmittedModal({ handleClose }) {
   const style = {
@@ -51,19 +52,20 @@ function PropertySubmittedModal({ handleClose }) {
             Property submitted for approval
           </Typography>
         </Grid>
-        <Button
-          onClick={handleClose}
-          fullWidth
-          sx={{
-            mt: 1,
-            py: 1,
-            background: "#34BE84",
-            color: "#ffffff",
-            fontSize: "16px",
-            fontWeight: "600",
-            lineHeight: "22px",
-            textTransform: "none",
-            "&:hover": {
+        <Link href="/my_properties">
+          <Button
+            onClick={handleClose}
+            fullWidth
+            sx={{
+              mt: 1,
+              py: 1,
+              background: "#34BE84",
+              color: "#ffffff",
+              fontSize: "16px",
+              fontWeight: "600",
+              lineHeight: "22px",
+              textTransform: "none",
+              "&:hover": {
                 mt: 1,
                 py: 1,
                 background: "#34BE84",
@@ -72,12 +74,13 @@ function PropertySubmittedModal({ handleClose }) {
                 fontWeight: "600",
                 lineHeight: "22px",
                 textTransform: "none",
-            }
-          }}
-          // onClick={handleProposalClose}
-        >
-          Continue
-        </Button>
+              },
+            }}
+            // onClick={handleProposalClose}
+          >
+            Continue
+          </Button>
+        </Link>
       </Box>
     </Box>
   );

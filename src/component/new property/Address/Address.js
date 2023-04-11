@@ -70,6 +70,7 @@ function Address({
   setDocuments,
 }) {
   const dispatch = useDispatch();
+  console.log({ documents });
 
   useEffect(() => {
     dispatch(findPropertyTypeData());
@@ -208,9 +209,9 @@ function Address({
           select documents
         </Button>
       </Box>
-      {documents.length > 0 && (
+      {documents?.length > 0 && (
         <Grid container spacing={1} sx={{ mt: 3 }}>
-          {files.map((file, index) => (
+          {documents?.map((file, index) => (
             <Grid item xs={12} sm={12} md={4} lg={3} xl={3} key={index}>
               <Box
                 sx={{
@@ -361,7 +362,7 @@ function Address({
             </Typography>
             <Box sx={{ mt: 1 }}>
               <Grid container spacing={1}>
-                {["Residence", "Commercial"].map((data, index) => (
+                {["Residential", "Commercial"].map((data, index) => (
                   <Grid item xs={6} key={index}>
                     <Button
                       onClick={() => setPropertyType(data)}
@@ -504,7 +505,7 @@ function Address({
             size={"medium"}
             placeholder={"Select Enterprise Name*"}
             onChange={(e, v, r, d) => field.onChange(v)}
-            value={field.value}
+            value={field.value || null}
           />
         )}
       />
@@ -556,6 +557,7 @@ function Address({
             <Controller
               name="zip_code"
               control={control}
+              defaultValue={""}
               render={({ field }) => (
                 <BaseOutlinedZipInput
                   placeholder={"Zip Code*"}

@@ -1,6 +1,13 @@
 import Head from "next/head";
 import Image from "next/image";
-import { Button, Container, Grid, Tooltip, Typography } from "@mui/material";
+import {
+  Button,
+  CircularProgress,
+  Container,
+  Grid,
+  Tooltip,
+  Typography,
+} from "@mui/material";
 import { Box } from "@mui/material";
 import ResponsiveDrawer from "../../../src/component/sharedProposal/ResponsiveDrawer/ResponsiveDrawer";
 import logo from "../../../public/Images/logo.png";
@@ -27,6 +34,8 @@ import { findProjectsData } from "../../../src/redux/projects/actions";
 import { findPropertyTypeData } from "../../../src/redux/propertyType/actions";
 import { propertyCreateApi } from "../../../src/api";
 import { serialize } from "object-to-formdata";
+import { useRouter } from "next/router";
+import { findSinglePropertyData } from "../../../src/redux/singleProperty/actions";
 
 const drawerWidth = 240;
 
@@ -123,12 +132,23 @@ const validationSchema = Yup.object().shape({
 export default function NewProperty(props) {
   const { data: session } = useSession();
   console.log({ session });
+  const { query } = useRouter();
+  console.log({ query });
+  const dispatch = useDispatch();
+  useEffect(() => {
+    dispatch(findSinglePropertyData(query?.property_id));
+  }, [dispatch, query?.property_id]);
+  const singleData = useSelector(
+    (state) => state?.singleProperty?.singlePropertyData
+  );
+  console.log({ singleData });
   const {
     register,
     watch,
     control,
     setError,
     setValue,
+    reset,
     handleSubmit,
     formState: { errors },
   } = useForm({
@@ -137,7 +157,7 @@ export default function NewProperty(props) {
       videos: [
         {
           url: "",
-          title: "",
+          title: null,
         },
       ],
     },
@@ -148,17 +168,104 @@ export default function NewProperty(props) {
     control,
     name: "videos",
   });
+  const [loading, setLoading] = useState(false);
+  const [draftloading, setDraftLoading] = useState(false);
   const [activeStep, setActiveStep] = useState(0);
   const [skipped, setSkipped] = useState(new Set());
   const [featuretypes, setFeatureTypes] = useState([]);
   const [documents, setDocuments] = useState([]);
   const [adType, setAdType] = useState("Rent");
-  const [propertyType, setPropertyType] = useState("Residence");
+  const [propertyType, setPropertyType] = useState("Residential");
   const [property_detail_id, setPropertyDetailId] = useState(1);
   const [files, setFiles] = useState([]);
   const [imageError, setImageError] = useState(false);
   const [imageErrorMessage, setImageErrorMessage] = useState("");
+  const [ErrorsData, setErrorsData] = useState(false);
+  const [ErrorMessage, setErrorMessage] = useState({});
   const [maritalStatus, setMaritalStatus] = useState("Married");
+  const [sentModalOpen, setSentModalOpen] = useState(false);
+  const [action, setAction] = useState("");
+  const handleOpen = () => setSentModalOpen(true);
+  const handleClose = () => setSentModalOpen(false);
+
+  useEffect(() => {
+    if (query?.property_id) {
+      setDocuments(singleData?.documents);
+      setValue("project_id", singleData?.project);
+      setValue("zip_code", singleData?.address?.zip_code);
+      setValue("address", singleData?.address?.address);
+      setValue("number", singleData?.address?.number),
+        setValue("neighbourhood", singleData?.address?.neighbourhood);
+      setValue("complement", singleData?.address?.complement);
+      setValue("city", singleData?.address?.city);
+      setValue("complement", singleData?.address?.complement);
+      setValue("state", singleData?.address?.state);
+      setValue("brl_rent", singleData?.brl_rent);
+      setValue("brl_iptu", singleData?.brl_iptu);
+      setValue("condominium", singleData?.condominium);
+      setValue("land_area", singleData?.land_area);
+      setValue("property_area", singleData?.property_area);
+      setValue("no_of_rooms", singleData?.no_of_rooms);
+      setValue("no_of_suites", singleData?.no_of_suites);
+      setValue("no_of_bathrooms", singleData?.no_of_bathrooms);
+      setValue("no_of_parking_spaces", singleData?.no_of_parking_spaces);
+
+      let selectFeatures = [];
+      singleData?.features?.forEach((data) => {
+        selectFeatures.push(data.id);
+      });
+      setFeatureTypes(selectFeatures);
+      let allSelectImages = singleData?.attachments?.filter(
+        (data) => data?.file_type === "image"
+      );
+      console.log({ allSelectImages });
+      setFiles(allSelectImages);
+
+      let allSelectVideos = singleData?.attachments?.filter(
+        (data) => data?.file_type === "url"
+      );
+      console.log({ allSelectImages });
+
+      const urlEditData = allSelectVideos?.map((info) => {
+        return {
+          url: info?.file_path,
+          title: info?.photo_type,
+        };
+      });
+      setValue("videos", urlEditData);
+      setValue("owner_name", singleData?.property_owner?.name);
+      setValue("owner_rg", singleData?.property_owner?.rg);
+      setValue("owner_cpf", singleData?.property_owner?.cpf);
+      setValue("owner_spouse_name", singleData?.property_owner?.spouse_name);
+      setValue("owner_spouse_rg", singleData?.property_owner?.spouse_rg);
+      setValue("owner_spouse_cpf", singleData?.property_owner?.spouse_cpf);
+      setValue("owner_zip_code", singleData?.property_owner?.address?.zip_code);
+      setValue("owner_address", singleData?.property_owner?.address?.address);
+      setValue("owner_number", singleData?.property_owner?.address?.number);
+      setValue(
+        "owner_neighbourhood",
+        singleData?.property_owner?.address?.neighbourhood
+      );
+      setValue("owner_city", singleData?.property_owner?.address?.city);
+      setValue("owner_state", singleData?.property_owner?.address?.state);
+      setValue(
+        "owner_complement",
+        singleData?.property_owner?.address?.complement
+      );
+      setValue(
+        "owner_registry",
+        singleData?.property_owner?.address?.registry?.registry_office
+      );
+      // setValue(
+      //   "owner_documentation",
+      //   singleData?.property_owner?.address?.registry?.title
+      // );
+      setValue(
+        "owner_registration",
+        singleData?.property_owner?.address?.registry?.registration
+      );
+    }
+  }, [query?.property_id, setValue, singleData]);
 
   const isStepOptional = (step) => {
     return step === 1;
@@ -204,7 +311,7 @@ export default function NewProperty(props) {
 
   const omitEmpties = (obj) => {
     return Object.entries(obj).reduce((carry, [key, value]) => {
-      if (![null, undefined, "", []].includes(value)) {
+      if (![null, undefined, "", [], {}].includes(value)) {
         carry[key] = value;
       }
       return carry;
@@ -216,19 +323,18 @@ export default function NewProperty(props) {
   console.log({ files });
 
   const onSubmit = async (data) => {
+    action === "new" ? setLoading(true) : setDraftLoading(true);
     console.log({ data });
-    // if (files.length > 0) {
-    // setLoading(true);
+    // if (files.length > 0 && featuretypes.length > 0) {
     let newArr = [];
     files?.forEach((data, index) => {
       newArr.push({ file: data, title: allValues[`title_${index}`].slug });
     });
     console.log(newArr);
-
-    const requireData = {
-      user_id: session?.user?.userId,
-      project_id: data?.project_id?.id,
-      property_detail_id: property_detail_id,
+    const firstPartData = omitEmpties({
+      user_id: +session?.user?.userId,
+      project_id: +data?.project_id?.id,
+      property_detail_id: +property_detail_id,
       ad_type: adType.toLocaleLowerCase(),
       property_type: propertyType.toLocaleLowerCase(),
       condominium: data?.condominium,
@@ -241,64 +347,84 @@ export default function NewProperty(props) {
       no_of_bathrooms: data?.no_of_bathrooms,
       no_of_parking_spaces: data?.no_of_parking_spaces,
       features: featuretypes,
+      status: action,
+      document_file: documents,
+      content_url: data?.videos,
+      images: newArr,
       // documents: "",
       // registry: "",
       // registration_number: "",
-      address: {
-        zip_code: data?.zip_code,
-        address: data?.address,
-        city: data?.city,
-        state_id: data?.state?.id,
-        number: data?.number,
-        neighbourhood: data?.neighbourhood,
-        complement: data?.complement,
-      },
-      content_url: data?.videos,
-      images: newArr,
+    });
+
+    const addressData = omitEmpties({
+      zip_code: data?.zip_code,
+      address: data?.address,
+      city: data?.city,
+      state_id: data?.state?.id,
+      number: data?.number,
+      neighbourhood: data?.neighbourhood,
+      complement: data?.complement,
+    });
+
+    const registryData = omitEmpties({
+      registry_office: data?.registry,
+      registry_number: data?.registry_number,
+      document_title: data?.documentation,
+    });
+
+    const ownerData = omitEmpties({
+      maritalStatus: maritalStatus,
+      name: data?.owner_name,
+      rg: data?.owner_rg,
+      cpf: data?.owner_cpf,
+      spouse_name: data?.owner_spouse_name,
+      spouse_rg: data?.owner_spouse_rg,
+      spouse_cpf: data?.owner_spouse_cpf,
+    });
+
+    const ownerDataAddress = omitEmpties({
+      zip_code: data?.owner_zip_code,
+      address: data?.owner_address,
+      city: data?.owner_city,
+      state_id: data?.owner_state?.id,
+      number: data?.number,
+      neighbourhood: data?.neighbourhood,
+      complement: data?.complement,
+    });
+
+    const ownerRegistryData = omitEmpties({
+      registry_office: data?.registry,
+      registry_number: data?.registry_number,
+      document_title: data?.documentation,
+    });
+    const requireData = {
+      ...firstPartData,
+      registry_data: registryData,
+      address: addressData,
       owner_datas: {
-        maritalStatus: maritalStatus,
-        name: data?.owner_name,
-        rg: data?.owner_rg,
-        cpf: data?.owner_cpf,
-        spouse_name: data?.owner_spouse_name,
-        spouse_rg: data?.owner_spouse_rg,
-        spouse_cpf: data?.owner_spouse_cpf,
-        address: {
-          zip_code: data?.owner_zip_code,
-          address: data?.owner_address,
-          city: data?.owner_city,
-          state_id: data?.state?.id,
-          number: data?.number,
-          neighbourhood: data?.neighbourhood,
-          complement: data?.complement,
-        },
+        ...ownerData,
+        address: ownerDataAddress,
+        registry_data: ownerRegistryData,
       },
     };
     console.log({ requireData });
 
     const formData = serialize(requireData, { indices: true });
     const [error, response] = await propertyCreateApi(formData);
+    setLoading(false);
+    setDraftLoading(false);
     if (!error) {
-      console.log(response);
+      // console.log(response);
+      setSentModalOpen(true);
+      reset();
+    } else {
+      const errors = error?.response?.data?.errors ?? {};
+      Object.entries(errors).forEach(([name, messages]) => {
+        setError(name, { type: "manual", message: messages[0] });
+      });
     }
-    // setLoading(false);
-    // if (!error) {
-    //   setSentModalOpen(true);
-    // } else {
-    //   const errors = error?.response?.data?.errors ?? {};
-    //   Object.entries(errors).forEach(([name, messages]) => {
-    //     setError(name, { type: "manual", message: messages[0] });
-    //   });
-    // }
-    // } else {
-    //   setImageError(true);
-    //   setImageErrorMessage("Image file is required");
-    // }
   };
 
-  const [sentModalOpen, setSentModalOpen] = useState(false);
-  const handleOpen = () => setSentModalOpen(true);
-  const handleClose = () => setSentModalOpen(false);
   return (
     <div>
       <Head>
@@ -494,6 +620,8 @@ export default function NewProperty(props) {
                         {activeStep === steps.length - 1 && (
                           <Box>
                             <Button
+                              type="submit"
+                              onClick={() => setAction("draft")}
                               sx={{
                                 background: "#DBE1E5",
                                 borderRadius: "4px",
@@ -520,10 +648,14 @@ export default function NewProperty(props) {
                                 },
                               }}
                             >
-                              Save as draft
+                              {draftloading && (
+                                <CircularProgress size={22} color="inherit" />
+                              )}
+                              {!draftloading && "Save as draft"}
                             </Button>
                             <Button
                               type="submit"
+                              onClick={() => setAction("new")}
                               sx={{
                                 background: "#7450F0",
                                 borderRadius: "4px",
@@ -551,7 +683,10 @@ export default function NewProperty(props) {
                                 },
                               }}
                             >
-                              Submit Approval
+                              {loading && (
+                                <CircularProgress size={22} color="inherit" />
+                              )}
+                              {!loading && "Submit Approval"}
                             </Button>
                           </Box>
                         )}

@@ -46,7 +46,7 @@ const PropertyFeature = [
   "fireplace",
   "furnish",
 ];
-function Features({ featuretypes, setFeatureTypes }) {
+function Features({ featuretypes, setFeatureTypes, errors }) {
   const [item, setItem] = useState("");
   const dispatch = useDispatch();
   useEffect(() => {
@@ -181,6 +181,14 @@ function Features({ featuretypes, setFeatureTypes }) {
           ))}
         </Grid>
       )}
+
+      <Typography
+        variant="inherit"
+        color="textSecondary"
+        sx={{ color: "#b91c1c" }}
+      >
+        {errors?.features?.message}
+      </Typography>
       <Grid
         container
         direction="row"
