@@ -60,7 +60,7 @@ function LeftBar(props) {
   const data = [
     {
       icon: <CampaignOutlinedIcon />,
-      label: "properties",
+      label: "Properties",
       route: "my_properties",
     },
     {

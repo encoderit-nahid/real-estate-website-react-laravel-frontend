@@ -9,6 +9,10 @@ import Footer from "../../shared/Footer/Footer";
 import { _baseURL } from "../../../../consts";
 
 function HouseCard({ shadow, marginTop, propertyInfo }) {
+  const myLoader = ({ src }) => {
+    return `${_baseURL}/storage/${src}`;
+  };
+
   return (
     <Box
       sx={{
@@ -23,7 +27,8 @@ function HouseCard({ shadow, marginTop, propertyInfo }) {
       <Box sx={{ width: "100%" }}>
         {/* <Image src={houseImage} layout="responsive" alt="house" /> */}
         <Image
-          src={ propertyInfo?.attachments[0]?.file_path != null ? `${_baseURL}/storage/${propertyInfo?.attachments[0]?.file_path}` : houseImage}
+          loader={myLoader}
+          src={`${propertyInfo?.attachments[0]?.file_path}`}
           width={500}
           height={400}
           alt="house"

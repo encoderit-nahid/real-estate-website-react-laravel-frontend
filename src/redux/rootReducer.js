@@ -9,6 +9,7 @@ import ProjectPropertyReducer from "./projectProperty/reducer";
 import PropertyStatusReducer from "./propertyStatus/reducer";
 import singlePropertyReducer from "./singleProperty/reducer";
 import ButtonReducer from "./featureWithoutGroup/reducer";
+import PropertyAcceptReducer from "./proposalAccept/reducer";
 
 const RootReducer = combineReducers({
   state: StateReducer,
@@ -20,6 +21,7 @@ const RootReducer = combineReducers({
   propertyStatus: PropertyStatusReducer,
   singleProperty: singlePropertyReducer,
   featureButton: ButtonReducer,
+  propertyAccept: PropertyAcceptReducer,
 
   // Auth: AuthReducer,
   // userDetails: UserReducer,

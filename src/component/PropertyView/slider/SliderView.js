@@ -94,6 +94,10 @@ function SliderView({
     console.log(data);
     setSideTabValue(data);
   };
+
+  const myLoader = ({ src }) => {
+    return `${_baseURL}/storage/${src}`;
+  };
   return (
     <Box
       sx={{
@@ -278,7 +282,8 @@ function SliderView({
       <TabPanel value={value} index={0}>
         {selectImage != null ? (
           <Image
-            src={`${_baseURL}/storage/${selectImage}`}
+            loader={myLoader}
+            src={`${selectImage}`}
             alt="home"
             width={800}
             height={400}
@@ -329,7 +334,8 @@ function SliderView({
       <TabPanel value={value} index={2}>
         {selectImage != null ? (
           <Image
-            src={`${_baseURL}/storage/${selectImage}`}
+            loader={myLoader}
+            src={`${selectImage}`}
             alt="home"
             width={800}
             height={400}

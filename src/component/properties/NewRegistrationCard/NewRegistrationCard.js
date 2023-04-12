@@ -6,7 +6,7 @@ import {
   LinearProgress,
   Typography,
 } from "@mui/material";
-import React from "react";
+import React, { useState } from "react";
 import rentImage from "../../../../public/Images/rentImage.png";
 import Image from "next/image";
 import Link from "next/link";
@@ -20,13 +20,17 @@ function NewRegistrationCard({ propertyData, newProperty }) {
   console.log("newCard");
   const [progress, setProgress] = React.useState(87);
   const dispatch = useDispatch();
+  const [approveid, setApproveId] = useState("");
+  const [rejectid, setRejectId] = useState("");
 
   const handleReject = (id) => {
+    setRejectId(id);
     dispatch(ChangePropertyStatus({ property_id: id, status: "rejected" }));
     // dispatch(findPropertyData({ status: "new", page: 1, per_page: 9 }));
   };
 
   const handleApprove = (id) => {
+    setApproveId(id);
     dispatch(ChangePropertyStatus({ property_id: id, status: "approved" }));
     // dispatch(findPropertyData({ status: "new", page: 1, per_page: 9 }));
   };
@@ -41,9 +45,9 @@ function NewRegistrationCard({ propertyData, newProperty }) {
 
   console.log({ approveLoading, rejectLoading });
 
-  const myLoader=({src})=>{
+  const myLoader = ({ src }) => {
     return `${_baseURL}/storage/${propertyData?.attachments[0]?.file_path}`;
-  }
+  };
 
   return (
     <Box
@@ -259,10 +263,11 @@ function NewRegistrationCard({ propertyData, newProperty }) {
                   },
                 }}
               >
-                {rejectLoading && (
-                  <CircularProgress size={22} sx={{ color: "red" }} />
+                {rejectLoading && rejectid === propertyData.id ? (
+                  <CircularProgress size={22} color="inherit" />
+                ) : (
+                  "Reject"
                 )}
-                {!rejectLoading && "Reject"}
               </Button>
               <Button
                 variant="contained"
@@ -316,10 +321,11 @@ function NewRegistrationCard({ propertyData, newProperty }) {
                   },
                 }}
               >
-                {approveLoading && (
+                {approveLoading && approveid === propertyData.id ? (
                   <CircularProgress size={22} color="inherit" />
+                ) : (
+                  "Approve"
                 )}
-                {!approveLoading && "Approve"}
               </Button>
             </Box>
           </Grid>

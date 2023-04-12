@@ -320,12 +320,12 @@ export default function PropertyView({
             <Grid item xs={12} sm={12} md={12} lg={9} xl={9}>
               <Features singlePropertyData={singlePropertyData} />
 
-              {Object.keys(singlePropertyData?.propertyFeature).map(
+              {Object.keys(singlePropertyData?.propertyFeatures).map(
                 (key, index) => (
                   <AboutProperty
                     key={index}
                     name={key}
-                    array={singlePropertyData?.propertyFeature[key]}
+                    array={singlePropertyData?.propertyFeatures[key]}
                   />
                 )
               )}

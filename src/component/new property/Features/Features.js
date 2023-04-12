@@ -57,6 +57,12 @@ function Features({ featuretypes, setFeatureTypes, errors }) {
 
   const loading = useSelector((state) => state.featureButton?.loading);
 
+  useEffect(() => {
+    if (featuretypes.length > 0) {
+      delete errors.features;
+    }
+  }, [featuretypes, errors]);
+
   const handleAddFeature = () => {
     if (item.length > 0) {
       console.log(item);

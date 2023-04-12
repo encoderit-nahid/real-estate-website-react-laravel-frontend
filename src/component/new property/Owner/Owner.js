@@ -509,7 +509,7 @@ function Owner({ control, errors, maritalStatus, setMaritalStatus }) {
                 size={"medium"}
                 placeholder={"Documents"}
                 onChange={(e, v, r, d) => field.onChange(v)}
-                value={field.value || null}
+                value={field.value}
               />
             )}
           />

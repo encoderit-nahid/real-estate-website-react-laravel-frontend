@@ -214,3 +214,13 @@ export const propertyCreateApi = async (body) => {
     return [error, null];
   }
 };
+
+//accept_proposal
+export const proposalAcceptApi = async (body) => {
+  try {
+    const response = await apiInstance.post(`proposal/accept`, body);
+    return [false, response];
+  } catch (error) {
+    return [error, null];
+  }
+};

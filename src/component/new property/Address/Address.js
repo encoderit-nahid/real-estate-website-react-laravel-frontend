@@ -208,6 +208,13 @@ function Address({
         >
           select documents
         </Button>
+        <Typography
+          variant="inherit"
+          color="textSecondary"
+          sx={{ color: "#b91c1c" }}
+        >
+          {errors?.document_files?.message}
+        </Typography>
       </Box>
       {documents?.length > 0 && (
         <Grid container spacing={1} sx={{ mt: 3 }}>

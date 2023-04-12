@@ -297,7 +297,7 @@ function ValuesAndDescription({ control, errors }) {
       <Grid container spacing={1} sx={{ mt: 2 }}>
         <Grid item xs={12} sm={12} md={12} lg={5}>
           <Controller
-            name="documnentation"
+            name="documentation"
             control={control}
             render={({ field }) => (
               <BaseAutocomplete
@@ -350,7 +350,7 @@ function ValuesAndDescription({ control, errors }) {
         </Grid>
         <Grid item xs={12} sm={12} md={12} lg={5}>
           <Controller
-            name="registartion_number"
+            name="registration_number"
             control={control}
             defaultValue={""}
             render={({ field }) => (

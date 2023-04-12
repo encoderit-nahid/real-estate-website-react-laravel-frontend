@@ -18,6 +18,7 @@ import Pendants from "../../src/component/proposals/pendants/Pendants";
 import Accepted from "../../src/component/proposals/accepted/Accepted";
 import Completed from "../../src/component/proposals/completed/Completed";
 import { getSession } from "next-auth/react";
+import { useRouter } from "next/router";
 
 const drawerWidth = 240;
 
@@ -55,10 +56,28 @@ function a11yProps(index) {
 }
 
 export default function Proposals(props) {
-  const [value, setValue] = useState(0);
+  const router = useRouter();
+  const { query } = router;
+  console.log({ query });
+
+  const [value, setValue] = useState(+query?.value || 0);
 
   const handleChange = (event, newValue) => {
     setValue(newValue);
+    newValue === 1
+      ? router.replace({
+          pathname: "/proposals",
+          query: { status: "completed", page: 1, per_page: 9, value: newValue },
+        })
+      : newValue === 2
+      ? router.replace({
+          pathname: "/proposals",
+          query: { status: "accepted", page: 1, per_page: 9, value: newValue },
+        })
+      : router.replace({
+          pathname: "/proposals",
+          query: { page: 1, per_page: 9, value: newValue },
+        });
   };
   return (
     <div>

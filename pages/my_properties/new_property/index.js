@@ -1,10 +1,12 @@
 import Head from "next/head";
 import Image from "next/image";
 import {
+  Alert,
   Button,
   CircularProgress,
   Container,
   Grid,
+  Stack,
   Tooltip,
   Typography,
 } from "@mui/material";
@@ -111,16 +113,16 @@ const validationSchema = Yup.object().shape({
   ),
   owner_spouse_rg: Yup.string().required("Owner spouse RG is required"),
   owner_spouse_cpf: Yup.string().required("Owner spouse CPF is required"),
-  owner_zip_code: Yup.string().required("Zip code is required"),
-  owner_address: Yup.string().required("Address is required"),
+  owner_zip_code: Yup.string().required("Owner Zip code is required"),
+  owner_address: Yup.string().required("Owner Address is required"),
   owner_number: Yup.number()
     .transform((value) => (Number.isNaN(value) ? null : value))
     .nullable()
-    .required("Number is required"),
-  owner_neighbourhood: Yup.string().required("Neighbourhood is required"),
+    .required("Owner Number is required"),
+  owner_neighbourhood: Yup.string().required("Owner Neighbourhood is required"),
   // owner_complement: Yup.string().required("Complement is required"),
-  owner_city: Yup.string().required("City is required"),
-  owner_state: Yup.object().required("State is required"),
+  owner_city: Yup.string().required("Owner City is required"),
+  owner_state: Yup.object().required("Owner State is required"),
   // owner_documnentation: Yup.object().required("Documentation is required"),
   // owner_registry: Yup.string().required("Registry office is required"),
   // owner_registration_number: Yup.number()
@@ -188,8 +190,32 @@ export default function NewProperty(props) {
   const handleOpen = () => setSentModalOpen(true);
   const handleClose = () => setSentModalOpen(false);
 
+  console.log({ documents });
+
+  useEffect(() => {
+    if (files?.length > 0) {
+      delete errors?.images;
+    }
+  }, [files, errors]);
+
+  useEffect(() => {
+    if (documents?.length > 0) {
+      delete errors?.document_files;
+    }
+  });
+
   useEffect(() => {
     if (query?.property_id) {
+      setAdType(
+        singleData?.ad_type?.charAt(0).toUpperCase() +
+          singleData?.ad_type?.slice(1)
+      );
+      setPropertyType(
+        singleData?.property_type?.charAt(0).toUpperCase() +
+          singleData?.property_type?.slice(1)
+      );
+      setDocuments(singleData?.documents);
+      setPropertyDetailId(+singleData?.property_detail_id);
       setDocuments(singleData?.documents);
       setValue("project_id", singleData?.project);
       setValue("zip_code", singleData?.address?.zip_code);
@@ -254,16 +280,26 @@ export default function NewProperty(props) {
       );
       setValue(
         "owner_registry",
-        singleData?.property_owner?.address?.registry?.registry_office
+        singleData?.property_owner?.registry[0]?.registry_office
       );
-      // setValue(
-      //   "owner_documentation",
-      //   singleData?.property_owner?.address?.registry?.title
-      // );
       setValue(
-        "owner_registration",
-        singleData?.property_owner?.address?.registry?.registration
+        "owner_registration_number",
+        +singleData?.property_owner?.registry[0]?.registry_number
       );
+      setValue("owner_documentation", {
+        label: singleData?.property_owner?.registry[0]?.title,
+        year: "2009",
+      });
+
+      setValue("registry", singleData?.registry?.[0]?.registry_office);
+      setValue(
+        "registration_number",
+        +singleData?.registry?.[0]?.registry_number
+      );
+      setValue("documentation", {
+        label: singleData?.registry?.[0]?.title,
+        year: "2009",
+      });
     }
   }, [query?.property_id, setValue, singleData]);
 
@@ -348,8 +384,8 @@ export default function NewProperty(props) {
       no_of_parking_spaces: data?.no_of_parking_spaces,
       features: featuretypes,
       status: action,
-      document_file: documents,
-      content_url: data?.videos,
+      document_files: documents,
+      content_url: data?.videos[0].url !== "" ? data?.videos : null,
       images: newArr,
       // documents: "",
       // registry: "",
@@ -368,9 +404,11 @@ export default function NewProperty(props) {
 
     const registryData = omitEmpties({
       registry_office: data?.registry,
-      registry_number: data?.registry_number,
-      document_title: data?.documentation,
+      registry_number: data?.registration_number,
+      document_title: data?.documentation?.label,
     });
+
+    console.log({ registryData });
 
     const ownerData = omitEmpties({
       maritalStatus: maritalStatus,
@@ -393,9 +431,9 @@ export default function NewProperty(props) {
     });
 
     const ownerRegistryData = omitEmpties({
-      registry_office: data?.registry,
-      registry_number: data?.registry_number,
-      document_title: data?.documentation,
+      registry_office: data?.owner_registry,
+      registry_number: data?.owner_registration_number,
+      document_title: data?.owner_documnentation?.label,
     });
     const requireData = {
       ...firstPartData,
@@ -536,6 +574,15 @@ export default function NewProperty(props) {
                           maritalStatus={maritalStatus}
                           setMaritalStatus={setMaritalStatus}
                         />
+                      )}
+                      {errors && (
+                        <Stack sx={{ width: "100%", mt: 2 }} spacing={2}>
+                          {Object.keys(errors).map((key, index) => (
+                            <Alert key={index} severity="error">
+                              {errors[key].message}
+                            </Alert>
+                          ))}
+                        </Stack>
                       )}
                       <Grid
                         container

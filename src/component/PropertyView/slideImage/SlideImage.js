@@ -17,6 +17,9 @@ function SlideImage({ Images, setSelectImage }) {
     console.log("file", data.file_path);
     setSelectImage(data?.file_path);
   };
+  const myLoader = ({ src }) => {
+    return `${_baseURL}/storage/${src}`;
+  };
   return (
     <Grid
       container
@@ -27,7 +30,8 @@ function SlideImage({ Images, setSelectImage }) {
       {Images?.map((data, index) => (
         <Box sx={{ mb: 2 }} key={index} onClick={() => handleImageSelect(data)}>
           <Image
-            src={`${_baseURL}/storage/${data.file_path}`}
+            loader={myLoader}
+            src={`${data.file_path}`}
             width={100}
             height={100}
             alt="image"

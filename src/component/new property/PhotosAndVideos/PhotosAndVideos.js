@@ -65,6 +65,8 @@ function PhotosAndVideos({
   append,
   remove,
 }) {
+
+
   const dispatch = useDispatch();
   const { query } = useRouter();
   useEffect(() => {

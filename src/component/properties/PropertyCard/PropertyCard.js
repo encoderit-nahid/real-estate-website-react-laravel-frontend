@@ -5,6 +5,9 @@ import propertyImage from "../../../../public/Images/propertyImage.png";
 import { _baseURL } from "../../../../consts";
 
 function PropertyCard({ srcImage }) {
+  const myLoader = ({ src }) => {
+    return `${_baseURL}/storage/${src}`;
+  };
   return (
     <Box
       sx={{
@@ -24,11 +27,11 @@ function PropertyCard({ srcImage }) {
             }}
           >
             <Image
-              // height={150}
-              // width={250}
-              src={srcImage?.[0]?.file_path != null ?  `${_baseURL}/storage/${srcImage?.[0]?.file_path}` : propertyImage}
+              loader={myLoader}
+              height={150}
+              width={250}
+              src={`${srcImage?.[0]?.file_path}`}
               alt="property"
-              layout="responsive"
             />
           </Box>
           <Box
