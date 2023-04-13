@@ -2,6 +2,7 @@ import { Box, Button, Grid, Typography } from "@mui/material";
 import Image from "next/image";
 import React from "react";
 import submitProposal from "../../../../public/Images/submit_proposal.png";
+import Link from "next/link";
 
 function SendModal({ handleSendModalClose }) {
   const style = {
@@ -51,23 +52,25 @@ function SendModal({ handleSendModalClose }) {
             Against proposal sent!
           </Typography>
         </Grid>
-        <Button
-          onClick={handleSendModalClose}
-          fullWidth
-          sx={{
-            mt: 1,
-            py: 1,
-            background: "#DBE1E5",
-            color: "#1A1859",
-            fontSize: "16px",
-            fontWeight: "600",
-            lineHeight: "22px",
-            textTransform: "none",
-          }}
-          // onClick={handleProposalClose}
-        >
-          Close
-        </Button>
+        <Link href="/proposals">
+          <Button
+            onClick={handleSendModalClose}
+            fullWidth
+            sx={{
+              mt: 1,
+              py: 1,
+              background: "#DBE1E5",
+              color: "#1A1859",
+              fontSize: "16px",
+              fontWeight: "600",
+              lineHeight: "22px",
+              textTransform: "none",
+            }}
+            // onClick={handleProposalClose}
+          >
+            Close
+          </Button>
+        </Link>
       </Box>
     </Box>
   );

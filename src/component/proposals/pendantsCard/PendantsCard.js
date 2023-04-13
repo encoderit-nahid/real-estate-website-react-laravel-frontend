@@ -3,6 +3,7 @@ import {
   Avatar,
   Box,
   Button,
+  CircularProgress,
   Divider,
   Grid,
   ListItemAvatar,
@@ -32,21 +33,39 @@ import dayjs from "dayjs";
 import { propertyAcceptData } from "../../../redux/proposalAccept/actions";
 import { findPropertyData } from "../../../redux/property/actions";
 import { useRouter } from "next/router";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { proposalRefuseData } from "../../../redux/proposalRefuse/actions";
 
 function PendantsCard({ propertyData }) {
   const dispatch = useDispatch();
   //add_see_proposal_modal
   const [seeProposalOpen, setSeeProposalOpen] = useState(false);
-  const handleSeeProposalOpen = () => setSeeProposalOpen(true);
+  const [selectProposal, setSelectProposal] = useState("");
+  const handleSeeProposalOpen = (data) => {
+    setSelectProposal(data);
+    setSeeProposalOpen(true);
+  };
   const handleSeeProposalClose = () => setSeeProposalOpen(false);
+  const [acceptid, setAcceptId] = useState("");
+  const [refuseId, setRefuseId] = useState("");
   const { query } = useRouter();
+  console.log({ query });
+
+  const handleProposalRefuse = (id) => {
+    setRefuseId(id);
+    dispatch(proposalRefuseData(propertyData?.id, id));
+    dispatch(findPropertyData(query));
+  };
 
   const handleProposalAccept = (id) => {
+    setAcceptId(id);
     dispatch(
       propertyAcceptData({ property_id: propertyData?.id, proposal_id: id })
     );
   };
+
+  const acceptLoading = useSelector((state) => state?.propertyAccept?.loading);
+  const refuseLoading = useSelector((state) => state?.proposalRefuse?.loading);
 
   const [state, setState] = React.useState({
     top: false,
@@ -257,6 +276,7 @@ function PendantsCard({ propertyData }) {
             <Grid container spacing={1} sx={{ px: 1 }}>
               <Grid item xs={12} sm={12} md={12} lg={3}>
                 <Button
+                  onClick={() => handleProposalRefuse(data.id)}
                   fullWidth
                   sx={{
                     color: " #002152",
@@ -282,7 +302,11 @@ function PendantsCard({ propertyData }) {
                     },
                   }}
                 >
-                  Refuse
+                  {refuseLoading && refuseId === data.id ? (
+                    <CircularProgress size={22} color="inherit" />
+                  ) : (
+                    "Refuse"
+                  )}
                 </Button>
               </Grid>
               <Grid item xs={12} sm={12} md={12} lg={6}>
@@ -311,7 +335,7 @@ function PendantsCard({ propertyData }) {
                       textTransform: "none",
                     },
                   }}
-                  onClick={handleSeeProposalOpen}
+                  onClick={() => handleSeeProposalOpen(data)}
                 >
                   see proposal
                 </Button>
@@ -344,7 +368,11 @@ function PendantsCard({ propertyData }) {
                   }}
                   onClick={() => handleProposalAccept(data.id)}
                 >
-                  To accept
+                  {acceptLoading && acceptid === data.id ? (
+                    <CircularProgress size={22} color="inherit" />
+                  ) : (
+                    "To accept"
+                  )}
                 </Button>
               </Grid>
             </Grid>
@@ -356,6 +384,8 @@ function PendantsCard({ propertyData }) {
             <>
               <SeeProposalModal
                 handleSeeProposalClose={handleSeeProposalClose}
+                propertyData={propertyData}
+                proposalData={selectProposal}
               />
             </>
           </Tooltip>

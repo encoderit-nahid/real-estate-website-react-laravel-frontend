@@ -13,6 +13,15 @@ apiInstance.interceptors.request.use((config) => {
   return config;
 });
 
+const omitEmpties = (obj) => {
+  return Object.entries(obj).reduce((carry, [key, value]) => {
+    if (![null, undefined, "", []].includes(value)) {
+      carry[key] = value;
+    }
+    return carry;
+  }, {});
+};
+
 //login
 export const loginApi = async (body) => {
   try {
@@ -141,11 +150,15 @@ export const photoTypeApi = async () => {
 export const getPropertyApi = async (queryData) => {
   try {
     const response = await apiInstance.get(`property/index`, {
-      params: {
+      params: omitEmpties({
+        ...queryData,
         status: queryData?.status,
         page: queryData?.page,
         per_page: queryData?.per_page,
-      },
+        relevant_filter: queryData?.relevant_filter,
+        ad_type: queryData?.ad_type,
+        // proposal_status: query?.proposal_status,
+      }),
     });
     return [false, response];
   } catch (error) {
@@ -219,6 +232,26 @@ export const propertyCreateApi = async (body) => {
 export const proposalAcceptApi = async (body) => {
   try {
     const response = await apiInstance.post(`proposal/accept`, body);
+    return [false, response];
+  } catch (error) {
+    return [error, null];
+  }
+};
+
+//refuse_proposal
+export const proposalRefuseApi = async (id) => {
+  try {
+    const response = await apiInstance.delete(`proposal/delete/${id}`);
+    return [false, response];
+  } catch (error) {
+    return [error, null];
+  }
+};
+
+//contract_upload
+export const contractUploadApi = async (body) => {
+  try {
+    const response = await apiInstance.post(`contract/file/upload`, body);
     return [false, response];
   } catch (error) {
     return [error, null];

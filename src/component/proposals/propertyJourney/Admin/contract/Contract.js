@@ -17,7 +17,7 @@ import ContractModal from "../contractModal/ContractModal";
 import SaleCard from "../../../../reuseable/saleCard/SaleCard";
 import ContractPdfModal from "../ContractPdfModal/ContractPdfModal";
 
-function Contract({ handleNext }) {
+function Contract({ handleNext, singlePropertyData }) {
   //contract_modal_open
   const [contractModalOpen, setContractModalOpen] = React.useState(false);
   const handleOpen = () => setContractModalOpen(true);
@@ -55,7 +55,7 @@ function Contract({ handleNext }) {
       <Box sx={{ mt: { xs: 2, sm: 2, md: 2, lg: 4 } }}>
         <Grid container spacing={2}>
           <Grid item xs={12} sm={12} md={12} lg={3}>
-            <SaleCard />
+            <SaleCard singlePropertyData={singlePropertyData} />
           </Grid>
           <Grid item xs={12} sm={12} md={12} lg={5}>
             <Box
@@ -250,7 +250,10 @@ function Contract({ handleNext }) {
       <BaseModal isShowing={contractModalOpen} isClose={handleClose}>
         <Tooltip title="Something">
           <>
-            <ContractModal handleClose={handleClose} />
+            <ContractModal
+              handleClose={handleClose}
+              singlePropertyData={singlePropertyData}
+            />
           </>
         </Tooltip>
       </BaseModal>

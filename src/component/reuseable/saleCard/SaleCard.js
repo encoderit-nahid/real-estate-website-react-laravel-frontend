@@ -9,8 +9,12 @@ import {
 } from "@mui/material";
 import media from "../../../../public/Images/Media.png";
 import Image from "next/image";
+import { _baseURL } from "../../../../consts";
 
-function SaleCard() {
+function SaleCard({ singlePropertyData }) {
+  const myLoader = ({ src }) => {
+    return `${_baseURL}/storage/${src}`;
+  };
   return (
     <Box
       sx={{
@@ -19,7 +23,13 @@ function SaleCard() {
         borderRadius: "8px",
       }}
     >
-      <Image src={media} layout="responsive" alt="media" />
+      <Image
+        loader={myLoader}
+        src={`${singlePropertyData?.attachments?.[0]?.file_path}`}
+        height={250}
+        width={300}
+        alt="media"
+      />
       <Box sx={{ mt: 2, px: 2 }}>
         <Button
           sx={{
@@ -34,7 +44,7 @@ function SaleCard() {
             mr: 1,
           }}
         >
-          sale
+          {singlePropertyData?.ad_type}
         </Button>
         <Typography
           variant="h1"
@@ -46,7 +56,7 @@ function SaleCard() {
             mt: 1,
           }}
         >
-          BRL 4,570.00
+          {`BRL ${singlePropertyData?.brl_rent}`}
         </Typography>
         <Typography
           variant="h1"
@@ -58,7 +68,7 @@ function SaleCard() {
             my: 1,
           }}
         >
-          Jaceguai Street, Bela Vista, São Paulo - SP - CEP 01315010
+          {singlePropertyData?.address?.address}
         </Typography>
       </Box>
     </Box>

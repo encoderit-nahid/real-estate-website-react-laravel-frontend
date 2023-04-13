@@ -61,22 +61,65 @@ export default function Proposals(props) {
   console.log({ query });
 
   const [value, setValue] = useState(+query?.value || 0);
+  const [adType, setAdType] = useState("allkinds");
+  const [relevantFilter, setReleventFilter] = useState("");
+
+  const handleAdTypeFilter = (data) => {
+    setAdType(data);
+    router.replace({
+      pathname: "/proposals",
+      query: {
+        ...router.query,
+        ad_type: data,
+      },
+    });
+  };
+
+  const handleRelevantFilter = (data) => {
+    console.log({ data });
+    // setReleventFilter(data);
+    router.replace({
+      pathname: "/proposals",
+      query: {
+        ...router.query,
+        relevant_filter: data?.slug,
+      },
+    });
+  };
 
   const handleChange = (event, newValue) => {
     setValue(newValue);
     newValue === 1
-      ? router.replace({
+      ? router.push({
           pathname: "/proposals",
-          query: { status: "completed", page: 1, per_page: 9, value: newValue },
+          query: {
+            proposal_status: "accepted",
+            page: 1,
+            per_page: 9,
+            status: "approved",
+            value: newValue,
+          },
         })
       : newValue === 2
-      ? router.replace({
+      ? router.push({
           pathname: "/proposals",
-          query: { status: "accepted", page: 1, per_page: 9, value: newValue },
+          query: {
+            proposal_status: "completed",
+            status: "approved",
+            page: 1,
+            per_page: 9,
+            value: newValue,
+          },
         })
-      : router.replace({
+      : router.push({
           pathname: "/proposals",
-          query: { page: 1, per_page: 9, value: newValue },
+          query: {
+            page: 1,
+            per_page: 9,
+            value: newValue,
+            status: "approved",
+            proposal_status: "pending",
+          },
         });
   };
   return (
@@ -158,18 +201,28 @@ export default function Proposals(props) {
                         justifyContent="flex-start"
                         alignItems="flex-start"
                       >
-                        <Button
-                          sx={{
-                            textTransform: "none",
-                            padding: "3px 6px",
-                            backgroundColor: "#7450F0",
-                            color: "#ffffff",
-                            borderRadius: "56px",
-                          }}
-                        >
-                          All Kinds
-                        </Button>
-                        <Button
+                        {["allkinds", "rent", "sale"]?.map((data, index) => (
+                          <Button
+                            key={index}
+                            onClick={() => handleAdTypeFilter(data)}
+                            sx={{
+                              textTransform: "none",
+                              padding: "3px 6px",
+                              backgroundColor:
+                                adType === data ? "#7450F0" : "#DBE1E5",
+                              color: adType === data ? "#ffffff" : "#002152",
+                              borderRadius: "56px",
+                              ml: index > 0 ? 1 : 0,
+                              "&:hover": {
+                                backgroundColor: "#7450F0",
+                                color: "#ffffff",
+                              },
+                            }}
+                          >
+                            {data}
+                          </Button>
+                        ))}
+                        {/* <Button
                           sx={{
                             textTransform: "none",
                             padding: "3px 6px",
@@ -192,7 +245,7 @@ export default function Proposals(props) {
                           }}
                         >
                           sell
-                        </Button>
+                        </Button> */}
                       </Grid>
                     </Grid>
                     <Grid item xs={12} sm={12} md={12} lg={5} xl={4}>
@@ -202,21 +255,29 @@ export default function Proposals(props) {
                         justifyContent="flex-start"
                         alignItems="flex-start"
                       >
-                        <Button
-                          sx={{
-                            display: "flex",
-                            textTransform: "none",
-                            padding: "3px 6px",
-                            backgroundColor: "transparent",
-                            color: "#9FAAB1",
-                            borderRadius: "56px",
-                            ml: 1,
-                          }}
-                        >
-                          <KeyboardDoubleArrowDownIcon />
-                          <Typography variant="p">lower value</Typography>
-                        </Button>
-                        <Button
+                        {[
+                          { name: "lower value", slug: "cheapest" },
+                          { name: "higher value", slug: "most_expensive" },
+                        ]?.map((data, index) => (
+                          <Button
+                            onClick={() => handleRelevantFilter(data)}
+                            key={index}
+                            sx={{
+                              display: "flex",
+                              textTransform: "none",
+                              padding: "3px 6px",
+                              backgroundColor: "transparent",
+                              color: "#9FAAB1",
+                              borderRadius: "56px",
+                              ml: 1,
+                            }}
+                          >
+                            <KeyboardDoubleArrowDownIcon />
+                            <Typography variant="p">{data?.name}</Typography>
+                          </Button>
+                        ))}
+
+                        {/* <Button
                           sx={{
                             textTransform: "none",
                             padding: "3px 6px",
@@ -228,7 +289,7 @@ export default function Proposals(props) {
                         >
                           <KeyboardDoubleArrowUpIcon />
                           <Typography variant="p">higher value</Typography>
-                        </Button>
+                        </Button> */}
                       </Grid>
                     </Grid>
                   </Grid>

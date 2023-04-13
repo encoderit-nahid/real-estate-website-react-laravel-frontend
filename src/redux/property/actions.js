@@ -28,6 +28,16 @@ export const propertyRemove = (id) => {
   };
 };
 
+// export const propertyProposalRemove = (property_id, proposal_id) => {
+//   return {
+//     type: Types.PROPERTY_PROPOSAL_REMOVE,
+//     payload: {
+//       propertyId: property_id,
+//       proposalId: proposal_id,
+//     },
+//   };
+// };
+
 //property action
 export const findPropertyData = (queryData) => async (dispatch) => {
   dispatch(propertyRequest());

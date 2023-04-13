@@ -15,8 +15,12 @@ import React from "react";
 import cardMedia from "../../../../public/Images/pendant.png";
 import CheckIcon from "@mui/icons-material/Check";
 import FiberManualRecordIcon from "@mui/icons-material/FiberManualRecord";
+import { _baseURL } from "../../../../consts";
 
-function AcceptedCard() {
+function AcceptedCard({ propertyData }) {
+  const myLoader = ({ src }) => {
+    return `${_baseURL}/storage/${src}`;
+  };
   return (
     <Box
       sx={{
@@ -27,7 +31,13 @@ function AcceptedCard() {
       }}
     >
       <Box sx={{ width: "100%" }}>
-        <Image src={cardMedia} layout="responsive" alt="pendant" />
+        <Image
+          loader={myLoader}
+          src={`${propertyData?.attachments[0]?.file_path}`}
+          alt="pendant"
+          height={200}
+          width={500}
+        />
       </Box>
 
       <Grid
@@ -223,7 +233,14 @@ function AcceptedCard() {
           </Button>
         </Grid>
         <Grid item xs={12} sm={12} md={12} lg={6} xl={6}>
-          <Link href="/proposals/property_journey">
+          <Link
+            href={{
+              pathname: "/proposals/property_journey",
+              query: {
+                propertyId: propertyData?.id,
+              },
+            }}
+          >
             <Button
               fullWidth
               sx={{

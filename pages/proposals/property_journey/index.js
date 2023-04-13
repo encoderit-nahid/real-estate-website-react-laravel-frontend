@@ -16,7 +16,7 @@ import ResponsiveDrawer from "../../../src/component/sharedProposal/ResponsiveDr
 import logo from "../../../public/Images/logo.png";
 import BasicBreadcrumbs from "../../../src/component/reuseable/baseBreadCrumb/BaseBreadCrumb";
 import BaseStepper from "../../../src/component/reuseable/baseStepper/BaseStepper";
-import { Fragment, useState } from "react";
+import { Fragment, useEffect, useState } from "react";
 import ProposalValueStep from "../../../src/component/properties/ProposalValueStep/ProposalValueStep";
 import BuyerDataStep from "../../../src/component/properties/BuyerDataStep/BuyerDataStep";
 import BaseModal from "../../../src/component/reuseable/baseModal/BaseModal";
@@ -36,6 +36,9 @@ import BrokerCertificateAndDocument from "../../../src/component/proposals/prope
 import Announce from "../../../src/component/proposals/propertyJourney/Admin/Announce/Announce";
 import Proposal from "../../../src/component/proposals/propertyJourney/Admin/Proposal/Proposal";
 import { getSession } from "next-auth/react";
+import { useRouter } from "next/router";
+import { useDispatch, useSelector } from "react-redux";
+import { findSinglePropertyData } from "../../../src/redux/singleProperty/actions";
 
 const drawerWidth = 240;
 
@@ -55,6 +58,19 @@ const steps = [
 export default function PropertyJourney(props) {
   const [activeStep, setActiveStep] = useState(2);
   const [skipped, setSkipped] = useState(new Set());
+  const dispatch = useDispatch();
+  const router = useRouter();
+  const { query } = router;
+
+  useEffect(() => {
+    dispatch(findSinglePropertyData(query?.propertyId));
+  }, [dispatch, query]);
+
+  const singlePropertyData = useSelector(
+    (state) => state?.singleProperty?.singlePropertyData
+  );
+
+  console.log({ singlePropertyData });
 
   const isStepOptional = (step) => {
     return step === 1;
@@ -235,6 +251,7 @@ export default function PropertyJourney(props) {
                       />
                     ) : activeStep === 2 ? (
                       <Contract
+                        singlePropertyData={singlePropertyData}
                         handleNext={handleNext}
                         handleBack={handleBack}
                       />

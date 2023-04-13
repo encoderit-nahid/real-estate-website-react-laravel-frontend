@@ -13,7 +13,15 @@ function Pendants() {
   const [page, setPage] = React.useState(+query?.page || 1);
 
   useEffect(() => {
-    dispatch(findPropertyData(query));
+    dispatch(
+      findPropertyData({
+        ...query,
+        status: "approved",
+        page: query?.page ? query?.page : 1,
+        per_page: 9,
+        proposal_status: "pending",
+      })
+    );
   }, [dispatch, query]);
 
   const pendingProperty = useSelector((state) => state.property.propertyData);
@@ -22,7 +30,14 @@ function Pendants() {
 
   const handlePageChange = (event, value) => {
     setPage(value);
-    dispatch(findPropertyData({ status: "third", page: value, per_page: 5 }));
+    dispatch(
+      findPropertyData({
+        status: "approved",
+        page: value,
+        per_page: 9,
+        proposal_status: "pending",
+      })
+    );
     router.replace({
       pathname: "/proposals",
       query: { ...router.query, page: value, per_page: 9 },

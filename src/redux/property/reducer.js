@@ -27,6 +27,19 @@ const PropertyReducer = (state = InitialState, action) => {
         propertyData: { ...state.propertyData, data: afterFiltered },
       };
 
+    // case Types.PROPERTY_PROPOSAL_REMOVE:
+    //   const afterFilteredProposal = state?.propertyData?.data?.map(
+    //     (property) =>
+    //       property.id === action.payload.propertyId &&
+    //       property?.proposals.filter((proposal) => {
+    //         return proposal.id !== action.payload.proposalId;
+    //       })
+    //   );
+    //   console.log({ afterFilteredProposal });
+    //   return {
+    //     propertyData: { ...state.propertyData, data: afterFilteredProposal },
+    //   };
+
     case Types.PROPERTY_FAILED:
       return {
         propertyData: {},

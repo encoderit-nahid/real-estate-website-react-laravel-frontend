@@ -1,7 +1,7 @@
 import * as Types from "./types";
 
 const InitialState = {
-  singlePropertyData: [],
+  singlePropertyData: {},
   loading: false,
 };
 
@@ -9,7 +9,7 @@ const singlePropertyReducer = (state = InitialState, action) => {
   switch (action.type) {
     case Types.SINGLE_PROPERTY_REQUEST:
       return {
-        singlePropertyData: [],
+        singlePropertyData: {},
         loading: true,
       };
 
@@ -21,7 +21,7 @@ const singlePropertyReducer = (state = InitialState, action) => {
 
     case Types.SINGLE_PROPERTY_FAILED:
       return {
-        singlePropertyData: [],
+        singlePropertyData: {},
         loading: false,
       };
 

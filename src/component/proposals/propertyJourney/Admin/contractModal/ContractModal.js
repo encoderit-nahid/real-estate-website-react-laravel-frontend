@@ -6,6 +6,8 @@ import { useDropzone } from "react-dropzone";
 import DeleteOutlineOutlinedIcon from "@mui/icons-material/DeleteOutlineOutlined";
 import { useState } from "react";
 import { useMemo } from "react";
+import { contractUploadApi } from "../../../../../api";
+import { serialize } from "object-to-formdata";
 
 const baseStyle = {
   display: "flex",
@@ -38,7 +40,7 @@ const rejectStyle = {
   borderColor: "#f2f",
 };
 
-function ContractModal({ handleClose }) {
+function ContractModal({ handleClose, singlePropertyData }) {
   const styleModal = {
     position: "absolute",
     top: "50%",
@@ -56,7 +58,10 @@ function ContractModal({ handleClose }) {
   };
 
   const [files, setFiles] = useState([]);
+  const [imageError, setImageError] = useState(false);
+  const [imageErrorMessage, setImageErrorMessage] = useState("");
   console.log(files);
+  const [loading, setLoading] = useState(false);
 
   const onDrop = (acceptedFiles) => {
     console.log(acceptedFiles);
@@ -70,6 +75,35 @@ function ContractModal({ handleClose }) {
     console.log(allFiles);
     setFiles(allFiles);
   };
+
+  const handleSubmit = async () => {
+    if (files.length > 0) {
+      setLoading(true);
+
+      const requireData = {
+        contract_id: +singlePropertyData?.contract?.id,
+        contract_file: files[0],
+      };
+      console.log({ requireData });
+
+      const formData = serialize(requireData, { indices: true });
+      const [error, response] = await contractUploadApi(formData);
+      setLoading(false);
+      if (!error) {
+        console.log("uploaded");
+        // setSentModalOpen(true);
+      } else {
+        // const errors = error?.response?.data?.errors ?? {};
+        // Object.entries(errors).forEach(([name, messages]) => {
+        //   setError(name, { type: "manual", message: messages[0] });
+        // });
+      }
+    } else {
+      setImageError(true);
+      setImageErrorMessage("Image file is required");
+    }
+  };
+
   const {
     getRootProps,
     getInputProps,
@@ -79,8 +113,10 @@ function ContractModal({ handleClose }) {
   } = useDropzone({
     onDrop,
     accept: {
-      "image/jpeg": [],
-      "image/png": [],
+      "application/pdf": [],
+      "application/vnd.openxmlformats-officedocument.wordprocessingml.document":
+        [],
+      "application/msword": [],
     },
   });
 
@@ -212,6 +248,7 @@ function ContractModal({ handleClose }) {
           Cancel
         </Button>
         <Button
+          onClick={handleSubmit}
           variant="outlined"
           sx={{
             background: "#34BE84",

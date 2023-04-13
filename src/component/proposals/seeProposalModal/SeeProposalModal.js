@@ -2,6 +2,7 @@ import {
   Avatar,
   Box,
   Button,
+  CircularProgress,
   Divider,
   Grid,
   List,
@@ -22,6 +23,12 @@ import avatar from "../../../../public/Images/AvatarPendant.png";
 import BaseModal from "../../reuseable/baseModal/BaseModal";
 import CounterProposalModal from "../counterProposalModal/counterProposalModal";
 import { useState } from "react";
+import { _baseURL } from "../../../../consts";
+import { useRouter } from "next/router";
+import { proposalRefuseData } from "../../../redux/proposalRefuse/actions";
+import { findPropertyData } from "../../../redux/property/actions";
+import { propertyAcceptData } from "../../../redux/proposalAccept/actions";
+import { useDispatch, useSelector } from "react-redux";
 
 const style = {
   position: "absolute",
@@ -40,11 +47,42 @@ const style = {
   py: 1,
 };
 
-function SeeProposalModal({ handleSeeProposalClose }) {
+function SeeProposalModal({
+  handleSeeProposalClose,
+  propertyData,
+  proposalData,
+}) {
+  const dispatch = useDispatch();
   //add_counter_proposal_modal
   const [counterProposalOpen, setCounterProposalOpen] = useState(false);
   const handleCounterProposalOpen = () => setCounterProposalOpen(true);
   const handleCounterProposalClose = () => setCounterProposalOpen(false);
+
+  const [acceptid, setAcceptId] = useState("");
+  const [refuseId, setRefuseId] = useState("");
+  const { query } = useRouter();
+  console.log({ query });
+
+  const handleProposalRefuse = (id) => {
+    setRefuseId(id);
+    dispatch(proposalRefuseData(propertyData?.id, id));
+    dispatch(findPropertyData(query));
+  };
+
+  const handleProposalAccept = (id) => {
+    setAcceptId(id);
+    dispatch(
+      propertyAcceptData({ property_id: propertyData?.id, proposal_id: id })
+    );
+    handleSeeProposalClose(true);
+  };
+
+  const acceptLoading = useSelector((state) => state?.propertyAccept?.loading);
+  const refuseLoading = useSelector((state) => state?.proposalRefuse?.loading);
+
+  const myLoader = ({ src }) => {
+    return `${_baseURL}/storage/${src}`;
+  };
 
   return (
     <Box sx={style}>
@@ -90,9 +128,11 @@ function SeeProposalModal({ handleSeeProposalClose }) {
           >
             <Box>
               <Image
+                loader={myLoader}
+                src={`${propertyData?.attachments[0]?.file_path}`}
+                width={500}
+                height={500}
                 alt="rent"
-                src={rentImage}
-                layout="responsive"
                 style={{ borderRadius: "8px 0 0 8px" }}
               />
             </Box>
@@ -124,7 +164,7 @@ function SeeProposalModal({ handleSeeProposalClose }) {
                       fontWeight: "400",
                     }}
                   >
-                    rent
+                    {propertyData?.ad_type}
                   </Button>
                   <Button
                     sx={{
@@ -152,7 +192,7 @@ function SeeProposalModal({ handleSeeProposalClose }) {
                   fontWeight: "500",
                 }}
               >
-                BRL 3,100.00
+                {`BRL ${propertyData?.brl_rent}`}
               </Typography>
               <Typography
                 variant="p"
@@ -165,7 +205,7 @@ function SeeProposalModal({ handleSeeProposalClose }) {
                   mr: 0.5,
                 }}
               >
-                Rua do Bixiga, Bela Vista, São Paulo, São Paulo- CEP 01315020
+                {propertyData?.address?.address}
               </Typography>
             </Grid>
           </Grid>
@@ -207,7 +247,7 @@ function SeeProposalModal({ handleSeeProposalClose }) {
                     lineHeight: "18px",
                   }}
                 >
-                  albert flowers
+                  {proposalData?.user?.name}
                 </Typography>
               }
             />
@@ -242,7 +282,7 @@ function SeeProposalModal({ handleSeeProposalClose }) {
             fontWeight: "700",
           }}
         >
-          BRL 3,700.00
+          {`BRL ${proposalData?.total_amount}`}
         </Typography>
       </Grid>
       <Divider sx={{ mx: 2 }} />
@@ -273,7 +313,7 @@ function SeeProposalModal({ handleSeeProposalClose }) {
             fontWeight: "400",
           }}
         >
-          Cash
+          {proposalData?.payment_type}
         </Typography>
       </Grid>
       <Divider sx={{ mx: 2 }} />
@@ -281,6 +321,7 @@ function SeeProposalModal({ handleSeeProposalClose }) {
         <Grid item xs={12} sm={12} md={12} lg={3}>
           <Button
             fullWidth
+            onClick={() => handleProposalRefuse(proposalData?.id)}
             sx={{
               color: " #002152",
               fontSize: "14px",
@@ -305,7 +346,11 @@ function SeeProposalModal({ handleSeeProposalClose }) {
               },
             }}
           >
-            Refuse
+            {refuseLoading && refuseId === proposalData?.id ? (
+              <CircularProgress size={22} color="inherit" />
+            ) : (
+              "Refuse"
+            )}
           </Button>
         </Grid>
         <Grid item xs={12} sm={12} md={12} lg={5}>
@@ -365,8 +410,13 @@ function SeeProposalModal({ handleSeeProposalClose }) {
                 textTransform: "none",
               },
             }}
+            onClick={() => handleProposalAccept(proposalData?.id)}
           >
-            To accept
+            {acceptLoading && acceptid === proposalData?.id ? (
+              <CircularProgress size={22} color="inherit" />
+            ) : (
+              "To accept"
+            )}
           </Button>
         </Grid>
       </Grid>
@@ -378,6 +428,8 @@ function SeeProposalModal({ handleSeeProposalClose }) {
           <>
             <CounterProposalModal
               handleCounterProposalClose={handleCounterProposalClose}
+              proposalData={proposalData}
+              propertyData={propertyData}
             />
           </>
         </Tooltip>
