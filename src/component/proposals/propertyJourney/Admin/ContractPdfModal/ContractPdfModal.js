@@ -2,6 +2,7 @@ import {
   Avatar,
   Box,
   Button,
+  CircularProgress,
   Divider,
   Grid,
   List,
@@ -14,7 +15,7 @@ import {
   Tooltip,
   Typography,
 } from "@mui/material";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import CloseIcon from "@mui/icons-material/Close";
@@ -41,6 +42,15 @@ import FormGroup from "@mui/material/FormGroup";
 import FormControlLabel from "@mui/material/FormControlLabel";
 import dynamic from "next/dynamic";
 import BaseTextField from "../../../../reuseable/baseTextField/BaseTextField";
+import { useDispatch, useSelector } from "react-redux";
+import {
+  findContractDetailsData,
+  signatureAddData,
+} from "../../../../../redux/contractDetails/actions";
+import { contractDownloadApi } from "../../../../../api";
+import { useForm, Controller } from "react-hook-form";
+import { yupResolver } from "@hookform/resolvers/yup";
+import * as Yup from "yup";
 const PDFViewer = dynamic(
   () => import("../../../../reuseable/PDFComponent/pdf-viewer"),
   {
@@ -48,6 +58,11 @@ const PDFViewer = dynamic(
   }
 );
 const drawerWidth = 300;
+
+const validationSchema = Yup.object().shape({
+  name: Yup.string().required("Name is required"),
+  details: Yup.string().required("Email is required"),
+});
 
 const Main = styled("main", { shouldForwardProp: (prop) => prop !== "open" })(
   ({ theme, open }) => ({
@@ -114,7 +129,36 @@ const style = {
   //   py: 1,
 };
 
-function ContractPdfModal({ handleClose, handlePdfOpen, handleNext }) {
+function ContractPdfModal({
+  handleClose,
+  handlePdfOpen,
+  handleNext,
+  singlePropertyData,
+}) {
+  const dispatch = useDispatch();
+  useEffect(() => {
+    dispatch(findContractDetailsData(+singlePropertyData?.contract?.id));
+  }, [dispatch, singlePropertyData]);
+
+  const contractDetailsInfo = useSelector(
+    (state) => state?.contractDetails?.ContactDetailsData
+  );
+
+  const {
+    register,
+    watch,
+    control,
+    handleSubmit,
+    setValue,
+    formState: { errors },
+    setError,
+  } = useForm({
+    resolver: yupResolver(validationSchema),
+  });
+
+  console.log({ contractDetailsInfo });
+
+  const [loading, setLoading] = useState(false);
   const theme = useTheme();
   const [open, setOpen] = React.useState(true);
 
@@ -124,6 +168,19 @@ function ContractPdfModal({ handleClose, handlePdfOpen, handleNext }) {
 
   const handleDrawerClose = () => {
     setOpen(false);
+  };
+
+  const onSubmit = async (data) => {
+    console.log(data);
+    setLoading(true);
+    dispatch(
+      signatureAddData({
+        ...data,
+        contract_id: +singlePropertyData?.contract?.id,
+      })
+    );
+    setLoading(false);
+    handleNext();
   };
 
   return (
@@ -231,6 +288,9 @@ function ContractPdfModal({ handleClose, handlePdfOpen, handleNext }) {
 
                 <Button
                   variant="outlined"
+                  onClick={() =>
+                    contractDownloadApi(singlePropertyData?.contract?.id)
+                  }
                   sx={{
                     borderColor: "#002152",
                     fontSize: "14px",
@@ -293,7 +353,7 @@ function ContractPdfModal({ handleClose, handlePdfOpen, handleNext }) {
         </AppBar>
         <Main open={open}>
           <DrawerHeader />
-          <PDFViewer />
+          <PDFViewer contractDetailsInfo={contractDetailsInfo} />
         </Main>
         <Drawer
           sx={{
@@ -345,6 +405,9 @@ function ContractPdfModal({ handleClose, handlePdfOpen, handleNext }) {
             >
               <Button
                 variant="outlined"
+                onClick={() =>
+                  contractDownloadApi(singlePropertyData?.contract?.id)
+                }
                 sx={{
                   borderColor: "#002152",
                   fontSize: "14px",
@@ -401,7 +464,7 @@ function ContractPdfModal({ handleClose, handlePdfOpen, handleNext }) {
 
           <Button
             sx={{
-              mx: 2,
+              // mx: 2,
               display: "flex",
               textAlign: "left",
               textTransform: "none",
@@ -423,7 +486,7 @@ function ContractPdfModal({ handleClose, handlePdfOpen, handleNext }) {
                 ml: 0.5,
               }}
             >
-              Contratos honorários lorem ipsum dolor amet.pdf
+              {contractDetailsInfo?.name}
             </Typography>
           </Button>
 
@@ -440,29 +503,59 @@ function ContractPdfModal({ handleClose, handlePdfOpen, handleNext }) {
             >
               Include signers:
             </Typography>
-            <BaseTextField
-              size={"medium"}
-              placeholder={"Name"}
-              sx={{ mt: 1.5 }}
-            />
-            <BaseTextField
-              size={"medium"}
-              placeholder={"Email"}
-              sx={{ mt: 1.5 }}
-            />
-            <Button
-              fullWidth
-              onClick={handleNext}
-              sx={{
-                mt: 1.5,
-                background: "#7450F0",
-                borderRadius: "4px",
-                color: "#ffffff",
-                textTransform: "none",
-                fontSize: "16px",
-                lineHeight: "22px",
-                fontWeight: "600",
-                "&:hover": {
+            <form onSubmit={handleSubmit(onSubmit)}>
+              <Controller
+                name="name"
+                control={control}
+                defaultValue={""}
+                render={({ field }) => (
+                  <BaseTextField
+                    size={"medium"}
+                    placeholder={"Name"}
+                    onChange={(e) => {
+                      field.onChange(e.target.value);
+                    }}
+                    name={"name"}
+                    value={field.value}
+                  />
+                )}
+              />
+              <Typography
+                variant="inherit"
+                color="textSecondary"
+                sx={{ color: "#b91c1c", mt: 0.5 }}
+              >
+                {errors.name?.message}
+              </Typography>
+              <Controller
+                name="details"
+                control={control}
+                defaultValue={""}
+                render={({ field }) => (
+                  <BaseTextField
+                    size={"medium"}
+                    placeholder={"Email"}
+                    onChange={(e) => {
+                      field.onChange(e.target.value);
+                    }}
+                    name={"details"}
+                    value={field.value}
+                  />
+                )}
+              />
+              <Typography
+                variant="inherit"
+                color="textSecondary"
+                sx={{ color: "#b91c1c", mt: 0.5 }}
+              >
+                {errors.details?.message}
+              </Typography>
+              <Button
+                fullWidth
+                // onClick={handleNext}
+                type="submit"
+                sx={{
+                  mt: 1.5,
                   background: "#7450F0",
                   borderRadius: "4px",
                   color: "#ffffff",
@@ -470,11 +563,21 @@ function ContractPdfModal({ handleClose, handlePdfOpen, handleNext }) {
                   fontSize: "16px",
                   lineHeight: "22px",
                   fontWeight: "600",
-                },
-              }}
-            >
-              Add signatories
-            </Button>
+                  "&:hover": {
+                    background: "#7450F0",
+                    borderRadius: "4px",
+                    color: "#ffffff",
+                    textTransform: "none",
+                    fontSize: "16px",
+                    lineHeight: "22px",
+                    fontWeight: "600",
+                  },
+                }}
+              >
+                {loading && <CircularProgress size={22} color="inherit" />}
+                {!loading && "Add signatories"}
+              </Button>
+            </form>
             <Grid
               container
               direction="column"
@@ -482,7 +585,7 @@ function ContractPdfModal({ handleClose, handlePdfOpen, handleNext }) {
               alignItems="flex-start"
               sx={{ mt: 3 }}
             >
-              {[0, 1, 2].map((data, index) => (
+              {contractDetailsInfo?.signatures?.map((data, index) => (
                 <Box key={index}>
                   <Typography
                     variant="h1"
@@ -493,7 +596,7 @@ function ContractPdfModal({ handleClose, handlePdfOpen, handleNext }) {
                       lineHeight: "22px",
                     }}
                   >
-                    Cameron Williamson
+                    {data?.name}
                   </Typography>
                   <Typography
                     variant="h1"

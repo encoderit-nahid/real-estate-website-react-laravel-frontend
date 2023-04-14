@@ -5,9 +5,10 @@ import {
   Typography,
   Tooltip,
   LinearProgress,
+  CircularProgress,
 } from "@mui/material";
 import Image from "next/image";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import certificate from "../../../../../../public/Images/certificate.png";
 import maskedIcon from "../../../../../../public/Images/maskedIcon.png";
 import content from "../../../../../../public/Images/content.png";
@@ -23,8 +24,39 @@ import FormGroup from "@mui/material/FormGroup";
 import FormControlLabel from "@mui/material/FormControlLabel";
 import FormControl from "@mui/material/FormControl";
 import FormLabel from "@mui/material/FormLabel";
+import { useDispatch, useSelector } from "react-redux";
+import { findCertificateData } from "../../../../../redux/certificates/actions";
+import { certificateSubmitApi } from "../../../../../api";
 
-function BrokerCertificateAndDocument({ handleNext }) {
+function BrokerCertificateAndDocument({ handleNext, singlePropertyData }) {
+  const dispatch = useDispatch();
+  useEffect(() => {
+    dispatch(findCertificateData("certificate"));
+  }, [dispatch]);
+  const [loading, setLoading] = useState(false);
+  const [certificateTypes, setCertificateTypes] = useState([]);
+  const allCertificateData = useSelector(
+    (state) => state?.certificate?.certificateData
+  );
+  console.log({ allCertificateData });
+
+  const handleRequestSubmit = async () => {
+    if (certificateTypes.length > 0) {
+      setLoading(true);
+      const requireData = {
+        contract_id: +singlePropertyData?.contract?.id,
+        certificates_id: certificateTypes,
+      };
+      const [error, response] = await certificateSubmitApi(requireData);
+      setLoading(false);
+      if (!error) {
+        handleNext();
+      } else {
+        const errors = error?.response?.data?.errors ?? {};
+        console.log({ errors });
+      }
+    }
+  };
   return (
     <Box sx={{ mt: 4 }}>
       <Grid
@@ -50,7 +82,7 @@ function BrokerCertificateAndDocument({ handleNext }) {
       <Box sx={{ mt: { xs: 2, sm: 2, md: 2, lg: 4 } }}>
         <Grid container spacing={2}>
           <Grid item xs={12} sm={12} md={12} lg={3}>
-            <SaleCard />
+            <SaleCard singlePropertyData={singlePropertyData} />
           </Grid>
           <Grid item xs={12} sm={12} md={12} lg={8}>
             <Grid
@@ -74,6 +106,16 @@ function BrokerCertificateAndDocument({ handleNext }) {
                 <FormControlLabel
                   value="end"
                   control={<Checkbox sx={{ color: "#002152" }} />}
+                  onChange={(e) => {
+                    if (e.target.checked === true) {
+                      const allIdArray = allCertificateData?.map(
+                        (data) => data?.id
+                      );
+                      setCertificateTypes(allIdArray);
+                    } else {
+                      setCertificateTypes([]);
+                    }
+                  }}
                   label={
                     <Typography
                       variant="h6"
@@ -92,9 +134,9 @@ function BrokerCertificateAndDocument({ handleNext }) {
               </FormControl>
             </Grid>
             <Grid container spacing={3}>
-              {[0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map((data, index) => (
+              {allCertificateData?.map((data, index) => (
                 <Grid
-                  key={index}
+                  key={data?.id}
                   item
                   xs={12}
                   sm={12}
@@ -103,12 +145,31 @@ function BrokerCertificateAndDocument({ handleNext }) {
                   sx={{ mt: 1 }}
                 >
                   <Box
+                    onClick={() => {
+                      if (!certificateTypes?.includes(data.id)) {
+                        setCertificateTypes((current) => [...current, data.id]);
+                      } else {
+                        const newArray = certificateTypes?.filter(
+                          (value) => value !== data.id
+                        );
+                        setCertificateTypes(newArray);
+                      }
+                    }}
                     sx={{
-                      background: "#F2F5F6",
-
+                      background: `${
+                        certificateTypes?.includes(data.id)
+                          ? "#0362F0"
+                          : "#F2F5F6"
+                      }`,
+                      color: `${
+                        certificateTypes?.includes(data.id)
+                          ? "#ffffff"
+                          : "#32414C"
+                      }`,
                       borderRadius: "8px",
                       py: 2,
                       px: 2,
+                      height: 120,
                     }}
                   >
                     <Grid
@@ -121,14 +182,17 @@ function BrokerCertificateAndDocument({ handleNext }) {
                         <Typography
                           variant="p"
                           sx={{
-                            color: "#1A1859",
+                            color: `${
+                              certificateTypes?.includes(data.id)
+                                ? "#ffffff"
+                                : "#32414C"
+                            }`,
                             fontSize: "14px",
                             lineHeight: "18px",
                             fontWeight: "400",
                           }}
                         >
-                          Certificate of Distribution of Civil Actions - State
-                          Justice (1st instance)
+                          {data?.name}
                         </Typography>
                       </Box>
                     </Grid>
@@ -143,7 +207,7 @@ function BrokerCertificateAndDocument({ handleNext }) {
               alignItems="flex-start"
             >
               <Button
-                onClick={handleNext}
+                onClick={handleRequestSubmit}
                 sx={{
                   background: "#34BE84",
                   color: "#ffffff",
@@ -161,7 +225,8 @@ function BrokerCertificateAndDocument({ handleNext }) {
                   },
                 }}
               >
-                Request documents
+                {loading && <CircularProgress size={22} color="inherit" />}
+                {!loading && "Request documents"}
               </Button>
             </Grid>
           </Grid>

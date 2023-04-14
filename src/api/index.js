@@ -73,9 +73,13 @@ export const propertyTypeApi = async () => {
 };
 
 //find_features
-export const featuresApi = async () => {
+export const featuresApi = async (type) => {
   try {
-    const response = await apiInstance.get(`feature/index`);
+    const response = await apiInstance.get(`feature/index`, {
+      params: omitEmpties({
+        type: type,
+      }),
+    });
     return [false, response];
   } catch (error) {
     return [error, null];
@@ -252,6 +256,60 @@ export const proposalRefuseApi = async (id) => {
 export const contractUploadApi = async (body) => {
   try {
     const response = await apiInstance.post(`contract/file/upload`, body);
+    return [false, response];
+  } catch (error) {
+    return [error, null];
+  }
+};
+
+//contract_download
+export const contractDownloadApi = async (id) => {
+  try {
+    const response = await apiInstance.get(`contract/download`, {
+      params: {
+        id: id,
+      },
+    });
+    window.open(`${response?.data?.url}`, "_blank");
+    console.log({ response });
+    return [false, response];
+  } catch (error) {
+    console.log("contractDownloadApi", error.message, error);
+    return [error, null];
+  }
+};
+
+//contract_details
+export const contractDetailsApi = async (id) => {
+  try {
+    const response = await apiInstance.get(`contract/details`, {
+      params: {
+        id: id,
+      },
+    });
+    return [false, response];
+  } catch (error) {
+    return [error, null];
+  }
+};
+
+//require_ceritificate_submit
+export const certificateSubmitApi = async (body) => {
+  try {
+    const response = await apiInstance.post(
+      `contract/require-certificates-submit`,
+      body
+    );
+    return [false, response];
+  } catch (error) {
+    return [error, null];
+  }
+};
+
+//signature_add
+export const createSignatureApi = async (body) => {
+  try {
+    const response = await apiInstance.post(`contract/create/signature`, body);
     return [false, response];
   } catch (error) {
     return [error, null];

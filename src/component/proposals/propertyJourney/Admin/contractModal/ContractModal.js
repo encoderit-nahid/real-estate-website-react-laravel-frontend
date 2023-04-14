@@ -1,4 +1,11 @@
-import { Box, Button, Grid, TextareaAutosize, Typography } from "@mui/material";
+import {
+  Box,
+  Button,
+  CircularProgress,
+  Grid,
+  TextareaAutosize,
+  Typography,
+} from "@mui/material";
 import React from "react";
 import handshake from "../../../../../../public/Images/handshake.png";
 import Image from "next/image";
@@ -8,6 +15,7 @@ import { useState } from "react";
 import { useMemo } from "react";
 import { contractUploadApi } from "../../../../../api";
 import { serialize } from "object-to-formdata";
+import { useForm } from "react-hook-form";
 
 const baseStyle = {
   display: "flex",
@@ -40,7 +48,11 @@ const rejectStyle = {
   borderColor: "#f2f",
 };
 
-function ContractModal({ handleClose, singlePropertyData }) {
+function ContractModal({
+  handleClose,
+  singlePropertyData,
+  setHideGenerateContract,
+}) {
   const styleModal = {
     position: "absolute",
     top: "50%",
@@ -58,8 +70,7 @@ function ContractModal({ handleClose, singlePropertyData }) {
   };
 
   const [files, setFiles] = useState([]);
-  const [imageError, setImageError] = useState(false);
-  const [imageErrorMessage, setImageErrorMessage] = useState("");
+
   console.log(files);
   const [loading, setLoading] = useState(false);
 
@@ -76,31 +87,34 @@ function ContractModal({ handleClose, singlePropertyData }) {
     setFiles(allFiles);
   };
 
+  const {
+    setError,
+    formState: { errors },
+  } = useForm();
+  console.log({ errors });
   const handleSubmit = async () => {
-    if (files.length > 0) {
-      setLoading(true);
+    setLoading(true);
 
-      const requireData = {
-        contract_id: +singlePropertyData?.contract?.id,
-        contract_file: files[0],
-      };
-      console.log({ requireData });
+    const requireData = {
+      contract_id: +singlePropertyData?.contract?.id,
+      contract_file: files[0],
+    };
+    console.log({ requireData });
 
-      const formData = serialize(requireData, { indices: true });
-      const [error, response] = await contractUploadApi(formData);
-      setLoading(false);
-      if (!error) {
-        console.log("uploaded");
-        // setSentModalOpen(true);
-      } else {
-        // const errors = error?.response?.data?.errors ?? {};
-        // Object.entries(errors).forEach(([name, messages]) => {
-        //   setError(name, { type: "manual", message: messages[0] });
-        // });
-      }
+    const formData = serialize(requireData, { indices: true });
+    const [error, response] = await contractUploadApi(formData);
+    setLoading(false);
+    if (!error) {
+      console.log("uploaded");
+      setHideGenerateContract(true);
+      handleClose();
+      // setSentModalOpen(true);
     } else {
-      setImageError(true);
-      setImageErrorMessage("Image file is required");
+      const errors = error?.response?.data?.errors ?? {};
+      // console.log({ errors });
+      Object.entries(errors).forEach(([name, messages]) => {
+        setError(name, { type: "manual", message: messages[0] });
+      });
     }
   };
 
@@ -112,11 +126,9 @@ function ContractModal({ handleClose, singlePropertyData }) {
     isDragReject,
   } = useDropzone({
     onDrop,
+
     accept: {
       "application/pdf": [],
-      "application/vnd.openxmlformats-officedocument.wordprocessingml.document":
-        [],
-      "application/msword": [],
     },
   });
 
@@ -212,6 +224,13 @@ function ContractModal({ handleClose, singlePropertyData }) {
               select contract
             </Button>
           </Box>
+          <Typography
+            variant="inherit"
+            color="textSecondary"
+            sx={{ color: "#b91c1c", mt: 0.5 }}
+          >
+            {errors?.contract_file?.message}
+          </Typography>
         </Grid>
       </Box>
       <Grid
@@ -275,7 +294,8 @@ function ContractModal({ handleClose, singlePropertyData }) {
             },
           }}
         >
-          To send
+          {loading && <CircularProgress size={22} color="inherit" />}
+          {!loading && "To send"}
         </Button>
       </Grid>
     </Box>

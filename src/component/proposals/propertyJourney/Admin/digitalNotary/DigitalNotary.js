@@ -24,7 +24,7 @@ import CheckCircleOutlineIcon from "@mui/icons-material/CheckCircleOutline";
 import DigitalNotaryPdfModal from "../digitalNotaryPdfModal/DigitalNotaryPdfModal";
 import DigitalNotaryModal from "../digitalNotaryModal/DigitalNotaryModal";
 
-function DigitalNotary({ handleNext }) {
+function DigitalNotary({ handleNext, singlePropertyData }) {
   //digital_notary_modal_open
   const [digitalNotaryModalOpen, setDigitalNotaryModalOpen] =
     React.useState(false);
@@ -60,7 +60,7 @@ function DigitalNotary({ handleNext }) {
       <Box sx={{ mt: { xs: 2, sm: 2, md: 2, lg: 4 } }}>
         <Grid container spacing={2}>
           <Grid item xs={12} sm={12} md={12} lg={3}>
-            <SaleCard />
+            <SaleCard singlePropertyData={singlePropertyData} />
           </Grid>
           <Grid item xs={12} sm={12} md={12} lg={8}>
             <Box>

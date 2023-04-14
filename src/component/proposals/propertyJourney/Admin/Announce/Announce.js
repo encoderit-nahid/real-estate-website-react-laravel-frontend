@@ -17,7 +17,7 @@ import ContractModal from "../contractModal/ContractModal";
 import SaleCard from "../../../../reuseable/saleCard/SaleCard";
 import ContractPdfModal from "../ContractPdfModal/ContractPdfModal";
 
-function Announce({ handleNext }) {
+function Announce({ handleNext, singlePropertyData }) {
   return (
     <Box sx={{ mt: 4 }}>
       <Grid
@@ -43,7 +43,7 @@ function Announce({ handleNext }) {
       <Box sx={{ mt: { xs: 2, sm: 2, md: 2, lg: 4 } }}>
         <Grid container spacing={2}>
           <Grid item xs={12} sm={12} md={12} lg={3}>
-            <SaleCard />
+            <SaleCard singlePropertyData={singlePropertyData} />
           </Grid>
           <Grid item xs={12} sm={12} md={12} lg={5}></Grid>
           <Grid item xs={12} sm={12} md={12} lg={4}></Grid>

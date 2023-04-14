@@ -35,7 +35,7 @@ import DigitalNotaryFinalContent from "../../../src/component/proposals/property
 import BrokerCertificateAndDocument from "../../../src/component/proposals/propertyJourney/Broker/BrokerCertificateAndDocuments/BrokerCertificateAndDocument";
 import Announce from "../../../src/component/proposals/propertyJourney/Admin/Announce/Announce";
 import Proposal from "../../../src/component/proposals/propertyJourney/Admin/Proposal/Proposal";
-import { getSession } from "next-auth/react";
+import { getSession, useSession } from "next-auth/react";
 import { useRouter } from "next/router";
 import { useDispatch, useSelector } from "react-redux";
 import { findSinglePropertyData } from "../../../src/redux/singleProperty/actions";
@@ -61,6 +61,8 @@ export default function PropertyJourney(props) {
   const dispatch = useDispatch();
   const router = useRouter();
   const { query } = router;
+
+  const { data: session } = useSession();
 
   useEffect(() => {
     dispatch(findSinglePropertyData(query?.propertyId));
@@ -243,9 +245,13 @@ export default function PropertyJourney(props) {
                   <Fragment>
                     {activeStep === 0 ? (
                       //   <Address handleNext={handleNext} />
-                      <Announce handleNext={handleNext} />
+                      <Announce
+                        singlePropertyData={singlePropertyData}
+                        handleNext={handleNext}
+                      />
                     ) : activeStep === 1 ? (
                       <Proposal
+                        singlePropertyData={singlePropertyData}
                         handleNext={handleNext}
                         handleBack={handleBack}
                       />
@@ -260,12 +266,34 @@ export default function PropertyJourney(props) {
                       //     handleNext={handleNext}
                       //     handleBack={handleBack}
                       //   />
-                      <CertificatesAndDocuments handleNext={handleNext} />
+                      // <CertificatesAndDocuments
+                      //   singlePropertyData={singlePropertyData}
+                      //   handleNext={handleNext}
+                      // />
+                      session.user.role === "broker" ? (
+                        <BrokerCertificateAndDocument
+                          singlePropertyData={singlePropertyData}
+                          handleNext={handleNext}
+                        />
+                      ) : session.user.role === "admin" ? (
+                        <CertificatesAndDocuments
+                          singlePropertyData={singlePropertyData}
+                          handleNext={handleNext}
+                        />
+                      ) : (
+                        ""
+                      )
                     ) : // <BrokerCertificateAndDocument handleNext={handleNext} />
                     activeStep === 4 ? (
-                      <PreAnalise handleNext={handleNext} />
+                      <PreAnalise
+                        singlePropertyData={singlePropertyData}
+                        handleNext={handleNext}
+                      />
                     ) : (
-                      <DigitalNotary handleNext={handleNext} />
+                      <DigitalNotary
+                        singlePropertyData={singlePropertyData}
+                        handleNext={handleNext}
+                      />
                     )}
                     <Grid
                       container

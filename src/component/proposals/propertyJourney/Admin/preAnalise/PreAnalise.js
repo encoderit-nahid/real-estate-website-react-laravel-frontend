@@ -25,7 +25,7 @@ import CloudDownloadOutlinedIcon from "@mui/icons-material/CloudDownloadOutlined
 import HighlightOffIcon from "@mui/icons-material/HighlightOff";
 import AnalysisPdfModal from "../AnalysisPdfModal/AnalysisPdfModal";
 
-function PreAnalise({ handleNext }) {
+function PreAnalise({ handleNext, singlePropertyData }) {
   //   const [contractModalOpen, setContractModalOpen] = React.useState(false);
   //   const handleOpen = () => setContractModalOpen(true);
   //   const handleClose = () => setContractModalOpen(false);
@@ -62,7 +62,7 @@ function PreAnalise({ handleNext }) {
       <Box sx={{ mt: { xs: 2, sm: 2, md: 2, lg: 4 } }}>
         <Grid container spacing={2}>
           <Grid item xs={12} sm={12} md={12} lg={3}>
-            <SaleCard />
+            <SaleCard singlePropertyData={singlePropertyData} />
           </Grid>
           <Grid item xs={12} sm={12} md={12} lg={9}>
             <Box

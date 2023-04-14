@@ -11,6 +11,8 @@ import singlePropertyReducer from "./singleProperty/reducer";
 import ButtonReducer from "./featureWithoutGroup/reducer";
 import PropertyAcceptReducer from "./proposalAccept/reducer";
 import ProposalRefuseReducer from "./proposalRefuse/reducer";
+import CertificateReducer from "./certificates/reducer";
+import ContractDetailsReducer from "./contractDetails/reducer";
 
 const RootReducer = combineReducers({
   state: StateReducer,
@@ -24,6 +26,8 @@ const RootReducer = combineReducers({
   featureButton: ButtonReducer,
   propertyAccept: PropertyAcceptReducer,
   proposalRefuse: ProposalRefuseReducer,
+  certificate: CertificateReducer,
+  contractDetails: ContractDetailsReducer,
 
   // Auth: AuthReducer,
   // userDetails: UserReducer,

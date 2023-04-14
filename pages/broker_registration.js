@@ -201,8 +201,7 @@ export default function BrokerRegistration({
       Object.entries(errors).forEach(([name, messages]) => {
         setError(name, { type: "manual", message: messages[0] });
       });
-
-      setLoading(false);
+      // setLoading(false);
     }
   };
 
