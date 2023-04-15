@@ -7,7 +7,7 @@ import {
   LinearProgress,
 } from "@mui/material";
 import Image from "next/image";
-import React from "react";
+import React, { useEffect } from "react";
 import analise from "../../../../../../public/Images/analise.png";
 import maskedIcon from "../../../../../../public/Images/maskedIcon.png";
 import content from "../../../../../../public/Images/content.png";
@@ -24,13 +24,16 @@ import CheckCircleOutlineIcon from "@mui/icons-material/CheckCircleOutline";
 import CloudDownloadOutlinedIcon from "@mui/icons-material/CloudDownloadOutlined";
 import HighlightOffIcon from "@mui/icons-material/HighlightOff";
 import AnalysisPdfModal from "../AnalysisPdfModal/AnalysisPdfModal";
+import { useDispatch, useSelector } from "react-redux";
+import { findUploadCertificateData } from "../../../../../redux/uploadCertificate/actions";
 
 function PreAnalise({ handleNext, singlePropertyData }) {
-  //   const [contractModalOpen, setContractModalOpen] = React.useState(false);
-  //   const handleOpen = () => setContractModalOpen(true);
-  //   const handleClose = () => setContractModalOpen(false);
-
-  //   const [progress, setProgress] = React.useState(40);
+  const dispatch = useDispatch()
+  useEffect(() => {
+    dispatch(findUploadCertificateData(+singlePropertyData?.contract?.id))
+  },[dispatch,singlePropertyData])
+  const uploadCertificateData = useSelector((state) => state?.uploadCertificate?.uploadCertificateData)
+  console.log({uploadCertificateData})
 
   //pdf_open
   const [analysisPdfOpen, setAnalysisPdfOpen] = React.useState(false);
@@ -65,7 +68,7 @@ function PreAnalise({ handleNext, singlePropertyData }) {
             <SaleCard singlePropertyData={singlePropertyData} />
           </Grid>
           <Grid item xs={12} sm={12} md={12} lg={9}>
-            <Box
+            {/* <Box
               sx={{
                 background: "#FFFFFF",
                 border: "1px solid #DBE1E5",
@@ -331,10 +334,11 @@ function PreAnalise({ handleNext, singlePropertyData }) {
                     </Button>
                   </Grid>
                 </Grid>
+                
               </Grid>
-            </Box>
+            </Box> */}
 
-            {[0, 1].map((data, index) => (
+            {uploadCertificateData?.documents?.map((data, index) => (
               <Box
                 key={index}
                 sx={{
@@ -345,7 +349,39 @@ function PreAnalise({ handleNext, singlePropertyData }) {
                   py: 2,
                   mt: 2,
                 }}
-              >
+              >{
+                data?.status === "certificate_validated" &&
+                <Box>
+                <Button
+                  sx={{
+                    display: "flex",
+                    textTransform: "none",
+                    background: "#E0F2FE",
+                    borderRadius: "2px",
+                    padding: "2px 8px",
+                    color: " #0362F0",
+                    fontSize: "14px",
+                    lineHeight: "18px",
+                    fontWeight: "400",
+                    mr: 1,
+                  }}
+                >
+                  <CheckCircleOutlineIcon sx={{ color: "#114B32" }} />
+                  <Typography
+                    varianat="p"
+                    sx={{
+                      color: "#114B32",
+                      fontSize: "14px",
+                      lineHeight: "18px",
+                      fontWeight: "400",
+                    }}
+                  >
+                    Analysis completed
+                  </Typography>
+                </Button>
+              </Box>
+           
+              }
                 <Grid
                   container
                   direction="column"
@@ -362,7 +398,7 @@ function PreAnalise({ handleNext, singlePropertyData }) {
                         fontWeight: "400",
                       }}
                     >
-                      Updated certificate of registration of the property.
+                      {data?.tag?.name}
                     </Typography>
                   </Box>
                   <Box sx={{ width: "100%", py: 1 }}>
@@ -589,23 +625,51 @@ function PreAnalise({ handleNext, singlePropertyData }) {
                         </Typography>
                       </Button>
                     </Grid>
-                    <Grid item xs={12} sm={12} md={12} lg={6}>
+                    {
+                      data?.status === 'certificate_validated' ?
+                      <Grid item xs={12} sm={12} md={12} lg={6}>
                       <Button
-                        onClick={handlePdfOpen}
                         fullWidth
                         variant="outlined"
                         sx={{
-                          background: "#7450F0",
-                          border: "1px solid #7450F0",
+                          display: "flex",
+                          background: "#DDF8ED",
+                          border: "1px solid #34BE84",
                           color: "#ffffff",
-                          fontSize: "16px",
-                          lineHeight: "22px",
-                          fontWeight: "600",
                           textTransform: "none",
                           py: 0.5,
-                          px: 1,
+                          px: 2,
                           mt: { xs: 0, sm: 0, md: 0, lg: 1, xl: 0 },
                           "&: hover": {
+                            background: "#DDF8ED",
+                            color: "#ffffff",
+                            textTransform: "none",
+                            py: 0.5,
+                            px: 2,
+                            border: "1px solid #34BE84",
+                          },
+                        }}
+                      >
+                        <CheckCircleOutlineIcon sx={{ color: "#114B32" }} />
+                        <Typography
+                          variant="p"
+                          sx={{
+                            color: "#114B32",
+                            fontSize: "14px",
+                            lineHeight: "18px",
+                            fontWeight: "600",
+                          }}
+                        >
+                          Validated documnet
+                        </Typography>
+                      </Button>
+                    </Grid>:
+                        <Grid item xs={12} sm={12} md={12} lg={6}>
+                        <Button
+                          onClick={handlePdfOpen}
+                          fullWidth
+                          variant="outlined"
+                          sx={{
                             background: "#7450F0",
                             border: "1px solid #7450F0",
                             color: "#ffffff",
@@ -614,14 +678,28 @@ function PreAnalise({ handleNext, singlePropertyData }) {
                             fontWeight: "600",
                             textTransform: "none",
                             py: 0.5,
-                            px: 2,
-                          },
-                        }}
-                      >
-                        Validate documnet
-                      </Button>
-                    </Grid>
-                  </Grid>
+                            px: 1,
+                            mt: { xs: 0, sm: 0, md: 0, lg: 1, xl: 0 },
+                            "&: hover": {
+                              background: "#7450F0",
+                              border: "1px solid #7450F0",
+                              color: "#ffffff",
+                              fontSize: "16px",
+                              lineHeight: "22px",
+                              fontWeight: "600",
+                              textTransform: "none",
+                              py: 0.5,
+                              px: 2,
+                            },
+                          }}
+                        >
+                          Validate documnet
+                        </Button>
+                      </Grid>
+               
+
+                    }
+                 </Grid>
                 </Grid>
               </Box>
             ))}

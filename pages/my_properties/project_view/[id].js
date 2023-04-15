@@ -1,5 +1,5 @@
-import Navbar from "../../../src/component/shared/Navbar/Navbar";
-import Head from "next/head";
+import Navbar from '../../../src/component/shared/Navbar/Navbar'
+import Head from 'next/head'
 import {
   Box,
   Grid,
@@ -8,76 +8,78 @@ import {
   ImageList,
   ImageListItem,
   Button,
-} from "@mui/material";
-import orionImage from "../../../public/Images/orion_view.svg";
-import Image from "next/image";
-import TabView from "../../../src/component/PropertyView/tab/TabView";
-import AmountView from "../../../src/component/PropertyView/amount/AmountView";
-import Features from "../../../src/component/PropertyView/feature/Features";
-import AboutProperty from "../../../src/component/PropertyView/AboutProperty/AboutProperty";
-import Negotiate from "../../../src/component/PropertyView/Negotiate/Negotiate";
-import HouseCard from "../../../src/component/reuseable/HouseCard/HouseCard";
-import Footer from "../../../src/component/shared/Footer/Footer";
-import SliderView from "../../../src/component/PropertyView/slider/SliderView";
-import SlideImage from "../../../src/component/PropertyView/slideImage/SlideImage";
-import SliderViewMobile from "../../../src/component/PropertyView/SliderViewMobile/SliderViewMobile";
-import sliderView from "../../../public/Images/sliderView.png";
-import sliderViewSmall from "../../../public/Images/sliderViewSmall.png";
-import BaseModal from "../../../src/component/reuseable/baseModal/BaseModal";
-import ProposalModal from "../../../src/component/PropertyView/ProposalStepperComponent/ProposalModal";
-import { useState } from "react";
-import yellowImage from "../../../public/Images/yellow.png";
-import { getSession } from "next-auth/react";
+} from '@mui/material'
+import orionImage from '../../../public/Images/orion_view.svg'
+import Image from 'next/image'
+import TabView from '../../../src/component/PropertyView/tab/TabView'
+import AmountView from '../../../src/component/PropertyView/amount/AmountView'
+import Features from '../../../src/component/PropertyView/feature/Features'
+import AboutProperty from '../../../src/component/PropertyView/AboutProperty/AboutProperty'
+import Negotiate from '../../../src/component/PropertyView/Negotiate/Negotiate'
+import HouseCard from '../../../src/component/reuseable/HouseCard/HouseCard'
+import Footer from '../../../src/component/shared/Footer/Footer'
+import SliderView from '../../../src/component/PropertyView/slider/SliderView'
+import SlideImage from '../../../src/component/PropertyView/slideImage/SlideImage'
+import SliderViewMobile from '../../../src/component/PropertyView/SliderViewMobile/SliderViewMobile'
+import sliderView from '../../../public/Images/sliderView.png'
+import sliderViewSmall from '../../../public/Images/sliderViewSmall.png'
+import BaseModal from '../../../src/component/reuseable/baseModal/BaseModal'
+import ProposalModal from '../../../src/component/PropertyView/ProposalStepperComponent/ProposalModal'
+import { useState } from 'react'
+import yellowImage from '../../../public/Images/yellow.png'
+import { getSession } from 'next-auth/react'
 
 const aboutProperty = [
-  "Heater",
-  "Dependency",
-  "Balcony",
-  "Service area",
-  "Air conditioner",
-  "Source",
-  "Coif",
-  "Cabinets",
-  "Wardrobe",
-  "Stove",
-];
+  'Heater',
+  'Dependency',
+  'Balcony',
+  'Service area',
+  'Air conditioner',
+  'Source',
+  'Coif',
+  'Cabinets',
+  'Wardrobe',
+  'Stove',
+]
 
 const aboutCondo = [
-  "sports court",
-  "playground",
-  "Electric fence",
-  "Internal TV circuit",
-  "Ordinance",
-  "individual gas",
-  "service entrance",
-  "Service elevator",
-  "Employee locker room",
-  "Academy",
-  "heated pool",
-  "Party room",
-];
+  'sports court',
+  'playground',
+  'Electric fence',
+  'Internal TV circuit',
+  'Ordinance',
+  'individual gas',
+  'service entrance',
+  'Service elevator',
+  'Employee locker room',
+  'Academy',
+  'heated pool',
+  'Party room',
+]
 
 const surroundings = [
-  "hospitals",
-  "pharmacies",
-  "Markets",
-  "Laundries",
-  "Museum",
-];
+  'hospitals',
+  'pharmacies',
+  'Markets',
+  'Laundries',
+  'Museum',
+]
 
 export default function ProjectView({
   loginOpen,
   setLoginOpen,
   handleLoginOpen,
   handleLoginClose,
+  singleProjectData,
 }) {
+  console.log({ singleProjectData })
   //add_proposal_modal
-  const [proposalOpen, setProposalOpen] = useState(false);
-  const handleProposalOpen = () => setProposalOpen(true);
-  const handleProposalClose = () => setProposalOpen(false);
+  const [proposalOpen, setProposalOpen] = useState(false)
+  const handleProposalOpen = () => setProposalOpen(true)
+  const handleProposalClose = () => setProposalOpen(false)
 
-  const [negotiate, setNegotiate] = useState(true);
-  const [schedule, setSchedule] = useState(false);
+  const [negotiate, setNegotiate] = useState(true)
+  const [schedule, setSchedule] = useState(false)
 
   return (
     <div>
@@ -90,7 +92,7 @@ export default function ProjectView({
       <main className="section">
         <Navbar
           shape={false}
-          paddingY={"1vh"}
+          paddingY={'1vh'}
           loginOpen={loginOpen}
           setLoginOpen={setLoginOpen}
           handleLoginClose={handleLoginClose}
@@ -106,22 +108,22 @@ export default function ProjectView({
             <Button
               sx={{
                 display: {
-                  xs: "grid",
-                  sm: "grid",
-                  md: "flex",
-                  lg: "flex",
-                  xl: "flex",
+                  xs: 'grid',
+                  sm: 'grid',
+                  md: 'flex',
+                  lg: 'flex',
+                  xl: 'flex',
                 },
-                color: "#1A1859",
+                color: '#1A1859',
               }}
             >
               <Image src={orionImage} alt="orionImage" />
 
               <Typography
                 variant="p"
-                sx={{ fontSize: "24px", fontWeight: 700, color: "#1A1859" }}
+                sx={{ fontSize: '24px', fontWeight: 700, color: '#1A1859' }}
               >
-                Rua Carlos Vicari | Água Branca São Paulo - SP
+                {singleProjectData?.project?.name}
               </Typography>
             </Button>
           </Grid>
@@ -146,11 +148,11 @@ export default function ProjectView({
             container
             sx={{
               display: {
-                xs: "inline",
-                sm: "inline",
-                md: "none",
-                lg: "none",
-                xl: "none",
+                xs: 'inline',
+                sm: 'inline',
+                md: 'none',
+                lg: 'none',
+                xl: 'none',
               },
             }}
           >
@@ -169,11 +171,11 @@ export default function ProjectView({
                 xs={3}
                 sx={{
                   display: {
-                    xs: "inline",
-                    sm: "inline",
-                    md: "none",
-                    lg: "none",
-                    xl: "none",
+                    xs: 'inline',
+                    sm: 'inline',
+                    md: 'none',
+                    lg: 'none',
+                    xl: 'none',
                   },
                 }}
               >
@@ -199,11 +201,11 @@ export default function ProjectView({
               xs={10}
               sx={{
                 display: {
-                  xs: "none",
-                  sm: "none",
-                  md: "inline",
-                  lg: "inline",
-                  xl: "inline",
+                  xs: 'none',
+                  sm: 'none',
+                  md: 'inline',
+                  lg: 'inline',
+                  xl: 'inline',
                 },
               }}
             >
@@ -214,11 +216,11 @@ export default function ProjectView({
               xs={2}
               sx={{
                 display: {
-                  xs: "none",
-                  sm: "none",
-                  md: "inline",
-                  lg: "inline",
-                  xl: "inline",
+                  xs: 'none',
+                  sm: 'none',
+                  md: 'inline',
+                  lg: 'inline',
+                  xl: 'inline',
                 },
               }}
             >
@@ -232,7 +234,7 @@ export default function ProjectView({
             mx: 3,
             mt: 4,
 
-            background: "linear-gradient(90deg, #20BAF6 0%, #7450F0 100%);",
+            background: 'linear-gradient(90deg, #20BAF6 0%, #7450F0 100%);',
           }}
         >
           <Container maxWidth="lg">
@@ -240,7 +242,7 @@ export default function ProjectView({
               container
               spacing={2}
               sx={{
-                height: { xs: "auto", sm: "auto", md: "auto", lg: "40vh" },
+                height: { xs: 'auto', sm: 'auto', md: 'auto', lg: '40vh' },
                 pt: 1,
                 pb: 1,
               }}
@@ -254,10 +256,10 @@ export default function ProjectView({
                 <Typography
                   variant="h6"
                   sx={{
-                    color: "#FFFFFF",
-                    fontWeight: "800",
-                    fontSize: "32px",
-                    lineHeight: "38px",
+                    color: '#FFFFFF',
+                    fontWeight: '800',
+                    fontSize: '32px',
+                    lineHeight: '38px',
                   }}
                 >
                   Yellow Empreendimentos imobiliários
@@ -265,10 +267,10 @@ export default function ProjectView({
                 <Typography
                   variant="h6"
                   sx={{
-                    color: "#FFFFFF",
-                    fontWeight: "500",
-                    fontSize: "20px",
-                    lineHeight: "28px",
+                    color: '#FFFFFF',
+                    fontWeight: '500',
+                    fontSize: '20px',
+                    lineHeight: '28px',
                     mt: 2,
                   }}
                 >
@@ -277,10 +279,10 @@ export default function ProjectView({
                 <Typography
                   variant="h6"
                   sx={{
-                    color: "#FFFFFF",
-                    fontWeight: "500",
-                    fontSize: "20px",
-                    lineHeight: "28px",
+                    color: '#FFFFFF',
+                    fontWeight: '500',
+                    fontSize: '20px',
+                    lineHeight: '28px',
                     mt: 4,
                   }}
                 >
@@ -299,29 +301,32 @@ export default function ProjectView({
             // spacing={3}
             cols={5}
             sx={{
-              gridAutoFlow: "column",
+              gridAutoFlow: 'column',
               gridTemplateColumns:
-                "repeat(auto-fill,minmax(140px,1fr)) !important",
-              gridAutoColumns: "minmax(140px, 1fr)",
+                'repeat(auto-fill,minmax(140px,1fr)) !important',
+              gridAutoColumns: 'minmax(140px, 1fr)',
               pl: 3,
               pb: 4,
             }}
           >
-            {[0, 1, 2, 3, 4, 5, 6].map((data, index) => (
+            {singleProjectData?.propject_wise_properties?.map((data, index) => (
               <ImageListItem
                 key={index}
                 cols={2}
                 sx={{
                   width: {
-                    xl: "90%",
-                    lg: "90%",
-                    md: "70%",
-                    sm: "90%",
-                    xs: "90%",
+                    xl: '90%',
+                    lg: '90%',
+                    md: '70%',
+                    sm: '90%',
+                    xs: '90%',
                   },
                 }}
               >
-                <HouseCard shadow={"0px 4px 18px rgba(0, 0, 0, 0.1)"} />
+                <HouseCard
+                  propertyInfo={data}
+                  shadow={'0px 4px 18px rgba(0, 0, 0, 0.1)'}
+                />
               </ImageListItem>
             ))}
           </ImageList>
@@ -329,27 +334,24 @@ export default function ProjectView({
         <Footer />
       </main>
     </div>
-  );
+  )
 }
 
 export async function getServerSideProps(context) {
-  //* Session for SSG
-  const session = await getSession(context);
-  //? If Not Logged In
-  if (!session) {
-    return {
-      redirect: {
-        destination: "/",
-      },
-      props: {
-        session: null,
-      },
-    };
-  }
+  const { id } = context.query
+  const base_url = process.env.NEXT_PUBLIC_API_URL
+  // console.log("paramId", id);
+  const res = await fetch(`${base_url}/api/project/show/${id}`)
+  const singleProjectData = await res.json()
 
+  // console.log("single", singlePropertyData);
   return {
     props: {
-      session: session,
+      singleProjectData: singleProjectData,
+      // tabArrayData:
+      //   singlePropertyData?.property?.property_detail?.photo_types?.filter(
+      //     (data) => data.slug.substr(data.slug.length - 3) !== "360"
+      //   ),
     },
-  };
+  }
 }

@@ -607,7 +607,7 @@ function ContractPdfModal({
                       lineHeight: "22px",
                     }}
                   >
-                    alma.lawson@example.com
+                   {data?.details}
                   </Typography>
                   <FormGroup>
                     <FormControlLabel

@@ -11,7 +11,7 @@ function ReleaseCard({ projectData }) {
     return `${_baseURL}/storage/${projectData?.attachments[0]?.file_path}`;
   }
   return (
-    <Link href="/my_properties/project_view">
+    <Link href={`/my_properties/project_view/${projectData?.id}`}>
       <Box
         sx={{
           background: "#ffffff",

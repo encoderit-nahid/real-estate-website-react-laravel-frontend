@@ -1,4 +1,4 @@
-import { Box, Button, Grid, TextareaAutosize, Typography } from "@mui/material";
+import { Box, Button, CircularProgress, Grid, TextareaAutosize, Typography } from "@mui/material";
 import React from "react";
 import handshake from "../../../../../../public/Images/handshake.png";
 import Image from "next/image";
@@ -8,6 +8,11 @@ import certificate from "../../../../../../public/Images/certificate.png";
 import FolderOutlinedIcon from "@mui/icons-material/FolderOutlined";
 import { useState } from "react";
 import { useMemo } from "react";
+import { serialize } from "object-to-formdata";
+import { useForm } from "react-hook-form";
+import { certificateUploadApi } from "../../../../../api";
+import { useDispatch } from "react-redux";
+import { findRequireCertificateData } from "../../../../../redux/requireCertificate/actions";
 
 const baseStyle = {
   display: "flex",
@@ -40,7 +45,8 @@ const rejectStyle = {
   borderColor: "#f2f",
 };
 
-function CertificateModal({ handleClose }) {
+function CertificateModal({ handleClose,certificateData,singlePropertyData }) {
+  const dispatch = useDispatch()
   const styleModal = {
     position: "absolute",
     top: "50%",
@@ -56,7 +62,7 @@ function CertificateModal({ handleClose }) {
     px: 1,
     py: 2,
   };
-
+  const [loading, setLoading] = useState(false);
   const [files, setFiles] = useState([]);
   console.log(files);
 
@@ -81,8 +87,7 @@ function CertificateModal({ handleClose }) {
   } = useDropzone({
     onDrop,
     accept: {
-      "image/jpeg": [],
-      "image/png": [],
+      "application/pdf": [],
     },
   });
 
@@ -101,6 +106,40 @@ function CertificateModal({ handleClose }) {
     }),
     [isDragActive, isDragReject, isDragAccept]
   );
+
+  
+  const {
+    setError,
+    formState: { errors },
+  } = useForm();
+  console.log({ errors });
+  const handleSubmit = async () => {
+    setLoading(true);
+
+    const requireData = {
+      contract_id: +singlePropertyData?.contract?.id,
+      certificate_file: files[files.length - 1],
+      certificate_type_id: certificateData?.tag?.id
+    };
+    console.log({ requireData });
+
+    const formData = serialize(requireData, { indices: true });
+    const [error, response] = await certificateUploadApi(formData);
+    setLoading(false);
+    if (!error) {
+      console.log("uploaded");
+      dispatch(findRequireCertificateData(+singlePropertyData?.contract?.id))
+      
+      handleClose();
+      // setSentModalOpen(true);
+    } else {
+      const errors = error?.response?.data?.errors ?? {};
+      // console.log({ errors });
+      Object.entries(errors).forEach(([name, messages]) => {
+        setError(name, { type: "manual", message: messages[0] });
+      });
+    }
+  };
   return (
     <Box sx={styleModal}>
       <Box sx={{ width: "100%" }}>
@@ -122,7 +161,7 @@ function CertificateModal({ handleClose }) {
           <Box>
             <Image src={certificate} alt="certificate" />
           </Box>
-          <Box sx={{ pl: { xs: 2, sm: 2, md: 2, lg: 2, xl: 2 } }}>
+          <Box sx={{ pl: { xs: 2, sm: 2, md: 2, lg: 2, xl: 4 } }}>
             <Typography
               variant="p"
               sx={{
@@ -132,9 +171,10 @@ function CertificateModal({ handleClose }) {
                 lineHeight: "32px",
                 textAlign: "center",
                 mt: 2,
+              
               }}
             >
-              Negative certificate of real estate tax debts
+              {certificateData?.tag?.name}
             </Typography>
           </Box>
           <Box {...getRootProps({ style })}>
@@ -179,9 +219,56 @@ function CertificateModal({ handleClose }) {
               select document
             </Button>
           </Box>
+          <Typography
+            variant="inherit"
+            color="textSecondary"
+            sx={{ color: "#b91c1c", mt: 0.5 }}
+          >
+            {errors?.certificate_file?.message}
+          </Typography>
         </Grid>
       </Box>
-      <Box sx={{ px: 3 }}>
+      {files?.length > 0 && (
+      <Grid sx={{px:10,mb:2}}>
+                <Box
+                sx={{
+                  p: 2,
+                  boxSizing: "border-box",
+                  border: "1px solid #DBE1E5",
+                  borderRadius: "6px",
+                  
+                }}
+              >
+                <Grid
+                  container
+                  direction="row"
+                  justifyContent="flex-end"
+                  alignItems="flex-start"
+                >
+                  <DeleteOutlineOutlinedIcon
+                    sx={{
+                      background: "#F44336",
+                      color: "#ffffff",
+                      borderRadius: "50%",
+                      height: "3vh",
+                      width: "3vh",
+                      paddingY: "3px",
+                    }}
+                    onClick={() => handleDelete(files.length - 1)}
+                  />
+                </Grid>
+                {/* <InsertDriveFileOutlinedIcon/> */}
+                <Typography
+                  variant="p"
+                  sx={{ color: "#38bdf8", fontWeight: "600" }}
+                >
+                  {files[files.length -1]?.name?.slice(0, 20)}
+                </Typography>
+              </Box>
+      </Grid>
+  
+      )}
+      {/* <Box sx={{ px: 3 }}>
         <Typography
           variant="p"
           sx={{
@@ -210,7 +297,7 @@ function CertificateModal({ handleClose }) {
             padding: "0.4vh 1.4vh",
           }}
         />
-      </Box>
+      </Box> */}
       <Grid
         container
         direction="row"
@@ -245,6 +332,7 @@ function CertificateModal({ handleClose }) {
           Cancel
         </Button>
         <Button
+         onClick={handleSubmit}
           variant="outlined"
           sx={{
             background: "#34BE84",
@@ -271,7 +359,8 @@ function CertificateModal({ handleClose }) {
             },
           }}
         >
-          To send
+          {loading && <CircularProgress size={22} color="inherit" />}
+          {!loading && "To send"}
         </Button>
       </Grid>
     </Box>

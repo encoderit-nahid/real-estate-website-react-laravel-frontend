@@ -7,7 +7,7 @@ import {
   LinearProgress,
 } from "@mui/material";
 import Image from "next/image";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import certificate from "../../../../../../public/Images/certificate.png";
 import maskedIcon from "../../../../../../public/Images/maskedIcon.png";
 import content from "../../../../../../public/Images/content.png";
@@ -20,11 +20,25 @@ import SaleCard from "../../../../reuseable/saleCard/SaleCard";
 import VisibilityOutlinedIcon from "@mui/icons-material/VisibilityOutlined";
 import CloudUploadOutlinedIcon from "@mui/icons-material/CloudUploadOutlined";
 import CertificateModal from "../certificateModal/CertificateModal";
+import { useDispatch, useSelector } from "react-redux";
+import { findRequireCertificateData } from "../../../../../redux/requireCertificate/actions";
 
 function CertificatesAndDocuments({ handleNext, singlePropertyData }) {
+
+  const dispatch = useDispatch()
+  useEffect(() => {
+    dispatch(findRequireCertificateData(+singlePropertyData?.contract?.id))
+  },[dispatch,singlePropertyData])
+  const requireCertificateData = useSelector((state) => state?.requireCertificate?.requireCertificateData)
+  console.log({requireCertificateData})
+  const[certificateData,setCertificateData] = useState('')
   //contract_modal_open
   const [contractModalOpen, setContractModalOpen] = React.useState(false);
-  const handleOpen = () => setContractModalOpen(true);
+  
+  const handleOpen = (data) => {
+    setCertificateData(data)
+    setContractModalOpen(true);
+  }
   const handleClose = () => setContractModalOpen(false);
 
   const [progress, setProgress] = React.useState(40);
@@ -71,112 +85,8 @@ function CertificatesAndDocuments({ handleNext, singlePropertyData }) {
               </Typography>
             </Box>
             <Grid container spacing={3}>
-              <Grid item xs={12} sm={12} md={12} lg={6} sx={{ mt: 1 }}>
-                <Box
-                  sx={{
-                    background: "#FFFFFF",
-                    border: "1px solid #DBE1E5",
-                    borderRadius: "8px",
-                    py: 2,
-                    px: { xs: 0, sm: 0, md: 0, lg: 2, xl: 0 },
-                  }}
-                >
-                  <Grid
-                    container
-                    direction="column"
-                    justifyContent="center"
-                    alignItems="center"
-                  >
-                    <Box>
-                      <Typography
-                        variant="p"
-                        sx={{
-                          color: "#1A1859",
-                          fontSize: "14px",
-                          lineHeight: "18px",
-                          fontWeight: "400",
-                        }}
-                      >
-                        Negative certificate of real estate tax debts
-                      </Typography>
-                    </Box>
-                    <Grid
-                      container
-                      direction="row"
-                      justifyContent={{
-                        xs: "center",
-                        sm: "center",
-                        md: "center",
-                        lg: "flex-start",
-                        xl: "center",
-                      }}
-                      alignItems="center"
-                      sx={{ mt: 2 }}
-                    >
-                      <Button
-                        sx={{
-                          background: "#7450F0",
-                          color: "#ffffff",
-                          mr: 1,
-                          "&: hover": {
-                            background: "#7450F0",
-                            color: "#ffffff",
-                          },
-                        }}
-                      >
-                        <Image src={content} alt="content" />
-                      </Button>
-                      <Button
-                        sx={{
-                          background: "#F44336",
-                          color: "#ffffff",
-                          mr: 1,
-
-                          "&: hover": {
-                            background: "#F44336",
-                            color: "#ffffff",
-                          },
-                        }}
-                      >
-                        <Image src={maskedIcon} alt="maskedIcon" />
-                      </Button>
-                      <Button
-                        onClick={handleOpen}
-                        sx={{
-                          display: "flex",
-                          background: "#0362F0",
-                          color: "#ffffff",
-                          textTransform: "none",
-                          py: 0.5,
-                          px: 2,
-                          mt: { xs: 0, sm: 0, md: 0, lg: 1, xl: 0 },
-                          "&: hover": {
-                            background: "#0362F0",
-                            color: "#ffffff",
-                            textTransform: "none",
-                            py: 0.5,
-                            px: 2,
-                          },
-                        }}
-                      >
-                        <VisibilityOutlinedIcon sx={{ color: "#ffffff" }} />
-                        <Typography
-                          variant="p"
-                          sx={{
-                            color: "#ffffff",
-                            fontSize: "14px",
-                            lineHeight: "18px",
-                            fontWeight: "400",
-                          }}
-                        >
-                          To view
-                        </Typography>
-                      </Button>
-                    </Grid>
-                  </Grid>
-                </Box>
-              </Grid>
-              {[0, 1, 2].map((data, index) => (
+             
+              {requireCertificateData?.documents?.map((data, index) => (
                 <Grid
                   key={index}
                   item
@@ -192,7 +102,8 @@ function CertificatesAndDocuments({ handleNext, singlePropertyData }) {
                       border: "1px solid #DBE1E5",
                       borderRadius: "8px",
                       py: 2,
-                      px: { xs: 0, sm: 0, md: 0, lg: 2, xl: 0 },
+                      px: { xs: 0, sm: 0, md: 0, lg: 2, xl: 2 },
+                      height:{xs:200,sm:200,md:200,lg:200,xl:150}
                     }}
                   >
                     <Grid
@@ -211,55 +122,151 @@ function CertificatesAndDocuments({ handleNext, singlePropertyData }) {
                             fontWeight: "400",
                           }}
                         >
-                          State tax regularity certificate - State CDN
+                         {data?.tag?.name}
                         </Typography>
                       </Box>
 
-                      <Box
+                      {
+                        data?.status === "certificate_uploaded" ?
+                        <Box
                         sx={{
-                          px: { xs: 2, sm: 2, md: 2, lg: 0, xl: 2 },
-                          width: "100%",
-                          mt: 2,
+                          background: "#FFFFFF",
+                          border: "1px solid #DBE1E5",
+                          borderRadius: "8px",
+                          py: 2,
+                          px: { xs: 0, sm: 0, md: 0, lg: 2, xl: 0.6, xxl: 1 },
                         }}
                       >
-                        <Button
-                          fullWidth
-                          onClick={handleOpen}
-                          varinat="outlined"
-                          sx={{
-                            display: "flex",
-                            border: "1px solid #000F1A",
-                            color: "#000F1A",
-                            textTransform: "none",
-
-                            py: 0.5,
-                            px: 2,
-
-                            mt: { xs: 0, sm: 0, md: 0, lg: 1, xl: 0 },
-                            "&: hover": {
-                              border: "1px solid #000F1A",
-                              color: "#000F1A",
-                              textTransform: "none",
-                              py: 0.5,
-                              px: 2,
-                            },
-                          }}
+                        <Grid
+                          container
+                          direction="column"
+                          justifyContent="center"
+                          alignItems="center"
                         >
-                          <CloudUploadOutlinedIcon sx={{ color: "#000F1A" }} />
-                          <Typography
-                            variant="p"
-                            sx={{
-                              color: "#000F1A",
-                              fontSize: "14px",
-                              lineHeight: "18px",
-                              fontWeight: "400",
-                              ml: 0.5,
+                         
+                          <Grid
+                            container
+                            direction="row"
+                            justifyContent={{
+                              xs: "center",
+                              sm: "center",
+                              md: "center",
+                              lg: "flex-start",
+                              xl: "center",
                             }}
+                            alignItems="center"
+                            sx={{ mt: 2 }}
                           >
-                            Send document
-                          </Typography>
-                        </Button>
-                      </Box>
+                            <Button
+                              sx={{
+                                background: "#7450F0",
+                                color: "#ffffff",
+                                mr: 1,
+                                "&: hover": {
+                                  background: "#7450F0",
+                                  color: "#ffffff",
+                                },
+                              }}
+                            >
+                              <Image src={content} alt="content" />
+                            </Button>
+                            <Button
+                              sx={{
+                                background: "#F44336",
+                                color: "#ffffff",
+                                mr: 1,
+      
+                                "&: hover": {
+                                  background: "#F44336",
+                                  color: "#ffffff",
+                                },
+                              }}
+                            >
+                              <Image src={maskedIcon} alt="maskedIcon" />
+                            </Button>
+                            <Button
+                           
+                              sx={{
+                                display: "flex",
+                                background: "#0362F0",
+                                color: "#ffffff",
+                                textTransform: "none",
+                                py: 0.5,
+                                px: 2,
+                                mt: { xs: 0, sm: 0, md: 0, lg: 1, xl: 0 },
+                                "&: hover": {
+                                  background: "#0362F0",
+                                  color: "#ffffff",
+                                  textTransform: "none",
+                                  py: 0.5,
+                                  px: 2,
+                                },
+                              }}
+                            >
+                              <VisibilityOutlinedIcon sx={{ color: "#ffffff" }} />
+                              <Typography
+                                variant="p"
+                                sx={{
+                                  color: "#ffffff",
+                                  fontSize: "14px",
+                                  lineHeight: "18px",
+                                  fontWeight: "400",
+                                }}
+                              >
+                                To view
+                              </Typography>
+                            </Button>
+                          </Grid>
+                        </Grid>
+                      </Box> : 
+ <Box
+ sx={{
+   px: { xs: 2, sm: 2, md: 2, lg: 0, xl: 2 },
+   width: "100%",
+   mt: 2,
+ }}
+>
+ <Button
+   fullWidth
+   onClick={()=>handleOpen(data)}
+   varinat="outlined"
+   sx={{
+     display: "flex",
+     border: "1px solid #000F1A",
+     color: "#000F1A",
+     textTransform: "none",
+
+     py: 0.5,
+     px: 2,
+
+     mt: { xs: 0, sm: 0, md: 0, lg: 1, xl: 0 },
+     "&: hover": {
+       border: "1px solid #000F1A",
+       color: "#000F1A",
+       textTransform: "none",
+       py: 0.5,
+       px: 2,
+     },
+   }}
+ >
+   <CloudUploadOutlinedIcon sx={{ color: "#000F1A" }} />
+   <Typography
+     variant="p"
+     sx={{
+       color: "#000F1A",
+       fontSize: "14px",
+       lineHeight: "18px",
+       fontWeight: "400",
+       ml: 0.5,
+     }}
+   >
+     Send document
+   </Typography>
+ </Button>
+</Box>
+                      }
+
+                     
                     </Grid>
                   </Box>
                 </Grid>
@@ -299,7 +306,7 @@ function CertificatesAndDocuments({ handleNext, singlePropertyData }) {
       <BaseModal isShowing={contractModalOpen} isClose={handleClose}>
         <Tooltip title="Something">
           <>
-            <CertificateModal handleClose={handleClose} />
+            <CertificateModal handleClose={handleClose} certificateData={certificateData} singlePropertyData={singlePropertyData} />
           </>
         </Tooltip>
       </BaseModal>

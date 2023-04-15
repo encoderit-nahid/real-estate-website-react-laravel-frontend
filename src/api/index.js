@@ -315,3 +315,87 @@ export const createSignatureApi = async (body) => {
     return [error, null];
   }
 };
+
+//getRequire_certificate
+export const requireCertrificateApi = async (id) => {
+  try {
+    const response = await apiInstance.get(`contract/get-require-certificates?id=${id}`);
+    return [false, response];
+  } catch (error) {
+    return [error, null];
+  }
+};
+
+//certificate_upload_api
+export const certificateUploadApi = async (body) => {
+  try {
+    const response = await apiInstance.post(`contract/certificate/upload`, body);
+    return [false, response];
+  } catch (error) {
+    return [error, null];
+  }
+};
+
+//getUpload_certificate
+export const uploadCertrificateApi = async (id) => {
+  try {
+    const response = await apiInstance.get(`contract/get-uploaded-certificates?id=${id}`);
+    return [false, response];
+  } catch (error) {
+    return [error, null];
+  }
+};
+
+
+
+//certificate_validation
+export const certificateValidationApi = async (body) => {
+  try {
+    const response = await apiInstance.post(`/contract/certificate/validation`, body);
+    return [false, response];
+  } catch (error) {
+    return [error, null];
+  }
+};
+
+//get_schedule
+export const getScheduleApi = async () => {
+  try {
+    const response = await apiInstance.get(`/schedule/index`);
+    return [false, response];
+  } catch (error) {
+    return [error, null];
+  }
+};
+
+//cancel_schedule
+export const cancelScheduleApi = async (body) => {
+  try {
+    const response = await apiInstance.post(`/schedule/cancel`,body);
+    return [false, response];
+  } catch (error) {
+    return [error, null];
+  }
+};
+
+//get_broker
+export const getBrokerApi = async (query) => {
+  try {
+    const response = await apiInstance.get(`/users/index`,{
+      params: query
+    });
+    return [false, response];
+  } catch (error) {
+    return [error, null];
+  }
+};
+
+//chnage_status_broker
+export const changeBrokerStatusApi = async (body) => {
+  try {
+    const response = await apiInstance.post(`/users/status-update`,body);
+    return [false, response];
+  } catch (error) {
+    return [error, null];
+  }
+};

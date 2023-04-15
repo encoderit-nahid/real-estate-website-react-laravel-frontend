@@ -13,6 +13,9 @@ import PropertyAcceptReducer from "./proposalAccept/reducer";
 import ProposalRefuseReducer from "./proposalRefuse/reducer";
 import CertificateReducer from "./certificates/reducer";
 import ContractDetailsReducer from "./contractDetails/reducer";
+import RequireCertificateReducer from "./requireCertificate/reducer";
+import UploadCertificateReducer from "./uploadCertificate/reducer";
+import ScheduleReducer from "./schedules/reducer";
 
 const RootReducer = combineReducers({
   state: StateReducer,
@@ -28,19 +31,9 @@ const RootReducer = combineReducers({
   proposalRefuse: ProposalRefuseReducer,
   certificate: CertificateReducer,
   contractDetails: ContractDetailsReducer,
-
-  // Auth: AuthReducer,
-  // userDetails: UserReducer,
-  // Orders: OrderReducer,
-  // counts: CountReducer,
-  // singleOrder: SingleOrderReducer,
-  // update: UpdateProfileReducer,
-  // changePassword: ChangePasswordReducer,
-  // statistics: StatisticsReducer,
-  // forgotPassword: ForgotPasswordReducer,
-  // pickup: PickupReducer,
-  // createOrder: CreateOrderReducer,
-  // scanOrder: ScanReducer,
+  requireCertificate: RequireCertificateReducer,
+  uploadCertificate: UploadCertificateReducer,
+  schedule: ScheduleReducer
 });
 
 export default RootReducer;
