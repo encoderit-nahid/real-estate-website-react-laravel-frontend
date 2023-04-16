@@ -90,8 +90,10 @@ export default function NewVenture(props) {
     dispatch(GetPhotoTypeData());
   }, [dispatch]);
 
-  const photoType = useSelector((state) => state.photoType.photoTypeData);
+  const photoType = useSelector((state) => state?.photoType?.photoTypeData);
   console.log({ photoType });
+
+  const Loading = useSelector((state) => state?.photoType?.loading)
   const {
     register,
     watch,
@@ -439,26 +441,39 @@ export default function NewVenture(props) {
                                 <TextField {...params} label="Convenient" />
                               )}
                             /> */}
-                            <Controller
-                              name={`title_${index}`}
-                              control={control}
-                              defaultValue={photoType[0] || {}}
-                              render={({ field }) => (
-                                <BaseAutocomplete
-                                  //   sx={{ margin: "0.6vh 0" }}
-                                  options={photoType || []}
-                                  getOptionLabel={(option) => option.name || ""}
-                                  sx={{ mt: 2 }}
-                                  isOptionEqualToValue={(option, value) =>
-                                    option.slug === value.slug
-                                  }
-                                  size={"small"}
-                                  placeholder={"Convenient"}
-                                  onChange={(e, v, r, d) => field.onChange(v)}
-                                  value={field.value}
-                                />
-                              )}
+                        {
+                          !Loading ?
+                          <Controller
+                          name={`title_${index}`}
+                          control={control}
+                          defaultValue={photoType[0] || {}}
+                          render={({ field }) => (
+                            <BaseAutocomplete
+                              //   sx={{ margin: "0.6vh 0" }}
+                              options={photoType || []}
+                              getOptionLabel={(option) => option.name || ""}
+                              sx={{ mt: 2 }}
+                              isOptionEqualToValue={(option, value) =>
+                                option.slug === value.slug
+                              }
+                              size={"small"}
+                              placeholder={"Convenient"}
+                              onChange={(e, v, r, d) => field.onChange(v)}
+                              value={field.value}
                             />
+                          )}
+                        />
+                        :
+                        <Grid
+                        container
+                        sx={{ height: "5vh" }}
+                        direction="row"
+                        justifyContent="center"
+                        alignItems="center"
+                      >
+                        <CircularProgress  />
+                      </Grid>
+                        }
                           </Box>
                         </Grid>
                       ))}

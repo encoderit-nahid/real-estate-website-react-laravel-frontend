@@ -144,7 +144,7 @@ function Contract({ handleNext, singlePropertyData }) {
               </Box>
             </Grid>
           )}
-          {singlePropertyData.contract?.status === "contract_uploaded" && (
+          {singlePropertyData.contract?.status !== "new" && (
             <Grid item xs={12} sm={12} md={12} lg={4}>
               <Box
                 sx={{

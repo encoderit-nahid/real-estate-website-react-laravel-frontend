@@ -12,6 +12,7 @@ import {
   Typography,
   Alert,
   CircularProgress,
+  Stack,
 } from "@mui/material";
 import BaseStepper from "../src/component/reuseable/baseStepper/BaseStepper";
 import { Fragment, useEffect, useState } from "react";
@@ -270,6 +271,15 @@ export default function BrokerRegistration({
                       setAboutLokkanBtn={setAboutLokkanBtn}
                     />
                   )}
+                   {errors && (
+                        <Stack sx={{ width: "100%", mt: 2 }} spacing={2}>
+                          {Object.keys(errors).map((key, index) => (
+                            <Alert key={index} severity="error">
+                              {errors[key].message}
+                            </Alert>
+                          ))}
+                        </Stack>
+                      )}
                   {activeStep === 2 && (
                     <Grid container spacing={1} sx={{ mt: 2, mb: 5 }}>
                       <Grid item xs={6} sm={6} md={6}>

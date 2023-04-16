@@ -13,6 +13,7 @@ import PhoneEnabledOutlinedIcon from "@mui/icons-material/PhoneEnabledOutlined";
 import dayjs from 'dayjs';
 import { useDispatch } from 'react-redux';
 import { cancelSchedule } from '../../redux/schedules/actions';
+import { _baseURL } from '../../../consts';
 
 
 function ScheduleCard({data}) {
@@ -26,6 +27,11 @@ function ScheduleCard({data}) {
         dispatch(cancelSchedule(data))
         setLoading(false)
     }
+
+    const myLoader = ({ src }) => {
+      return `${_baseURL}/storage/${src}`;
+    };
+  
     
   return (
     <Container  maxWidth="xl" sx={{ marginTop: 5 }}>
@@ -50,11 +56,13 @@ function ScheduleCard({data}) {
           className="rentImage"
         >
           <Box>
-            {/* <Image
-              src={rentImage}
-              layout="responsive"
+            <Image
+            loader={myLoader}
+              src={`${data?.property?.attchments?.[0]?.file_path}`}
+              height={200}
+              width={200}
               alt="rentImage"
-            /> */}
+            />
           </Box>
         </Grid>
         <Grid item xs={12} sm={12} md={12} lg={8}>
@@ -119,8 +127,7 @@ function ScheduleCard({data}) {
                     lineHeight: "22px",
                   }}
                 >
-                  Jaceguai Street, Bela Vista, São Paulo - SP - CEP
-                  01315010
+                  {data?.property?.address?.address}
                 </Typography>
                 <Typography
                   variant="h6"

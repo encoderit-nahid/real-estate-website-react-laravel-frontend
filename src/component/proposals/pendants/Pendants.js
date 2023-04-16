@@ -1,4 +1,4 @@
-import { Box, Button, Grid, Pagination, Stack } from "@mui/material";
+import { Box, Button, Grid, Pagination, Skeleton, Stack } from "@mui/material";
 import React, { useEffect } from "react";
 import PendantsCard from "../pendantsCard/PendantsCard";
 import { useDispatch, useSelector } from "react-redux";
@@ -44,6 +44,23 @@ function Pendants() {
     });
     // setData(datas.slice(firstIndex + pageSize * (value - 1), pageSize * value));
   };
+
+  if (Loading) {
+    return (
+      <Grid container spacing={1}>
+        {[0, 1, 2].map((data, index) => (
+          <Grid key={index} item xs={12} sm={12} md={12} lg={4} xl={4} xxl={4}>
+            <Skeleton
+              variant="rect"
+              height={500}
+              sx={{ mx: 2, my: 2, borderRadius: "8px" }}
+            />
+      
+          </Grid>
+        ))}
+      </Grid>
+    );
+  }
   return (
     <Box>
       <Grid container spacing={2}>

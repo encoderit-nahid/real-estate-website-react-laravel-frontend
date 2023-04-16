@@ -180,7 +180,6 @@ function ContractPdfModal({
       })
     );
     setLoading(false);
-    handleNext();
   };
 
   return (

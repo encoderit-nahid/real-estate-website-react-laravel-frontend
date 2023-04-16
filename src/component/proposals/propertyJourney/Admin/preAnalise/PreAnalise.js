@@ -442,7 +442,7 @@ function PreAnalise({ handleNext, singlePropertyData }) {
                     </Grid>
                   </Box>
 
-                  <Grid container spacing={1}>
+                  {/* <Grid container spacing={1}>
                     <Grid item xs={12} sm={12} md={12} lg={3}>
                       <Box
                         sx={{
@@ -553,7 +553,7 @@ function PreAnalise({ handleNext, singlePropertyData }) {
                         </Grid>
                       </Box>
                     </Grid>
-                  </Grid>
+                  </Grid> */}
                   <Grid container spacing={1} sx={{ mt: 1 }}>
                     <Grid item xs={12} sm={12} md={12} lg={3}>
                       <Button

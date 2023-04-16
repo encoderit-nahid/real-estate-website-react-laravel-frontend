@@ -25,7 +25,7 @@ import sliderView from '../../../public/Images/sliderView.png'
 import sliderViewSmall from '../../../public/Images/sliderViewSmall.png'
 import BaseModal from '../../../src/component/reuseable/baseModal/BaseModal'
 import ProposalModal from '../../../src/component/PropertyView/ProposalStepperComponent/ProposalModal'
-import { useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 import yellowImage from '../../../public/Images/yellow.png'
 import { getSession } from 'next-auth/react'
 
@@ -73,13 +73,33 @@ export default function ProjectView({
   singleProjectData,
 }) {
   console.log({ singleProjectData })
-  //add_proposal_modal
-  const [proposalOpen, setProposalOpen] = useState(false)
-  const handleProposalOpen = () => setProposalOpen(true)
-  const handleProposalClose = () => setProposalOpen(false)
 
-  const [negotiate, setNegotiate] = useState(true)
-  const [schedule, setSchedule] = useState(false)
+  const [sideTabValue, setSideTabValue] = useState("photos");
+  console.log({sideTabValue})
+
+  const Images = useMemo(() => {
+    return singleProjectData?.project?.attachments?.filter((data) => {
+      return sideTabValue === "vision_360"
+        ? data.title.includes(`project_${sideTabValue}`)
+        : sideTabValue === "photos"
+        ? data.title === "project_photo"
+        : sideTabValue === "condominium"
+        ? data.title === sideTabValue
+        : null;
+    });
+  }, [singleProjectData, sideTabValue]);
+
+  console.log({ Images });
+
+  const [selectImage, setSelectImage] = useState(() => Images?.[0]?.file_path);
+
+  useEffect(() => {
+    if (Images?.length > 0) {
+      setSelectImage(Images?.[0]?.file_path);
+    } else {
+      setSelectImage(Images?.[0]?.lofi);
+    }
+  }, [Images]);
 
   return (
     <div>
@@ -209,7 +229,9 @@ export default function ProjectView({
                 },
               }}
             >
-              <SliderView />
+              <SliderView  sideTabValue={sideTabValue}
+                setSideTabValue={setSideTabValue}  selectImage={selectImage} />
+                +
             </Grid>
             <Grid
               item
@@ -224,7 +246,7 @@ export default function ProjectView({
                 },
               }}
             >
-              <SlideImage />
+              <SlideImage Images={Images} setSelectImage={setSelectImage} />
             </Grid>
           </Grid>
         </Box>

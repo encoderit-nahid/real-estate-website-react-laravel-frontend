@@ -16,7 +16,7 @@ import CloseIcon from "@mui/icons-material/Close";
 import Image from "next/image";
 import { useState } from "react";
 
-function TabRegisteredCard() {
+function TabRegisteredCard({brokerInfo}) {
   const [state, setState] = React.useState({
     top: false,
     left: false,
@@ -40,8 +40,8 @@ function TabRegisteredCard() {
     <Box
       sx={{ width: anchor === "top" || anchor === "bottom" ? "auto" : 380 }}
       role="presentation"
-      onClick={toggleDrawer(anchor, false)}
-      onKeyDown={toggleDrawer(anchor, false)}
+      // onClick={toggleDrawer(anchor, false)}
+      // onKeyDown={toggleDrawer(anchor, false)}
     >
       <Grid
         container
@@ -61,7 +61,7 @@ function TabRegisteredCard() {
         >
           Broker
         </Typography>
-        <CloseIcon />
+        <CloseIcon onClick={toggleDrawer(anchor, false)} />
       </Grid>
       <Box
         sx={{
@@ -101,7 +101,7 @@ function TabRegisteredCard() {
             pl: 0.5,
           }}
         >
-          Name: Jenifer Mascarenhas
+         {`Name ${brokerInfo?.name}`}
         </Typography>
         <Typography
           variant="h6"
@@ -166,7 +166,7 @@ function TabRegisteredCard() {
             mt: 1,
           }}
         >
-          Email: je.nifere@gmail.com
+         {`Email ${brokerInfo?.email}`}
         </Typography>
         <Typography
           variant="h6"
@@ -179,7 +179,7 @@ function TabRegisteredCard() {
             mt: 1,
           }}
         >
-          Phone: (11) 9999-6666
+          {`Phone ${brokerInfo?.phone}`}
         </Typography>
         <Typography
           variant="h6"
@@ -205,51 +205,10 @@ function TabRegisteredCard() {
             mt: 1,
           }}
         >
-          Jaceguai Street, Bela Vista, São Paulo - SP - CEP 01315010
+         {brokerInfo?.address}
         </Typography>
       </Grid>
-      <Grid container spacing={1} sx={{ px: 1.5, mt: 2 }}>
-        <Grid item xs={12} sm={12} md={12} lg={6}>
-          <Button
-            fullWidth
-            sx={{
-              background: "#ffffff",
-              color: "#F44336",
-              fontWeight: "600",
-              fontSize: "14px",
-              lineHeight: "18px",
-              textTransform: "none",
-              mb: 2,
-              "&:hover": {
-                background: "#ffffff",
-                color: "#F44336",
-              },
-            }}
-          >
-            fail
-          </Button>
-        </Grid>
-        <Grid item xs={12} sm={12} md={12} lg={6}>
-          <Button
-            fullWidth
-            sx={{
-              background: "#34BE84",
-              color: "#ffffff",
-              fontWeight: "600",
-              fontSize: "14px",
-              lineHeight: "18px",
-              textTransform: "none",
-
-              "&:hover": {
-                background: "#34BE84",
-                color: "#ffffff",
-              },
-            }}
-          >
-            Approve Registration
-          </Button>
-        </Grid>
-      </Grid>
+      
     </Box>
   );
 
@@ -283,7 +242,7 @@ function TabRegisteredCard() {
             pl: 0.5,
           }}
         >
-          Ronald Richards
+         {brokerInfo?.name}
         </Typography>
         <Button
           sx={{
@@ -306,7 +265,8 @@ function TabRegisteredCard() {
               lineHeight: "22px",
             }}
           >
-            CRECI 95496840
+ 
+            {`CRECI ${brokerInfo?.id}`}
           </Typography>
         </Button>
         <Button
@@ -330,7 +290,7 @@ function TabRegisteredCard() {
               lineHeight: "22px",
             }}
           >
-            asncontaa@gmail.com
+            {brokerInfo?.email}
           </Typography>
         </Button>
         <Button
@@ -354,7 +314,7 @@ function TabRegisteredCard() {
               lineHeight: "22px",
             }}
           >
-            (11) 9366-666
+           {brokerInfo?.phone}
           </Typography>
         </Button>
       </Grid>

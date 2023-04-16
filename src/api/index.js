@@ -399,3 +399,33 @@ export const changeBrokerStatusApi = async (body) => {
     return [error, null];
   }
 };
+
+//delete_broker
+export const deleteBrokerApi = async (id) => {
+  try {
+    const response = await apiInstance.delete(`users/delete/${id}`);
+    return [false, response];
+  } catch (error) {
+    return [error, null];
+  }
+};
+
+//request_documents
+export const requestDocumentsApi = async (id) => {
+  try {
+    const response = await apiInstance.get(`contract/check-certificate-validation?contract_id=${id}`);
+    return [false, response];
+  } catch (error) {
+    return [error, null];
+  }
+};
+
+//certificate_validation
+export const ContractCertificateValidationApi = async (body) => {
+  try {
+    const response = await apiInstance.post(`/contract/certificate/validation`,body);
+    return [false, response];
+  } catch (error) {
+    return [error, null];
+  }
+};

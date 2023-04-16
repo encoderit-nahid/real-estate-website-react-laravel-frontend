@@ -5,6 +5,9 @@ import {
   Typography,
   Tooltip,
   LinearProgress,
+  Snackbar,
+  Alert,
+  CircularProgress,
 } from "@mui/material";
 import Image from "next/image";
 import React, { useEffect, useState } from "react";
@@ -22,6 +25,7 @@ import CloudUploadOutlinedIcon from "@mui/icons-material/CloudUploadOutlined";
 import CertificateModal from "../certificateModal/CertificateModal";
 import { useDispatch, useSelector } from "react-redux";
 import { findRequireCertificateData } from "../../../../../redux/requireCertificate/actions";
+import { requestDocumentsApi } from "../../../../../api";
 
 function CertificatesAndDocuments({ handleNext, singlePropertyData }) {
 
@@ -42,6 +46,34 @@ function CertificatesAndDocuments({ handleNext, singlePropertyData }) {
   const handleClose = () => setContractModalOpen(false);
 
   const [progress, setProgress] = React.useState(40);
+  const [loading,setLoading] = useState(false)
+
+  const [snackbarOpen, setSnackbarOpen] = useState(false);
+
+  const handleClickSnackbar = () => {
+    setSnackbarOpen(true);
+  };
+
+  const handleCloseSnackbar = (event, reason) => {
+    if (reason === "clickaway") {
+      return;
+    }
+    setSnackbarOpen(false);
+  };
+
+  const handleRequestDocument = async() => {
+      setLoading(true)
+      const [error, response] = await requestDocumentsApi(+singlePropertyData?.contract?.id);
+      setLoading(false)
+      if(!error){
+        if(response?.data?.status === true){
+          handleNext()
+        }
+        else{
+          handleClickSnackbar()
+        }
+      }
+  }
 
   return (
     <Box sx={{ mt: 4 }}>
@@ -102,8 +134,9 @@ function CertificatesAndDocuments({ handleNext, singlePropertyData }) {
                       border: "1px solid #DBE1E5",
                       borderRadius: "8px",
                       py: 2,
+                      mt:2,
                       px: { xs: 0, sm: 0, md: 0, lg: 2, xl: 2 },
-                      height:{xs:200,sm:200,md:200,lg:200,xl:150}
+                      height:{xs:200,sm:200,md:200,lg:200,xl:180}
                     }}
                   >
                     <Grid
@@ -279,13 +312,15 @@ function CertificatesAndDocuments({ handleNext, singlePropertyData }) {
               alignItems="flex-start"
             >
               <Button
-                onClick={handleNext}
+                onClick={handleRequestDocument}
+                
                 sx={{
                   background: "#34BE84",
                   color: "#ffffff",
                   fontSize: "16px",
                   lineHeight: "22px",
                   textTransform: "none",
+                  width:{xs:'50%',sm:"50%",md:"50%",lg:"50%",xl:"40%",xxl:"30%"},
                   mt: 5,
                   px: 2,
                   "&: hover": {
@@ -297,12 +332,33 @@ function CertificatesAndDocuments({ handleNext, singlePropertyData }) {
                   },
                 }}
               >
-                Request documents
+                 {loading && (
+                            <CircularProgress size={22} color="inherit" />
+                          )}
+                          {!loading && "Requested documents"}
               </Button>
             </Grid>
           </Grid>
         </Grid>
       </Box>
+      <Snackbar
+                  open={snackbarOpen}
+                  autoHideDuration={6000}
+                  onClose={handleCloseSnackbar}
+                  anchorOrigin={{
+                    vertical: "top",
+                    horizontal: "right",
+                  }}
+                  key={"top"}
+                >
+                  <Alert
+                    onClose={handleCloseSnackbar}
+                    severity="error"
+                    sx={{ width: "100%" }}
+                  >
+                    Please upload all requested documents
+                  </Alert>
+                </Snackbar>
       <BaseModal isShowing={contractModalOpen} isClose={handleClose}>
         <Tooltip title="Something">
           <>

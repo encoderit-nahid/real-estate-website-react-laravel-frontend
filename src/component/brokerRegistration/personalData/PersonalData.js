@@ -186,7 +186,7 @@ function PersonalData({ handleNext, control, errors, allValues }) {
             direction="row"
             justifyContent="flex-start"
             alignItems="flex-start"
-            sx={{ mb: 1 }}
+            sx={{ mb: 1,ml:{xxl:4} }}
           >
             <Typography
               variant="p"
@@ -207,6 +207,7 @@ function PersonalData({ handleNext, control, errors, allValues }) {
             render={({ field }) => (
               <BaseTextField
                 size={"small"}
+                sx={{ml:{xxl:4}}}
                 placeholder={"Full Name"}
                 // sx={{ mb: 2 }}
                 onChange={(e) => {
@@ -220,7 +221,7 @@ function PersonalData({ handleNext, control, errors, allValues }) {
           <Typography
             variant="inherit"
             color="textSecondary"
-            sx={{ color: "#b91c1c" }}
+            sx={{ color: "#b91c1c",ml:{xxl:4} }}
           >
             {errors.full_name?.message}
           </Typography>
@@ -229,7 +230,7 @@ function PersonalData({ handleNext, control, errors, allValues }) {
             direction="row"
             justifyContent="flex-start"
             alignItems="flex-start"
-            sx={{ mb: 1, mt: 1 }}
+            sx={{ mb: 1, mt: 1,ml:{xxl:4} }}
           >
             <Typography
               variant="p"
@@ -260,7 +261,7 @@ function PersonalData({ handleNext, control, errors, allValues }) {
               <BaseTextField
                 size={"small"}
                 placeholder={"Social Name"}
-                sx={{ mb: 1 }}
+                sx={{ mb: 1,ml:{xxl:4} }}
                 onChange={(e) => {
                   field.onChange(e.target.value);
                 }}

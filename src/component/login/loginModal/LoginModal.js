@@ -7,6 +7,7 @@ import {
   Grid,
   InputAdornment,
   Snackbar,
+  Tooltip,
   Typography,
 } from "@mui/material";
 import loginImage from "../../../../public/Images/login.png";
@@ -25,6 +26,8 @@ import axios from "axios";
 import { signIn } from "next-auth/react";
 import { loginApi, userDetailsApi } from "../../../api";
 import { useRouter } from "next/router";
+import BaseModal from "../../reuseable/baseModal/BaseModal";
+import ForgotPasswordModal from "../../forgotPassword/ForgotPasswordModal";
 
 const style = {
   position: "absolute",
@@ -63,6 +66,10 @@ function LoginModal({ handleLoginClose }) {
   };
   const [snackbarOpen, setSnackbarOpen] = React.useState(false);
   const [message, setMessage] = useState("");
+
+  const [forgotOpen, setForgotOpen] = useState(false);
+  const handleForgotOpen = () => setForgotOpen(true);
+  const handleForgotClose = () => setForgotOpen(false);
 
   const handleClickSnackbar = () => {
     setSnackbarOpen(true);
@@ -290,6 +297,7 @@ function LoginModal({ handleLoginClose }) {
             justifyContent="flex-end"
             alignItems="flex-start"
             sx={{ mt: 1 }}
+            onClick={handleForgotOpen}
           >
             <Typography
               variant="p"
@@ -362,6 +370,13 @@ function LoginModal({ handleLoginClose }) {
           {message && message}
         </Alert>
       </Snackbar>
+      <BaseModal isShowing={forgotOpen} isClose={handleForgotClose}>
+            <Tooltip title="Something">
+              <>
+                <ForgotPasswordModal handleForgotClose={handleForgotClose} />
+              </>
+            </Tooltip>
+          </BaseModal>
     </Box>
   );
 }

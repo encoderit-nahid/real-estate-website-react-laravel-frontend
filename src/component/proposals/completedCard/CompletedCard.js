@@ -15,8 +15,12 @@ import React from "react";
 import cardMedia from "../../../../public/Images/pendant.png";
 import CheckIcon from "@mui/icons-material/Check";
 import FiberManualRecordIcon from "@mui/icons-material/FiberManualRecord";
+import { _baseURL } from "../../../../consts";
 
-function CompletedCard() {
+function CompletedCard({propertyData}) {
+  const myLoader = ({ src }) => {
+    return `${_baseURL}/storage/${src}`;
+  };
   return (
     <Box
       sx={{
@@ -27,7 +31,13 @@ function CompletedCard() {
       }}
     >
       <Box sx={{ width: "100%" }}>
-        <Image src={cardMedia} layout="responsive" alt="pendant" />
+      <Image
+          loader={myLoader}
+          src={`${propertyData?.attachments[0]?.file_path}`}
+          alt="completed"
+          height={200}
+          width={500}
+        />
       </Box>
 
       <Grid

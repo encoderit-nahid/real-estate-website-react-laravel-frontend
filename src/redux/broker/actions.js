@@ -1,5 +1,5 @@
 
-import { changeBrokerStatusApi, getBrokerApi } from "../../api";
+import { changeBrokerStatusApi, deleteBrokerApi, getBrokerApi } from "../../api";
 import * as Types from "./types";
 
 const brokerRequest = (data) => {
@@ -34,7 +34,7 @@ export const findBrokerData = (query) => async (dispatch) => {
   dispatch(brokerRequest());
   const [error, response] = await getBrokerApi(query);
   if (!error) {
-    dispatch(brokerSuccess(response?.data?.require_certificate));
+    dispatch(brokerSuccess(response?.data?.users));
   } else {
     const errorMassage =
       error?.response?.data?.data || error?.response?.data?.status;
@@ -57,3 +57,16 @@ export const changeStatusBroker = (body) => async (dispatch) => {
     }
   };
 
+  //status_change_broker
+export const deleteBroker = (id) => async (dispatch) => {
+ 
+  const [error, response] = await deleteBrokerApi(id);
+  console.log({ response });
+
+  if (!error) {
+    dispatch(brokerRemove(id));
+  } else {
+    const errorMassage =
+      error?.response?.data?.data || error?.response?.data?.status;
+  }
+};
