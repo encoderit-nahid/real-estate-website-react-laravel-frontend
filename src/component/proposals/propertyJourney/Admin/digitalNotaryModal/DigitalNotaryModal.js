@@ -73,10 +73,10 @@ function DigitalNotaryModal({ handleClose, handleNext, singlePropertyData }) {
       ...data,
       contract_id: +singlePropertyData?.contract?.id,
     };
-    const [error, response] = await DocumentSentApi();
+    const [error, response] = await DocumentSentApi(requireData);
     setLoading(false);
     if (!error) {
-      handleSentModalOpen;
+      setDigitalNotarySentModalOpen(true)
     } else {
       const errors = error?.response?.data?.errors ?? {};
       Object.entries(errors).forEach(([name, messages]) => {

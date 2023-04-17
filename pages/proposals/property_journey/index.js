@@ -240,7 +240,7 @@ export default function PropertyJourney(props) {
                   })}
                 </Stepper>
                 {activeStep === steps.length ? (
-                  <DigitalNotaryFinalContent />
+                  <DigitalNotaryFinalContent   singlePropertyData={singlePropertyData} />
                 ) : (
                   <Fragment>
                     {activeStep === 0 ? (

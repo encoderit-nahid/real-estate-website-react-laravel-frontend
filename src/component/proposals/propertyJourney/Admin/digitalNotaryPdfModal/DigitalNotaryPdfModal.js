@@ -133,7 +133,7 @@ function DigitalNotaryPdfModal({
     dispatch(
       getViewCertificateData(
         +singlePropertyData?.contract?.id,
-        certificateData?.tag?.id
+        certificateData?.tag?.id || certificateData?.certificate_type_id
       )
     );
   }, [dispatch, singlePropertyData, certificateData]);

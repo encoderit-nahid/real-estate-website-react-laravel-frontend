@@ -5,6 +5,7 @@ import {
   Typography,
   Tooltip,
   LinearProgress,
+  Skeleton,
 } from "@mui/material";
 import Image from "next/image";
 import React from "react";
@@ -39,8 +40,10 @@ function DigitalNotary({ handleNext, singlePropertyData }) {
   const uploadCertificateData = useSelector(
     (state) => state?.uploadCertificate?.uploadCertificateData
   );
+ 
   const [certificateData, setCertificateData] = useState("");
-  const Loading = useSelector((state) => state?.uploadCertificate?.laoding);
+  const Loading = useSelector((state) => state?.uploadCertificate?.loading);
+  console.log({Loading})
   //digital_notary_modal_open
   const [digitalNotaryModalOpen, setDigitalNotaryModalOpen] =
     React.useState(false);
@@ -78,9 +81,21 @@ function DigitalNotary({ handleNext, singlePropertyData }) {
       </Grid>
       <Box sx={{ mt: { xs: 2, sm: 2, md: 2, lg: 4 } }}>
         <Grid container spacing={2}>
-          <Grid item xs={12} sm={12} md={12} lg={3}>
-            <SaleCard singlePropertyData={singlePropertyData} />
-          </Grid>
+       
+          {Loading ? (
+            <Grid item xs={12} sm={12} md={12} lg={3}>
+              <Skeleton
+                variant="rect"
+                height={230}
+                sx={{ mx: 2, my: 2, borderRadius: "8px" }}
+              />
+            </Grid>
+          ) : (
+            <Grid item xs={12} sm={12} md={12} lg={3}>
+              <SaleCard singlePropertyData={singlePropertyData} />
+            </Grid>
+          )}
+    
           <Grid item xs={12} sm={12} md={12} lg={8}>
             <Box>
               <Typography
@@ -96,97 +111,129 @@ function DigitalNotary({ handleNext, singlePropertyData }) {
               </Typography>
             </Box>
             <Grid container spacing={2}>
-              {uploadCertificateData?.documents?.map((data, index) => (
-                <Grid key={index} item xs={12} sm={12} md={12} lg={6}>
-                  <Box
-                    sx={{
-                      border: "1px solid #34BE84",
-                      borderRadius: "8px",
-                      px: 2,
-                      py: 2,
-                      mt: 1,
-                    }}
+              {
+                Loading ?
+                [0, 1, 2].map((data, index) => (
+                  <Grid
+                    key={index}
+                    item
+                    xs={12}
+                    sm={12}
+                    md={12}
+                    lg={6}
+                    xl={6}
+                    xxl={6}
                   >
-                    <Grid
-                      container
-                      direction="column"
-                      justifyContent="flex-start"
-                      alignItems="flex-start"
+                    <Skeleton
+                      variant="rect"
+                      height={150}
+                      width={300}
+                      sx={{ mx: 2, my: 2, borderRadius: "8px" }}
+                    />
+                  </Grid>
+                ))
+                :
+                uploadCertificateData?.documents?.map((data, index) => (
+                  <Grid key={index} item xs={12} sm={12} md={12} lg={6}>
+                    <Box
+                      sx={{
+                        border: "1px solid #34BE84",
+                        borderRadius: "8px",
+                        px: 2,
+                        py: 2,
+                        mt: 1,
+                        height: {
+                          xs: 200,
+                          sm: 200,
+                          md: 200,
+                          lg: 200,
+                          xl: 180,
+                        },
+                      }}
                     >
-                      <Box>
-                        <Button
-                          sx={{
-                            display: "flex",
-                            textTransform: "none",
-                            background: "#E0F2FE",
-                            borderRadius: "2px",
-                            padding: "2px 8px",
-                            color: " #0362F0",
-                            fontSize: "14px",
-                            lineHeight: "18px",
-                            fontWeight: "400",
-                            mr: 1,
-                          }}
-                        >
-                          <CheckCircleOutlineIcon sx={{ color: "#114B32" }} />
-                          <Typography
-                            varianat="p"
+                      <Grid
+                        container
+                        direction="column"
+                        justifyContent="flex-start"
+                        alignItems="flex-start"
+                      >
+                        <Box>
+                          <Button
                             sx={{
-                              color: "#114B32",
+                              display: "flex",
+                              textTransform: "none",
+                              background: "#E0F2FE",
+                              borderRadius: "2px",
+                              padding: "2px 8px",
+                              color: " #0362F0",
+                              fontSize: "14px",
+                              lineHeight: "18px",
+                              fontWeight: "400",
+                              mr: 1,
+                            }}
+                          >
+                            <CheckCircleOutlineIcon sx={{ color: "#114B32" }} />
+                            <Typography
+                              varianat="p"
+                              sx={{
+                                color: "#114B32",
+                                fontSize: "14px",
+                                lineHeight: "18px",
+                                fontWeight: "400",
+                              }}
+                            >
+                              Validated document
+                            </Typography>
+                          </Button>
+                        </Box>
+                        <Box>
+                          <Typography
+                            variant="p"
+                            sx={{
+                              color: "#1A1859",
                               fontSize: "14px",
                               lineHeight: "18px",
                               fontWeight: "400",
                             }}
                           >
-                            Validated document
+                            {data?.tag?.name}
                           </Typography>
-                        </Button>
-                      </Box>
-                      <Box>
-                        <Typography
-                          variant="p"
+                        </Box>
+                      </Grid>
+                      <Grid
+                        container
+                        direction="row"
+                        justifyContent="flex-end"
+                        alignItems="flex-end"
+                        sx={{ mt: 1 }}
+                      >
+                        <Button
                           sx={{
-                            color: "#1A1859",
-                            fontSize: "14px",
-                            lineHeight: "18px",
-                            fontWeight: "400",
-                          }}
-                        >
-                          {data?.tag?.name}
-                        </Typography>
-                      </Box>
-                    </Grid>
-                    <Grid
-                      container
-                      direction="row"
-                      justifyContent="flex-end"
-                      alignItems="flex-end"
-                      sx={{ mt: 1 }}
-                    >
-                      <Button
-                        sx={{
-                          background: "#DBE1E5",
-                          color: "#002152",
-                          fontWeight: "600",
-                          fontSize: "14px",
-                          lineHeight: "18px",
-                          textTransform: "none",
-                          "&:hover": {
                             background: "#DBE1E5",
                             color: "#002152",
                             fontWeight: "600",
                             fontSize: "14px",
                             lineHeight: "18px",
-                          },
-                        }}
-                        onClick={() => handlePdfOpen(data)}
-                      >
-                        Details
-                      </Button>
-                    </Grid>
-                  </Box>
-                </Grid>
-              ))}
+                            textTransform: "none",
+                            "&:hover": {
+                              background: "#DBE1E5",
+                              color: "#002152",
+                              fontWeight: "600",
+                              fontSize: "14px",
+                              lineHeight: "18px",
+                            },
+                          }}
+                          onClick={() => handlePdfOpen(data)}
+                        >
+                          Details
+                        </Button>
+                      </Grid>
+                    </Box>
+                  </Grid>
+                ))}
+
+              
+             
             </Grid>
             <Grid
               container

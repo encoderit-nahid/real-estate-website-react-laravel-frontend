@@ -289,6 +289,24 @@ export const contractDownloadApi = async (id) => {
   }
 };
 
+//contract_download
+export const certificateDownloadApi = async (id,certificate_type_id) => {
+  try {
+    const response = await apiInstance.get(`contract/download`, {
+      params: {
+        id: id,
+        certificate_type_id: certificate_type_id
+      },
+    });
+    window.open(`${response?.data?.url}`, "_blank");
+    console.log({ response });
+    return [false, response];
+  } catch (error) {
+    console.log("contractDownloadApi", error.message, error);
+    return [error, null];
+  }
+};
+
 //contract_details
 export const contractDetailsApi = async (id) => {
   try {
@@ -475,6 +493,19 @@ export const ContractCertificateValidationApi = async (body) => {
 export const DocumentSentApi = async (body) => {
   try {
     const response = await apiInstance.post(`/contract/documents/send`, body);
+    return [false, response];
+  } catch (error) {
+    return [error, null];
+  }
+};
+
+
+//final_submitted
+export const contractSubmittedDataApi = async (id) => {
+  try {
+    const response = await apiInstance.get(
+      `contract/submitted-data??contract_id=${id}`
+    );
     return [false, response];
   } catch (error) {
     return [error, null];

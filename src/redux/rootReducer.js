@@ -18,6 +18,7 @@ import UploadCertificateReducer from "./uploadCertificate/reducer";
 import ScheduleReducer from "./schedules/reducer";
 import BrokerReducer from "./broker/reducer";
 import ViewCertificateReducer from "./viewCertificate/reducer";
+import FinalSubmittedDataReducer from "./finalData/reducer";
 
 const RootReducer = combineReducers({
   state: StateReducer,
@@ -38,6 +39,7 @@ const RootReducer = combineReducers({
   schedule: ScheduleReducer,
   broker: BrokerReducer,
   viewCertificate: ViewCertificateReducer,
+  finalSubmit: FinalSubmittedDataReducer
 });
 
 export default RootReducer;

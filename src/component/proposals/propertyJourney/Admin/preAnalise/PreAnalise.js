@@ -28,6 +28,8 @@ import AnalysisPdfModal from "../AnalysisPdfModal/AnalysisPdfModal";
 import { useDispatch, useSelector } from "react-redux";
 import { findUploadCertificateData } from "../../../../../redux/uploadCertificate/actions";
 import { useState } from "react";
+import { certificateDownloadApi } from "../../../../../api";
+import DigitalNotaryPdfModal from "../digitalNotaryPdfModal/DigitalNotaryPdfModal";
 
 function PreAnalise({ handleNext, singlePropertyData }) {
   const dispatch = useDispatch();
@@ -49,6 +51,13 @@ function PreAnalise({ handleNext, singlePropertyData }) {
     setCertificateData(data);
   };
   const handlePdfClose = () => setAnalysisPdfOpen(false);
+
+  const [digitalNotaryPdfOpen, setDigitalNotaryPdfOpen] = React.useState(false);
+  const handleNotaryPdfOpen = (data) => {
+    setDigitalNotaryPdfOpen(true);
+    setCertificateData(data);
+  };
+  const handleNotaryPdfClose = () => setDigitalNotaryPdfOpen(false);
 
   return (
     <Box sx={{ mt: 4, mb: 2 }}>
@@ -595,6 +604,10 @@ function PreAnalise({ handleNext, singlePropertyData }) {
                       <Grid container spacing={1} sx={{ mt: 1 }}>
                         <Grid item xs={12} sm={12} md={12} lg={3}>
                           <Button
+                          onClick={() =>
+                            certificateDownloadApi(singlePropertyData?.contract?.id,data?.certificate_type_id
+                              )
+                          }
                             varinat="outlined"
                             fullWidth
                             sx={{
@@ -632,6 +645,7 @@ function PreAnalise({ handleNext, singlePropertyData }) {
                         </Grid>
                         <Grid item xs={12} sm={12} md={12} lg={3}>
                           <Button
+                           onClick={() => handleNotaryPdfOpen(data)}
                             varinat="outlined"
                             fullWidth
                             sx={{
@@ -753,6 +767,19 @@ function PreAnalise({ handleNext, singlePropertyData }) {
               handleClose={handlePdfClose}
               handlePdfOpen={handlePdfOpen}
               handleNext={handleNext}
+              singlePropertyData={singlePropertyData}
+              certificateData={certificateData}
+            />
+          </>
+        </Tooltip>
+      </BaseModal>
+      <BaseModal isShowing={digitalNotaryPdfOpen} isClose={handleNotaryPdfClose}>
+        <Tooltip title="Something">
+          <>
+            <DigitalNotaryPdfModal
+              handleClose={handleNotaryPdfClose}
+              handlePdfOpen={handleNotaryPdfOpen}
+             
               singlePropertyData={singlePropertyData}
               certificateData={certificateData}
             />

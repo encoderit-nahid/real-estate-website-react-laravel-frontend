@@ -6,14 +6,42 @@ import {
   Tooltip,
   LinearProgress,
   Divider,
+  Skeleton,
 } from "@mui/material";
 import Image from "next/image";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import SaleCard from "../../../../reuseable/saleCard/SaleCard";
 import notary from "../../../../../../public/Images/notary.png";
 import CheckCircleOutlineIcon from "@mui/icons-material/CheckCircleOutline";
+import { useDispatch, useSelector } from "react-redux";
+import { getFinalSubmittedData } from "../../../../../redux/finalData/actions";
+import { certificateDownloadApi, contractDownloadApi } from "../../../../../api";
+import BaseModal from "../../../../reuseable/baseModal/BaseModal";
+import ContractPdfModal from "../ContractPdfModal/ContractPdfModal";
+import DigitalNotaryPdfModal from "../digitalNotaryPdfModal/DigitalNotaryPdfModal";
 
-function DigitalNotaryFinalContent() {
+function DigitalNotaryFinalContent({ singlePropertyData}) {
+
+  const dispatch = useDispatch()
+
+  useEffect(() => {
+    dispatch(getFinalSubmittedData(+singlePropertyData?.contract?.id))
+  },[dispatch,singlePropertyData])
+  const submittedData = useSelector((state) => state?.finalSubmit?.finalSubmittedData)
+  console.log({submittedData})
+  const Loading = useSelector((state) => state?.finalSubmit?.loading)
+  const [certificateData, setCertificateData] = useState("");
+
+  const [contractPdfOpen, setContractPdfOpen] = React.useState(false);
+  const handlePdfOpen = () => setContractPdfOpen(true);
+  const handlePdfClose = () => setContractPdfOpen(false);
+
+  const [digitalNotaryPdfOpen, setDigitalNotaryPdfOpen] = React.useState(false);
+  const handleNotaryPdfOpen = (data) => {
+    setDigitalNotaryPdfOpen(true);
+    setCertificateData(data);
+  };
+  const handleNotaryPdfClose = () => setDigitalNotaryPdfOpen(false);
   return (
     <Box sx={{ mt: 4, mb: 2 }}>
       <Grid
@@ -38,10 +66,21 @@ function DigitalNotaryFinalContent() {
       </Grid>
       <Box sx={{ mt: { xs: 2, sm: 2, md: 2, lg: 4 } }}>
         <Grid container spacing={2}>
-          <Grid item xs={12} sm={12} md={12} lg={3}>
-            <SaleCard />
-          </Grid>
+        {Loading ? (
+            <Grid item xs={12} sm={12} md={12} lg={3}>
+              <Skeleton
+                variant="rect"
+                height={230}
+                sx={{ mx: 2, my: 2, borderRadius: "8px" }}
+              />
+            </Grid>
+          ) : (
+            <Grid item xs={12} sm={12} md={12} lg={3}>
+              <SaleCard singlePropertyData={singlePropertyData} />
+            </Grid>
+          )}
           <Grid item xs={12} sm={12} md={12} lg={8}>
+        
             <Box
               sx={{ px: 2, border: "1px solid #DBE1E5", borderRadius: "8px" }}
             >
@@ -69,7 +108,7 @@ function DigitalNotaryFinalContent() {
                       fontWeight: "600",
                     }}
                   >
-                    203.849.735
+                    {submittedData?.notaries?.protocol_no}
                   </Typography>
                 </Grid>
               </Grid>
@@ -98,7 +137,7 @@ function DigitalNotaryFinalContent() {
                       fontWeight: "600",
                     }}
                   >
-                    6391 Elgin St. Celina, Delaware, ZIP Code 10299
+                   {submittedData?.notaries?.registration_no}
                   </Typography>
                 </Grid>
               </Grid>
@@ -127,7 +166,7 @@ function DigitalNotaryFinalContent() {
                       fontWeight: "600",
                     }}
                   >
-                    (11) 99203-01010
+                    {submittedData?.notaries?.phone}
                   </Typography>
                 </Grid>
               </Grid>
@@ -143,7 +182,7 @@ function DigitalNotaryFinalContent() {
                       fontWeight: "400",
                     }}
                   >
-                    Return term:
+                   Return Term:
                   </Typography>
                 </Grid>
                 <Grid item xs={6}>
@@ -156,7 +195,7 @@ function DigitalNotaryFinalContent() {
                       fontWeight: "600",
                     }}
                   >
-                    03/08/2021
+                    {submittedData?.notaries?.return_period}
                   </Typography>
                 </Grid>
               </Grid>
@@ -251,7 +290,7 @@ function DigitalNotaryFinalContent() {
                       fontWeight: "400",
                     }}
                   >
-                    Honorary contracts lorem ipsum dolor amet.pdf
+                    {submittedData?.contract_title}
                   </Typography>
                 </Box>
               </Grid>
@@ -264,6 +303,9 @@ function DigitalNotaryFinalContent() {
                 gap={1}
               >
                 <Button
+                   onClick={() =>
+                    contractDownloadApi(singlePropertyData?.contract?.id)
+                  }
                   variant="outlined"
                   sx={{
                     borderColor: "#002152",
@@ -286,6 +328,7 @@ function DigitalNotaryFinalContent() {
                   Download
                 </Button>
                 <Button
+                  onClick={handlePdfOpen}
                   sx={{
                     background: "#0362F0",
                     color: "#ffffff",
@@ -321,123 +364,178 @@ function DigitalNotaryFinalContent() {
             </Box>
 
             <Grid container spacing={2}>
-              {[0, 1, 2, 3, 4, 5].map((data, index) => (
-                <Grid key={index} item xs={12} sm={12} md={12} lg={6}>
-                  <Box
-                    sx={{
-                      border: "1px solid #34BE84",
-                      borderRadius: "8px",
-                      px: 2,
-                      pt: 2,
-                      mt: 1,
-                      pb: 1,
-                    }}
+            {
+                Loading ?
+                [0, 1, 2].map((data, index) => (
+                  <Grid
+                    key={index}
+                    item
+                    xs={12}
+                    sm={12}
+                    md={12}
+                    lg={6}
+                    xl={6}
+                    xxl={6}
                   >
-                    <Grid
-                      container
-                      direction="column"
-                      justifyContent="flex-start"
-                      alignItems="flex-start"
+                    <Skeleton
+                      variant="rect"
+                      height={150}
+                      width={300}
+                      sx={{ mx: 2, my: 2, borderRadius: "8px" }}
+                    />
+                  </Grid>
+                ))
+                :
+                submittedData?.sent_document?.documents?.map((data, index) => (
+                  <Grid key={index} item xs={12} sm={12} md={12} lg={6}>
+                    <Box
+                      sx={{
+                        border: "1px solid #34BE84",
+                        borderRadius: "8px",
+                        px: 2,
+                        pt: 2,
+                        mt: 1,
+                        pb: 1,
+                      }}
                     >
-                      <Box>
-                        <Button
-                          sx={{
-                            display: "flex",
-                            textTransform: "none",
-                            background: "#E0F2FE",
-                            borderRadius: "2px",
-                            padding: "2px 8px",
-                            color: " #0362F0",
-                            fontSize: "14px",
-                            lineHeight: "18px",
-                            fontWeight: "400",
-                            mr: 1,
-                          }}
-                        >
-                          <CheckCircleOutlineIcon sx={{ color: "#114B32" }} />
-                          <Typography
-                            varianat="p"
+                      <Grid
+                        container
+                        direction="column"
+                        justifyContent="flex-start"
+                        alignItems="flex-start"
+                      >
+                        <Box>
+                          <Button
                             sx={{
-                              color: "#114B32",
+                              display: "flex",
+                              textTransform: "none",
+                              background: "#E0F2FE",
+                              borderRadius: "2px",
+                              padding: "2px 8px",
+                              color: " #0362F0",
+                              fontSize: "14px",
+                              lineHeight: "18px",
+                              fontWeight: "400",
+                              mr: 1,
+                            }}
+                          >
+                            <CheckCircleOutlineIcon sx={{ color: "#114B32" }} />
+                            <Typography
+                              varianat="p"
+                              sx={{
+                                color: "#114B32",
+                                fontSize: "14px",
+                                lineHeight: "18px",
+                                fontWeight: "400",
+                              }}
+                            >
+                              Document sent
+                            </Typography>
+                          </Button>
+                        </Box>
+                        <Box>
+                          <Typography
+                            variant="p"
+                            sx={{
+                              color: "#1A1859",
                               fontSize: "14px",
                               lineHeight: "18px",
                               fontWeight: "400",
                             }}
                           >
-                            Document sent
+                            State tax regularity certificate - State CDN
                           </Typography>
-                        </Button>
-                      </Box>
-                      <Box>
-                        <Typography
-                          variant="p"
-                          sx={{
-                            color: "#1A1859",
-                            fontSize: "14px",
-                            lineHeight: "18px",
-                            fontWeight: "400",
-                          }}
-                        >
-                          State tax regularity certificate - State CDN
-                        </Typography>
-                      </Box>
-                    </Grid>
-                    <Grid container spacing={2} sx={{ mt: 1 }}>
-                      <Grid item xs={6}>
-                        <Button
-                          fullWidth
-                          variant="outlined"
-                          sx={{
-                            borderColor: "#002152",
-                            fontSize: "14px",
-                            lineHeight: "18px",
-                            fontWeight: "600",
-                            color: "#002152",
-                            textTransform: "none",
-
-                            "&:hover": {
+                        </Box>
+                      </Grid>
+                      <Grid container spacing={2} sx={{ mt: 1 }}>
+                        <Grid item xs={6}>
+  
+                          <Button
+                            fullWidth
+                            onClick={() =>
+                              certificateDownloadApi(singlePropertyData?.contract?.id,data?.certificate_type_id
+                                )
+                            }
+                            variant="outlined"
+                            sx={{
                               borderColor: "#002152",
                               fontSize: "14px",
                               lineHeight: "18px",
                               fontWeight: "600",
                               color: "#002152",
                               textTransform: "none",
-                            },
-                          }}
-                        >
-                          Download
-                        </Button>
-                      </Grid>
-                      <Grid item xs={6}>
-                        <Button
-                          fullWidth
-                          sx={{
-                            background: "#0362F0",
-                            color: "#ffffff",
-                            fontWeight: "600",
-                            fontSize: "14px",
-                            lineHeight: "18px",
-                            textTransform: "none",
-                            "&:hover": {
+  
+                              "&:hover": {
+                                borderColor: "#002152",
+                                fontSize: "14px",
+                                lineHeight: "18px",
+                                fontWeight: "600",
+                                color: "#002152",
+                                textTransform: "none",
+                              },
+                            }}
+                          >
+                            Download
+                          </Button>
+                        </Grid>
+                        <Grid item xs={6}>
+                          <Button
+                           onClick={() => handleNotaryPdfOpen(data)}
+                            fullWidth
+                            sx={{
                               background: "#0362F0",
                               color: "#ffffff",
                               fontWeight: "600",
                               fontSize: "14px",
                               lineHeight: "18px",
-                            },
-                          }}
-                        >
-                          Details
-                        </Button>
+                              textTransform: "none",
+                              "&:hover": {
+                                background: "#0362F0",
+                                color: "#ffffff",
+                                fontWeight: "600",
+                                fontSize: "14px",
+                                lineHeight: "18px",
+                              },
+                            }}
+                          >
+                            Details
+                          </Button>
+                        </Grid>
                       </Grid>
-                    </Grid>
-                  </Box>
-                </Grid>
-              ))}
+                    </Box>
+                  </Grid>
+                ))
+}
+           
             </Grid>
           </Grid>
         </Grid>
       </Box>
+      <BaseModal isShowing={contractPdfOpen} isClose={handlePdfClose}>
+        <Tooltip title="Something">
+          <>
+            <ContractPdfModal
+              handleClose={handlePdfClose}
+              handlePdfOpen={handlePdfOpen}
+            
+              singlePropertyData={singlePropertyData}
+            />
+          </>
+        </Tooltip>
+      </BaseModal>
+      <BaseModal isShowing={digitalNotaryPdfOpen} isClose={handleNotaryPdfClose}>
+        <Tooltip title="Something">
+          <>
+            <DigitalNotaryPdfModal
+              handleClose={handleNotaryPdfClose}
+              handlePdfOpen={handleNotaryPdfOpen}
+             
+              singlePropertyData={singlePropertyData}
+              certificateData={certificateData}
+            />
+          </>
+        </Tooltip>
+      </BaseModal>
     </Box>
   );
 }
