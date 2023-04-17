@@ -2,6 +2,7 @@ import {
   Avatar,
   Box,
   Button,
+  CircularProgress,
   Divider,
   Grid,
   List,
@@ -13,7 +14,7 @@ import {
   Tooltip,
   Typography,
 } from "@mui/material";
-import React from "react";
+import React, { useMemo } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import CloseIcon from "@mui/icons-material/Close";
@@ -41,6 +42,17 @@ import FormGroup from "@mui/material/FormGroup";
 import FormControlLabel from "@mui/material/FormControlLabel";
 import HighlightOffIcon from "@mui/icons-material/HighlightOff";
 import dynamic from "next/dynamic";
+import { useEffect } from "react";
+import {
+  ContractCertificateValidationApi,
+  certificateViewApi,
+  getScheduleApi,
+} from "../../../../../api";
+import { useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { getViewCertificateData } from "../../../../../redux/viewCertificate/actions";
+import { findFeatureData } from "../../../../../redux/features/actions";
+import { findUploadCertificateData } from "../../../../../redux/uploadCertificate/actions";
 const PDFViewer = dynamic(
   () => import("../../../../reuseable/PDFComponent/pdf-viewer"),
   {
@@ -114,8 +126,33 @@ const style = {
   //   py: 1,
 };
 
-function AnalysisPdfModal({ handleClose, handlePdfOpen, handleNext }) {
+function AnalysisPdfModal({
+  handleClose,
+  handlePdfOpen,
+  handleNext,
+  singlePropertyData,
+  certificateData,
+}) {
   const theme = useTheme();
+  console.log({ certificateData });
+  const dispatch = useDispatch();
+  const [loading, setLoading] = useState(false);
+
+  useEffect(() => {
+    dispatch(
+      getViewCertificateData(
+        +singlePropertyData?.contract?.id,
+        certificateData?.tag?.id
+      )
+    );
+  }, [dispatch, singlePropertyData, certificateData]);
+
+  const viewData = useSelector(
+    (state) => state?.viewCertificate?.viewCertificateData
+  );
+
+  console.log({ viewData });
+
   const [open, setOpen] = React.useState(true);
 
   const handleDrawerOpen = () => {
@@ -125,6 +162,21 @@ function AnalysisPdfModal({ handleClose, handlePdfOpen, handleNext }) {
   const handleDrawerClose = () => {
     setOpen(false);
   };
+
+  const handleValidation = () => {
+    setLoading(true);
+    const data = {
+      contract_id: +singlePropertyData?.contract?.id,
+      certificate_type_id: certificateData?.tag?.id,
+    };
+    const { error, response } = ContractCertificateValidationApi(data);
+    setLoading(false);
+    if (!error) {
+      dispatch(findUploadCertificateData(+singlePropertyData?.contract?.id));
+      handleClose();
+    }
+  };
+
   return (
     <Box sx={style}>
       {/* <Box sx={{ background: "#ffffff", border: "1px solid #DBE1E5" }}>
@@ -292,7 +344,7 @@ function AnalysisPdfModal({ handleClose, handlePdfOpen, handleNext }) {
         </AppBar>
         <Main open={open}>
           <DrawerHeader />
-          <PDFViewer />
+          <PDFViewer contractDetailsInfo={viewData} />
         </Main>
         <Drawer
           sx={{
@@ -422,7 +474,7 @@ function AnalysisPdfModal({ handleClose, handlePdfOpen, handleNext }) {
                 ml: 0.5,
               }}
             >
-              Contratos honorários lorem ipsum dolor amet.pdf
+              {viewData?.name}
             </Typography>
           </Button>
 
@@ -501,7 +553,7 @@ function AnalysisPdfModal({ handleClose, handlePdfOpen, handleNext }) {
           <Box sx={{ px: 2 }}>
             <Button
               fullWidth
-              onClick={handleNext}
+              onClick={handleValidation}
               sx={{
                 mt: 1.5,
                 background: "#34BE84",
@@ -523,7 +575,8 @@ function AnalysisPdfModal({ handleClose, handlePdfOpen, handleNext }) {
                 },
               }}
             >
-              Validate documents
+              {loading && <CircularProgress size={22} color="inherit" />}
+              {!loading && "Validate documents"}
             </Button>
           </Box>
         </Drawer>

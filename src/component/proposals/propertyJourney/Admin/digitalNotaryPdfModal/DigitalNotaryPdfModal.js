@@ -41,6 +41,9 @@ import FormGroup from "@mui/material/FormGroup";
 import FormControlLabel from "@mui/material/FormControlLabel";
 import HighlightOffIcon from "@mui/icons-material/HighlightOff";
 import dynamic from "next/dynamic";
+import { getViewCertificateData } from "../../../../../redux/viewCertificate/actions";
+import { useDispatch, useSelector } from "react-redux";
+import { useEffect } from "react";
 const PDFViewer = dynamic(
   () => import("../../../../reuseable/PDFComponent/pdf-viewer"),
   {
@@ -114,9 +117,32 @@ const style = {
   //   py: 1,
 };
 
-function DigitalNotaryPdfModal({ handleClose, handlePdfOpen, handleNext }) {
+function DigitalNotaryPdfModal({
+  handleClose,
+  handlePdfOpen,
+  handleNext,
+  singlePropertyData,
+  certificateData,
+}) {
   const theme = useTheme();
   const [open, setOpen] = React.useState(true);
+
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch(
+      getViewCertificateData(
+        +singlePropertyData?.contract?.id,
+        certificateData?.tag?.id
+      )
+    );
+  }, [dispatch, singlePropertyData, certificateData]);
+
+  const viewData = useSelector(
+    (state) => state?.viewCertificate?.viewCertificateData
+  );
+
+  console.log({ viewData });
 
   const handleDrawerOpen = () => {
     setOpen(true);
@@ -230,7 +256,7 @@ function DigitalNotaryPdfModal({ handleClose, handlePdfOpen, handleNext }) {
         </AppBar>
         <Main open={open}>
           <DrawerHeader />
-          <PDFViewer />
+          <PDFViewer viewData={viewData} />
         </Main>
         <Drawer
           sx={{

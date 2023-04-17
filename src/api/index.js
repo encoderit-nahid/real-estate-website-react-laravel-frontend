@@ -32,6 +32,16 @@ export const loginApi = async (body) => {
   }
 };
 
+//forgot_password
+export const forgotPasswordApi = async (body) => {
+  try {
+    const response = await apiInstance.post(`/password/forgot`, body);
+    return [false, response];
+  } catch (error) {
+    return [error, null];
+  }
+};
+
 //register
 export const registrationApi = async (body) => {
   try {
@@ -319,7 +329,9 @@ export const createSignatureApi = async (body) => {
 //getRequire_certificate
 export const requireCertrificateApi = async (id) => {
   try {
-    const response = await apiInstance.get(`contract/get-require-certificates?id=${id}`);
+    const response = await apiInstance.get(
+      `contract/get-require-certificates?id=${id}`
+    );
     return [false, response];
   } catch (error) {
     return [error, null];
@@ -329,7 +341,10 @@ export const requireCertrificateApi = async (id) => {
 //certificate_upload_api
 export const certificateUploadApi = async (body) => {
   try {
-    const response = await apiInstance.post(`contract/certificate/upload`, body);
+    const response = await apiInstance.post(
+      `contract/certificate/upload`,
+      body
+    );
     return [false, response];
   } catch (error) {
     return [error, null];
@@ -337,21 +352,30 @@ export const certificateUploadApi = async (body) => {
 };
 
 //getUpload_certificate
-export const uploadCertrificateApi = async (id) => {
+export const uploadCertrificateApi = async (id, type) => {
   try {
-    const response = await apiInstance.get(`contract/get-uploaded-certificates?id=${id}`);
+    const response = await apiInstance.get(
+      `contract/get-uploaded-certificates`,
+      {
+        params: omitEmpties({
+          id: id,
+          type: type,
+        }),
+      }
+    );
     return [false, response];
   } catch (error) {
     return [error, null];
   }
 };
 
-
-
 //certificate_validation
 export const certificateValidationApi = async (body) => {
   try {
-    const response = await apiInstance.post(`/contract/certificate/validation`, body);
+    const response = await apiInstance.post(
+      `/contract/certificate/validation`,
+      body
+    );
     return [false, response];
   } catch (error) {
     return [error, null];
@@ -371,7 +395,7 @@ export const getScheduleApi = async () => {
 //cancel_schedule
 export const cancelScheduleApi = async (body) => {
   try {
-    const response = await apiInstance.post(`/schedule/cancel`,body);
+    const response = await apiInstance.post(`/schedule/cancel`, body);
     return [false, response];
   } catch (error) {
     return [error, null];
@@ -381,8 +405,8 @@ export const cancelScheduleApi = async (body) => {
 //get_broker
 export const getBrokerApi = async (query) => {
   try {
-    const response = await apiInstance.get(`/users/index`,{
-      params: query
+    const response = await apiInstance.get(`/users/index`, {
+      params: query,
     });
     return [false, response];
   } catch (error) {
@@ -393,7 +417,7 @@ export const getBrokerApi = async (query) => {
 //chnage_status_broker
 export const changeBrokerStatusApi = async (body) => {
   try {
-    const response = await apiInstance.post(`/users/status-update`,body);
+    const response = await apiInstance.post(`/users/status-update`, body);
     return [false, response];
   } catch (error) {
     return [error, null];
@@ -413,7 +437,21 @@ export const deleteBrokerApi = async (id) => {
 //request_documents
 export const requestDocumentsApi = async (id) => {
   try {
-    const response = await apiInstance.get(`contract/check-certificate-validation?contract_id=${id}`);
+    const response = await apiInstance.get(
+      `contract/check-certificate-validation?contract_id=${id}`
+    );
+    return [false, response];
+  } catch (error) {
+    return [error, null];
+  }
+};
+
+//view_certificate
+export const certificateViewApi = async (contract_id, certificate_type_id) => {
+  try {
+    const response = await apiInstance.get(
+      `contract/certificate/view?contract_id=${contract_id}&certificate_type_id=${certificate_type_id}`
+    );
     return [false, response];
   } catch (error) {
     return [error, null];
@@ -423,7 +461,20 @@ export const requestDocumentsApi = async (id) => {
 //certificate_validation
 export const ContractCertificateValidationApi = async (body) => {
   try {
-    const response = await apiInstance.post(`/contract/certificate/validation`,body);
+    const response = await apiInstance.post(
+      `/contract/certificate/validation`,
+      body
+    );
+    return [false, response];
+  } catch (error) {
+    return [error, null];
+  }
+};
+
+//documnet_send
+export const DocumentSentApi = async (body) => {
+  try {
+    const response = await apiInstance.post(`/contract/documents/send`, body);
     return [false, response];
   } catch (error) {
     return [error, null];

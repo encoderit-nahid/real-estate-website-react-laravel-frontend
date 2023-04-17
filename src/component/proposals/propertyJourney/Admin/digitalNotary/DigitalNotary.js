@@ -23,8 +23,24 @@ import CertificateModal from "../certificateModal/CertificateModal";
 import CheckCircleOutlineIcon from "@mui/icons-material/CheckCircleOutline";
 import DigitalNotaryPdfModal from "../digitalNotaryPdfModal/DigitalNotaryPdfModal";
 import DigitalNotaryModal from "../digitalNotaryModal/DigitalNotaryModal";
+import { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { findUploadCertificateData } from "../../../../../redux/uploadCertificate/actions";
+import { useState } from "react";
 
 function DigitalNotary({ handleNext, singlePropertyData }) {
+  const dispatch = useDispatch();
+  useEffect(() => {
+    const type = "certificate_validated";
+    dispatch(
+      findUploadCertificateData(+singlePropertyData?.contract?.id, type)
+    );
+  }, [dispatch, singlePropertyData]);
+  const uploadCertificateData = useSelector(
+    (state) => state?.uploadCertificate?.uploadCertificateData
+  );
+  const [certificateData, setCertificateData] = useState("");
+  const Loading = useSelector((state) => state?.uploadCertificate?.laoding);
   //digital_notary_modal_open
   const [digitalNotaryModalOpen, setDigitalNotaryModalOpen] =
     React.useState(false);
@@ -32,7 +48,10 @@ function DigitalNotary({ handleNext, singlePropertyData }) {
   const handleClose = () => setDigitalNotaryModalOpen(false);
   //pdf_open
   const [digitalNotaryPdfOpen, setDigitalNotaryPdfOpen] = React.useState(false);
-  const handlePdfOpen = () => setDigitalNotaryPdfOpen(true);
+  const handlePdfOpen = (data) => {
+    setDigitalNotaryPdfOpen(true);
+    setCertificateData(data);
+  };
   const handlePdfClose = () => setDigitalNotaryPdfOpen(false);
 
   return (
@@ -77,7 +96,7 @@ function DigitalNotary({ handleNext, singlePropertyData }) {
               </Typography>
             </Box>
             <Grid container spacing={2}>
-              {[0, 1, 2, 3, 4, 5].map((data, index) => (
+              {uploadCertificateData?.documents?.map((data, index) => (
                 <Grid key={index} item xs={12} sm={12} md={12} lg={6}>
                   <Box
                     sx={{
@@ -133,7 +152,7 @@ function DigitalNotary({ handleNext, singlePropertyData }) {
                             fontWeight: "400",
                           }}
                         >
-                          State tax regularity certificate - State CDN
+                          {data?.tag?.name}
                         </Typography>
                       </Box>
                     </Grid>
@@ -160,7 +179,7 @@ function DigitalNotary({ handleNext, singlePropertyData }) {
                             lineHeight: "18px",
                           },
                         }}
-                        onClick={handlePdfOpen}
+                        onClick={() => handlePdfOpen(data)}
                       >
                         Details
                       </Button>
@@ -206,6 +225,7 @@ function DigitalNotary({ handleNext, singlePropertyData }) {
             <DigitalNotaryModal
               handleClose={handleClose}
               handleNext={handleNext}
+              singlePropertyData={singlePropertyData}
             />
           </>
         </Tooltip>
@@ -217,6 +237,8 @@ function DigitalNotary({ handleNext, singlePropertyData }) {
               handleClose={handlePdfClose}
               handlePdfOpen={handlePdfOpen}
               handleNext={handleNext}
+              singlePropertyData={singlePropertyData}
+              certificateData={certificateData}
             />
           </>
         </Tooltip>

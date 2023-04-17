@@ -7,14 +7,17 @@ import Typography from "@mui/material/Typography";
 import Box from "@mui/material/Box";
 import ResponsiveDrawer from "../../src/component/sharedProposal/ResponsiveDrawer/ResponsiveDrawer";
 import { Button, Container, Grid } from "@mui/material";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Releases from "../../src/component/properties/Releases/Releases";
 import ThirdTab from "../../src/component/properties/Third/ThirdTab";
 import NewRegistration from "../../src/component/properties/NewRegistration/NewRegistration";
 import notifyImage from "../../public/Images/notify.png";
 import Link from "next/link";
-import { getSession } from "next-auth/react";
+import { getSession, useSession } from "next-auth/react";
 import { useRouter } from "next/router";
+// import { pusher } from "../../consts";
+import LaravelEcho from "laravel-echo";
+import { _baseURL } from "../../consts";
 
 const drawerWidth = 240;
 
@@ -56,7 +59,70 @@ export default function MyProperties(props) {
   const { query } = router;
   console.log({ query });
 
-  
+  const session = useSession();
+
+  useEffect(() => {
+    const token = localStorage.getItem("token");
+    if (token) {
+      window.Pusher = require("pusher-js");
+      window.Echo = new LaravelEcho({
+        encrypted: true,
+        broadcaster: "pusher",
+        key: process.env.NEXT_PUBLIC_PUSHER_KEY,
+        cluster: process.env.NEXT_PUBLIC_PUSHER_CLUSTER,
+        authEndpoint: _baseURL + "/api/broadcasting/auth",
+        auth: {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        },
+      });
+
+      const channel = window.Echo.join("notification-broadcast");
+
+      channel
+        .here((...args) => {
+          console.log("notification-broadcast:here", ...args);
+        })
+        .joining((...args) => {
+          console.log("notification-broadcast:joining", ...args);
+        })
+        .leaving((...args) => {
+          console.log("notification-broadcast:leaving", ...args);
+        })
+        .listen("NotificationEvent", (event) => {
+          console.log("notification-broadcast:NotificationEvent", event);
+        })
+        .listenForWhisper("ping", (event) => {
+          console.log("notification-broadcast:ping", event);
+        });
+
+      setInterval(() => {
+        channel.whisper("ping", Date.now());
+      }, 5000);
+    }
+
+    // const channel = pusher.subscribe("notification-broadcast");
+    // channel.bind("NotificationEvent", function (data) {
+    //   console.log("Received data:", data);
+    // });
+
+    // console.log("channel", channel);
+
+    // // setInterval(() => {
+    // //   channel.emit("ping", Date.now());
+    // // }, 2000);
+
+    // channel.bind("ping", (event) => {
+    //   console.log("on:ping", event);
+    // });
+
+    // return () => {
+    //   channel.unbind("NotificationEvent");
+    //   pusher.unsubscribe("notification-broadcast");
+    // };
+  }, []);
+
   const [value, setValue] = useState(+query?.value || 0);
 
   const handleChange = (event, newValue) => {

@@ -97,7 +97,7 @@ function ContractModal({
 
     const requireData = {
       contract_id: +singlePropertyData?.contract?.id,
-      contract_file: files[files.length -1],
+      contract_file: files[files.length - 1],
     };
     console.log({ requireData });
 
@@ -106,7 +106,7 @@ function ContractModal({
     setLoading(false);
     if (!error) {
       console.log("uploaded");
-      setHideGenerateContract(true);
+      // setHideGenerateContract(true);
       handleClose();
       // setSentModalOpen(true);
     } else {
@@ -234,44 +234,42 @@ function ContractModal({
         </Grid>
       </Box>
       {files?.length > 0 && (
-      <Grid sx={{px:10,mb:2}}>
-                <Box
+        <Grid sx={{ px: 10, mb: 2 }}>
+          <Box
+            sx={{
+              p: 2,
+              boxSizing: "border-box",
+              border: "1px solid #DBE1E5",
+              borderRadius: "6px",
+            }}
+          >
+            <Grid
+              container
+              direction="row"
+              justifyContent="flex-end"
+              alignItems="flex-start"
+            >
+              <DeleteOutlineOutlinedIcon
                 sx={{
-                  p: 2,
-                  boxSizing: "border-box",
-                  border: "1px solid #DBE1E5",
-                  borderRadius: "6px",
-                  
+                  background: "#F44336",
+                  color: "#ffffff",
+                  borderRadius: "50%",
+                  height: "3vh",
+                  width: "3vh",
+                  paddingY: "3px",
                 }}
-              >
-                <Grid
-                  container
-                  direction="row"
-                  justifyContent="flex-end"
-                  alignItems="flex-start"
-                >
-                  <DeleteOutlineOutlinedIcon
-                    sx={{
-                      background: "#F44336",
-                      color: "#ffffff",
-                      borderRadius: "50%",
-                      height: "3vh",
-                      width: "3vh",
-                      paddingY: "3px",
-                    }}
-                    onClick={() => handleDelete(files.length - 1)}
-                  />
-                </Grid>
-                {/* <InsertDriveFileOutlinedIcon/> */}
-                <Typography
-                  variant="p"
-                  sx={{ color: "#38bdf8", fontWeight: "600" }}
-                >
-                  {files[files.length -1]?.name?.slice(0, 20)}
-                </Typography>
-              </Box>
-      </Grid>
-  
+                onClick={() => handleDelete(files.length - 1)}
+              />
+            </Grid>
+            {/* <InsertDriveFileOutlinedIcon/> */}
+            <Typography
+              variant="p"
+              sx={{ color: "#38bdf8", fontWeight: "600" }}
+            >
+              {files[files.length - 1]?.name?.slice(0, 20)}
+            </Typography>
+          </Box>
+        </Grid>
       )}
       <Grid
         container

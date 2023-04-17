@@ -270,12 +270,12 @@ export default function PropertyJourney(props) {
                       //   singlePropertyData={singlePropertyData}
                       //   handleNext={handleNext}
                       // />
-                      session.user.role === "broker" ? (
+                      session?.user?.role === "broker" ? (
                         <BrokerCertificateAndDocument
                           singlePropertyData={singlePropertyData}
                           handleNext={handleNext}
                         />
-                      ) : session.user.role === "admin" ? (
+                      ) : session?.user?.role === "admin" ? (
                         <CertificatesAndDocuments
                           singlePropertyData={singlePropertyData}
                           handleNext={handleNext}

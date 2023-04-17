@@ -1,36 +1,39 @@
-import { Box, Button, Grid, Typography } from '@mui/material'
-import Image from 'next/image'
-import React from 'react'
-import submitProposal from '../../../public/Images/submit_proposal.png'
-import Link from 'next/link'
-import { useForm, Controller } from 'react-hook-form'
-import { yupResolver } from '@hookform/resolvers/yup'
-import * as Yup from 'yup'
-import BaseTextField from '../reuseable/baseTextField/BaseTextField'
+import { Box, Button, Grid, Typography } from "@mui/material";
+import Image from "next/image";
+import React from "react";
+import submitProposal from "../../../public/Images/submit_proposal.png";
+import Link from "next/link";
+import { useForm, Controller } from "react-hook-form";
+import { yupResolver } from "@hookform/resolvers/yup";
+import * as Yup from "yup";
+import BaseTextField from "../reuseable/baseTextField/BaseTextField";
+import { forgotPasswordApi } from "../../api";
+import { useState } from "react";
 
 const validationSchema = Yup.object().shape({
   email: Yup.string()
-    .required('Email is required')
-    .matches(/.+@.+\.[A-Za-z]+$/, 'Email is invalid'),
-})
+    .required("Email is required")
+    .matches(/.+@.+\.[A-Za-z]+$/, "Email is invalid"),
+});
 
-function ForgotPasswordModal({ handleClose }) {
+function ForgotPasswordModal({ handleForgotClose }) {
   const style = {
-    position: 'absolute',
-    top: '50%',
-    left: '50%',
+    position: "absolute",
+    top: "50%",
+    left: "50%",
     // top:{xs:"80%"},
-    transform: 'translate(-50%, -50%)',
-    width: { xs: '80%', sm: '80%', md: '60%', lg: '35%', xl: '35%' },
-    bgcolor: '#ffffff',
+    transform: "translate(-50%, -50%)",
+    width: { xs: "80%", sm: "80%", md: "60%", lg: "35%", xl: "35%" },
+    bgcolor: "#ffffff",
     // border: "2px solid #000",
-    boxShadow: 'none',
-    borderRadius: '12px',
-    maxHeight: '70vh',
-    overflowY: 'scroll',
+    boxShadow: "none",
+    borderRadius: "12px",
+    maxHeight: "70vh",
+    overflowY: "scroll",
     px: 3,
     py: 2,
-  }
+  };
+  const [loading, setLoading] = useState(false);
 
   const {
     register,
@@ -41,14 +44,20 @@ function ForgotPasswordModal({ handleClose }) {
     formState: { errors },
   } = useForm({
     resolver: yupResolver(validationSchema),
-  })
+  });
 
   const onSubmit = async (data) => {
-    console.log({ data })
-  }
+    console.log({ data });
+    setLoading(true);
+    const [error, response] = await forgotPasswordApi(data);
+    setLoading(false);
+    if (!error) {
+    } else {
+    }
+  };
   return (
     <Box sx={style}>
-      <Box sx={{ width: '100%' }}>
+      <Box sx={{ width: "100%" }}>
         <Grid
           container
           direction="row"
@@ -68,10 +77,10 @@ function ForgotPasswordModal({ handleClose }) {
           <Typography
             variant="p"
             sx={{
-              fontSize: '24px',
-              fontWeight: '700',
-              color: '#1A1859',
-              lineHeight: '32px',
+              fontSize: "24px",
+              fontWeight: "700",
+              color: "#1A1859",
+              lineHeight: "32px",
             }}
           >
             Forgot your password ?
@@ -88,13 +97,13 @@ function ForgotPasswordModal({ handleClose }) {
             <Typography
               variant="p"
               sx={{
-                color: '#253858',
-                fontSize: '14px',
-                fontWeight: '400',
-                lineHeight: '16px',
+                color: "#253858",
+                fontSize: "14px",
+                fontWeight: "400",
+                lineHeight: "16px",
               }}
             >
-              Email<span style={{ color: '#E63333' }}>*</span>
+              Email<span style={{ color: "#E63333" }}>*</span>
             </Typography>
           </Grid>
           <Controller
@@ -102,12 +111,12 @@ function ForgotPasswordModal({ handleClose }) {
             control={control}
             render={({ field }) => (
               <BaseTextField
-                size={'small'}
-                placeholder={'Email'}
+                size={"small"}
+                placeholder={"Email"}
                 onChange={(e) => {
-                  field.onChange(e.target.value)
+                  field.onChange(e.target.value);
                 }}
-                name={'email'}
+                name={"email"}
                 // error={errors.email ? true : false}
               />
             )}
@@ -115,7 +124,7 @@ function ForgotPasswordModal({ handleClose }) {
           <Typography
             variant="inherit"
             color="textSecondary"
-            sx={{ color: '#b91c1c' }}
+            sx={{ color: "#b91c1c" }}
           >
             {errors.email?.message}
           </Typography>
@@ -127,12 +136,12 @@ function ForgotPasswordModal({ handleClose }) {
             sx={{
               mt: 2,
               py: 1,
-              background: '#DBE1E5',
-              color: '#1A1859',
-              fontSize: '16px',
-              fontWeight: '600',
-              lineHeight: '22px',
-              textTransform: 'none',
+              background: "#DBE1E5",
+              color: "#1A1859",
+              fontSize: "16px",
+              fontWeight: "600",
+              lineHeight: "22px",
+              textTransform: "none",
             }}
             // onClick={handleProposalClose}
           >
@@ -141,7 +150,7 @@ function ForgotPasswordModal({ handleClose }) {
         </form>
       </Box>
     </Box>
-  )
+  );
 }
 
-export default ForgotPasswordModal
+export default ForgotPasswordModal;

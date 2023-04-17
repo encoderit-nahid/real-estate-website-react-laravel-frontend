@@ -76,7 +76,7 @@ function Contract({ handleNext, singlePropertyData }) {
           <Grid item xs={12} sm={12} md={12} lg={3}>
             <SaleCard singlePropertyData={singlePropertyData} />
           </Grid>
-          {singlePropertyData?.contract?.status === "new" && (
+          {singlePropertyData?.contract?.status === "new" ? (
             <Grid item xs={12} sm={12} md={12} lg={5}>
               <Box
                 sx={{
@@ -143,8 +143,7 @@ function Contract({ handleNext, singlePropertyData }) {
                 </Grid>
               </Box>
             </Grid>
-          )}
-          {singlePropertyData.contract?.status !== "new" && (
+          ) : (
             <Grid item xs={12} sm={12} md={12} lg={4}>
               <Box
                 sx={{

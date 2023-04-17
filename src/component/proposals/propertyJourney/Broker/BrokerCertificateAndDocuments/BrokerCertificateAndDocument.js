@@ -6,6 +6,7 @@ import {
   Tooltip,
   LinearProgress,
   CircularProgress,
+  Skeleton,
 } from "@mui/material";
 import Image from "next/image";
 import React, { useEffect, useState } from "react";
@@ -38,6 +39,8 @@ function BrokerCertificateAndDocument({ handleNext, singlePropertyData }) {
   const allCertificateData = useSelector(
     (state) => state?.certificate?.certificateData
   );
+
+  const Loading = useSelector((state) => state?.certificate?.loading);
   console.log({ allCertificateData });
 
   const handleRequestSubmit = async () => {
@@ -81,9 +84,19 @@ function BrokerCertificateAndDocument({ handleNext, singlePropertyData }) {
       </Grid>
       <Box sx={{ mt: { xs: 2, sm: 2, md: 2, lg: 4 } }}>
         <Grid container spacing={2}>
-          <Grid item xs={12} sm={12} md={12} lg={3}>
-            <SaleCard singlePropertyData={singlePropertyData} />
-          </Grid>
+          {Loading ? (
+            <Grid item xs={12} sm={12} md={12} lg={3}>
+              <Skeleton
+                variant="rect"
+                height={230}
+                sx={{ mx: 2, my: 2, borderRadius: "8px" }}
+              />
+            </Grid>
+          ) : (
+            <Grid item xs={12} sm={12} md={12} lg={3}>
+              <SaleCard singlePropertyData={singlePropertyData} />
+            </Grid>
+          )}
           <Grid item xs={12} sm={12} md={12} lg={8}>
             <Grid
               container
@@ -134,71 +147,94 @@ function BrokerCertificateAndDocument({ handleNext, singlePropertyData }) {
               </FormControl>
             </Grid>
             <Grid container spacing={3}>
-              {allCertificateData?.map((data, index) => (
-                <Grid
-                  key={data?.id}
-                  item
-                  xs={12}
-                  sm={12}
-                  md={12}
-                  lg={6}
-                  sx={{ mt: 1 }}
-                >
-                  <Box
-                    onClick={() => {
-                      if (!certificateTypes?.includes(data.id)) {
-                        setCertificateTypes((current) => [...current, data.id]);
-                      } else {
-                        const newArray = certificateTypes?.filter(
-                          (value) => value !== data.id
-                        );
-                        setCertificateTypes(newArray);
-                      }
-                    }}
-                    sx={{
-                      background: `${
-                        certificateTypes?.includes(data.id)
-                          ? "#0362F0"
-                          : "#F2F5F6"
-                      }`,
-                      color: `${
-                        certificateTypes?.includes(data.id)
-                          ? "#ffffff"
-                          : "#32414C"
-                      }`,
-                      borderRadius: "8px",
-                      py: 2,
-                      px: 2,
-                      height: 120,
-                    }}
-                  >
+              {Loading
+                ? [0, 1, 2].map((data, index) => (
                     <Grid
-                      container
-                      direction="column"
-                      justifyContent="center"
-                      alignItems="center"
+                      key={index}
+                      item
+                      xs={12}
+                      sm={12}
+                      md={12}
+                      lg={6}
+                      xl={6}
+                      xxl={6}
                     >
-                      <Box>
-                        <Typography
-                          variant="p"
-                          sx={{
-                            color: `${
-                              certificateTypes?.includes(data.id)
-                                ? "#ffffff"
-                                : "#32414C"
-                            }`,
-                            fontSize: "14px",
-                            lineHeight: "18px",
-                            fontWeight: "400",
-                          }}
+                      <Skeleton
+                        variant="rect"
+                        height={150}
+                        width={300}
+                        sx={{ mx: 2, my: 2, borderRadius: "8px" }}
+                      />
+                    </Grid>
+                  ))
+                : allCertificateData?.map((data, index) => (
+                    <Grid
+                      key={data?.id}
+                      item
+                      xs={12}
+                      sm={12}
+                      md={12}
+                      lg={6}
+                      sx={{ mt: 1 }}
+                    >
+                      <Box
+                        onClick={() => {
+                          if (!certificateTypes?.includes(data.id)) {
+                            setCertificateTypes((current) => [
+                              ...current,
+                              data.id,
+                            ]);
+                          } else {
+                            const newArray = certificateTypes?.filter(
+                              (value) => value !== data.id
+                            );
+                            setCertificateTypes(newArray);
+                          }
+                        }}
+                        sx={{
+                          background: `${
+                            certificateTypes?.includes(data.id)
+                              ? "#0362F0"
+                              : "#F2F5F6"
+                          }`,
+                          color: `${
+                            certificateTypes?.includes(data.id)
+                              ? "#ffffff"
+                              : "#32414C"
+                          }`,
+                          borderRadius: "8px",
+                          py: 2,
+                          px: 2,
+                          height: 120,
+                        }}
+                      >
+                        <Grid
+                          container
+                          direction="column"
+                          justifyContent="center"
+                          alignItems="center"
                         >
-                          {data?.name}
-                        </Typography>
+                          <Box>
+                            <Typography
+                              variant="p"
+                              sx={{
+                                color: `${
+                                  certificateTypes?.includes(data.id)
+                                    ? "#ffffff"
+                                    : "#32414C"
+                                }`,
+                                fontSize: "14px",
+                                lineHeight: "18px",
+                                fontWeight: "400",
+                              }}
+                            >
+                              {data?.name}
+                            </Typography>
+                          </Box>
+                        </Grid>
                       </Box>
                     </Grid>
-                  </Box>
-                </Grid>
-              ))}
+                  ))}
             </Grid>
             <Grid
               container

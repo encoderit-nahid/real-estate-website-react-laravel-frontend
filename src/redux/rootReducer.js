@@ -17,6 +17,7 @@ import RequireCertificateReducer from "./requireCertificate/reducer";
 import UploadCertificateReducer from "./uploadCertificate/reducer";
 import ScheduleReducer from "./schedules/reducer";
 import BrokerReducer from "./broker/reducer";
+import ViewCertificateReducer from "./viewCertificate/reducer";
 
 const RootReducer = combineReducers({
   state: StateReducer,
@@ -35,8 +36,8 @@ const RootReducer = combineReducers({
   requireCertificate: RequireCertificateReducer,
   uploadCertificate: UploadCertificateReducer,
   schedule: ScheduleReducer,
-  broker: BrokerReducer
-  
+  broker: BrokerReducer,
+  viewCertificate: ViewCertificateReducer,
 });
 
 export default RootReducer;

@@ -1,4 +1,8 @@
-import { featuresApi, requireCertrificateApi, uploadCertrificateApi } from "../../api";
+import {
+  featuresApi,
+  requireCertrificateApi,
+  uploadCertrificateApi,
+} from "../../api";
 import * as Types from "./types";
 
 const uploadCertificateRequest = (data) => {
@@ -22,9 +26,9 @@ const uploadCertificateFailed = (err) => {
 };
 
 // require certificate action
-export const findUploadCertificateData = (id) => async (dispatch) => {
+export const findUploadCertificateData = (id, type) => async (dispatch) => {
   dispatch(uploadCertificateRequest());
-  const [error, response] = await uploadCertrificateApi(id);
+  const [error, response] = await uploadCertrificateApi(id, type);
   if (!error) {
     dispatch(uploadCertificateSuccess(response?.data?.require_certificate));
   } else {
@@ -34,4 +38,3 @@ export const findUploadCertificateData = (id) => async (dispatch) => {
     dispatch(uploadCertificateFailed(errorMassage));
   }
 };
-
