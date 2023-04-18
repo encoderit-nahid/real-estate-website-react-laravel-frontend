@@ -92,6 +92,7 @@ export default function ProjectView({
   console.log({ Images });
 
   const [selectImage, setSelectImage] = useState(() => Images?.[0]?.file_path);
+  console.log({selectImage})
 
   useEffect(() => {
     if (Images?.length > 0) {

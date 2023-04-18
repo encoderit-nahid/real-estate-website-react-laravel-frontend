@@ -90,6 +90,8 @@ export default function PropertyJourney(props) {
     (state) => state?.singleProperty?.singlePropertyData
   );
 
+  const Loading = useSelector((state) => state?.singleProperty?.loading)
+
   console.log({ singlePropertyData });
 
   const isStepOptional = (step) => {
@@ -280,6 +282,7 @@ export default function PropertyJourney(props) {
                         singlePropertyData={singlePropertyData}
                         handleNext={handleNext}
                         handleBack={handleBack}
+                        Loading={Loading}
                       />
                     ) : activeStep === 3 ? (
                       //   <PhotosAndVideos

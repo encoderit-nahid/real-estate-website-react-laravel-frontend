@@ -5,6 +5,7 @@ import {
   Typography,
   Tooltip,
   LinearProgress,
+  Skeleton,
 } from "@mui/material";
 import Image from "next/image";
 import React, { useState } from "react";
@@ -18,7 +19,7 @@ import SaleCard from "../../../../reuseable/saleCard/SaleCard";
 import ContractPdfModal from "../ContractPdfModal/ContractPdfModal";
 import { contractDownloadApi } from "../../../../../api";
 
-function Contract({ handleNext, singlePropertyData }) {
+function Contract({ handleNext, singlePropertyData,Loading }) {
   console.log({ singlePropertyData });
   //contract_modal_open
   const [contractModalOpen, setContractModalOpen] = React.useState(false);
@@ -73,9 +74,21 @@ function Contract({ handleNext, singlePropertyData }) {
       </Grid>
       <Box sx={{ mt: { xs: 2, sm: 2, md: 2, lg: 4 } }}>
         <Grid container spacing={2}>
-          <Grid item xs={12} sm={12} md={12} lg={3}>
-            <SaleCard singlePropertyData={singlePropertyData} />
-          </Grid>
+         
+          {Loading ? (
+            <Grid item xs={12} sm={12} md={12} lg={3}>
+              <Skeleton
+                variant="rect"
+                height={230}
+                sx={{ mx: 2, my: 2, borderRadius: "8px" }}
+              />
+            </Grid>
+          ) : (
+            <Grid item xs={12} sm={12} md={12} lg={3}>
+              <SaleCard singlePropertyData={singlePropertyData} />
+            </Grid>
+          )}
+         
           {singlePropertyData?.contract?.status === "new" ? (
             <Grid item xs={12} sm={12} md={12} lg={5}>
               <Box

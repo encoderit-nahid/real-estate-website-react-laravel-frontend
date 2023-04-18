@@ -2,6 +2,7 @@
   "name": "spare-parts-ecom-app-laravel-react-front-end",
   "version": "0.1.0",
   "private": true,
+ 
   "scripts": {
     "dev": "next dev",
     "build": "next build",

@@ -17,6 +17,8 @@ import BaseGoogleMap from "../../IAmOwner/map/BaseGoogleMap";
 import { Grid } from "@mui/material";
 import { _baseURL } from "../../../../consts";
 import BaseStreetView from "../../reuseable/baseStreetView/BaseStreetView";
+import { useEffect } from "react";
+import { useState } from "react";
 
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
@@ -60,6 +62,11 @@ function SliderView({
   addressData,
 }) {
   const [value, setValue] = React.useState(0);
+
+//   function get_url_extension( selectImage ) {
+//     return selectImage.split(/[#?]/)[0].split('.').pop().trim();
+// }
+console.log(selectImage.split(/[#?]/)[0].split('.').pop().trim())
 
   const handleChange = (event, newValue) => {
     setValue(+newValue);
@@ -280,7 +287,7 @@ function SliderView({
         />
       </Tabs>
       <TabPanel value={value} index={0}>
-        {selectImage != null ? (
+        {selectImage != null  ? (
           <Image
             loader={myLoader}
             src={`${selectImage}`}
@@ -306,7 +313,7 @@ function SliderView({
         )}
       </TabPanel>
       <TabPanel value={value} index={1}>
-        {selectImage != null ? (
+        {selectImage != null && selectImage.split(/[#?]/)[0].split('.').pop().trim() !== 'webp' ? (
           <ReactPannellum
             id="1"
             sceneId="firstScene"

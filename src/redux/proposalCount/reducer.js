@@ -1,7 +1,7 @@
 import * as Types from "./types";
 
 const InitialState = {
-  countData: [],
+  countData: {},
   loading: false,
 };
 
@@ -9,7 +9,7 @@ const CountReducer = (state = InitialState, action) => {
   switch (action.type) {
     case Types.COUNT_REQUEST:
       return {
-        countData: [],
+        countData: {},
         loading: true,
       };
 
@@ -21,7 +21,7 @@ const CountReducer = (state = InitialState, action) => {
 
     case Types.COUNT_FAILED:
       return {
-        countData: [],
+        countData: {},
         loading: false,
       };
 
