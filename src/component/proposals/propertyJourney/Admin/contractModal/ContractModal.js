@@ -6,7 +6,7 @@ import {
   TextareaAutosize,
   Typography,
 } from "@mui/material";
-import React from "react";
+import React, { useEffect } from "react";
 import handshake from "../../../../../../public/Images/handshake.png";
 import Image from "next/image";
 import { useDropzone } from "react-dropzone";
@@ -16,6 +16,9 @@ import { useMemo } from "react";
 import { contractUploadApi } from "../../../../../api";
 import { serialize } from "object-to-formdata";
 import { useForm } from "react-hook-form";
+import { useDispatch } from "react-redux";
+import { useRouter } from "next/router";
+import { findSinglePropertyData } from "../../../../../redux/singleProperty/actions";
 
 const baseStyle = {
   display: "flex",
@@ -68,7 +71,9 @@ function ContractModal({
     px: 1,
     py: 2,
   };
-
+  const dispatch = useDispatch();
+  const router = useRouter();
+  const { query } = router;
   const [files, setFiles] = useState([]);
 
   console.log(files);
@@ -94,19 +99,18 @@ function ContractModal({
   console.log({ errors });
   const handleSubmit = async () => {
     setLoading(true);
-
     const requireData = {
       contract_id: +singlePropertyData?.contract?.id,
       contract_file: files[files.length - 1],
     };
     console.log({ requireData });
-
     const formData = serialize(requireData, { indices: true });
     const [error, response] = await contractUploadApi(formData);
     setLoading(false);
     if (!error) {
       console.log("uploaded");
       // setHideGenerateContract(true);
+      dispatch(findSinglePropertyData(query?.propertyId));
       handleClose();
       // setSentModalOpen(true);
     } else {

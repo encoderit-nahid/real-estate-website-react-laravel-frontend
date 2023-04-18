@@ -47,6 +47,15 @@ const BreadCrumbsData = [
   { stage: "My properties", route: "" },
 ];
 
+const omitEmpties = (obj) => {
+  return Object.entries(obj).reduce((carry, [key, value]) => {
+    if (![null, undefined, "", []].includes(value)) {
+      carry[key] = value;
+    }
+    return carry;
+  }, {});
+};
+
 const steps = [
   "Announce",
   "Proposal",
@@ -56,17 +65,26 @@ const steps = [
   "Digital notery",
 ];
 export default function PropertyJourney(props) {
-  const [activeStep, setActiveStep] = useState(2);
-  const [skipped, setSkipped] = useState(new Set());
-  const dispatch = useDispatch();
   const router = useRouter();
   const { query } = router;
+
+  // const [activeStep, setActiveStep] = useState((+query?.step_count || 1) + 1);
+  // useEffect(() => {
+  //   const requireStep = (+query?.step_count || 1) + 1;
+  //   if (requireStep !== activeStep) {
+  //     setActiveStep(requireStep);
+  //   }
+  // }, [query, activeStep]);
+  // console.log({ activeStep });
+  const [skipped, setSkipped] = useState(new Set());
+  const dispatch = useDispatch();
 
   const { data: session } = useSession();
 
   useEffect(() => {
     dispatch(findSinglePropertyData(query?.propertyId));
   }, [dispatch, query]);
+  const [activeStep, setActiveStep] = useState((+query?.step_count || 1) + 1);
 
   const singlePropertyData = useSelector(
     (state) => state?.singleProperty?.singlePropertyData
@@ -240,7 +258,9 @@ export default function PropertyJourney(props) {
                   })}
                 </Stepper>
                 {activeStep === steps.length ? (
-                  <DigitalNotaryFinalContent   singlePropertyData={singlePropertyData} />
+                  <DigitalNotaryFinalContent
+                    singlePropertyData={singlePropertyData}
+                  />
                 ) : (
                   <Fragment>
                     {activeStep === 0 ? (

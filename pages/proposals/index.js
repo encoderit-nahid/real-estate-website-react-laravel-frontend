@@ -19,6 +19,8 @@ import Accepted from "../../src/component/proposals/accepted/Accepted";
 import Completed from "../../src/component/proposals/completed/Completed";
 import { getSession } from "next-auth/react";
 import { useRouter } from "next/router";
+import { useEffect } from "react";
+import { proposalCountApi } from "../../src/api";
 
 const drawerWidth = 240;
 
@@ -59,6 +61,8 @@ export default function Proposals(props) {
   const router = useRouter();
   const { query } = router;
   console.log({ query });
+  const [proposalCount, setProposalCount] = useState("");
+  console.log({ proposalCount });
 
   const [value, setValue] = useState(+query?.value || 0);
   const [adType, setAdType] = useState("allkinds");

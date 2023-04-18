@@ -178,7 +178,7 @@ function Contract({ handleNext, singlePropertyData }) {
                       mt: 0.5,
                     }}
                   >
-                    Honorary contracts lorem ipsum dolor amet.pdf
+                    {singlePropertyData?.contract?.documents[0]?.title}
                   </Typography>
                   <Typography
                     variant="h1"

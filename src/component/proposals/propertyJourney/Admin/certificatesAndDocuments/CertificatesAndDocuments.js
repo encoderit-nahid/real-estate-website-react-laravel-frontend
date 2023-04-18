@@ -27,12 +27,19 @@ import CertificateModal from "../certificateModal/CertificateModal";
 import { useDispatch, useSelector } from "react-redux";
 import { findRequireCertificateData } from "../../../../../redux/requireCertificate/actions";
 import { requestDocumentsApi } from "../../../../../api";
+import { useRouter } from "next/router";
 
 function CertificatesAndDocuments({ handleNext, singlePropertyData }) {
+  const router = useRouter();
+  const { query } = router;
   const dispatch = useDispatch();
   useEffect(() => {
-    dispatch(findRequireCertificateData(+singlePropertyData?.contract?.id));
-  }, [dispatch, singlePropertyData]);
+    dispatch(
+      findRequireCertificateData(
+        +singlePropertyData?.contract?.id || +query?.contractId
+      )
+    );
+  }, [dispatch, singlePropertyData, query]);
   const requireCertificateData = useSelector(
     (state) => state?.requireCertificate?.requireCertificateData
   );

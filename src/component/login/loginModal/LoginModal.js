@@ -367,16 +367,16 @@ function LoginModal({ handleLoginClose }) {
           severity="error"
           sx={{ width: "100%" }}
         >
-          {message && message}
+          valid
         </Alert>
       </Snackbar>
       <BaseModal isShowing={forgotOpen} isClose={handleForgotClose}>
-            <Tooltip title="Something">
-              <>
-                <ForgotPasswordModal handleForgotClose={handleForgotClose} />
-              </>
-            </Tooltip>
-          </BaseModal>
+        <Tooltip title="Something">
+          <>
+            <ForgotPasswordModal handleForgotClose={handleForgotClose} />
+          </>
+        </Tooltip>
+      </BaseModal>
     </Box>
   );
 }

@@ -42,6 +42,29 @@ export const forgotPasswordApi = async (body) => {
   }
 };
 
+//reset_password
+export const resetPasswordApi = async (body) => {
+  try {
+    const responseReset = await apiInstance.post(`/password/reset`, body);
+    return [false, responseReset];
+  } catch (errorReset) {
+    return [errorReset, null];
+  }
+};
+
+//verify_token
+export const verifyToken = async (body) => {
+  try {
+    const responseVerifyToken = await apiInstance.post(
+      `/password/token/varify`,
+      body
+    );
+    return [false, responseVerifyToken];
+  } catch (errorVerifyToken) {
+    return [errorVerifyToken, null];
+  }
+};
+
 //register
 export const registrationApi = async (body) => {
   try {
@@ -290,12 +313,12 @@ export const contractDownloadApi = async (id) => {
 };
 
 //contract_download
-export const certificateDownloadApi = async (id,certificate_type_id) => {
+export const certificateDownloadApi = async (id, certificate_type_id) => {
   try {
     const response = await apiInstance.get(`contract/download`, {
       params: {
         id: id,
-        certificate_type_id: certificate_type_id
+        certificate_type_id: certificate_type_id,
       },
     });
     window.open(`${response?.data?.url}`, "_blank");
@@ -311,6 +334,7 @@ export const certificateDownloadApi = async (id,certificate_type_id) => {
 export const contractDetailsApi = async (id) => {
   try {
     const response = await apiInstance.get(`contract/details`, {
+      mode: "no-cors",
       params: {
         id: id,
       },
@@ -499,13 +523,22 @@ export const DocumentSentApi = async (body) => {
   }
 };
 
-
 //final_submitted
 export const contractSubmittedDataApi = async (id) => {
   try {
     const response = await apiInstance.get(
       `contract/submitted-data??contract_id=${id}`
     );
+    return [false, response];
+  } catch (error) {
+    return [error, null];
+  }
+};
+
+//proposal_count
+export const proposalCountApi = async () => {
+  try {
+    const response = await apiInstance.get(`proposal/count`);
     return [false, response];
   } catch (error) {
     return [error, null];

@@ -21,6 +21,20 @@ function AcceptedCard({ propertyData }) {
   const myLoader = ({ src }) => {
     return `${_baseURL}/storage/${src}`;
   };
+
+  const Status = [
+    { name: "Announcement", slug: "announcement" },
+    { name: "Proposal", slug: "proposal" },
+    { name: "Contract", slug: "contract_uploaded" },
+    { name: "Certificates and Documents", slug: "certificate" },
+    { name: "Pre-analysis", slug: "analysis" },
+    { name: "Digital notary", slug: "notary" },
+  ];
+
+  const Statusindex = Status.findIndex((object) => {
+    return object.slug === propertyData?.contract?.status;
+  });
+
   return (
     <Box
       sx={{
@@ -95,7 +109,7 @@ function AcceptedCard({ propertyData }) {
             lineHeight: "32px",
           }}
         >
-          BRL 4570.00
+          {` BRL  ${propertyData?.brl_rent}`}
         </Typography>
         <Typography
           variant="p"
@@ -107,26 +121,36 @@ function AcceptedCard({ propertyData }) {
             mt: 1,
           }}
         >
-          8502 Preston Rd. Inglewood, Maine 98380
+          {propertyData?.address?.address}
         </Typography>
       </Grid>
 
       <Box sx={{ mt: 1, px: 2 }}>
-        <Button sx={{ display: "flex", textTransform: "none" }}>
-          <CheckIcon sx={{ color: "#34BE84" }} />
-          <Typography
-            variant="h5"
-            sx={{
-              color: "#34BE84",
-              fontSize: "14px",
-              fontWeight: "400",
-              lineHeight: "18px",
-            }}
-          >
-            Announcement
-          </Typography>
-        </Button>
-        <Button sx={{ display: "flex", textTransform: "none" }}>
+        {Status?.map((data, index) => (
+          <Button key={index} sx={{ display: "flex", textTransform: "none" }}>
+            {index <= Statusindex ? (
+              <CheckIcon sx={{ color: "#34BE84" }} />
+            ) : (
+              <FiberManualRecordIcon
+                sx={{ color: "#9FAAB1", height: "2vh", width: "2vh" }}
+              />
+            )}
+
+            <Typography
+              variant="h5"
+              sx={{
+                color: `${index <= Statusindex ? "#34BE84" : "#9FAAB1"}`,
+                fontSize: "14px",
+                fontWeight: "400",
+                lineHeight: "18px",
+                ml: `${index <= Statusindex ? "0vh" : "1vh"}`,
+              }}
+            >
+              {data?.name}
+            </Typography>
+          </Button>
+        ))}
+        {/* <Button sx={{ display: "flex", textTransform: "none" }}>
           <CheckIcon sx={{ color: "#34BE84" }} />
           <Typography
             variant="h5"
@@ -201,36 +225,47 @@ function AcceptedCard({ propertyData }) {
           >
             Digital notery
           </Typography>
-        </Button>
+        </Button> */}
       </Box>
       <Grid container spacing={1} sx={{ px: 2, mt: 1 }}>
         <Grid item xs={12} sm={12} md={12} lg={6} xl={6}>
-          <Button
-            fullWidth
-            sx={{
-              color: "#FFFFFF",
-              fontSize: "14px",
-              lineHeight: "18px",
-              fontWeight: "600",
-
-              background: "#0362F0",
-              borderRadius: "4px",
-
-              textTransform: "none",
-              "&:hover": {
+          <Link
+            href={{
+              pathname: "/proposals/property_journey",
+              query: {
+                propertyId: propertyData?.id,
+                contractId: propertyData?.contract?.id,
+                step_count: Statusindex,
+              },
+            }}
+          >
+            <Button
+              fullWidth
+              sx={{
                 color: "#FFFFFF",
                 fontSize: "14px",
                 lineHeight: "18px",
                 fontWeight: "600",
+
                 background: "#0362F0",
                 borderRadius: "4px",
 
                 textTransform: "none",
-              },
-            }}
-          >
-            Go to the journey
-          </Button>
+                "&:hover": {
+                  color: "#FFFFFF",
+                  fontSize: "14px",
+                  lineHeight: "18px",
+                  fontWeight: "600",
+                  background: "#0362F0",
+                  borderRadius: "4px",
+
+                  textTransform: "none",
+                },
+              }}
+            >
+              Go to the journey
+            </Button>
+          </Link>
         </Grid>
         <Grid item xs={12} sm={12} md={12} lg={6} xl={6}>
           <Link
@@ -238,6 +273,8 @@ function AcceptedCard({ propertyData }) {
               pathname: "/proposals/property_journey",
               query: {
                 propertyId: propertyData?.id,
+                contractId: propertyData?.contract?.id,
+                step_count: 1,
               },
             }}
           >

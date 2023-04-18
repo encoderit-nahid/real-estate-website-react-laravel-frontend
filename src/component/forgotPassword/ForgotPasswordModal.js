@@ -1,4 +1,12 @@
-import { Box, Button, Grid, Typography } from "@mui/material";
+import {
+  Alert,
+  Box,
+  Button,
+  CircularProgress,
+  Grid,
+  Snackbar,
+  Typography,
+} from "@mui/material";
 import Image from "next/image";
 import React from "react";
 import submitProposal from "../../../public/Images/submit_proposal.png";
@@ -9,6 +17,7 @@ import * as Yup from "yup";
 import BaseTextField from "../reuseable/baseTextField/BaseTextField";
 import { forgotPasswordApi } from "../../api";
 import { useState } from "react";
+import { useRouter } from "next/router";
 
 const validationSchema = Yup.object().shape({
   email: Yup.string()
@@ -34,6 +43,20 @@ function ForgotPasswordModal({ handleForgotClose }) {
     py: 2,
   };
   const [loading, setLoading] = useState(false);
+  const [severity, setSeverity] = useState(false);
+  const [snackbarOpen, setSnackbarOpen] = React.useState(false);
+  const [message, setMessage] = useState("");
+
+  const handleClickSnackbar = () => {
+    setSnackbarOpen(true);
+  };
+
+  const handleCloseSnackbar = (event, reason) => {
+    if (reason === "clickaway") {
+      return;
+    }
+    setSnackbarOpen(false);
+  };
 
   const {
     register,
@@ -46,13 +69,28 @@ function ForgotPasswordModal({ handleForgotClose }) {
     resolver: yupResolver(validationSchema),
   });
 
+  const router = useRouter();
+
   const onSubmit = async (data) => {
     console.log({ data });
+    const baseRedirectUrl = window.location.origin;
+    console.log("window", baseRedirectUrl);
     setLoading(true);
-    const [error, response] = await forgotPasswordApi(data);
+    const [error, response] = await forgotPasswordApi({
+      ...data,
+      redirect_url: `${baseRedirectUrl}/reset_password`,
+    });
     setLoading(false);
     if (!error) {
+      setSnackbarOpen(true);
+      // router.push("/reset_password");
+      console.log(response);
+      setMessage("Password reset link sent to the email.");
+      setSeverity(true);
     } else {
+      setSnackbarOpen(true);
+      setMessage("Invalid Email");
+      setSeverity(false);
     }
   };
   return (
@@ -145,10 +183,29 @@ function ForgotPasswordModal({ handleForgotClose }) {
             }}
             // onClick={handleProposalClose}
           >
-            Submit
+            {loading && <CircularProgress size={22} sx={{ color: "grey" }} />}
+            {!loading && "Submit"}
           </Button>
         </form>
       </Box>
+      <Snackbar
+        open={snackbarOpen}
+        autoHideDuration={6000}
+        onClose={handleCloseSnackbar}
+        anchorOrigin={{
+          vertical: "top",
+          horizontal: "right",
+        }}
+        key={"top"}
+      >
+        <Alert
+          onClose={handleCloseSnackbar}
+          severity={severity ? "success" : "error"}
+          sx={{ width: "100%" }}
+        >
+          {message && message}
+        </Alert>
+      </Snackbar>
     </Box>
   );
 }

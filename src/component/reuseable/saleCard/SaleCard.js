@@ -23,13 +23,13 @@ function SaleCard({ singlePropertyData }) {
         borderRadius: "8px",
       }}
     >
-      {/* <Image
+      <Image
         loader={myLoader}
         src={`${singlePropertyData?.attachments?.[0]?.file_path}`}
         height={250}
         width={300}
         alt="media"
-      /> */}
+      />
       <Box sx={{ mt: 2, px: 2 }}>
         <Button
           sx={{
