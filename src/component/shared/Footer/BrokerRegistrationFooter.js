@@ -14,6 +14,8 @@ import twitter from "../../../../public/Images/twitter.png";
 import instagram from "../../../../public/Images/instagram.png";
 import linkedin from "../../../../public/Images/linkedin.png";
 import { flexbox } from "@mui/system";
+import Link from "next/link";
+import BaseTextField from "../../reuseable/baseTextField/BaseTextField";
 
 function BrokerRegistrationFooter() {
   return (
@@ -62,16 +64,37 @@ function BrokerRegistrationFooter() {
             gap={3}
           >
             <Box>
-              <Image src={facebook} height={30} width={15} alt="facebook" />
+              <Link href="https://web.facebook.com/lokkan.com.br">
+                <a target="_blank">
+                  <Image src={facebook} height={30} width={15} alt="facebook" />
+                </a>
+              </Link>
             </Box>
             <Box sx={{ marginLeft: 2 }}>
-              <Image src={instagram} height={30} width={30} alt="instagram" />
+              <Link href="https://www.instagram.com/lokkan.com.br/">
+                <a target="_blank">
+                  <Image
+                    src={instagram}
+                    height={30}
+                    width={30}
+                    alt="instagram"
+                  />
+                </a>
+              </Link>
             </Box>
             <Box sx={{ marginLeft: 2 }}>
-              <Image src={twitter} height={30} width={30} alt="twitter" />
+              <Link href="">
+                <a target="_blank">
+                  <Image src={twitter} height={30} width={30} alt="twitter" />
+                </a>
+              </Link>
             </Box>
             <Box sx={{ marginLeft: 2 }}>
-              <Image src={linkedin} height={30} width={30} alt="linkedin" />
+              <Link href="https://www.linkedin.com/company/lokkan/">
+                <a target="_blank">
+                  <Image src={linkedin} height={30} width={30} alt="linkedin" />
+                </a>
+              </Link>
             </Box>
           </Grid>
         </Grid>
@@ -83,12 +106,9 @@ function BrokerRegistrationFooter() {
             alignItems="flex-start"
             sx={{ color: "#ffffff", fontSize: "14px" }}
           >
-            <TextField
-              fullWidth
-              size="small"
-              id="outlined-basic"
-              placeholder="Email"
-              variant="outlined"
+            <BaseTextField
+              size={"small"}
+              placeholder={"Email"}
               sx={{
                 mb: 1,
                 fieldset: { borderColor: "#ffffff" },

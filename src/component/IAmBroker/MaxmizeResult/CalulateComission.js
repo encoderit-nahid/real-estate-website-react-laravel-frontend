@@ -1,25 +1,34 @@
-import {
-  Box,
-  Button,
-  Grid,
-  InputAdornment,
-  TextField,
-  Typography,
-} from "@mui/material";
+import { Box, Button, Grid, InputAdornment, Typography } from "@mui/material";
 import React from "react";
 import impulseImage from "../../../../public/Images/impulse.png";
 import Image from "next/image";
 import { useState } from "react";
+import BaseTextField from "../../reuseable/baseTextField/BaseTextField";
 
-function CalulateComission() {
+function CalulateComission({ setFullCommission, setYourCommission }) {
+  const [salevalue, setSaleValue] = useState(0);
+  const [commission, setCommission] = useState(0);
   const [value, setValue] = useState("");
   console.log(value.length);
   const [valid, setValid] = useState(false);
   console.log({ valid });
-  const handleValidation = (e) => {
+  const handleComissionChange = (e) => {
     setValid(/^\d{3,}$/.test(e.target.value));
     console.log(e.target.value);
-    setValue(e.target.value);
+    setCommission(e.target, value);
+  };
+
+  const handleSaleValueChange = (e) => {
+    setSaleValue(e.target.value);
+  };
+
+  const handleCalculation = () => {
+    const fullComissionValue = salevalue * (6 / 100);
+    setFullCommission(fullComissionValue);
+    console.log({ fullComissionValue });
+    const yourComissionValue = fullComissionValue * (70 / 100);
+    console.log({ yourComissionValue });
+    setYourCommission(yourComissionValue);
   };
   return (
     <Grid
@@ -54,14 +63,12 @@ function CalulateComission() {
           Simulate a sale here
         </Typography>
       </Grid>
-      <TextField
-        fullWidth
-        id="outlined-basic"
-        label="Sale Value"
-        placeholder="Sale Value"
-        size="medium"
-        type="number"
-        variant="outlined"
+      <BaseTextField
+        label={"Sale Value"}
+        placeholder={"Sale Value"}
+        size={"medium"}
+        type={"number"}
+        onChange={handleSaleValueChange}
         sx={{ mt: 4 }}
         InputProps={{
           startAdornment: (
@@ -73,18 +80,15 @@ function CalulateComission() {
           ),
         }}
       />
-      <TextField
-        fullWidth
-        id="outlined-basic"
-        label="Comission"
-        placeholder="Comission"
-        size="medium"
-        variant="outlined"
-        type="number"
+      <BaseTextField
+        label={"Comission"}
+        placeholder={"Comission"}
+        size={"medium"}
+        type={"number"}
         sx={{ mt: 4 }}
-        value={value}
-        onChange={(e) => handleValidation(e)}
-        error={!valid && value.length > 0 ? true : false}
+        // value={commission}
+        onChange={handleComissionChange}
+        error={!valid && commission.length > 0 ? true : false}
         required={true}
         InputProps={{
           startAdornment: (
@@ -117,6 +121,7 @@ function CalulateComission() {
             width: "100%",
           },
         }}
+        onClick={handleCalculation}
       >
         calculate my commission
       </Button>

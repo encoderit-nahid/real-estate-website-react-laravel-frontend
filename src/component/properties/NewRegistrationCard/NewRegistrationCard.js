@@ -1,10 +1,54 @@
-import { Box, Button, Grid, LinearProgress, Typography } from "@mui/material";
-import React from "react";
+import {
+  Box,
+  Button,
+  CircularProgress,
+  Grid,
+  LinearProgress,
+  Typography,
+} from "@mui/material";
+import React, { useState } from "react";
 import rentImage from "../../../../public/Images/rentImage.png";
 import Image from "next/image";
+import Link from "next/link";
+import { _baseURL } from "../../../../consts";
+import dayjs from "dayjs";
+import { useDispatch, useSelector } from "react-redux";
+import { ChangePropertyStatus } from "../../../redux/propertyStatus/actions";
+import { findPropertyData } from "../../../redux/property/actions";
 
-function NewRegistrationCard() {
+function NewRegistrationCard({ propertyData, newProperty }) {
+  console.log("newCard");
   const [progress, setProgress] = React.useState(87);
+  const dispatch = useDispatch();
+  const [approveid, setApproveId] = useState("");
+  const [rejectid, setRejectId] = useState("");
+
+  const handleReject = (id) => {
+    setRejectId(id);
+    dispatch(ChangePropertyStatus({ property_id: id, status: "rejected" }));
+    // dispatch(findPropertyData({ status: "new", page: 1, per_page: 9 }));
+  };
+
+  const handleApprove = (id) => {
+    setApproveId(id);
+    dispatch(ChangePropertyStatus({ property_id: id, status: "approved" }));
+    // dispatch(findPropertyData({ status: "new", page: 1, per_page: 9 }));
+  };
+
+  const rejectLoading = useSelector(
+    (state) => state?.propertyStatus?.rejectLoading
+  );
+  console.log({ rejectLoading });
+  const approveLoading = useSelector(
+    (state) => state?.propertyStatus?.approveLoading
+  );
+
+  console.log({ approveLoading, rejectLoading });
+
+  const myLoader = ({ src }) => {
+    return `${_baseURL}/storage/${propertyData?.attachments[0]?.file_path}`;
+  };
+
   return (
     <Box
       sx={{
@@ -27,22 +71,29 @@ function NewRegistrationCard() {
           {/* <Box>
             <Image src={rentImage} layout="responsive" alt="rent" />
           </Box> */}
-          <Box
-            style={{
-              width: "100%",
-              height: "100%",
-              position: "relative",
-              //   display: { lg: "inline" },
-            }}
+          <Link
+            href={`/property_view/${propertyData?.id}`}
+            as={`/property_view/${propertyData?.id}`}
           >
-            <Image
-              alt="rent"
-              src={rentImage}
-              layout="fill"
-              objectFit="cover"
-              style={{ borderRadius: "8px 0 0 8px" }}
-            />
-          </Box>
+            <Box
+              style={{
+                width: "100%",
+                height: "100%",
+                position: "relative",
+                cursor: "pointer",
+                //   display: { lg: "inline" },
+              }}
+            >
+              <Image
+                alt="rent"
+                loader={myLoader}
+                src={`${_baseURL}/storage/${propertyData?.attachments[0]?.file_path}`}
+                layout="fill"
+                objectFit="cover"
+                style={{ borderRadius: "8px 0 0 8px" }}
+              />
+            </Box>
+          </Link>
         </Grid>
 
         <Grid
@@ -95,23 +146,25 @@ function NewRegistrationCard() {
                     fontWeight: "400",
                   }}
                 >
-                  rent
+                  {propertyData?.ad_type}
                 </Button>
-                <Button
-                  sx={{
-                    textTransform: "none",
-                    background: "#DDF8ED",
-                    borderRadius: "2px",
-                    padding: "2px 8px",
-                    color: "#229464",
-                    fontSize: "14px",
-                    lineHeight: "18px",
-                    fontWeight: "400",
-                    ml: "3px",
-                  }}
-                >
-                  published
-                </Button>
+                {propertyData?.status === "approved" && (
+                  <Button
+                    sx={{
+                      textTransform: "none",
+                      background: "#DDF8ED",
+                      borderRadius: "2px",
+                      padding: "2px 8px",
+                      color: "#229464",
+                      fontSize: "14px",
+                      lineHeight: "18px",
+                      fontWeight: "400",
+                      ml: "3px",
+                    }}
+                  >
+                    published
+                  </Button>
+                )}
               </Box>
               <Box sx={{ ml: { xs: 0, sm: 0, md: 0, lg: 1, xl: 3, xxl: 8 } }}>
                 <Typography
@@ -154,7 +207,7 @@ function NewRegistrationCard() {
                 mt: 1,
               }}
             >
-              BRL 3,100.00
+              {`BRL ${propertyData?.brl_rent}`}
             </Typography>
             <Typography
               variant="p"
@@ -167,7 +220,7 @@ function NewRegistrationCard() {
                 mr: 0.5,
               }}
             >
-              Rua do Bixiga, Bela Vista, São Paulo, São Paulo- CEP 01315020
+              {propertyData?.address?.address}
             </Typography>
             <Typography
               variant="p"
@@ -179,10 +232,13 @@ function NewRegistrationCard() {
                 mt: 0.5,
               }}
             >
-              created on: 08/19/2020
+              {`created on: ${dayjs(propertyData?.created_at).format(
+                "DD/MM/YYYY"
+              )}`}
             </Typography>
             <Box sx={{ mt: 1, mb: { xs: 0, sm: 0, md: 0, lg: 2, xl: 2 } }}>
               <Button
+                onClick={() => handleReject(propertyData.id)}
                 variant="outlined"
                 sx={{
                   borderColor: "#F44336",
@@ -207,7 +263,11 @@ function NewRegistrationCard() {
                   },
                 }}
               >
-                Reject
+                {rejectLoading && rejectid === propertyData.id ? (
+                  <CircularProgress size={22} color="inherit" />
+                ) : (
+                  "Reject"
+                )}
               </Button>
               <Button
                 variant="contained"
@@ -237,6 +297,7 @@ function NewRegistrationCard() {
                 Edit
               </Button>
               <Button
+                onClick={() => handleApprove(propertyData.id)}
                 variant="contained"
                 color="success"
                 sx={{
@@ -260,7 +321,11 @@ function NewRegistrationCard() {
                   },
                 }}
               >
-                Approves
+                {approveLoading && approveid === propertyData.id ? (
+                  <CircularProgress size={22} color="inherit" />
+                ) : (
+                  "Approve"
+                )}
               </Button>
             </Box>
           </Grid>

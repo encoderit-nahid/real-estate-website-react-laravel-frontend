@@ -15,6 +15,10 @@ import SignpostOutlinedIcon from "@mui/icons-material/SignpostOutlined";
 import ReactPannellum, { getConfig } from "react-pannellum";
 import BaseGoogleMap from "../../IAmOwner/map/BaseGoogleMap";
 import { Grid } from "@mui/material";
+import { _baseURL } from "../../../../consts";
+import BaseStreetView from "../../reuseable/baseStreetView/BaseStreetView";
+import { useEffect } from "react";
+import { useState } from "react";
 
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
@@ -29,7 +33,9 @@ function TabPanel(props) {
     >
       {value === index && (
         <Box>
-          <Typography>{children}</Typography>
+          <Typography component={"span"} variant={"body2"}>
+            {children}
+          </Typography>
         </Box>
       )}
     </div>
@@ -49,12 +55,38 @@ function a11yProps(index) {
   };
 }
 
-function SliderView() {
+function SliderView({
+  sideTabValue,
+  setSideTabValue,
+  selectImage,
+  addressData,
+}) {
   const [value, setValue] = React.useState(0);
 
+//   function get_url_extension( selectImage ) {
+//     return selectImage.split(/[#?]/)[0].split('.').pop().trim();
+// }
+console.log(selectImage.split(/[#?]/)[0].split('.').pop().trim())
+
   const handleChange = (event, newValue) => {
-    setValue(newValue);
+    setValue(+newValue);
   };
+
+  const markersData = {
+    properties: {
+      data: [
+        {
+          id: 1,
+          address: {
+            latitude: +addressData?.latitude,
+            longitude: addressData?.longitude,
+          },
+        },
+      ],
+    },
+  };
+
+  console.log({ markersData });
 
   const config = {
     autoLoad: true,
@@ -63,6 +95,15 @@ function SliderView() {
     width: "850px",
     height: "450px",
     // background: "#000000",
+  };
+
+  const handleTabClick = (data) => {
+    console.log(data);
+    setSideTabValue(data);
+  };
+
+  const myLoader = ({ src }) => {
+    return `${_baseURL}/storage/${src}`;
   };
   return (
     <Box
@@ -77,7 +118,7 @@ function SliderView() {
         className="slider-tab"
         orientation="vertical"
         variant="scrollable"
-        // value={value}
+        value={value}
         onChange={handleChange}
         aria-label="Vertical tabs example"
         sx={{ width: { md: "35%", lg: "25%", xl: "20%", xxl: "15%" } }}
@@ -112,6 +153,7 @@ function SliderView() {
             />
           }
           // icon={<Image src={photos} alt="photos" />}
+          onClick={() => handleTabClick("photos")}
           iconPosition="start"
           {...a11yProps(0)}
         />
@@ -138,6 +180,7 @@ function SliderView() {
             borderTop: `${value === 1 ? "2px solid #F9F9FB" : ""}`,
           }}
           label="360 vision"
+          onClick={() => handleTabClick("vision_360")}
           icon={
             <RedoOutlinedIcon
               sx={{ color: `${value === 1 ? "#0E97F7" : ""}` }}
@@ -174,6 +217,7 @@ function SliderView() {
             />
           }
           iconPosition="start"
+          onClick={() => handleTabClick("condominium")}
           label="Condominium"
           {...a11yProps(2)}
         />
@@ -205,6 +249,7 @@ function SliderView() {
               sx={{ color: `${value === 3 ? "#0E97F7" : ""}` }}
             />
           }
+          onClick={() => handleTabClick("location")}
           iconPosition="start"
           {...a11yProps(3)}
         />
@@ -237,33 +282,100 @@ function SliderView() {
           }
           iconPosition="start"
           label="Street view"
+          onClick={() => handleTabClick("street_view")}
           {...a11yProps(4)}
         />
       </Tabs>
       <TabPanel value={value} index={0}>
-        <Image src={home} alt="home" />
+        {selectImage != null  ? (
+          <Image
+            loader={myLoader}
+            src={`${selectImage}`}
+            alt="home"
+            width={800}
+            height={400}
+          />
+        ) : (
+          <Grid
+            container
+            direction="row"
+            justifyContent="center"
+            alignItems="center"
+            sx={{ height: "30vh", paddingLeft: "25vh" }}
+          >
+            <Typography
+              variant="p"
+              sx={{ color: " #7450F0", fontWeight: "600", fontSize: "20px" }}
+            >
+              No Image Found
+            </Typography>
+          </Grid>
+        )}
       </TabPanel>
       <TabPanel value={value} index={1}>
-        {/* <Image src={home} alt="home" /> */}
-        <ReactPannellum
-          id="1"
-          sceneId="firstScene"
-          imageSource="https://as1.ftcdn.net/v2/jpg/01/14/52/38/1000_F_114523814_pDNUyVDPNcZRzSdaq98JbOPOkDvnJFqz.jpg"
-          config={config}
-          // style={style}
-        />
+        {selectImage != null && selectImage.split(/[#?]/)[0].split('.').pop().trim() !== 'webp' ? (
+          <ReactPannellum
+            id="1"
+            sceneId="firstScene"
+            imageSource={`${_baseURL}/storage/${selectImage}`}
+            config={config}
+            // style={style}
+          />
+        ) : (
+          <Grid
+            container
+            direction="row"
+            justifyContent="center"
+            alignItems="center"
+            sx={{ height: "30vh", paddingLeft: "25vh" }}
+          >
+            <Typography
+              variant="p"
+              sx={{ color: " #7450F0", fontWeight: "600", fontSize: "20px" }}
+            >
+              No Image Found
+            </Typography>
+          </Grid>
+        )}
       </TabPanel>
       <TabPanel value={value} index={2}>
-        <Image src={home} alt="home" />
+        {selectImage != null ? (
+          <Image
+            loader={myLoader}
+            src={`${selectImage}`}
+            alt="home"
+            width={800}
+            height={400}
+          />
+        ) : (
+          <Grid
+            container
+            direction="row"
+            justifyContent="center"
+            alignItems="center"
+            sx={{ height: "30vh", paddingLeft: "25vh" }}
+          >
+            <Typography
+              variant="p"
+              sx={{ color: " #7450F0", fontWeight: "600", fontSize: "20px" }}
+            >
+              No Image Found
+            </Typography>
+          </Grid>
+        )}
       </TabPanel>
       <TabPanel value={value} index={3}>
-        <Image src={home} alt="home" />
+        <BaseGoogleMap
+          height={"59vh"}
+          width={"55vw"}
+          markersData={markersData}
+        />
       </TabPanel>
       <TabPanel value={value} index={4}>
         {/* <Typography variant="p" sx={{ visibility: "hidden", width: "100%" }}>
           dfsfffffffffffffffffffffffdsfffffffffffffffffffffffffffffffffffdsdsdsdsdsdsdsdsdsdsdsdsdsdsdsdsfsdfsdfsd
         </Typography> */}
-        <BaseGoogleMap height={"59vh"} width={"55vw"} />
+        <BaseStreetView addressData={addressData} />
       </TabPanel>
     </Box>
   );

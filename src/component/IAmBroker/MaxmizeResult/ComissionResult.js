@@ -1,7 +1,7 @@
 import { Grid, Typography } from "@mui/material";
 import React from "react";
 
-function ComissionResult() {
+function ComissionResult({ fullCommission, yourCommission }) {
   return (
     <Grid
       container
@@ -14,7 +14,11 @@ function ComissionResult() {
         variant="p"
         sx={{ fontSize: "48px", fontWeight: "800", color: "#7450F0" }}
       >
-        BRL 30,000
+        BRL{" "}
+        {`${fullCommission.toLocaleString("pt-BR", {
+          style: "currency",
+          currency: "BRL",
+        })}`}
       </Typography>
       <Typography
         variant="p"
@@ -26,7 +30,11 @@ function ComissionResult() {
         variant="p"
         sx={{ fontSize: "48px", fontWeight: "800", color: "#1A1859" }}
       >
-        BRL 21,000
+        BRL{" "}
+        {`${yourCommission.toLocaleString("pt-BR", {
+          style: "currency",
+          currency: "BRL",
+        })}`}
       </Typography>
       <Typography
         variant="p"

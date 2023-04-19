@@ -1,22 +1,416 @@
-import { Box, Button, Divider, Grid, Typography } from '@mui/material'
-import React from 'react'
-import cardMedia from '../../../../public/Images/pendant.png'
-import avatar from '../../../../public/Images/AvatarPendant.png'
-import Image from 'next/image'
-import Link from 'next/link'
+import React from "react";
+import {
+  Avatar,
+  Box,
+  Button,
+  CircularProgress,
+  Divider,
+  Grid,
+  ListItemAvatar,
+  Paper,
+  Tooltip,
+  Typography,
+} from "@mui/material";
+import SwipeableDrawer from "@mui/material/SwipeableDrawer";
+import List from "@mui/material/List";
+import ListItem from "@mui/material/ListItem";
+import ListItemButton from "@mui/material/ListItemButton";
+import ListItemIcon from "@mui/material/ListItemIcon";
+import ListItemText from "@mui/material/ListItemText";
+import InboxIcon from "@mui/icons-material/MoveToInbox";
+import MailIcon from "@mui/icons-material/Mail";
+import cardMedia from "../../../../public/Images/pendant.png";
+import rentImage from "../../../../public/Images/rentImage.png";
+import avatar from "../../../../public/Images/AvatarPendant.png";
+import Image from "next/image";
+import CloseIcon from "@mui/icons-material/Close";
+import Link from "next/link";
+import { useState } from "react";
+import BaseModal from "../../reuseable/baseModal/BaseModal";
+import SeeProposalModal from "../seeProposalModal/SeeProposalModal";
+import { _baseURL } from "../../../../consts";
+import dayjs from "dayjs";
+import { propertyAcceptData } from "../../../redux/proposalAccept/actions";
+import { findPropertyData } from "../../../redux/property/actions";
+import { useRouter } from "next/router";
+import { useDispatch, useSelector } from "react-redux";
+import { proposalRefuseData } from "../../../redux/proposalRefuse/actions";
 
-function PendantsCard() {
+function PendantsCard({ propertyData }) {
+  const dispatch = useDispatch();
+  //add_see_proposal_modal
+  const [seeProposalOpen, setSeeProposalOpen] = useState(false);
+  const [selectProposal, setSelectProposal] = useState("");
+  const handleSeeProposalOpen = (data) => {
+    setSelectProposal(data);
+    setSeeProposalOpen(true);
+  };
+  const handleSeeProposalClose = () => setSeeProposalOpen(false);
+  const [acceptid, setAcceptId] = useState("");
+  const [refuseId, setRefuseId] = useState("");
+  const { query } = useRouter();
+  console.log({ query });
+
+  const handleProposalRefuse = (id) => {
+    setRefuseId(id);
+    dispatch(proposalRefuseData(propertyData?.id, id));
+    dispatch(findPropertyData(query));
+  };
+
+  const handleProposalAccept = (id) => {
+    setAcceptId(id);
+    dispatch(
+      propertyAcceptData({ property_id: propertyData?.id, proposal_id: id })
+    );
+  };
+
+  const acceptLoading = useSelector((state) => state?.propertyAccept?.loading);
+  const refuseLoading = useSelector((state) => state?.proposalRefuse?.loading);
+
+  const [state, setState] = React.useState({
+    top: false,
+    left: false,
+    bottom: false,
+    right: false,
+  });
+
+  const myLoader = ({ src }) => {
+    return `${_baseURL}/storage/${src}`;
+  };
+
+  const toggleDrawer = (anchor, open) => (event) => {
+    if (
+      event &&
+      event.type === "keydown" &&
+      (event.key === "Tab" || event.key === "Shift")
+    ) {
+      return;
+    }
+
+    setState({ ...state, [anchor]: open });
+  };
+
+  const list = (anchor) => {
+    return (
+      <Box
+        sx={{ width: anchor === "top" || anchor === "bottom" ? "auto" : 380 }}
+        role="presentation"
+        onClick={toggleDrawer(anchor, false)}
+        onKeyDown={toggleDrawer(anchor, false)}
+      >
+        <Grid
+          container
+          direction="row"
+          justifyContent="space-between"
+          alignItems="center"
+          sx={{ mt: 2, px: 2 }}
+        >
+          <Typography
+            variant="p"
+            sx={{
+              color: "#1A1859",
+              fontSize: "24px",
+              lineHeight: "32px",
+              fontWeight: "700",
+            }}
+          >
+            Proposals
+          </Typography>
+          <CloseIcon />
+        </Grid>
+        <Box
+          sx={{
+            background: "#ffffff",
+            boxShadow: "0px 4px 8px rgba(0, 33, 82, 0.08)",
+            border: "1px solid #DBE1E5",
+            borderRadius: { xs: 0, sm: 0, md: 0, lg: "8px", xl: "8px" },
+            mt: 2,
+            mx: 2,
+          }}
+        >
+          <Grid container spacing={2}>
+            <Grid
+              item
+              xs={12}
+              sm={12}
+              md={12}
+              lg={4}
+              xl={4}
+              // className="rentImageCard"
+            >
+              <Box>
+                <Image
+                  alt="rent"
+                  loader={myLoader}
+                  src={`${propertyData?.attachments[0]?.file_path}`}
+                  height={110}
+                  width={100}
+                  style={{ borderRadius: "8px 0 0 8px" }}
+                />
+              </Box>
+            </Grid>
+            <Grid item xs={12} sm={12} md={12} lg={8} xl={8}>
+              <Grid
+                container
+                direction="column"
+                justifyContent="flex-start"
+                alignItems="flex-start"
+                sx={{ p: { xs: 2, sm: 2, md: 2, lg: 0 }, mt: 0.5 }}
+              >
+                <Grid
+                  container
+                  direction="row"
+                  justifyContent="flex-start"
+                  alignItems="flex-start"
+                >
+                  <Box>
+                    <Button
+                      sx={{
+                        textTransform: "none",
+                        background: "rgba(116, 80, 240, 0.2)",
+                        borderRadius: "2px",
+                        padding: "2px 8px",
+                        color: "#7450F0",
+                        fontSize: "12px",
+                        lineHeight: "18px",
+                        fontWeight: "400",
+                      }}
+                    >
+                      {propertyData?.ad_type}
+                    </Button>
+                    <Button
+                      sx={{
+                        textTransform: "none",
+                        background: "#FFF7E6",
+                        borderRadius: "2px",
+                        padding: "2px 8px",
+                        color: "#229464",
+                        fontSize: "12px",
+                        lineHeight: "18px",
+                        fontWeight: "400",
+                        ml: "3px",
+                      }}
+                    >
+                      pending proposal
+                    </Button>
+                  </Box>
+                </Grid>
+                <Typography
+                  variant="p"
+                  sx={{
+                    color: "#002152",
+                    fontSize: "16px",
+                    lineHeight: "28px",
+                    fontWeight: "500",
+                  }}
+                >
+                  {`BRL ${propertyData?.brl_rent}`}
+                </Typography>
+                <Typography
+                  variant="p"
+                  sx={{
+                    color: " #9FAAB1",
+                    fontSize: "12px",
+                    lineHeight: "20px",
+                    fontWeight: "300",
+
+                    mr: 0.5,
+                  }}
+                >
+                  {propertyData?.address?.address}
+                </Typography>
+              </Grid>
+            </Grid>
+          </Grid>
+        </Box>
+        <Box sx={{ mt: 1 }}>
+          <Typography
+            variant="p"
+            sx={{
+              color: "#9FAAB1",
+              fontSize: "14px",
+              fontWeight: "400",
+              lineHeight: "18px",
+
+              px: 2,
+            }}
+          >
+            Proposals ({`${propertyData.proposals.length}`})
+          </Typography>
+        </Box>
+        {propertyData?.proposals?.map((data, index) => (
+          <Box key={index}>
+            <Grid container spacing={1}>
+              <Grid item xs={7}>
+                <List
+                // sx={{ width: "100%", maxWidth: 360, bgcolor: "background.paper" }}
+                >
+                  <ListItem>
+                    <ListItemAvatar>
+                      <Avatar>
+                        <Image src={avatar} alt="avatar" />
+                      </Avatar>
+                    </ListItemAvatar>
+                    <ListItemText
+                      primary={`${data?.user?.name}`}
+                      secondary={`${dayjs(data?.created_at).format(
+                        "MM/DD/YYYY"
+                      )}, ${dayjs(data?.created_at).format("h:mm  ")}`}
+                    />
+                  </ListItem>
+                </List>
+              </Grid>
+              <Grid item xs={5}>
+                <List
+                // sx={{ width: "100%", maxWidth: 360, bgcolor: "background.paper" }}
+                >
+                  <ListItem>
+                    <ListItemText
+                      primary={`${data?.total_amount}`}
+                      secondary={`${data?.payment_type}`}
+                    />
+                  </ListItem>
+                </List>
+              </Grid>
+            </Grid>
+            <Grid container spacing={1} sx={{ px: 1 }}>
+              <Grid item xs={12} sm={12} md={12} lg={3}>
+                <Button
+                  onClick={() => handleProposalRefuse(data.id)}
+                  fullWidth
+                  sx={{
+                    color: " #002152",
+                    fontSize: "14px",
+
+                    lineHeight: "18px",
+                    fontWeight: "600",
+                    background: "#DBE1E5",
+                    borderRadius: "4px",
+
+                    textTransform: "none",
+
+                    "&:hover": {
+                      color: " #002152",
+                      fontSize: "14px",
+
+                      lineHeight: "18px",
+                      fontWeight: "600",
+                      background: "#DBE1E5",
+                      borderRadius: "4px",
+
+                      textTransform: "none",
+                    },
+                  }}
+                >
+                  {refuseLoading && refuseId === data.id ? (
+                    <CircularProgress size={22} color="inherit" />
+                  ) : (
+                    "Refuse"
+                  )}
+                </Button>
+              </Grid>
+              <Grid item xs={12} sm={12} md={12} lg={6}>
+                <Button
+                  fullWidth
+                  sx={{
+                    color: "#FFFFFF",
+                    fontSize: "14px",
+
+                    lineHeight: "18px",
+                    fontWeight: "600",
+                    background: "#7450F0",
+                    borderRadius: "4px",
+
+                    textTransform: "none",
+
+                    "&:hover": {
+                      color: "#FFFFFF",
+                      fontSize: "14px",
+
+                      lineHeight: "18px",
+                      fontWeight: "600",
+                      background: "#7450F0",
+                      borderRadius: "4px",
+
+                      textTransform: "none",
+                    },
+                  }}
+                  onClick={() => handleSeeProposalOpen(data)}
+                >
+                  see proposal
+                </Button>
+              </Grid>
+              <Grid item xs={12} sm={12} md={12} lg={3}>
+                <Button
+                  fullWidth
+                  sx={{
+                    color: "#FFFFFF",
+                    fontSize: "14px",
+
+                    lineHeight: "18px",
+                    fontWeight: "600",
+                    background: " #34BE84",
+                    borderRadius: "4px",
+
+                    textTransform: "none",
+
+                    "&:hover": {
+                      color: "#FFFFFF",
+                      fontSize: "14px",
+
+                      lineHeight: "18px",
+                      fontWeight: "600",
+                      background: " #34BE84",
+                      borderRadius: "4px",
+
+                      textTransform: "none",
+                    },
+                  }}
+                  onClick={() => handleProposalAccept(data.id)}
+                >
+                  {acceptLoading && acceptid === data.id ? (
+                    <CircularProgress size={22} color="inherit" />
+                  ) : (
+                    "To accept"
+                  )}
+                </Button>
+              </Grid>
+            </Grid>
+            <Divider sx={{ px: 2, mt: 1 }} />
+          </Box>
+        ))}
+        <BaseModal isShowing={seeProposalOpen} isClose={handleSeeProposalClose}>
+          <Tooltip title="Something">
+            <>
+              <SeeProposalModal
+                handleSeeProposalClose={handleSeeProposalClose}
+                propertyData={propertyData}
+                proposalData={selectProposal}
+              />
+            </>
+          </Tooltip>
+        </BaseModal>
+      </Box>
+    );
+  };
+
   return (
     <Box
       sx={{
-        background: '#ffffff',
-        boxShadow: '0px 4px 8px rgba(0, 33, 82, 0.08)',
-        borderRadius: '8px',
+        background: "#ffffff",
+        boxShadow: "0px 4px 8px rgba(0, 33, 82, 0.08)",
+        borderRadius: "8px",
         paddingBottom: 2,
       }}
     >
-      <Box sx={{ width: '100%' }}>
-        <Image src={cardMedia} layout="responsive" alt="pendant" />
+      <Box sx={{ width: "100%" }}>
+        <Image
+          loader={myLoader}
+          src={`${propertyData?.attachments[0]?.file_path}`}
+          width={500}
+          height={200}
+          alt="pendant"
+        />
       </Box>
 
       <Grid
@@ -28,30 +422,31 @@ function PendantsCard() {
         <Box sx={{ pl: 2, mt: 2 }}>
           <Button
             sx={{
-              textTransform: 'none',
-              background: 'rgba(116, 80, 240, 0.2)',
-              borderRadius: '2px',
-              padding: '2px 8px',
-              color: '#7450F0',
-              fontSize: '14px',
-              lineHeight: '18px',
-              fontWeight: '400',
+              textTransform: "none",
+              background: "rgba(116, 80, 240, 0.2)",
+              borderRadius: "2px",
+              padding: "2px 8px",
+              color: "#7450F0",
+              fontSize: "14px",
+              lineHeight: "18px",
+              fontWeight: "400",
               mr: 1,
             }}
           >
-            rent
+            {propertyData?.ad_type}
           </Button>
+
           <Button
             sx={{
-              textTransform: 'none',
-              background: '#FFF7E6',
-              borderRadius: '2px',
-              padding: '2px 8px',
-              color: '#229464',
-              fontSize: '14px',
-              lineHeight: '18px',
-              fontWeight: '400',
-              ml: '3px',
+              textTransform: "none",
+              background: "#FFF7E6",
+              borderRadius: "2px",
+              padding: "2px 8px",
+              color: "#229464",
+              fontSize: "14px",
+              lineHeight: "18px",
+              fontWeight: "400",
+              ml: "3px",
             }}
           >
             pending proposal
@@ -68,167 +463,198 @@ function PendantsCard() {
         <Typography
           variant="p"
           sx={{
-            color: '#1A1859',
-            fontSize: '24px',
-            fontWeight: '700',
-            lineHeight: '32px',
+            color: "#1A1859",
+            fontSize: "24px",
+            fontWeight: "700",
+            lineHeight: "32px",
           }}
         >
-          BRL 1,700,000.00
+          {`BRL ${propertyData?.brl_rent}`}
         </Typography>
         <Typography
           variant="p"
           sx={{
-            color: '#1A1859',
-            fontSize: '14px',
-            fontWeight: '400',
-            lineHeight: '18px',
+            color: "#1A1859",
+            fontSize: "14px",
+            fontWeight: "400",
+            lineHeight: "18px",
             mt: 1,
           }}
         >
-          Jaceguai Street, Bela Vista, São Paulo - SP - CEP 01315010
+          {propertyData?.address?.address}
         </Typography>
         <Typography
           variant="p"
           sx={{
-            color: '#9FAAB1',
-            fontSize: '14px',
-            fontWeight: '400',
-            lineHeight: '18px',
+            color: "#9FAAB1",
+            fontSize: "14px",
+            fontWeight: "400",
+            lineHeight: "18px",
             mt: 1,
           }}
         >
-          2 Proposals:
+          {`${propertyData?.proposals.length} Proposals:`}
         </Typography>
       </Grid>
-    {
-        [0,1].map((data,index) => (
-            <Box key={index}>
-            <Grid container spacing={1} sx={{ pl: 1.5, mt: 1 }}>
-              <Grid item xs={6}>
-                <Grid
-                  container
-                  direction="column"
-                  justifyContent="flex-start"
-                  alignItems="flex-start"
-                >
-                  <Box sx={{ display: 'flex' }}>
-                    <Image src={avatar} alt="avatar" />
-                    <Typography
-                      variant="p"
-                      sx={{
-                        ml: 1,
-                        mt: 0.5,
-                        color: '#1A1859',
-                        fontSize: '14px',
-                        fontWeight: '400',
-                        lineHeight: '18px',
-                      }}
-                    >
-                      Jefferson Luiz
-                    </Typography>
-                  </Box>
-                  <Typography
-                    variant="p"
-                    sx={{
-                      pl: 1,
-                      color: '#9FAAB1',
-                      fontSize: '14px',
-                      fontWeight: '400',
-                      lineHeight: '18px',
-                    }}
-                  >
-                    14/03/2021, 14:32
-                  </Typography>
-                </Grid>
+      <Box
+        sx={{
+          mb: 2,
+          display: "flex",
+          flexDirection: "column",
+          height: 200,
+          overflow: "hidden",
+          overflowY: "scroll",
+          // justifyContent="flex-end" # DO NOT USE THIS WITH 'scroll'
+        }}
+      >
+        {propertyData?.proposals?.map((data, index) => (
+          <Box key={index}>
+            <Grid container spacing={1}>
+              <Grid item xs={7}>
+                <List>
+                  <ListItem sx={{ margin: 0, paddingY: "1px" }}>
+                    <ListItemAvatar sx={{ paddingRight: 0, minWidth: 0 }}>
+                      <Avatar>
+                        <Image src={avatar} alt="avatar" />
+                      </Avatar>
+                    </ListItemAvatar>
+                    <ListItemText
+                      sx={{ ml: "3px" }}
+                      primary={
+                        <Typography
+                          variant="p"
+                          sx={{
+                            fontSize: "14px",
+                            fontWeight: 400,
+                            color: "#1A1859",
+                            lineHeight: "18px",
+                          }}
+                        >
+                          {data?.user?.name}
+                        </Typography>
+                      }
+                      secondary={
+                        <Typography
+                          variant="h5"
+                          sx={{
+                            fontSize: "12px",
+                            fontWeight: 400,
+                            color: "#9FAAB1",
+                            lineHeight: "18px",
+                          }}
+                        >
+                          {`${dayjs(data?.created_at).format(
+                            "MM/DD/YYYY"
+                          )}, ${dayjs(data?.created_at).format("h:mm   ")}`}
+                        </Typography>
+                      }
+                    />
+                  </ListItem>
+                </List>
               </Grid>
-              <Grid item xs={6}>
-                <Typography
-                  variant="p"
-                  sx={{
-                    ml: 1,
-                    mt: 0.5,
-                    color: '#1A1859',
-                    fontSize: '14px',
-                    fontWeight: '400',
-                    lineHeight: '18px',
-                  }}
+              <Grid item xs={5}>
+                <List
+                // sx={{ width: "100%", maxWidth: 360, bgcolor: "background.paper" }}
                 >
-                  BRL 1,690,000.00
-                </Typography>
+                  <ListItem>
+                    <ListItemText
+                      primary={
+                        <Typography
+                          variant="p"
+                          sx={{
+                            fontSize: "12px",
+                            fontWeight: 400,
+                            color: "#1A1859",
+                            lineHeight: "18px",
+                            width: "100%",
+                          }}
+                        >
+                          {`BRL ${data?.total_amount}`}
+                        </Typography>
+                      }
+                    />
+                  </ListItem>
+                </List>
               </Grid>
             </Grid>
             <Divider sx={{ px: 2, mt: 1 }} />
           </Box>
-        ))
-    }
-
-<Grid container spacing={1} sx={{ px:2,mt:1 }}>
-              <Grid item xs={12} sm={12} md={12} lg={6} xl={6}>
-              <Button
-              fullWidth
-                sx={{
-                    color: "#FFFFFF",
-                    fontSize: "14px",
-                  
-                   
-                    lineHeight: "18px",
-                    fontWeight: "600",
-                    background: "#7450F0",
-                    borderRadius: "4px",
-                 
-                    textTransform: "none",
-                
-                  "&:hover": {
-                    color: "#FFFFFF",
-                    fontSize: "14px",
-                  
-                   
-                    lineHeight: "18px",
-                    fontWeight: "600",
-                    background: "#7450F0",
-                    borderRadius: "4px",
-                 
-                    textTransform: "none",
-                  },
-                }}
-              >
-                Include proposal
-              </Button>
-              </Grid>
-
-            <Grid item xs={12} sm={12} md={12} lg={6} xl={6}>
+        ))}
+      </Box>
+      <Grid container spacing={1} sx={{ px: 2, mt: 1 }}>
+        <Grid item xs={12} sm={12} md={12} lg={6} xl={6}>
+          <Link href="/include_proposal">
             <Button
-                 fullWidth
-                sx={{
+              fullWidth
+              sx={{
+                color: "#FFFFFF",
+                fontSize: "14px",
+
+                lineHeight: "18px",
+                fontWeight: "600",
+                background: "#7450F0",
+                borderRadius: "4px",
+
+                textTransform: "none",
+
+                "&:hover": {
                   color: "#FFFFFF",
                   fontSize: "14px",
+
                   lineHeight: "18px",
                   fontWeight: "600",
-                 
-                  background: "#0362F0",
+                  background: "#7450F0",
                   borderRadius: "4px",
-                  
+
                   textTransform: "none",
-                  "&:hover": {
-                    color: "#FFFFFF",
-                    fontSize: "14px",
-                    lineHeight: "18px",
-                    fontWeight: "600",
-                    background: "#0362F0",
-                    borderRadius: "4px",
-                  
-                    textTransform: "none",
-                  },
-                }}
-              >
-                See proposals (2)
-              </Button>
-            </Grid>
-            
-            </Grid>
+                },
+              }}
+            >
+              Include proposal
+            </Button>
+          </Link>
+        </Grid>
+
+        <Grid item xs={12} sm={12} md={12} lg={6} xl={6}>
+          <Button
+            fullWidth
+            onClick={toggleDrawer("right", true)}
+            sx={{
+              color: "#FFFFFF",
+              fontSize: "14px",
+              lineHeight: "18px",
+              fontWeight: "600",
+
+              background: "#0362F0",
+              borderRadius: "4px",
+
+              textTransform: "none",
+              "&:hover": {
+                color: "#FFFFFF",
+                fontSize: "14px",
+                lineHeight: "18px",
+                fontWeight: "600",
+                background: "#0362F0",
+                borderRadius: "4px",
+
+                textTransform: "none",
+              },
+            }}
+          >
+            See proposals
+          </Button>
+          <SwipeableDrawer
+            anchor={"right"}
+            open={state["right"]}
+            onClose={toggleDrawer("right", false)}
+            onOpen={toggleDrawer("right", true)}
+          >
+            {list("right")}
+          </SwipeableDrawer>
+        </Grid>
+      </Grid>
     </Box>
-  )
+  );
 }
 
-export default PendantsCard
+export default PendantsCard;

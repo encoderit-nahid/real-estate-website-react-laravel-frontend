@@ -1,10 +1,13 @@
 import "../styles/globals.css";
 import "@fontsource/lato";
 
-
 import { createTheme, CssBaseline, ThemeProvider } from "@mui/material";
+import { useState } from "react";
+import { SessionProvider } from "next-auth/react";
+import { Provider } from "react-redux";
+import { configureStore } from "../src/redux/store";
 
-function MyApp({ Component, pageProps }) {
+function MyApp({ Component, pageProps: { session, ...pageProps } }) {
   const theme = createTheme({
     typography: {
       fontFamily: ["Lato", "sans-serif", "Inter"].join(","),
@@ -21,10 +24,25 @@ function MyApp({ Component, pageProps }) {
       },
     },
   });
+  //add_login_modal
+  const [loginOpen, setLoginOpen] = useState(false);
+  const handleLoginOpen = () => setLoginOpen(true);
+  const handleLoginClose = () => setLoginOpen(false);
+
   return (
     <ThemeProvider theme={theme}>
       <CssBaseline />
-      <Component {...pageProps} />
+      <SessionProvider session={session} refetchInterval={5 * 60}>
+        <Provider store={configureStore()}>
+          <Component
+            {...pageProps}
+            loginOpen={loginOpen}
+            setLoginOpen={setLoginOpen}
+            handleLoginClose={handleLoginClose}
+            handleLoginOpen={handleLoginOpen}
+          />
+        </Provider>
+      </SessionProvider>
     </ThemeProvider>
   );
 }

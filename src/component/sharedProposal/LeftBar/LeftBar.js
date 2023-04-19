@@ -35,9 +35,12 @@ import person from "../../../../public/Images/person.png";
 import { createTheme, CssBaseline, ThemeProvider } from "@mui/material";
 import { useEffect } from "react";
 import { useState } from "react";
+import { useSession, signIn, signOut } from "next-auth/react";
 
 function LeftBar(props) {
   const router = useRouter();
+  const { data: session } = useSession();
+  console.log({ session });
   const { handleDrawerToggle, mobileOpen, drawerWidth, isDarkModeClose } =
     props;
   const { window } = props;
@@ -47,10 +50,17 @@ function LeftBar(props) {
     },
   });
 
+  const handleLogout = () => {
+    localStorage.clear();
+    signOut({
+      callbackUrl: "/",
+    });
+  };
+
   const data = [
     {
       icon: <CampaignOutlinedIcon />,
-      label: "properties",
+      label: "Properties",
       route: "my_properties",
     },
     {
@@ -72,8 +82,8 @@ function LeftBar(props) {
     { icon: <InputOutlinedIcon />, label: "Leave", route: "leave" },
   ];
 
-  const [selectedLabel, setSelectedLabel] = useState("properties");
-  console.log(selectedLabel);
+  // const [selectedLabel, setSelectedLabel] = useState("properties");
+  // console.log(selectedLabel);
   const [selectedIndex, setSelectedIndex] = useState(0);
 
   // useEffect(() => {
@@ -82,11 +92,26 @@ function LeftBar(props) {
   //   console.log({ name });
   // }, [router.isReady, router.pathname]);
 
-  const handleListItemClick = (index, leftData) => {
-    // const name = router.pathname.split("/")[1];
-    setSelectedLabel(leftData.route);
+  // const handleListItemClick = (index, leftData) => {
+  //   // const name = router.pathname.split("/")[1];
+  //   setSelectedLabel(leftData.route);
+  //   setSelectedIndex(index);
+  //   // console.log({ name });
+  // };
+
+  const [selectedLabel, setSelectedLabel] = React.useState("");
+  console.log(selectedLabel);
+
+  React.useEffect(() => {
+    // console.log(router.pathname)
+    const name = router.pathname.split("/")[1];
+    setSelectedLabel(name);
+    console.log({ name });
+  }, [router.isReady]);
+
+  const handleListItemClick = (event, index, leftData) => {
     setSelectedIndex(index);
-    // console.log({ name });
+    router.push(`/${leftData.route}`);
   };
 
   const drawer = (
@@ -105,9 +130,18 @@ function LeftBar(props) {
             justifyContent="center"
             alignItems="center"
           >
-            <Box>
-              <Image height={30} width={120} src={logo} alt="logo" />
-            </Box>
+            <Link href="/">
+              <a
+                style={{
+                  textDecoration: "none",
+                  listStyle: "none",
+                }}
+              >
+                <Box sx={{ cursor: "pointer" }}>
+                  <Image height={30} width={120} src={logo} alt="logo" />
+                </Box>
+              </a>
+            </Link>
             <Box sx={{ mt: 2 }}>
               <Avatar />
             </Box>
@@ -121,7 +155,7 @@ function LeftBar(props) {
                 mt: 2,
               }}
             >
-              Jerome Bell
+              {session?.user?.name}
             </Typography>
             <Typography
               variant="p"
@@ -133,7 +167,7 @@ function LeftBar(props) {
                 mt: 2,
               }}
             >
-              Jerome@example.com
+              {session?.user?.userEmail}
             </Typography>
           </Grid>
         </Box>
@@ -147,7 +181,11 @@ function LeftBar(props) {
               <ListItemButton
                 className="btn-leftbar"
                 selected={selectedLabel === leftData.route}
-                onClick={(event) => handleListItemClick(index, leftData)}
+                onClick={
+                  index === 5
+                    ? handleLogout
+                    : (event) => handleListItemClick(event, index, leftData)
+                }
                 to={`/${leftData?.route}`}
                 sx={{
                   marginLeft: 2,
@@ -163,7 +201,9 @@ function LeftBar(props) {
               >
                 <ListItemIcon
                   sx={{
-                    color: `${selectedIndex === index ? "#7450F0" : "#9FAAB1"}`,
+                    color: `${
+                      selectedLabel === leftData.route ? "#7450F0" : "#9FAAB1"
+                    }`,
                     minWidth: 0,
                     paddingRight: 1,
                   }}
@@ -180,11 +220,13 @@ function LeftBar(props) {
                         margin: 0,
                         padding: 0,
                         fontWeight: `${
-                          selectedIndex === index ? "600" : "400"
+                          selectedLabel === leftData.route ? "600" : "400"
                         }`,
                         fontSize: "16px",
                         color: `${
-                          selectedIndex === index ? "#7450F0" : "#9FAAB1"
+                          selectedLabel === leftData.route
+                            ? "#7450F0"
+                            : "#9FAAB1"
                         }`,
                         lineHeight: "22px",
                       }}

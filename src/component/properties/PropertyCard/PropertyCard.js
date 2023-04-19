@@ -2,8 +2,12 @@ import { Box, Grid, Typography } from "@mui/material";
 import Image from "next/image";
 import React from "react";
 import propertyImage from "../../../../public/Images/propertyImage.png";
+import { _baseURL } from "../../../../consts";
 
-function PropertyCard() {
+function PropertyCard({ srcImage }) {
+  const myLoader = ({ src }) => {
+    return `${_baseURL}/storage/${src}`;
+  };
   return (
     <Box
       sx={{
@@ -22,7 +26,13 @@ function PropertyCard() {
               display: { xs: "none", sm: "none", md: "none", lg: "inline" },
             }}
           >
-            <Image layout="responsive" src={propertyImage} alt="property" />
+            <Image
+              loader={myLoader}
+              height={150}
+              width={250}
+              src={`${srcImage?.[0]?.file_path}`}
+              alt="property"
+            />
           </Box>
           <Box
             sx={{

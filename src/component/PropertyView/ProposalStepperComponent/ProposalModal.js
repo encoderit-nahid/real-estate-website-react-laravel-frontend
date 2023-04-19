@@ -1,11 +1,4 @@
-import {
-  Box,
-  Button,
-  Grid,
-  TextField,
-  TextareaAutosize,
-  Typography,
-} from "@mui/material";
+import { Box, Button, Grid, TextareaAutosize, Typography } from "@mui/material";
 import React from "react";
 import CloseIcon from "@mui/icons-material/Close";
 import Stepper from "@mui/material/Stepper";
@@ -18,9 +11,10 @@ import BuyerStep from "../BuyerStep/BuyerStep";
 import submitProposal from "../../../../public/Images/submit_proposal.png";
 import BaseStepper from "../../reuseable/baseStepper/BaseStepper";
 
-const steps = ["Proposal Values", "Buyer's Data"];
+const steps = ["Proposal Values"];
 
-function ProposalModal({ handleProposalClose }) {
+function ProposalModal({ handleProposalClose, singlePropertyId }) {
+  console.log({ singlePropertyId });
   const [activeStep, setActiveStep] = React.useState(0);
   const [skipped, setSkipped] = React.useState(new Set());
 
@@ -128,6 +122,7 @@ function ProposalModal({ handleProposalClose }) {
           steps={steps}
           activeStep={activeStep}
           isStepSkipped={isStepSkipped}
+          setActiveStep={setActiveStep}
           marginTop={"2vh"}
         />
         {activeStep === steps.length ? (
@@ -186,7 +181,15 @@ function ProposalModal({ handleProposalClose }) {
           </React.Fragment>
         ) : (
           <React.Fragment>
-            {activeStep === 0 ? <ProposalStep /> : <BuyerStep />}
+            {activeStep === 0 && (
+              <ProposalStep
+                skipped={skipped}
+                setSkipped={setSkipped}
+                activeStep={activeStep}
+                setActiveStep={setActiveStep}
+                singlePropertyId={singlePropertyId}
+              />
+            )}
             <Grid
               container
               direction="row"
@@ -205,7 +208,7 @@ function ProposalModal({ handleProposalClose }) {
                 pt: 2,
               }}
             >
-              <Button
+              {/* <Button
                 color="inherit"
                 // disabled={activeStep === 0}
                 onClick={handleBack}
@@ -223,7 +226,7 @@ function ProposalModal({ handleProposalClose }) {
                 }}
               >
                 Come back
-              </Button>
+              </Button> */}
 
               {/* {isStepOptional(activeStep) && (
                 <Button
@@ -246,7 +249,7 @@ function ProposalModal({ handleProposalClose }) {
                 </Button>
               )} */}
 
-              <Button
+              {/* <Button
                 onClick={handleNext}
                 sx={{
                   background: "#7450F0",
@@ -273,8 +276,8 @@ function ProposalModal({ handleProposalClose }) {
                   },
                 }}
               >
-                {activeStep === steps.length - 1 ? "Submit Proposal" : "Next"}
-              </Button>
+                {activeStep === steps.length - 1 ? "Submit Proposal" : "Submit"}
+              </Button> */}
             </Grid>
           </React.Fragment>
         )}

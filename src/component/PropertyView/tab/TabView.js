@@ -19,7 +19,9 @@ function TabPanel(props) {
     >
       {value === index && (
         <Box sx={{ p: 3 }}>
-          <Typography>{children}</Typography>
+          <Typography component={"span"} variant={"body2"}>
+            {children}
+          </Typography>
         </Box>
       )}
     </div>
@@ -39,11 +41,17 @@ function a11yProps(index) {
   };
 }
 
-function TabView() {
+function TabView({ tabArray, upperTabValue, setUpperTabValue }) {
   const [value, setValue] = React.useState(0);
 
   const handleChange = (event, newValue) => {
+    // console.log("new", event.target.value);
     setValue(newValue);
+  };
+
+  const handleClick = (data) => {
+    console.log(data);
+    setUpperTabValue(data?.slug);
   };
 
   const AntTab = styled((props) => <Tab disableRipple {...props} />)(
@@ -78,12 +86,16 @@ function TabView() {
           variant="scrollable"
           scrollButtons={false}
         >
-          <AntTab
-            sx={{ borderRight: 1, paddingX: 4 }}
-            label="Living Room"
-            {...a11yProps(0)}
-          />
-          <AntTab
+          {tabArray?.map((data, index) => (
+            <AntTab
+              key={index}
+              sx={{ borderRight: 1, paddingX: 4 }}
+              label={data.name}
+              onClick={() => handleClick(data)}
+              {...a11yProps(index)}
+            />
+          ))}
+          {/* <AntTab
             sx={{ borderRight: 1, paddingX: 4 }}
             label="Kitchen"
             {...a11yProps(1)}
@@ -107,7 +119,7 @@ function TabView() {
             sx={{ borderRight: 1, paddingX: 4 }}
             label="Balcony"
             {...a11yProps(5)}
-          />
+          /> */}
         </Tabs>
       </Box>
       {/* <TabPanel value={value} index={0}>

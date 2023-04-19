@@ -7,10 +7,10 @@
 // module.exports = nextConfig
 
 module.exports = {
-  reactStrictMode: false,
+  reactStrictMode: true,
   swcMinify: true,
   staticPageGenerationTimeout: 1000,
-  output: "standalone",
+  output:"standalone",
   images: {
     remotePatterns: [
       {
@@ -20,3 +20,4 @@ module.exports = {
     ],
   },
 };
+

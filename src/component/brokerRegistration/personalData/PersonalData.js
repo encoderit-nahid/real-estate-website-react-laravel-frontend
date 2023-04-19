@@ -2,15 +2,47 @@ import {
   Box,
   Button,
   Divider,
+  FormControl,
   Grid,
   TextField,
   Typography,
 } from "@mui/material";
 import accountIcon from "../../../../public/Images/account.png";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import Image from "next/image";
+import BaseOutlinedRgInput from "../../reuseable/baseOutlinedRgInput/BaseOutlinedRgInput";
+import BaseOutlinedCpfInput from "../../reuseable/baseOutlinedCpfInput/BaseOutlinedCpfInput";
+import BaseTextField from "../../reuseable/baseTextField/BaseTextField";
+import { Controller } from "react-hook-form";
+import BaseDateField from "../../reuseable/baseDateField/BaseDateField";
+import { formatISO } from "date-fns";
 
-function PersonalData({ handleNext }) {
+function PersonalData({ handleNext, control, errors, allValues }) {
+  console.log("dob", errors.full_name);
+  //rg
+  const [rgValue, setRGValue] = useState("");
+  const [rgValid, setRGValid] = useState(false);
+  const handleRGValidation = (e) => {
+    setRGValid(/^W(\d(\d(\d[A-Z]?)?)?$)/.test(e.target.value));
+    setRGValue(e.target.value);
+  };
+
+  const [preview, setPreview] = useState();
+  console.log({ preview });
+  // create a preview as a side effect, whenever selected file is changed
+  useEffect(() => {
+    if (!allValues.image) {
+      setPreview(undefined);
+      return;
+    }
+
+    const objectUrl = URL.createObjectURL(allValues.image);
+    setPreview(objectUrl);
+
+    // free memory when ever this component is unmounted
+    return () => URL.revokeObjectURL(objectUrl);
+  }, [allValues.image]);
+
   return (
     <Box sx={{ mt: 4 }}>
       <Grid
@@ -77,7 +109,12 @@ function PersonalData({ handleNext }) {
                 alignItems="center"
               >
                 <Box>
-                  <Image src={accountIcon} alt="account" />
+                  <Image
+                    src={preview != null ? preview : accountIcon}
+                    alt="account"
+                    width={25}
+                    height={25}
+                  />
                 </Box>
                 <Typography
                   variant="p"
@@ -90,9 +127,11 @@ function PersonalData({ handleNext }) {
                 >
                   Profile picture
                 </Typography>
+
                 <Button
+                  variant="contained"
+                  component="label"
                   sx={{
-                    // mt: { xs: 0, sm: 0, md: 0, lg: 1.7, xl: 3.5, xxl: 1.7 },
                     mt: 1,
                     background: "#0362F0",
                     borderRadius: "4px",
@@ -101,11 +140,43 @@ function PersonalData({ handleNext }) {
                     color: "#ffffff",
                     lineHeight: "18px",
                     textTransform: "none",
+                    "&: hover": {
+                      background: "#0362F0",
+                      borderRadius: "4px",
+                      fontSize: "14px",
+                      fontWeight: "600",
+                      color: "#ffffff",
+                    },
                   }}
                 >
                   Select
+                  <Controller
+                    name="image"
+                    control={control}
+                    render={({ field }) => {
+                      return (
+                        <input
+                          name="image"
+                          hidden
+                          accept="image/*"
+                          type="file"
+                          // value={field.value}
+                          onChange={(e) => {
+                            field.onChange(e.target.files[0]);
+                          }}
+                        />
+                      );
+                    }}
+                  />
                 </Button>
               </Grid>
+              <Typography
+                variant="inherit"
+                color="textSecondary"
+                sx={{ color: "#b91c1c", mt: 4.5 }}
+              >
+                {errors.image?.message}
+              </Typography>
             </Box>
           </Box>
         </Grid>
@@ -115,7 +186,7 @@ function PersonalData({ handleNext }) {
             direction="row"
             justifyContent="flex-start"
             alignItems="flex-start"
-            sx={{ mb: 1 }}
+            sx={{ mb: 1,ml:{xxl:4} }}
           >
             <Typography
               variant="p"
@@ -129,20 +200,37 @@ function PersonalData({ handleNext }) {
               Full Name<span style={{ color: "#E63333" }}>*</span>
             </Typography>
           </Grid>
-          <TextField
-            fullWidth
-            size="small"
-            id="outlined-basic"
-            placeholder="Full Name"
-            variant="outlined"
-            sx={{ mb: 2 }}
+          <Controller
+            name="full_name"
+            control={control}
+            defaultValue={""}
+            render={({ field }) => (
+              <BaseTextField
+                size={"small"}
+                sx={{ml:{xxl:4}}}
+                placeholder={"Full Name"}
+                // sx={{ mb: 2 }}
+                onChange={(e) => {
+                  field.onChange(e.target.value);
+                }}
+                name={"full_name"}
+                value={field.value}
+              />
+            )}
           />
+          <Typography
+            variant="inherit"
+            color="textSecondary"
+            sx={{ color: "#b91c1c",ml:{xxl:4} }}
+          >
+            {errors.full_name?.message}
+          </Typography>
           <Grid
             container
             direction="row"
             justifyContent="flex-start"
             alignItems="flex-start"
-            sx={{ mb: 1 }}
+            sx={{ mb: 1, mt: 1,ml:{xxl:4} }}
           >
             <Typography
               variant="p"
@@ -165,13 +253,22 @@ function PersonalData({ handleNext }) {
               </span>
             </Typography>
           </Grid>
-          <TextField
-            fullWidth
-            size="small"
-            id="outlined-basic"
-            placeholder="Social Name"
-            variant="outlined"
-            sx={{ mb: 1 }}
+          <Controller
+            name="social_name"
+            control={control}
+            defaultValue={""}
+            render={({ field }) => (
+              <BaseTextField
+                size={"small"}
+                placeholder={"Social Name"}
+                sx={{ mb: 1,ml:{xxl:4} }}
+                onChange={(e) => {
+                  field.onChange(e.target.value);
+                }}
+                value={field.value}
+                name={"social_name"}
+              />
+            )}
           />
         </Grid>
       </Grid>
@@ -199,14 +296,30 @@ function PersonalData({ handleNext }) {
               CRECI number<span style={{ color: "#E63333" }}>*</span>
             </Typography>
           </Grid>
-          <TextField
-            fullWidth
-            size="small"
-            id="outlined-basic"
-            // placeholder="Social Name"
-            variant="outlined"
-            sx={{ mb: 1 }}
+          <Controller
+            name="creci_number"
+            control={control}
+            defaultValue={""}
+            render={({ field }) => (
+              <BaseTextField
+                size={"small"}
+                type={"number"}
+                placeholder={"CRECI Number"}
+                onChange={(e) => {
+                  field.onChange(e.target.value);
+                }}
+                value={field.value}
+                name={"creci_number"}
+              />
+            )}
           />
+          <Typography
+            variant="inherit"
+            color="textSecondary"
+            sx={{ color: "#b91c1c" }}
+          >
+            {errors?.creci_number?.message}
+          </Typography>
         </Grid>
         <Grid item xs={12} sm={12} md={6}>
           <Grid
@@ -228,14 +341,31 @@ function PersonalData({ handleNext }) {
               CPF<span style={{ color: "#E63333" }}>*</span>
             </Typography>
           </Grid>
-          <TextField
-            fullWidth
-            size="small"
-            id="outlined-basic"
-            // placeholder="Social Name"
-            variant="outlined"
-            sx={{ mb: 1 }}
-          />
+          <FormControl variant="outlined" sx={{ width: "100%" }}>
+            <Controller
+              name="cpf_number"
+              control={control}
+              render={({ field }) => (
+                <BaseOutlinedCpfInput
+                  placeholder={"CPF"}
+                  size={"small"}
+                  onChange={(e) => {
+                    field.onChange(e.target.value);
+                  }}
+                  name={"cpf_number"}
+                  value={field.value}
+                  // error={errors.cpf_number ? true : false}
+                />
+              )}
+            />
+            <Typography
+              variant="inherit"
+              color="textSecondary"
+              sx={{ color: "#b91c1c" }}
+            >
+              {errors.cpf_number?.message}
+            </Typography>
+          </FormControl>
         </Grid>
       </Grid>
       <Grid container spacing={1} sx={{ mt: 2 }}>
@@ -259,14 +389,34 @@ function PersonalData({ handleNext }) {
               RG<span style={{ color: "#E63333" }}>*</span>
             </Typography>
           </Grid>
-          <TextField
-            fullWidth
-            size="small"
-            id="outlined-basic"
-            // placeholder="Social Name"
+          <FormControl
             variant="outlined"
-            sx={{ mb: 1 }}
-          />
+            sx={{ width: "100%", marginBottom: 1 }}
+          >
+            <Controller
+              name="rg_number"
+              control={control}
+              render={({ field }) => (
+                <BaseOutlinedRgInput
+                  placeholder={"RG"}
+                  size={"small"}
+                  onChange={(e) => {
+                    field.onChange(e.target.value);
+                  }}
+                  name={"RG_number"}
+                  value={field.value}
+                  // error={errors?.rg_number ? true : false}
+                />
+              )}
+            />
+            <Typography
+              variant="inherit"
+              color="textSecondary"
+              sx={{ color: "#b91c1c" }}
+            >
+              {errors?.rg_number?.message}
+            </Typography>
+          </FormControl>
         </Grid>
         <Grid item xs={12} sm={12} md={6}>
           <Grid
@@ -288,17 +438,34 @@ function PersonalData({ handleNext }) {
               Date of Birth<span style={{ color: "#E63333" }}>*</span>
             </Typography>
           </Grid>
-          <TextField
-            fullWidth
-            size="small"
-            id="outlined-basic"
-            // placeholder="Social Name"
-            variant="outlined"
-            sx={{ mb: 1 }}
+          <Controller
+            name="dob"
+            control={control}
+            defaultValue={formatISO(new Date())}
+            render={({ field }) => (
+              <BaseDateField
+                placeholder={"Date of Birth"}
+                size={"small"}
+                onChange={(value) => {
+                  field.onChange(value);
+                }}
+                // sx={{ mb: 1 }}
+                name={"dob"}
+                value={field.value}
+                // error={errors.dob ? true : false}
+              />
+            )}
           />
+          <Typography
+            variant="inherit"
+            color="textSecondary"
+            sx={{ color: "#b91c1c" }}
+          >
+            {errors?.dob?.message}
+          </Typography>
         </Grid>
       </Grid>
-      <Button
+      {/* <Button
         onClick={handleNext}
         fullWidth
         sx={{
@@ -328,7 +495,7 @@ function PersonalData({ handleNext }) {
         }}
       >
         Continue
-      </Button>
+      </Button> */}
     </Box>
   );
 }

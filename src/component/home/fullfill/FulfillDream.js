@@ -8,11 +8,13 @@ import {
   Typography,
   styled,
 } from "@mui/material";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import BaseButton from "../../reuseable/button/BaseButton";
 import homeImage from "../../../../public/Images/home.png";
 import Image from "next/image";
 import Link from "next/link";
+import BaseTextField from "../../reuseable/baseTextField/BaseTextField";
+import BaseAutocomplete from "../../reuseable/baseAutocomplete/BaseAutocomplete";
 
 // const AutoComplete = styled(Autocomplete)`
 //   & .MuiInputBase-input {
@@ -20,7 +22,29 @@ import Link from "next/link";
 //   }
 // `;
 
+const omitEmpties = (obj) => {
+  return Object.entries(obj).reduce((carry, [key, value]) => {
+    if (![null, undefined, ""].includes(value)) {
+      carry[key] = value;
+    }
+    return carry;
+  }, {});
+};
+
 function FulfillDream() {
+  const [value, setValue] = useState(null);
+  console.log(value);
+  const [locationName, setLocationName] = useState(null);
+
+  const handleValueChange = (v) => {
+    setValue(v);
+  };
+
+  const handleLocationChange = (e) => {
+    console.log(e.target.value);
+    setLocationName(e.target.value);
+  };
+
   return (
     <Grid
       container
@@ -61,20 +85,16 @@ function FulfillDream() {
       >
         Dream!
       </Typography>
-      <TextField
+      <BaseTextField
         fullWidth
-        id="outlined-basic"
-        label="Location"
-        placeholder="Search by street, neighborhood or city"
-        variant="outlined"
+        label={"Location"}
+        placeholder={"Search by street, neighborhood or city"}
         sx={{
           mt: 4,
           width: { xs: "90%", sm: "90%", md: "90%", xl: "90%", lg: "75%" },
         }}
+        onChange={(e) => handleLocationChange(e)}
         InputProps={{
-          // style: {
-          //   height: "6.4vh",
-          // },
           endAdornment: (
             <InputAdornment position="end">
               <Image src={homeImage} alt="homeImage" />
@@ -82,18 +102,32 @@ function FulfillDream() {
           ),
         }}
       />
-      <Autocomplete
-        fullWidth
-        disablePortal
-        id="combo-box-demo"
+
+      <BaseAutocomplete
+        options={valueUpto || []}
+        getOptionLabel={(option) => option.label || ""}
         sx={{
           mt: 4,
           width: { xs: "90%", sm: "90%", md: "90%", xl: "90%", lg: "75%" },
         }}
-        options={top100Films}
-        renderInput={(params) => <TextField {...params} label="value up to" />}
+        isOptionEqualToValue={(option, value) => option.value === value.value}
+        size={"medium"}
+        placeholder={"Value up to"}
+        onChange={(e, v, r, d) => handleValueChange(v)}
+        value={value}
       />
-      <Link href="/owner">
+      <Link
+        href={{
+          pathname: "/search_real_estate",
+          query: omitEmpties({
+            status: "approved",
+            location: locationName && locationName,
+            value_up_to: value && value.label,
+            page: 1,
+            per_page: 9,
+          }),
+        }}
+      >
         <a style={{ textDecoration: "none", listStyle: "none", width: "100%" }}>
           <BaseButton
             name={"search real estate"}
@@ -109,12 +143,12 @@ function FulfillDream() {
 
 export default FulfillDream;
 
-const top100Films = [
-  { label: "The Shawshank Redemption", year: 1994 },
-  { label: "The Godfather", year: 1972 },
-  { label: "The Godfather: Part II", year: 1974 },
-  { label: "The Dark Knight", year: 2008 },
-  { label: "12 Angry Men", year: 1957 },
-  { label: "Schindler's List", year: 1993 },
-  { label: "Pulp Fiction", year: 1994 },
+const valueUpto = [
+  { label: "5000", id: 1 },
+  { label: "10000", id: 2 },
+  { label: "15000", id: 3 },
+  { label: "20000", id: 4 },
+  { label: "25000", id: 5 },
+  { label: "30000", id: 6 },
+  { label: "35000", id: 7 },
 ];

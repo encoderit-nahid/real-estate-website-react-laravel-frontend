@@ -21,16 +21,26 @@ import { useState } from "react";
 import BaseModal from "../../reuseable/baseModal/BaseModal";
 import LoginModal from "../../login/loginModal/LoginModal";
 import Link from "next/link";
+import { useSession, signIn, signOut } from "next-auth/react";
+import PersonOutlineOutlinedIcon from "@mui/icons-material/PersonOutlineOutlined";
+import { Popover } from "@mui/material";
 
-const pages = ["search Real estate", "I am broker", "I am Owner", "blog"];
 const pagesData = [
-  { name: "search real estate", page: "owner" },
+  { name: "search real estate", page: "search_real_estate" },
   { name: "I am broker", page: "broker" },
-  { name: "I am Owner", page: "owner" },
-  { name: "blog", page: "blog" },
+  { name: "I am Owner", page: "advertise" },
+  // { name: "blog", page: "blog" },
 ];
 
-function Navbar({ shape, paddingY }) {
+function Navbar({
+  shape,
+  paddingY,
+  loginOpen,
+  setLoginOpen,
+  handleLoginOpen,
+  handleLoginClose,
+}) {
+  const { data: session } = useSession();
   const [anchorElNav, setAnchorElNav] = React.useState(null);
   const [anchorElUser, setAnchorElUser] = React.useState(null);
 
@@ -48,11 +58,28 @@ function Navbar({ shape, paddingY }) {
   const handleCloseUserMenu = () => {
     setAnchorElUser(null);
   };
+  const handleLogout = () => {
+    localStorage.clear();
+    signOut();
+  };
 
-  //add_login_modal
-  const [loginOpen, setLoginOpen] = useState(false);
-  const handleLoginOpen = () => setLoginOpen(true);
-  const handleLoginClose = () => setLoginOpen(false);
+  const [anchorEl, setAnchorEl] = React.useState(null);
+
+  const handleClick = (event) => {
+    setAnchorEl(event.currentTarget);
+  };
+
+  const handleClose = () => {
+    setAnchorEl(null);
+  };
+
+  const open = Boolean(anchorEl);
+  const id = open ? "simple-popover" : undefined;
+
+  // //add_login_modal
+  // const [loginOpen, setLoginOpen] = useState(false);
+  // const handleLoginOpen = () => setLoginOpen(true);
+  // const handleLoginClose = () => setLoginOpen(false);
 
   return (
     <AppBar
@@ -68,9 +95,23 @@ function Navbar({ shape, paddingY }) {
     >
       <Container maxWidth="xxl">
         <Toolbar disableGutters>
-          <Box sx={{ display: { xs: "none", md: "none", lg: "flex" } }}>
-            <Image src={logoIcon} height={25} width={110} alt="logo" />
-          </Box>
+          <Link href="/">
+            <a
+              style={{
+                textDecoration: "none",
+                listStyle: "none",
+              }}
+            >
+              <Box
+                sx={{
+                  display: { xs: "none", md: "none", lg: "flex" },
+                  cursor: "pointer",
+                }}
+              >
+                <Image src={logoIcon} height={25} width={110} alt="logo" />
+              </Box>
+            </a>
+          </Link>
 
           <Box
             sx={{
@@ -108,7 +149,17 @@ function Navbar({ shape, paddingY }) {
               }}
             >
               {pagesData?.map((data, index) => (
-                <Link href={`/${data.page}`} key={index}>
+                <Link
+                  href={{
+                    pathname: `/${data.page}`,
+                    query: data.page === "search_real_estate" && {
+                      status: "approved",
+                      page: 1,
+                      per_page: 9,
+                    },
+                  }}
+                  key={index}
+                >
                   <a
                     style={{
                       textDecoration: "none",
@@ -125,7 +176,7 @@ function Navbar({ shape, paddingY }) {
                 </Link>
               ))}
               <BaseButton
-                name={"Login"}
+                name={!session ? "Login" : "Log out"}
                 margin={"0 0 0 1vh"}
                 handleFunction={handleLoginOpen}
               />
@@ -181,7 +232,17 @@ function Navbar({ shape, paddingY }) {
             }}
           >
             {pagesData?.map((data, index) => (
-              <Link href={`/${data.page}`} key={index}>
+              <Link
+                href={{
+                  pathname: `/${data.page}`,
+                  query: data.page === "search_real_estate" && {
+                    status: "approved",
+                    page: 1,
+                    per_page: 9,
+                  },
+                }}
+                key={index}
+              >
                 <a
                   style={{
                     textDecoration: "none",
@@ -196,6 +257,9 @@ function Navbar({ shape, paddingY }) {
                       display: "block",
                       textTransform: "none",
                       fontSize: "16px",
+                      "&:hover": {
+                        background: "transparent",
+                      },
                     }}
                   >
                     {data?.name}
@@ -203,12 +267,30 @@ function Navbar({ shape, paddingY }) {
                 </a>
               </Link>
             ))}
-            <BaseButton
-              name={"Login"}
-              handleFunction={handleLoginOpen}
-              shape={shape}
-              fontSize={"12px"}
-            />
+            {session ? (
+              <Button
+                sx={{ display: "flex", textTransform: "none" }}
+                onClick={handleClick}
+              >
+                <PersonOutlineOutlinedIcon sx={{ color: "#1A1859" }} />
+                <Typography
+                  variant="p"
+                  sx={{
+                    color: `${"#1A1859"}`,
+                    fontSize: "16px",
+                  }}
+                >
+                  {session.user.name}
+                </Typography>
+              </Button>
+            ) : (
+              <BaseButton
+                name={"Login"}
+                handleFunction={!session ? handleLoginOpen : handleLogout}
+                shape={shape}
+                fontSize={"12px"}
+              />
+            )}
           </Grid>
         </Toolbar>
         <BaseModal isShowing={loginOpen} isClose={handleLoginClose}>
@@ -219,6 +301,52 @@ function Navbar({ shape, paddingY }) {
           </Tooltip>
         </BaseModal>
       </Container>
+      <Popover
+        id={id}
+        open={open}
+        anchorEl={anchorEl}
+        onClose={handleClose}
+        anchorOrigin={{
+          vertical: "bottom",
+          horizontal: "left",
+        }}
+      >
+        <Typography
+          sx={{
+            px: 2,
+            py: 0.5,
+            cursor: "pointer",
+            "&:hover": {
+              background: "#e0f2fe",
+            },
+          }}
+          onClick={handleLogout}
+        >
+          Log out
+        </Typography>
+        <Link
+          href={{
+            pathname: "/my_properties",
+            query: {
+              page: 1,
+              per_page: 9,
+            },
+          }}
+        >
+          <Typography
+            sx={{
+              px: 2,
+              py: 0.5,
+              cursor: "pointer",
+              "&:hover": {
+                background: "#e0f2fe",
+              },
+            }}
+          >
+            Dashboard
+          </Typography>
+        </Link>
+      </Popover>
     </AppBar>
   );
 }

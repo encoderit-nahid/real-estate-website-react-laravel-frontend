@@ -1,4 +1,4 @@
-import { Box, Button, Grid } from "@mui/material";
+import { Box, Button, Grid, Pagination, Skeleton, Stack } from "@mui/material";
 import React from "react";
 import ReleaseCard from "../ReleaseCard/ReleaseCard";
 import useMediaQuery from "@mui/material/useMediaQuery";
@@ -14,9 +14,9 @@ function Releases({ queryData }) {
   const router = useRouter();
 
   const [page, setPage] = React.useState(+queryData?.page || 1);
-  // useEffect(() => {
-  //   dispatch(findProjectsData(queryData));
-  // }, [dispatch, queryData]);
+  useEffect(() => {
+    dispatch(findProjectsData(queryData));
+  }, [dispatch, queryData]);
 
   const AllProjects = useSelector((state) => state.project.projectData);
   console.log({ AllProjects });
@@ -54,16 +54,24 @@ function Releases({ queryData }) {
     );
   }
 
-function Releases() {
   return (
     <Box>
       <Grid container spacing={2}>
-        {[0, 1, 2].map((data, index) => (
+        {AllProjects?.data?.map((data, index) => (
           <Grid key={index} item xs={12} sm={12} md={12} lg={4} xl={4}>
-            <ReleaseCard />
+            <ReleaseCard projectData={data} />
           </Grid>
         ))}
       </Grid>
+      <Stack spacing={2} sx={{ marginY: 8 }}>
+        <Pagination
+          count={Math.ceil(AllProjects?.total / 9) || 1}
+          page={page}
+          onChange={handlePageChange}
+          variant="outlined"
+          shape="rounded"
+        />
+      </Stack>
     </Box>
   );
 }

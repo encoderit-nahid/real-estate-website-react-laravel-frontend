@@ -1,18 +1,19 @@
-import { Grid, InputAdornment, TextField, Typography } from "@mui/material";
+import { FormControl, Grid, InputLabel, Typography } from "@mui/material";
 import React from "react";
 import BaseButton from "../../reuseable/button/BaseButton";
-import { useState } from "react";
-import Link from "next/link";
+import BaseOutlinedZipInput from "../../reuseable/baseOutlinedZipInput/BaseOutlinedZipInput";
+import { useSession } from "next-auth/react";
+import { useRouter } from "next/router";
 
-function BrokerHelp({ name, content, buttonName, fieldItem }) {
-  const [value, setValue] = useState("");
-  console.log(value.length);
-  const [valid, setValid] = useState(false);
-  console.log({ valid });
-  const handleValidation = (e) => {
-    setValid(/^[0-9]{5}-[0-9]{3}$/.test(e.target.value));
-    console.log(e.target.value);
-    setValue(e.target.value);
+function BrokerHelp({ name, content, buttonName, fieldItem, handleLoginOpen }) {
+  const { data: session } = useSession();
+  const router = useRouter();
+  const [value, setValue] = React.useState("");
+  console.log({ value });
+
+  const handleAdvertise = () => {
+    router.push("/new_property");
+    localStorage.setItem("Zip_code", value);
   };
   return (
     <Grid
@@ -67,47 +68,26 @@ function BrokerHelp({ name, content, buttonName, fieldItem }) {
         {content}
       </Typography>
       {fieldItem && (
-        <TextField
-          fullWidth
-          id="outlined-basic"
-          label="Zip Code"
-          name="zip_code"
-          placeholder="Zip Code"
-          size="medium"
-          variant="outlined"
-          value={value}
-          onChange={(e) => handleValidation(e)}
-          error={!valid && value.length > 0 ? true : false}
-          required={true}
-          sx={{ mt: 4 }}
-          InputProps={{
-            startAdornment: (
-              <InputAdornment position="start">
-                <Typography variant="p" sx={{ color: "#7450F0" }}>
-                  Eg: 00000-000
-                </Typography>
-              </InputAdornment>
-            ),
-          }}
-        />
+        <FormControl variant="outlined" sx={{ width: "100%", marginTop: 3 }}>
+          <InputLabel htmlFor="sandbox" variant="outlined">
+            Zip Code
+          </InputLabel>
+          <BaseOutlinedZipInput
+            placeholder={"Eg: 00000-000"}
+            label={"Zip Code"}
+            onChange={(e) => setValue(e.target.value)}
+            value={value}
+          />
+        </FormControl>
       )}
 
-      <Link href="/registration">
-        <a
-          style={{
-            textDecoration: "none",
-            listStyle: "none",
-            width: "100%",
-          }}
-        >
-          <BaseButton
-            name={buttonName}
-            width={"100%"}
-            fontSize={"24px"}
-            margin={"4vh 0 0 0"}
-          />
-        </a>
-      </Link>
+      <BaseButton
+        name={buttonName}
+        width={"100%"}
+        fontSize={"24px"}
+        margin={"3vh 0 0 0"}
+        handleFunction={!session ? handleLoginOpen : handleAdvertise}
+      />
     </Grid>
   );
 }

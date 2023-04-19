@@ -47,6 +47,67 @@ body {
 }
 }
 
+.step-complete .MuiStepLabel-iconContainer .Mui-completed{
+  color: #16a34a !important;
+}
+
+.analysis-card{
+  padding-top: 0!important;
+}
+.react-pdf__Page__canvas{
+  width: 100% !important;
+  height: 100% !important;
+}
+.MuiCalendarPicker-root{
+  width: 100% !important;
+}
+.MuiDayPicker-slideTransition{
+  min-height: 200px!important;
+}
+.MuiPickersCalendarHeader-root{
+  padding-right: 0!important;
+  margin-right: 2vh!important;
+  margin-left: 2vh!important;
+  
+}
+.MuiPickersDay-root{
+  background: #f9f9fb !important;
+}
+.MuiPickersDay-root.Mui-selected{
+  background-color: #1976d2!important;
+}
+.MuiPickersCalendarHeader-label{
+  font-size: 13px!important;
+}
+.MuiFormControlLabel-label{
+  color: #34be84 !important;
+}
+.MuiButtonBase-root-MuiSwitch-switchBase.Mui-checked{
+  color: #34be84 !important;
+  font-weight: 600!important;
+}
+.Mui-checked+.MuiSwitch-track{
+  background-color: #6C7A84!important;
+}
+
+/* Chrome, Safari, Edge, Opera */
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+/* Firefox */
+input[type=number] {
+  -moz-appearance: textfield;
+}
+
+.rentImage{
+  padding-top: 0!important;
+  padding-left: 0!important;
+}
+
+
 
 
 /* .MuiButtonBase-root .MuiTab-root .Mui-selected{
