@@ -15,8 +15,9 @@ import AssignmentOutlinedIcon from "@mui/icons-material/AssignmentOutlined";
 import CloseIcon from "@mui/icons-material/Close";
 import Image from "next/image";
 import { useState } from "react";
+import dayjs from "dayjs";
 
-function TabRegisteredCard({brokerInfo}) {
+function TabRegisteredCard({ brokerInfo }) {
   const [state, setState] = React.useState({
     top: false,
     left: false,
@@ -101,7 +102,7 @@ function TabRegisteredCard({brokerInfo}) {
             pl: 0.5,
           }}
         >
-         {`Name ${brokerInfo?.name}`}
+          {`Name ${brokerInfo?.name}`}
         </Typography>
         <Typography
           variant="h6"
@@ -114,7 +115,9 @@ function TabRegisteredCard({brokerInfo}) {
             mt: 1,
           }}
         >
-          Date of birth: 02/03/1989
+          {`Date of birth: ${dayjs(brokerInfo?.additional_info?.dob).format(
+            "MM/DD/YYYY"
+          )}`}
         </Typography>
         <Typography
           variant="h6"
@@ -127,7 +130,7 @@ function TabRegisteredCard({brokerInfo}) {
             mt: 1,
           }}
         >
-          RG: 234.456.67-10
+          {` RG: ${brokerInfo?.additional_info?.rg}`}
         </Typography>
         <Typography
           variant="h6"
@@ -140,7 +143,7 @@ function TabRegisteredCard({brokerInfo}) {
             mt: 1,
           }}
         >
-          CPF: 123.345.567-40
+          {`CPF: ${brokerInfo?.additional_info?.cpf}`}
         </Typography>
         <Typography
           variant="h6"
@@ -153,7 +156,7 @@ function TabRegisteredCard({brokerInfo}) {
             mt: 1,
           }}
         >
-          CRECI: 394757349
+          {`CRECI: ${brokerInfo?.additional_info?.creci_number}`}
         </Typography>
         <Typography
           variant="h6"
@@ -166,7 +169,7 @@ function TabRegisteredCard({brokerInfo}) {
             mt: 1,
           }}
         >
-         {`Email ${brokerInfo?.email}`}
+          {`Email ${brokerInfo?.email}`}
         </Typography>
         <Typography
           variant="h6"
@@ -205,10 +208,9 @@ function TabRegisteredCard({brokerInfo}) {
             mt: 1,
           }}
         >
-         {brokerInfo?.address}
+          {brokerInfo?.address}
         </Typography>
       </Grid>
-      
     </Box>
   );
 
@@ -242,7 +244,7 @@ function TabRegisteredCard({brokerInfo}) {
             pl: 0.5,
           }}
         >
-         {brokerInfo?.name}
+          {brokerInfo?.name}
         </Typography>
         <Button
           sx={{
@@ -265,8 +267,7 @@ function TabRegisteredCard({brokerInfo}) {
               lineHeight: "22px",
             }}
           >
- 
-            {`CRECI ${brokerInfo?.id}`}
+            {`CRECI ${brokerInfo?.additional_info?.creci_number}`}
           </Typography>
         </Button>
         <Button
@@ -314,7 +315,7 @@ function TabRegisteredCard({brokerInfo}) {
               lineHeight: "22px",
             }}
           >
-           {brokerInfo?.phone}
+            {brokerInfo?.phone}
           </Typography>
         </Button>
       </Grid>

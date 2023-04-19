@@ -21,6 +21,8 @@ import { getSession } from "next-auth/react";
 import { useRouter } from "next/router";
 import { useEffect } from "react";
 import { proposalCountApi } from "../../src/api";
+import { useDispatch, useSelector } from "react-redux";
+import { findProposalCountData } from "../../src/redux/proposalCount/actions";
 
 const drawerWidth = 240;
 
@@ -60,6 +62,13 @@ function a11yProps(index) {
 export default function Proposals(props) {
   const router = useRouter();
   const { query } = router;
+  const dispatch = useDispatch();
+  useEffect(() => {
+    dispatch(findProposalCountData());
+  }, [dispatch]);
+  const proposalCountData = useSelector((state) => state?.count?.countData);
+  console.log({ proposalCountData });
+  const countLoading = useSelector((state) => state?.count?.loading);
   console.log({ query });
   const [proposalCount, setProposalCount] = useState("");
   console.log({ proposalCount });
@@ -181,17 +190,29 @@ export default function Proposals(props) {
                   >
                     <Tab
                       sx={{ fontWeight: "600" }}
-                      label="Pendants(4)"
+                      label={
+                        countLoading
+                          ? "Pendants"
+                          : `Pendants(${proposalCountData?.pending || 0})`
+                      }
                       {...a11yProps(0)}
                     />
                     <Tab
                       sx={{ fontWeight: "600" }}
-                      label="Accepted(2)"
+                      label={
+                        countLoading
+                          ? "Accepted"
+                          : `Accepted(${proposalCountData?.accepted || 0})`
+                      }
                       {...a11yProps(1)}
                     />
                     <Tab
                       sx={{ fontWeight: "600" }}
-                      label="Completed(1)"
+                      label={
+                        countLoading
+                          ? "Completed"
+                          : `Completed(${proposalCountData?.completed || 0})`
+                      }
                       {...a11yProps(2)}
                     />
                   </Tabs>

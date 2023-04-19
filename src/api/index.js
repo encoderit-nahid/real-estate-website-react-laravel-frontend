@@ -538,7 +538,7 @@ export const contractSubmittedDataApi = async (id) => {
 //proposal_count
 export const proposalCountApi = async () => {
   try {
-    const response = await apiInstance.get(`proposal/count`);
+    const response = await apiInstance.get(`/proposal/count`);
     return [false, response];
   } catch (error) {
     return [error, null];

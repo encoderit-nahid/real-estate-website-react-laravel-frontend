@@ -10,6 +10,7 @@ import {
   Container,
   ImageList,
   ImageListItem,
+  Skeleton,
 } from "@mui/material";
 import FulfillDream from "../src/component/home/fullfill/FulfillDream";
 import SideContent from "../src/component/home/FullfillSideContent/SideContent";
@@ -33,7 +34,7 @@ import earnImage from "../public/Images/earn.png";
 import { useSession, signIn, signOut } from "next-auth/react";
 import { _baseURL } from "../consts";
 import { bestDealsApi } from "../src/api";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import Link from "next/link";
 
 const brokerData = [
@@ -67,10 +68,14 @@ export default function App({
   const svgDealsString = encodeURIComponent(
     renderToStaticMarkup(<BestDealSvgBackground />)
   );
+  const [isLoading, setIsLoading] = useState(true);
   const { data: session } = useSession();
   // console.log(session && JSON.parse(session?.user?.permissions));
   console.log(session);
-  console.log(data);
+
+  useEffect(() => {
+    setIsLoading(false);
+  }, [data]);
 
   return (
     <div>
@@ -376,28 +381,53 @@ export default function App({
                 // px: 3,
               }}
             >
-              {data?.property?.map((stateInfo, index) => (
-                <Link
-                  key={stateInfo.id}
-                  href={`/property_view/${stateInfo.id}`}
-                  as={`/property_view/${stateInfo.id}`}
-                >
-                  <ImageListItem
-                    cols={3}
-                    sx={{
-                      width: {
-                        xl: "95%",
-                        lg: "95%",
-                        md: "70%",
-                        sm: "70%",
-                        xs: "70%",
-                      },
-                    }}
-                  >
-                    <HouseCard propertyInfo={stateInfo} />
-                  </ImageListItem>
-                </Link>
-              ))}
+              {isLoading
+                ? [0, 1, 2, 3].map((data, index) => (
+                    <Grid
+                      key={index}
+                      item
+                      xs={12}
+                      sm={12}
+                      md={12}
+                      lg={4}
+                      xl={4}
+                      xxl={4}
+                    >
+                      <Skeleton
+                        variant="rect"
+                        height={220}
+                        sx={{ mx: 2, my: 2, borderRadius: "8px" }}
+                      />
+                      <Box sx={{ mx: 2, my: 1 }}>
+                        <Skeleton width="60%" />
+                        <Skeleton width="60%" />
+                        <Skeleton width="60%" />
+                        <Skeleton />
+                      </Box>
+                    </Grid>
+                  ))
+                : data?.property?.map((stateInfo, index) => (
+                    <Link
+                      key={stateInfo.id}
+                      href={`/property_view/${stateInfo.id}`}
+                      as={`/property_view/${stateInfo.id}`}
+                    >
+                      <ImageListItem
+                        cols={3}
+                        sx={{
+                          width: {
+                            xl: "95%",
+                            lg: "95%",
+                            md: "70%",
+                            sm: "70%",
+                            xs: "70%",
+                          },
+                        }}
+                      >
+                        <HouseCard propertyInfo={stateInfo} />
+                      </ImageListItem>
+                    </Link>
+                  ))}
             </ImageList>
           </Container>
         </Box>

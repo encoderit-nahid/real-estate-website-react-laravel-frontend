@@ -8,10 +8,14 @@ import AssignmentOutlinedIcon from "@mui/icons-material/AssignmentOutlined";
 import CloseIcon from "@mui/icons-material/Close";
 import Image from "next/image";
 import { useDispatch } from "react-redux";
-import { changeStatusBroker, deleteBroker } from "../../../redux/broker/actions";
+import {
+  changeStatusBroker,
+  deleteBroker,
+} from "../../../redux/broker/actions";
+import dayjs from "dayjs";
 
-function TabpendantCard({brokerInfo}) {
-  const dispatch = useDispatch()
+function TabpendantCard({ brokerInfo }) {
+  const dispatch = useDispatch();
   const [state, setState] = React.useState({
     top: false,
     left: false,
@@ -33,17 +37,19 @@ function TabpendantCard({brokerInfo}) {
 
   const handleStatusBroker = (id) => {
     const data = {
-      user_id : id,
-      status: "active"
-    }
-   dispatch(changeStatusBroker(data))
-  }
+      user_id: id,
+      status: "active",
+    };
+    dispatch(changeStatusBroker(data));
+  };
 
   const handleFailBroker = (id) => {
-   dispatch(deleteBroker(id))
-  }
+    dispatch(deleteBroker(id));
+  };
 
-
+  const myLoader = ({ src }) => {
+    return `${_baseURL}/storage/${src}`;
+  };
 
   const list = (anchor) => (
     <Box
@@ -90,7 +96,7 @@ function TabpendantCard({brokerInfo}) {
         sx={{ px: 1.5, py: 1 }}
       >
         <Box>
-          <Image src={brokerImage} alt="brokerImahe" />
+          <Image src={brokerImage} alt="brokerImage" />
         </Box>
       </Grid>
       <Grid
@@ -110,7 +116,7 @@ function TabpendantCard({brokerInfo}) {
             pl: 0.5,
           }}
         >
-         {`Name ${brokerInfo?.name}`}
+          {`Name ${brokerInfo?.name}`}
         </Typography>
         <Typography
           variant="h6"
@@ -123,7 +129,9 @@ function TabpendantCard({brokerInfo}) {
             mt: 1,
           }}
         >
-          Date of birth: 02/03/1989
+          {`Date of birth: ${dayjs(brokerInfo?.additional_info?.dob).format(
+            "MM/DD/YYYY"
+          )}`}
         </Typography>
         <Typography
           variant="h6"
@@ -136,7 +144,7 @@ function TabpendantCard({brokerInfo}) {
             mt: 1,
           }}
         >
-          RG: 234.456.67-10
+          {` RG: ${brokerInfo?.additional_info?.rg}`}
         </Typography>
         <Typography
           variant="h6"
@@ -149,7 +157,7 @@ function TabpendantCard({brokerInfo}) {
             mt: 1,
           }}
         >
-          CPF: 123.345.567-40
+          {`CPF: ${brokerInfo?.additional_info?.cpf}`}
         </Typography>
         <Typography
           variant="h6"
@@ -162,7 +170,7 @@ function TabpendantCard({brokerInfo}) {
             mt: 1,
           }}
         >
-          CRECI: 394757349
+          {`CRECI: ${brokerInfo?.additional_info?.creci_number}`}
         </Typography>
         <Typography
           variant="h6"
@@ -175,7 +183,7 @@ function TabpendantCard({brokerInfo}) {
             mt: 1,
           }}
         >
-         {`Email ${brokerInfo?.email}`}
+          {`Email ${brokerInfo?.email}`}
         </Typography>
         <Typography
           variant="h6"
@@ -214,7 +222,7 @@ function TabpendantCard({brokerInfo}) {
             mt: 1,
           }}
         >
-         {brokerInfo?.address}
+          {brokerInfo?.address}
         </Typography>
       </Grid>
       <Grid container spacing={1} sx={{ px: 1.5, mt: 2 }}>
@@ -241,7 +249,7 @@ function TabpendantCard({brokerInfo}) {
         </Grid>
         <Grid item xs={12} sm={12} md={12} lg={6}>
           <Button
-           onClick={() => handleStatusBroker(brokerInfo?.id)}
+            onClick={() => handleStatusBroker(brokerInfo?.id)}
             fullWidth
             sx={{
               background: "#34BE84",
@@ -294,7 +302,7 @@ function TabpendantCard({brokerInfo}) {
             pl: 0.5,
           }}
         >
-         {brokerInfo?.name}
+          {brokerInfo?.name}
         </Typography>
         <Button
           sx={{
@@ -317,7 +325,7 @@ function TabpendantCard({brokerInfo}) {
               lineHeight: "22px",
             }}
           >
-            {`CRECI ${brokerInfo?.id}`}
+            {`CRECI ${brokerInfo?.additional_info?.creci_number}`}
           </Typography>
         </Button>
         <Button
@@ -341,7 +349,7 @@ function TabpendantCard({brokerInfo}) {
               lineHeight: "22px",
             }}
           >
-          {brokerInfo?.email}
+            {brokerInfo?.email}
           </Typography>
         </Button>
         <Button
@@ -371,7 +379,7 @@ function TabpendantCard({brokerInfo}) {
       </Grid>
       <Box sx={{ px: 1.5, mt: 2 }}>
         <Button
-        onClick={() => handleStatusBroker(brokerInfo?.id)}
+          onClick={() => handleStatusBroker(brokerInfo?.id)}
           fullWidth
           sx={{
             background: "#34BE84",
