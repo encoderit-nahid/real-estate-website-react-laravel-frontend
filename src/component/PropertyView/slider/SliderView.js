@@ -63,10 +63,9 @@ function SliderView({
 }) {
   const [value, setValue] = React.useState(0);
 
-//   function get_url_extension( selectImage ) {
-//     return selectImage.split(/[#?]/)[0].split('.').pop().trim();
-// }
-console.log(selectImage.split(/[#?]/)[0].split('.').pop().trim())
+  //   function get_url_extension( selectImage ) {
+  //     return selectImage.split(/[#?]/)[0].split('.').pop().trim();
+  // }
 
   const handleChange = (event, newValue) => {
     setValue(+newValue);
@@ -287,7 +286,7 @@ console.log(selectImage.split(/[#?]/)[0].split('.').pop().trim())
         />
       </Tabs>
       <TabPanel value={value} index={0}>
-        {selectImage != null  ? (
+        {selectImage != null ? (
           <Image
             loader={myLoader}
             src={`${selectImage}`}
@@ -313,7 +312,8 @@ console.log(selectImage.split(/[#?]/)[0].split('.').pop().trim())
         )}
       </TabPanel>
       <TabPanel value={value} index={1}>
-        {selectImage != null && selectImage.split(/[#?]/)[0].split('.').pop().trim() !== 'webp' ? (
+        {selectImage != null &&
+        selectImage?.split(/[#?]/)[0].split(".").pop().trim() !== "webp" ? (
           <ReactPannellum
             id="1"
             sceneId="firstScene"

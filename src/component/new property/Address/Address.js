@@ -132,8 +132,10 @@ function Address({
 
   const handleDelete = (index) => {
     console.log(index);
-    const filterItem = files.filter((file, fileIndex) => fileIndex !== index);
-    setFiles(filterItem);
+    const filterItem = documents.filter(
+      (file, fileIndex) => fileIndex !== index
+    );
+    setDocuments(filterItem);
   };
 
   const style = useMemo(
@@ -219,7 +221,7 @@ function Address({
       {documents?.length > 0 && (
         <Grid container spacing={1} sx={{ mt: 3 }}>
           {documents?.map((file, index) => (
-            <Grid item xs={12} sm={12} md={4} lg={3} xl={3} key={index}>
+            <Grid item xs={12} sm={12} md={4} lg={3} xl={3} key={file.id}>
               <Box
                 sx={{
                   p: 2,

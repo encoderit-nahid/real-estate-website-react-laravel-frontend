@@ -383,15 +383,18 @@ export default function App({
             >
               {isLoading
                 ? [0, 1, 2, 3].map((data, index) => (
-                    <Grid
+                    <ImageListItem
                       key={index}
-                      item
-                      xs={12}
-                      sm={12}
-                      md={12}
-                      lg={4}
-                      xl={4}
-                      xxl={4}
+                      cols={3}
+                      sx={{
+                        width: {
+                          xl: "95%",
+                          lg: "95%",
+                          md: "70%",
+                          sm: "70%",
+                          xs: "70%",
+                        },
+                      }}
                     >
                       <Skeleton
                         variant="rect"
@@ -404,7 +407,7 @@ export default function App({
                         <Skeleton width="60%" />
                         <Skeleton />
                       </Box>
-                    </Grid>
+                    </ImageListItem>
                   ))
                 : data?.property?.map((stateInfo, index) => (
                     <Link

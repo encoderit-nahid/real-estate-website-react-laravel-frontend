@@ -61,21 +61,21 @@ export default function MyProperties(props) {
 	useChannel('notification-broadcast', (channel) => {
 		console.log('useChannel', channel)
 		channel
-			.here((...args) => {
-				console.log('notification-broadcast:here', ...args)
-			})
-			.joining((...args) => {
-				console.log('notification-broadcast:joining', ...args)
-			})
-			.leaving((...args) => {
-				console.log('notification-broadcast:leaving', ...args)
-			})
+			// .here((...args) => {
+			// 	console.log('notification-broadcast:here', ...args)
+			// })
+			// .joining((...args) => {
+			// 	console.log('notification-broadcast:joining', ...args)
+			// })
+			// .leaving((...args) => {
+			// 	console.log('notification-broadcast:leaving', ...args)
+			// })
 			.listen('NotificationEvent', (event) => {
 				console.log('notification-broadcast:NotificationEvent', event)
 			})
-			.listenForWhisper('ping', (event) => {
-				console.log('notification-broadcast:ping', event)
-			})
+			// .listenForWhisper('ping', (event) => {
+			// 	console.log('notification-broadcast:ping', event)
+			// })
 	})
 
 	const [value, setValue] = useState(+query?.value || 0)
