@@ -22,7 +22,7 @@ import BrokerRegisterContent from "../src/component/home/whoIsBroker/brokerRegis
 import BrokerImageContent from "../src/component/home/whoIsBroker/brokerContent/BrokerImageContent";
 import BestDealSvgBackground from "../src/component/svg/BestDealSvgBackground";
 import HouseCard from "../src/component/reuseable/HouseCard/HouseCard";
-import MobileSideContent from "../src/component/home/FullfillSideContent/mobileSideContent";
+import MobileSideContent from "../src/component/home/FullfillSideContent/MobileSideContent";
 import BrokerImageContentMobile from "../src/component/home/whoIsBroker/brokerContent/BrokerImageContentMobile";
 import BrokerHelp from "../src/component/IAmBroker/BrokerHelp/BrokerHelp";
 import BrokerHelpContent from "../src/component/IAmBroker/BrokerHelp/BrokerHelpContent";
