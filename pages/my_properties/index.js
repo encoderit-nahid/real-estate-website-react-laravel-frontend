@@ -1,337 +1,297 @@
-import Head from "next/head";
-import Image from "next/image";
-import PropTypes from "prop-types";
-import Tabs from "@mui/material/Tabs";
-import Tab from "@mui/material/Tab";
-import Typography from "@mui/material/Typography";
-import Box from "@mui/material/Box";
-import ResponsiveDrawer from "../../src/component/sharedProposal/ResponsiveDrawer/ResponsiveDrawer";
-import { Button, Container, Grid } from "@mui/material";
-import { useEffect, useState } from "react";
-import Releases from "../../src/component/properties/Releases/Releases";
-import ThirdTab from "../../src/component/properties/Third/ThirdTab";
-import NewRegistration from "../../src/component/properties/NewRegistration/NewRegistration";
-import notifyImage from "../../public/Images/notify.png";
-import Link from "next/link";
-import { getSession, useSession } from "next-auth/react";
-import { useRouter } from "next/router";
-// import { pusher } from "../../consts";
-import LaravelEcho from "laravel-echo";
-import { _baseURL } from "../../consts";
+import Head from 'next/head'
+import Image from 'next/image'
+import PropTypes from 'prop-types'
+import Tabs from '@mui/material/Tabs'
+import Tab from '@mui/material/Tab'
+import Typography from '@mui/material/Typography'
+import Box from '@mui/material/Box'
+import ResponsiveDrawer from '../../src/component/sharedProposal/ResponsiveDrawer/ResponsiveDrawer'
+import { Button, Container, Grid } from '@mui/material'
+import { useEffect, useState } from 'react'
+import Releases from '../../src/component/properties/Releases/Releases'
+import ThirdTab from '../../src/component/properties/Third/ThirdTab'
+import NewRegistration from '../../src/component/properties/NewRegistration/NewRegistration'
+import notifyImage from '../../public/Images/notify.png'
+import Link from 'next/link'
+import { getSession } from 'next-auth/react'
+import { useRouter } from 'next/router'
+import { _baseURL } from '../../consts'
+import useChannel from '@/hooks/useChannel'
 
-const drawerWidth = 240;
+const drawerWidth = 240
 
 function TabPanel(props) {
-  const { children, value, index, ...other } = props;
+	const { children, value, index, ...other } = props
 
-  return (
-    <div
-      role="tabpanel"
-      hidden={value !== index}
-      id={`simple-tabpanel-${index}`}
-      aria-labelledby={`simple-tab-${index}`}
-      {...other}
-    >
-      {value === index && (
-        <Box sx={{ p: 3 }}>
-          <Box>{children}</Box>
-        </Box>
-      )}
-    </div>
-  );
+	return (
+		<div
+			role="tabpanel"
+			hidden={value !== index}
+			id={`simple-tabpanel-${index}`}
+			aria-labelledby={`simple-tab-${index}`}
+			{...other}
+		>
+			{value === index && (
+				<Box sx={{ p: 3 }}>
+					<Box>{children}</Box>
+				</Box>
+			)}
+		</div>
+	)
 }
 
 TabPanel.propTypes = {
-  children: PropTypes.node,
-  index: PropTypes.number.isRequired,
-  value: PropTypes.number.isRequired,
-};
+	children: PropTypes.node,
+	index: PropTypes.number.isRequired,
+	value: PropTypes.number.isRequired,
+}
 
 function a11yProps(index) {
-  return {
-    id: `simple-tab-${index}`,
-    "aria-controls": `simple-tabpanel-${index}`,
-  };
+	return {
+		id: `simple-tab-${index}`,
+		'aria-controls': `simple-tabpanel-${index}`,
+	}
 }
 
 export default function MyProperties(props) {
-  const router = useRouter();
-  const { query } = router;
-  console.log({ query });
+	const router = useRouter()
+	const { query } = router
+	console.log({ query })
 
-  const session = useSession();
+	useChannel('notification-broadcast', (channel) => {
+		console.log('useChannel', channel)
+		channel
+			.here((...args) => {
+				console.log('notification-broadcast:here', ...args)
+			})
+			.joining((...args) => {
+				console.log('notification-broadcast:joining', ...args)
+			})
+			.leaving((...args) => {
+				console.log('notification-broadcast:leaving', ...args)
+			})
+			.listen('NotificationEvent', (event) => {
+				console.log('notification-broadcast:NotificationEvent', event)
+			})
+			.listenForWhisper('ping', (event) => {
+				console.log('notification-broadcast:ping', event)
+			})
+	})
 
-  useEffect(() => {
-    const token = localStorage.getItem("token");
-    if (token) {
-      window.Pusher = require("pusher-js");
-      window.Echo = new LaravelEcho({
-        encrypted: true,
-        broadcaster: "pusher",
-        key: process.env.NEXT_PUBLIC_PUSHER_KEY,
-        cluster: process.env.NEXT_PUBLIC_PUSHER_CLUSTER,
-        authEndpoint: _baseURL + "/api/broadcasting/auth",
-        auth: {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        },
-      });
+	const [value, setValue] = useState(+query?.value || 0)
 
-      const channel = window.Echo.join("notification-broadcast");
+	const handleChange = (event, newValue) => {
+		setValue(newValue)
+		newValue === 1
+			? router.replace({
+					pathname: '/my_properties',
+					query: {
+						status: 'third',
+						page: 1,
+						per_page: 9,
+						value: newValue,
+					},
+			  })
+			: newValue === 2
+			? router.replace({
+					pathname: '/my_properties',
+					query: { status: 'new', page: 1, per_page: 9, value: newValue },
+			  })
+			: router.replace({
+					pathname: '/my_properties',
+					query: { page: 1, per_page: 9, value: newValue },
+			  })
+	}
+	return (
+		<div>
+			<Head>
+				<title>Lokkan</title>
+				<meta name="description" content="Generated by create next app" />
+				<link rel="icon" href="/negotiate.png" />
+			</Head>
 
-      channel
-        .here((...args) => {
-          console.log("notification-broadcast:here", ...args);
-        })
-        .joining((...args) => {
-          console.log("notification-broadcast:joining", ...args);
-        })
-        .leaving((...args) => {
-          console.log("notification-broadcast:leaving", ...args);
-        })
-        .listen("NotificationEvent", (event) => {
-          console.log("notification-broadcast:NotificationEvent", event);
-        })
-        .listenForWhisper("ping", (event) => {
-          console.log("notification-broadcast:ping", event);
-        });
-
-      setInterval(() => {
-        channel.whisper("ping", Date.now());
-      }, 5000);
-    }
-
-    // const channel = pusher.subscribe("notification-broadcast");
-    // channel.bind("NotificationEvent", function (data) {
-    //   console.log("Received data:", data);
-    // });
-
-    // console.log("channel", channel);
-
-    // // setInterval(() => {
-    // //   channel.emit("ping", Date.now());
-    // // }, 2000);
-
-    // channel.bind("ping", (event) => {
-    //   console.log("on:ping", event);
-    // });
-
-    // return () => {
-    //   channel.unbind("NotificationEvent");
-    //   pusher.unsubscribe("notification-broadcast");
-    // };
-  }, []);
-
-  const [value, setValue] = useState(+query?.value || 0);
-
-  const handleChange = (event, newValue) => {
-    setValue(newValue);
-    newValue === 1
-      ? router.replace({
-          pathname: "/my_properties",
-          query: { status: "third", page: 1, per_page: 9, value: newValue },
-        })
-      : newValue === 2
-      ? router.replace({
-          pathname: "/my_properties",
-          query: { status: "new", page: 1, per_page: 9, value: newValue },
-        })
-      : router.replace({
-          pathname: "/my_properties",
-          query: { page: 1, per_page: 9, value: newValue },
-        });
-  };
-  return (
-    <div>
-      <Head>
-        <title>Lokkan</title>
-        <meta name="description" content="Generated by create next app" />
-        <link rel="icon" href="/negotiate.png" />
-      </Head>
-
-      <main>
-        <Box sx={{ display: "flex" }}>
-          <ResponsiveDrawer />
-          <Box
-            sx={{
-              //   backgroundColor: "#f6f8fc",
-              flexGrow: 1,
-              background: "#F2F5F6",
-              minHeight: "100vh",
-              width: { sm: `calc(100% - ${drawerWidth}px)` },
-              paddingX: { xs: 0, sm: 0, md: 6, lg: 6, xl: 6 },
-              paddingTop: { xs: 6, sm: 6, md: 6, lg: 8, xl: 3 },
-              paddingBottom: { xs: 3, sm: 3, md: 3, lg: 4, xl: 3 },
-            }}
-          >
-            <Grid
-              container
-              direction="row"
-              justifyContent="space-between"
-              alignItems="flex-start"
-            >
-              <Typography
-                variant="p"
-                sx={{
-                  color: "#002152",
-                  fontSize: "24px",
-                  fontWeight: "700",
-                  lineHeight: "32px",
-                  ml: { xs: 4, sm: 4, md: 0, lg: 0, xl: 0 },
-                  mt: { xs: 1, sm: 1, md: 0, lg: 0, xl: 0 },
-                }}
-              >
-                My Properties
-              </Typography>
-              <Image src={notifyImage} alt="notify" />
-            </Grid>
-            <Container maxWidth="xl">
-              <Box sx={{ width: "100%" }}>
-                <Box sx={{ borderBottom: 1, borderColor: "divider" }}>
-                  <Tabs
-                    value={value}
-                    onChange={handleChange}
-                    aria-label="basic tabs example"
-                    variant="scrollable"
-                  >
-                    <Tab
-                      sx={{ fontWeight: "600" }}
-                      label="Releases"
-                      {...a11yProps(0)}
-                    />
-                    <Tab
-                      sx={{ fontWeight: "600" }}
-                      label="Third"
-                      {...a11yProps(1)}
-                    />
-                    <Tab
-                      sx={{ fontWeight: "600" }}
-                      label="New Registration(2)"
-                      {...a11yProps(2)}
-                    />
-                  </Tabs>
-                </Box>
-                <Container maxWidth="xl">
-                  <Grid
-                    container
-                    direction="row"
-                    justifyContent={{
-                      xs: "flex-start",
-                      sm: "flex-start",
-                      md: "flex-start",
-                      lg: "flex-end",
-                    }}
-                    alignItems="center"
-                    gap={2}
-                    sx={{ mt: 3 }}
-                  >
-                    <Link href="/my_properties/new_property">
-                      {/* <a
+			<main>
+				<Box sx={{ display: 'flex' }}>
+					<ResponsiveDrawer />
+					<Box
+						sx={{
+							//   backgroundColor: "#f6f8fc",
+							flexGrow: 1,
+							background: '#F2F5F6',
+							minHeight: '100vh',
+							width: { sm: `calc(100% - ${drawerWidth}px)` },
+							paddingX: { xs: 0, sm: 0, md: 6, lg: 6, xl: 6 },
+							paddingTop: { xs: 6, sm: 6, md: 6, lg: 8, xl: 3 },
+							paddingBottom: { xs: 3, sm: 3, md: 3, lg: 4, xl: 3 },
+						}}
+					>
+						<Grid
+							container
+							direction="row"
+							justifyContent="space-between"
+							alignItems="flex-start"
+						>
+							<Typography
+								variant="p"
+								sx={{
+									color: '#002152',
+									fontSize: '24px',
+									fontWeight: '700',
+									lineHeight: '32px',
+									ml: { xs: 4, sm: 4, md: 0, lg: 0, xl: 0 },
+									mt: { xs: 1, sm: 1, md: 0, lg: 0, xl: 0 },
+								}}
+							>
+								My Properties
+							</Typography>
+							<Image src={notifyImage} alt="notify" />
+						</Grid>
+						<Container maxWidth="xl">
+							<Box sx={{ width: '100%' }}>
+								<Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
+									<Tabs
+										value={value}
+										onChange={handleChange}
+										aria-label="basic tabs example"
+										variant="scrollable"
+									>
+										<Tab
+											sx={{ fontWeight: '600' }}
+											label="Releases"
+											{...a11yProps(0)}
+										/>
+										<Tab
+											sx={{ fontWeight: '600' }}
+											label="Third"
+											{...a11yProps(1)}
+										/>
+										<Tab
+											sx={{ fontWeight: '600' }}
+											label="New Registration(2)"
+											{...a11yProps(2)}
+										/>
+									</Tabs>
+								</Box>
+								<Container maxWidth="xl">
+									<Grid
+										container
+										direction="row"
+										justifyContent={{
+											xs: 'flex-start',
+											sm: 'flex-start',
+											md: 'flex-start',
+											lg: 'flex-end',
+										}}
+										alignItems="center"
+										gap={2}
+										sx={{ mt: 3 }}
+									>
+										<Link href="/my_properties/new_property">
+											{/* <a
                         style={{
                           textDecoration: "none",
                           listStyle: "none",
                           width: "100%",
                         }}
                       > */}
-                      <Button
-                        sx={{
-                          textTransform: "none",
-                          background: "#0362F0",
-                          borderRadius: "4px",
-                          color: "#ffffff",
-                          fontSize: "16px",
-                          fontWeight: "600",
-                          px: 4,
-                          py: 1,
-                          width: {
-                            xs: "100%",
-                            sm: "100%",
-                            md: "30%",
-                            lg: "30%",
-                            xl: "20%",
-                          },
-                          "&:hover": {
-                            background: "#0362F0",
-                            borderRadius: "4px",
-                            color: "#ffffff",
-                          },
-                        }}
-                      >
-                        New property
-                      </Button>
-                      {/* </a> */}
-                    </Link>
+											<Button
+												sx={{
+													textTransform: 'none',
+													background: '#0362F0',
+													borderRadius: '4px',
+													color: '#ffffff',
+													fontSize: '16px',
+													fontWeight: '600',
+													px: 4,
+													py: 1,
+													width: {
+														xs: '100%',
+														sm: '100%',
+														md: '30%',
+														lg: '30%',
+														xl: '20%',
+													},
+													'&:hover': {
+														background: '#0362F0',
+														borderRadius: '4px',
+														color: '#ffffff',
+													},
+												}}
+											>
+												New property
+											</Button>
+											{/* </a> */}
+										</Link>
 
-                    <Link href="/my_properties/new_venture">
-                      {/* <a
+										<Link href="/my_properties/new_venture">
+											{/* <a
                         style={{
                           textDecoration: "none",
                           listStyle: "none",
                           width: "100%",
                         }}
                       > */}
-                      <Button
-                        sx={{
-                          textTransform: "none",
-                          border: "1px solid #002152",
-                          borderRadius: "4px",
-                          color: "#002152",
-                          fontSize: "16px",
-                          fontWeight: "600",
-                          px: 4,
-                          py: 1,
-                          width: {
-                            xs: "100%",
-                            sm: "100%",
-                            md: "30%",
-                            lg: "30%",
-                            xl: "20%",
-                          },
-                        }}
-                      >
-                        New venture
-                      </Button>
-                      {/* </a> */}
-                    </Link>
-                  </Grid>
-                </Container>
-                <TabPanel value={value} index={0}>
-                  <Releases queryData={query} />
-                </TabPanel>
-                <TabPanel value={value} index={1}>
-                  <ThirdTab />
-                </TabPanel>
-                <TabPanel value={value} index={2}>
-                  <NewRegistration />
-                </TabPanel>
-              </Box>
-            </Container>
-          </Box>
-        </Box>
-      </main>
-    </div>
-  );
+											<Button
+												sx={{
+													textTransform: 'none',
+													border: '1px solid #002152',
+													borderRadius: '4px',
+													color: '#002152',
+													fontSize: '16px',
+													fontWeight: '600',
+													px: 4,
+													py: 1,
+													width: {
+														xs: '100%',
+														sm: '100%',
+														md: '30%',
+														lg: '30%',
+														xl: '20%',
+													},
+												}}
+											>
+												New venture
+											</Button>
+											{/* </a> */}
+										</Link>
+									</Grid>
+								</Container>
+								<TabPanel value={value} index={0}>
+									<Releases queryData={query} />
+								</TabPanel>
+								<TabPanel value={value} index={1}>
+									<ThirdTab />
+								</TabPanel>
+								<TabPanel value={value} index={2}>
+									<NewRegistration />
+								</TabPanel>
+							</Box>
+						</Container>
+					</Box>
+				</Box>
+			</main>
+		</div>
+	)
 }
 
 export async function getServerSideProps(context) {
-  //* Session for SSG
-  const session = await getSession(context);
-  //? If Not Logged In
-  if (!session) {
-    return {
-      redirect: {
-        destination: "/",
-      },
-      props: {
-        session: null,
-      },
-    };
-  }
+	//* Session for SSG
+	const session = await getSession(context)
+	//? If Not Logged In
+	if (!session) {
+		return {
+			redirect: {
+				destination: '/',
+			},
+			props: {
+				session: null,
+			},
+		}
+	}
 
-  return {
-    props: {
-      session: session,
-    },
-  };
+	return {
+		props: {
+			session: session,
+		},
+	}
 }

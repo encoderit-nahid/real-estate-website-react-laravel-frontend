@@ -2,7 +2,6 @@
   "name": "spare-parts-ecom-app-laravel-react-front-end",
   "version": "0.1.0",
   "private": true,
- 
   "scripts": {
     "dev": "next dev",
     "build": "next build",
@@ -48,6 +47,7 @@
   },
   "devDependencies": {
     "eslint": "8.24.0",
-    "eslint-config-next": "12.3.1"
+    "eslint-config-next": "12.3.1",
+    "eslint-config-prettier": "^8.8.0"
   }
 }
