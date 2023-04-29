@@ -7,17 +7,16 @@
 // module.exports = nextConfig
 
 module.exports = {
-  reactStrictMode: true,
-  swcMinify: true,
-  staticPageGenerationTimeout: 1000,
-  output:"standalone",
-  images: {
-    remotePatterns: [
-      {
-        protocol: "http",
-        hostname: "http://127.0.0.1",
-      },
-    ],
-  },
-};
-
+	reactStrictMode: true,
+	swcMinify: true,
+	staticPageGenerationTimeout: 1000,
+	output: 'standalone',
+	images: {
+		remotePatterns: [
+			{
+				protocol: 'http',
+				hostname: 'http://192.168.50.70',
+			},
+		],
+	},
+}

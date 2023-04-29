@@ -1,42 +1,41 @@
-import { featuresApi } from "../../api";
-import * as Types from "./types";
+import { featuresApi } from '../../api'
+import * as Types from './types'
 
 const certificateRequest = (data) => {
-  return {
-    type: Types.CERTIFICATE_REQUEST,
-  };
-};
+	return {
+		type: Types.CERTIFICATE_REQUEST,
+	}
+}
 
 const certificateSuccess = (data) => {
-  return {
-    type: Types.CERTIFICATE_SUCCESS,
-    payload: data,
-  };
-};
+	return {
+		type: Types.CERTIFICATE_SUCCESS,
+		payload: data,
+	}
+}
 
 const certificateFailed = (err) => {
-  return {
-    type: Types.CERTIFICATE_FAILED,
-    payload: err,
-  };
-};
+	return {
+		type: Types.CERTIFICATE_FAILED,
+		payload: err,
+	}
+}
 
 // feature action
 export const findCertificateData = (type) => async (dispatch) => {
-  dispatch(certificateRequest());
+	dispatch(certificateRequest())
 
-  const [error, response] = await featuresApi(type);
-  console.log({ response });
+	const [error, response] = await featuresApi(type)
 
-  if (!error) {
-    dispatch(certificateSuccess(response?.data?.features));
-  } else {
-    const errorMassage =
-      error?.response?.data?.data || error?.response?.data?.status;
-    // toast.error(errorMassage);
-    dispatch(certificateFailed(errorMassage));
-  }
-};
+	if (!error) {
+		dispatch(certificateSuccess(response?.data?.features))
+	} else {
+		const errorMassage =
+			error?.response?.data?.data || error?.response?.data?.status
+		// toast.error(errorMassage);
+		dispatch(certificateFailed(errorMassage))
+	}
+}
 
 //FEATURE_CREATE
 // export const featureDataCreate = (body) => async (dispatch) => {

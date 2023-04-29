@@ -1,75 +1,69 @@
-import axios from "axios";
-import NextAuth from "next-auth";
-import CredentialsProvider from "next-auth/providers/credentials";
+import axios from 'axios'
+import NextAuth from 'next-auth'
+import CredentialsProvider from 'next-auth/providers/credentials'
 
 export default NextAuth({
-  providers: [
-    CredentialsProvider({
-      // The name to display on the sign in form (e.g. 'Sign in with...')
+	providers: [
+		CredentialsProvider({
+			// The name to display on the sign in form (e.g. 'Sign in with...')
 
-      async authorize(credentials, req) {
-        console.log(typeof credentials.permisison);
-        return {
-          auth: true,
-          userId: credentials.userId,
-          userEmail: credentials.userEmail,
-          name: credentials.name,
-          phone: credentials.phone,
-          status: credentials.status,
-          role: credentials.role,
-          roleId: credentials.roleId,
-          permissions: credentials.permissions,
-        };
-      },
-    }),
-  ],
+			async authorize(credentials, req) {
+				return {
+					auth: true,
+					userId: credentials.userId,
+					userEmail: credentials.userEmail,
+					name: credentials.name,
+					phone: credentials.phone,
+					status: credentials.status,
+					role: credentials.role,
+					roleId: credentials.roleId,
+					permissions: credentials.permissions,
+				}
+			},
+		}),
+	],
 
-  secret: process.env.JWT_SECRET,
-  jwt: {
-    secret: process.env.JWT_SECRET,
-  },
-  session: {
-    // Use JSON Web Tokens for session instead of database sessions.
-    // This option can be used with or without a database for users/accounts.
-    // Note: `jwt` is automatically set to `true` if no database is specified.
-    jwt: true,
-    // Seconds - How long until an idle session expires and is no longer valid.
-    // maxAge: 30 * 24 * 60 * 60, // 30 days
+	secret: process.env.JWT_SECRET,
+	jwt: {
+		secret: process.env.JWT_SECRET,
+	},
+	session: {
+		// Use JSON Web Tokens for session instead of database sessions.
+		// This option can be used with or without a database for users/accounts.
+		// Note: `jwt` is automatically set to `true` if no database is specified.
+		jwt: true,
+		// Seconds - How long until an idle session expires and is no longer valid.
+		// maxAge: 30 * 24 * 60 * 60, // 30 days
 
-    // // Seconds - Throttle how frequently to write to database to extend a session.
-    // // Use it to limit write operations. Set to 0 to always update the database.
-    // // Note: This option is ignored if using JSON Web Tokens
-    // updateAge: 24 * 60 * 60, // 24 hours
-  },
+		// // Seconds - Throttle how frequently to write to database to extend a session.
+		// // Use it to limit write operations. Set to 0 to always update the database.
+		// // Note: This option is ignored if using JSON Web Tokens
+		// updateAge: 24 * 60 * 60, // 24 hours
+	},
 
-  callbacks: {
-    // async redirect({url, baseUrl}) {
-    //     // console.log("REDIRECT", url, baseUrl);
-    //     return baseUrl;
-    // },
-    async session({ session, token }) {
-      if (token) {
-        session.user = token.user;
-        session.accessToken = token.token;
-      }
-      // console.log("SESSION", session, "TOKEN", token);
-      return session;
-    },
-    async jwt({ token, user, account, profile, isNewUser }) {
-      console.log({ user });
-      // Initial sign in
-      if (account && user) {
-        token.user = user;
-        token.token = account.token;
-      }
-      return token;
-    },
-  },
+	callbacks: {
+		async session({ session, token }) {
+			if (token) {
+				session.user = token.user
+				session.accessToken = token.token
+			}
 
-  pages: {
-    signIn: "/",
-  },
-  session: {
-    strategy: "jwt",
-  },
-});
+			return session
+		},
+		async jwt({ token, user, account, profile, isNewUser }) {
+			// Initial sign in
+			if (account && user) {
+				token.user = user
+				token.token = account.token
+			}
+			return token
+		},
+	},
+
+	pages: {
+		signIn: '/',
+	},
+	session: {
+		strategy: 'jwt',
+	},
+})

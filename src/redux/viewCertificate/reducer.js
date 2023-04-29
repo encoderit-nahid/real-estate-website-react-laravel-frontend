@@ -1,34 +1,41 @@
-import * as Types from "./types";
+import * as Types from './types'
 
 const InitialState = {
-  viewCertificateData: {},
-  loading: false,
-};
+	viewCertificateData: {},
+	loading: false,
+}
 
 const ViewCertificateReducer = (state = InitialState, action) => {
-  console.log(action.payload);
-  switch (action.type) {
-    case Types.VIEW_CERTIFICATE_REQUEST:
-      return {
-        viewCertificateData: {},
-        loading: true,
-      };
+	switch (action.type) {
+		case Types.VIEW_CERTIFICATE_REQUEST:
+			return {
+				viewCertificateData: {},
+				loading: true,
+			}
 
-    case Types.VIEW_CERTIFICATE_SUCCESS:
-      return {
-        viewCertificateData: action.payload,
-        loading: false,
-      };
+		case Types.VIEW_CERTIFICATE_SUCCESS:
+			return {
+				viewCertificateData: action.payload,
+				loading: false,
+			}
 
-    case Types.VIEW_CERTIFICATE_FAILED:
-      return {
-        viewCertificateData: {},
-        loading: false,
-      };
+		// case Types.CERTIFICATE_REMOVE:
+		// 	const afterFiltered = state?.scheduleData?.data?.filter((schedule) => {
+		// 		return schedule.id !== action.payload
+		// 	})
+		// 	return {
+		// 		scheduleData: { ...state.scheduleData, data: afterFiltered },
+		// 	}
 
-    default:
-      return state;
-  }
-};
+		case Types.VIEW_CERTIFICATE_FAILED:
+			return {
+				viewCertificateData: {},
+				loading: false,
+			}
 
-export default ViewCertificateReducer;
+		default:
+			return state
+	}
+}
+
+export default ViewCertificateReducer

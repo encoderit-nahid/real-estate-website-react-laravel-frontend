@@ -6,19 +6,55 @@ import Tab from '@mui/material/Tab'
 import Typography from '@mui/material/Typography'
 import Box from '@mui/material/Box'
 import ResponsiveDrawer from '../../src/component/sharedProposal/ResponsiveDrawer/ResponsiveDrawer'
-import { Button, Container, Grid } from '@mui/material'
+import {
+	Badge,
+	Button,
+	Container,
+	Grid,
+	ListItem,
+	ListItemButton,
+	ListItemIcon,
+	ListItemText,
+} from '@mui/material'
 import { useEffect, useState } from 'react'
 import Releases from '../../src/component/properties/Releases/Releases'
 import ThirdTab from '../../src/component/properties/Third/ThirdTab'
 import NewRegistration from '../../src/component/properties/NewRegistration/NewRegistration'
 import notifyImage from '../../public/Images/notify.png'
 import Link from 'next/link'
-import { getSession } from 'next-auth/react'
+import { getSession, useSession } from 'next-auth/react'
 import { useRouter } from 'next/router'
 import { _baseURL } from '../../consts'
 import useChannel from '@/hooks/useChannel'
+import Popover from '@mui/material/Popover'
+import { FixedSizeList } from 'react-window'
+import { useDispatch, useSelector } from 'react-redux'
+import NotificationsNoneOutlinedIcon from '@mui/icons-material/NotificationsNoneOutlined'
+import {
+	GetAllNotification,
+	notificationAddPusherItem,
+	notificationRemove,
+} from '@/redux/all-notification/actions'
+import {
+	findNotificationCountData,
+	notificationAddCount,
+} from '@/redux/notificationCount/actions'
+import { NOTIFICATION_ADD_COUNT } from '@/redux/notificationCount/types'
+import { NotificationReadApi } from '@/api'
 
 const drawerWidth = 240
+
+function renderRow(props) {
+	const { index, style } = props
+
+	return (
+		<ListItem style={style} key={index} component="div" disablePadding>
+			<ListItemButton>
+				<ListItemText primary={`Item ${index + 1}`} />
+			</ListItemButton>
+		</ListItem>
+	)
+}
 
 function TabPanel(props) {
 	const { children, value, index, ...other } = props
@@ -56,9 +92,22 @@ function a11yProps(index) {
 export default function MyProperties(props) {
 	const router = useRouter()
 	const { query } = router
-	console.log({ query })
+	const { data: session } = useSession()
 
-	useChannel('notification-broadcast', (channel) => {
+	const dispatch = useDispatch()
+	useEffect(() => {
+		dispatch(findNotificationCountData())
+		dispatch(GetAllNotification())
+	}, [dispatch])
+	const notificationCountData = useSelector(
+		(state) => state?.notificationCount?.notificationCountData
+	)
+	console.log({ notificationCountData })
+	const notificationData = useSelector(
+		(state) => state?.notification?.notificationData
+	)
+	console.log({ notificationData })
+	useChannel('notification-broadcast.' + session.user.userId, (channel) => {
 		console.log('useChannel', channel)
 		channel
 			// .here((...args) => {
@@ -70,13 +119,36 @@ export default function MyProperties(props) {
 			// .leaving((...args) => {
 			// 	console.log('notification-broadcast:leaving', ...args)
 			// })
-			.listen('NotificationEvent', (event) => {
+			.listen('.OnCreateNewSchedule', (event) => {
 				console.log('notification-broadcast:NotificationEvent', event)
+				dispatch(notificationAddPusherItem(event.notification))
+				dispatch(notificationAddCount(1))
 			})
-			// .listenForWhisper('ping', (event) => {
-			// 	console.log('notification-broadcast:ping', event)
-			// })
+		// .listenForWhisper('ping', (event) => {
+		// 	console.log('notification-broadcast:ping', event)
+		// })
 	})
+
+	const handleReadNotification = async (data) => {
+		const [error, response] = await NotificationReadApi(data?.id)
+		if (!error) {
+			dispatch(notificationRemove(data?.id))
+			dispatch(notificationAddCount(-1))
+		}
+	}
+
+	const [anchorEl, setAnchorEl] = useState(null)
+
+	const handleClick = (event) => {
+		setAnchorEl(event.currentTarget)
+	}
+
+	const handleClose = () => {
+		setAnchorEl(null)
+	}
+
+	const open = Boolean(anchorEl)
+	const id = open ? 'simple-popover' : undefined
 
 	const [value, setValue] = useState(+query?.value || 0)
 
@@ -144,7 +216,77 @@ export default function MyProperties(props) {
 							>
 								My Properties
 							</Typography>
-							<Image src={notifyImage} alt="notify" />
+							<Button
+								aria-describedby={id}
+								variant="contained"
+								onClick={handleClick}
+								sx={{
+									p: 0,
+									background: 'transparent',
+									boxShadow: 'none',
+									'&:hover': {
+										boxShadow: 'none',
+										background: 'transparent',
+									},
+								}}
+							>
+								<Badge
+									badgeContent={notificationCountData?.count}
+									color="primary"
+								>
+									<Image src={notifyImage} alt="notify" />
+								</Badge>
+							</Button>
+							<Popover
+								id={id}
+								open={open}
+								anchorEl={anchorEl}
+								onClose={handleClose}
+								anchorOrigin={{
+									vertical: 'bottom',
+									horizontal: 'left',
+								}}
+							>
+								<Box
+									sx={{
+										width: '100%',
+										height: 350,
+										maxWidth: 360,
+										minWidth: 360,
+										bgcolor: 'background.paper',
+									}}
+								>
+									{/* <FixedSizeList
+										height={400}
+										width={360}
+										itemSize={46}
+										itemCount={200}
+										overscanCount={10}
+									>
+										{renderRow}
+									</FixedSizeList> */}
+									{notificationData?.map((data, index) => (
+										<ListItem
+											// style={style}
+											key={index}
+											component="div"
+											disablePadding
+											sx={{ width: 360 }}
+										>
+											<ListItemButton
+												onClick={() => handleReadNotification(data)}
+											>
+												<ListItemIcon>
+													<NotificationsNoneOutlinedIcon
+														sx={{ color: '#7dd3fc' }}
+													/>
+												</ListItemIcon>
+												<ListItemText primary={data?.data} />
+											</ListItemButton>
+										</ListItem>
+									))}
+								</Box>
+							</Popover>
 						</Grid>
 						<Container maxWidth="xl">
 							<Box sx={{ width: '100%' }}>
@@ -165,11 +307,13 @@ export default function MyProperties(props) {
 											label="Third"
 											{...a11yProps(1)}
 										/>
-										<Tab
-											sx={{ fontWeight: '600' }}
-											label="New Registration(2)"
-											{...a11yProps(2)}
-										/>
+										{session.user?.role === 'admin' && (
+											<Tab
+												sx={{ fontWeight: '600' }}
+												label="New Registration"
+												{...a11yProps(2)}
+											/>
+										)}
 									</Tabs>
 								</Box>
 								<Container maxWidth="xl">
@@ -224,13 +368,6 @@ export default function MyProperties(props) {
 										</Link>
 
 										<Link href="/my_properties/new_venture">
-											{/* <a
-                        style={{
-                          textDecoration: "none",
-                          listStyle: "none",
-                          width: "100%",
-                        }}
-                      > */}
 											<Button
 												sx={{
 													textTransform: 'none',
@@ -252,7 +389,6 @@ export default function MyProperties(props) {
 											>
 												New venture
 											</Button>
-											{/* </a> */}
 										</Link>
 									</Grid>
 								</Container>
