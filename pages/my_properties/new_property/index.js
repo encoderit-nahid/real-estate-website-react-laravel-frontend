@@ -34,7 +34,7 @@ import * as Yup from 'yup'
 import { useDispatch, useSelector } from 'react-redux'
 import { findProjectsData } from '../../../src/redux/projects/actions'
 import { findPropertyTypeData } from '../../../src/redux/propertyType/actions'
-import { propertyCreateApi } from '../../../src/api'
+import { propertyCreateApi, propertyUpdateApi } from '../../../src/api'
 import { serialize } from 'object-to-formdata'
 import { useRouter } from 'next/router'
 import { findSinglePropertyData } from '../../../src/redux/singleProperty/actions'
@@ -357,18 +357,31 @@ export default function NewProperty(props) {
 
 	const allValues = watch()
 
+	console.log({ singleData })
+
+	console.log({ files })
+
 	const onSubmit = async (data) => {
 		action === 'new' ? setLoading(true) : setDraftLoading(true)
 
 		// if (files.length > 0 && featuretypes.length > 0) {
 		let newArr = []
 		files?.forEach((data, index) => {
-			newArr.push({ file: data, title: allValues[`title_${index}`].slug })
+			if (data instanceof File) {
+				newArr.push({ file: data, title: allValues[`title_${index}`].slug })
+			}
 		})
+
+		const newDocuments = documents?.filter((data) => data instanceof File)
+		// console.log({ newDocuments })
+		// const newImages = newArr?.filter((data) => data instanceof File)
+		// console.log({ newImages })
+		// console.log({ newArr })
 
 		const firstPartData = omitEmpties({
 			user_id: +session?.user?.userId,
 			project_id: +data?.project_id?.id,
+			property_id: query?.property_id,
 			property_detail_id: +property_detail_id,
 			ad_type: adType.toLocaleLowerCase(),
 			property_type: propertyType.toLocaleLowerCase(),
@@ -382,9 +395,10 @@ export default function NewProperty(props) {
 			no_of_bathrooms: data?.no_of_bathrooms,
 			no_of_parking_spaces: data?.no_of_parking_spaces,
 			features: featuretypes,
+			// deprecated_images: singleData?.attachments?.map((data) => data.id),
 			status: action,
-			document_files: documents,
-			content_url: data?.videos[0].url !== '' ? data?.videos : null,
+			document_files: newDocuments,
+			content_url: data?.videos[0]?.url !== '' ? data?.videos : null,
 			images: newArr,
 			// documents: "",
 			// registry: "",
@@ -444,17 +458,32 @@ export default function NewProperty(props) {
 		}
 
 		const formData = serialize(requireData, { indices: true })
-		const [error, response] = await propertyCreateApi(formData)
-		setLoading(false)
-		setDraftLoading(false)
-		if (!error) {
-			setSentModalOpen(true)
-			reset()
+		if (query?.property_id) {
+			const [error, response] = await propertyUpdateApi(formData)
+			setLoading(false)
+			setDraftLoading(false)
+			if (!error) {
+				setSentModalOpen(true)
+				reset()
+			} else {
+				const errors = error?.response?.data?.errors ?? {}
+				Object.entries(errors).forEach(([name, messages]) => {
+					setError(name, { type: 'manual', message: messages[0] })
+				})
+			}
 		} else {
-			const errors = error?.response?.data?.errors ?? {}
-			Object.entries(errors).forEach(([name, messages]) => {
-				setError(name, { type: 'manual', message: messages[0] })
-			})
+			const [error, response] = await propertyCreateApi(formData)
+			setLoading(false)
+			setDraftLoading(false)
+			if (!error) {
+				setSentModalOpen(true)
+				reset()
+			} else {
+				const errors = error?.response?.data?.errors ?? {}
+				Object.entries(errors).forEach(([name, messages]) => {
+					setError(name, { type: 'manual', message: messages[0] })
+				})
+			}
 		}
 	}
 

@@ -265,6 +265,16 @@ export const propertyCreateApi = async (body) => {
 	}
 }
 
+//update_new_property
+export const propertyUpdateApi = async (body) => {
+	try {
+		const response = await apiInstance.post(`property/update`, body)
+		return [false, response]
+	} catch (error) {
+		return [error, null]
+	}
+}
+
 //accept_proposal
 export const proposalAcceptApi = async (body) => {
 	try {

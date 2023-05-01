@@ -95,6 +95,10 @@ function Address({
 		setValue(e.target.value)
 	}
 
+	// console.log({ documents })
+	// const filterDocs = documents?.filter((d) => d instanceof File)
+	// console.log({ filterDocs })
+
 	const onDrop = (acceptedFiles) => {
 		acceptedFiles.map((file) =>
 			Object.assign(file, {
@@ -116,7 +120,8 @@ function Address({
 		onDrop,
 		accept: {
 			'application/pdf': [],
-			'application/vnd.openxmlformats-officedocument.wordprocessingml.document': [],
+			'application/vnd.openxmlformats-officedocument.wordprocessingml.document':
+				[],
 			'application/msword': [],
 		},
 	})
@@ -243,7 +248,8 @@ function Address({
 									variant="p"
 									sx={{ color: '#38bdf8', fontWeight: '600' }}
 								>
-									{file?.name?.slice(0, 15)}
+									{file?.name?.slice(0, 15) ||
+										file?.title?.slice(0, 15)}
 								</Typography>
 							</Box>
 						</Grid>

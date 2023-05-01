@@ -24,6 +24,7 @@ export default function PDFViewer({ contractDetailsInfo }) {
 	function onDocumentLoadSuccess({ numPages: nextNumPages }) {
 		setNumPages(nextNumPages)
 	}
+	console.log('file', file, contractDetailsInfo)
 
 	return (
 		<div style={{ maxHeight: '70vh', overflowY: 'scroll' }}>

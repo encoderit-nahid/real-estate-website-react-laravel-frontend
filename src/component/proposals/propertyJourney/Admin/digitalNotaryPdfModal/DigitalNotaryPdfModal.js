@@ -261,7 +261,7 @@ function DigitalNotaryPdfModal({
 				</AppBar>
 				<Main open={open}>
 					<DrawerHeader />
-					<PDFViewer viewData={viewData} />
+					<PDFViewer contractDetailsInfo={viewData} />
 				</Main>
 				<Drawer
 					sx={{

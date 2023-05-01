@@ -16,6 +16,15 @@ import { useDispatch, useSelector } from 'react-redux'
 import { ChangePropertyStatus } from '../../../redux/propertyStatus/actions'
 import { findPropertyData } from '../../../redux/property/actions'
 
+const omitEmpties = (obj) => {
+	return Object.entries(obj).reduce((carry, [key, value]) => {
+		if (![null, undefined, ''].includes(value)) {
+			carry[key] = value
+		}
+		return carry
+	}, {})
+}
+
 function NewRegistrationCard({ propertyData, newProperty }) {
 	const [progress, setProgress] = React.useState(87)
 	const dispatch = useDispatch()
@@ -43,7 +52,7 @@ function NewRegistrationCard({ propertyData, newProperty }) {
 	)
 
 	const myLoader = ({ src }) => {
-		return `${_baseURL}/storage/${propertyData?.attachments[0]?.file_path}`
+		return `${_baseURL}/storage/${src}`
 	}
 
 	return (
@@ -84,7 +93,7 @@ function NewRegistrationCard({ propertyData, newProperty }) {
 							<Image
 								alt="rent"
 								loader={myLoader}
-								src={`${_baseURL}/storage/${propertyData?.attachments[0]?.file_path}`}
+								src={`${propertyData?.attachments[0]?.file_path}`}
 								layout="fill"
 								objectFit="cover"
 								style={{ borderRadius: '8px 0 0 8px' }}
@@ -182,7 +191,7 @@ function NewRegistrationCard({ propertyData, newProperty }) {
 										color: '#9FAAB1',
 									}}
 								>
-									87%
+									{`${propertyData?.form_fill_up_progress}%`}
 								</Typography>
 							</Box>
 							<Box sx={{ width: '20%', mr: 1, mt: '1.5vh', ml: 1 }}>
@@ -199,7 +208,7 @@ function NewRegistrationCard({ propertyData, newProperty }) {
 										// },
 									}}
 									variant="determinate"
-									value={progress}
+									value={propertyData?.form_fill_up_progress}
 								/>
 							</Box>
 						</Grid>
@@ -277,19 +286,17 @@ function NewRegistrationCard({ propertyData, newProperty }) {
 									'Reject'
 								)}
 							</Button>
-							<Button
-								variant="contained"
-								sx={{
-									fontSize: '14px',
-									lineHeight: '18px',
-									fontWeight: '600',
-
-									borderRadius: '4px',
-									//   padding: "8px 20px",
-									textTransform: 'none',
-									ml: 1,
-									mr: 1,
-									'&:hover': {
+							<Link
+								href={{
+									pathname: '/my_properties/new_property',
+									query: omitEmpties({
+										property_id: propertyData?.id,
+									}),
+								}}
+							>
+								<Button
+									variant="contained"
+									sx={{
 										fontSize: '14px',
 										lineHeight: '18px',
 										fontWeight: '600',
@@ -299,11 +306,22 @@ function NewRegistrationCard({ propertyData, newProperty }) {
 										textTransform: 'none',
 										ml: 1,
 										mr: 1,
-									},
-								}}
-							>
-								Edit
-							</Button>
+										'&:hover': {
+											fontSize: '14px',
+											lineHeight: '18px',
+											fontWeight: '600',
+
+											borderRadius: '4px',
+											//   padding: "8px 20px",
+											textTransform: 'none',
+											ml: 1,
+											mr: 1,
+										},
+									}}
+								>
+									Edit
+								</Button>
+							</Link>
 							<Button
 								onClick={() => handleApprove(propertyData.id)}
 								variant="contained"

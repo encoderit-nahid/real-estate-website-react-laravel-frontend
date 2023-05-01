@@ -67,6 +67,8 @@ function SliderView({
 	//     return selectImage.split(/[#?]/)[0].split('.').pop().trim();
 	// }
 
+	console.log({ selectImage })
+
 	const handleChange = (event, newValue) => {
 		setValue(+newValue)
 	}
@@ -315,13 +317,23 @@ function SliderView({
 			<TabPanel value={value} index={1}>
 				{selectImage != null &&
 				selectImage?.split(/[#?]/)[0].split('.').pop().trim() !== 'webp' ? (
-					<ReactPannellum
-						id="1"
-						sceneId="firstScene"
-						imageSource={`${_baseURL}/storage/${selectImage}`}
-						config={config}
-						// style={style}
-					/>
+					<div key={selectImage}>
+						{/* {`${_baseURL}/storage/${selectImage}`}
+						<Image
+							loader={myLoader}
+							src={`${_baseURL}/storage/${selectImage}`}
+							alt="home"
+							width={800}
+							height={400}
+						/> */}
+						<ReactPannellum
+							id="1"
+							sceneId="firstScene"
+							imageSource={`${_baseURL}/storage/${selectImage}`}
+							config={config}
+							// style={style}
+						/>
+					</div>
 				) : (
 					<Grid
 						container

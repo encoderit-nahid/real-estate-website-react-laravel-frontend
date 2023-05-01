@@ -11,7 +11,7 @@ function BrokerHelp({ name, content, buttonName, fieldItem, handleLoginOpen }) {
 	const [value, setValue] = React.useState('')
 
 	const handleAdvertise = () => {
-		router.push('/new_property')
+		router.push('/my_properties/new_property')
 		localStorage.setItem('Zip_code', value)
 	}
 	return (

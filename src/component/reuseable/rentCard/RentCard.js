@@ -19,7 +19,7 @@ function RentCard({ propertyData }) {
 	const [progress, setProgress] = React.useState(87)
 
 	const myLoader = ({ src }) => {
-		return `${_baseURL}/storage/${propertyData?.attachments[0]?.file_path}`
+		return `${_baseURL}/storage/${src}`
 	}
 	return (
 		<Box
@@ -54,7 +54,7 @@ function RentCard({ propertyData }) {
 						<Image
 							alt="rent"
 							loader={myLoader}
-							src={`${_baseURL}/storage/${propertyData?.attachments[0]?.file_path}`}
+							src={`${propertyData?.attachments[0]?.file_path}`}
 							layout="fill"
 							objectFit="cover"
 							style={{ borderRadius: '8px 0 0 8px' }}
@@ -151,7 +151,7 @@ function RentCard({ propertyData }) {
 										color: '#9FAAB1',
 									}}
 								>
-									87%
+									{`${propertyData?.form_fill_up_progress}%`}
 								</Typography>
 							</Box>
 							<Box sx={{ width: '20%', mr: 1, mt: '1.5vh', ml: 1 }}>
@@ -168,7 +168,7 @@ function RentCard({ propertyData }) {
 										// },
 									}}
 									variant="determinate"
-									value={progress}
+									value={propertyData?.form_fill_up_progress}
 								/>
 							</Box>
 						</Grid>

@@ -93,7 +93,7 @@ export default function MyProperties(props) {
 	const router = useRouter()
 	const { query } = router
 	const { data: session } = useSession()
-
+	console.log({ session })
 	const dispatch = useDispatch()
 	useEffect(() => {
 		dispatch(findNotificationCountData())
