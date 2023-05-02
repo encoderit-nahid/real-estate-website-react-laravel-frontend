@@ -25,8 +25,9 @@ import { useForm, Controller } from 'react-hook-form'
 import { yupResolver } from '@hookform/resolvers/yup'
 import * as Yup from 'yup'
 import BaseOutlinedPhoneInput from '../src/component/reuseable/baseOutlinedPhoneInput/BaseOutlinedPhoneInput'
-import { registrationApi, userDetailsApi } from '../src/api'
+import { emailVerifyApi, registrationApi, userDetailsApi } from '../src/api'
 import { signIn } from 'next-auth/react'
+import { useRouter } from 'next/router'
 
 const validationSchema = Yup.object().shape({
 	name: Yup.string().required('Name is required'),
@@ -62,6 +63,43 @@ export default function Registration() {
 	} = useForm({
 		resolver: yupResolver(validationSchema),
 	})
+
+	const router = useRouter()
+	const { query } = router
+
+	useEffect(() => {
+		const getData = async () => {
+			if (query?.token) {
+				const [err, resp] = await emailVerifyApi(query?.token)
+				if (!err) {
+					// console.log({ resp })
+					localStorage.setItem('token', resp?.data?.token)
+					const [error, response] = await userDetailsApi()
+					if (!error) {
+						return signIn('credentials', {
+							userId: response.data.user.id,
+							userEmail: response.data.user.email,
+							name: response.data.user.name,
+							phone: response.data.user.phone,
+							status: response.data.user.status,
+							role: response.data.user.roles[0].slug,
+							roleId: response.data.user.roles[0].id,
+							permissions: JSON.stringify(
+								response.data.user.roles[0].permissions
+							),
+							callbackUrl:
+								response.data.user.roles[0].slug === 'buyer'
+									? '/'
+									: '/my_properties',
+						})
+					}
+				}
+			} else {
+				return
+			}
+		}
+		getData()
+	}, [query?.token])
 
 	const [activeBtn, setActiveBtn] = useState(4)
 	const [disableBtn, setDisableBtn] = useState(true)
@@ -117,34 +155,38 @@ export default function Registration() {
 
 	const onSubmit = async (data) => {
 		setLoading(true)
+		console.log(window.location.href)
 
-		const allData = { ...data, role_id: activeBtn }
+		const allData = {
+			...data,
+			role_id: activeBtn,
+			redirect_url: window.location.href,
+		}
 
 		const [errorToken, responseToken] = await registrationApi(allData)
+		setLoading(false)
 		if (!errorToken) {
-			localStorage.setItem('token', responseToken?.data?.token)
-			const [error, response] = await userDetailsApi()
-
-
-			setLoading(false)
-			if (!error) {
-				return signIn('credentials', {
-					userId: response.data.user.id,
-					userEmail: response.data.user.email,
-					name: response.data.user.name,
-					phone: response.data.user.phone,
-					status: response.data.user.status,
-					role: response.data.user.roles[0].slug,
-					roleId: response.data.user.roles[0].id,
-					permissions: JSON.stringify(
-						response.data.user.roles[0].permissions
-					),
-					callbackUrl:
-						response.data.user.roles[0].slug === 'buyer'
-							? '/'
-							: '/my_properties',
-				})
-			}
+			// localStorage.setItem('token', responseToken?.data?.token)
+			// const [error, response] = await userDetailsApi()
+			// setLoading(false)
+			// if (!error) {
+			// 	return signIn('credentials', {
+			// 		userId: response.data.user.id,
+			// 		userEmail: response.data.user.email,
+			// 		name: response.data.user.name,
+			// 		phone: response.data.user.phone,
+			// 		status: response.data.user.status,
+			// 		role: response.data.user.roles[0].slug,
+			// 		roleId: response.data.user.roles[0].id,
+			// 		permissions: JSON.stringify(
+			// 			response.data.user.roles[0].permissions
+			// 		),
+			// 		callbackUrl:
+			// 			response.data.user.roles[0].slug === 'buyer'
+			// 				? '/'
+			// 				: '/my_properties',
+			// 	})
+			// }
 			//
 		} else {
 			const errors = errorToken?.response?.data?.errors ?? {}

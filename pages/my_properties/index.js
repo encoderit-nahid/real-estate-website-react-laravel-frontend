@@ -93,7 +93,7 @@ export default function MyProperties(props) {
 	const router = useRouter()
 	const { query } = router
 	const { data: session } = useSession()
-	console.log({ session })
+
 	const dispatch = useDispatch()
 	useEffect(() => {
 		dispatch(findNotificationCountData())
@@ -102,13 +102,13 @@ export default function MyProperties(props) {
 	const notificationCountData = useSelector(
 		(state) => state?.notificationCount?.notificationCountData
 	)
-	console.log({ notificationCountData })
+
 	const notificationData = useSelector(
 		(state) => state?.notification?.notificationData
 	)
-	console.log({ notificationData })
+
 	useChannel('notification-broadcast.' + session.user.userId, (channel) => {
-		console.log('useChannel', channel)
+		// console.log('useChannel', channel)
 		channel
 			// .here((...args) => {
 			// 	console.log('notification-broadcast:here', ...args)

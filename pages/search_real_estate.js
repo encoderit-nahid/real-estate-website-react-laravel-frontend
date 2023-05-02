@@ -1337,11 +1337,11 @@ export async function getServerSideProps(context) {
 	Object.keys(params).forEach((key) =>
 		url.searchParams.append(key, params[key])
 	)
-	let now = Date.now()
+	// let now = Date.now()
 	const res = await fetch(url)
 
 	const data = await res.json()
-	console.log('getServerSideProps', data, Date.now() - now)
+	// console.log('getServerSideProps', data, Date.now() - now)
 
 	return {
 		props: {

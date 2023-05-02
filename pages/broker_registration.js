@@ -30,7 +30,10 @@ import * as Yup from 'yup'
 import { findStateData } from '../src/redux/state/actions'
 import { useDispatch, useSelector } from 'react-redux'
 import { serialize } from 'object-to-formdata'
-import { registrationApi } from '../src/api'
+import { emailVerifyApi, registrationApi, userDetailsApi } from '../src/api'
+import { useRouter } from 'next/router'
+import dayjs from 'dayjs'
+import { signIn } from 'next-auth/react'
 
 const steps = ['Personal Data', 'Address', 'Performance']
 
@@ -58,12 +61,58 @@ const aboutLokkanData = [
 	'Partnership',
 ]
 
+const omitEmpties = (obj) => {
+	return Object.entries(obj).reduce((carry, [key, value]) => {
+		if (![null, undefined, '', [], {}].includes(value)) {
+			carry[key] = value
+		}
+		return carry
+	}, {})
+}
+
 export default function BrokerRegistration({
 	loginOpen,
 	setLoginOpen,
 	handleLoginOpen,
 	handleLoginClose,
 }) {
+	const router = useRouter()
+	const { query } = router
+
+	useEffect(() => {
+		const getData = async () => {
+			if (query?.token) {
+				const [err, resp] = await emailVerifyApi(query?.token)
+				if (!err) {
+					// console.log({ resp })
+					localStorage.setItem('token', resp?.data?.token)
+					const [error, response] = await userDetailsApi()
+					if (!error) {
+						return signIn('credentials', {
+							userId: response.data.user.id,
+							userEmail: response.data.user.email,
+							name: response.data.user.name,
+							phone: response.data.user.phone,
+							status: response.data.user.status,
+							role: response.data.user.roles[0].slug,
+							roleId: response.data.user.roles[0].id,
+							permissions: JSON.stringify(
+								response.data.user.roles[0].permissions
+							),
+							callbackUrl:
+								response.data.user.roles[0].slug === 'buyer'
+									? '/'
+									: '/my_properties',
+						})
+					}
+				}
+			} else {
+				return
+			}
+		}
+		getData()
+	}, [query?.token])
+
 	const [activeStep, setActiveStep] = useState(0)
 	const [skipped, setSkipped] = useState(new Set())
 	const dispatch = useDispatch()
@@ -157,33 +206,43 @@ export default function BrokerRegistration({
 			localStorage.getItem('broker_registration')
 		)
 
-		const requireData = {
-			additional_info: {
-				full_name: data.full_name,
-				creci_number: data.creci_number,
-				cpf: data.cpf_number,
-				rg: data.rg_number,
-				dob: data.dob,
-				social_name: data.social_name,
-				broker_type: actingPreferenceBtn,
-				referred_from: aboutLokkanBtn,
-			},
-			address: {
-				zip_code: data.zip_code,
-				address: data.address,
-				number: data.number,
-				neighbourhood: data.neighbourhood,
-				add_on: data.add_on,
-				city: data.city,
-				state_id: data.state.id,
-			},
+		const additionalInfoData = omitEmpties({
+			full_name: data.full_name,
+			creci_number: data.creci_number,
+			cpf: data.cpf_number,
+			rg: data.rg_number,
+			dob: dayjs(data.dob).format('YYYY-MM-DD'),
+			social_name: data.social_name,
+			broker_type: actingPreferenceBtn,
+			referred_from: aboutLokkanBtn,
+		})
+		const addressData = omitEmpties({
+			zip_code: data.zip_code,
+			address: data.address,
+			number: data.number,
+			neighbourhood: data.neighbourhood,
+			add_on: data.add_on,
+			city: data.city,
+			state_id: data.state.id,
+		})
+
+		const firstPartData = omitEmpties({
 			image: data.image,
 			name: previousFieldData.name,
 			email: previousFieldData.email,
 			password: previousFieldData.password,
 			role_id: previousFieldData.role_id,
 			phone: previousFieldData.phone,
+			redirect_url: window.location.href,
+		})
+
+		const requireData = {
+			...firstPartData,
+			additional_info: additionalInfoData,
+			address: addressData,
 		}
+
+		console.log({ requireData })
 
 		const formData = serialize(requireData, { indices: true })
 		const [error, responseToken] = await registrationApi(formData)
@@ -193,6 +252,7 @@ export default function BrokerRegistration({
 			setSentModalOpen(true)
 		} else {
 			const errors = error?.response?.data?.errors ?? {}
+			console.log({ error })
 			Object.entries(errors).forEach(([name, messages]) => {
 				setError(name, { type: 'manual', message: messages[0] })
 			})

@@ -42,6 +42,16 @@ export const forgotPasswordApi = async (body) => {
 	}
 }
 
+//email_varify
+export const emailVerifyApi = async (token) => {
+	try {
+		const resp = await apiInstance.get(`/email-varify?token=${token}`)
+		return [false, resp]
+	} catch (err) {
+		return [err, null]
+	}
+}
+
 //reset_password
 export const resetPasswordApi = async (body) => {
 	try {

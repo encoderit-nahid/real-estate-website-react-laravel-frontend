@@ -357,10 +357,6 @@ export default function NewProperty(props) {
 
 	const allValues = watch()
 
-	console.log({ singleData })
-
-	console.log({ files })
-
 	const onSubmit = async (data) => {
 		action === 'new' ? setLoading(true) : setDraftLoading(true)
 
