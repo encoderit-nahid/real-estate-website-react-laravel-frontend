@@ -28,6 +28,7 @@ import { proposalCreateApi } from '../../../src/api'
 import { useDispatch, useSelector } from 'react-redux'
 import { findSinglePropertyData } from '../../../src/redux/singleProperty/actions'
 import { useMemo } from 'react'
+import PropertyCard from '@/component/properties/PropertyCard/PropertyCard'
 
 const drawerWidth = 240
 
@@ -267,6 +268,9 @@ export default function IncludeProposal(props) {
 									</Container>
 								) : (
 									<Fragment>
+										<Box sx={{ mt: 4 }}>
+											<PropertyCard srcImage={srcImage} />
+										</Box>
 										<form onSubmit={handleSubmit(onSubmit)}>
 											{activeStep === 0 ? (
 												<ProposalValueStep

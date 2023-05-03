@@ -55,7 +55,7 @@ const steps = [
 ]
 
 const validationSchema = Yup.object().shape({
-	project_id: Yup.object().required('Enterprise is required'),
+	// project_id: Yup.object().required('Enterprise is required'),
 	zip_code: Yup.string().required('Zip code is required'),
 	address: Yup.string().required('Address is required'),
 	number: Yup.string().required('Number is required'),
@@ -376,7 +376,7 @@ export default function NewProperty(props) {
 
 		const firstPartData = omitEmpties({
 			user_id: +session?.user?.userId,
-			project_id: +data?.project_id?.id,
+			project_id: data?.project_id?.id && +data?.project_id?.id,
 			property_id: query?.property_id,
 			property_detail_id: +property_detail_id,
 			ad_type: adType.toLocaleLowerCase(),

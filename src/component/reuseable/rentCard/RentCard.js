@@ -5,6 +5,7 @@ import Image from 'next/image'
 import Link from 'next/link'
 import { _baseURL } from '../../../../consts'
 import dayjs from 'dayjs'
+import { useSession } from 'next-auth/react'
 
 const omitEmpties = (obj) => {
 	return Object.entries(obj).reduce((carry, [key, value]) => {
@@ -17,6 +18,8 @@ const omitEmpties = (obj) => {
 
 function RentCard({ propertyData }) {
 	const [progress, setProgress] = React.useState(87)
+
+	const { data: session } = useSession()
 
 	const myLoader = ({ src }) => {
 		return `${_baseURL}/storage/${src}`
@@ -255,26 +258,17 @@ function RentCard({ propertyData }) {
 								</Button>
 								{/* </a> */}
 							</Link>
-							<Link
-								href={{
-									pathname: '/my_properties/new_property',
-									query: omitEmpties({
-										property_id: propertyData?.id,
-									}),
-								}}
-							>
-								<Button
-									sx={{
-										color: '#002152',
-										fontSize: '14px',
-										lineHeight: '18px',
-										fontWeight: '600',
-										background: '#F2F5F6',
-										borderRadius: '4px',
-										//   padding: "8px 20px",
-										textTransform: 'none',
-										ml: 1,
-										'&:hover': {
+							{session?.user?.role !== 'buyer' && (
+								<Link
+									href={{
+										pathname: '/my_properties/new_property',
+										query: omitEmpties({
+											property_id: propertyData?.id,
+										}),
+									}}
+								>
+									<Button
+										sx={{
 											color: '#002152',
 											fontSize: '14px',
 											lineHeight: '18px',
@@ -284,12 +278,23 @@ function RentCard({ propertyData }) {
 											//   padding: "8px 20px",
 											textTransform: 'none',
 											ml: 1,
-										},
-									}}
-								>
-									Edit
-								</Button>
-							</Link>
+											'&:hover': {
+												color: '#002152',
+												fontSize: '14px',
+												lineHeight: '18px',
+												fontWeight: '600',
+												background: '#F2F5F6',
+												borderRadius: '4px',
+												//   padding: "8px 20px",
+												textTransform: 'none',
+												ml: 1,
+											},
+										}}
+									>
+										Edit
+									</Button>
+								</Link>
+							)}
 						</Box>
 					</Grid>
 				</Grid>

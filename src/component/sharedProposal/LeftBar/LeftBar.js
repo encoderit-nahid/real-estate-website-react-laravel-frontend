@@ -41,12 +41,8 @@ function LeftBar(props) {
 	const router = useRouter()
 	const { data: session } = useSession()
 
-	const {
-		handleDrawerToggle,
-		mobileOpen,
-		drawerWidth,
-		isDarkModeClose,
-	} = props
+	const { handleDrawerToggle, mobileOpen, drawerWidth, isDarkModeClose } =
+		props
 	const { window } = props
 	const theme = createTheme({
 		typography: {
@@ -83,7 +79,7 @@ function LeftBar(props) {
 			route: 'brokers',
 		},
 		{ icon: <HelpOutlineOutlinedIcon />, label: 'FAQ', route: 'faq' },
-		{ icon: <InputOutlinedIcon />, label: 'Leave', route: 'leave' },
+		{ icon: <InputOutlinedIcon />, label: 'Leave', route: '/' },
 	]
 
 	// const [selectedLabel, setSelectedLabel] = useState("properties");

@@ -36,6 +36,9 @@ import { _baseURL } from '../consts'
 import { bestDealsApi } from '../src/api'
 import { useEffect, useState } from 'react'
 import Link from 'next/link'
+import Slider from 'react-slick'
+// import 'slick-carousel/slick/slick.css'
+// import 'slick-carousel/slick/slick-theme.css'
 
 const brokerData = [
 	{
@@ -74,6 +77,31 @@ export default function App({
 	useEffect(() => {
 		setIsLoading(false)
 	}, [data])
+	const settings = {
+		centerMode: true,
+		centerPadding: '10px',
+		slidesToShow: 3,
+		speed: 500,
+		slidesToScroll: 1,
+		arrows: true,
+		dots: false,
+		responsive: [
+			{
+				breakpoint: 768,
+				settings: {
+					arrows: false,
+					slidesToShow: 3,
+				},
+			},
+			{
+				breakpoint: 480,
+				settings: {
+					arrows: false,
+					slidesToShow: 1,
+				},
+			},
+		],
+	}
 
 	return (
 		<div>
@@ -367,9 +395,10 @@ export default function App({
 					}}
 				>
 					<Container maxWidth="xl">
-						<ImageList
-							// container
-							// spacing={3}
+						<Slider {...settings}>
+							{/* <ImageList
+							container
+							spacing={3}
 
 							cols={3}
 							gap={4}
@@ -378,13 +407,11 @@ export default function App({
 								gridTemplateColumns:
 									'repeat(auto-fill,minmax(110px,1fr)) !important',
 								gridAutoColumns: 'minmax(110px, 1fr)',
-
-								// px: 3,
 							}}
-						>
+							> */}
 							{isLoading
-								? [0, 1, 2, 3].map((data, index) => (
-										<ImageListItem
+								? [0, 1, 2].map((data, index) => (
+										<Box
 											key={index}
 											cols={3}
 											sx={{
@@ -400,7 +427,11 @@ export default function App({
 											<Skeleton
 												variant="rect"
 												height={220}
-												sx={{ mx: 2, my: 2, borderRadius: '8px' }}
+												sx={{
+													mx: 2,
+													my: 2,
+													borderRadius: '8px',
+												}}
 											/>
 											<Box sx={{ mx: 2, my: 1 }}>
 												<Skeleton width="60%" />
@@ -408,7 +439,7 @@ export default function App({
 												<Skeleton width="60%" />
 												<Skeleton />
 											</Box>
-										</ImageListItem>
+										</Box>
 								  ))
 								: data?.property?.map((stateInfo, index) => (
 										<Link
@@ -416,23 +447,12 @@ export default function App({
 											href={`/property_view/${stateInfo.id}`}
 											as={`/property_view/${stateInfo.id}`}
 										>
-											<ImageListItem
-												cols={3}
-												sx={{
-													width: {
-														xl: '95%',
-														lg: '95%',
-														md: '70%',
-														sm: '70%',
-														xs: '70%',
-													},
-												}}
-											>
+											<Box sx={{ pl: 5 }}>
 												<HouseCard propertyInfo={stateInfo} />
-											</ImageListItem>
+											</Box>
 										</Link>
 								  ))}
-						</ImageList>
+						</Slider>
 					</Container>
 				</Box>
 				<Footer />

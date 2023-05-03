@@ -114,6 +114,7 @@ export default function SearchRealEstate({
 	propertyData,
 	query,
 }) {
+	console.log({ propertyData })
 	const [isLoading, setIsLoading] = useState(true)
 	useEffect(() => {
 		setIsLoading(false)

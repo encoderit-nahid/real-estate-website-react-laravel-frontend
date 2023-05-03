@@ -27,7 +27,7 @@ import { useRouter } from 'next/router'
 import { _baseURL } from '../../consts'
 import useChannel from '@/hooks/useChannel'
 import Popover from '@mui/material/Popover'
-import { FixedSizeList } from 'react-window'
+
 import { useDispatch, useSelector } from 'react-redux'
 import NotificationsNoneOutlinedIcon from '@mui/icons-material/NotificationsNoneOutlined'
 import {
@@ -93,6 +93,7 @@ export default function MyProperties(props) {
 	const router = useRouter()
 	const { query } = router
 	const { data: session } = useSession()
+	console.log({ session })
 
 	const dispatch = useDispatch()
 	useEffect(() => {
@@ -330,66 +331,62 @@ export default function MyProperties(props) {
 										gap={2}
 										sx={{ mt: 3 }}
 									>
-										<Link href="/my_properties/new_property">
-											{/* <a
-                        style={{
-                          textDecoration: "none",
-                          listStyle: "none",
-                          width: "100%",
-                        }}
-                      > */}
-											<Button
-												sx={{
-													textTransform: 'none',
-													background: '#0362F0',
-													borderRadius: '4px',
-													color: '#ffffff',
-													fontSize: '16px',
-													fontWeight: '600',
-													px: 4,
-													py: 1,
-													width: {
-														xs: '100%',
-														sm: '100%',
-														md: '30%',
-														lg: '30%',
-														xl: '20%',
-													},
-													'&:hover': {
+										{session?.user?.role !== 'buyer' && (
+											<Link href="/my_properties/new_property">
+												<Button
+													sx={{
+														textTransform: 'none',
 														background: '#0362F0',
 														borderRadius: '4px',
 														color: '#ffffff',
-													},
-												}}
-											>
-												New property
-											</Button>
-											{/* </a> */}
-										</Link>
+														fontSize: '16px',
+														fontWeight: '600',
+														px: 4,
+														py: 1,
+														width: {
+															xs: '100%',
+															sm: '100%',
+															md: '30%',
+															lg: '30%',
+															xl: '20%',
+														},
+														'&:hover': {
+															background: '#0362F0',
+															borderRadius: '4px',
+															color: '#ffffff',
+														},
+													}}
+												>
+													New property
+												</Button>
+											</Link>
+										)}
 
-										<Link href="/my_properties/new_venture">
-											<Button
-												sx={{
-													textTransform: 'none',
-													border: '1px solid #002152',
-													borderRadius: '4px',
-													color: '#002152',
-													fontSize: '16px',
-													fontWeight: '600',
-													px: 4,
-													py: 1,
-													width: {
-														xs: '100%',
-														sm: '100%',
-														md: '30%',
-														lg: '30%',
-														xl: '20%',
-													},
-												}}
-											>
-												New venture
-											</Button>
-										</Link>
+										{session?.user?.role === 'admin' && (
+											<Link href="/my_properties/new_venture">
+												<Button
+													sx={{
+														textTransform: 'none',
+														border: '1px solid #002152',
+														borderRadius: '4px',
+														color: '#002152',
+														fontSize: '16px',
+														fontWeight: '600',
+														px: 4,
+														py: 1,
+														width: {
+															xs: '100%',
+															sm: '100%',
+															md: '30%',
+															lg: '30%',
+															xl: '20%',
+														},
+													}}
+												>
+													New venture
+												</Button>
+											</Link>
+										)}
 									</Grid>
 								</Container>
 								<TabPanel value={value} index={0}>

@@ -41,7 +41,7 @@ function BuyerDataStep({
 
 	return (
 		<Box sx={{ mt: 4 }}>
-			<PropertyCard />
+			{/* <PropertyCard /> */}
 			<Box sx={{ mt: 2, mb: 1 }}>
 				<Grid
 					container
