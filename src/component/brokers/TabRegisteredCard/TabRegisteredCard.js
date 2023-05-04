@@ -36,6 +36,7 @@ function TabRegisteredCard({ brokerInfo }) {
 
 		setState({ ...state, [anchor]: open })
 	}
+	console.log({ brokerInfo })
 
 	const list = (anchor) => (
 		<Box
@@ -208,7 +209,7 @@ function TabRegisteredCard({ brokerInfo }) {
 						mt: 1,
 					}}
 				>
-					{/* {brokerInfo?.address} */}
+					{brokerInfo?.address?.address}
 				</Typography>
 			</Grid>
 		</Box>

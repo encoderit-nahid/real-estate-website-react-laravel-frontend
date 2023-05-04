@@ -26,8 +26,8 @@ function AcceptedCard({ propertyData }) {
 		{ name: 'Announcement', slug: 'announcement' },
 		{ name: 'Proposal', slug: 'proposal' },
 		{ name: 'Contract', slug: 'contract_uploaded' },
-		{ name: 'Certificates and Documents', slug: 'certificate_validated' },
-		{ name: 'Pre-analysis', slug: 'analysis' },
+		{ name: 'Certificates and Documents', slug: 'certificate_uploaded' },
+		{ name: 'Pre-analysis', slug: 'certificate_validated' },
 		{ name: 'Digital notary', slug: 'notary' },
 	]
 

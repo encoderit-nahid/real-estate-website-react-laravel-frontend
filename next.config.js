@@ -11,6 +11,10 @@ module.exports = {
 	swcMinify: true,
 	staticPageGenerationTimeout: 1000,
 	output: 'standalone',
+	i18n: {
+		locales: ['en', 'fr'],
+		defaultLocale: 'en',
+	},
 	images: {
 		remotePatterns: [
 			{
@@ -19,4 +23,9 @@ module.exports = {
 			},
 		],
 	},
+
+	// i18n: {
+	// 	locales: ['en-US', 'pt-br'],
+	// 	defaultLocale: 'en-US',
+	// },
 }

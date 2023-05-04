@@ -79,7 +79,7 @@ function LeftBar(props) {
 			route: 'brokers',
 		},
 		{ icon: <HelpOutlineOutlinedIcon />, label: 'FAQ', route: 'faq' },
-		{ icon: <InputOutlinedIcon />, label: 'Leave', route: '/' },
+		{ icon: <InputOutlinedIcon />, label: 'Leave', route: '' },
 	]
 
 	// const [selectedLabel, setSelectedLabel] = useState("properties");
