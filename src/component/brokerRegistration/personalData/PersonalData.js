@@ -16,8 +16,16 @@ import BaseTextField from '../../reuseable/baseTextField/BaseTextField'
 import { Controller } from 'react-hook-form'
 import BaseDateField from '../../reuseable/baseDateField/BaseDateField'
 import { formatISO } from 'date-fns'
+import en from 'locales/en'
+import pt from 'locales/pt'
 
-function PersonalData({ handleNext, control, errors, allValues }) {
+function PersonalData({
+	handleNext,
+	control,
+	errors,
+	allValues,
+	languageName,
+}) {
 	//rg
 	const [rgValue, setRGValue] = useState('')
 	const [rgValid, setRGValid] = useState(false)
@@ -27,6 +35,8 @@ function PersonalData({ handleNext, control, errors, allValues }) {
 	}
 
 	const [preview, setPreview] = useState()
+
+	const t = languageName === 'en' ? en : pt
 
 	// create a preview as a side effect, whenever selected file is changed
 	useEffect(() => {
@@ -59,7 +69,7 @@ function PersonalData({ handleNext, control, errors, allValues }) {
 						lineHeight: '29px',
 					}}
 				>
-					personal data
+					{t['Personal data']}
 				</Typography>
 			</Grid>
 
@@ -124,7 +134,7 @@ function PersonalData({ handleNext, control, errors, allValues }) {
 										lineHeight: '18px',
 									}}
 								>
-									Profile picture
+									{t['Profile picture']}
 								</Typography>
 
 								<Button
@@ -196,7 +206,8 @@ function PersonalData({ handleNext, control, errors, allValues }) {
 								lineHeight: '16px',
 							}}
 						>
-							Full Name<span style={{ color: '#E63333' }}>*</span>
+							{t['Full Name']}
+							<span style={{ color: '#E63333' }}>*</span>
 						</Typography>
 					</Grid>
 					<Controller
@@ -207,7 +218,7 @@ function PersonalData({ handleNext, control, errors, allValues }) {
 							<BaseTextField
 								size={'small'}
 								sx={{ ml: { xxl: 4 } }}
-								placeholder={'Full Name'}
+								placeholder={t['Full Name']}
 								// sx={{ mb: 2 }}
 								onChange={(e) => {
 									field.onChange(e.target.value)
@@ -240,7 +251,7 @@ function PersonalData({ handleNext, control, errors, allValues }) {
 								lineHeight: '16px',
 							}}
 						>
-							Social Name
+							{t['Social Name']}
 							<span
 								style={{
 									color: '#7C7C99',
@@ -259,7 +270,7 @@ function PersonalData({ handleNext, control, errors, allValues }) {
 						render={({ field }) => (
 							<BaseTextField
 								size={'small'}
-								placeholder={'Social Name'}
+								placeholder={t['Social Name']}
 								sx={{ mb: 1, ml: { xxl: 4 } }}
 								onChange={(e) => {
 									field.onChange(e.target.value)
@@ -434,7 +445,8 @@ function PersonalData({ handleNext, control, errors, allValues }) {
 								lineHeight: '16px',
 							}}
 						>
-							Date of Birth<span style={{ color: '#E63333' }}>*</span>
+							{t['Date of Birth']}
+							<span style={{ color: '#E63333' }}>*</span>
 						</Typography>
 					</Grid>
 					<Controller

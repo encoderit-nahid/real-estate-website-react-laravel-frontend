@@ -34,8 +34,8 @@ import { emailVerifyApi, registrationApi, userDetailsApi } from '../src/api'
 import { useRouter } from 'next/router'
 import dayjs from 'dayjs'
 import { signIn } from 'next-auth/react'
-
-const steps = ['Personal Data', 'Address', 'Performance']
+import en from 'locales/en'
+import pt from 'locales/pt'
 
 const validationSchema = Yup.object().shape({
 	full_name: Yup.string().required('Full Name is required'),
@@ -51,7 +51,6 @@ const validationSchema = Yup.object().shape({
 	city: Yup.string().required('City is required'),
 })
 
-const preferenceData = ['rent', 'sale', 'both']
 const aboutLokkanData = [
 	'Refer a friend',
 	'Facebook',
@@ -75,9 +74,18 @@ export default function BrokerRegistration({
 	setLoginOpen,
 	handleLoginOpen,
 	handleLoginClose,
+	language,
 }) {
 	const router = useRouter()
 	const { query } = router
+
+	const [myValue, setMyValue] = useState(language || 'en')
+
+	const t = myValue === 'en' ? en : pt
+
+	const preferenceData = [t['rent'], t['sale'], t['both']]
+
+	const steps = [t['Personal data'], t['Address'], t['Performance']]
 
 	useEffect(() => {
 		const getData = async () => {
@@ -275,6 +283,9 @@ export default function BrokerRegistration({
 					setLoginOpen={setLoginOpen}
 					handleLoginClose={handleLoginClose}
 					handleLoginOpen={handleLoginOpen}
+					languageName={language}
+					setMyValue={setMyValue}
+					myValue={myValue}
 				/>
 				<Box>
 					<Container maxWidth="md">
@@ -299,6 +310,7 @@ export default function BrokerRegistration({
 											control={control}
 											errors={errors}
 											allValues={allValues}
+											languageName={myValue.toString()}
 										/>
 									) : activeStep === 1 ? (
 										<AddressData
@@ -308,6 +320,7 @@ export default function BrokerRegistration({
 											errors={errors}
 											allValues={allValues}
 											setValue={setValue}
+											languageName={myValue.toString()}
 											// allStateData={allStateData}
 										/>
 									) : (
@@ -323,6 +336,7 @@ export default function BrokerRegistration({
 											setActingPreferenceBtn={setActingPreferenceBtn}
 											aboutLokkanBtn={aboutLokkanBtn}
 											setAboutLokkanBtn={setAboutLokkanBtn}
+											languageName={myValue.toString()}
 										/>
 									)}
 									{errors && (
@@ -355,7 +369,7 @@ export default function BrokerRegistration({
 														textTransform: 'none',
 													}}
 												>
-													Come back
+													{t['Come back']}
 												</Button>
 											</Grid>
 											<Grid item xs={6} sm={6} md={6}>
@@ -395,7 +409,7 @@ export default function BrokerRegistration({
 															color="inherit"
 														/>
 													)}
-													{!loading && 'register'}
+													{!loading && t['Register']}
 												</Button>
 											</Grid>
 										</Grid>
@@ -422,7 +436,7 @@ export default function BrokerRegistration({
 													textTransform: 'none',
 												}}
 											>
-												Come back
+												{t['Come back']}
 											</Button>
 										</Grid>
 										<Grid item xs={6} sm={6} md={6}>
@@ -456,7 +470,7 @@ export default function BrokerRegistration({
 													},
 												}}
 											>
-												Continue
+												{t['Continue']}
 											</Button>
 										</Grid>
 									</Grid>
@@ -496,4 +510,13 @@ export default function BrokerRegistration({
 			</main>
 		</div>
 	)
+}
+
+export async function getServerSideProps(context) {
+	const cookies = context.req.cookies['language']
+	return {
+		props: {
+			language: cookies,
+		},
+	}
 }

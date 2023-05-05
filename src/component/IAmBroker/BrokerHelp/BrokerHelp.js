@@ -4,8 +4,18 @@ import BaseButton from '../../reuseable/button/BaseButton'
 import BaseOutlinedZipInput from '../../reuseable/baseOutlinedZipInput/BaseOutlinedZipInput'
 import { useSession } from 'next-auth/react'
 import { useRouter } from 'next/router'
+import en from 'locales/en'
+import pt from 'locales/pt'
 
-function BrokerHelp({ name, content, buttonName, fieldItem, handleLoginOpen }) {
+function BrokerHelp({
+	name,
+	content,
+	buttonName,
+	fieldItem,
+	handleLoginOpen,
+	languageName,
+}) {
+	const t = languageName === 'en' ? en : pt
 	const { data: session } = useSession()
 	const router = useRouter()
 	const [value, setValue] = React.useState('')
@@ -72,13 +82,13 @@ function BrokerHelp({ name, content, buttonName, fieldItem, handleLoginOpen }) {
 					sx={{ width: '100%', marginTop: 3 }}
 				>
 					<InputLabel htmlFor="sandbox" variant="outlined">
-						Zip Code
+						{t['Zip code']}
 					</InputLabel>
 					<BaseOutlinedZipInput
 						placeholder={'Eg: 00000-000'}
 						label={'Zip Code'}
-						onChange={(e) => setValue(e.target.value)}
 						value={value}
+						onChange={(e) => setValue(e.target.value)}
 					/>
 				</FormControl>
 			)}

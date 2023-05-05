@@ -28,6 +28,9 @@ import BaseOutlinedPhoneInput from '../src/component/reuseable/baseOutlinedPhone
 import { emailVerifyApi, registrationApi, userDetailsApi } from '../src/api'
 import { signIn } from 'next-auth/react'
 import { useRouter } from 'next/router'
+import GetCookie from '@/hooks/getCookie'
+import en from 'locales/en'
+import pt from 'locales/pt'
 
 const validationSchema = Yup.object().shape({
 	name: Yup.string().required('Name is required'),
@@ -40,17 +43,6 @@ const validationSchema = Yup.object().shape({
 		.min(6, 'Password must be at least 6 characters')
 		.max(40, 'Password must not exceed 40 characters'),
 })
-
-const UserRoleData = [
-	{
-		name: 'Buyer',
-		value: 4,
-	},
-	{
-		name: 'Owner',
-		value: 3,
-	},
-]
 
 export default function Registration() {
 	const {
@@ -66,6 +58,21 @@ export default function Registration() {
 
 	const router = useRouter()
 	const { query } = router
+
+	const language = GetCookie('language')?.toString()
+
+	const t = language === 'en' ? en : pt
+
+	const UserRoleData = [
+		{
+			name: t['Buyer'],
+			value: 4,
+		},
+		{
+			name: t['Owner'],
+			value: 3,
+		},
+	]
 
 	useEffect(() => {
 		const getData = async () => {
@@ -240,7 +247,7 @@ export default function Registration() {
 													lineHeight: '17px',
 												}}
 											>
-												Cancel Registration
+												{t['Cancel registration']}
 											</Typography>
 										</Button>
 									</a>
@@ -263,7 +270,7 @@ export default function Registration() {
 													lineHeight: '16px',
 												}}
 											>
-												Name
+												{t['Name']}
 												<span style={{ color: '#E63333' }}>*</span>
 											</Typography>
 										</Grid>
@@ -273,7 +280,7 @@ export default function Registration() {
 											render={({ field }) => (
 												<BaseTextField
 													size={'small'}
-													placeholder={'name'}
+													placeholder={t['Name']}
 													onChange={(e) => {
 														field.onChange(e.target.value)
 													}}
@@ -305,7 +312,7 @@ export default function Registration() {
 													lineHeight: '16px',
 												}}
 											>
-												Email
+												{t['Email']}
 												<span style={{ color: '#E63333' }}>*</span>
 											</Typography>
 										</Grid>
@@ -315,7 +322,7 @@ export default function Registration() {
 											render={({ field }) => (
 												<BaseTextField
 													size={'small'}
-													placeholder={'Email'}
+													placeholder={t['Email']}
 													onChange={(e) => {
 														field.onChange(e.target.value)
 													}}
@@ -347,7 +354,7 @@ export default function Registration() {
 													lineHeight: '16px',
 												}}
 											>
-												Phone
+												{t['Phone']}
 												<span style={{ color: '#E63333' }}>*</span>
 											</Typography>
 										</Grid>
@@ -357,7 +364,7 @@ export default function Registration() {
 											render={({ field }) => (
 												<BaseOutlinedPhoneInput
 													size={'small'}
-													placeholder={'Phone'}
+													placeholder={t['Phone']}
 													onChange={(e) => {
 														field.onChange(e.target.value)
 													}}
@@ -397,7 +404,7 @@ export default function Registration() {
 													lineHeight: '16px',
 												}}
 											>
-												Password
+												{t['Password']}
 												<span style={{ color: '#E63333' }}>*</span>
 											</Typography>
 										</Grid>
@@ -407,7 +414,7 @@ export default function Registration() {
 											render={({ field }) => (
 												<BaseTextField
 													size={'small'}
-													placeholder={'Password'}
+													placeholder={t['Password']}
 													type={showPass ? 'text' : 'password'}
 													name={'password'}
 													// {...field}
@@ -460,7 +467,7 @@ export default function Registration() {
 													lineHeight: '16px',
 												}}
 											>
-												Profile
+												{t['Profile']}
 											</Typography>
 										</Grid>
 										<Grid
@@ -603,7 +610,7 @@ export default function Registration() {
 															},
 														}}
 													>
-														Broker
+														{t['Broker']}
 													</Button>
 												</Link>
 											</Grid>
@@ -633,7 +640,7 @@ export default function Registration() {
 													color="inherit"
 												/>
 											)}
-											{!loading && 'register'}
+											{!loading && t['Register']}
 										</Button>
 									</form>
 									<Grid

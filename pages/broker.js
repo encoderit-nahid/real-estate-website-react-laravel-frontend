@@ -38,6 +38,9 @@ import houseColor from '../public/Images/house-colored.png'
 import moneyColor from '../public/Images/money-colored.png'
 import timeColor from '../public/Images/time-colored.png'
 import { useState } from 'react'
+import GetCookie from '@/hooks/getCookie'
+import en from 'locales/en'
+import pt from 'locales/pt'
 
 const facilitiesData = [
 	{
@@ -74,38 +77,93 @@ const facilitiesBottomData = [
 	},
 ]
 
-const becomeBrokerData = [
-	{
-		name: 'free of bureaucracy',
-		info:
-			'You will receive qualified Leads not only from your properties, but from all in your region, as well as scheduling visits, proposals, directly in your control panel.',
-	},
-	{
-		name: 'Highest commission on the market',
-		info:
-			'You receive 70% of the commission negotiated with the property owner (raising and commission).',
-	},
-	{
-		name: 'Autonomy',
-		info:
-			"At Lokkan you are the owner of your business, you don't have a boss, you don't have to pay for the phone, ads, lawyers, documents and you still receive the highest commission on the market.",
-	},
-	{
-		name: 'Access to the entire property database',
-		info:
-			"You will have access to Lokkan's property database, which is made up of properties registered by owner, launches by land developers, builders and developers in several cities.",
-	},
-]
+// const becomeBrokerData = [
+// 	{
+// 		name: 'free of bureaucracy',
+// 		info: 'You will receive qualified Leads not only from your properties, but from all in your region, as well as scheduling visits, proposals, directly in your control panel.',
+// 	},
+// 	{
+// 		name: 'Highest commission on the market',
+// 		info: 'You receive 70% of the commission negotiated with the property owner (raising and commission).',
+// 	},
+// 	{
+// 		name: 'Autonomy',
+// 		info: "At Lokkan you are the owner of your business, you don't have a boss, you don't have to pay for the phone, ads, lawyers, documents and you still receive the highest commission on the market.",
+// 	},
+// 	{
+// 		name: 'Access to the entire property database',
+// 		info: "You will have access to Lokkan's property database, which is made up of properties registered by owner, launches by land developers, builders and developers in several cities.",
+// 	},
+// ]
 
 export default function Broker({
 	loginOpen,
 	setLoginOpen,
 	handleLoginOpen,
 	handleLoginClose,
+	language,
 }) {
 	const svgString = encodeURIComponent(
 		renderToStaticMarkup(<WantSellSvgBackground />)
 	)
+
+	const [myValue, setMyValue] = useState(language || 'en')
+
+	const t = myValue === 'en' ? en : pt
+
+	const becomeBrokerData = [
+		{
+			name: t['free of bureaucracy'],
+			info: 'You will receive qualified Leads not only from your properties, but from all in your region, as well as scheduling visits, proposals, directly in your control panel.',
+		},
+		{
+			name: t['Highest commission on the market'],
+			info: 'You receive 70% of the commission negotiated with the property owner (raising and commission).',
+		},
+		{
+			name: t['Autonomy'],
+			info: "At Lokkan you are the owner of your business, you don't have a boss, you don't have to pay for the phone, ads, lawyers, documents and you still receive the highest commission on the market.",
+		},
+		{
+			name: t['Access to the entire property database'],
+			info: "You will have access to Lokkan's property database, which is made up of properties registered by owner, launches by land developers, builders and developers in several cities.",
+		},
+	]
+
+	const facilitiesData = [
+		{
+			name: t['ready customers'],
+			content: 'Get customers who are ready to close deals',
+			image: usersColor,
+		},
+		{
+			name: t['highest commission'],
+			content:
+				'Receive the highest commission on the market, keep up to 70% of the full amount',
+			image: moneyColor,
+		},
+		{
+			name: t['Flexibility'],
+			content:
+				'Work wherever you are and with flexible hours and total autonomy',
+			image: timeColor,
+		},
+	]
+
+	const facilitiesBottomData = [
+		{
+			name: t['Properties'],
+			content:
+				'Get access to the property database, with third-party properties, launches by land developers, builders and developers in several cities',
+			image: houseColor,
+		},
+		{
+			name: t['Good Business'],
+			content:
+				'Receive customers who have already negotiated price and payment method and are ready to close the deal',
+			image: dealColor,
+		},
+	]
 
 	const [fullCommission, setFullCommission] = useState(30.0)
 	const [yourCommission, setYourCommission] = useState(21.0)
@@ -125,6 +183,9 @@ export default function Broker({
 					setLoginOpen={setLoginOpen}
 					handleLoginClose={handleLoginClose}
 					handleLoginOpen={handleLoginOpen}
+					languageName={language}
+					setMyValue={setMyValue}
+					myValue={myValue}
 				/>
 				<Grid
 					container
@@ -136,7 +197,7 @@ export default function Broker({
 				>
 					<Grid item xs={12} sm={12} md={12} xl={6} lg={6}>
 						<BrokerHelp
-							name="Help revolutionize the real estate market"
+							name={t['Help revolutionize the real estate market']}
 							content="By connecting to the network, you will have the most modern and
             technological real estate platform in Brazil. The only platform that
             offers the 100% digital buying and selling process, from scheduling a
@@ -144,7 +205,7 @@ export default function Broker({
             bureaucracy and providing more time so you can dedicate yourself to what
             matters, the customer"
 							fieldItem={false}
-							buttonName="Be a Partner!"
+							buttonName={t['Be a partner']}
 							handleLoginOpen={handleLoginOpen}
 						/>
 					</Grid>
@@ -188,7 +249,7 @@ export default function Broker({
 								fontWeight: '800',
 							}}
 						>
-							Become a super broker
+							{t['Become a super broker']}
 						</Typography>
 					</Grid>
 					<Container
@@ -208,6 +269,7 @@ export default function Broker({
 								<BecomeBroker
 									contentData={becomeBrokerData}
 									buttonVisible={true}
+									languageName={myValue.toString()}
 								/>
 							</Grid>
 						</Grid>
@@ -256,7 +318,7 @@ export default function Broker({
 								fontWeight: '800',
 							}}
 						>
-							Maximize your results
+							{t['Maximize your results']}
 						</Typography>
 					</Grid>
 					<Container
@@ -279,12 +341,14 @@ export default function Broker({
 								<CalulateComission
 									setFullCommission={setFullCommission}
 									setYourCommission={setYourCommission}
+									languageName={myValue.toString()}
 								/>
 							</Grid>
 							<Grid item xs={12} sm={12} md={12} xl={6} lg={6}>
 								<ComissionResult
 									fullCommission={fullCommission}
 									yourCommission={yourCommission}
+									languageName={myValue.toString()}
 								/>
 							</Grid>
 						</Grid>
@@ -332,4 +396,13 @@ export default function Broker({
 			</main>
 		</div>
 	)
+}
+
+export async function getServerSideProps(context) {
+	const cookies = context.req.cookies['language']
+	return {
+		props: {
+			language: cookies,
+		},
+	}
 }

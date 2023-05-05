@@ -13,6 +13,8 @@ import { Controller } from 'react-hook-form'
 import BaseAutocomplete from '../../reuseable/baseAutocomplete/BaseAutocomplete'
 import { useDispatch, useSelector } from 'react-redux'
 import { findStateData } from '../../../redux/state/actions'
+import en from 'locales/en'
+import pt from 'locales/pt'
 
 function AddressData({
 	handleBack,
@@ -21,7 +23,9 @@ function AddressData({
 	errors,
 	allValues,
 	setValue,
+	languageName,
 }) {
+	const t = languageName === 'en' ? en : pt
 	const dispatch = useDispatch()
 	useEffect(() => {
 		dispatch(findStateData())
@@ -50,7 +54,7 @@ function AddressData({
 						lineHeight: '29px',
 					}}
 				>
-					Address
+					{t['Address']}
 				</Typography>
 			</Grid>
 
@@ -72,7 +76,8 @@ function AddressData({
 								lineHeight: '16px',
 							}}
 						>
-							Zip Code<span style={{ color: '#E63333' }}>*</span>
+							{t['Zip code']}
+							<span style={{ color: '#E63333' }}>*</span>
 						</Typography>
 					</Grid>
 					{/* <TextField
@@ -94,7 +99,7 @@ function AddressData({
 							control={control}
 							render={({ field }) => (
 								<BaseOutlinedZipInput
-									placeholder={'Zip Code'}
+									placeholder={t['Zip code']}
 									size={'small'}
 									onChange={(e) => {
 										field.onChange(e.target.value)
@@ -134,7 +139,8 @@ function AddressData({
 								lineHeight: '16px',
 							}}
 						>
-							Address<span style={{ color: '#E63333' }}>*</span>
+							{t['Address']}
+							<span style={{ color: '#E63333' }}>*</span>
 						</Typography>
 					</Grid>
 					<Controller
@@ -144,7 +150,7 @@ function AddressData({
 						render={({ field }) => (
 							<BaseTextField
 								size={'small'}
-								placeholder={'Address'}
+								placeholder={t['Address']}
 								onChange={(e) => {
 									field.onChange(e.target.value)
 								}}
@@ -178,7 +184,8 @@ function AddressData({
 								lineHeight: '16px',
 							}}
 						>
-							Number<span style={{ color: '#E63333' }}>*</span>
+							{t['Number']}
+							<span style={{ color: '#E63333' }}>*</span>
 						</Typography>
 					</Grid>
 					<Controller
@@ -188,7 +195,7 @@ function AddressData({
 						render={({ field }) => (
 							<BaseTextField
 								size={'small'}
-								placeholder={'Number'}
+								placeholder={t['Number']}
 								onChange={(e) => {
 									field.onChange(e.target.value)
 								}}
@@ -226,7 +233,8 @@ function AddressData({
 								lineHeight: '16px',
 							}}
 						>
-							Neighbourhood<span style={{ color: '#E63333' }}>*</span>
+							{t['Neighborhood']}
+							<span style={{ color: '#E63333' }}>*</span>
 						</Typography>
 					</Grid>
 					<Controller
@@ -236,7 +244,7 @@ function AddressData({
 						render={({ field }) => (
 							<BaseTextField
 								size={'small'}
-								placeholder={'Neighbourhood'}
+								placeholder={t['Neighborhood']}
 								onChange={(e) => {
 									field.onChange(e.target.value)
 								}}
@@ -273,7 +281,7 @@ function AddressData({
 								lineHeight: '16px',
 							}}
 						>
-							Add-on
+							{t['Add-on']}
 							<span
 								style={{
 									color: '#7C7C99',
@@ -292,7 +300,7 @@ function AddressData({
 						render={({ field }) => (
 							<BaseTextField
 								size={'small'}
-								placeholder={'Add on'}
+								placeholder={t['Add-on']}
 								onChange={(e) => {
 									field.onChange(e.target.value)
 								}}
@@ -322,7 +330,8 @@ function AddressData({
 								lineHeight: '16px',
 							}}
 						>
-							State<span style={{ color: '#E63333' }}>*</span>
+							{t['state']}
+							<span style={{ color: '#E63333' }}>*</span>
 						</Typography>
 					</Grid>
 					<Controller
@@ -338,7 +347,7 @@ function AddressData({
 									option.id === value.id
 								}
 								size={'small'}
-								placeholder={'State'}
+								placeholder={t['state']}
 								onChange={(e, v, r, d) => field.onChange(v)}
 								value={field.value}
 							/>
@@ -369,7 +378,8 @@ function AddressData({
 								lineHeight: '16px',
 							}}
 						>
-							City<span style={{ color: '#E63333' }}>*</span>
+							{t['city']}
+							<span style={{ color: '#E63333' }}>*</span>
 						</Typography>
 					</Grid>
 					<Controller
@@ -379,7 +389,7 @@ function AddressData({
 						render={({ field }) => (
 							<BaseTextField
 								size={'small'}
-								placeholder={'City'}
+								placeholder={t['city']}
 								onChange={(e) => {
 									field.onChange(e.target.value)
 								}}

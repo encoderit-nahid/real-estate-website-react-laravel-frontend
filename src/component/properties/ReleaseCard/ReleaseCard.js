@@ -4,8 +4,11 @@ import cardMedia from '../../../../public/Images/CardMedia.png'
 import Image from 'next/image'
 import Link from 'next/link'
 import { _baseURL } from '../../../../consts'
+import en from 'locales/en'
+import pt from 'locales/pt'
 
-function ReleaseCard({ projectData }) {
+function ReleaseCard({ projectData, languageName }) {
+	const t = languageName === 'en' ? en : pt
 	const myLoader = ({ src }) => {
 		return `${_baseURL}/storage/${projectData?.attachments[0]?.file_path}`
 	}
@@ -58,7 +61,7 @@ function ReleaseCard({ projectData }) {
 							py: 1,
 						}}
 					>
-						{`${projectData?.properties_count} properties registered`}
+						{`${projectData?.properties_count} ${t['Properties']} registered`}
 					</Typography>
 					<Typography
 						variant="p"
@@ -71,7 +74,7 @@ function ReleaseCard({ projectData }) {
 							py: 1,
 						}}
 					>
-						{`${projectData?.sold} properties sold`}
+						{`${projectData?.sold} ${t['Properties']} sold`}
 					</Typography>
 
 					<Link
@@ -111,7 +114,7 @@ function ReleaseCard({ projectData }) {
 									my: 2,
 								}}
 							>
-								View properties
+								{t['View Properties']}
 							</Button>
 						</a>
 					</Link>

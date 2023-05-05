@@ -28,6 +28,8 @@ import { loginApi, userDetailsApi } from '../../../api'
 import { useRouter } from 'next/router'
 import BaseModal from '../../reuseable/baseModal/BaseModal'
 import ForgotPasswordModal from '../../forgotPassword/ForgotPasswordModal'
+import en from 'locales/en'
+import pt from 'locales/pt'
 
 const style = {
 	position: 'absolute',
@@ -56,7 +58,7 @@ const validationSchema = Yup.object().shape({
 		.max(40, 'Password must not exceed 40 characters'),
 })
 
-function LoginModal({ handleLoginClose }) {
+function LoginModal({ handleLoginClose, myValue }) {
 	const [validEmail, setValidEmail] = useState(false)
 	const [loading, setLoading] = useState(false)
 	const router = useRouter()
@@ -74,6 +76,8 @@ function LoginModal({ handleLoginClose }) {
 	const handleClickSnackbar = () => {
 		setSnackbarOpen(true)
 	}
+
+	const t = myValue === 'en' ? en : pt
 
 	const handleCloseSnackbar = (event, reason) => {
 		if (reason === 'clickaway') {
@@ -148,7 +152,7 @@ function LoginModal({ handleLoginClose }) {
 							color: '#1A1859',
 						}}
 					>
-						Already have registration?
+						{t['Already have registration?']}
 					</Typography>
 
 					<Grid
@@ -167,7 +171,7 @@ function LoginModal({ handleLoginClose }) {
 								lineHeight: '16px',
 							}}
 						>
-							Email
+							{t['Email']}
 						</Typography>
 					</Grid>
 					<Controller
@@ -222,7 +226,7 @@ function LoginModal({ handleLoginClose }) {
 								lineHeight: '16px',
 							}}
 						>
-							Password
+							{t['Password']}
 						</Typography>
 					</Grid>
 					<Controller
@@ -287,7 +291,7 @@ function LoginModal({ handleLoginClose }) {
 						}}
 					>
 						{loading && <CircularProgress size={22} color="inherit" />}
-						{!loading && 'To enter'}
+						{!loading && t['To enter']}
 					</Button>
 					{/* </a>
           </Link> */}
@@ -309,7 +313,7 @@ function LoginModal({ handleLoginClose }) {
 								lineHeight: '16px',
 							}}
 						>
-							I forgot the password
+							{t['I forgot the password']}
 						</Typography>
 					</Grid>
 				</Grid>
@@ -334,7 +338,7 @@ function LoginModal({ handleLoginClose }) {
 							pb: 1,
 						}}
 					>
-						Register now!
+						{t['Register now']}
 					</Typography>
 					<Link href="/registration">
 						<a
@@ -346,7 +350,7 @@ function LoginModal({ handleLoginClose }) {
 						>
 							<BaseButton
 								width={'100%'}
-								name="Register"
+								name={t['Register']}
 								handleFunction={handleLoginClose}
 							/>
 						</a>
@@ -374,7 +378,10 @@ function LoginModal({ handleLoginClose }) {
 			<BaseModal isShowing={forgotOpen} isClose={handleForgotClose}>
 				<Tooltip title="Something">
 					<>
-						<ForgotPasswordModal handleForgotClose={handleForgotClose} />
+						<ForgotPasswordModal
+							handleForgotClose={handleForgotClose}
+							myValue={myValue}
+						/>
 					</>
 				</Tooltip>
 			</BaseModal>

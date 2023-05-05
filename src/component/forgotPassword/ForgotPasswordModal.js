@@ -18,6 +18,8 @@ import BaseTextField from '../reuseable/baseTextField/BaseTextField'
 import { forgotPasswordApi } from '../../api'
 import { useState } from 'react'
 import { useRouter } from 'next/router'
+import en from 'locales/en'
+import pt from 'locales/pt'
 
 const validationSchema = Yup.object().shape({
 	email: Yup.string()
@@ -64,12 +66,14 @@ function ForgotPasswordModal({ handleForgotClose }) {
 		control,
 		setError,
 		handleSubmit,
+		myValue,
 		formState: { errors },
 	} = useForm({
 		resolver: yupResolver(validationSchema),
 	})
 
 	const router = useRouter()
+	const t = myValue === 'en' ? en : pt
 
 	const onSubmit = async (data) => {
 		const baseRedirectUrl = window.location.origin
@@ -92,6 +96,7 @@ function ForgotPasswordModal({ handleForgotClose }) {
 			setSeverity(false)
 		}
 	}
+
 	return (
 		<Box sx={style}>
 			<Box sx={{ width: '100%' }}>
@@ -120,7 +125,7 @@ function ForgotPasswordModal({ handleForgotClose }) {
 							lineHeight: '32px',
 						}}
 					>
-						Forgot your password ?
+						{t['Forgot your password ?']}
 					</Typography>
 				</Grid>
 				<form onSubmit={handleSubmit(onSubmit)}>
@@ -140,7 +145,8 @@ function ForgotPasswordModal({ handleForgotClose }) {
 								lineHeight: '16px',
 							}}
 						>
-							Email<span style={{ color: '#E63333' }}>*</span>
+							{t['Email']}
+							<span style={{ color: '#E63333' }}>*</span>
 						</Typography>
 					</Grid>
 					<Controller
@@ -149,7 +155,7 @@ function ForgotPasswordModal({ handleForgotClose }) {
 						render={({ field }) => (
 							<BaseTextField
 								size={'small'}
-								placeholder={'Email'}
+								placeholder={t['Email']}
 								onChange={(e) => {
 									field.onChange(e.target.value)
 								}}
@@ -185,7 +191,7 @@ function ForgotPasswordModal({ handleForgotClose }) {
 						{loading && (
 							<CircularProgress size={22} sx={{ color: 'grey' }} />
 						)}
-						{!loading && 'Submit'}
+						{!loading && t['Submit']}
 					</Button>
 				</form>
 			</Box>

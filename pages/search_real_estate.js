@@ -67,6 +67,8 @@ import { findPropertyTypeData } from '../src/redux/propertyType/actions'
 import { findFeatureData } from '../src/redux/features/actions'
 import { serialize } from 'object-to-formdata'
 import BaseAutocomplete from '../src/component/reuseable/baseAutocomplete/BaseAutocomplete'
+import en from 'locales/en'
+import pt from 'locales/pt'
 
 const unflatten = require('flat').unflatten
 
@@ -113,8 +115,14 @@ export default function SearchRealEstate({
 	handleLoginClose,
 	propertyData,
 	query,
+	language,
 }) {
 	console.log({ propertyData })
+
+	const [myValue, setMyValue] = useState(language || 'en')
+
+	const t = myValue === 'en' ? en : pt
+
 	const [isLoading, setIsLoading] = useState(true)
 	useEffect(() => {
 		setIsLoading(false)
@@ -1157,6 +1165,9 @@ export default function SearchRealEstate({
 					setLoginOpen={setLoginOpen}
 					handleLoginClose={handleLoginClose}
 					handleLoginOpen={handleLoginOpen}
+					languageName={language}
+					setMyValue={setMyValue}
+					myValue={myValue}
 				/>
 				<Grid
 					container
@@ -1190,7 +1201,9 @@ export default function SearchRealEstate({
 									color: '#1A1859',
 								}}
 							>
-								Property for sale in Sao Paulo, SP
+								{`${t['property for sale in']} ${
+									query?.location ? query?.location : ''
+								}`}
 							</Typography>
 							<Typography
 								variant="p"
@@ -1200,7 +1213,7 @@ export default function SearchRealEstate({
 									color: '#4B4B66',
 								}}
 							>
-								1,431 properties found
+								{`${propertyData?.properties?.total} ${t['Properties found']} `}
 							</Typography>
 						</Grid>
 						<Box sx={{ borderBottom: '1px dashed #D3D3DF' }}></Box>
@@ -1231,7 +1244,7 @@ export default function SearchRealEstate({
 								}}
 							>
 								<FilterAltOutlinedIcon />
-								<Typography variant="p">filter</Typography>
+								<Typography variant="p">{t['filter']}</Typography>
 							</Button>
 							<SwipeableDrawer
 								anchor={'left'}
@@ -1343,11 +1356,12 @@ export async function getServerSideProps(context) {
 
 	const data = await res.json()
 	// console.log('getServerSideProps', data, Date.now() - now)
-
+	const cookies = context.req.cookies['language']
 	return {
 		props: {
 			propertyData: data,
 			query: queryValue,
+			language: cookies,
 		},
 	}
 }

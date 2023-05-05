@@ -27,14 +27,9 @@ import { FormControl, InputLabel, Popover, Select } from '@mui/material'
 import { useRouter } from 'next/router'
 import en from '../../../../locales/en'
 import pt from '../../../../locales/pt'
+import SetCookie from '@/hooks/setCookie'
+import GetCookie from '@/hooks/getCookie'
 // import { getCookies, setCookie, deleteCookie, getCookie } from 'cookies-next'
-
-const pagesData = [
-	{ name: 'search real estate', page: 'search_real_estate' },
-	{ name: 'I am broker', page: 'broker' },
-	{ name: 'I am Owner', page: 'advertise' },
-	// { name: "blog", page: "blog" },
-]
 
 function Navbar({
 	shape,
@@ -43,12 +38,25 @@ function Navbar({
 	setLoginOpen,
 	handleLoginOpen,
 	handleLoginClose,
+	language,
+	languageName,
+	setMyValue,
+	myValue,
 }) {
 	const { data: session } = useSession()
 	const [anchorElNav, setAnchorElNav] = React.useState(null)
 	const [anchorElUser, setAnchorElUser] = React.useState(null)
 
-	const [myValue, setMyValue] = useState('en')
+	// const languageName = GetCookie('language')?.toString()
+
+	console.log({ languageName })
+
+	// const [myValue, setMyValue] = useState(languageName || 'en')
+
+	// React.useEffect(() => {
+	// 	console.log('myValue', myValue)
+	// 	SetCookie('language', myValue)
+	// }, [myValue])
 
 	const handleOpenNavMenu = (event) => {
 		setAnchorElNav(event.currentTarget)
@@ -94,10 +102,17 @@ function Navbar({
 	// const router = useRouter()
 	// const { locale } = router
 	// console.log('r', router)
-	const locale = 'en'
+	const locale = myValue.toString()
 	console.log({ locale })
 	const t = locale === 'en' ? en : pt
 	console.log('t', t)
+
+	const pagesData = [
+		{ name: t['search real estate'], page: 'search_real_estate' },
+		{ name: t['I am broker'], page: 'broker' },
+		{ name: t['I am owner'], page: 'advertise' },
+		// { name: "blog", page: "blog" },
+	]
 
 	// const changeLanguage = (e) => {
 	// 	const locale = e.target.value
@@ -208,7 +223,7 @@ function Navbar({
 								</Link>
 							))}
 							<BaseButton
-								name={!session ? 'Login' : 'Log out'}
+								name={!session ? t['login'] : t['Log out']}
 								margin={'0 0 0 1vh'}
 								handleFunction={handleLoginOpen}
 							/>
@@ -329,33 +344,55 @@ function Navbar({
 							/>
 						)}
 					</Grid>
-					<Typography variant="p" sx={{ marginBottom: '0.5vh' }}>
-						<FormControl fullWidth size="small">
-							<InputLabel id="demo-simple-select-label">
-								Select
-							</InputLabel>
-							<Select
-								labelId="demo-simple-select-label"
-								id="demo-simple-select"
-								defaultValue={'en'}
-								// value={locale}
-								onChange={(e) => {
-									console.log(e.target.value)
-									// setCookie('language', e.target.value)
-									// Cookies.set('language', e.target.value)
-								}}
-								label="language"
-							>
-								<MenuItem value="en">English</MenuItem>
-								<MenuItem value="pt">Brazil</MenuItem>
-							</Select>
-						</FormControl>
-					</Typography>
+					{language && (
+						<Typography variant="p" sx={{ marginLeft: '3vh' }}>
+							<FormControl fullWidth size="small">
+								<InputLabel id="demo-simple-select-label">
+									Select
+								</InputLabel>
+								<Select
+									labelId="demo-simple-select-label"
+									id="demo-simple-select"
+									value={myValue}
+									sx={{
+										color: 'white',
+										'.MuiOutlinedInput-notchedOutline': {
+											borderColor: 'rgba(228, 219, 233, 0.25)',
+										},
+										'&.Mui-focused .MuiOutlinedInput-notchedOutline':
+											{
+												borderColor: 'rgba(228, 219, 233, 0.25)',
+											},
+										'&:hover .MuiOutlinedInput-notchedOutline': {
+											borderColor: 'rgba(228, 219, 233, 0.25)',
+										},
+										'.MuiSvgIcon-root ': {
+											fill: 'white !important',
+										},
+									}}
+									// value={locale}
+									onChange={(e) => {
+										console.log(e.target.value)
+										setMyValue(e.target.value)
+										// setCookie('language', e.target.value)
+										// Cookies.set('language', e.target.value)
+									}}
+									label="language"
+								>
+									<MenuItem value="en">English</MenuItem>
+									<MenuItem value="pt">Brazil</MenuItem>
+								</Select>
+							</FormControl>
+						</Typography>
+					)}
 				</Toolbar>
 				<BaseModal isShowing={loginOpen} isClose={handleLoginClose}>
 					<Tooltip title="Something">
 						<>
-							<LoginModal handleLoginClose={handleLoginClose} />
+							<LoginModal
+								handleLoginClose={handleLoginClose}
+								myValue={myValue}
+							/>
 						</>
 					</Tooltip>
 				</BaseModal>

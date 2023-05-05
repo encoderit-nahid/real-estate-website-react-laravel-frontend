@@ -37,32 +37,20 @@ import { bestDealsApi } from '../src/api'
 import { useEffect, useState } from 'react'
 import Link from 'next/link'
 import Slider from 'react-slick'
+import GetCookie from '@/hooks/getCookie'
+import Cookies from 'js-cookie'
+import SetCookie from '@/hooks/setCookie'
+import en from 'locales/en'
+import pt from 'locales/pt'
 // import 'slick-carousel/slick/slick.css'
 // import 'slick-carousel/slick/slick-theme.css'
-
-const brokerData = [
-	{
-		name: 'High technology and low bureaucracy',
-		info: 'Digital and simplified sales process, which provides agility and transparency, allowing you to focus on your customer.',
-		imageSrc: technologyImage,
-	},
-	{
-		name: 'Clients and full assistance',
-		info: 'Simple ad system combined with complete assistance in the end-to-end buying and selling process. From announcement to public deed.',
-		imageSrc: clientsImage,
-	},
-	{
-		name: 'earn more',
-		info: 'We offer the best technologies, the most complete and agile advice on the market and the highest commission, the broker gets up to 70% of the total commission.',
-		imageSrc: earnImage,
-	},
-]
 
 export default function App({
 	loginOpen,
 	setLoginOpen,
 	handleLoginOpen,
 	handleLoginClose,
+	language,
 	data,
 }) {
 	const svgString = encodeURIComponent(
@@ -74,9 +62,37 @@ export default function App({
 	const [isLoading, setIsLoading] = useState(true)
 	const { data: session } = useSession()
 
+	const [myValue, setMyValue] = useState(language || 'en')
+
+	useEffect(() => {
+		console.log('myValue', myValue)
+		SetCookie('language', myValue)
+	}, [myValue])
+
+	const t = myValue === 'en' ? en : pt
+
+	const brokerData = [
+		{
+			name: t['High technology and low bureaucracy'],
+			info: 'Digital and simplified sales process, which provides agility and transparency, allowing you to focus on your customer.',
+			imageSrc: technologyImage,
+		},
+		{
+			name: t['Clients and full assistance'],
+			info: 'Simple ad system combined with complete assistance in the end-to-end buying and selling process. From announcement to public deed.',
+			imageSrc: clientsImage,
+		},
+		{
+			name: t['earn more'],
+			info: 'We offer the best technologies, the most complete and agile advice on the market and the highest commission, the broker gets up to 70% of the total commission.',
+			imageSrc: earnImage,
+		},
+	]
+
 	useEffect(() => {
 		setIsLoading(false)
 	}, [data])
+
 	const settings = {
 		centerMode: true,
 		centerPadding: '10px',
@@ -131,6 +147,10 @@ export default function App({
 					handleLoginClose={handleLoginClose}
 					handleLoginOpen={handleLoginOpen}
 					session={session}
+					language={true}
+					languageName={language}
+					setMyValue={setMyValue}
+					myValue={myValue}
 				/>
 				<Grid
 					container
@@ -138,7 +158,7 @@ export default function App({
 					sx={{ paddingRight: { xs: 5, sm: 5, md: 10, xl: 10, lg: 10 } }}
 				>
 					<Grid item xs={12} sm={12} md={12} xl={6} lg={6}>
-						<FulfillDream />
+						<FulfillDream languageName={myValue.toString()} />
 					</Grid>
 					<Grid
 						item
@@ -220,7 +240,7 @@ export default function App({
 								fontWeight: '800',
 							}}
 						>
-							For those who want to sell
+							{t['For those who want to sell']}
 						</Typography>
 					</Grid>
 					<Container
@@ -241,7 +261,7 @@ export default function App({
 								<SellSideContent />
 							</Grid>
 							<Grid item xs={12} sm={12} md={12} xl={6} lg={6}>
-								<WantToSell />
+								<WantToSell languageName={myValue.toString()} />
 							</Grid>
 						</Grid>
 					</Container>
@@ -273,7 +293,7 @@ export default function App({
 								fontWeight: '800',
 							}}
 						>
-							For anyone who is a broker
+							{t['For anyone who is a broker']}
 						</Typography>
 					</Grid>
 					<Container maxWidth="lg" sx={{ paddingLeft: 0 }}>
@@ -320,6 +340,7 @@ export default function App({
 								}}
 							>
 								<BrokerRegisterContent
+									languageName={myValue.toString()}
 									contentData={brokerData}
 									buttonVisible={true}
 								/>
@@ -372,7 +393,7 @@ export default function App({
 							fontWeight: '800',
 						}}
 					>
-						The Best Deals For You
+						{t['The best deals for you']}
 					</Typography>
 				</Grid>
 				<Box
@@ -465,6 +486,9 @@ export async function getServerSideProps(context) {
 	const base_url = process.env.NEXT_PUBLIC_API_URL
 	const res = await fetch(`${base_url}/api/property/best-deals`)
 	const data = await res.json()
+
+	const cookies = context.req.cookies['language']
+
 	// console.log('sfas', data)
 	// if (!data) {
 	// 	return {
@@ -472,7 +496,9 @@ export async function getServerSideProps(context) {
 	// 	}
 	// }
 
+	// console.log({ cookies })
+
 	return {
-		props: { data: data }, // will be passed to the page component as props
+		props: { data: data, language: cookies }, // will be passed to the page component as props
 	}
 }

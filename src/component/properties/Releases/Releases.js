@@ -6,11 +6,13 @@ import { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { findProjectsData } from '../../../redux/projects/actions'
 import { useRouter } from 'next/router'
+import en from 'locales/en'
+import pt from 'locales/pt'
 
-function Releases({ queryData }) {
+function Releases({ queryData, languageName }) {
 	const dispatch = useDispatch()
 	const router = useRouter()
-
+	const t = languageName === 'en' ? en : pt
 	const [page, setPage] = React.useState(+queryData?.page || 1)
 	useEffect(() => {
 		dispatch(findProjectsData(queryData))
@@ -66,7 +68,7 @@ function Releases({ queryData }) {
 			<Grid container spacing={2}>
 				{AllProjects?.data?.map((data, index) => (
 					<Grid key={index} item xs={12} sm={12} md={12} lg={4} xl={4}>
-						<ReleaseCard projectData={data} />
+						<ReleaseCard projectData={data} languageName={languageName} />
 					</Grid>
 				))}
 			</Grid>

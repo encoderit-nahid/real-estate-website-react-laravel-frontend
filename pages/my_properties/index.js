@@ -41,6 +41,8 @@ import {
 } from '@/redux/notificationCount/actions'
 import { NOTIFICATION_ADD_COUNT } from '@/redux/notificationCount/types'
 import { NotificationReadApi } from '@/api'
+import en from 'locales/en'
+import pt from 'locales/pt'
 
 const drawerWidth = 240
 
@@ -89,11 +91,15 @@ function a11yProps(index) {
 	}
 }
 
-export default function MyProperties(props) {
+export default function MyProperties({ language }) {
 	const router = useRouter()
 	const { query } = router
 	const { data: session } = useSession()
 	console.log({ session })
+
+	const [myValue, setMyValue] = useState(language || 'en')
+
+	const t = myValue === 'en' ? en : pt
 
 	const dispatch = useDispatch()
 	useEffect(() => {
@@ -215,7 +221,7 @@ export default function MyProperties(props) {
 									mt: { xs: 1, sm: 1, md: 0, lg: 0, xl: 0 },
 								}}
 							>
-								My Properties
+								{t['My Properties']}
 							</Typography>
 							<Button
 								aria-describedby={id}
@@ -300,18 +306,18 @@ export default function MyProperties(props) {
 									>
 										<Tab
 											sx={{ fontWeight: '600' }}
-											label="Releases"
+											label={t['Releases']}
 											{...a11yProps(0)}
 										/>
 										<Tab
 											sx={{ fontWeight: '600' }}
-											label="Third"
+											label={t['Third']}
 											{...a11yProps(1)}
 										/>
 										{session.user?.role === 'admin' && (
 											<Tab
 												sx={{ fontWeight: '600' }}
-												label="New Registration"
+												label={t['New Registration']}
 												{...a11yProps(2)}
 											/>
 										)}
@@ -357,7 +363,7 @@ export default function MyProperties(props) {
 														},
 													}}
 												>
-													New property
+													{t['New property']}
 												</Button>
 											</Link>
 										)}
@@ -383,20 +389,23 @@ export default function MyProperties(props) {
 														},
 													}}
 												>
-													New venture
+													{t['New venture']}
 												</Button>
 											</Link>
 										)}
 									</Grid>
 								</Container>
 								<TabPanel value={value} index={0}>
-									<Releases queryData={query} />
+									<Releases
+										queryData={query}
+										languageName={myValue.toString()}
+									/>
 								</TabPanel>
 								<TabPanel value={value} index={1}>
-									<ThirdTab />
+									<ThirdTab languageName={myValue.toString()} />
 								</TabPanel>
 								<TabPanel value={value} index={2}>
-									<NewRegistration />
+									<NewRegistration languageName={myValue.toString()} />
 								</TabPanel>
 							</Box>
 						</Container>
@@ -421,10 +430,12 @@ export async function getServerSideProps(context) {
 			},
 		}
 	}
+	const cookies = context.req.cookies['language']
 
 	return {
 		props: {
 			session: session,
+			language: cookies,
 		},
 	}
 }

@@ -4,8 +4,15 @@ import impulseImage from '../../../../public/Images/impulse.png'
 import Image from 'next/image'
 import { useState } from 'react'
 import BaseTextField from '../../reuseable/baseTextField/BaseTextField'
+import en from 'locales/en'
+import pt from 'locales/pt'
 
-function CalulateComission({ setFullCommission, setYourCommission }) {
+function CalulateComission({
+	setFullCommission,
+	setYourCommission,
+	languageName,
+}) {
+	const t = languageName === 'en' ? en : pt
 	const [salevalue, setSaleValue] = useState(0)
 	const [commission, setCommission] = useState(0)
 	const [value, setValue] = useState('')
@@ -60,12 +67,12 @@ function CalulateComission({ setFullCommission, setYourCommission }) {
 						color: '#1A1859',
 					}}
 				>
-					Simulate a sale here
+					{t['Simulate a sale here']}
 				</Typography>
 			</Grid>
 			<BaseTextField
-				label={'Sale Value'}
-				placeholder={'Sale Value'}
+				label={t['Sale value']}
+				placeholder={t['Sale value']}
 				size={'medium'}
 				type={'number'}
 				onChange={handleSaleValueChange}
@@ -81,8 +88,8 @@ function CalulateComission({ setFullCommission, setYourCommission }) {
 				}}
 			/>
 			<BaseTextField
-				label={'Comission'}
-				placeholder={'Comission'}
+				label={t['Commission']}
+				placeholder={t['Commission']}
 				size={'medium'}
 				type={'number'}
 				sx={{ mt: 4 }}
@@ -123,7 +130,7 @@ function CalulateComission({ setFullCommission, setYourCommission }) {
 				}}
 				onClick={handleCalculation}
 			>
-				calculate my commission
+				{t['calculate my commission']}
 			</Button>
 		</Grid>
 	)

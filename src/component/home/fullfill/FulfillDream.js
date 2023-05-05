@@ -15,6 +15,8 @@ import Image from 'next/image'
 import Link from 'next/link'
 import BaseTextField from '../../reuseable/baseTextField/BaseTextField'
 import BaseAutocomplete from '../../reuseable/baseAutocomplete/BaseAutocomplete'
+import en from 'locales/en'
+import pt from 'locales/pt'
 
 // const AutoComplete = styled(Autocomplete)`
 //   & .MuiInputBase-input {
@@ -31,8 +33,10 @@ const omitEmpties = (obj) => {
 	}, {})
 }
 
-function FulfillDream() {
+function FulfillDream({ languageName }) {
 	const [value, setValue] = useState(null)
+
+	const t = languageName === 'en' ? en : pt
 
 	const [locationName, setLocationName] = useState(null)
 
@@ -66,7 +70,7 @@ function FulfillDream() {
 					fontWeight: '800',
 				}}
 			>
-				Make your
+				{t['Make your']}
 			</Typography>
 			<Typography
 				variant="h1"
@@ -82,11 +86,11 @@ function FulfillDream() {
 					fontWeight: '800',
 				}}
 			>
-				Dream!
+				{t['Dream!']}
 			</Typography>
 			<BaseTextField
 				fullWidth
-				label={'Location'}
+				label={t['Location']}
 				placeholder={'Search by street, neighborhood or city'}
 				sx={{
 					mt: 4,
@@ -137,7 +141,7 @@ function FulfillDream() {
 					}}
 				>
 					<BaseButton
-						name={'search real estate'}
+						name={t['search real estate']}
 						width={{
 							xs: '90%',
 							sm: '90%',
