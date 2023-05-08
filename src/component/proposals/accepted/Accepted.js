@@ -5,7 +5,7 @@ import { useRouter } from 'next/router'
 import { useDispatch, useSelector } from 'react-redux'
 import { findPropertyData } from '../../../redux/property/actions'
 
-function Accepted() {
+function Accepted({ languageName }) {
 	const dispatch = useDispatch()
 	const router = useRouter()
 	const { query } = router
@@ -79,7 +79,10 @@ function Accepted() {
 			<Grid container spacing={2}>
 				{acceptedProperty?.data?.map((data, index) => (
 					<Grid key={data?.id} item xs={12} sm={12} md={12} lg={4} xl={4}>
-						<AcceptedCard propertyData={data} />
+						<AcceptedCard
+							propertyData={data}
+							languageName={languageName}
+						/>
 					</Grid>
 				))}
 			</Grid>

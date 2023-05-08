@@ -14,8 +14,11 @@ import dayjs from 'dayjs'
 import { useDispatch } from 'react-redux'
 import { cancelSchedule } from '../../redux/schedules/actions'
 import { _baseURL } from '../../../consts'
+import en from 'locales/en'
+import pt from 'locales/pt'
 
-function ScheduleCard({ data }) {
+function ScheduleCard({ data, languageName }) {
+	const t = languageName === 'en' ? en : pt
 	const [loading, setLoading] = useState(false)
 	const dispatch = useDispatch()
 	const handleCancelSchedule = (id) => {
@@ -84,7 +87,7 @@ function ScheduleCard({ data }) {
 											lineHeight: '22px',
 										}}
 									>
-										property details
+										{t['property details']}
 									</Typography>
 									<Typography
 										variant="h6"
@@ -169,7 +172,7 @@ function ScheduleCard({ data }) {
 											pl: 0.5,
 										}}
 									>
-										visitor data
+										{t['visitor data']}
 									</Typography>
 									<Button
 										sx={{
@@ -293,7 +296,7 @@ function ScheduleCard({ data }) {
 											lineHeight: '22px',
 										}}
 									>
-										visit data
+										{t['visit data']}
 									</Typography>
 
 									<Typography
@@ -402,7 +405,7 @@ function ScheduleCard({ data }) {
 								{loading && (
 									<CircularProgress size={22} color="inherit" />
 								)}
-								{!loading && 'Cancel visit'}
+								{!loading && t['Cancel visit']}
 							</Button>
 							{/* <Button
               variant="contained"

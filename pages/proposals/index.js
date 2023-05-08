@@ -23,6 +23,8 @@ import { useEffect } from 'react'
 import { proposalCountApi } from '../../src/api'
 import { useDispatch, useSelector } from 'react-redux'
 import { findProposalCountData } from '../../src/redux/proposalCount/actions'
+import en from 'locales/en'
+import pt from 'locales/pt'
 
 const drawerWidth = 240
 
@@ -59,9 +61,14 @@ function a11yProps(index) {
 	}
 }
 
-export default function Proposals(props) {
+export default function Proposals({ language }) {
 	const router = useRouter()
 	const { query } = router
+
+	const [myValue, setMyValue] = useState(language || 'en')
+
+	const t = myValue === 'en' ? en : pt
+
 	const dispatch = useDispatch()
 	useEffect(() => {
 		dispatch(findProposalCountData())
@@ -143,7 +150,7 @@ export default function Proposals(props) {
 
 			<main>
 				<Box sx={{ display: 'flex' }}>
-					<ResponsiveDrawer />
+					<ResponsiveDrawer languageName={myValue.toString()} />
 					<Box
 						sx={{
 							//   backgroundColor: "#f6f8fc",
@@ -173,7 +180,7 @@ export default function Proposals(props) {
 									mt: { xs: 1, sm: 1, md: 0, lg: 0, xl: 0 },
 								}}
 							>
-								Proposals
+								{t['Proposals']}
 							</Typography>
 							<Image src={notifyImage} alt="notify" />
 						</Grid>
@@ -190,8 +197,8 @@ export default function Proposals(props) {
 											sx={{ fontWeight: '600' }}
 											label={
 												countLoading
-													? 'Pendants'
-													: `Pendants(${
+													? t['Pending']
+													: `${t['Pending']}(${
 															proposalCountData?.pending || 0
 													  })`
 											}
@@ -201,8 +208,8 @@ export default function Proposals(props) {
 											sx={{ fontWeight: '600' }}
 											label={
 												countLoading
-													? 'Accepted'
-													: `Accepted(${
+													? t['Accepted']
+													: `${t['Accepted']}(${
 															proposalCountData?.accepted || 0
 													  })`
 											}
@@ -212,8 +219,8 @@ export default function Proposals(props) {
 											sx={{ fontWeight: '600' }}
 											label={
 												countLoading
-													? 'Completed'
-													: `Completed(${
+													? t['Completed']
+													: `${t['Completed']}(${
 															proposalCountData?.completed || 0
 													  })`
 											}
@@ -343,13 +350,13 @@ export default function Proposals(props) {
 									</Grid>
 								</Container>
 								<TabPanel value={value} index={0}>
-									<Pendants />
+									<Pendants languageName={myValue.toString()} />
 								</TabPanel>
 								<TabPanel value={value} index={1}>
-									<Accepted />
+									<Accepted languageName={myValue.toString()} />
 								</TabPanel>
 								<TabPanel value={value} index={2}>
-									<Completed />
+									<Completed languageName={myValue.toString()} />
 								</TabPanel>
 							</Box>
 						</Container>
@@ -375,9 +382,12 @@ export async function getServerSideProps(context) {
 		}
 	}
 
+	const cookies = context.req.cookies['language']
+
 	return {
 		props: {
 			session: session,
+			language: cookies,
 		},
 	}
 }

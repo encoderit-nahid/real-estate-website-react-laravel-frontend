@@ -22,7 +22,9 @@ import TabPendant from '../src/component/brokers/TabPendant/TabPendant'
 import { useDispatch, useSelector } from 'react-redux'
 import { useEffect } from 'react'
 import { findBrokerCountData } from '@/redux/brokerCount/actions'
-import { useSession } from 'next-auth/react'
+import { getSession, useSession } from 'next-auth/react'
+import pt from 'locales/pt'
+import en from 'locales/en'
 
 const drawerWidth = 240
 
@@ -59,7 +61,10 @@ function a11yProps(index) {
 	}
 }
 
-export default function Brokers(props) {
+export default function Brokers({ language }) {
+	const [myValue, setMyValue] = useState(language || 'en')
+
+	const t = myValue === 'en' ? en : pt
 	const { data: session } = useSession()
 	const dispatch = useDispatch()
 	useEffect(() => {
@@ -85,7 +90,7 @@ export default function Brokers(props) {
 
 			<main>
 				<Box sx={{ display: 'flex' }}>
-					<ResponsiveDrawer />
+					<ResponsiveDrawer languageName={myValue.toString()} />
 					<Box
 						sx={{
 							//   backgroundColor: "#f6f8fc",
@@ -115,7 +120,7 @@ export default function Brokers(props) {
 									mt: { xs: 1, sm: 1, md: 0, lg: 0, xl: 0 },
 								}}
 							>
-								Brokers
+								{t['Brokers']}
 							</Typography>
 							<Image src={notifyImage} alt="notify" />
 						</Grid>
@@ -132,8 +137,8 @@ export default function Brokers(props) {
 											sx={{ fontWeight: '600' }}
 											label={
 												brokerLoading
-													? 'Registered'
-													: `Registered(${
+													? t['Registered']
+													: `${t['Registered']}(${
 															brokerCountData?.register || 0
 													  })`
 											}
@@ -144,8 +149,8 @@ export default function Brokers(props) {
 												sx={{ fontWeight: '600' }}
 												label={
 													brokerLoading
-														? 'Pendant'
-														: `Pendant(${
+														? t['Pending']
+														: `${t['Pending']}(${
 																brokerCountData?.pending || 0
 														  })`
 												}
@@ -157,11 +162,11 @@ export default function Brokers(props) {
 
 								<TabPanel value={value} index={0}>
 									{/* <Pendants /> */}
-									<TabRegistered />
+									<TabRegistered languageName={myValue.toString()} />
 								</TabPanel>
 								<TabPanel value={value} index={1}>
 									{/* <Accepted /> */}
-									<TabPendant />
+									<TabPendant languageName={myValue.toString()} />
 								</TabPanel>
 							</Box>
 						</Container>
@@ -170,4 +175,29 @@ export default function Brokers(props) {
 			</main>
 		</div>
 	)
+}
+
+export async function getServerSideProps(context) {
+	//* Session for SSG
+	const session = await getSession(context)
+	//? If Not Logged In
+	if (!session) {
+		return {
+			redirect: {
+				destination: '/',
+			},
+			props: {
+				session: null,
+			},
+		}
+	}
+
+	const cookies = context.req.cookies['language']
+
+	return {
+		props: {
+			session: session,
+			language: cookies,
+		},
+	}
 }

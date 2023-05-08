@@ -41,6 +41,8 @@ import { findPropertyTypeData } from '../../../src/redux/propertyType/actions'
 import { findFeatureData } from '../../../src/redux/features/actions'
 import { serialize } from 'object-to-formdata'
 import SearchComponent from '../../../src/component/reuseable/SearchComponent/SearchComponent'
+import en from 'locales/en'
+import pt from 'locales/pt'
 
 function valuetext(value) {
 	return `${value}°C`
@@ -124,9 +126,17 @@ function a11yProps(index) {
 	}
 }
 
-export default function ViewProperties({ projectPropertyData, query }) {
+export default function ViewProperties({
+	projectPropertyData,
+	query,
+	language,
+}) {
 	const dispatch = useDispatch()
 	const router = useRouter()
+
+	const [myValue, setMyValue] = useState(language || 'en')
+
+	const t = myValue === 'en' ? en : pt
 
 	const [page, setPage] = useState(1)
 
@@ -1214,7 +1224,7 @@ export default function ViewProperties({ projectPropertyData, query }) {
 													lineHeight: '17px',
 												}}
 											>
-												come back
+												{t['Come Back']}
 											</Typography>
 										</Button>
 									</a>
@@ -1277,6 +1287,7 @@ export default function ViewProperties({ projectPropertyData, query }) {
 								<SearchComponent
 									handleSearch={handleSearch}
 									handleSearchBtn={handleSearchBtn}
+									languageName={myValue.toString()}
 								/>
 							</Grid>
 							<Grid item xs={12} sm={12} md={12} lg={2} xl={2}>
@@ -1300,7 +1311,7 @@ export default function ViewProperties({ projectPropertyData, query }) {
 									}}
 								>
 									<FilterAltOutlinedIcon />
-									<Typography variant="p">filter</Typography>
+									<Typography variant="p">{t['filter']}</Typography>
 								</Button>
 								<SwipeableDrawer
 									anchor={'left'}
@@ -1339,7 +1350,7 @@ export default function ViewProperties({ projectPropertyData, query }) {
 											},
 										}}
 									>
-										New property
+										{t['New property']}
 									</Button>
 								</Link>
 							</Grid>
@@ -1357,7 +1368,10 @@ export default function ViewProperties({ projectPropertyData, query }) {
 										xl={6}
 										xxl={6}
 									>
-										<RentCard propertyData={data} />
+										<RentCard
+											propertyData={data}
+											languageName={myValue.toString()}
+										/>
 									</Grid>
 								))}
 							</Grid>
@@ -1409,10 +1423,13 @@ export async function getServerSideProps(context) {
 	const data = await res.json()
 	console.log({ data })
 
+	const cookies = context.req.cookies['language']
+
 	return {
 		props: {
 			projectPropertyData: data?.properties?.data,
 			query: queryValue,
+			language: cookies,
 		},
 	}
 }

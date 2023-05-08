@@ -16,8 +16,11 @@ import cardMedia from '../../../../public/Images/pendant.png'
 import CheckIcon from '@mui/icons-material/Check'
 import FiberManualRecordIcon from '@mui/icons-material/FiberManualRecord'
 import { _baseURL } from '../../../../consts'
+import pt from 'locales/pt'
+import en from 'locales/en'
 
-function AcceptedCard({ propertyData }) {
+function AcceptedCard({ propertyData, languageName }) {
+	const t = languageName === 'en' ? en : pt
 	const myLoader = ({ src }) => {
 		return `${_baseURL}/storage/${src}`
 	}
@@ -274,7 +277,7 @@ function AcceptedCard({ propertyData }) {
 								},
 							}}
 						>
-							Go to the journey
+							{t['Go to the journey']}
 						</Button>
 					</Link>
 				</Grid>
@@ -315,7 +318,7 @@ function AcceptedCard({ propertyData }) {
 								},
 							}}
 						>
-							Generate contact
+							{t['Generate contract']}
 						</Button>
 					</Link>
 				</Grid>

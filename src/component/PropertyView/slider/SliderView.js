@@ -19,6 +19,8 @@ import { _baseURL } from '../../../../consts'
 import BaseStreetView from '../../reuseable/baseStreetView/BaseStreetView'
 import { useEffect } from 'react'
 import { useState } from 'react'
+import en from 'locales/en'
+import pt from 'locales/pt'
 
 function TabPanel(props) {
 	const { children, value, index, ...other } = props
@@ -60,7 +62,10 @@ function SliderView({
 	setSideTabValue,
 	selectImage,
 	addressData,
+	languageName,
 }) {
+	const t = languageName === 'en' ? en : pt
+
 	const [value, setValue] = React.useState(0)
 
 	//   function get_url_extension( selectImage ) {
@@ -123,7 +128,7 @@ function SliderView({
 				// sx={{ borderRight: 1, borderColor: "divider" }}
 			>
 				<Tab
-					label="Photos"
+					label={t['Photos']}
 					sx={{
 						fontSize: '14px',
 						color: '#4B4B66',
@@ -177,7 +182,7 @@ function SliderView({
 						borderBottom: `${value === 1 ? '2px solid #F9F9FB' : ''}`,
 						borderTop: `${value === 1 ? '2px solid #F9F9FB' : ''}`,
 					}}
-					label="360 vision"
+					label={t['360 vision']}
 					onClick={() => handleTabClick('vision_360')}
 					icon={
 						<RedoOutlinedIcon
@@ -216,7 +221,7 @@ function SliderView({
 					}
 					iconPosition="start"
 					onClick={() => handleTabClick('condominium')}
-					label="Condominium"
+					label={t['Condominium']}
 					{...a11yProps(2)}
 				/>
 				<Tab
@@ -241,7 +246,7 @@ function SliderView({
 						borderBottom: `${value === 3 ? '2px solid #F9F9FB' : ''}`,
 						borderTop: `${value === 3 ? '2px solid #F9F9FB' : ''}`,
 					}}
-					label="Location"
+					label={t['Location']}
 					icon={
 						<MapOutlinedIcon
 							sx={{ color: `${value === 3 ? '#0E97F7' : ''}` }}
@@ -279,7 +284,7 @@ function SliderView({
 						/>
 					}
 					iconPosition="start"
-					label="Street view"
+					label={t['Street view']}
 					onClick={() => handleTabClick('street_view')}
 					{...a11yProps(4)}
 				/>

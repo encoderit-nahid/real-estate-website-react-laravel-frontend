@@ -16,8 +16,11 @@ import CloseIcon from '@mui/icons-material/Close'
 import Image from 'next/image'
 import { useState } from 'react'
 import dayjs from 'dayjs'
+import pt from 'locales/pt'
+import en from 'locales/en'
 
-function TabRegisteredCard({ brokerInfo }) {
+function TabRegisteredCard({ brokerInfo, languageName }) {
+	const t = languageName === 'en' ? en : pt
 	const [state, setState] = React.useState({
 		top: false,
 		left: false,
@@ -61,7 +64,7 @@ function TabRegisteredCard({ brokerInfo }) {
 						fontWeight: '700',
 					}}
 				>
-					Broker
+					{t['Brokers']}
 				</Typography>
 				<CloseIcon onClick={toggleDrawer(anchor, false)} />
 			</Grid>
@@ -196,7 +199,7 @@ function TabRegisteredCard({ brokerInfo }) {
 						mt: 3,
 					}}
 				>
-					Address
+					{t['Address']}
 				</Typography>
 				<Typography
 					variant="h6"
@@ -338,7 +341,7 @@ function TabRegisteredCard({ brokerInfo }) {
 						},
 					}}
 				>
-					See all data
+					{t['See all data']}
 				</Button>
 				<SwipeableDrawer
 					anchor={'right'}

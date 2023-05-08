@@ -15,6 +15,8 @@ import dayjs from 'dayjs'
 import { useDispatch, useSelector } from 'react-redux'
 import { ChangePropertyStatus } from '../../../redux/propertyStatus/actions'
 import { findPropertyData } from '../../../redux/property/actions'
+import en from 'locales/en'
+import pt from 'locales/pt'
 
 const omitEmpties = (obj) => {
 	return Object.entries(obj).reduce((carry, [key, value]) => {
@@ -25,7 +27,8 @@ const omitEmpties = (obj) => {
 	}, {})
 }
 
-function NewRegistrationCard({ propertyData, newProperty }) {
+function NewRegistrationCard({ propertyData, newProperty, languageName }) {
+	const t = languageName === 'en' ? en : pt
 	const [progress, setProgress] = React.useState(87)
 	const dispatch = useDispatch()
 	const [approveid, setApproveId] = useState('')
@@ -283,7 +286,7 @@ function NewRegistrationCard({ propertyData, newProperty }) {
 								{rejectLoading && rejectid === propertyData.id ? (
 									<CircularProgress size={22} color="inherit" />
 								) : (
-									'Reject'
+									t['reject']
 								)}
 							</Button>
 							<Link
@@ -319,7 +322,7 @@ function NewRegistrationCard({ propertyData, newProperty }) {
 										},
 									}}
 								>
-									Edit
+									{t['edit']}
 								</Button>
 							</Link>
 							<Button
@@ -350,7 +353,7 @@ function NewRegistrationCard({ propertyData, newProperty }) {
 								{approveLoading && approveid === propertyData.id ? (
 									<CircularProgress size={22} color="inherit" />
 								) : (
-									'Approve'
+									t['approve']
 								)}
 							</Button>
 						</Box>

@@ -36,14 +36,22 @@ import { createTheme, CssBaseline, ThemeProvider } from '@mui/material'
 import { useEffect } from 'react'
 import { useState } from 'react'
 import { useSession, signIn, signOut } from 'next-auth/react'
+import pt from 'locales/pt'
+import en from 'locales/en'
 
 function LeftBar(props) {
 	const router = useRouter()
 	const { data: session } = useSession()
 
-	const { handleDrawerToggle, mobileOpen, drawerWidth, isDarkModeClose } =
-		props
+	const {
+		handleDrawerToggle,
+		mobileOpen,
+		drawerWidth,
+		isDarkModeClose,
+		languageName,
+	} = props
 	const { window } = props
+	const t = languageName === 'en' ? en : pt
 	const theme = createTheme({
 		typography: {
 			fontFamily: ['Lato', 'Inter', 'sans-serif'].join(','),
@@ -60,26 +68,26 @@ function LeftBar(props) {
 	const data = [
 		{
 			icon: <CampaignOutlinedIcon />,
-			label: 'Properties',
+			label: t['Properties'],
 			route: 'my_properties',
 		},
 		{
 			icon: <ArticleOutlinedIcon />,
-			label: 'Proposals',
+			label: t['Proposals'],
 			route: 'proposals',
 		},
 		{
 			icon: <StarBorderOutlinedIcon />,
-			label: 'Schedules',
+			label: t['Schedules'],
 			route: 'schedules',
 		},
 		{
 			icon: <PersonOutlineOutlinedIcon />,
-			label: 'Brokers',
+			label: t['Brokers'],
 			route: 'brokers',
 		},
 		{ icon: <HelpOutlineOutlinedIcon />, label: 'FAQ', route: 'faq' },
-		{ icon: <InputOutlinedIcon />, label: 'Leave', route: '' },
+		{ icon: <InputOutlinedIcon />, label: t['Leave'], route: '' },
 	]
 
 	// const [selectedLabel, setSelectedLabel] = useState("properties");

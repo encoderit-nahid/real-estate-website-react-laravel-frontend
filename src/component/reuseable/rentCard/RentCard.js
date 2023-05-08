@@ -6,6 +6,8 @@ import Link from 'next/link'
 import { _baseURL } from '../../../../consts'
 import dayjs from 'dayjs'
 import { useSession } from 'next-auth/react'
+import en from 'locales/en'
+import pt from 'locales/pt'
 
 const omitEmpties = (obj) => {
 	return Object.entries(obj).reduce((carry, [key, value]) => {
@@ -16,7 +18,8 @@ const omitEmpties = (obj) => {
 	}, {})
 }
 
-function RentCard({ propertyData }) {
+function RentCard({ propertyData, languageName }) {
+	const t = languageName === 'en' ? en : pt
 	const [progress, setProgress] = React.useState(87)
 
 	const { data: session } = useSession()
@@ -254,7 +257,7 @@ function RentCard({ propertyData }) {
 										},
 									}}
 								>
-									Include proposal
+									{t['Include Proposal']}
 								</Button>
 								{/* </a> */}
 							</Link>
@@ -291,7 +294,7 @@ function RentCard({ propertyData }) {
 											},
 										}}
 									>
-										Edit
+										{t['Edit']}
 									</Button>
 								</Link>
 							)}

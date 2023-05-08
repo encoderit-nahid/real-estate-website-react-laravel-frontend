@@ -399,7 +399,7 @@ export default function Broker({
 }
 
 export async function getServerSideProps(context) {
-	const cookies = context.req.cookies['language']
+	const cookies = context.req.cookies['language'] || 'en'
 	return {
 		props: {
 			language: cookies,

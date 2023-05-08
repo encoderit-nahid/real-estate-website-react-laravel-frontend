@@ -29,6 +29,8 @@ import ProposalModal from '../../src/component/PropertyView/ProposalStepperCompo
 import { useMemo, useState } from 'react'
 import { useEffect } from 'react'
 import Link from 'next/link'
+import en from 'locales/en'
+import pt from 'locales/pt'
 
 const aboutProperty = [
 	'Heater',
@@ -73,7 +75,11 @@ export default function PropertyView({
 	handleLoginClose,
 	singlePropertyData,
 	tabArrayData,
+	language,
 }) {
+	const [myValue, setMyValue] = useState(language || 'en')
+
+	const t = myValue === 'en' ? en : pt
 	//add_proposal_modal
 	const [proposalOpen, setProposalOpen] = useState(false)
 	const handleProposalOpen = () => setProposalOpen(true)
@@ -141,6 +147,9 @@ export default function PropertyView({
 					setLoginOpen={setLoginOpen}
 					handleLoginClose={handleLoginClose}
 					handleLoginOpen={handleLoginOpen}
+					languageName={language}
+					setMyValue={setMyValue}
+					myValue={myValue}
 				/>
 				<Box sx={{ ml: 3 }}>
 					<Grid
@@ -270,6 +279,7 @@ export default function PropertyView({
 								setSideTabValue={setSideTabValue}
 								selectImage={selectImage}
 								addressData={singlePropertyData?.property?.address}
+								languageName={myValue.toString()}
 							/>
 						</Grid>
 						<Grid
@@ -319,6 +329,7 @@ export default function PropertyView({
 							schedule={schedule}
 							setSchedule={setSchedule}
 							singlePropertyData={singlePropertyData}
+							languageName={myValue.toString()}
 						/>
 					</Grid>
 				</Box>
@@ -347,6 +358,7 @@ export default function PropertyView({
 								singlePropertyData={singlePropertyData}
 								handleLoginOpen={handleLoginOpen}
 								singlePropertyId={singlePropertyData?.property?.id}
+								languageName={myValue.toString()}
 							/>
 						</Grid>
 					</Grid>
@@ -420,13 +432,17 @@ export async function getServerSideProps(context) {
 	const res = await fetch(`${base_url}/api/property/show/${id}`)
 	const singlePropertyData = await res.json()
 
+	const cookies = context.req.cookies['language']
+
 	// console.log("single", singlePropertyData);
 	return {
 		props: {
 			singlePropertyData: singlePropertyData,
-			tabArrayData: singlePropertyData?.property?.property_detail?.photo_types?.filter(
-				(data) => data.slug.substr(data.slug.length - 3) !== '360'
-			),
+			tabArrayData:
+				singlePropertyData?.property?.property_detail?.photo_types?.filter(
+					(data) => data.slug.substr(data.slug.length - 3) !== '360'
+				),
+			language: cookies,
 		},
 	}
 }

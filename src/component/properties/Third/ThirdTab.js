@@ -6,7 +6,7 @@ import { useRouter } from 'next/router'
 import { useEffect } from 'react'
 import { findPropertyData } from '../../../redux/property/actions'
 
-function ThirdTab() {
+function ThirdTab({ languageName }) {
 	const dispatch = useDispatch()
 	const router = useRouter()
 	const { query } = router
@@ -70,7 +70,7 @@ function ThirdTab() {
 						xl={6}
 						xxl={6}
 					>
-						<RentCard propertyData={data} />
+						<RentCard propertyData={data} languageName={languageName} />
 					</Grid>
 				))}
 			</Grid>

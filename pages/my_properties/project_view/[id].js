@@ -28,6 +28,8 @@ import ProposalModal from '../../../src/component/PropertyView/ProposalStepperCo
 import { useEffect, useMemo, useState } from 'react'
 import yellowImage from '../../../public/Images/yellow.png'
 import { getSession } from 'next-auth/react'
+import en from 'locales/en'
+import pt from 'locales/pt'
 
 const aboutProperty = [
 	'Heater',
@@ -71,7 +73,11 @@ export default function ProjectView({
 	handleLoginOpen,
 	handleLoginClose,
 	singleProjectData,
+	language,
 }) {
+	const [myValue, setMyValue] = useState(language || 'en')
+
+	const t = myValue === 'en' ? en : pt
 	const [sideTabValue, setSideTabValue] = useState('photos')
 
 	const Images = useMemo(() => {
@@ -112,6 +118,9 @@ export default function ProjectView({
 					setLoginOpen={setLoginOpen}
 					handleLoginClose={handleLoginClose}
 					handleLoginOpen={handleLoginOpen}
+					languageName={language}
+					setMyValue={setMyValue}
+					myValue={myValue}
 				/>
 				<Box sx={{ ml: 3 }}>
 					<Grid
@@ -236,6 +245,7 @@ export default function ProjectView({
 								sideTabValue={sideTabValue}
 								setSideTabValue={setSideTabValue}
 								selectImage={selectImage}
+								languageName={myValue.toString()}
 							/>
 							+
 						</Grid>
@@ -384,9 +394,12 @@ export async function getServerSideProps(context) {
 	const res = await fetch(`${base_url}/api/project/show/${id}`)
 	const singleProjectData = await res.json()
 
+	const cookies = context.req.cookies['language']
+
 	return {
 		props: {
 			singleProjectData: singleProjectData,
+			language: cookies,
 			// tabArrayData:
 			//   singlePropertyData?.property?.property_detail?.photo_types?.filter(
 			//     (data) => data.slug.substr(data.slug.length - 3) !== "360"

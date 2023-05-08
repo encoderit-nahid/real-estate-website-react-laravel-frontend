@@ -4,8 +4,9 @@ import PendantsCard from '../pendantsCard/PendantsCard'
 import { useDispatch, useSelector } from 'react-redux'
 import { findPropertyData } from '../../../redux/property/actions'
 import { useRouter } from 'next/router'
+import { Language } from '@mui/icons-material'
 
-function Pendants() {
+function Pendants({ languageName }) {
 	const dispatch = useDispatch()
 	const router = useRouter()
 	const { query } = router
@@ -74,7 +75,10 @@ function Pendants() {
 			<Grid container spacing={2}>
 				{pendingProperty?.data?.map((data, index) => (
 					<Grid key={index} item xs={12} sm={12} md={12} lg={4} xl={4}>
-						<PendantsCard propertyData={data} />
+						<PendantsCard
+							propertyData={data}
+							languageName={languageName}
+						/>
 					</Grid>
 				))}
 			</Grid>

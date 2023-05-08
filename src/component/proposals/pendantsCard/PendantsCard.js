@@ -35,6 +35,8 @@ import { findPropertyData } from '../../../redux/property/actions'
 import { useRouter } from 'next/router'
 import { useDispatch, useSelector } from 'react-redux'
 import { proposalRefuseData } from '../../../redux/proposalRefuse/actions'
+import en from 'locales/en'
+import pt from 'locales/pt'
 
 const omitEmpties = (obj) => {
 	return Object.entries(obj).reduce((carry, [key, value]) => {
@@ -45,7 +47,8 @@ const omitEmpties = (obj) => {
 	}, {})
 }
 
-function PendantsCard({ propertyData }) {
+function PendantsCard({ propertyData, languageName }) {
+	const t = languageName === 'en' ? en : pt
 	const dispatch = useDispatch()
 	//add_see_proposal_modal
 	const [seeProposalOpen, setSeeProposalOpen] = useState(false)
@@ -124,7 +127,7 @@ function PendantsCard({ propertyData }) {
 							fontWeight: '700',
 						}}
 					>
-						Proposals
+						{t['Proposals']}
 					</Typography>
 					<CloseIcon />
 				</Grid>
@@ -349,7 +352,7 @@ function PendantsCard({ propertyData }) {
 									}}
 									onClick={() => handleSeeProposalOpen(data)}
 								>
-									see proposal
+									{t['See proposal']}
 								</Button>
 							</Grid>
 							<Grid item xs={12} sm={12} md={12} lg={3}>
@@ -464,7 +467,7 @@ function PendantsCard({ propertyData }) {
 							ml: '3px',
 						}}
 					>
-						pending proposal
+						{t['pending proposal']}
 					</Button>
 				</Box>
 			</Grid>
@@ -508,7 +511,7 @@ function PendantsCard({ propertyData }) {
 						mt: 1,
 					}}
 				>
-					{`${propertyData?.proposals.length} Proposals:`}
+					{`${propertyData?.proposals.length} ${t['Proposals']}:`}
 				</Typography>
 			</Grid>
 			<Box
@@ -636,7 +639,7 @@ function PendantsCard({ propertyData }) {
 								},
 							}}
 						>
-							Include proposal
+							{t['Include Proposal']}
 						</Button>
 					</Link>
 				</Grid>
@@ -667,7 +670,7 @@ function PendantsCard({ propertyData }) {
 							},
 						}}
 					>
-						See proposals
+						{t['See proposal']}
 					</Button>
 					<SwipeableDrawer
 						anchor={'right'}

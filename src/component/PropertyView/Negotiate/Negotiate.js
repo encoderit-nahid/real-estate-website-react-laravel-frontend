@@ -26,6 +26,8 @@ import { DateTimePicker } from '@mui/x-date-pickers'
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns'
 import { Controller } from 'react-hook-form'
 import { createScheduleApi } from '../../../api'
+import en from 'locales/en'
+import pt from 'locales/pt'
 
 function Negotiate({
 	handleProposalOpen,
@@ -36,9 +38,10 @@ function Negotiate({
 	singlePropertyData,
 	handleLoginOpen,
 	singlePropertyId,
+	languageName,
 }) {
 	// const [date, setDate] = React.useState(dayjs("2022-04-07"));
-
+	const t = languageName === 'en' ? en : pt
 	const [value, setValue] = React.useState(new Date())
 
 	const [brlValue, setBrlValue] = useState('')
@@ -94,7 +97,7 @@ function Negotiate({
 					variant="p"
 					sx={{ fontSize: '14px', fontWeight: '400', color: '#1A1859' }}
 				>
-					Value
+					{t['Value']}
 				</Typography>
 				<Typography
 					variant="p"
@@ -115,7 +118,7 @@ function Negotiate({
 					variant="p"
 					sx={{ fontSize: '14px', fontWeight: '400', color: '#1A1859' }}
 				>
-					Condominium
+					{t['Condominium']}
 				</Typography>
 				<Typography
 					variant="p"
@@ -179,7 +182,7 @@ function Negotiate({
 						setSchedule(false)
 					}}
 				>
-					Negotiate
+					{t['Negotiate']}
 				</Button>
 				{negotiate && (
 					<Box
@@ -219,7 +222,7 @@ function Negotiate({
 										color: '#ffffff',
 									}}
 								>
-									There is no proposal or schedule yet
+									{t['There is no proposal or schedule yet']}
 								</Typography>
 							</Box>
 						</Grid>
@@ -260,7 +263,7 @@ function Negotiate({
 						variant="outlined"
 						sx={{ textTransform: 'none', mt: 1 }}
 					>
-						Include Conditions
+						{t['Include Condition']}
 					</Button>
 					{conditionField && (
 						<BaseTextArea
@@ -315,7 +318,7 @@ function Negotiate({
 						}}
 						onClick={!session ? handleLoginOpen : handleProposalOpen}
 					>
-						Submit proposals
+						{t['Submit proposal']}
 					</Button>
 				</Grid>
 			)}
@@ -354,7 +357,7 @@ function Negotiate({
 						setSchedule(true)
 					}}
 				>
-					Schedule visit
+					{t['Schedule visit']}
 				</Button>
 			</Grid>
 			{schedule && (

@@ -6,7 +6,7 @@ import { useRouter } from 'next/router'
 import { findPropertyData } from '../../../redux/property/actions'
 import { useEffect } from 'react'
 
-function NewRegistration() {
+function NewRegistration({ languageName }) {
 	const dispatch = useDispatch()
 	const router = useRouter()
 	const { query } = router
@@ -71,6 +71,7 @@ function NewRegistration() {
 						<NewRegistrationCard
 							propertyData={data}
 							newProperty={newProperty}
+							languageName={languageName}
 						/>
 					</Grid>
 				))}

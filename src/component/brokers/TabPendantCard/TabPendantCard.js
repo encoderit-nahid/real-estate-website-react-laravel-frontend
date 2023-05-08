@@ -18,8 +18,11 @@ import { useDispatch } from 'react-redux'
 import { changeStatusBroker, deleteBroker } from '../../../redux/broker/actions'
 import dayjs from 'dayjs'
 import { _baseURL } from 'consts'
+import pt from 'locales/pt'
+import en from 'locales/en'
 
-function TabpendantCard({ brokerInfo }) {
+function TabpendantCard({ brokerInfo, languageName }) {
+	const t = languageName === 'en' ? en : pt
 	const dispatch = useDispatch()
 	const [state, setState] = React.useState({
 		top: false,
@@ -79,7 +82,7 @@ function TabpendantCard({ brokerInfo }) {
 						fontWeight: '700',
 					}}
 				>
-					Broker
+					{t['Brokers']}
 				</Typography>
 				<CloseIcon onClick={toggleDrawer(anchor, false)} />
 			</Grid>
@@ -224,7 +227,7 @@ function TabpendantCard({ brokerInfo }) {
 						mt: 3,
 					}}
 				>
-					Address
+					{t['Address']}
 				</Typography>
 				<Typography
 					variant="h6"
@@ -259,7 +262,7 @@ function TabpendantCard({ brokerInfo }) {
 							},
 						}}
 					>
-						fail
+						{t['fail']}
 					</Button>
 				</Grid>
 				<Grid item xs={12} sm={12} md={12} lg={6}>
@@ -280,7 +283,7 @@ function TabpendantCard({ brokerInfo }) {
 							},
 						}}
 					>
-						Approve Registration
+						{t['Approve Registration']}
 					</Button>
 				</Grid>
 			</Grid>
@@ -420,7 +423,7 @@ function TabpendantCard({ brokerInfo }) {
 						},
 					}}
 				>
-					Approve Registration
+					{t['Approve Registration']}
 				</Button>
 			</Box>
 			<Box sx={{ px: 1.5, mt: 2 }}>
@@ -441,7 +444,7 @@ function TabpendantCard({ brokerInfo }) {
 						},
 					}}
 				>
-					See all data
+					{t['See all data']}
 				</Button>
 				<SwipeableDrawer
 					anchor={'right'}
@@ -470,7 +473,7 @@ function TabpendantCard({ brokerInfo }) {
 						},
 					}}
 				>
-					fail
+					{t['fail']}
 				</Button>
 			</Box>
 		</Box>

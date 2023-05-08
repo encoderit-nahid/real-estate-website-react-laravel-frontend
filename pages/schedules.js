@@ -11,10 +11,16 @@ import ScheduleCard from '../src/component/schedule/ScheduleCard'
 import { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { findScheduleData } from '../src/redux/schedules/actions'
+import en from 'locales/en'
+import pt from 'locales/pt'
+import { useState } from 'react'
 
 const drawerWidth = 240
 
-export default function Schedules(props) {
+export default function Schedules({ language }) {
+	const [myValue, setMyValue] = useState(language || 'en')
+
+	const t = myValue === 'en' ? en : pt
 	const dispatch = useDispatch()
 	useEffect(() => {
 		dispatch(findScheduleData())
@@ -56,7 +62,7 @@ export default function Schedules(props) {
 
 			<main>
 				<Box sx={{ display: 'flex' }}>
-					<ResponsiveDrawer />
+					<ResponsiveDrawer languageName={myValue.toString()} />
 					{!Loading ? (
 						<Box
 							sx={{
@@ -87,12 +93,16 @@ export default function Schedules(props) {
 										mt: { xs: 1, sm: 1, md: 0, lg: 0, xl: 0 },
 									}}
 								>
-									Schedules
+									{t['Schedules']}
 								</Typography>
 								<Image src={notifyImage} alt="notify" />
 							</Grid>
 							{scheduleData?.data?.map((data, index) => (
-								<ScheduleCard data={data} key={index} />
+								<ScheduleCard
+									data={data}
+									key={index}
+									languageName={myValue.toString()}
+								/>
 							))}
 						</Box>
 					) : (
@@ -125,7 +135,7 @@ export default function Schedules(props) {
 										mt: { xs: 1, sm: 1, md: 0, lg: 0, xl: 0 },
 									}}
 								>
-									Schedules
+									{t['Schedules']}
 								</Typography>
 								<Image src={notifyImage} alt="notify" />
 							</Grid>
@@ -165,9 +175,12 @@ export async function getServerSideProps(context) {
 		}
 	}
 
+	const cookies = context.req.cookies['language']
+
 	return {
 		props: {
 			session: session,
+			language: cookies,
 		},
 	}
 }

@@ -1356,7 +1356,7 @@ export async function getServerSideProps(context) {
 
 	const data = await res.json()
 	// console.log('getServerSideProps', data, Date.now() - now)
-	const cookies = context.req.cookies['language']
+	const cookies = context.req.cookies['language'] || 'en'
 	return {
 		props: {
 			propertyData: data,

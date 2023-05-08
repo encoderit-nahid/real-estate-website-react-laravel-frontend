@@ -191,7 +191,7 @@ export default function MyProperties({ language }) {
 
 			<main>
 				<Box sx={{ display: 'flex' }}>
-					<ResponsiveDrawer />
+					<ResponsiveDrawer languageName={myValue.toString()} />
 					<Box
 						sx={{
 							//   backgroundColor: "#f6f8fc",

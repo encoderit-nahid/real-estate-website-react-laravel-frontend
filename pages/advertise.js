@@ -340,7 +340,7 @@ export default function Advertise({
 }
 
 export async function getServerSideProps(context) {
-	const cookies = context.req.cookies['language']
+	const cookies = context.req.cookies['language'] || 'en'
 	return {
 		props: {
 			language: cookies,

@@ -5,7 +5,7 @@ import TabPendantCard from '../TabPendantCard/TabPendantCard'
 import { useDispatch, useSelector } from 'react-redux'
 import { findBrokerData } from '../../../redux/broker/actions'
 
-function TabPendant() {
+function TabPendant({ languageName }) {
 	const dispatch = useDispatch()
 	useEffect(() => {
 		dispatch(findBrokerData({ user_type: 'broker', status: 'pending' }))
@@ -42,7 +42,7 @@ function TabPendant() {
 		<Grid container spacing={2}>
 			{brokerData?.data?.map((data, index) => (
 				<Grid key={index} item xs={12} sm={12} md={12} lg={4} xl={3}>
-					<TabPendantCard brokerInfo={data} />
+					<TabPendantCard brokerInfo={data} languageName={languageName} />
 				</Grid>
 			))}
 		</Grid>

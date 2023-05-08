@@ -487,7 +487,7 @@ export async function getServerSideProps(context) {
 	const res = await fetch(`${base_url}/api/property/best-deals`)
 	const data = await res.json()
 
-	const cookies = context.req.cookies['language']
+	const cookies = context.req.cookies['language'] || 'en'
 
 	// console.log('sfas', data)
 	// if (!data) {
