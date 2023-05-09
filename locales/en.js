@@ -52,7 +52,7 @@ export default {
 	'Practical, simple and easy': 'Practical, simple and easy',
 	'Zip code': 'Zip code',
 	'The best experience for you!': 'The best experience for you!',
-
+	'Come back': 'Come back',
 	'I want to advertise': 'I want to advertise',
 	'Lokkan for your property': 'Lokkan for your property',
 	'Practical, simple and easy': 'Practical, simple and easy',

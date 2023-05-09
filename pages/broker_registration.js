@@ -83,9 +83,23 @@ export default function BrokerRegistration({
 
 	const t = myValue === 'en' ? en : pt
 
-	const preferenceData = [t['rent'], t['sale'], t['both']]
+	const preferenceData = ['rent', 'sale', 'both']
 
-	const steps = [t['Personal data'], t['Address'], t['Performance']]
+	const steps = ['Personal data', 'Address', 'Performance']
+
+	const [successMessage, setSuccessMessage] = useState('')
+	const [successSnackbarOpen, setSuccessSnackbarOpen] = useState(false)
+
+	const handleClickSuccessSnackbar = () => {
+		setSuccessSnackbarOpen(true)
+	}
+
+	const handleCloseSuccessSnackbar = (event, reason) => {
+		if (reason === 'clickaway') {
+			return
+		}
+		setSuccessSnackbarOpen(false)
+	}
 
 	useEffect(() => {
 		const getData = async () => {
@@ -258,6 +272,8 @@ export default function BrokerRegistration({
 		setLoading(false)
 		if (!error) {
 			setSentModalOpen(true)
+			setSuccessMessage(responseToken?.data?.message)
+			handleClickSuccessSnackbar()
 		} else {
 			const errors = error?.response?.data?.errors ?? {}
 			console.log({ error })
@@ -491,6 +507,24 @@ export default function BrokerRegistration({
 										sx={{ width: '100%' }}
 									>
 										Fill up the required field!
+									</Alert>
+								</Snackbar>
+								<Snackbar
+									open={successSnackbarOpen}
+									autoHideDuration={6000}
+									onClose={handleCloseSuccessSnackbar}
+									anchorOrigin={{
+										vertical: 'top',
+										horizontal: 'left',
+									}}
+									key={'bottom'}
+								>
+									<Alert
+										onClose={handleCloseSuccessSnackbar}
+										severity="success"
+										sx={{ width: '100%' }}
+									>
+										{successMessage && successMessage}
 									</Alert>
 								</Snackbar>
 							</Fragment>

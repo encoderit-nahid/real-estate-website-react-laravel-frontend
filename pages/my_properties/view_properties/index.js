@@ -1224,7 +1224,7 @@ export default function ViewProperties({
 													lineHeight: '17px',
 												}}
 											>
-												{t['Come Back']}
+												{t['Come back']}
 											</Typography>
 										</Button>
 									</a>

@@ -59,6 +59,20 @@ export default function Registration() {
 	const router = useRouter()
 	const { query } = router
 
+	const [successMessage, setSuccessMessage] = useState('')
+	const [successSnackbarOpen, setSuccessSnackbarOpen] = React.useState(false)
+
+	const handleClickSuccessSnackbar = () => {
+		setSuccessSnackbarOpen(true)
+	}
+
+	const handleCloseSuccessSnackbar = (event, reason) => {
+		if (reason === 'clickaway') {
+			return
+		}
+		setSuccessSnackbarOpen(false)
+	}
+
 	const language = GetCookie('language')?.toString()
 
 	const t = language === 'en' ? en : pt
@@ -79,7 +93,6 @@ export default function Registration() {
 			if (query?.token) {
 				const [err, resp] = await emailVerifyApi(query?.token)
 				if (!err) {
-					// console.log({ resp })
 					localStorage.setItem('token', resp?.data?.token)
 					const [error, response] = await userDetailsApi()
 					if (!error) {
@@ -173,6 +186,9 @@ export default function Registration() {
 		const [errorToken, responseToken] = await registrationApi(allData)
 		setLoading(false)
 		if (!errorToken) {
+			// console.log(responseToken?.data?.message)
+			setSuccessMessage(responseToken?.data?.message)
+			handleClickSuccessSnackbar()
 			// localStorage.setItem('token', responseToken?.data?.token)
 			// const [error, response] = await userDetailsApi()
 			// setLoading(false)
@@ -762,6 +778,25 @@ export default function Registration() {
 						sx={{ width: '100%' }}
 					>
 						{message && message}
+					</Alert>
+				</Snackbar>
+
+				<Snackbar
+					open={successSnackbarOpen}
+					autoHideDuration={6000}
+					onClose={handleCloseSuccessSnackbar}
+					anchorOrigin={{
+						vertical: 'top',
+						horizontal: 'left',
+					}}
+					key={'bottom'}
+				>
+					<Alert
+						onClose={handleCloseSuccessSnackbar}
+						severity="success"
+						sx={{ width: '100%' }}
+					>
+						{successMessage && successMessage}
 					</Alert>
 				</Snackbar>
 			</main>
