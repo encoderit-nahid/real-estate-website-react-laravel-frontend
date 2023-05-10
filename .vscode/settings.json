@@ -1,6 +1,0 @@
-{
-	"cSpell.words": ["consts", "Laravel"],
-	"editor.formatOnSave": true,
-	"editor.detectIndentation": false,
-	"editor.defaultFormatter": "esbenp.prettier-vscode"
-}
