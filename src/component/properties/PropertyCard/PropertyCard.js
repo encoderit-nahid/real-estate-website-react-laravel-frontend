@@ -2,11 +2,11 @@ import { Box, Grid, Typography } from "@mui/material";
 import Image from "next/image";
 import React from "react";
 import propertyImage from "../../../../public/Images/propertyImage.png";
-import { _baseURL } from "../../../../consts";
+import { _baseURL, _imageURL } from "../../../../consts";
 
 function PropertyCard({ srcImage }) {
   const myLoader = ({ src }) => {
-    return `${_baseURL}/storage/${src}`;
+    return `${_imageURL}/storage/${src}`;
   };
   return (
     <Box

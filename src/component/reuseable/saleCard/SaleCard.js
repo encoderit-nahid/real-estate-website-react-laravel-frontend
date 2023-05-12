@@ -9,11 +9,11 @@ import {
 } from "@mui/material";
 import media from "../../../../public/Images/Media.png";
 import Image from "next/image";
-import { _baseURL } from "../../../../consts";
+import { _baseURL, _imageURL } from "../../../../consts";
 
 function SaleCard({ singlePropertyData }) {
   const myLoader = ({ src }) => {
-    return `${_baseURL}/storage/${src}`;
+    return `${_imageURL}/storage/${src}`;
   };
   return (
     <Box

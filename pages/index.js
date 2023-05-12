@@ -62,7 +62,7 @@ export default function App({
   const [isLoading, setIsLoading] = useState(true);
   const { data: session } = useSession();
 
-  const [myValue, setMyValue] = useState(language || "en");
+  const [myValue, setMyValue] = useState(language || "pt");
 
   useEffect(() => {
     console.log("myValue", myValue);
@@ -485,7 +485,7 @@ export async function getServerSideProps(context) {
   const res = await fetch(`${base_url}/api/property/best-deals`);
   const data = await res.json();
 
-  const cookies = context.req.cookies["language"] || "en";
+  const cookies = context.req.cookies["language"] || "pt";
 
   // console.log('sfas', data)
   // if (!data) {

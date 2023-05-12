@@ -1,7 +1,7 @@
 import * as React from "react";
 import Typography from "@mui/material/Typography";
 import Breadcrumbs from "@mui/material/Breadcrumbs";
-import Link from "@mui/material/Link";
+import Link from "next/link";
 
 function handleClick(event) {
   event.preventDefault();
@@ -19,12 +19,20 @@ export default function BasicBreadcrumbs({
         {BreadcrumbsData?.map((data, index) => (
           <Link
             key={index}
-            underline="hover"
-            color="inherit"
-            href={data.route}
+            href={`/${data.route}`}
+
             // href="/material-ui/getting-started/installation/"
           >
-            {data.stage}
+            <a
+              style={{
+                textDecoration: "none",
+                listStyle: "none",
+                width: "100%",
+                color: "rgba(0, 0, 0, 0.87)",
+              }}
+            >
+              {data.stage}
+            </a>
           </Link>
         ))}
 

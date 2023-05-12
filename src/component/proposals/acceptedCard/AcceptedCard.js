@@ -1,170 +1,167 @@
 import {
-	Avatar,
-	Box,
-	Button,
-	Grid,
-	List,
-	ListItem,
-	ListItemAvatar,
-	ListItemText,
-	Typography,
-} from '@mui/material'
-import Image from 'next/image'
-import Link from 'next/link'
-import React from 'react'
-import cardMedia from '../../../../public/Images/pendant.png'
-import CheckIcon from '@mui/icons-material/Check'
-import FiberManualRecordIcon from '@mui/icons-material/FiberManualRecord'
-import { _baseURL } from '../../../../consts'
-import pt from 'locales/pt'
-import en from 'locales/en'
+  Avatar,
+  Box,
+  Button,
+  Grid,
+  List,
+  ListItem,
+  ListItemAvatar,
+  ListItemText,
+  Typography,
+} from "@mui/material";
+import Image from "next/image";
+import Link from "next/link";
+import React from "react";
+import cardMedia from "../../../../public/Images/pendant.png";
+import CheckIcon from "@mui/icons-material/Check";
+import FiberManualRecordIcon from "@mui/icons-material/FiberManualRecord";
+import { _baseURL, _imageURL } from "../../../../consts";
+import pt from "locales/pt";
+import en from "locales/en";
 
 function AcceptedCard({ propertyData, languageName }) {
-	const t = languageName === 'en' ? en : pt
-	const myLoader = ({ src }) => {
-		return `${_baseURL}/storage/${src}`
-	}
+  const t = languageName === "en" ? en : pt;
+  const myLoader = ({ src }) => {
+    return `${_imageURL}/storage/${src}`;
+  };
 
-	const Status = [
-		{ name: 'Announcement', slug: 'announcement' },
-		{ name: 'Proposal', slug: 'proposal' },
-		{ name: 'Contract', slug: 'contract_uploaded' },
-		{ name: 'Certificates and Documents', slug: 'certificate_uploaded' },
-		{ name: 'Pre-analysis', slug: 'certificate_validated' },
-		{ name: 'Digital notary', slug: 'notary' },
-	]
+  const Status = [
+    { name: "Announcement", slug: "announcement" },
+    { name: "Proposal", slug: "proposal" },
+    { name: "Contract", slug: "contract_uploaded" },
+    { name: "Certificates and Documents", slug: "certificate_uploaded" },
+    { name: "Pre-analysis", slug: "certificate_validated" },
+    { name: "Digital notary", slug: "notary" },
+  ];
 
-	const Statusindex = Status.findIndex((object) => {
-		return object.slug === propertyData?.contract?.status
-	})
+  const Statusindex = Status.findIndex((object) => {
+    return object.slug === propertyData?.contract?.status;
+  });
 
-	return (
-		<Box
-			sx={{
-				background: '#ffffff',
-				boxShadow: '0px 4px 8px rgba(0, 33, 82, 0.08)',
-				borderRadius: '8px',
-				paddingBottom: 2,
-			}}
-		>
-			<Box sx={{ width: '100%' }}>
-				<Image
-					loader={myLoader}
-					src={`${propertyData?.attachments[0]?.file_path}`}
-					alt="pendant"
-					height={200}
-					width={500}
-				/>
-			</Box>
+  return (
+    <Box
+      sx={{
+        background: "#ffffff",
+        boxShadow: "0px 4px 8px rgba(0, 33, 82, 0.08)",
+        borderRadius: "8px",
+        paddingBottom: 2,
+      }}
+    >
+      <Box sx={{ width: "100%" }}>
+        <Image
+          loader={myLoader}
+          src={`${propertyData?.attachments[0]?.file_path}`}
+          alt="pendant"
+          height={200}
+          width={500}
+        />
+      </Box>
 
-			<Grid
-				container
-				direction="row"
-				justifyContent="flex-start"
-				alignItems="flex-start"
-			>
-				<Box sx={{ pl: 2, mt: 2 }}>
-					<Button
-						sx={{
-							textTransform: 'none',
-							background: 'rgba(116, 80, 240, 0.2)',
-							borderRadius: '2px',
-							padding: '2px 8px',
-							color: '#7450F0',
-							fontSize: '14px',
-							lineHeight: '18px',
-							fontWeight: '400',
-							mr: 1,
-						}}
-					>
-						rent
-					</Button>
-					<Button
-						sx={{
-							textTransform: 'none',
-							background: '#FFF7E6',
-							borderRadius: '2px',
-							padding: '2px 8px',
-							color: '#229464',
-							fontSize: '14px',
-							lineHeight: '18px',
-							fontWeight: '400',
-							ml: '3px',
-						}}
-					>
-						proposal accepted
-					</Button>
-				</Box>
-			</Grid>
-			<Grid
-				container
-				direction="column"
-				justifyContent="flex-start"
-				alignItems="flex-start"
-				sx={{ pl: 2, mt: 2 }}
-			>
-				<Typography
-					variant="p"
-					sx={{
-						color: '#1A1859',
-						fontSize: '24px',
-						fontWeight: '700',
-						lineHeight: '32px',
-					}}
-				>
-					{` BRL  ${propertyData?.brl_rent}`}
-				</Typography>
-				<Typography
-					variant="p"
-					sx={{
-						color: '#1A1859',
-						fontSize: '14px',
-						fontWeight: '400',
-						lineHeight: '18px',
-						mt: 1,
-					}}
-				>
-					{propertyData?.address?.address}
-				</Typography>
-			</Grid>
+      <Grid
+        container
+        direction="row"
+        justifyContent="flex-start"
+        alignItems="flex-start"
+      >
+        <Box sx={{ pl: 2, mt: 2 }}>
+          <Button
+            sx={{
+              textTransform: "none",
+              background: "rgba(116, 80, 240, 0.2)",
+              borderRadius: "2px",
+              padding: "2px 8px",
+              color: "#7450F0",
+              fontSize: "14px",
+              lineHeight: "18px",
+              fontWeight: "400",
+              mr: 1,
+            }}
+          >
+            rent
+          </Button>
+          <Button
+            sx={{
+              textTransform: "none",
+              background: "#FFF7E6",
+              borderRadius: "2px",
+              padding: "2px 8px",
+              color: "#229464",
+              fontSize: "14px",
+              lineHeight: "18px",
+              fontWeight: "400",
+              ml: "3px",
+            }}
+          >
+            proposal accepted
+          </Button>
+        </Box>
+      </Grid>
+      <Grid
+        container
+        direction="column"
+        justifyContent="flex-start"
+        alignItems="flex-start"
+        sx={{ pl: 2, mt: 2 }}
+      >
+        <Typography
+          variant="p"
+          sx={{
+            color: "#1A1859",
+            fontSize: "24px",
+            fontWeight: "700",
+            lineHeight: "32px",
+          }}
+        >
+          {` BRL  ${propertyData?.brl_rent}`}
+        </Typography>
+        <Typography
+          variant="p"
+          sx={{
+            color: "#1A1859",
+            fontSize: "14px",
+            fontWeight: "400",
+            lineHeight: "18px",
+            mt: 1,
+          }}
+        >
+          {propertyData?.address?.address}
+        </Typography>
+      </Grid>
 
-			<Box sx={{ mt: 1, px: 2 }}>
-				{Status?.map((data, index) => (
-					<Button
-						key={index}
-						sx={{ display: 'flex', textTransform: 'none' }}
-					>
-						{index <= Statusindex || index === 0 || index === 1 ? (
-							<CheckIcon sx={{ color: '#34BE84' }} />
-						) : (
-							<FiberManualRecordIcon
-								sx={{ color: '#9FAAB1', height: '2vh', width: '2vh' }}
-							/>
-						)}
+      <Box sx={{ mt: 1, px: 2 }}>
+        {Status?.map((data, index) => (
+          <Button key={index} sx={{ display: "flex", textTransform: "none" }}>
+            {index <= Statusindex || index === 0 || index === 1 ? (
+              <CheckIcon sx={{ color: "#34BE84" }} />
+            ) : (
+              <FiberManualRecordIcon
+                sx={{ color: "#9FAAB1", height: "2vh", width: "2vh" }}
+              />
+            )}
 
-						<Typography
-							variant="h5"
-							sx={{
-								color: `${
-									index <= Statusindex || index === 0 || index === 1
-										? '#34BE84'
-										: '#9FAAB1'
-								}`,
-								fontSize: '14px',
-								fontWeight: '400',
-								lineHeight: '18px',
-								ml: `${
-									index <= Statusindex || index === 0 || index === 1
-										? '0vh'
-										: '1vh'
-								}`,
-							}}
-						>
-							{data?.name}
-						</Typography>
-					</Button>
-				))}
-				{/* <Button sx={{ display: "flex", textTransform: "none" }}>
+            <Typography
+              variant="h5"
+              sx={{
+                color: `${
+                  index <= Statusindex || index === 0 || index === 1
+                    ? "#34BE84"
+                    : "#9FAAB1"
+                }`,
+                fontSize: "14px",
+                fontWeight: "400",
+                lineHeight: "18px",
+                ml: `${
+                  index <= Statusindex || index === 0 || index === 1
+                    ? "0vh"
+                    : "1vh"
+                }`,
+              }}
+            >
+              {data?.name}
+            </Typography>
+          </Button>
+        ))}
+        {/* <Button sx={{ display: "flex", textTransform: "none" }}>
           <CheckIcon sx={{ color: "#34BE84" }} />
           <Typography
             variant="h5"
@@ -240,91 +237,91 @@ function AcceptedCard({ propertyData, languageName }) {
             Digital notery
           </Typography>
         </Button> */}
-			</Box>
-			<Grid container spacing={1} sx={{ px: 2, mt: 1 }}>
-				<Grid item xs={12} sm={12} md={12} lg={6} xl={6}>
-					<Link
-						href={{
-							pathname: '/proposals/property_journey',
-							query: {
-								propertyId: propertyData?.id,
-								contractId: propertyData?.contract?.id,
-								step_count: Statusindex,
-							},
-						}}
-					>
-						<Button
-							fullWidth
-							sx={{
-								color: '#FFFFFF',
-								fontSize: '14px',
-								lineHeight: '18px',
-								fontWeight: '600',
+      </Box>
+      <Grid container spacing={1} sx={{ px: 2, mt: 1 }}>
+        <Grid item xs={12} sm={12} md={12} lg={6} xl={6}>
+          <Link
+            href={{
+              pathname: "/proposals/property_journey",
+              query: {
+                propertyId: propertyData?.id,
+                contractId: propertyData?.contract?.id,
+                step_count: Statusindex,
+              },
+            }}
+          >
+            <Button
+              fullWidth
+              sx={{
+                color: "#FFFFFF",
+                fontSize: "14px",
+                lineHeight: "18px",
+                fontWeight: "600",
 
-								background: '#0362F0',
-								borderRadius: '4px',
+                background: "#0362F0",
+                borderRadius: "4px",
 
-								textTransform: 'none',
-								'&:hover': {
-									color: '#FFFFFF',
-									fontSize: '14px',
-									lineHeight: '18px',
-									fontWeight: '600',
-									background: '#0362F0',
-									borderRadius: '4px',
+                textTransform: "none",
+                "&:hover": {
+                  color: "#FFFFFF",
+                  fontSize: "14px",
+                  lineHeight: "18px",
+                  fontWeight: "600",
+                  background: "#0362F0",
+                  borderRadius: "4px",
 
-									textTransform: 'none',
-								},
-							}}
-						>
-							{t['Go to the journey']}
-						</Button>
-					</Link>
-				</Grid>
-				<Grid item xs={12} sm={12} md={12} lg={6} xl={6}>
-					<Link
-						href={{
-							pathname: '/proposals/property_journey',
-							query: {
-								propertyId: propertyData?.id,
-								contractId: propertyData?.contract?.id,
-								step_count: 1,
-							},
-						}}
-					>
-						<Button
-							fullWidth
-							sx={{
-								color: '#FFFFFF',
-								fontSize: '14px',
+                  textTransform: "none",
+                },
+              }}
+            >
+              {t["Go to the journey"]}
+            </Button>
+          </Link>
+        </Grid>
+        <Grid item xs={12} sm={12} md={12} lg={6} xl={6}>
+          <Link
+            href={{
+              pathname: "/proposals/property_journey",
+              query: {
+                propertyId: propertyData?.id,
+                contractId: propertyData?.contract?.id,
+                step_count: 1,
+              },
+            }}
+          >
+            <Button
+              fullWidth
+              sx={{
+                color: "#FFFFFF",
+                fontSize: "14px",
 
-								lineHeight: '18px',
-								fontWeight: '600',
-								background: '#7450F0',
-								borderRadius: '4px',
+                lineHeight: "18px",
+                fontWeight: "600",
+                background: "#7450F0",
+                borderRadius: "4px",
 
-								textTransform: 'none',
+                textTransform: "none",
 
-								'&:hover': {
-									color: '#FFFFFF',
-									fontSize: '14px',
+                "&:hover": {
+                  color: "#FFFFFF",
+                  fontSize: "14px",
 
-									lineHeight: '18px',
-									fontWeight: '600',
-									background: '#7450F0',
-									borderRadius: '4px',
+                  lineHeight: "18px",
+                  fontWeight: "600",
+                  background: "#7450F0",
+                  borderRadius: "4px",
 
-									textTransform: 'none',
-								},
-							}}
-						>
-							{t['Generate contract']}
-						</Button>
-					</Link>
-				</Grid>
-			</Grid>
-		</Box>
-	)
+                  textTransform: "none",
+                },
+              }}
+            >
+              {t["Generate contract"]}
+            </Button>
+          </Link>
+        </Grid>
+      </Grid>
+    </Box>
+  );
 }
 
-export default AcceptedCard
+export default AcceptedCard;
