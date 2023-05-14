@@ -59,7 +59,7 @@ function TabpendantCard({ brokerInfo, languageName }) {
   };
 
   const myLoader = ({ src }) => {
-    return `${_imageURL}/storage/${src}`;
+    return `${_imageURL}/${src}`;
   };
 
   const list = (anchor) => (

@@ -31,7 +31,7 @@ function ScheduleCard({ data, languageName }) {
   };
 
   const myLoader = ({ src }) => {
-    return `${_imageURL}/storage/${src}`;
+    return `${_imageURL}/${src}`;
   };
 
   return (

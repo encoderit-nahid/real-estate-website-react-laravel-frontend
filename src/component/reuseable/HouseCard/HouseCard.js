@@ -11,7 +11,7 @@ import { _baseURL, _imageURL } from "../../../../consts";
 function HouseCard({ shadow, marginTop, propertyInfo }) {
   console.log({ propertyInfo });
   const myLoader = ({ src }) => {
-    return `${_imageURL}/storage/${src}`;
+    return `${_imageURL}/${src}`;
   };
 
   return (

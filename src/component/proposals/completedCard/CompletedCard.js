@@ -19,7 +19,7 @@ import { _baseURL, _imageURL } from "../../../../consts";
 
 function CompletedCard({ propertyData }) {
   const myLoader = ({ src }) => {
-    return `${_imageURL}/storage/${src}`;
+    return `${_imageURL}/${src}`;
   };
   return (
     <Box

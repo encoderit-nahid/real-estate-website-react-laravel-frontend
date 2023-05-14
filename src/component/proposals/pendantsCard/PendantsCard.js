@@ -86,7 +86,7 @@ function PendantsCard({ propertyData, languageName }) {
   });
 
   const myLoader = ({ src }) => {
-    return `${_imageURL}/storage/${src}`;
+    return `${_imageURL}/${src}`;
   };
 
   const toggleDrawer = (anchor, open) => (event) => {

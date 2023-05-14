@@ -185,7 +185,7 @@ export default function Advertise({
           sx={{
             backgroundColor: "#F9F9FB",
             paddingTop: { xs: 0, sm: 0, md: 5, lg: 5, xl: 5 },
-            marginTop: { xs: 25, sm: 25, md: 15, lg: 15, xl: 15 },
+            marginTop: { xs: 25, sm: 25, md: 15, lg: 15, xl: 15,xxl:15,xxxl:35 },
 
             paddingBottom: { xs: 2, sm: 2, md: 20, lg: 20, xl: 20 },
             // clipPath:

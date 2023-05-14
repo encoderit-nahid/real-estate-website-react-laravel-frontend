@@ -106,7 +106,7 @@ function SliderView({
   };
 
   const myLoader = ({ src }) => {
-    return `${_imageURL}/storage/${src}`;
+    return `${_imageURL}/${src}`;
   };
   return (
     <Box
@@ -334,7 +334,7 @@ function SliderView({
             <ReactPannellum
               id="1"
               sceneId="firstScene"
-              imageSource={`${_imageURL}/storage/${selectImage}`}
+              imageSource={`${_imageURL}/${selectImage}`}
               config={config}
               // style={style}
             />

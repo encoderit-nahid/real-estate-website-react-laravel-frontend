@@ -10,7 +10,7 @@ import pt from "locales/pt";
 function ReleaseCard({ projectData, languageName }) {
   const t = languageName === "en" ? en : pt;
   const myLoader = ({ src }) => {
-    return `${_imageURL}/${projectData?.attachments[0]?.file_path}`;
+    return `${_imageURL}/${src}`;
   };
   return (
     <Link href={`/my_properties/project_view/${projectData?.id}`}>
@@ -25,7 +25,7 @@ function ReleaseCard({ projectData, languageName }) {
         <Box sx={{ width: "100%" }}>
           <Image
             loader={myLoader}
-            src={`${_imageURL}/storage/${projectData?.attachments[0]?.file_path}`}
+            src={`${projectData?.attachments[0]?.file_path}`}
             width={400}
             height={300}
             alt="aston"

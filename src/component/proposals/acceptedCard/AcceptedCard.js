@@ -22,7 +22,7 @@ import en from "locales/en";
 function AcceptedCard({ propertyData, languageName }) {
   const t = languageName === "en" ? en : pt;
   const myLoader = ({ src }) => {
-    return `${_imageURL}/storage/${src}`;
+    return `${_imageURL}/${src}`;
   };
 
   const Status = [

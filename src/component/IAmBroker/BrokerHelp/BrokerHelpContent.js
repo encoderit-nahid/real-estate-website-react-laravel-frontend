@@ -16,7 +16,9 @@ function BrokerHelpContent({ imageSrc }) {
       }}
       alignItems="flex-start"
     >
-      <Image src={imageSrc} alt="brokerHelp" />
+  
+     <Image src={imageSrc}  alt="brokerHelp" />
+  
     </Grid>
   );
 }

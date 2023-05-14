@@ -23,6 +23,7 @@ function MyApp({ Component, pageProps: { session, ...pageProps } }) {
         lg: 1024,
         xl: 1280,
         xxl: 1536,
+        xxxl:2100
       },
     },
   });

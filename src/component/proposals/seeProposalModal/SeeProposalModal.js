@@ -80,7 +80,7 @@ function SeeProposalModal({
   const refuseLoading = useSelector((state) => state?.proposalRefuse?.loading);
 
   const myLoader = ({ src }) => {
-    return `${_imageURL}/storage/${src}`;
+    return `${_imageURL}/${src}`;
   };
 
   return (

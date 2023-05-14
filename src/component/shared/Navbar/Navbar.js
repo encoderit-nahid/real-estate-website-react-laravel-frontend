@@ -223,9 +223,9 @@ function Navbar({
 								</Link>
 							))}
 							<BaseButton
-								name={!session ? t['login'] : t['Log out']}
+								name={!session ? t['login'] : session?.user?.name}
 								margin={'0 0 0 1vh'}
-								handleFunction={handleLoginOpen}
+								handleFunction={!session ? handleLoginOpen : handleClick}
 							/>
 						</Menu>
 					</Box>

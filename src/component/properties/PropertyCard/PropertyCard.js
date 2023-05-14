@@ -6,7 +6,7 @@ import { _baseURL, _imageURL } from "../../../../consts";
 
 function PropertyCard({ srcImage }) {
   const myLoader = ({ src }) => {
-    return `${_imageURL}/storage/${src}`;
+    return `${_imageURL}/${src}`;
   };
   return (
     <Box

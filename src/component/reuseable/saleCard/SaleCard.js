@@ -13,7 +13,7 @@ import { _baseURL, _imageURL } from "../../../../consts";
 
 function SaleCard({ singlePropertyData }) {
   const myLoader = ({ src }) => {
-    return `${_imageURL}/storage/${src}`;
+    return `${_imageURL}/${src}`;
   };
   return (
     <Box

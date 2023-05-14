@@ -56,8 +56,8 @@ function BecomeBrokerContent() {
             lg: "inline",
           },
           position: "relative",
-          top: "-28vh",
-          left: "16vh",
+          top: {xs:'-28vh',xxxl:'-10vh'},
+          left: {xs:'16vh',xxxl:'5vh'},
         }}
       >
         <Image src={shapeImage} alt="WantImage" />

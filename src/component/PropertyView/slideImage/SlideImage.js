@@ -17,7 +17,7 @@ function SlideImage({ Images, setSelectImage }) {
     setSelectImage(data?.file_path);
   };
   const myLoader = ({ src }) => {
-    return `${_imageURL}/storage/${src}`;
+    return `${_imageURL}/${src}`;
   };
   return (
     <Grid

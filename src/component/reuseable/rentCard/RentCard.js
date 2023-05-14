@@ -25,7 +25,7 @@ function RentCard({ propertyData, languageName }) {
   const { data: session } = useSession();
 
   const myLoader = ({ src }) => {
-    return `${_imageURL}/storage/${src}`;
+    return `${_imageURL}/${src}`;
   };
   return (
     <Box

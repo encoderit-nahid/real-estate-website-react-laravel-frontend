@@ -79,7 +79,7 @@ export default function BrokerRegistration({
 	const router = useRouter()
 	const { query } = router
 
-	const [myValue, setMyValue] = useState(language || 'en')
+	const [myValue, setMyValue] = useState(language || 'pt')
 
 	const t = myValue === 'en' ? en : pt
 
@@ -547,7 +547,7 @@ export default function BrokerRegistration({
 }
 
 export async function getServerSideProps(context) {
-	const cookies = context.req.cookies['language']
+	const cookies = context.req.cookies['language'] || 'pt'
 	return {
 		props: {
 			language: cookies,
