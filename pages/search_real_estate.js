@@ -69,6 +69,7 @@ import { serialize } from "object-to-formdata";
 import BaseAutocomplete from "../src/component/reuseable/baseAutocomplete/BaseAutocomplete";
 import en from "locales/en";
 import pt from "locales/pt";
+import BaseOutlinedAreaInput from "@/component/reuseable/baseOutlinedAreaInput/BaseOutlinedAreaInput";
 
 const unflatten = require("flat").unflatten;
 
@@ -498,7 +499,7 @@ export default function SearchRealEstate({
                     : valueSlider
                 }
                 size="small"
-                max={+allValues?.max_value + 1000 || 1000}
+                max={30000000}
                 onChange={handleChange}
                 valueLabelDisplay="auto"
                 getAriaValueText={valuetext}
@@ -757,7 +758,7 @@ export default function SearchRealEstate({
                   name="min_area"
                   control={control}
                   render={({ field }) => (
-                    <BaseOutlinedCurrencyInput
+                    <BaseOutlinedAreaInput
                       size={"medium"}
                       placeholder={"Minimum"}
                       onChange={(e) => {
@@ -784,7 +785,7 @@ export default function SearchRealEstate({
                   name="max_area"
                   control={control}
                   render={({ field }) => (
-                    <BaseOutlinedCurrencyInput
+                    <BaseOutlinedAreaInput
                       size={"medium"}
                       placeholder={"Maximum"}
                       onChange={(e) => {

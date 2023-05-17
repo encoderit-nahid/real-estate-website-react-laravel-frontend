@@ -387,7 +387,7 @@ export default function NewProperty(props) {
       no_of_parking_spaces: data?.no_of_parking_spaces,
       features: featuretypes,
       // deprecated_images: singleData?.attachments?.map((data) => data.id),
-      status: action,
+      // status: action,
       document_files: newDocuments,
       content_url: data?.videos[0]?.url !== "" ? data?.videos : null,
       images: newArr,

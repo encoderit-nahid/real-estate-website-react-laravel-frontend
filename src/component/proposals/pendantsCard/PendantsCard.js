@@ -37,6 +37,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { proposalRefuseData } from "../../../redux/proposalRefuse/actions";
 import en from "locales/en";
 import pt from "locales/pt";
+import { useSession } from "next-auth/react";
 
 const omitEmpties = (obj) => {
   return Object.entries(obj).reduce((carry, [key, value]) => {
@@ -50,6 +51,7 @@ const omitEmpties = (obj) => {
 function PendantsCard({ propertyData, languageName }) {
   const t = languageName === "en" ? en : pt;
   const dispatch = useDispatch();
+  const { data: session } = useSession();
   //add_see_proposal_modal
   const [seeProposalOpen, setSeeProposalOpen] = useState(false);
   const [selectProposal, setSelectProposal] = useState("");
@@ -286,23 +288,13 @@ function PendantsCard({ propertyData, languageName }) {
                 </List>
               </Grid>
             </Grid>
-            <Grid container spacing={1} sx={{ px: 1 }}>
-              <Grid item xs={12} sm={12} md={12} lg={3}>
-                <Button
-                  onClick={() => handleProposalRefuse(data.id)}
-                  fullWidth
-                  sx={{
-                    color: " #002152",
-                    fontSize: "14px",
-
-                    lineHeight: "18px",
-                    fontWeight: "600",
-                    background: "#DBE1E5",
-                    borderRadius: "4px",
-
-                    textTransform: "none",
-
-                    "&:hover": {
+            {session?.user?.role !== "buyer" ? (
+              <Grid container spacing={1} sx={{ px: 1 }}>
+                <Grid item xs={12} sm={12} md={12} lg={3}>
+                  <Button
+                    onClick={() => handleProposalRefuse(data.id)}
+                    fullWidth
+                    sx={{
                       color: " #002152",
                       fontSize: "14px",
 
@@ -312,31 +304,31 @@ function PendantsCard({ propertyData, languageName }) {
                       borderRadius: "4px",
 
                       textTransform: "none",
-                    },
-                  }}
-                >
-                  {refuseLoading && refuseId === data.id ? (
-                    <CircularProgress size={22} color="inherit" />
-                  ) : (
-                    "Refuse"
-                  )}
-                </Button>
-              </Grid>
-              <Grid item xs={12} sm={12} md={12} lg={6}>
-                <Button
-                  fullWidth
-                  sx={{
-                    color: "#FFFFFF",
-                    fontSize: "14px",
 
-                    lineHeight: "18px",
-                    fontWeight: "600",
-                    background: "#7450F0",
-                    borderRadius: "4px",
+                      "&:hover": {
+                        color: " #002152",
+                        fontSize: "14px",
 
-                    textTransform: "none",
+                        lineHeight: "18px",
+                        fontWeight: "600",
+                        background: "#DBE1E5",
+                        borderRadius: "4px",
 
-                    "&:hover": {
+                        textTransform: "none",
+                      },
+                    }}
+                  >
+                    {refuseLoading && refuseId === data.id ? (
+                      <CircularProgress size={22} color="inherit" />
+                    ) : (
+                      "Refuse"
+                    )}
+                  </Button>
+                </Grid>
+                <Grid item xs={12} sm={12} md={12} lg={6}>
+                  <Button
+                    fullWidth
+                    sx={{
                       color: "#FFFFFF",
                       fontSize: "14px",
 
@@ -346,28 +338,28 @@ function PendantsCard({ propertyData, languageName }) {
                       borderRadius: "4px",
 
                       textTransform: "none",
-                    },
-                  }}
-                  onClick={() => handleSeeProposalOpen(data)}
-                >
-                  {t["See proposal"]}
-                </Button>
-              </Grid>
-              <Grid item xs={12} sm={12} md={12} lg={3}>
-                <Button
-                  fullWidth
-                  sx={{
-                    color: "#FFFFFF",
-                    fontSize: "14px",
 
-                    lineHeight: "18px",
-                    fontWeight: "600",
-                    background: " #34BE84",
-                    borderRadius: "4px",
+                      "&:hover": {
+                        color: "#FFFFFF",
+                        fontSize: "14px",
 
-                    textTransform: "none",
+                        lineHeight: "18px",
+                        fontWeight: "600",
+                        background: "#7450F0",
+                        borderRadius: "4px",
 
-                    "&:hover": {
+                        textTransform: "none",
+                      },
+                    }}
+                    onClick={() => handleSeeProposalOpen(data)}
+                  >
+                    {t["See proposal"]}
+                  </Button>
+                </Grid>
+                <Grid item xs={12} sm={12} md={12} lg={3}>
+                  <Button
+                    fullWidth
+                    sx={{
                       color: "#FFFFFF",
                       fontSize: "14px",
 
@@ -377,18 +369,32 @@ function PendantsCard({ propertyData, languageName }) {
                       borderRadius: "4px",
 
                       textTransform: "none",
-                    },
-                  }}
-                  onClick={() => handleProposalAccept(data.id)}
-                >
-                  {acceptLoading && acceptid === data.id ? (
-                    <CircularProgress size={22} color="inherit" />
-                  ) : (
-                    "To accept"
-                  )}
-                </Button>
+
+                      "&:hover": {
+                        color: "#FFFFFF",
+                        fontSize: "14px",
+
+                        lineHeight: "18px",
+                        fontWeight: "600",
+                        background: " #34BE84",
+                        borderRadius: "4px",
+
+                        textTransform: "none",
+                      },
+                    }}
+                    onClick={() => handleProposalAccept(data.id)}
+                  >
+                    {acceptLoading && acceptid === data.id ? (
+                      <CircularProgress size={22} color="inherit" />
+                    ) : (
+                      "To accept"
+                    )}
+                  </Button>
+                </Grid>
               </Grid>
-            </Grid>
+            ) : (
+              ""
+            )}
             <Divider sx={{ px: 2, mt: 1 }} />
           </Box>
         ))}

@@ -86,40 +86,45 @@ export default function Registration({ language }) {
       name: t["Owner"],
       value: 3,
     },
+    {
+      name: t["Broker"],
+      value: 2,
+    },
   ];
 
-  useEffect(() => {
-    const getData = async () => {
-      if (query?.token) {
-        const [err, resp] = await emailVerifyApi(query?.token);
-        if (!err) {
-          localStorage.setItem("token", resp?.data?.token);
-          const [error, response] = await userDetailsApi();
-          if (!error) {
-            return signIn("credentials", {
-              userId: response.data.user.id,
-              userEmail: response.data.user.email,
-              name: response.data.user.name,
-              phone: response.data.user.phone,
-              status: response.data.user.status,
-              role: response.data.user.roles[0].slug,
-              roleId: response.data.user.roles[0].id,
-              permissions: JSON.stringify(
-                response.data.user.roles[0].permissions
-              ),
-              callbackUrl:
-                response.data.user.roles[0].slug === "buyer"
-                  ? "/"
-                  : "/my_properties",
-            });
-          }
-        }
-      } else {
-        return;
-      }
-    };
-    getData();
-  }, [query?.token]);
+  // useEffect(() => {
+  //   const getData = async () => {
+  //     if (query?.token) {
+  //       const [err, resp] = await emailVerifyApi(query?.token);
+  //       if (!err) {
+  //         router.push("/broker_registration");
+  //         // localStorage.setItem("token", resp?.data?.token);
+  //         // const [error, response] = await userDetailsApi();
+  //         // if (!error) {
+  //         //   return signIn("credentials", {
+  //         //     userId: response.data.user.id,
+  //         //     userEmail: response.data.user.email,
+  //         //     name: response.data.user.name,
+  //         //     phone: response.data.user.phone,
+  //         //     status: response.data.user.status,
+  //         //     role: response.data.user.roles[0].slug,
+  //         //     roleId: response.data.user.roles[0].id,
+  //         //     permissions: JSON.stringify(
+  //         //       response.data.user.roles[0].permissions
+  //         //     ),
+  //         //     callbackUrl:
+  //         //       response.data.user.roles[0].slug === "buyer"
+  //         //         ? "/"
+  //         //         : "/my_properties",
+  //         //   });
+  //         // }
+  //       }
+  //     } else {
+  //       return;
+  //     }
+  //   };
+  //   getData();
+  // }, [query?.token, router]);
 
   const [activeBtn, setActiveBtn] = useState(4);
   const [disableBtn, setDisableBtn] = useState(true);
@@ -186,10 +191,11 @@ export default function Registration({ language }) {
     const [errorToken, responseToken] = await registrationApi(allData);
     setLoading(false);
     if (!errorToken) {
-      // console.log(responseToken?.data?.message)
+      console.log(responseToken?.data);
       setSuccessMessage(responseToken?.data?.message);
       handleClickSuccessSnackbar();
-      // localStorage.setItem('token', responseToken?.data?.token)
+      localStorage.setItem("registration_id", responseToken?.data?.user?.id);
+      router.push("/broker_registration");
       // const [error, response] = await userDetailsApi()
       // setLoading(false)
       // if (!error) {
@@ -552,7 +558,7 @@ export default function Registration({ language }) {
                         </Grid>
                       ))}
 
-                      <Grid item xs={4}>
+                      {/* <Grid item xs={4}>
                         <Link href="/broker_registration">
                           <Button
                             disabled={disableBtn}
@@ -615,7 +621,7 @@ export default function Registration({ language }) {
                             {t["Broker"]}
                           </Button>
                         </Link>
-                      </Grid>
+                      </Grid> */}
                     </Grid>
 
                     <Button
@@ -785,7 +791,7 @@ export default function Registration({ language }) {
 }
 
 export async function getServerSideProps(context) {
-  const cookies = context.req.cookies["language"] || 'pt';
+  const cookies = context.req.cookies["language"] || "pt";
   return {
     props: {
       language: cookies,
