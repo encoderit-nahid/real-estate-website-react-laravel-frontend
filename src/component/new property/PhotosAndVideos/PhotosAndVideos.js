@@ -338,7 +338,10 @@ function PhotosAndVideos({
                 }
                 size={"medium"}
                 placeholder={"Convenient"}
-                onChange={(e, v, r, d) => field.onChange(v)}
+                onChange={(e, v, r, d) => {
+                  field.onChange(v);
+                  console.log(v);
+                }}
                 value={field.value}
               />
             )}

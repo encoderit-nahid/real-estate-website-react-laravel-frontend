@@ -131,6 +131,8 @@ export default function BrokerRegistration({
                   ? "/"
                   : "/my_properties",
             });
+          } else {
+            router.push("/");
           }
         }
       } else {
@@ -259,7 +261,7 @@ export default function BrokerRegistration({
       image: data.image,
 
       user_id: registrationId,
-
+      broker_url: window.location.origin,
       redirect_url: window.location.href,
     });
 
