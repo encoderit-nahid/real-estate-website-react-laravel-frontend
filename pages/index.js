@@ -65,7 +65,7 @@ export default function App({
   const [myValue, setMyValue] = useState(language || "pt");
 
   useEffect(() => {
-    console.log("myValue", myValue);
+    // console.log("myValue", myValue);
     SetCookie("language", myValue);
   }, [myValue]);
 

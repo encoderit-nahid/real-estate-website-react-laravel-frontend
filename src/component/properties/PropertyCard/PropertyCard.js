@@ -4,7 +4,7 @@ import React from "react";
 import propertyImage from "../../../../public/Images/propertyImage.png";
 import { _baseURL, _imageURL } from "../../../../consts";
 
-function PropertyCard({ srcImage }) {
+function PropertyCard({ srcImage, amount }) {
   const myLoader = ({ src }) => {
     return `${_imageURL}/${src}`;
   };
@@ -72,7 +72,7 @@ function PropertyCard({ srcImage }) {
                 lineHeight: "32px",
               }}
             >
-              BRL 1,700.00
+              {`BRL ${amount}`}
             </Typography>
             <Typography
               variant="p"

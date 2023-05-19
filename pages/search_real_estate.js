@@ -118,7 +118,7 @@ export default function SearchRealEstate({
   query,
   language,
 }) {
-  console.log({ propertyData });
+  // console.log({ propertyData });
 
   const [myValue, setMyValue] = useState(language || "pt");
 

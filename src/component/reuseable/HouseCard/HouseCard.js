@@ -9,7 +9,6 @@ import Footer from "../../shared/Footer/Footer";
 import { _baseURL, _imageURL } from "../../../../consts";
 
 function HouseCard({ shadow, marginTop, propertyInfo }) {
-  console.log({ propertyInfo });
   const myLoader = ({ src }) => {
     return `${_imageURL}/${src}`;
   };

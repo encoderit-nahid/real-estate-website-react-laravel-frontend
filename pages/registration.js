@@ -180,7 +180,7 @@ export default function Registration({ language }) {
 
   const onSubmit = async (data) => {
     setLoading(true);
-    console.log(window.location.href);
+    // console.log(window.location.href);
 
     const allData = {
       ...data,
@@ -191,7 +191,7 @@ export default function Registration({ language }) {
     const [errorToken, responseToken] = await registrationApi(allData);
     setLoading(false);
     if (!errorToken) {
-      console.log(responseToken?.data);
+      // console.log(responseToken?.data);
       setSuccessMessage(responseToken?.data?.message);
       handleClickSuccessSnackbar();
       localStorage.setItem("registration_id", responseToken?.data?.user?.id);

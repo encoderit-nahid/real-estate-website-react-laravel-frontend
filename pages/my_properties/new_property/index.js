@@ -579,6 +579,7 @@ export default function NewProperty(props) {
                           fields={fields}
                           append={append}
                           remove={remove}
+                          allValues={allValues}
                         />
                       ) : (
                         <Owner

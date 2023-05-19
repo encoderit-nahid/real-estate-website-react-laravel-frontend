@@ -109,11 +109,11 @@ function TabpendantCard({ brokerInfo, languageName }) {
         <Box>
           {brokerInfo?.attachments[0]?.file_path ? (
             <Image
-              src={`${brokerInfo?.attachments[0]?.file_path}`}
-              height={50}
-              width={50}
-              alt="brokerImahe"
               loader={myLoader}
+              src={`${brokerInfo?.attachments[0]?.file_path}`}
+              alt="brokerImahe"
+              height={70}
+              width={70}
             />
           ) : (
             <Avatar />
@@ -305,11 +305,11 @@ function TabpendantCard({ brokerInfo, languageName }) {
         <Box>
           {brokerInfo?.attachments[0]?.file_path ? (
             <Image
-              src={`${brokerInfo?.attachments[0]?.file_path}`}
-              height={50}
-              width={50}
-              alt="brokerImahe"
               loader={myLoader}
+              src={`${brokerInfo?.attachments[0]?.file_path}`}
+              alt="brokerImahe"
+              height={70}
+              width={70}
             />
           ) : (
             <Avatar />

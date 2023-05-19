@@ -33,7 +33,6 @@ export const findContractDetailsData = (id) => async (dispatch) => {
   dispatch(contactDetailsRequest());
 
   const [error, response] = await contractDetailsApi(id);
-  console.log({ response });
 
   if (!error) {
     dispatch(contactDetailsSuccess(response?.data));
@@ -49,7 +48,6 @@ export const findContractDetailsData = (id) => async (dispatch) => {
 
 export const signatureAddData = (body) => async (dispatch) => {
   const [error, response] = await createSignatureApi(body);
-  console.log({ response });
 
   if (!error) {
     // dispatch(contactDetailsSuccess(response?.data));

@@ -22,7 +22,7 @@ function BaseStepper({
           stepProps.completed = false;
         }
         return (
-          <Step key={label} {...stepProps} onClick={() => setActiveStep(index)}>
+          <Step key={label} {...stepProps}>
             <StepLabel {...labelProps}>{label}</StepLabel>
           </Step>
         );

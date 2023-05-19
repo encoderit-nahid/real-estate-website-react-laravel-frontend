@@ -114,6 +114,7 @@ export default function BrokerRegistration({
           // console.log({ resp })
           localStorage.setItem("token", resp?.data?.token);
           const [error, response] = await userDetailsApi();
+
           if (!error) {
             return signIn("credentials", {
               userId: response.data.user.id,
@@ -140,7 +141,7 @@ export default function BrokerRegistration({
       }
     };
     getData();
-  }, [query?.token]);
+  }, [query?.token, router]);
 
   const [activeStep, setActiveStep] = useState(0);
   const [skipped, setSkipped] = useState(new Set());
@@ -333,6 +334,7 @@ export default function BrokerRegistration({
                       control={control}
                       errors={errors}
                       allValues={allValues}
+                      activeStep={activeStep}
                       languageName={myValue.toString()}
                     />
                   ) : activeStep === 1 ? (
@@ -343,6 +345,7 @@ export default function BrokerRegistration({
                       errors={errors}
                       allValues={allValues}
                       setValue={setValue}
+                      activeStep={activeStep}
                       languageName={myValue.toString()}
                       // allStateData={allStateData}
                     />
@@ -433,7 +436,7 @@ export default function BrokerRegistration({
                     </Grid>
                   )}
                 </form>
-                {activeStep !== 2 && (
+                {/* {activeStep !== 2 && (
                   <Grid container spacing={1} sx={{ mt: 2, mb: 5 }}>
                     <Grid item xs={6} sm={6} md={6}>
                       <Button
@@ -490,7 +493,7 @@ export default function BrokerRegistration({
                       </Button>
                     </Grid>
                   </Grid>
-                )}
+                )} */}
                 <Snackbar
                   open={snackbarOpen}
                   autoHideDuration={6000}

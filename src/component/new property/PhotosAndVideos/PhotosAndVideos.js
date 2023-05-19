@@ -64,6 +64,7 @@ function PhotosAndVideos({
   fields,
   append,
   remove,
+  allValues,
 }) {
   const dispatch = useDispatch();
   const { query } = useRouter();
@@ -115,6 +116,11 @@ function PhotosAndVideos({
 
   const myLoader = ({ src }) => {
     return `${_imageURL}/${src}`;
+  };
+
+  const ThumbnailLoader = ({ src }) => {
+    const videoId = src.match(/[?&]v=([^&]+)/)[1] || "dasfdas";
+    return `https://img.youtube.com/vi/${videoId}/maxresdefault.jpg`;
   };
 
   return (
@@ -340,7 +346,6 @@ function PhotosAndVideos({
                 placeholder={"Convenient"}
                 onChange={(e, v, r, d) => {
                   field.onChange(v);
-                  console.log(v);
                 }}
                 value={field.value}
               />
@@ -383,6 +388,20 @@ function PhotosAndVideos({
               <CancelOutlinedIcon />
             </Button>
           )}
+          <Grid container sx={{ mt: 1 }}>
+            <Grid item xs={12}>
+              {allValues?.videos[index]?.url && (
+                <Image
+                  loader={ThumbnailLoader}
+                  src={`${allValues?.videos[index]?.url}`}
+                  height={200}
+                  width={200}
+                  // layout="responsive"
+                  alt="file"
+                />
+              )}
+            </Grid>
+          </Grid>
         </Grid>
       ))}
     </Box>

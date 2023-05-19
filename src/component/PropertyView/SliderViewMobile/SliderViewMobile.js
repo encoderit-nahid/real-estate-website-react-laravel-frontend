@@ -73,8 +73,6 @@ function SliderViewMobile({
   //     return selectImage.split(/[#?]/)[0].split('.').pop().trim();
   // }
 
-  console.log({ selectImage });
-
   const handleChange = (event, newValue) => {
     setValue(+newValue);
   };

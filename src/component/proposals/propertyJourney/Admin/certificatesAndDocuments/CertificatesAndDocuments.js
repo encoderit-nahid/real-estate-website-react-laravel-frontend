@@ -53,7 +53,6 @@ function CertificatesAndDocuments({ handleNext, singlePropertyData }) {
   const uploadCount = useSelector(
     (state) => state?.requireCertificate?.uploadCount
   );
-  console.log({ uploadCount });
 
   const [certificateData, setCertificateData] = useState("");
   //contract_modal_open
@@ -104,8 +103,6 @@ function CertificatesAndDocuments({ handleNext, singlePropertyData }) {
     setCertificateData(data);
   };
   const handleNotaryPdfClose = () => setDigitalNotaryPdfOpen(false);
-
-  console.log({ requireCertificateData });
 
   return (
     <Box sx={{ mt: 4 }}>

@@ -95,7 +95,6 @@ export default function MyProperties({ language }) {
   const router = useRouter();
   const { query } = router;
   const { data: session } = useSession();
-  console.log({ session });
 
   const [myValue, setMyValue] = useState(language || "en");
 
