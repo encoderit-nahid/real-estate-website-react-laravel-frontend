@@ -119,7 +119,9 @@ function PhotosAndVideos({
   };
 
   const ThumbnailLoader = ({ src }) => {
-    const videoId = src.match(/[?&]v=([^&]+)/)[1] || "dasfdas";
+    const match = src.match(/[?&]v=([^&]+)/);
+    const videoId = match ? match[1] : null;
+
     return `https://img.youtube.com/vi/${videoId}/maxresdefault.jpg`;
   };
 

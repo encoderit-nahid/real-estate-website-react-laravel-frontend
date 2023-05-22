@@ -25,6 +25,8 @@ import { findProjectsData } from "../../../redux/projects/actions";
 import { Controller } from "react-hook-form";
 import BaseAutocomplete from "../../reuseable/baseAutocomplete/BaseAutocomplete";
 import { findStateData } from "../../../redux/state/actions";
+import en from "locales/en";
+import pt from "locales/pt";
 
 const baseStyle = {
   flex: 1,
@@ -68,8 +70,11 @@ function Address({
   setPropertyDetailId,
   documents,
   setDocuments,
+  languageName,
 }) {
   const dispatch = useDispatch();
+
+  const t = languageName === "en" ? en : pt;
 
   useEffect(() => {
     dispatch(findPropertyTypeData());
@@ -162,7 +167,7 @@ function Address({
             ml: 1,
           }}
         >
-          sales authorization document
+          {t["sales authorization document"]}
         </Typography>
       </Grid>
       <Box {...getRootProps({ style })}>
@@ -177,7 +182,7 @@ function Address({
             mt: 1,
           }}
         >
-          Drag and drop documents here
+          {t["Drag and drop documents here"]}
         </Typography>
         <Typography
           variant="p"
@@ -189,7 +194,7 @@ function Address({
             mt: 1,
           }}
         >
-          or
+          {t["or"]}
         </Typography>
         <Button
           variant="contained"
@@ -203,7 +208,7 @@ function Address({
             lineHeight: "18px",
           }}
         >
-          select documents
+          {t["select documents"]}
         </Button>
         <Typography
           variant="inherit"
@@ -273,7 +278,7 @@ function Address({
             ml: 1,
           }}
         >
-          property type and address
+          {t["property type and address"]}
         </Typography>
       </Grid>
       <Grid container sx={{ mt: 2 }}>
@@ -293,19 +298,23 @@ function Address({
                 lineHeight: "22px",
               }}
             >
-              Ad type:
+              {`${t["Ad type"]}:`}
             </Typography>
             <Box sx={{ mt: 1 }}>
               <Grid container spacing={1}>
-                {["Rent", "Sale"].map((data, index) => (
+                {[
+                  { name: "Rent", slug: t["Rent"] },
+                  { name: "Sale", slug: t["Sale"] },
+                ].map((data, index) => (
                   <Grid item xs={6} key={index}>
                     <Button
-                      onClick={() => setAdType(data)}
+                      onClick={() => setAdType(data?.name)}
                       sx={{
                         width: "100%",
-                        background: adType === data ? "#0362F0" : "#F2F5F6",
+                        background:
+                          adType === data?.name ? "#0362F0" : "#F2F5F6",
                         borderRadius: "152px",
-                        color: adType === data ? "#ffffff" : "#002152",
+                        color: adType === data?.name ? "#ffffff" : "#002152",
                         fontSize: {
                           xs: "12px",
                           sm: "13px",
@@ -344,7 +353,7 @@ function Address({
                         },
                       }}
                     >
-                      {data}
+                      {data?.slug}
                     </Button>
                   </Grid>
                 ))}
@@ -368,20 +377,24 @@ function Address({
                 lineHeight: "22px",
               }}
             >
-              Property type:
+              {`${t["Property type"]}:`}
             </Typography>
             <Box sx={{ mt: 1 }}>
               <Grid container spacing={1}>
-                {["Residential", "Commercial"].map((data, index) => (
+                {[
+                  { name: "Residential", slug: t["Residential"] },
+                  { name: "Commercial", slug: t["Commercial"] },
+                ].map((data, index) => (
                   <Grid item xs={6} key={index}>
                     <Button
-                      onClick={() => setPropertyType(data)}
+                      onClick={() => setPropertyType(data?.name)}
                       sx={{
                         width: "100%",
                         background:
-                          propertyType === data ? "#0362F0" : "#F2F5F6",
+                          propertyType === data?.name ? "#0362F0" : "#F2F5F6",
                         borderRadius: "152px",
-                        color: propertyType === data ? "#ffffff" : "#002152",
+                        color:
+                          propertyType === data?.name ? "#ffffff" : "#002152",
                         fontSize: {
                           xs: "12px",
                           sm: "13px",
@@ -420,7 +433,7 @@ function Address({
                         },
                       }}
                     >
-                      {data}
+                      {data?.slug}
                     </Button>
                   </Grid>
                 ))}
@@ -446,7 +459,7 @@ function Address({
                 lineHeight: "22px",
               }}
             >
-              Property detail:
+              {`${t["Property detail"]}:`}
             </Typography>
             <Box sx={{ mt: 1 }}>
               <Grid container spacing={1}>
@@ -525,7 +538,7 @@ function Address({
             getOptionLabel={(option) => option.name || ""}
             isOptionEqualToValue={(option, value) => option.id === value.id}
             size={"medium"}
-            placeholder={"Select Enterprise Name*"}
+            placeholder={`${t["select enterprise name"]}*`}
             onChange={(e, v, r, d) => field.onChange(v)}
             value={field.value || null}
           />
@@ -567,7 +580,7 @@ function Address({
                 fontWeight: "400",
               }}
             >
-              New venture
+              {t["New venture"]}
             </Typography>
           </a>
         </Link>
@@ -582,7 +595,7 @@ function Address({
               defaultValue={""}
               render={({ field }) => (
                 <BaseOutlinedZipInput
-                  placeholder={"Zip Code*"}
+                  placeholder={`${t["Zip code"]}*`}
                   size={"medium"}
                   onChange={(e) => {
                     field.onChange(e.target.value);
@@ -610,7 +623,7 @@ function Address({
             render={({ field }) => (
               <BaseTextField
                 size={"medium"}
-                placeholder={"Address*"}
+                placeholder={`${t["Address"]}*`}
                 onChange={(e) => {
                   field.onChange(e.target.value);
                 }}
@@ -635,7 +648,7 @@ function Address({
             render={({ field }) => (
               <BaseTextField
                 size={"medium"}
-                placeholder={"Number*"}
+                placeholder={`${t["Number"]}*`}
                 onChange={(e) => {
                   field.onChange(e.target.value);
                 }}
@@ -663,7 +676,7 @@ function Address({
             render={({ field }) => (
               <BaseTextField
                 size={"medium"}
-                placeholder={"Neighbourhood*"}
+                placeholder={`${t["Neighborhood"]}*`}
                 onChange={(e) => {
                   field.onChange(e.target.value);
                 }}
@@ -688,7 +701,7 @@ function Address({
             render={({ field }) => (
               <BaseTextField
                 size={"medium"}
-                placeholder={"Complement"}
+                placeholder={t["Complement"]}
                 onChange={(e) => {
                   field.onChange(e.target.value);
                 }}
@@ -715,7 +728,7 @@ function Address({
             render={({ field }) => (
               <BaseTextField
                 size={"medium"}
-                placeholder={"City*"}
+                placeholder={`${t["City"]}*`}
                 onChange={(e) => {
                   field.onChange(e.target.value);
                 }}
@@ -744,7 +757,7 @@ function Address({
                 getOptionLabel={(option) => option.name || ""}
                 isOptionEqualToValue={(option, value) => option.id === value.id}
                 size={"medium"}
-                placeholder={"State*"}
+                placeholder={`${t["State"]}*`}
                 onChange={(e, v, r, d) => field.onChange(v)}
                 value={field.value || null}
               />

@@ -42,20 +42,6 @@ import { signIn } from "next-auth/react";
 import en from "locales/en";
 import pt from "locales/pt";
 
-const validationSchema = Yup.object().shape({
-  full_name: Yup.string().required("Full Name is required"),
-  creci_number: Yup.string().required("CRECI number is required"),
-  cpf_number: Yup.string().required("CPF number is required"),
-  rg_number: Yup.string().required("RG number is required"),
-  dob: Yup.string().required("Date of Birth number is required"),
-  zip_code: Yup.string().required("Zip code number is required"),
-  address: Yup.string().required("Address is required"),
-  number: Yup.string().required("Number is required"),
-  neighbourhood: Yup.string().required("Neighbourhood is required"),
-  state: Yup.object().required("State is required"),
-  city: Yup.string().required("City is required"),
-});
-
 const aboutLokkanData = [
   "Refer a friend",
   "Facebook",
@@ -88,9 +74,27 @@ export default function BrokerRegistration({
 
   const t = myValue === "en" ? en : pt;
 
-  const preferenceData = ["rent", "sale", "both"];
+  const validationSchema = Yup.object().shape({
+    full_name: Yup.string().required(t["Full Name is required"]),
+    // creci_number: Yup.string().required(t["CRECI number is required"]),
+    cpf_number: Yup.string().required(t["CPF number is required"]),
+    rg_number: Yup.string().required(t["RG number is required"]),
+    dob: Yup.string().required(t["Date of Birth number is required"]),
+    zip_code: Yup.string().required(t["Zip code number is required"]),
+    address: Yup.string().required(t["Address is required"]),
+    number: Yup.string().required(t["Number is required"]),
+    neighbourhood: Yup.string().required(t["Neighbourhood is required"]),
+    state: Yup.object().required(t["State is required"]),
+    city: Yup.string().required(t["City is required"]),
+  });
 
-  const steps = ["Personal data", "Address", "Performance"];
+  const preferenceData = [
+    { name: "rent", slug: t["rent"] },
+    { name: "sale", slug: t["sale"] },
+    { name: "both", slug: t["both"] },
+  ];
+
+  const steps = [t["Personal data"], t["Address"], t["Performance"]];
 
   const [successMessage, setSuccessMessage] = useState("");
   const [successSnackbarOpen, setSuccessSnackbarOpen] = useState(false);
@@ -115,20 +119,23 @@ export default function BrokerRegistration({
           localStorage.setItem("token", resp?.data?.token);
           const [error, response] = await userDetailsApi();
 
+          console.log("rr", response);
+
           if (!error) {
             return signIn("credentials", {
-              userId: response.data.user.id,
-              userEmail: response.data.user.email,
-              name: response.data.user.name,
-              phone: response.data.user.phone,
-              status: response.data.user.status,
-              role: response.data.user.roles[0].slug,
-              roleId: response.data.user.roles[0].id,
+              userId: response?.data?.user?.id,
+              userEmail: response?.data?.user?.email,
+              name: response?.data?.user?.name,
+              phone: response?.data?.user?.phone,
+              status: response?.data?.user?.status,
+              role: response?.data?.user?.roles[0]?.slug,
+              roleId: response?.data?.user?.roles[0]?.id,
+              // image: response?.data?.user?.attachments[0],
               permissions: JSON.stringify(
-                response.data.user.roles[0].permissions
+                response?.data?.user?.roles[0]?.permissions
               ),
               callbackUrl:
-                response.data.user.roles[0].slug === "buyer"
+                response.data?.user?.roles[0]?.slug === "buyer"
                   ? "/"
                   : "/my_properties",
             });
@@ -206,7 +213,7 @@ export default function BrokerRegistration({
   const handleClose = () => setSentModalOpen(false);
 
   const [actingPreferenceBtn, setActingPreferenceBtn] = useState(
-    preferenceData[0]
+    preferenceData[0]?.name
   );
   const [aboutLokkanBtn, setAboutLokkanBtn] = useState(aboutLokkanData[0]);
   const [loading, setLoading] = useState(false);

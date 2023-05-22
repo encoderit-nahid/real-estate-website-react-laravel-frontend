@@ -32,19 +32,23 @@ import GetCookie from "@/hooks/getCookie";
 import en from "locales/en";
 import pt from "locales/pt";
 
-const validationSchema = Yup.object().shape({
-  name: Yup.string().required("Name is required"),
-  phone: Yup.string().required("Phone is required"),
-  email: Yup.string()
-    .required("Email is required")
-    .matches(/.+@.+\.[A-Za-z]+$/, "Email is invalid"),
-  password: Yup.string()
-    .required("Password is required")
-    .min(6, "Password must be at least 6 characters")
-    .max(40, "Password must not exceed 40 characters"),
-});
-
 export default function Registration({ language }) {
+  const router = useRouter();
+  const { query } = router;
+  const [myValue, setMyValue] = useState(language || "pt");
+  const t = myValue === "en" ? en : pt;
+  const validationSchema = Yup.object().shape({
+    name: Yup.string().required(t["Name is required"]),
+    phone: Yup.string().required(t["Phone is required"]),
+    email: Yup.string()
+      .required(t["Email is required"])
+      .matches(/.+@.+\.[A-Za-z]+$/, t["Email is invalid"]),
+    password: Yup.string()
+      .required(t["Password is required"])
+      .min(6, t["Password must be at least 6 characters"])
+      .max(40, t["Password must not exceed 40 characters"]),
+  });
+
   const {
     register,
     watch,
@@ -55,9 +59,6 @@ export default function Registration({ language }) {
   } = useForm({
     resolver: yupResolver(validationSchema),
   });
-
-  const router = useRouter();
-  const { query } = router;
 
   const [successMessage, setSuccessMessage] = useState("");
   const [successSnackbarOpen, setSuccessSnackbarOpen] = React.useState(false);
@@ -72,10 +73,6 @@ export default function Registration({ language }) {
     }
     setSuccessSnackbarOpen(false);
   };
-
-  const [myValue, setMyValue] = useState(language || "pt");
-
-  const t = myValue === "en" ? en : pt;
 
   const UserRoleData = [
     {
@@ -195,6 +192,7 @@ export default function Registration({ language }) {
       setSuccessMessage(responseToken?.data?.message);
       handleClickSuccessSnackbar();
       localStorage.setItem("registration_id", responseToken?.data?.user?.id);
+      localStorage.setItem("user_role", responseToken?.data?.userRole);
       router.push("/broker_registration");
       // const [error, response] = await userDetailsApi()
       // setLoading(false)

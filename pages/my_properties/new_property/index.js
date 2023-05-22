@@ -38,6 +38,8 @@ import { propertyCreateApi, propertyUpdateApi } from "../../../src/api";
 import { serialize } from "object-to-formdata";
 import { useRouter } from "next/router";
 import { findSinglePropertyData } from "../../../src/redux/singleProperty/actions";
+import en from "locales/en";
+import pt from "locales/pt";
 
 const drawerWidth = 240;
 
@@ -54,87 +56,80 @@ const steps = [
   "Owner",
 ];
 
-const validationSchema = Yup.object().shape({
-  // project_id: Yup.object().required('Enterprise is required'),
-  zip_code: Yup.string().required("Zip code is required"),
-  address: Yup.string().required("Address is required"),
-  number: Yup.string().required("Number is required"),
-  neighbourhood: Yup.string().required("Neighbourhood is required"),
-  // complement: Yup.string().required("Complement is required"),
-  city: Yup.string().required("City is required"),
-  state: Yup.object().required("State is required"),
-  brl_rent: Yup.number()
-    .transform((value) => (Number.isNaN(value) ? null : value))
-    .nullable()
-    .required("BRL rent is required"),
-  condominium: Yup.number()
-    .transform((value) => (Number.isNaN(value) ? null : value))
-    .nullable()
-    .required("Condominium is required"),
-  brl_iptu: Yup.number()
-    .transform((value) => (Number.isNaN(value) ? null : value))
-    .nullable()
-    .required("IPTU is required"),
-  land_area: Yup.number()
-    .transform((value) => (Number.isNaN(value) ? null : value))
-    .nullable()
-    .required("Land area is required"),
-  property_area: Yup.number()
-    .transform((value) => (Number.isNaN(value) ? null : value))
-    .nullable()
-    .required("Property area is required"),
-  no_of_rooms: Yup.number()
-    .transform((value) => (Number.isNaN(value) ? null : value))
-    .nullable()
-    .required("No of rooms is required"),
-  no_of_suites: Yup.number()
-    .transform((value) => (Number.isNaN(value) ? null : value))
-    .nullable()
-    .required("NO of suites is required"),
-  no_of_bathrooms: Yup.number()
-    .transform((value) => (Number.isNaN(value) ? null : value))
-    .nullable()
-    .required("NO of bathrooms is required"),
-  no_of_parking_spaces: Yup.number()
-    .transform((value) => (Number.isNaN(value) ? null : value))
-    .nullable()
-    .required("NO of parking spaces is required"),
-  // documnentation: Yup.object().required("Documentation is required"),
-  // registry: Yup.string().required("Registry office is required"),
-  // registartion_number: Yup.number()
-  //   .transform((value) => (Number.isNaN(value) ? null : value))
-  //   .nullable()
-  //   .required("Registration number office is required"),
-  owner_name: Yup.string().required("Owner Full Name is required"),
-  owner_rg: Yup.string().required("Owner Rg is required"),
-  owner_cpf: Yup.string().required("Owner cpf is required"),
-  owner_spouse_name: Yup.string().required(
-    "Owner spouse full name is required"
-  ),
-  owner_spouse_rg: Yup.string().required("Owner spouse RG is required"),
-  owner_spouse_cpf: Yup.string().required("Owner spouse CPF is required"),
-  owner_zip_code: Yup.string().required("Owner Zip code is required"),
-  owner_address: Yup.string().required("Owner Address is required"),
-  owner_number: Yup.number()
-    .transform((value) => (Number.isNaN(value) ? null : value))
-    .nullable()
-    .required("Owner Number is required"),
-  owner_neighbourhood: Yup.string().required("Owner Neighbourhood is required"),
-  // owner_complement: Yup.string().required("Complement is required"),
-  owner_city: Yup.string().required("Owner City is required"),
-  owner_state: Yup.object().required("Owner State is required"),
-  // owner_documnentation: Yup.object().required("Documentation is required"),
-  // owner_registry: Yup.string().required("Registry office is required"),
-  // owner_registration_number: Yup.number()
-  //   .transform((value) => (Number.isNaN(value) ? null : value))
-  //   .nullable()
-  //   .required("Registration number office is required"),
-});
-
-export default function NewProperty(props) {
+export default function NewProperty({ language }) {
   const { data: session } = useSession();
 
   const { query } = useRouter();
+
+  const [myValue, setMyValue] = useState(language || "pt");
+  const t = myValue === "en" ? en : pt;
+
+  const validationSchema = Yup.object().shape({
+    zip_code: Yup.string().required(t["Zip code is required"]),
+    address: Yup.string().required(t["Address is required"]),
+    number: Yup.string().required(t["Number is required"]),
+    neighbourhood: Yup.string().required(t["Neighbourhood is required"]),
+    // complement: Yup.string().required("Complement is required"),
+    city: Yup.string().required(t["City is required"]),
+    state: Yup.object().required(t["State is required"]),
+    brl_rent: Yup.number()
+      .transform((value) => (Number.isNaN(value) ? null : value))
+      .nullable()
+      .required(t["BRL rent is required"]),
+    condominium: Yup.number()
+      .transform((value) => (Number.isNaN(value) ? null : value))
+      .nullable()
+      .required(t["Condominium is required"]),
+    brl_iptu: Yup.number()
+      .transform((value) => (Number.isNaN(value) ? null : value))
+      .nullable()
+      .required(t["IPTU is required"]),
+    land_area: Yup.number()
+      .transform((value) => (Number.isNaN(value) ? null : value))
+      .nullable()
+      .required(t["Land area is required"]),
+    property_area: Yup.number()
+      .transform((value) => (Number.isNaN(value) ? null : value))
+      .nullable()
+      .required(t["Property area is required"]),
+    no_of_rooms: Yup.number()
+      .transform((value) => (Number.isNaN(value) ? null : value))
+      .nullable()
+      .required(t["No of rooms is required"]),
+    no_of_suites: Yup.number()
+      .transform((value) => (Number.isNaN(value) ? null : value))
+      .nullable()
+      .required(t["NO of suites is required"]),
+    no_of_bathrooms: Yup.number()
+      .transform((value) => (Number.isNaN(value) ? null : value))
+      .nullable()
+      .required(t["NO of bathrooms is required"]),
+    no_of_parking_spaces: Yup.number()
+      .transform((value) => (Number.isNaN(value) ? null : value))
+      .nullable()
+      .required(t["NO of parking spaces is required"]),
+
+    owner_name: Yup.string().required(t["Owner Full Name is required"]),
+    owner_rg: Yup.string().required(t["Owner Rg is required"]),
+    owner_cpf: Yup.string().required(t["Owner cpf is required"]),
+    owner_spouse_name: Yup.string().required(
+      t["Owner spouse full name is required"]
+    ),
+    owner_spouse_rg: Yup.string().required(t["Owner spouse RG is required"]),
+    owner_spouse_cpf: Yup.string().required(t["Owner spouse CPF is required"]),
+    owner_zip_code: Yup.string().required(t["Owner Zip code is required"]),
+    owner_address: Yup.string().required(t["Owner Address is required"]),
+    owner_number: Yup.number()
+      .transform((value) => (Number.isNaN(value) ? null : value))
+      .nullable()
+      .required(t["Owner Number is required"]),
+    owner_neighbourhood: Yup.string().required(
+      t["Owner Neighbourhood is required"]
+    ),
+
+    owner_city: Yup.string().required(t["Owner City is required"]),
+    owner_state: Yup.object().required(t["Owner State is required"]),
+  });
 
   const dispatch = useDispatch();
   useEffect(() => {
@@ -549,6 +544,7 @@ export default function NewProperty(props) {
                           setPropertyType={setPropertyType}
                           property_detail_id={property_detail_id}
                           setPropertyDetailId={setPropertyDetailId}
+                          languageName={myValue.toString()}
                         />
                       ) : activeStep === 1 ? (
                         <ValuesAndDescription
@@ -556,6 +552,7 @@ export default function NewProperty(props) {
                           handleBack={handleBack}
                           control={control}
                           errors={errors}
+                          languageName={myValue.toString()}
                         />
                       ) : activeStep === 2 ? (
                         <Features
@@ -565,6 +562,7 @@ export default function NewProperty(props) {
                           errors={errors}
                           featuretypes={featuretypes}
                           setFeatureTypes={setFeatureTypes}
+                          languageName={myValue.toString()}
                         />
                       ) : activeStep === 3 ? (
                         <PhotosAndVideos
@@ -580,6 +578,7 @@ export default function NewProperty(props) {
                           append={append}
                           remove={remove}
                           allValues={allValues}
+                          languageName={myValue.toString()}
                         />
                       ) : (
                         <Owner
@@ -589,6 +588,7 @@ export default function NewProperty(props) {
                           errors={errors}
                           maritalStatus={maritalStatus}
                           setMaritalStatus={setMaritalStatus}
+                          languageName={myValue.toString()}
                         />
                       )}
                       {errors && (
@@ -808,6 +808,7 @@ export default function NewProperty(props) {
 export async function getServerSideProps(context) {
   //* Session for SSG
   const session = await getSession(context);
+  const cookies = context.req.cookies["language"] || "pt";
   //? If Not Logged In
   if (!session) {
     return {
@@ -823,6 +824,7 @@ export async function getServerSideProps(context) {
   return {
     props: {
       session: session,
+      language: cookies,
     },
   };
 }

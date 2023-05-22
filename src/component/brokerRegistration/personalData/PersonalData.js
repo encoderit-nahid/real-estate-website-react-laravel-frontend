@@ -40,6 +40,8 @@ function PersonalData({
 
   const t = languageName === "en" ? en : pt;
 
+  const userRole = localStorage.getItem("user_role");
+
   // create a preview as a side effect, whenever selected file is changed
   useEffect(() => {
     if (!allValues.image) {
@@ -310,52 +312,54 @@ function PersonalData({
         <Divider />
       </Box>
       <Grid container spacing={1} sx={{ mt: 3 }}>
-        <Grid item xs={12} sm={12} md={6}>
-          <Grid
-            container
-            direction="row"
-            justifyContent="flex-start"
-            alignItems="flex-start"
-            sx={{ mb: 1 }}
-          >
-            <Typography
-              variant="p"
-              sx={{
-                color: "#253858",
-                fontSize: "14px",
-                fontWeight: "400",
-                lineHeight: "16px",
-              }}
+        {userRole === "broker" && (
+          <Grid item xs={12} sm={12} md={6}>
+            <Grid
+              container
+              direction="row"
+              justifyContent="flex-start"
+              alignItems="flex-start"
+              sx={{ mb: 1 }}
             >
-              CRECI number<span style={{ color: "#E63333" }}>*</span>
+              <Typography
+                variant="p"
+                sx={{
+                  color: "#253858",
+                  fontSize: "14px",
+                  fontWeight: "400",
+                  lineHeight: "16px",
+                }}
+              >
+                CRECI number<span style={{ color: "#E63333" }}>*</span>
+              </Typography>
+            </Grid>
+            <Controller
+              name="creci_number"
+              control={control}
+              defaultValue={""}
+              render={({ field }) => (
+                <BaseTextField
+                  size={"small"}
+                  type={"number"}
+                  placeholder={"CRECI Number"}
+                  onChange={(e) => {
+                    field.onChange(e.target.value);
+                  }}
+                  value={field.value}
+                  name={"creci_number"}
+                />
+              )}
+            />
+            <Typography
+              variant="inherit"
+              color="textSecondary"
+              sx={{ color: "#b91c1c" }}
+            >
+              {errors?.creci_number?.message}
             </Typography>
           </Grid>
-          <Controller
-            name="creci_number"
-            control={control}
-            defaultValue={""}
-            render={({ field }) => (
-              <BaseTextField
-                size={"small"}
-                type={"number"}
-                placeholder={"CRECI Number"}
-                onChange={(e) => {
-                  field.onChange(e.target.value);
-                }}
-                value={field.value}
-                name={"creci_number"}
-              />
-            )}
-          />
-          <Typography
-            variant="inherit"
-            color="textSecondary"
-            sx={{ color: "#b91c1c" }}
-          >
-            {errors?.creci_number?.message}
-          </Typography>
-        </Grid>
-        <Grid item xs={12} sm={12} md={6}>
+        )}
+        <Grid item xs={12} sm={12} md={userRole !== "broker" ? 12 : 6}>
           <Grid
             container
             direction="row"
