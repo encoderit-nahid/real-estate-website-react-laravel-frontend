@@ -6,8 +6,11 @@ import ventureImage from "../../../../public/Images/certidoes.png";
 import BaseTextField from "../../reuseable/baseTextField/BaseTextField";
 import { Controller } from "react-hook-form";
 import BaseAutocomplete from "../../reuseable/baseAutocomplete/BaseAutocomplete";
+import en from "locales/en";
+import pt from "locales/pt";
 
-function ValuesAndDescription({ control, errors }) {
+function ValuesAndDescription({ control, errors, languageName }) {
+  const t = languageName === "en" ? en : pt;
   return (
     <Box sx={{ mt: 4 }}>
       <Grid
@@ -27,7 +30,7 @@ function ValuesAndDescription({ control, errors }) {
             ml: 1,
           }}
         >
-          Values
+          {t["Values"]}
         </Typography>
       </Grid>
       <Grid container spacing={1} sx={{ mt: 2 }}>
@@ -39,7 +42,7 @@ function ValuesAndDescription({ control, errors }) {
             render={({ field }) => (
               <BaseTextField
                 size={"medium"}
-                placeholder={"BRL Rent*"}
+                placeholder={`${t["BRL Rent"]}*`}
                 type={"number"}
                 onChange={(e) => {
                   field.onChange(e.target.value);
@@ -65,7 +68,7 @@ function ValuesAndDescription({ control, errors }) {
             render={({ field }) => (
               <BaseTextField
                 size={"medium"}
-                placeholder={"R$ condominium*"}
+                placeholder={`R$ ${t["Condominium"]}*`}
                 type={"number"}
                 onChange={(e) => {
                   field.onChange(e.target.value);
@@ -130,7 +133,7 @@ function ValuesAndDescription({ control, errors }) {
             ml: 1,
           }}
         >
-          Description
+          {t["Description"]}
         </Typography>
       </Grid>
 
@@ -143,7 +146,7 @@ function ValuesAndDescription({ control, errors }) {
             render={({ field }) => (
               <BaseTextField
                 size={"medium"}
-                placeholder={"m² Land area*"}
+                placeholder={`m² ${t["Land area"]}*`}
                 type={"number"}
                 onChange={(e) => {
                   field.onChange(e.target.value);
@@ -169,7 +172,7 @@ function ValuesAndDescription({ control, errors }) {
             render={({ field }) => (
               <BaseTextField
                 size={"medium"}
-                placeholder={"m²Size of the property*"}
+                placeholder={`m² ${t["Size of the property"]}*`}
                 type={"number"}
                 onChange={(e) => {
                   field.onChange(e.target.value);
@@ -195,7 +198,7 @@ function ValuesAndDescription({ control, errors }) {
             render={({ field }) => (
               <BaseTextField
                 size={"medium"}
-                placeholder={"number of rooms*"}
+                placeholder={`${t["number of rooms"]}*`}
                 type={"number"}
                 onChange={(e) => {
                   field.onChange(e.target.value);
@@ -223,7 +226,7 @@ function ValuesAndDescription({ control, errors }) {
             render={({ field }) => (
               <BaseTextField
                 size={"medium"}
-                placeholder={"number of suites*"}
+                placeholder={`${t["number of suites"]}*`}
                 type={"number"}
                 onChange={(e) => {
                   field.onChange(e.target.value);
@@ -249,7 +252,7 @@ function ValuesAndDescription({ control, errors }) {
             render={({ field }) => (
               <BaseTextField
                 size={"medium"}
-                placeholder={"bathrooms*"}
+                placeholder={`${t["bathrooms"]}*`}
                 type={"number"}
                 onChange={(e) => {
                   field.onChange(e.target.value);
@@ -275,7 +278,7 @@ function ValuesAndDescription({ control, errors }) {
             render={({ field }) => (
               <BaseTextField
                 size={"medium"}
-                placeholder={"Number of parking spaces*"}
+                placeholder={`${t["number of parking spaces"]}*`}
                 type={"number"}
                 onChange={(e) => {
                   field.onChange(e.target.value);
@@ -309,7 +312,7 @@ function ValuesAndDescription({ control, errors }) {
                 }
                 name="documentation"
                 size={"medium"}
-                placeholder={"Documents"}
+                placeholder={t["documents"]}
                 onChange={(e, v, r, d) => field.onChange(v)}
                 value={field.value || null}
               />
@@ -331,7 +334,7 @@ function ValuesAndDescription({ control, errors }) {
             render={({ field }) => (
               <BaseTextField
                 size={"medium"}
-                placeholder={"Registry office"}
+                placeholder={t["registry office"]}
                 onChange={(e) => {
                   field.onChange(e.target.value);
                 }}
@@ -356,7 +359,7 @@ function ValuesAndDescription({ control, errors }) {
             render={({ field }) => (
               <BaseTextField
                 size={"medium"}
-                placeholder={"Registration number"}
+                placeholder={t["registration number"]}
                 type={"number"}
                 onChange={(e) => {
                   field.onChange(e.target.value);

@@ -40,7 +40,15 @@ function PersonalData({
 
   const t = languageName === "en" ? en : pt;
 
-  const userRole = localStorage.getItem("user_role");
+  // const userRole = localStorage.getItem("user_role");
+
+  const [userRole, setUserRole] = useState("");
+
+  useEffect(() => {
+    // Perform localStorage action
+    const role = localStorage.getItem("user_role");
+    setUserRole(role);
+  }, []);
 
   // create a preview as a side effect, whenever selected file is changed
   useEffect(() => {
@@ -60,7 +68,6 @@ function PersonalData({
   useEffect(() => {
     if (
       allValues?.full_name != null &&
-      allValues?.creci_number != null &&
       allValues?.cpf_number != null &&
       allValues?.rg_number != null &&
       allValues?.dob != null
@@ -69,7 +76,6 @@ function PersonalData({
     }
     if (
       allValues?.full_name === "" ||
-      allValues?.creci_number === "" ||
       allValues?.cpf_number === "" ||
       allValues?.rg_number === "" ||
       allValues?.dob === ""

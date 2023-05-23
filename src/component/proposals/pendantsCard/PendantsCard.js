@@ -206,7 +206,7 @@ function PendantsCard({ propertyData, languageName }) {
                         ml: "3px",
                       }}
                     >
-                      pending proposal
+                      {t["pending proposal"]}
                     </Button>
                   </Box>
                 </Grid>
@@ -250,7 +250,7 @@ function PendantsCard({ propertyData, languageName }) {
               px: 2,
             }}
           >
-            Proposals ({`${propertyData.proposals.length}`})
+            {t["Proposals"]} ({`${propertyData.proposals.length}`})
           </Typography>
         </Box>
         {propertyData?.proposals?.map((data, index) => (
@@ -321,7 +321,7 @@ function PendantsCard({ propertyData, languageName }) {
                     {refuseLoading && refuseId === data.id ? (
                       <CircularProgress size={22} color="inherit" />
                     ) : (
-                      "Refuse"
+                      t["refuse"]
                     )}
                   </Button>
                 </Grid>
@@ -387,7 +387,7 @@ function PendantsCard({ propertyData, languageName }) {
                     {acceptLoading && acceptid === data.id ? (
                       <CircularProgress size={22} color="inherit" />
                     ) : (
-                      "To accept"
+                      t["To accept"]
                     )}
                   </Button>
                 </Grid>

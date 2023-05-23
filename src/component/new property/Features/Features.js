@@ -20,6 +20,8 @@ import {
   findButtonData,
 } from "../../../redux/featureWithoutGroup/actions";
 import { findFeatureData } from "../../../redux/features/actions";
+import en from "locales/en";
+import pt from "locales/pt";
 
 const PropertyFeature = [
   "close to the metro",
@@ -46,7 +48,8 @@ const PropertyFeature = [
   "fireplace",
   "furnish",
 ];
-function Features({ featuretypes, setFeatureTypes, errors }) {
+function Features({ featuretypes, setFeatureTypes, errors, languageName }) {
+  const t = languageName === "en" ? en : pt;
   const [item, setItem] = useState("");
   const dispatch = useDispatch();
   useEffect(() => {
@@ -93,7 +96,7 @@ function Features({ featuretypes, setFeatureTypes, errors }) {
             ml: 1,
           }}
         >
-          Features
+          {t["Features"]}
         </Typography>
       </Grid>
       <Box sx={{ mt: 2 }}>
@@ -106,7 +109,7 @@ function Features({ featuretypes, setFeatureTypes, errors }) {
             lineHeight: "22px",
           }}
         >
-          Select property features:
+          {`${t["select property features"]}:`}
         </Typography>
       </Box>
       {loading ? (
@@ -202,7 +205,7 @@ function Features({ featuretypes, setFeatureTypes, errors }) {
       >
         <BaseTextField
           sx={{ width: "50%" }}
-          placeholder={"Add feature"}
+          placeholder={t["Add feature"]}
           onChange={(e) => setItem(e.target.value)}
         />
         <Button

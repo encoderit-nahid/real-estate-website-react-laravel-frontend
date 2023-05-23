@@ -22,6 +22,8 @@ import { GetPhotoTypeData } from "../../../redux/photo/actions";
 import CancelOutlinedIcon from "@mui/icons-material/CancelOutlined";
 import { _baseURL, _imageURL } from "../../../../consts";
 import { useRouter } from "next/router";
+import en from "locales/en";
+import pt from "locales/pt";
 
 const baseStyle = {
   flex: 1,
@@ -65,9 +67,11 @@ function PhotosAndVideos({
   append,
   remove,
   allValues,
+  languageName,
 }) {
   const dispatch = useDispatch();
   const { query } = useRouter();
+  const t = languageName === "en" ? en : pt;
   useEffect(() => {
     dispatch(GetPhotoTypeData());
   }, [dispatch]);
@@ -144,7 +148,7 @@ function PhotosAndVideos({
             ml: 1,
           }}
         >
-          Photos and videos
+          {t["Photos and videos"]}
         </Typography>
       </Grid>
       <Box sx={{ mt: 3 }}>
@@ -157,7 +161,7 @@ function PhotosAndVideos({
             lineHeight: "22px",
           }}
         >
-          Images of the property:
+          {`${t["Images of the property"]}:`}
         </Typography>
       </Box>
 
@@ -173,7 +177,7 @@ function PhotosAndVideos({
             mt: 1,
           }}
         >
-          Drag and drop images here
+          {t["drag and drop images here"]}
         </Typography>
         <Typography
           variant="p"
@@ -185,7 +189,7 @@ function PhotosAndVideos({
             mt: 1,
           }}
         >
-          or
+          {t["or"]}
         </Typography>
         <Button
           variant="contained"
@@ -199,7 +203,7 @@ function PhotosAndVideos({
             lineHeight: "18px",
           }}
         >
-          select images
+          {t["select images"]}
         </Button>
         <Typography
           variant="inherit"
@@ -273,7 +277,7 @@ function PhotosAndVideos({
                         option.id === value.id
                       }
                       size={"small"}
-                      placeholder={"Convenient"}
+                      placeholder={t["Convenient"]}
                       onChange={(e, v, r, d) => field.onChange(v)}
                       value={field.value}
                     />
@@ -295,7 +299,7 @@ function PhotosAndVideos({
             lineHeight: "22px",
           }}
         >
-          videos of the property:
+          {`${t["videos of the property"]}:`}
         </Typography>
       </Box>
       {fields?.map((item, index) => (
@@ -325,7 +329,7 @@ function PhotosAndVideos({
                   },
                 }}
                 size={"medium"}
-                placeholder={"paste the url of the video"}
+                placeholder={t["paste the url of the video"]}
                 onChange={field.onChange}
                 value={field.value}
               />
@@ -345,7 +349,7 @@ function PhotosAndVideos({
                   option.slug === value.slug
                 }
                 size={"medium"}
-                placeholder={"Convenient"}
+                placeholder={t["Convenient"]}
                 onChange={(e, v, r, d) => {
                   field.onChange(v);
                 }}

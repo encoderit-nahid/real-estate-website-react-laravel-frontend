@@ -43,19 +43,6 @@ import pt from "locales/pt";
 
 const drawerWidth = 240;
 
-const BreadCrumbsData = [
-  { stage: "Start", route: "" },
-  { stage: "My properties", route: "my_properties" },
-];
-
-const steps = [
-  "Address",
-  "Values and description",
-  "Features",
-  "Photos and videos",
-  "Owner",
-];
-
 export default function NewProperty({ language }) {
   const { data: session } = useSession();
 
@@ -63,6 +50,19 @@ export default function NewProperty({ language }) {
 
   const [myValue, setMyValue] = useState(language || "pt");
   const t = myValue === "en" ? en : pt;
+
+  const BreadCrumbsData = [
+    { stage: t["Start"], route: "" },
+    { stage: t["My Properties"], route: "my_properties" },
+  ];
+
+  const steps = [
+    t["Address"],
+    t["Values and description"],
+    t["Features"],
+    t["Photos and videos"],
+    t["Owner"],
+  ];
 
   const validationSchema = Yup.object().shape({
     zip_code: Yup.string().required(t["Zip code is required"]),
@@ -504,7 +504,7 @@ export default function NewProperty({ language }) {
               >
                 <BasicBreadcrumbs
                   BreadcrumbsData={BreadCrumbsData}
-                  lastStageData={"New property"}
+                  lastStageData={t["New property"]}
                 />
               </Grid>
               <Box sx={{ mt: 3 }}>
@@ -633,7 +633,7 @@ export default function NewProperty({ language }) {
                               textTransform: "none",
                             }}
                           >
-                            Come back
+                            {t["come back"]}
                           </Button>
                         )}
                         {activeStep === 0 && (
@@ -655,7 +655,7 @@ export default function NewProperty({ language }) {
                                 textTransform: "none",
                               }}
                             >
-                              Cancel
+                              {t["Cancel"]}
                             </Button>
                           </Link>
                         )}
@@ -714,7 +714,7 @@ export default function NewProperty({ language }) {
                               {draftloading && (
                                 <CircularProgress size={22} color="inherit" />
                               )}
-                              {!draftloading && "Save as draft"}
+                              {!draftloading && t["Save as draft"]}
                             </Button>
                             <Button
                               type="submit"
@@ -749,7 +749,7 @@ export default function NewProperty({ language }) {
                               {loading && (
                                 <CircularProgress size={22} color="inherit" />
                               )}
-                              {!loading && "Submit Approval"}
+                              {!loading && t["Submit approval"]}
                             </Button>
                           </Box>
                         )}
@@ -782,7 +782,7 @@ export default function NewProperty({ language }) {
                               },
                             }}
                           >
-                            Next
+                            {t["Next"]}
                           </Button>
                         )}
                       </Grid>

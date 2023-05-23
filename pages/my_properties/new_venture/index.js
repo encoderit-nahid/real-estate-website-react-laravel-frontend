@@ -38,6 +38,8 @@ import { useDispatch, useSelector } from "react-redux";
 import { findPropertyTypeData } from "../../../src/redux/propertyType/actions";
 import { GetPhotoTypeData } from "../../../src/redux/photo/actions";
 import NewVentureSentModal from "../../../src/component/new venture/NewVentureSentModal/NewVentureSentModal";
+import en from "locales/en";
+import pt from "locales/pt";
 
 const validationSchema = Yup.object().shape({
   name: Yup.string().required("Enterprise Name is required"),
@@ -76,14 +78,18 @@ const rejectStyle = {
 
 const drawerWidth = 240;
 
-const BreadCrumbsData = [
-  { stage: "Start", route: "" },
-  { stage: "My properties", route: "my_properties" },
-];
-
-export default function NewVenture(props) {
+export default function NewVenture({ language }) {
   //   const [files, setFiles] = useState([]);
   //   console.log({ files });
+
+  const [myValue, setMyValue] = useState(language || "pt");
+  const t = myValue === "en" ? en : pt;
+
+  const BreadCrumbsData = [
+    { stage: t["Start"], route: "" },
+    { stage: t["My Properties"], route: "my_properties" },
+  ];
+
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -221,7 +227,7 @@ export default function NewVenture(props) {
               >
                 <BasicBreadcrumbs
                   BreadcrumbsData={BreadCrumbsData}
-                  lastStageData={"new venture"}
+                  lastStageData={t["new venture"]}
                 />
               </Grid>
               <Box sx={{ mt: 3 }}>
@@ -243,7 +249,7 @@ export default function NewVenture(props) {
                         ml: 1,
                       }}
                     >
-                      New Venture
+                      {t["New venture"]}
                     </Typography>
                   </Grid>
                   <Grid
@@ -260,7 +266,7 @@ export default function NewVenture(props) {
                       render={({ field }) => (
                         <BaseTextField
                           size={"small"}
-                          placeholder={"Enterprise Name"}
+                          placeholder={t["Enterprise Name"]}
                           onChange={(e) => {
                             field.onChange(e.target.value);
                           }}
@@ -300,7 +306,7 @@ export default function NewVenture(props) {
                             borderRadius: "5px",
                             padding: "0.4vh 1.4vh",
                           }}
-                          placeholder={"Description"}
+                          placeholder={t["Description"]}
                         />
                       )}
                     />
@@ -321,7 +327,7 @@ export default function NewVenture(props) {
                         mt: 3,
                       }}
                     >
-                      Logo and images of the enterprise (.png or .jpeg)
+                      {`${t["Logo and images of the enterprise"]} (.png or .jpeg)`}
                     </Typography>
 
                     <Box {...getRootProps({ style })}>
@@ -336,7 +342,7 @@ export default function NewVenture(props) {
                           mt: 1,
                         }}
                       >
-                        Drag and drop images here
+                        {t["drag and drop images here"]}
                       </Typography>
                       <Typography
                         variant="p"
@@ -348,7 +354,7 @@ export default function NewVenture(props) {
                           mt: 1,
                         }}
                       >
-                        or
+                        {t["or"]}
                       </Typography>
                       <Button
                         variant="contained"
@@ -362,7 +368,7 @@ export default function NewVenture(props) {
                           lineHeight: "18px",
                         }}
                       >
-                        select images
+                        {t["select images"]}
                       </Button>
                       {imageError && (
                         <Typography
@@ -501,7 +507,7 @@ export default function NewVenture(props) {
                           },
                         }}
                       >
-                        Cancel
+                        {t["Cancel"]}
                       </Button>
                     </Link>
                     <Button
@@ -535,7 +541,7 @@ export default function NewVenture(props) {
                       {loading && (
                         <CircularProgress size={22} color="inherit" />
                       )}
-                      {!loading && "Save"}
+                      {!loading && t["Save"]}
                     </Button>
                   </Grid>
                 </form>
@@ -568,6 +574,7 @@ const top100Films = [
 export async function getServerSideProps(context) {
   //* Session for SSG
   const session = await getSession(context);
+  const cookies = context.req.cookies["language"] || "pt";
   //? If Not Logged In
   if (!session) {
     return {
@@ -583,6 +590,7 @@ export async function getServerSideProps(context) {
   return {
     props: {
       session: session,
+      language: cookies,
     },
   };
 }
