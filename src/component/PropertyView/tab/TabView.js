@@ -44,6 +44,8 @@ function a11yProps(index) {
 function TabView({ tabArray, upperTabValue, setUpperTabValue }) {
   const [value, setValue] = React.useState(0);
 
+  console.log({tabArray})
+
   const handleChange = (event, newValue) => {
     setValue(newValue);
   };

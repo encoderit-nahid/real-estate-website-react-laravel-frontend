@@ -374,7 +374,7 @@ function ValuesAndDescription({ control, errors, languageName }) {
             color="textSecondary"
             sx={{ color: "#b91c1c" }}
           >
-            {errors.registartion_number?.message}
+            {errors.registration_number?.message}
           </Typography>
         </Grid>
       </Grid>

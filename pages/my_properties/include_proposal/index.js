@@ -29,6 +29,8 @@ import { useDispatch, useSelector } from "react-redux";
 import { findSinglePropertyData } from "../../../src/redux/singleProperty/actions";
 import { useMemo } from "react";
 import PropertyCard from "@/component/properties/PropertyCard/PropertyCard";
+import en from "locales/en";
+import pt from "locales/pt";
 
 const drawerWidth = 240;
 
@@ -41,47 +43,54 @@ const omitEmpties = (obj) => {
   }, {});
 };
 
-const validationSchemaCash = Yup.object().shape({
-  total_amount: Yup.string().required("BRL amount is required"),
-  //   name: Yup.string().required("Full name is required"),
-  //   rg: Yup.string().required("RG  is required"),
-  //   cpf: Yup.string().required("CPF is required"),
-  //   zip_code: Yup.string().required("Zip code is required"),
-  //   address: Yup.string().required("Address is required"),
-  //   number: Yup.string().required("Number is required"),
-  //   neighbourhood: Yup.string().required("Neighborhood is required"),
-  //   complement: Yup.string().required("Complement is required"),
-  //   city: Yup.string().required("city is required"),
-  //   state: Yup.object().required("State is required"),
-});
 
-const validationSchemaInstallment = Yup.object().shape({
-  total_amount: Yup.string().required("Name is required"),
-  cash_amount: Yup.number().required("Cash Value is required"),
-  payment_per_installment: Yup.number().required("Term Value is required"),
-  no_of_installment: Yup.number().required(
-    "Number of Installments is required"
-  ),
-  //   name: Yup.string().required("Full name is required"),
-  //   rg: Yup.string().required("RG  is required"),
-  //   cpf: Yup.string().required("CPF is required"),
-  //   zip_code: Yup.string().required("Zip code is required"),
-  //   address: Yup.string().required("Address is required"),
-  //   number: Yup.string().required("Number is required"),
-  //   neighbourhood: Yup.string().required("Neighbourhood is required"),
-  //   complement: Yup.string().required("Complement is required"),
-  //   city: Yup.string().required("city is required"),
-  //   state: Yup.object().required("State is required"),
-});
 
-const BreadCrumbsData = [
-  { stage: "Start", route: "" },
-  { stage: "My properties", route: "" },
-];
-
-export default function IncludeProposal(props) {
+export default function IncludeProposal({language}) {
   const dispatch = useDispatch();
   const { data: session } = useSession();
+
+  const [myValue, setMyValue] = useState(language || "en");
+
+  const t = myValue === "en" ? en : pt;
+
+
+  const validationSchemaCash = Yup.object().shape({
+    total_amount: Yup.string().required(t["BRL amount is required"]),
+    //   name: Yup.string().required("Full name is required"),
+    //   rg: Yup.string().required("RG  is required"),
+    //   cpf: Yup.string().required("CPF is required"),
+    //   zip_code: Yup.string().required("Zip code is required"),
+    //   address: Yup.string().required("Address is required"),
+    //   number: Yup.string().required("Number is required"),
+    //   neighbourhood: Yup.string().required("Neighborhood is required"),
+    //   complement: Yup.string().required("Complement is required"),
+    //   city: Yup.string().required("city is required"),
+    //   state: Yup.object().required("State is required"),
+  });
+  
+  const validationSchemaInstallment = Yup.object().shape({
+    total_amount: Yup.string().required(t['Total amount is required']),
+    cash_amount: Yup.number().required(t["Cash Value is required"]),
+    payment_per_installment: Yup.number().required(t["Term Value is required"]),
+    no_of_installment: Yup.number().required(
+      t["Number of Installments is required"]
+    ),
+    //   name: Yup.string().required("Full name is required"),
+    //   rg: Yup.string().required("RG  is required"),
+    //   cpf: Yup.string().required("CPF is required"),
+    //   zip_code: Yup.string().required("Zip code is required"),
+    //   address: Yup.string().required("Address is required"),
+    //   number: Yup.string().required("Number is required"),
+    //   neighbourhood: Yup.string().required("Neighbourhood is required"),
+    //   complement: Yup.string().required("Complement is required"),
+    //   city: Yup.string().required("city is required"),
+    //   state: Yup.object().required("State is required"),
+  });
+  
+  const BreadCrumbsData = [
+    { stage: "Start", route: "" },
+    { stage: "My properties", route: "" },
+  ];
 
   const { query } = useRouter();
 
@@ -537,6 +546,7 @@ export default function IncludeProposal(props) {
 export async function getServerSideProps(context) {
   //* Session for SSG
   const session = await getSession(context);
+  const cookies = context.req.cookies["language"] || "pt";
   //? If Not Logged In
   if (!session) {
     return {
@@ -552,6 +562,7 @@ export async function getServerSideProps(context) {
   return {
     props: {
       session: session,
+      language: cookies,
     },
   };
 }

@@ -489,7 +489,7 @@ function Owner({
           </Typography>
         </Grid>
       </Grid>
-      <Grid container sx={{ mt: 2 }}>
+      {/* <Grid container sx={{ mt: 2 }}>
         <Grid item xs={12} sm={12} md={6} lg={6} xl={6}>
           <Typography
             variant="p"
@@ -503,8 +503,8 @@ function Owner({
             {`${t["Document data"]}:`}
           </Typography>
         </Grid>
-      </Grid>
-      <Grid container spacing={1} sx={{ mt: 1 }}>
+      </Grid> */}
+      {/* <Grid container spacing={1} sx={{ mt: 1 }}>
         <Grid item xs={12} sm={12} md={6} lg={4} xl={4}>
           <Controller
             name="owner_documnentation"
@@ -583,7 +583,7 @@ function Owner({
             {errors.owner_registration_number?.message}
           </Typography>
         </Grid>
-      </Grid>
+      </Grid> */}
     </Box>
   );
 }

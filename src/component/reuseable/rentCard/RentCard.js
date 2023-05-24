@@ -234,6 +234,7 @@ function RentCard({ propertyData, languageName }) {
                   }}
                 > */}
                 <Button
+                  disabled={session?.user?.role === "broker" ? true : session?.user?.role === "owner" ? true : false }
                   sx={{
                     color: "#FFFFFF",
                     fontSize: "14px",

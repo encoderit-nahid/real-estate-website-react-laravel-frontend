@@ -429,7 +429,7 @@ export async function getServerSideProps(context) {
       },
     };
   }
-  const cookies = context.req.cookies["language"];
+  const cookies = context.req.cookies["language"] || 'pt';
 
   return {
     props: {

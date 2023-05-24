@@ -264,4 +264,9 @@ export default {
   "Save as draft": "Save as draft",
   Cancel: "Cancel",
   Save: "Save",
+  "BRL amount is required" : "BRL amount is required",
+  "Total amount is required": "Total amount is required",
+  "Cash Value is required": "Cash Value is required",
+  "Term Value is required": "Term Value is required",
+  "Number of Installments is required": "Number of Installments is required",
 };

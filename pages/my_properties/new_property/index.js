@@ -109,6 +109,13 @@ export default function NewProperty({ language }) {
       .nullable()
       .required(t["NO of parking spaces is required"]),
 
+  documentation: Yup.object().required("Documentation is required"),
+  registry: Yup.string().required("Registry office is required"),
+  registration_number: Yup.number()
+    .transform((value) => (Number.isNaN(value) ? null : value))
+    .nullable()
+    .required("Registration number office is required"),
+
     owner_name: Yup.string().required(t["Owner Full Name is required"]),
     owner_rg: Yup.string().required(t["Owner Rg is required"]),
     owner_cpf: Yup.string().required(t["Owner cpf is required"]),
@@ -154,7 +161,7 @@ export default function NewProperty({ language }) {
       videos: [
         {
           url: "",
-          title: null,
+          title: 'bedroom',
         },
       ],
     },
@@ -269,18 +276,18 @@ export default function NewProperty({ language }) {
         "owner_complement",
         singleData?.property_owner?.address?.complement
       );
-      setValue(
-        "owner_registry",
-        singleData?.property_owner?.registry[0]?.registry_office
-      );
-      setValue(
-        "owner_registration_number",
-        +singleData?.property_owner?.registry[0]?.registry_number
-      );
-      setValue("owner_documentation", {
-        label: singleData?.property_owner?.registry[0]?.title,
-        year: "2009",
-      });
+      // setValue(
+      //   "owner_registry",
+      //   singleData?.property_owner?.registry[0]?.registry_office
+      // );
+      // setValue(
+      //   "owner_registration_number",
+      //   +singleData?.property_owner?.registry[0]?.registry_number
+      // );
+      // setValue("owner_documentation", {
+      //   label: singleData?.property_owner?.registry[0]?.title,
+      //   year: "2009",
+      // });
 
       setValue("registry", singleData?.registry?.[0]?.registry_office);
       setValue(
@@ -427,11 +434,11 @@ export default function NewProperty({ language }) {
       complement: data?.complement,
     });
 
-    const ownerRegistryData = omitEmpties({
-      registry_office: data?.owner_registry,
-      registry_number: data?.owner_registration_number,
-      document_title: data?.owner_documnentation?.label,
-    });
+    // const ownerRegistryData = omitEmpties({
+    //   registry_office: data?.owner_registry,
+    //   registry_number: data?.owner_registration_number,
+    //   document_title: data?.owner_documnentation?.label,
+    // });
     const requireData = {
       ...firstPartData,
       registry_data: registryData,
@@ -439,7 +446,6 @@ export default function NewProperty({ language }) {
       owner_datas: {
         ...ownerData,
         address: ownerDataAddress,
-        registry_data: ownerRegistryData,
       },
     };
 

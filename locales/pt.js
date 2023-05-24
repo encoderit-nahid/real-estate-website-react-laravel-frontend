@@ -270,4 +270,9 @@ export default {
   "Save as draft": "Salvar como rascunho",
   Cancel: "Cancelar",
   Save: "Salvar",
+  "BRL amount is required" : "Valor em BRL é obrigatório",
+  "Total amount is required": "Valor total é obrigatório",
+  "Cash Value is required": "Valor em dinheiro é obrigatório",
+  "Term Value is required": "Valor do Prazo é obrigatório",
+  "Number of Installments is required": "Número de parcelas é necessário",
 };

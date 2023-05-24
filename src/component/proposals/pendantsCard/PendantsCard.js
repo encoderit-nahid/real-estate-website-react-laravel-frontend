@@ -288,7 +288,7 @@ function PendantsCard({ propertyData, languageName }) {
                 </List>
               </Grid>
             </Grid>
-            {session?.user?.role !== "buyer" ? (
+            {( data?.proposal_type === 'general' && session?.user?.role === "owner") || ( data?.proposal_type === 'counter' && session?.user?.role === "buyer") || (session?.user?.role === 'admin')  ? (
               <Grid container spacing={1} sx={{ px: 1 }}>
                 <Grid item xs={12} sm={12} md={12} lg={3}>
                   <Button
@@ -612,6 +612,7 @@ function PendantsCard({ propertyData, languageName }) {
           >
             <Button
               fullWidth
+              disabled={session?.user?.role === "broker" ? true : session?.user?.role === "owner" ? true : false }
               sx={{
                 color: "#FFFFFF",
                 fontSize: "14px",
