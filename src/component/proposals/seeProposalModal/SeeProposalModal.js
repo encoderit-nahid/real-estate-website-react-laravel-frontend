@@ -29,6 +29,8 @@ import { proposalRefuseData } from "../../../redux/proposalRefuse/actions";
 import { findPropertyData } from "../../../redux/property/actions";
 import { propertyAcceptData } from "../../../redux/proposalAccept/actions";
 import { useDispatch, useSelector } from "react-redux";
+import en from "locales/en";
+import pt from "locales/pt";
 
 const style = {
   position: "absolute",
@@ -51,8 +53,11 @@ function SeeProposalModal({
   handleSeeProposalClose,
   propertyData,
   proposalData,
+  languageName,
 }) {
   const dispatch = useDispatch();
+
+  const t = languageName === "en" ? en : pt;
   //add_counter_proposal_modal
   const [counterProposalOpen, setCounterProposalOpen] = useState(false);
   const handleCounterProposalOpen = () => setCounterProposalOpen(true);
@@ -101,7 +106,7 @@ function SeeProposalModal({
             fontWeight: "700",
           }}
         >
-          Confirm
+          {t["Confirm"]}
         </Typography>
         <CloseIcon onClick={handleSeeProposalClose} />
       </Grid>
@@ -178,7 +183,7 @@ function SeeProposalModal({
                       ml: "3px",
                     }}
                   >
-                    pending proposal
+                    {t["pending proposal"]}
                   </Button>
                 </Box>
               </Grid>
@@ -222,7 +227,7 @@ function SeeProposalModal({
             px: 2,
           }}
         >
-          Proposal details
+          {t["Proposal details"]}
         </Typography>
       </Box>
       <Box>
@@ -270,7 +275,7 @@ function SeeProposalModal({
             fontWeight: "400",
           }}
         >
-          Value:
+          {`${t["Value"]}:`}
         </Typography>
         <Typography
           variant="p"
@@ -301,7 +306,7 @@ function SeeProposalModal({
             fontWeight: "400",
           }}
         >
-          Proposal type:
+          {`${t["Proposal type"]}:`}
         </Typography>
         <Typography
           variant="p"
@@ -348,7 +353,7 @@ function SeeProposalModal({
             {refuseLoading && refuseId === proposalData?.id ? (
               <CircularProgress size={22} color="inherit" />
             ) : (
-              "Refuse"
+              t["refuse"]
             )}
           </Button>
         </Grid>
@@ -380,7 +385,7 @@ function SeeProposalModal({
             }}
             onClick={handleCounterProposalOpen}
           >
-            Counter proposal
+            {t["Counter proposal"]}
           </Button>
         </Grid>
         <Grid item xs={12} sm={12} md={12} lg={4}>
@@ -414,7 +419,7 @@ function SeeProposalModal({
             {acceptLoading && acceptid === proposalData?.id ? (
               <CircularProgress size={22} color="inherit" />
             ) : (
-              "To accept"
+              t["To accept"]
             )}
           </Button>
         </Grid>
@@ -429,6 +434,7 @@ function SeeProposalModal({
               handleCounterProposalClose={handleCounterProposalClose}
               proposalData={proposalData}
               propertyData={propertyData}
+              languageName={languageName}
             />
           </>
         </Tooltip>

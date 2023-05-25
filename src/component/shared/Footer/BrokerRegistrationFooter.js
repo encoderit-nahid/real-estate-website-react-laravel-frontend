@@ -43,10 +43,10 @@ function BrokerRegistrationFooter() {
               <Image src={logoWhiteIcon} height={40} width={200} alt="logo" />
             </Box>
             <Typography variant="p">
-              Lokkan Real Estate Services LTD.
+              Lokkan Serviços Imobiliários LTDA.
             </Typography>
             <Typography variant="p">
-              Avenida Paulista, 1439 - 1st floor - conj. 12
+              Avenida Paulista, 1439 - 1 andar - conj. 12
             </Typography>
             <Typography variant="p">
               Jardim Paulista - CEP 01311-200 - São Paulo / SP
@@ -148,7 +148,7 @@ function BrokerRegistrationFooter() {
                 },
               }}
             >
-              Sign up for our newsletter!
+              Assine nossa Newsletter!
             </Button>
           </Grid>
         </Grid>

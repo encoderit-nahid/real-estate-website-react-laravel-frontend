@@ -32,10 +32,10 @@ function Footer() {
             sx={{ color: "#ffffff", fontSize: "14px" }}
           >
             <Typography variant="p">
-              Lokkan Real Estate Services LTD.
+              Lokkan Serviços Imobiliários LTDA.
             </Typography>
             <Typography variant="p">
-              Avenida Paulista, 1439 - 1st floor - conj. 12
+              Avenida Paulista, 1439 - 1 andar - conj. 12
             </Typography>
             <Typography variant="p">
               Jardim Paulista - CEP 01311-200 - São Paulo / SP
@@ -53,22 +53,22 @@ function Footer() {
           >
             <Link href="/terms">
               <Typography variant="p" sx={{ cursor: "pointer" }}>
-                Terms of use
+                Termos de Uso
               </Typography>
             </Link>
             <Link href="/privacy">
               <Typography variant="p" sx={{ cursor: "pointer" }}>
-                Privacy Policy
+                Política de Privacidade
               </Typography>
             </Link>
             <Link href="/user_manual">
               <Typography variant="p" sx={{ cursor: "pointer" }}>
-                users manual
+                Manual dos usuários
               </Typography>
             </Link>
             <Link href="/cookie_policy">
               <Typography variant="p" sx={{ cursor: "pointer" }}>
-                cookie policy
+                Política de cookies
               </Typography>
             </Link>
           </Grid>
@@ -83,19 +83,19 @@ function Footer() {
             sx={{ color: "#ffffff", fontSize: "14px" }}
           >
             <Typography variant="p" sx={{ cursor: "pointer" }}>
-              My account
+              Minha conta
             </Typography>
             <Link href="/advertise">
               <Typography variant="p" sx={{ cursor: "pointer" }}>
-                Advertise your property
+                Anuncie seu imóvel
               </Typography>
             </Link>
             <Typography variant="p" sx={{ cursor: "pointer" }}>
-              be a consultant
+              Seja um consultor
             </Typography>
             <Link href="/blog">
               <Typography variant="p" sx={{ cursor: "pointer" }}>
-                blog
+                Blog
               </Typography>
             </Link>
           </Grid>

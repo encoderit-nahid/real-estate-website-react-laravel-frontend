@@ -43,16 +43,13 @@ const omitEmpties = (obj) => {
   }, {});
 };
 
-
-
-export default function IncludeProposal({language}) {
+export default function IncludeProposal({ language }) {
   const dispatch = useDispatch();
   const { data: session } = useSession();
 
   const [myValue, setMyValue] = useState(language || "en");
 
   const t = myValue === "en" ? en : pt;
-
 
   const validationSchemaCash = Yup.object().shape({
     total_amount: Yup.string().required(t["BRL amount is required"]),
@@ -67,9 +64,9 @@ export default function IncludeProposal({language}) {
     //   city: Yup.string().required("city is required"),
     //   state: Yup.object().required("State is required"),
   });
-  
+
   const validationSchemaInstallment = Yup.object().shape({
-    total_amount: Yup.string().required(t['Total amount is required']),
+    total_amount: Yup.string().required(t["Total amount is required"]),
     cash_amount: Yup.number().required(t["Cash Value is required"]),
     payment_per_installment: Yup.number().required(t["Term Value is required"]),
     no_of_installment: Yup.number().required(
@@ -86,18 +83,20 @@ export default function IncludeProposal({language}) {
     //   city: Yup.string().required("city is required"),
     //   state: Yup.object().required("State is required"),
   });
-  
+
   const BreadCrumbsData = [
-    { stage: "Start", route: "" },
-    { stage: "My properties", route: "" },
+    { stage: t["Start"], route: "" },
+    { stage: t["My Properties"], route: "" },
   ];
 
   const { query } = useRouter();
 
   const steps =
     session?.user?.role === "broker"
-      ? ["Proposal Values", "Buyer Data"]
-      : ["Proposal Values"];
+      ? [t["Proposal values"], t["Buyer data"]]
+      : session?.user?.role === "admin"
+      ? [t["Proposal values"], t["Buyer data"]]
+      : [t["Proposal values"]];
 
   useEffect(() => {
     dispatch(findSinglePropertyData(query?.property_id));
@@ -255,7 +254,7 @@ export default function IncludeProposal({language}) {
               >
                 <BasicBreadcrumbs
                   BreadcrumbsData={BreadCrumbsData}
-                  lastStageData={"Proposal"}
+                  lastStageData={t["Proposal"]}
                 />
               </Grid>
               <Box sx={{ mt: 3 }}>
@@ -299,6 +298,7 @@ export default function IncludeProposal({language}) {
                           errors={errors}
                           propertyData={propertyData}
                           srcImage={srcImage}
+                          languageName={myValue.toString()}
                         />
                       ) : (
                         <BuyerDataStep
@@ -309,6 +309,7 @@ export default function IncludeProposal({language}) {
                           setMaritalStatus={setMaritalStatus}
                           maritalStatus={maritalStatus}
                           setValue={setValue}
+                          languageName={myValue.toString()}
                         />
                       )}
                       <Grid
@@ -328,7 +329,8 @@ export default function IncludeProposal({language}) {
                       >
                         {activeStep === steps.length - 1 && (
                           <Grid container spacing={1} sx={{ mt: 2, mb: 5 }}>
-                            {session?.user?.role === "broker" ? (
+                            {session?.user?.role === "broker" ||
+                            session?.user?.role === "admin" ? (
                               <Grid item xs={6} sm={6} md={6}>
                                 <Button
                                   color="inherit"
@@ -347,7 +349,7 @@ export default function IncludeProposal({language}) {
                                     textTransform: "none",
                                   }}
                                 >
-                                  Come back
+                                  {t["Come back"]}
                                 </Button>
                               </Grid>
                             ) : (
@@ -382,7 +384,7 @@ export default function IncludeProposal({language}) {
                                         textTransform: "none",
                                       }}
                                     >
-                                      back
+                                      {t["Come back"]}
                                     </Button>
                                   </a>
                                 </Link>
@@ -432,7 +434,7 @@ export default function IncludeProposal({language}) {
                                       color="inherit"
                                     />
                                   )}
-                                  {!loading && "Submit proposal"}
+                                  {!loading && t["Submit proposal"]}
                                 </Button>
                               </Box>
                             </Grid>
@@ -440,7 +442,8 @@ export default function IncludeProposal({language}) {
                         )}
 
                         {activeStep === 0 &&
-                          session?.user?.role === "broker" && (
+                          (session?.user?.role === "broker" ||
+                            session?.user?.role === "admin") && (
                             <Grid container spacing={1} sx={{ mt: 2, mb: 5 }}>
                               <Grid item xs={6} sm={6} md={6}>
                                 <Link href="/my_properties">
@@ -461,7 +464,7 @@ export default function IncludeProposal({language}) {
                                       textTransform: "none",
                                     }}
                                   >
-                                    Cancel
+                                    {t["Cancel"]}
                                   </Button>
                                 </Link>
                               </Grid>
@@ -496,7 +499,7 @@ export default function IncludeProposal({language}) {
                                       },
                                     }}
                                   >
-                                    Next
+                                    {t["Next"]}
                                   </Button>
                                 </Box>
                               </Grid>

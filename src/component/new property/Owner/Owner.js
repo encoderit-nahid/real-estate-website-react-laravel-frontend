@@ -77,7 +77,7 @@ function Owner({
               mb: 1,
             }}
           >
-            {`${t["Martial status"]}:`}
+            {`${t["Marital status"]}:`}
           </Typography>
         </Grid>
         {[

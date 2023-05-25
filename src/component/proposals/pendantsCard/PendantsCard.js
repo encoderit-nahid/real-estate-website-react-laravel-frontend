@@ -288,7 +288,11 @@ function PendantsCard({ propertyData, languageName }) {
                 </List>
               </Grid>
             </Grid>
-            {( data?.proposal_type === 'general' && session?.user?.role === "owner") || ( data?.proposal_type === 'counter' && session?.user?.role === "buyer") || (session?.user?.role === 'admin')  ? (
+            {(data?.proposal_type === "general" &&
+              session?.user?.role === "owner") ||
+            (data?.proposal_type === "counter" &&
+              session?.user?.role === "buyer") ||
+            session?.user?.role === "admin" ? (
               <Grid container spacing={1} sx={{ px: 1 }}>
                 <Grid item xs={12} sm={12} md={12} lg={3}>
                   <Button
@@ -405,6 +409,7 @@ function PendantsCard({ propertyData, languageName }) {
                 handleSeeProposalClose={handleSeeProposalClose}
                 propertyData={propertyData}
                 proposalData={selectProposal}
+                languageName={languageName}
               />
             </>
           </Tooltip>
@@ -612,7 +617,13 @@ function PendantsCard({ propertyData, languageName }) {
           >
             <Button
               fullWidth
-              disabled={session?.user?.role === "broker" ? true : session?.user?.role === "owner" ? true : false }
+              disabled={
+                session?.user?.role === "broker"
+                  ? true
+                  : session?.user?.role === "owner"
+                  ? true
+                  : false
+              }
               sx={{
                 color: "#FFFFFF",
                 fontSize: "14px",

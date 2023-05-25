@@ -29,6 +29,7 @@ import en from "../../../../locales/en";
 import pt from "../../../../locales/pt";
 import SetCookie from "@/hooks/setCookie";
 import GetCookie from "@/hooks/getCookie";
+import { languageChangeApi } from "@/api";
 // import { getCookies, setCookie, deleteCookie, getCookie } from 'cookies-next'
 
 function Navbar({
@@ -382,6 +383,8 @@ function Navbar({
                   // value={locale}
                   onChange={(e) => {
                     setMyValue(e.target.value);
+                    languageChangeApi(e.target.value);
+
                     // setCookie('language', e.target.value)
                     // Cookies.set('language', e.target.value)
                   }}

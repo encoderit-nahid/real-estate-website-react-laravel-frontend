@@ -52,6 +52,16 @@ export const emailVerifyApi = async (token) => {
   }
 };
 
+//language_change
+export const languageChangeApi = async (language) => {
+  try {
+    const resp = await apiInstance.get(`language-change/${language}`);
+    return [false, resp];
+  } catch (err) {
+    return [err, null];
+  }
+};
+
 //reset_password
 export const resetPasswordApi = async (body) => {
   try {
