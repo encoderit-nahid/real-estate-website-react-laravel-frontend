@@ -16,8 +16,11 @@ import BaseModal from "../../../../reuseable/baseModal/BaseModal";
 import ContractModal from "../contractModal/ContractModal";
 import SaleCard from "../../../../reuseable/saleCard/SaleCard";
 import ContractPdfModal from "../ContractPdfModal/ContractPdfModal";
+import en from "locales/en";
+import pt from "locales/pt";
 
-function Proposal({ handleNext, singlePropertyData }) {
+function Proposal({ handleNext, singlePropertyData, languageName }) {
+  const t = languageName === "en" ? en : pt;
   return (
     <Box sx={{ mt: 4 }}>
       <Grid
@@ -37,7 +40,7 @@ function Proposal({ handleNext, singlePropertyData }) {
             ml: 1,
           }}
         >
-          Proposal
+          {t["Proposal"]}
         </Typography>
       </Grid>
       <Box sx={{ mt: { xs: 2, sm: 2, md: 2, lg: 4 } }}>

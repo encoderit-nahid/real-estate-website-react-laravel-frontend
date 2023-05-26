@@ -221,7 +221,7 @@ export default function Registration({ language }) {
         setError(name, { type: "manual", message: messages[0] });
       });
 
-      handleClickSnackbar();
+      // handleClickSnackbar();
       setLoading(false);
       setMessage(errorToken?.response?.data?.message);
     }

@@ -52,6 +52,8 @@ function PendantsCard({ propertyData, languageName }) {
   const t = languageName === "en" ? en : pt;
   const dispatch = useDispatch();
   const { data: session } = useSession();
+
+  console.log({ propertyData });
   //add_see_proposal_modal
   const [seeProposalOpen, setSeeProposalOpen] = useState(false);
   const [selectProposal, setSelectProposal] = useState("");
@@ -261,11 +263,23 @@ function PendantsCard({ propertyData, languageName }) {
                 // sx={{ width: "100%", maxWidth: 360, bgcolor: "background.paper" }}
                 >
                   <ListItem>
-                    <ListItemAvatar>
-                      <Avatar>
-                        <Image src={avatar} alt="avatar" />
-                      </Avatar>
-                    </ListItemAvatar>
+                    {data?.user?.attachments?.[0]?.file_path ? (
+                      <ListItemAvatar>
+                        <Avatar>
+                          <Image
+                            loader={myLoader}
+                            src={data?.user?.attachments[0]?.file_path}
+                            alt="avatar"
+                            width={50}
+                            height={50}
+                          />
+                        </Avatar>
+                      </ListItemAvatar>
+                    ) : (
+                      <ListItemAvatar>
+                        <Avatar></Avatar>
+                      </ListItemAvatar>
+                    )}
                     <ListItemText
                       primary={`${data?.user?.name}`}
                       secondary={`${dayjs(data?.created_at).format(
@@ -537,11 +551,23 @@ function PendantsCard({ propertyData, languageName }) {
               <Grid item xs={7}>
                 <List>
                   <ListItem sx={{ margin: 0, paddingY: "1px" }}>
-                    <ListItemAvatar sx={{ paddingRight: 0, minWidth: 0 }}>
-                      <Avatar>
-                        <Image src={avatar} alt="avatar" />
-                      </Avatar>
-                    </ListItemAvatar>
+                    {data?.user?.attachments?.[0]?.file_path ? (
+                      <ListItemAvatar>
+                        <Avatar>
+                          <Image
+                            loader={myLoader}
+                            src={data?.user?.attachments[0]?.file_path}
+                            alt="avatar"
+                            width={50}
+                            height={50}
+                          />
+                        </Avatar>
+                      </ListItemAvatar>
+                    ) : (
+                      <ListItemAvatar>
+                        <Avatar></Avatar>
+                      </ListItemAvatar>
+                    )}
                     <ListItemText
                       sx={{ ml: "3px" }}
                       primary={

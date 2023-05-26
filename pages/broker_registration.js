@@ -130,10 +130,11 @@ export default function BrokerRegistration({
               status: response?.data?.user?.status,
               role: response?.data?.user?.roles[0]?.slug,
               roleId: response?.data?.user?.roles[0]?.id,
+              userImage: response?.data?.user?.attachments[0]?.file_path,
               // image: response?.data?.user?.attachments[0],
-              permissions: JSON.stringify(
-                response?.data?.user?.roles[0]?.permissions
-              ),
+              // permissions: JSON.stringify(
+              //   response?.data?.user?.roles[0]?.permissions
+              // ),
               callbackUrl:
                 response.data?.user?.roles[0]?.slug === "buyer"
                   ? "/"

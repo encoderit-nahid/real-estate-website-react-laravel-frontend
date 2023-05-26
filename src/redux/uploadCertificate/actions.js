@@ -30,7 +30,7 @@ export const findUploadCertificateData = (id, type) => async (dispatch) => {
   dispatch(uploadCertificateRequest());
   const [error, response] = await uploadCertrificateApi(id, type);
   if (!error) {
-    dispatch(uploadCertificateSuccess(response?.data?.require_certificate));
+    dispatch(uploadCertificateSuccess(response?.data));
   } else {
     const errorMassage =
       error?.response?.data?.data || error?.response?.data?.status;

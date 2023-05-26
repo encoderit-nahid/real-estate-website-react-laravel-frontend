@@ -22,6 +22,7 @@ import {
 import { findFeatureData } from "../../../redux/features/actions";
 import en from "locales/en";
 import pt from "locales/pt";
+import { useSession } from "next-auth/react";
 
 const PropertyFeature = [
   "close to the metro",
@@ -50,6 +51,8 @@ const PropertyFeature = [
 ];
 function Features({ featuretypes, setFeatureTypes, errors, languageName }) {
   const t = languageName === "en" ? en : pt;
+
+  const { data: session } = useSession();
   const [item, setItem] = useState("");
   const dispatch = useDispatch();
   useEffect(() => {
@@ -196,36 +199,38 @@ function Features({ featuretypes, setFeatureTypes, errors, languageName }) {
       >
         {errors?.features?.message}
       </Typography>
-      <Grid
-        container
-        direction="row"
-        justifyContent="flex-start"
-        alignItems="flex-start"
-        sx={{ mt: 3 }}
-      >
-        <BaseTextField
-          sx={{ width: "50%" }}
-          placeholder={t["Add feature"]}
-          onChange={(e) => setItem(e.target.value)}
-        />
-        <Button
-          onClick={handleAddFeature}
-          sx={{
-            backgroundColor: "#0362F0",
-            py: 2,
-            ml: 1,
-            borderRadius: "4px",
-            "&:hover": {
+      {session?.user?.role === "admin" && (
+        <Grid
+          container
+          direction="row"
+          justifyContent="flex-start"
+          alignItems="flex-start"
+          sx={{ mt: 3 }}
+        >
+          <BaseTextField
+            sx={{ width: "50%" }}
+            placeholder={t["Add feature"]}
+            onChange={(e) => setItem(e.target.value)}
+          />
+          <Button
+            onClick={handleAddFeature}
+            sx={{
               backgroundColor: "#0362F0",
               py: 2,
               ml: 1,
               borderRadius: "4px",
-            },
-          }}
-        >
-          <AddOutlinedIcon sx={{ color: "#ffffff" }} />
-        </Button>
-      </Grid>
+              "&:hover": {
+                backgroundColor: "#0362F0",
+                py: 2,
+                ml: 1,
+                borderRadius: "4px",
+              },
+            }}
+          >
+            <AddOutlinedIcon sx={{ color: "#ffffff" }} />
+          </Button>
+        </Grid>
+      )}
     </Box>
   );
 }

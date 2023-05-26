@@ -35,10 +35,18 @@ import {
 } from "../../../../../api";
 import { useRouter } from "next/router";
 import DigitalNotaryPdfModal from "../digitalNotaryPdfModal/DigitalNotaryPdfModal";
+import en from "locales/en";
+import pt from "locales/pt";
 
-function CertificatesAndDocuments({ handleNext, singlePropertyData }) {
+function CertificatesAndDocuments({
+  handleNext,
+  singlePropertyData,
+  languageName,
+}) {
   const router = useRouter();
   const { query } = router;
+
+  const t = languageName === "en" ? en : pt;
   const dispatch = useDispatch();
   useEffect(() => {
     dispatch(
@@ -123,7 +131,7 @@ function CertificatesAndDocuments({ handleNext, singlePropertyData }) {
             ml: 1,
           }}
         >
-          Certificates and documents
+          {t["Certificates and documents"]}
         </Typography>
       </Grid>
       <Box sx={{ mt: { xs: 2, sm: 2, md: 2, lg: 4 } }}>
@@ -153,7 +161,7 @@ function CertificatesAndDocuments({ handleNext, singlePropertyData }) {
                   fontWeight: "400",
                 }}
               >
-                {`Requested documents ${uploadCount || 0}/${
+                {`${t["Requested documents"]} ${uploadCount || 0}/${
                   requireCertificateData?.documents?.length || 0
                 }`}
               </Typography>
@@ -329,7 +337,7 @@ function CertificatesAndDocuments({ handleNext, singlePropertyData }) {
                                         fontWeight: "400",
                                       }}
                                     >
-                                      To view
+                                      {t["To view"]}
                                     </Typography>
                                   </Button>
                                 </Grid>
@@ -454,7 +462,7 @@ function CertificatesAndDocuments({ handleNext, singlePropertyData }) {
                 }}
               >
                 {loading && <CircularProgress size={22} color="inherit" />}
-                {!loading && "Requested documents"}
+                {!loading && t["requested documents"]}
               </Button>
             </Grid>
           </Grid>

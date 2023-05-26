@@ -17,7 +17,7 @@ function BaseStreetView({ addressData }) {
   return (
     <div
       style={{
-        width: "850px",
+        width: { xs: "200px", md: "850px" },
         height: "450px",
         backgroundColor: "#eeeeee",
       }}

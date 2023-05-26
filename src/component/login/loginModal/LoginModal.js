@@ -102,7 +102,6 @@ function LoginModal({ handleLoginClose, myValue }) {
     if (!errorToken) {
       localStorage.setItem("token", responseToken?.data?.token);
       const [error, response] = await userDetailsApi();
-
       setLoading(false);
       if (!error) {
         signIn("credentials", {
@@ -113,10 +112,10 @@ function LoginModal({ handleLoginClose, myValue }) {
           status: response?.data?.user?.status,
           role: response?.data?.user?.roles[0]?.slug,
           roleId: response?.data?.user?.roles[0]?.id,
-          // image: response?.data?.user?.attachments[0],
-          permissions: JSON.stringify(
-            response?.data?.user?.roles[0]?.permissions
-          ),
+          userImage: response?.data?.user?.attachments[0]?.file_path,
+          // permissions: JSON.stringify(
+          //   response?.data?.user?.roles[0]?.permissions
+          // ),
           callbackUrl: router.asPath,
           // response.data.user.roles[0].slug === "buyer"
           //   ? router.asPath

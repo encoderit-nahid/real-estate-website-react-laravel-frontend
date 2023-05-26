@@ -39,6 +39,8 @@ import { getSession, useSession } from "next-auth/react";
 import { useRouter } from "next/router";
 import { useDispatch, useSelector } from "react-redux";
 import { findSinglePropertyData } from "../../../src/redux/singleProperty/actions";
+import en from "locales/en";
+import pt from "locales/pt";
 
 const drawerWidth = 240;
 
@@ -56,17 +58,26 @@ const omitEmpties = (obj) => {
   }, {});
 };
 
-const steps = [
-  "Announce",
-  "Proposal",
-  "Contract",
-  "Certificates and documents",
-  "Pre analysis",
-  "Digital notery",
-];
-export default function PropertyJourney(props) {
+export default function PropertyJourney({ language }) {
   const router = useRouter();
   const { query } = router;
+
+  const [myValue, setMyValue] = useState(language || "pt");
+  const t = myValue === "en" ? en : pt;
+
+  const steps = [
+    t["Announce"],
+    t["Proposal"],
+    t["Contract"],
+    t["Certificates and documents"],
+    t["Pre analysis"],
+    t["Digital notery"],
+  ];
+
+  const BreadCrumbsData = [
+    { stage: t["Start"], route: "" },
+    { stage: t["My Properties"], route: "" },
+  ];
 
   // const [activeStep, setActiveStep] = useState((+query?.step_count || 1) + 1);
   // useEffect(() => {
@@ -168,7 +179,7 @@ export default function PropertyJourney(props) {
               >
                 <BasicBreadcrumbs
                   BreadcrumbsData={BreadCrumbsData}
-                  lastStageData={"Property journey"}
+                  lastStageData={t["Property journey"]}
                 />
               </Grid>
               <Box sx={{ mt: 3 }}>
@@ -268,12 +279,14 @@ export default function PropertyJourney(props) {
                       <Announce
                         singlePropertyData={singlePropertyData}
                         handleNext={handleNext}
+                        languageName={myValue.toString()}
                       />
                     ) : activeStep === 1 ? (
                       <Proposal
                         singlePropertyData={singlePropertyData}
                         handleNext={handleNext}
                         handleBack={handleBack}
+                        languageName={myValue.toString()}
                       />
                     ) : activeStep === 2 ? (
                       <Contract
@@ -281,6 +294,7 @@ export default function PropertyJourney(props) {
                         handleNext={handleNext}
                         handleBack={handleBack}
                         Loading={Loading}
+                        languageName={myValue.toString()}
                       />
                     ) : activeStep === 3 ? (
                       //   <PhotosAndVideos
@@ -291,29 +305,31 @@ export default function PropertyJourney(props) {
                       //   singlePropertyData={singlePropertyData}
                       //   handleNext={handleNext}
                       // />
-                      session?.user?.role === "buyer" ? (
-                        <BrokerCertificateAndDocument
-                          singlePropertyData={singlePropertyData}
-                          handleNext={handleNext}
-                        />
-                      ) : session?.user?.role === "admin" ? (
+                      session?.user?.role === "admin" ? (
                         <CertificatesAndDocuments
                           singlePropertyData={singlePropertyData}
                           handleNext={handleNext}
+                          languageName={myValue.toString()}
                         />
                       ) : (
-                        ""
+                        <BrokerCertificateAndDocument
+                          singlePropertyData={singlePropertyData}
+                          handleNext={handleNext}
+                          languageName={myValue.toString()}
+                        />
                       )
                     ) : // <BrokerCertificateAndDocument handleNext={handleNext} />
                     activeStep === 4 ? (
                       <PreAnalise
                         singlePropertyData={singlePropertyData}
                         handleNext={handleNext}
+                        languageName={myValue.toString()}
                       />
                     ) : (
                       <DigitalNotary
                         singlePropertyData={singlePropertyData}
                         handleNext={handleNext}
+                        languageName={myValue.toString()}
                       />
                     )}
                     <Grid
@@ -349,7 +365,7 @@ export default function PropertyJourney(props) {
                             textTransform: "none",
                           }}
                         >
-                          Come back
+                          {t["Come back"]}
                         </Button>
                       )}
 
@@ -437,8 +453,8 @@ export default function PropertyJourney(props) {
                         }}
                       >
                         {activeStep === steps.length - 1
-                          ? "Submit Approval"
-                          : "Next"}
+                          ? t["Submit approval"]
+                          : t["Next"]}
                       </Button>
                     </Grid>
                   </Fragment>
@@ -462,6 +478,7 @@ export default function PropertyJourney(props) {
 export async function getServerSideProps(context) {
   //* Session for SSG
   const session = await getSession(context);
+  const cookies = context.req.cookies["language"] || "pt";
   //? If Not Logged In
   if (!session) {
     return {
@@ -477,6 +494,7 @@ export async function getServerSideProps(context) {
   return {
     props: {
       session: session,
+      language: cookies,
     },
   };
 }
