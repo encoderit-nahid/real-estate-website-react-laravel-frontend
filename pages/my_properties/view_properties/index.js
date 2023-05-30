@@ -1322,10 +1322,20 @@ export default function ViewProperties({
                     xl={6}
                     xxl={6}
                   >
-                    <RentCard
-                      propertyData={data}
-                      languageName={myValue.toString()}
-                    />
+                    <Link href={`/property_view/${data?.id}`}>
+                      <a
+                        style={{
+                          textDecoration: "none",
+                          listStyle: "none",
+                          width: "100%",
+                        }}
+                      >
+                        <RentCard
+                          propertyData={data}
+                          languageName={myValue.toString()}
+                        />
+                      </a>
+                    </Link>
                   </Grid>
                 ))}
               </Grid>
@@ -1375,7 +1385,7 @@ export async function getServerSideProps(context) {
   const data = await res.json();
   console.log({ data });
 
-  const cookies = context.req.cookies["language"] || 'pt';
+  const cookies = context.req.cookies["language"] || "pt";
 
   return {
     props: {

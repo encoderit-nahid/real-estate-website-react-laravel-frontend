@@ -290,6 +290,9 @@ export default function BrokerRegistration({
       setSentModalOpen(true);
       setSuccessMessage(responseToken?.data?.message);
       handleClickSuccessSnackbar();
+      localStorage.removeItem("Reg_user_name");
+      localStorage.removeItem("user_role");
+      localStorage.removeItem("registration_id");
     } else {
       const errors = error?.response?.data?.errors ?? {};
       console.log({ error });
@@ -299,6 +302,11 @@ export default function BrokerRegistration({
       // setLoading(false);
     }
   };
+
+  useEffect(() => {
+    const user_name = localStorage.getItem("Reg_user_name") || "";
+    setValue("full_name", user_name);
+  }, [setValue]);
 
   return (
     <div>

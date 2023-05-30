@@ -1,6 +1,13 @@
-import { Autocomplete, Box, Grid, TextField, Typography } from "@mui/material";
+import {
+  Autocomplete,
+  Box,
+  Button,
+  Grid,
+  TextField,
+  Typography,
+} from "@mui/material";
 import Image from "next/image";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import valueImage from "../../../../public/Images/proposal_modal.png";
 import ventureImage from "../../../../public/Images/certidoes.png";
 import BaseTextField from "../../reuseable/baseTextField/BaseTextField";
@@ -9,8 +16,52 @@ import BaseAutocomplete from "../../reuseable/baseAutocomplete/BaseAutocomplete"
 import en from "locales/en";
 import pt from "locales/pt";
 
-function ValuesAndDescription({ control, errors, languageName }) {
+function ValuesAndDescription({
+  control,
+  errors,
+  languageName,
+  handleNext,
+  handleBack,
+  allValues,
+}) {
   const t = languageName === "en" ? en : pt;
+
+  const [disableBtn, setDisableBtn] = useState(true);
+  useEffect(() => {
+    if (
+      allValues?.brl_rent != null &&
+      allValues?.condominium != null &&
+      allValues?.brl_iptu != null &&
+      allValues?.land_area != null &&
+      allValues?.property_area != null &&
+      allValues?.no_of_rooms != null &&
+      allValues?.no_of_suites != null &&
+      allValues?.no_of_bathrooms != null &&
+      allValues?.no_of_parking_spaces != null &&
+      allValues?.documentation != null &&
+      allValues?.registry != null &&
+      allValues?.registration_number != null
+    ) {
+      setDisableBtn(false);
+    }
+    if (
+      allValues?.brl_rent === "" ||
+      allValues?.condominium === "" ||
+      allValues?.brl_iptu === "" ||
+      allValues?.land_area === "" ||
+      allValues?.property_area === "" ||
+      allValues?.no_of_rooms === "" ||
+      allValues?.no_of_suites === "" ||
+      allValues?.no_of_bathrooms === "" ||
+      allValues?.no_of_parking_spaces === "" ||
+      allValues?.documentation === "" ||
+      allValues?.registry === "" ||
+      allValues?.registration_number === ""
+    ) {
+      setDisableBtn(true);
+    }
+  }, [allValues]);
+
   return (
     <Box sx={{ mt: 4 }}>
       <Grid
@@ -376,6 +427,64 @@ function ValuesAndDescription({ control, errors, languageName }) {
           >
             {errors.registration_number?.message}
           </Typography>
+        </Grid>
+        <Grid
+          container
+          direction="row"
+          justifyContent="flex-end"
+          alignItems="center"
+          sx={{ mt: 2, mb: 2 }}
+        >
+          <Button
+            color="inherit"
+            onClick={handleBack}
+            // disabled={activeStep === 0}
+            sx={{
+              mr: 1,
+              border: "1px solid #002152",
+              borderRadius: "4px",
+              px: 2,
+              py: 1,
+              color: "#002152",
+              fontSize: "16px",
+              fontWeight: "600",
+              lineHeight: "22px",
+              textTransform: "none",
+            }}
+          >
+            {t["come back"]}
+          </Button>
+
+          <Button
+            onClick={handleNext}
+            disabled={disableBtn}
+            sx={{
+              background: "#7450F0",
+              borderRadius: "4px",
+              px: 2,
+              py: 1,
+              color: "#ffffff",
+              fontSize: "16px",
+              fontWeight: "600",
+              lineHeight: "22px",
+              textTransform: "none",
+              boxShadow: "0px 4px 8px rgba(81, 51, 182, 0.32)",
+              "&:hover": {
+                background: "#7450F0",
+                borderRadius: "4px",
+                px: 2,
+                py: 1,
+                color: "#ffffff",
+                fontSize: "16px",
+                fontWeight: "600",
+                lineHeight: "22px",
+                textTransform: "none",
+                boxShadow: "0px 4px 8px rgba(81, 51, 182, 0.32)",
+              },
+            }}
+          >
+            {t["Next"]}
+          </Button>
         </Grid>
       </Grid>
     </Box>

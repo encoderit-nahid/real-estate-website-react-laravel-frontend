@@ -28,6 +28,10 @@ function Owner({
   maritalStatus,
   setMaritalStatus,
   languageName,
+  setSingle,
+  single,
+  married,
+  setMarried,
 }) {
   const t = languageName === "en" ? en : pt;
   const dispatch = useDispatch();
@@ -86,7 +90,16 @@ function Owner({
         ].map((data, index) => (
           <Button
             key={index}
-            onClick={() => setMaritalStatus(data?.name)}
+            onClick={() => {
+              setMaritalStatus(data?.name);
+              if (data?.name === "Single") {
+                setSingle(true);
+                setMarried(false);
+              } else {
+                setMarried(true);
+                setSingle(false);
+              }
+            }}
             sx={{
               textTransform: "none",
               padding: "3px 10px",
@@ -190,105 +203,109 @@ function Owner({
           </FormControl>
         </Grid>
       </Grid>
-      <Grid container sx={{ mt: 2 }}>
-        <Grid item xs={12} sm={12} md={6} lg={6} xl={6}>
-          <Typography
-            variant="p"
-            sx={{
-              fontSize: "16px",
-              fontWeight: "400",
-              color: "#002152",
-              lineHeight: "22px",
-            }}
-          >
-            Spouse details:
-          </Typography>
-        </Grid>
-      </Grid>
-      <Grid container sx={{ mt: 2 }}>
-        <Grid item xs={12}>
-          <Controller
-            name="owner_spouse_name"
-            control={control}
-            defaultValue={""}
-            render={({ field }) => (
-              <BaseTextField
-                size={"medium"}
-                placeholder={`${t["Full Name"]}*`}
-                // sx={{ mb: 2 }}
-                onChange={(e) => {
-                  field.onChange(e.target.value);
+      {married && (
+        <Box>
+          <Grid container sx={{ mt: 2 }}>
+            <Grid item xs={12} sm={12} md={6} lg={6} xl={6}>
+              <Typography
+                variant="p"
+                sx={{
+                  fontSize: "16px",
+                  fontWeight: "400",
+                  color: "#002152",
+                  lineHeight: "22px",
                 }}
-                name={"owner_spouse_name"}
-                value={field.value}
+              >
+                Spouse details:
+              </Typography>
+            </Grid>
+          </Grid>
+          <Grid container sx={{ mt: 2 }}>
+            <Grid item xs={12}>
+              <Controller
+                name="owner_spouse_name"
+                control={control}
+                defaultValue={""}
+                render={({ field }) => (
+                  <BaseTextField
+                    size={"medium"}
+                    placeholder={`${t["Full Name"]}*`}
+                    // sx={{ mb: 2 }}
+                    onChange={(e) => {
+                      field.onChange(e.target.value);
+                    }}
+                    name={"owner_spouse_name"}
+                    value={field.value}
+                  />
+                )}
               />
-            )}
-          />
-          <Typography
-            variant="inherit"
-            color="textSecondary"
-            sx={{ color: "#b91c1c" }}
-          >
-            {errors.owner_spouse_name?.message}
-          </Typography>
-        </Grid>
-      </Grid>
-      <Grid container spacing={1} sx={{ mt: 1 }}>
-        <Grid item xs={12} sm={12} md={6} lg={6} xl={6}>
-          <FormControl variant="outlined" sx={{ width: "100%" }}>
-            <Controller
-              name="owner_spouse_rg"
-              control={control}
-              render={({ field }) => (
-                <BaseOutlinedRgInput
-                  placeholder={"RG*"}
-                  size={"medium"}
-                  onChange={(e) => {
-                    field.onChange(e.target.value);
-                  }}
-                  name={"owner_spouse_rg"}
-                  value={field.value}
-                  // error={errors?.rg_number ? true : false}
+              <Typography
+                variant="inherit"
+                color="textSecondary"
+                sx={{ color: "#b91c1c" }}
+              >
+                {errors.owner_spouse_name?.message}
+              </Typography>
+            </Grid>
+          </Grid>
+          <Grid container spacing={1} sx={{ mt: 1 }}>
+            <Grid item xs={12} sm={12} md={6} lg={6} xl={6}>
+              <FormControl variant="outlined" sx={{ width: "100%" }}>
+                <Controller
+                  name="owner_spouse_rg"
+                  control={control}
+                  render={({ field }) => (
+                    <BaseOutlinedRgInput
+                      placeholder={"RG*"}
+                      size={"medium"}
+                      onChange={(e) => {
+                        field.onChange(e.target.value);
+                      }}
+                      name={"owner_spouse_rg"}
+                      value={field.value}
+                      // error={errors?.rg_number ? true : false}
+                    />
+                  )}
                 />
-              )}
-            />
-            <Typography
-              variant="inherit"
-              color="textSecondary"
-              sx={{ color: "#b91c1c" }}
-            >
-              {errors?.owner_spouse_rg?.message}
-            </Typography>
-          </FormControl>
-        </Grid>
-        <Grid item xs={12} sm={12} md={6} lg={6} xl={6}>
-          <FormControl variant="outlined" sx={{ width: "100%" }}>
-            <Controller
-              name="owner_spouse_cpf"
-              control={control}
-              render={({ field }) => (
-                <BaseOutlinedCpfInput
-                  placeholder={"CPF*"}
-                  size={"medium"}
-                  onChange={(e) => {
-                    field.onChange(e.target.value);
-                  }}
-                  name={"owner_spouse_cpf"}
-                  value={field.value}
-                  // error={errors.cpf_number ? true : false}
+                <Typography
+                  variant="inherit"
+                  color="textSecondary"
+                  sx={{ color: "#b91c1c" }}
+                >
+                  {errors?.owner_spouse_rg?.message}
+                </Typography>
+              </FormControl>
+            </Grid>
+            <Grid item xs={12} sm={12} md={6} lg={6} xl={6}>
+              <FormControl variant="outlined" sx={{ width: "100%" }}>
+                <Controller
+                  name="owner_spouse_cpf"
+                  control={control}
+                  render={({ field }) => (
+                    <BaseOutlinedCpfInput
+                      placeholder={"CPF*"}
+                      size={"medium"}
+                      onChange={(e) => {
+                        field.onChange(e.target.value);
+                      }}
+                      name={"owner_spouse_cpf"}
+                      value={field.value}
+                      // error={errors.cpf_number ? true : false}
+                    />
+                  )}
                 />
-              )}
-            />
-            <Typography
-              variant="inherit"
-              color="textSecondary"
-              sx={{ color: "#b91c1c" }}
-            >
-              {errors.owner_spouse_cpf?.message}
-            </Typography>
-          </FormControl>
-        </Grid>
-      </Grid>
+                <Typography
+                  variant="inherit"
+                  color="textSecondary"
+                  sx={{ color: "#b91c1c" }}
+                >
+                  {errors.owner_spouse_cpf?.message}
+                </Typography>
+              </FormControl>
+            </Grid>
+          </Grid>
+        </Box>
+      )}
       <Grid container sx={{ mt: 2 }}>
         <Grid item xs={12} sm={12} md={6} lg={6} xl={6}>
           <Typography

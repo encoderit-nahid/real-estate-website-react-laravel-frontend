@@ -27,6 +27,8 @@ function RentCard({ propertyData, languageName }) {
   const myLoader = ({ src }) => {
     return `${_imageURL}/${src}`;
   };
+
+  console.log({ propertyData });
   return (
     <Box
       sx={{
@@ -234,7 +236,13 @@ function RentCard({ propertyData, languageName }) {
                   }}
                 > */}
                 <Button
-                  disabled={session?.user?.role === "broker" ? true : session?.user?.role === "owner" ? true : false }
+                  disabled={
+                    session?.user?.role === "broker"
+                      ? true
+                      : session?.user?.role === "owner"
+                      ? true
+                      : false
+                  }
                   sx={{
                     color: "#FFFFFF",
                     fontSize: "14px",
@@ -260,7 +268,7 @@ function RentCard({ propertyData, languageName }) {
                 </Button>
                 {/* </a> */}
               </Link>
-              {session?.user?.role !== "buyer" && (
+              {((parseInt(session?.user?.userId) === propertyData?.user?.id) ||( session?.user?.role === "admin"))&& (
                 <Link
                   href={{
                     pathname: "/my_properties/new_property",

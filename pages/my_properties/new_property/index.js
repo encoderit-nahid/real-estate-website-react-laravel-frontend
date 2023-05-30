@@ -109,21 +109,21 @@ export default function NewProperty({ language }) {
       .nullable()
       .required(t["NO of parking spaces is required"]),
 
-  documentation: Yup.object().required("Documentation is required"),
-  registry: Yup.string().required("Registry office is required"),
-  registration_number: Yup.number()
-    .transform((value) => (Number.isNaN(value) ? null : value))
-    .nullable()
-    .required("Registration number office is required"),
+    documentation: Yup.object().required("Documentation is required"),
+    registry: Yup.string().required("Registry office is required"),
+    registration_number: Yup.number()
+      .transform((value) => (Number.isNaN(value) ? null : value))
+      .nullable()
+      .required("Registration number office is required"),
 
     owner_name: Yup.string().required(t["Owner Full Name is required"]),
     owner_rg: Yup.string().required(t["Owner Rg is required"]),
     owner_cpf: Yup.string().required(t["Owner cpf is required"]),
-    owner_spouse_name: Yup.string().required(
-      t["Owner spouse full name is required"]
-    ),
-    owner_spouse_rg: Yup.string().required(t["Owner spouse RG is required"]),
-    owner_spouse_cpf: Yup.string().required(t["Owner spouse CPF is required"]),
+    // owner_spouse_name: Yup.string().required(
+    //   t["Owner spouse full name is required"]
+    // ),
+    // owner_spouse_rg: Yup.string().required(t["Owner spouse RG is required"]),
+    // owner_spouse_cpf: Yup.string().required(t["Owner spouse CPF is required"]),
     owner_zip_code: Yup.string().required(t["Owner Zip code is required"]),
     owner_address: Yup.string().required(t["Owner Address is required"]),
     owner_number: Yup.number()
@@ -161,7 +161,6 @@ export default function NewProperty({ language }) {
       videos: [
         {
           url: "",
-          title: 'bedroom',
         },
       ],
     },
@@ -253,7 +252,6 @@ export default function NewProperty({ language }) {
       const urlEditData = allSelectVideos?.map((info) => {
         return {
           url: info?.file_path,
-          title: info?.photo_type,
         };
       });
       setValue("videos", urlEditData);
@@ -456,7 +454,6 @@ export default function NewProperty({ language }) {
       setDraftLoading(false);
       if (!error) {
         setSentModalOpen(true);
-        reset();
       } else {
         const errors = error?.response?.data?.errors ?? {};
         Object.entries(errors).forEach(([name, messages]) => {
@@ -469,7 +466,6 @@ export default function NewProperty({ language }) {
       setDraftLoading(false);
       if (!error) {
         setSentModalOpen(true);
-        reset();
       } else {
         const errors = error?.response?.data?.errors ?? {};
         Object.entries(errors).forEach(([name, messages]) => {
@@ -478,6 +474,39 @@ export default function NewProperty({ language }) {
       }
     }
   };
+
+  const [single, setSingle] = useState(false);
+  const [married, setMarried] = useState(true);
+
+  const [disableBtn, setDisableBtn] = useState(true);
+  useEffect(() => {
+    if (
+      allValues?.owner_name != null &&
+      allValues?.owner_cpf != null &&
+      allValues?.owner_rg != null &&
+      allValues?.owner_zip_code != null &&
+      allValues?.owner_address != null &&
+      allValues?.owner_number != null &&
+      allValues?.owner_neighbourhood != null &&
+      allValues?.owner_city != null &&
+      allValues?.owner_state != null
+    ) {
+      setDisableBtn(false);
+    }
+    if (
+      allValues?.owner_name === "" ||
+      allValues?.owner_cpf === "" ||
+      allValues?.owner_rg === "" ||
+      allValues?.owner_zip_code === "" ||
+      allValues?.owner_address === "" ||
+      allValues?.owner_number === "" ||
+      allValues?.owner_neighbourhood === "" ||
+      allValues?.owner_city === "" ||
+      allValues?.owner_state === ""
+    ) {
+      setDisableBtn(true);
+    }
+  }, [allValues]);
 
   return (
     <div>
@@ -551,6 +580,7 @@ export default function NewProperty({ language }) {
                           property_detail_id={property_detail_id}
                           setPropertyDetailId={setPropertyDetailId}
                           languageName={myValue.toString()}
+                          allValues={allValues}
                         />
                       ) : activeStep === 1 ? (
                         <ValuesAndDescription
@@ -558,6 +588,7 @@ export default function NewProperty({ language }) {
                           handleBack={handleBack}
                           control={control}
                           errors={errors}
+                          allValues={allValues}
                           languageName={myValue.toString()}
                         />
                       ) : activeStep === 2 ? (
@@ -595,6 +626,10 @@ export default function NewProperty({ language }) {
                           maritalStatus={maritalStatus}
                           setMaritalStatus={setMaritalStatus}
                           languageName={myValue.toString()}
+                          setSingle={setSingle}
+                          single={single}
+                          married={married}
+                          setMarried={setMarried}
                         />
                       )}
                       {errors && (
@@ -621,7 +656,7 @@ export default function NewProperty({ language }) {
                           pt: 2,
                         }}
                       >
-                        {activeStep !== 0 && (
+                        {activeStep === steps.length - 1 && (
                           <Button
                             color="inherit"
                             // disabled={activeStep === 0}
@@ -642,7 +677,7 @@ export default function NewProperty({ language }) {
                             {t["come back"]}
                           </Button>
                         )}
-                        {activeStep === 0 && (
+                        {/* {activeStep === 0 && (
                           <Link href="/my_properties">
                             <Button
                               color="inherit"
@@ -664,7 +699,7 @@ export default function NewProperty({ language }) {
                               {t["Cancel"]}
                             </Button>
                           </Link>
-                        )}
+                        )} */}
 
                         {/* {isStepOptional(activeStep) && (
                 <Button
@@ -690,6 +725,7 @@ export default function NewProperty({ language }) {
                           <Box>
                             <Button
                               type="submit"
+                              disabled={disableBtn}
                               onClick={() => setAction("draft")}
                               sx={{
                                 background: "#DBE1E5",
@@ -724,6 +760,7 @@ export default function NewProperty({ language }) {
                             </Button>
                             <Button
                               type="submit"
+                              disabled={disableBtn}
                               onClick={() => setAction("new")}
                               sx={{
                                 background: "#7450F0",
@@ -759,7 +796,7 @@ export default function NewProperty({ language }) {
                             </Button>
                           </Box>
                         )}
-                        {activeStep !== steps.length - 1 && (
+                        {/* {activeStep !== steps.length - 1 && (
                           <Button
                             onClick={handleNext}
                             sx={{
@@ -790,7 +827,7 @@ export default function NewProperty({ language }) {
                           >
                             {t["Next"]}
                           </Button>
-                        )}
+                        )} */}
                       </Grid>
                     </form>
                   </Fragment>

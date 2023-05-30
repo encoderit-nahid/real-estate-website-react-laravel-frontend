@@ -193,6 +193,7 @@ export default function Registration({ language }) {
       handleClickSuccessSnackbar();
       localStorage.setItem("registration_id", responseToken?.data?.user?.id);
       localStorage.setItem("user_role", responseToken?.data?.userRole);
+      localStorage.setItem("Reg_user_name", data?.name);
       router.push("/broker_registration");
       // const [error, response] = await userDetailsApi()
       // setLoading(false)

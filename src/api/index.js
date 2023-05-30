@@ -214,6 +214,16 @@ export const photoTypeApi = async () => {
   }
 };
 
+//photo_type
+export const videoTypeApi = async () => {
+  try {
+    const response = await apiInstance.get(`property/video-type`);
+    return [false, response];
+  } catch (error) {
+    return [error, null];
+  }
+};
+
 //property
 export const getPropertyApi = async (queryData) => {
   try {

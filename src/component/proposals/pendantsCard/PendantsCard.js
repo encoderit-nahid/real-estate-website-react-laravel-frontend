@@ -305,7 +305,11 @@ function PendantsCard({ propertyData, languageName }) {
             {(data?.proposal_type === "general" &&
               session?.user?.role === "owner") ||
             (data?.proposal_type === "counter" &&
-              session?.user?.role === "buyer") ||
+              session?.user?.role === "buyer" &&
+              parseInt(session?.user?.userId) !== data?.user?.id) ||
+            (data?.proposal_type === "counter" &&
+              session?.user?.role === "owner" &&
+              parseInt(session?.user?.userId) !== data?.user?.id) ||
             session?.user?.role === "admin" ? (
               <Grid container spacing={1} sx={{ px: 1 }}>
                 <Grid item xs={12} sm={12} md={12} lg={3}>

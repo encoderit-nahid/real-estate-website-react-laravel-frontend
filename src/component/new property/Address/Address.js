@@ -71,6 +71,8 @@ function Address({
   documents,
   setDocuments,
   languageName,
+  allValues,
+  handleNext,
 }) {
   const dispatch = useDispatch();
 
@@ -147,6 +149,32 @@ function Address({
     }),
     [isDragActive, isDragReject, isDragAccept]
   );
+
+  const [disableBtn, setDisableBtn] = useState(true);
+  useEffect(() => {
+    if (
+      allValues?.zip_code != null &&
+      allValues?.address != null &&
+      allValues?.number != null &&
+      allValues?.neighbourhood != null &&
+      allValues?.city != null &&
+      allValues?.state != null &&
+      documents?.length > 0
+    ) {
+      setDisableBtn(false);
+    }
+    if (
+      allValues?.zip_code === "" ||
+      allValues?.address === "" ||
+      allValues?.number === "" ||
+      allValues?.neighbourhood === "" ||
+      allValues?.city === "" ||
+      allValues?.state === "" ||
+      documents?.length < 1
+    ) {
+      setDisableBtn(true);
+    }
+  }, [allValues, documents]);
 
   return (
     <Box sx={{ mt: 4 }}>
@@ -771,15 +799,67 @@ function Address({
             {errors.state?.message}
           </Typography>
         </Grid>
+        <Grid
+          container
+          direction="row"
+          justifyContent="flex-end"
+          alignItems="center"
+          sx={{ mt: 2, mb: 2 }}
+        >
+          <Link href="/my_properties">
+            <Button
+              color="inherit"
+              // disabled={activeStep === 0}
+              sx={{
+                mr: 1,
+                border: "1px solid #002152",
+                borderRadius: "4px",
+                px: 2,
+                py: 1,
+                color: "#002152",
+                fontSize: "16px",
+                fontWeight: "600",
+                lineHeight: "22px",
+                textTransform: "none",
+              }}
+            >
+              {t["Cancel"]}
+            </Button>
+          </Link>
+          <Button
+            onClick={handleNext}
+            disabled={disableBtn}
+            sx={{
+              background: "#7450F0",
+              borderRadius: "4px",
+              px: 2,
+              py: 1,
+              color: "#ffffff",
+              fontSize: "16px",
+              fontWeight: "600",
+              lineHeight: "22px",
+              textTransform: "none",
+              boxShadow: "0px 4px 8px rgba(81, 51, 182, 0.32)",
+              "&:hover": {
+                background: "#7450F0",
+                borderRadius: "4px",
+                px: 2,
+                py: 1,
+                color: "#ffffff",
+                fontSize: "16px",
+                fontWeight: "600",
+                lineHeight: "22px",
+                textTransform: "none",
+                boxShadow: "0px 4px 8px rgba(81, 51, 182, 0.32)",
+              },
+            }}
+          >
+            {t["Next"]}
+          </Button>
+        </Grid>
       </Grid>
     </Box>
   );
 }
 
 export default Address;
-const top100Films = [
-  { label: "Buyer's agent agreement", year: 1994 },
-  { label: "Purchase Agreement", year: 1972 },
-  { label: "Building Approval Plan", year: 1974 },
-  { label: " Land Receipts", year: 2008 },
-];

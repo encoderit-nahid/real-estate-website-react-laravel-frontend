@@ -68,6 +68,8 @@ function PhotosAndVideos({
   remove,
   allValues,
   languageName,
+  handleNext,
+  handleBack,
 }) {
   const dispatch = useDispatch();
   const { query } = useRouter();
@@ -128,6 +130,16 @@ function PhotosAndVideos({
 
     return `https://img.youtube.com/vi/${videoId}/maxresdefault.jpg`;
   };
+
+  const [disableBtn, setDisableBtn] = useState(true);
+  useEffect(() => {
+    if (files?.length > 0) {
+      setDisableBtn(false);
+    }
+    if (files?.length < 1) {
+      setDisableBtn(true);
+    }
+  }, [files]);
 
   return (
     <Box sx={{ mt: 4 }}>
@@ -335,14 +347,14 @@ function PhotosAndVideos({
               />
             )}
           />
-          <Controller
+          {/* <Controller
             name={`videos[${index}].title`}
             control={control}
-            defaultValue={photoType[0] || {}}
+            defaultValue={videoType[0] || {}}
             render={({ field }) => (
               <BaseAutocomplete
                 //   sx={{ margin: "0.6vh 0" }}
-                options={photoType || []}
+                options={videoType || []}
                 getOptionLabel={(option) => option.name || ""}
                 sx={{ width: "20%", ml: 1, mr: 1 }}
                 isOptionEqualToValue={(option, value) =>
@@ -356,7 +368,7 @@ function PhotosAndVideos({
                 value={field.value}
               />
             )}
-          />
+          /> */}
           {index === fields?.length - 1 && (
             <Button
               sx={{
@@ -369,7 +381,7 @@ function PhotosAndVideos({
                   borderRadius: "0px 4px 4px 0px",
                 },
               }}
-              onClick={() => append({ url: "", title:'bedroom' })}
+              onClick={() => append({ url: "" })}
             >
               <AddOutlinedIcon sx={{ color: "#002152" }} />
             </Button>
@@ -410,6 +422,64 @@ function PhotosAndVideos({
           </Grid>
         </Grid>
       ))}
+      <Grid
+        container
+        direction="row"
+        justifyContent="flex-end"
+        alignItems="center"
+        sx={{ mt: 2, mb: 2 }}
+      >
+        <Button
+          color="inherit"
+          onClick={handleBack}
+          // disabled={activeStep === 0}
+          sx={{
+            mr: 1,
+            border: "1px solid #002152",
+            borderRadius: "4px",
+            px: 2,
+            py: 1,
+            color: "#002152",
+            fontSize: "16px",
+            fontWeight: "600",
+            lineHeight: "22px",
+            textTransform: "none",
+          }}
+        >
+          {t["come back"]}
+        </Button>
+
+        <Button
+          onClick={handleNext}
+          disabled={disableBtn}
+          sx={{
+            background: "#7450F0",
+            borderRadius: "4px",
+            px: 2,
+            py: 1,
+            color: "#ffffff",
+            fontSize: "16px",
+            fontWeight: "600",
+            lineHeight: "22px",
+            textTransform: "none",
+            boxShadow: "0px 4px 8px rgba(81, 51, 182, 0.32)",
+            "&:hover": {
+              background: "#7450F0",
+              borderRadius: "4px",
+              px: 2,
+              py: 1,
+              color: "#ffffff",
+              fontSize: "16px",
+              fontWeight: "600",
+              lineHeight: "22px",
+              textTransform: "none",
+              boxShadow: "0px 4px 8px rgba(81, 51, 182, 0.32)",
+            },
+          }}
+        >
+          {t["Next"]}
+        </Button>
+      </Grid>
     </Box>
   );
 }

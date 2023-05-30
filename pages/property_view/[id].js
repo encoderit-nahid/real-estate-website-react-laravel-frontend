@@ -97,11 +97,11 @@ export default function PropertyView({
   const Images = useMemo(() => {
     return singlePropertyData?.property?.attachments?.filter((data) => {
       return sideTabValue === "vision_360"
-        ? data.title.includes(`${upperTabValue}_${sideTabValue}`)
+        ? data?.title?.includes(`${upperTabValue}_${sideTabValue}`)
         : sideTabValue === "photos"
-        ? data.title === upperTabValue
+        ? data?.title === upperTabValue
         : sideTabValue === "condominium"
-        ? data.title === sideTabValue
+        ? data?.title === sideTabValue
         : null;
     });
   }, [singlePropertyData, upperTabValue, sideTabValue]);
