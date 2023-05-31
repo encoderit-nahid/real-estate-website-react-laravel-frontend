@@ -31,7 +31,12 @@ import { useState } from "react";
 import pt from "locales/pt";
 import en from "locales/en";
 
-function DigitalNotary({ handleNext, singlePropertyData, languageName }) {
+function DigitalNotary({
+  handleNext,
+  singlePropertyData,
+  languageName,
+  handleBack,
+}) {
   const t = languageName === "en" ? en : pt;
   const dispatch = useDispatch();
   useEffect(() => {
@@ -249,20 +254,48 @@ function DigitalNotary({ handleNext, singlePropertyData, languageName }) {
               sx={{ mt: 3, mb: 1 }}
             >
               <Button
+                color="inherit"
+                // disabled={activeStep === 0}
+                onClick={handleBack}
+                sx={{
+                  mr: 1,
+                  border: "1px solid #002152",
+                  borderRadius: "4px",
+                  px: 2,
+                  py: 1,
+                  color: "#002152",
+                  fontSize: "16px",
+                  fontWeight: "600",
+                  lineHeight: "22px",
+                  textTransform: "none",
+                }}
+              >
+                {t["Come back"]}
+              </Button>
+              <Button
                 onClick={handleOpen}
                 sx={{
                   background: "#7450F0",
+                  borderRadius: "4px",
+                  px: 2,
+                  py: 1,
                   color: "#ffffff",
+                  fontSize: "16px",
                   fontWeight: "600",
-                  fontSize: "14px",
-                  lineHeight: "18px",
+                  lineHeight: "22px",
                   textTransform: "none",
+                  boxShadow: "0px 4px 8px rgba(81, 51, 182, 0.32)",
                   "&:hover": {
                     background: "#7450F0",
+                    borderRadius: "4px",
+                    px: 2,
+                    py: 1,
                     color: "#ffffff",
+                    fontSize: "16px",
                     fontWeight: "600",
-                    fontSize: "14px",
-                    lineHeight: "18px",
+                    lineHeight: "22px",
+                    textTransform: "none",
+                    boxShadow: "0px 4px 8px rgba(81, 51, 182, 0.32)",
                   },
                 }}
               >

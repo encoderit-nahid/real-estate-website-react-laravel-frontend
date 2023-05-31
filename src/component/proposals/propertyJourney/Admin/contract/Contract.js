@@ -6,6 +6,9 @@ import {
   Tooltip,
   LinearProgress,
   Skeleton,
+  Popover,
+  Snackbar,
+  CircularProgress,
 } from "@mui/material";
 import Image from "next/image";
 import React, { useState } from "react";
@@ -17,13 +20,28 @@ import BaseModal from "../../../../reuseable/baseModal/BaseModal";
 import ContractModal from "../contractModal/ContractModal";
 import SaleCard from "../../../../reuseable/saleCard/SaleCard";
 import ContractPdfModal from "../ContractPdfModal/ContractPdfModal";
-import { contractDownloadApi } from "../../../../../api";
+import { contractDownloadApi, contractNextStepApi } from "../../../../../api";
 import { useSession } from "next-auth/react";
 import en from "locales/en";
 import pt from "locales/pt";
+import { useRouter } from "next/router";
+import MuiAlert from "@mui/material/Alert";
 
-function Contract({ handleNext, singlePropertyData, Loading, languageName }) {
+const Alert = React.forwardRef(function Alert(props, ref) {
+  return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
+});
+
+function Contract({
+  handleNext,
+  singlePropertyData,
+  Loading,
+  languageName,
+  handleBack,
+}) {
   const { data: session } = useSession();
+  const router = useRouter();
+  const { query } = router;
+  console.log({ query });
   const t = languageName === "en" ? en : pt;
   //contract_modal_open
   const [contractModalOpen, setContractModalOpen] = React.useState(false);
@@ -53,6 +71,34 @@ function Contract({ handleNext, singlePropertyData, Loading, languageName }) {
   //     console.log({ errors });
   //   }
   // };
+
+  const [nextLoading, setNextLoading] = useState(false);
+  const [nextErrormessage, setNextErrorMessage] = useState("");
+  const [open, setOpen] = React.useState(false);
+
+  const handleSnackbarClose = (event, reason) => {
+    if (reason === "clickaway") {
+      return;
+    }
+
+    setOpen(false);
+  };
+
+  const handleContractNext = async (event) => {
+    setNextLoading(true);
+    const [error, resp] = await contractNextStepApi(query?.contractId);
+    setNextLoading(false);
+    if (!error) {
+      if (resp?.data?.status === true) {
+        handleNext();
+        setOpen(false);
+      } else {
+        console.log("rrr", resp?.data?.message);
+        setOpen(true);
+        setNextErrorMessage(resp?.data?.message);
+      }
+    }
+  };
 
   return (
     <Box sx={{ mt: 4 }}>
@@ -205,7 +251,10 @@ function Contract({ handleNext, singlePropertyData, Loading, languageName }) {
                       mt: 0.5,
                     }}
                   >
-                    {singlePropertyData?.contract?.documents[0]?.title}
+                    {singlePropertyData?.contract?.documents[0]?.title?.slice(
+                      0,
+                      25
+                    )}
                   </Typography>
                   <Typography
                     variant="h1"
@@ -297,6 +346,89 @@ function Contract({ handleNext, singlePropertyData, Loading, languageName }) {
               </Box>
             </Grid>
           )}
+        </Grid>
+        <Grid
+          container
+          direction="row"
+          justifyContent="flex-end"
+          alignItems="center"
+          sx={{ mt: 2, mb: 2 }}
+        >
+          <Snackbar
+            open={open}
+            autoHideDuration={6000}
+            onClose={handleSnackbarClose}
+            anchorOrigin={{
+              vertical: "bottom",
+              horizontal: "right",
+            }}
+          >
+            <Alert
+              onClose={handleSnackbarClose}
+              severity="error"
+              sx={{ width: "100%" }}
+            >
+              {nextErrormessage}
+            </Alert>
+          </Snackbar>
+        </Grid>
+        <Grid
+          container
+          direction="row"
+          justifyContent="flex-end"
+          alignItems="center"
+          sx={{ mt: 2, mb: 2 }}
+        >
+          <Button
+            color="inherit"
+            onClick={handleBack}
+            // disabled={activeStep === 0}
+            sx={{
+              mr: 1,
+              border: "1px solid #002152",
+              borderRadius: "4px",
+              px: 2,
+              py: 1,
+              color: "#002152",
+              fontSize: "16px",
+              fontWeight: "600",
+              lineHeight: "22px",
+              textTransform: "none",
+            }}
+          >
+            {t["come back"]}
+          </Button>
+
+          <Button
+            onClick={handleContractNext}
+            sx={{
+              background: "#7450F0",
+              borderRadius: "4px",
+              px: 2,
+              py: 1,
+              color: "#ffffff",
+              fontSize: "16px",
+              fontWeight: "600",
+              lineHeight: "22px",
+              textTransform: "none",
+              boxShadow: "0px 4px 8px rgba(81, 51, 182, 0.32)",
+              "&:hover": {
+                background: "#7450F0",
+                borderRadius: "4px",
+                px: 2,
+                py: 1,
+                color: "#ffffff",
+                fontSize: "16px",
+                fontWeight: "600",
+                lineHeight: "22px",
+                textTransform: "none",
+                boxShadow: "0px 4px 8px rgba(81, 51, 182, 0.32)",
+              },
+            }}
+          >
+            {nextLoading && <CircularProgress size={22} color="inherit" />}
+            {!nextLoading && t["Next"]}
+          </Button>
         </Grid>
       </Box>
       <BaseModal isShowing={contractModalOpen} isClose={handleClose}>

@@ -42,6 +42,7 @@ function CertificatesAndDocuments({
   handleNext,
   singlePropertyData,
   languageName,
+  handleBack,
 }) {
   const router = useRouter();
   const { query } = router;
@@ -467,13 +468,40 @@ function CertificatesAndDocuments({
             </Grid>
           </Grid>
         </Grid>
+        <Grid
+          container
+          direction="row"
+          justifyContent="flex-end"
+          alignItems="center"
+          sx={{ mt: 2, mb: 2 }}
+        >
+          <Button
+            color="inherit"
+            onClick={handleBack}
+            // disabled={activeStep === 0}
+            sx={{
+              mr: 1,
+              border: "1px solid #002152",
+              borderRadius: "4px",
+              px: 2,
+              py: 1,
+              color: "#002152",
+              fontSize: "16px",
+              fontWeight: "600",
+              lineHeight: "22px",
+              textTransform: "none",
+            }}
+          >
+            {t["come back"]}
+          </Button>
+        </Grid>
       </Box>
       <Snackbar
         open={snackbarOpen}
         autoHideDuration={6000}
         onClose={handleCloseSnackbar}
         anchorOrigin={{
-          vertical: "top",
+          vertical: "bottom",
           horizontal: "right",
         }}
         key={"top"}

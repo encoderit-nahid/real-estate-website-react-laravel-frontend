@@ -393,6 +393,57 @@ export const contractDetailsApi = async (id) => {
   }
 };
 
+//contract_sign
+export const contractSignApi = async (body) => {
+  try {
+    const response = await apiInstance.post(
+      `contract/change/signature-staus`,
+      body
+    );
+    return [false, response];
+  } catch (error) {
+    return [error, null];
+  }
+};
+
+//contract-next-step
+
+export const contractNextStepApi = async (id) => {
+  try {
+    const response = await apiInstance.get(
+      `contract/next-button?contract_id=${id}`
+    );
+    return [false, response];
+  } catch (error) {
+    return [error, null];
+  }
+};
+
+//certificate-next-step
+
+export const certificateNextStepApi = async (id) => {
+  try {
+    const response = await apiInstance.get(
+      `contract/next-button-2?contract_id=${id}`
+    );
+    return [false, response];
+  } catch (error) {
+    return [error, null];
+  }
+};
+
+//pre_analise_next_step
+export const AnaliseNextStepApi = async (id) => {
+  try {
+    const response = await apiInstance.get(
+      `contract/next-button-3?contract_id=${id}`
+    );
+    return [false, response];
+  } catch (error) {
+    return [error, null];
+  }
+};
+
 //require_ceritificate_submit
 export const certificateSubmitApi = async (body) => {
   try {
@@ -590,7 +641,7 @@ export const DocumentSentApi = async (body) => {
 export const contractSubmittedDataApi = async (id) => {
   try {
     const response = await apiInstance.get(
-      `contract/submitted-data??contract_id=${id}`
+      `contract/submitted-data?contract_id=${id}`
     );
     return [false, response];
   } catch (error) {

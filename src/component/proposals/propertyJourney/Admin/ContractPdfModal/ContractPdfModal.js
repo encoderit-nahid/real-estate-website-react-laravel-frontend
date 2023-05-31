@@ -47,7 +47,7 @@ import {
   findContractDetailsData,
   signatureAddData,
 } from "../../../../../redux/contractDetails/actions";
-import { contractDownloadApi } from "../../../../../api";
+import { contractDownloadApi, contractSignApi } from "../../../../../api";
 import { useForm, Controller } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as Yup from "yup";
@@ -179,6 +179,19 @@ function ContractPdfModal({
       })
     );
     setLoading(false);
+  };
+
+  const [switchLoading, setSwitchLoading] = useState(false);
+
+  const handleSwitchChange = async (data) => {
+    setSwitchLoading(true);
+    const status = data?.is_signed === 0 ? 1 : 0;
+    const bodyData = { contract_sign_id: data?.id, status: status };
+    const [error, resp] = await contractSignApi(bodyData);
+    setSwitchLoading(false);
+    if (!error) {
+      dispatch(findContractDetailsData(+singlePropertyData?.contract?.id));
+    }
   };
 
   return (
@@ -498,7 +511,7 @@ function ContractPdfModal({
                 ml: 0.5,
               }}
             >
-              {contractDetailsInfo?.name}
+              {contractDetailsInfo?.name?.slice(0, 25)}
             </Typography>
           </Button>
 
@@ -592,6 +605,9 @@ function ContractPdfModal({
                 </Button>
               </form>
             )}
+            <Box>
+              {switchLoading && <CircularProgress size={22} color="inherit" />}
+            </Box>
             <Grid
               container
               direction="column"
@@ -628,6 +644,10 @@ function ContractPdfModal({
                       control={
                         <Switch
                           // defaultChecked
+                          disabled={
+                            session?.user?.role === "broker" ? true : false
+                          }
+                          checked={data?.is_signed === 0 ? false : true}
                           sx={{
                             "& .MuiSwitch-switchBase.Mui-checked": {
                               color: "#34BE84",
@@ -636,7 +656,8 @@ function ContractPdfModal({
                           }}
                         />
                       }
-                      label="Signed"
+                      label={data?.is_signed === 0 ? "Unsigned" : "signed"}
+                      onChange={() => handleSwitchChange(data)}
                     />
                   </FormGroup>
                   <Divider />

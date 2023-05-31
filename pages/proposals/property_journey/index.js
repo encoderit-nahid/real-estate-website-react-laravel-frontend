@@ -310,12 +310,14 @@ export default function PropertyJourney({ language }) {
                           singlePropertyData={singlePropertyData}
                           handleNext={handleNext}
                           languageName={myValue.toString()}
+                          handleBack={handleBack}
                         />
                       ) : (
                         <BrokerCertificateAndDocument
                           singlePropertyData={singlePropertyData}
                           handleNext={handleNext}
                           languageName={myValue.toString()}
+                          handleBack={handleBack}
                         />
                       )
                     ) : // <BrokerCertificateAndDocument handleNext={handleNext} />
@@ -324,12 +326,14 @@ export default function PropertyJourney({ language }) {
                         singlePropertyData={singlePropertyData}
                         handleNext={handleNext}
                         languageName={myValue.toString()}
+                        handleBack={handleBack}
                       />
                     ) : (
                       <DigitalNotary
                         singlePropertyData={singlePropertyData}
                         handleNext={handleNext}
                         languageName={myValue.toString()}
+                        handleBack={handleBack}
                       />
                     )}
                     <Grid
@@ -347,7 +351,7 @@ export default function PropertyJourney({ language }) {
                         pt: 2,
                       }}
                     >
-                      {activeStep > 0 && (
+                      {activeStep === 1 && (
                         <Button
                           color="inherit"
                           // disabled={activeStep === 0}
@@ -421,24 +425,14 @@ export default function PropertyJourney({ language }) {
                         </Button>
                       )} */}
 
-                      <Button
-                        onClick={
-                          activeStep === steps.length - 1
-                            ? handleOpen
-                            : handleNext
-                        }
-                        sx={{
-                          background: "#7450F0",
-                          borderRadius: "4px",
-                          px: 2,
-                          py: 1,
-                          color: "#ffffff",
-                          fontSize: "16px",
-                          fontWeight: "600",
-                          lineHeight: "22px",
-                          textTransform: "none",
-                          boxShadow: "0px 4px 8px rgba(81, 51, 182, 0.32)",
-                          "&:hover": {
+                      {activeStep < 2 && (
+                        <Button
+                          onClick={
+                            activeStep === steps.length - 1
+                              ? handleOpen
+                              : handleNext
+                          }
+                          sx={{
                             background: "#7450F0",
                             borderRadius: "4px",
                             px: 2,
@@ -449,13 +443,23 @@ export default function PropertyJourney({ language }) {
                             lineHeight: "22px",
                             textTransform: "none",
                             boxShadow: "0px 4px 8px rgba(81, 51, 182, 0.32)",
-                          },
-                        }}
-                      >
-                        {activeStep === steps.length - 1
-                          ? t["Submit approval"]
-                          : t["Next"]}
-                      </Button>
+                            "&:hover": {
+                              background: "#7450F0",
+                              borderRadius: "4px",
+                              px: 2,
+                              py: 1,
+                              color: "#ffffff",
+                              fontSize: "16px",
+                              fontWeight: "600",
+                              lineHeight: "22px",
+                              textTransform: "none",
+                              boxShadow: "0px 4px 8px rgba(81, 51, 182, 0.32)",
+                            },
+                          }}
+                        >
+                          {t["Next"]}
+                        </Button>
+                      )}
                     </Grid>
                   </Fragment>
                 )}

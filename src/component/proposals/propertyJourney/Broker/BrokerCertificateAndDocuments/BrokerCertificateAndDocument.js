@@ -7,6 +7,7 @@ import {
   LinearProgress,
   CircularProgress,
   Skeleton,
+  Snackbar,
 } from "@mui/material";
 import Image from "next/image";
 import React, { useEffect, useState } from "react";
@@ -27,17 +28,30 @@ import FormControl from "@mui/material/FormControl";
 import FormLabel from "@mui/material/FormLabel";
 import { useDispatch, useSelector } from "react-redux";
 import { findCertificateData } from "../../../../../redux/certificates/actions";
-import { certificateSubmitApi } from "../../../../../api";
+import {
+  certificateNextStepApi,
+  certificateSubmitApi,
+} from "../../../../../api";
 import { useSession } from "next-auth/react";
 import en from "locales/en";
 import pt from "locales/pt";
+import { useRouter } from "next/router";
+import MuiAlert from "@mui/material/Alert";
+
+const Alert = React.forwardRef(function Alert(props, ref) {
+  return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
+});
 
 function BrokerCertificateAndDocument({
   handleNext,
   singlePropertyData,
   languageName,
+  handleBack,
 }) {
   const { data: session } = useSession();
+
+  const router = useRouter();
+  const { query } = router;
 
   const t = languageName === "en" ? en : pt;
   const dispatch = useDispatch();
@@ -53,6 +67,9 @@ function BrokerCertificateAndDocument({
 
   const Loading = useSelector((state) => state?.certificate?.loading);
 
+  const [nextErrormessage, setNextErrorMessage] = useState("");
+  const [open, setOpen] = React.useState(false);
+
   const handleRequestSubmit = async () => {
     if (certificateTypes.length > 0) {
       setLoading(true);
@@ -63,12 +80,43 @@ function BrokerCertificateAndDocument({
       const [error, response] = await certificateSubmitApi(requireData);
       setLoading(false);
       if (!error) {
-        handleNext();
+        // handleNext();
+        console.log({ response });
+        setOpen(true);
+        setNextErrorMessage(response?.data?.message);
       } else {
-        const errors = error?.response?.data?.errors ?? {};
+        setOpen(true);
+        setNextErrorMessage(response?.data?.message);
       }
     }
   };
+
+  const [nextLoading, setNextLoading] = useState(false);
+
+  const handleSnackbarClose = (event, reason) => {
+    if (reason === "clickaway") {
+      return;
+    }
+
+    setOpen(false);
+  };
+
+  const handleCertificateNext = async (event) => {
+    setNextLoading(true);
+    const [error, resp] = await certificateNextStepApi(query?.contractId);
+    setNextLoading(false);
+    if (!error) {
+      if (resp?.data?.status === true) {
+        handleNext();
+        setOpen(false);
+      } else {
+        console.log("rrr", resp?.data?.message);
+        setOpen(true);
+        setNextErrorMessage(resp?.data?.message);
+      }
+    }
+  };
+
   return (
     <Box sx={{ mt: 4 }}>
       <Grid
@@ -281,6 +329,89 @@ function BrokerCertificateAndDocument({
               </Grid>
             )}
           </Grid>
+        </Grid>
+        <Grid
+          container
+          direction="row"
+          justifyContent="flex-end"
+          alignItems="center"
+          sx={{ mt: 2, mb: 2 }}
+        >
+          <Snackbar
+            open={open}
+            autoHideDuration={6000}
+            onClose={handleSnackbarClose}
+            anchorOrigin={{
+              vertical: "bottom",
+              horizontal: "right",
+            }}
+          >
+            <Alert
+              onClose={handleSnackbarClose}
+              severity="error"
+              sx={{ width: "100%" }}
+            >
+              {nextErrormessage}
+            </Alert>
+          </Snackbar>
+        </Grid>
+        <Grid
+          container
+          direction="row"
+          justifyContent="flex-end"
+          alignItems="center"
+          sx={{ mt: 2, mb: 2 }}
+        >
+          <Button
+            color="inherit"
+            onClick={handleBack}
+            // disabled={activeStep === 0}
+            sx={{
+              mr: 1,
+              border: "1px solid #002152",
+              borderRadius: "4px",
+              px: 2,
+              py: 1,
+              color: "#002152",
+              fontSize: "16px",
+              fontWeight: "600",
+              lineHeight: "22px",
+              textTransform: "none",
+            }}
+          >
+            {t["come back"]}
+          </Button>
+
+          <Button
+            onClick={handleCertificateNext}
+            sx={{
+              background: "#7450F0",
+              borderRadius: "4px",
+              px: 2,
+              py: 1,
+              color: "#ffffff",
+              fontSize: "16px",
+              fontWeight: "600",
+              lineHeight: "22px",
+              textTransform: "none",
+              boxShadow: "0px 4px 8px rgba(81, 51, 182, 0.32)",
+              "&:hover": {
+                background: "#7450F0",
+                borderRadius: "4px",
+                px: 2,
+                py: 1,
+                color: "#ffffff",
+                fontSize: "16px",
+                fontWeight: "600",
+                lineHeight: "22px",
+                textTransform: "none",
+                boxShadow: "0px 4px 8px rgba(81, 51, 182, 0.32)",
+              },
+            }}
+          >
+            {nextLoading && <CircularProgress size={22} color="inherit" />}
+            {!nextLoading && t["Next"]}
+          </Button>
         </Grid>
       </Box>
     </Box>

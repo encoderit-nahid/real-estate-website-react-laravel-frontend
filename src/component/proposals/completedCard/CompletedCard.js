@@ -184,32 +184,43 @@ function CompletedCard({ propertyData }) {
       </Box>
       <Grid container spacing={1} sx={{ px: 2, mt: 1 }}>
         <Grid item xs={12} sm={12} md={12} lg={12} xl={12}>
-          <Button
-            fullWidth
-            sx={{
-              color: "#FFFFFF",
-              fontSize: "14px",
-              lineHeight: "18px",
-              fontWeight: "600",
-
-              background: "#0362F0",
-              borderRadius: "4px",
-
-              textTransform: "none",
-              "&:hover": {
+          <Link
+            href={{
+              pathname: "/proposals/property_journey",
+              query: {
+                propertyId: propertyData?.id,
+                contractId: propertyData?.contract?.id,
+                step_count: 5,
+              },
+            }}
+          >
+            <Button
+              fullWidth
+              sx={{
                 color: "#FFFFFF",
                 fontSize: "14px",
                 lineHeight: "18px",
                 fontWeight: "600",
+
                 background: "#0362F0",
                 borderRadius: "4px",
 
                 textTransform: "none",
-              },
-            }}
-          >
-            See Documentation
-          </Button>
+                "&:hover": {
+                  color: "#FFFFFF",
+                  fontSize: "14px",
+                  lineHeight: "18px",
+                  fontWeight: "600",
+                  background: "#0362F0",
+                  borderRadius: "4px",
+
+                  textTransform: "none",
+                },
+              }}
+            >
+              See Documentation
+            </Button>
+          </Link>
         </Grid>
       </Grid>
     </Box>

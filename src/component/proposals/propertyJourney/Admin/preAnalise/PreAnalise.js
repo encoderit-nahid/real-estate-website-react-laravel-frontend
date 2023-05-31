@@ -6,6 +6,8 @@ import {
   Tooltip,
   LinearProgress,
   Skeleton,
+  CircularProgress,
+  Snackbar,
 } from "@mui/material";
 import Image from "next/image";
 import React, { useEffect } from "react";
@@ -28,13 +30,29 @@ import AnalysisPdfModal from "../AnalysisPdfModal/AnalysisPdfModal";
 import { useDispatch, useSelector } from "react-redux";
 import { findUploadCertificateData } from "../../../../../redux/uploadCertificate/actions";
 import { useState } from "react";
-import { certificateDownloadApi } from "../../../../../api";
+import { AnaliseNextStepApi, certificateDownloadApi } from "../../../../../api";
 import DigitalNotaryPdfModal from "../digitalNotaryPdfModal/DigitalNotaryPdfModal";
 import en from "locales/en";
 import pt from "locales/pt";
+import { useSession } from "next-auth/react";
+import { useRouter } from "next/router";
+import MuiAlert from "@mui/material/Alert";
 
-function PreAnalise({ handleNext, singlePropertyData, languageName }) {
+const Alert = React.forwardRef(function Alert(props, ref) {
+  return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
+});
+
+function PreAnalise({
+  handleNext,
+  singlePropertyData,
+  languageName,
+  handleBack,
+}) {
   const t = languageName === "en" ? en : pt;
+
+  const router = useRouter();
+  const { query } = router;
+  const { data: session } = useSession();
   const dispatch = useDispatch();
   useEffect(() => {
     dispatch(findUploadCertificateData(+singlePropertyData?.contract?.id));
@@ -60,6 +78,34 @@ function PreAnalise({ handleNext, singlePropertyData, languageName }) {
     setCertificateData(data);
   };
   const handleNotaryPdfClose = () => setDigitalNotaryPdfOpen(false);
+
+  const [nextLoading, setNextLoading] = useState(false);
+  const [nextErrormessage, setNextErrorMessage] = useState("");
+  const [open, setOpen] = React.useState(false);
+
+  const handleSnackbarClose = (event, reason) => {
+    if (reason === "clickaway") {
+      return;
+    }
+
+    setOpen(false);
+  };
+
+  const handleAnaliseNext = async (event) => {
+    setNextLoading(true);
+    const [error, resp] = await AnaliseNextStepApi(query?.contractId);
+    setNextLoading(false);
+    if (!error) {
+      if (resp?.data?.status === true) {
+        handleNext();
+        setOpen(false);
+      } else {
+        console.log("rrr", resp?.data?.message);
+        setOpen(true);
+        setNextErrorMessage(resp?.data?.message);
+      }
+    }
+  };
 
   return (
     <Box sx={{ mt: 4, mb: 2 }}>
@@ -700,6 +746,13 @@ function PreAnalise({ handleNext, singlePropertyData, languageName }) {
                             <Button
                               fullWidth
                               variant="outlined"
+                              disabled={
+                                session?.user?.role === "owner"
+                                  ? true
+                                  : session?.user?.role === "broker"
+                                  ? true
+                                  : false
+                              }
                               sx={{
                                 display: "flex",
                                 background: "#DDF8ED",
@@ -745,6 +798,13 @@ function PreAnalise({ handleNext, singlePropertyData, languageName }) {
                           <Grid item xs={12} sm={12} md={12} lg={6}>
                             <Button
                               onClick={() => handlePdfOpen(data)}
+                              disabled={
+                                session?.user?.role === "owner"
+                                  ? true
+                                  : session?.user?.role === "broker"
+                                  ? true
+                                  : false
+                              }
                               fullWidth
                               variant="outlined"
                               sx={{
@@ -786,6 +846,89 @@ function PreAnalise({ handleNext, singlePropertyData, languageName }) {
                   </Box>
                 ))}
           </Grid>
+        </Grid>
+        <Grid
+          container
+          direction="row"
+          justifyContent="flex-end"
+          alignItems="center"
+          sx={{ mt: 2, mb: 2 }}
+        >
+          <Snackbar
+            open={open}
+            autoHideDuration={6000}
+            onClose={handleSnackbarClose}
+            anchorOrigin={{
+              vertical: "bottom",
+              horizontal: "right",
+            }}
+          >
+            <Alert
+              onClose={handleSnackbarClose}
+              severity="error"
+              sx={{ width: "100%" }}
+            >
+              {nextErrormessage}
+            </Alert>
+          </Snackbar>
+        </Grid>
+        <Grid
+          container
+          direction="row"
+          justifyContent="flex-end"
+          alignItems="center"
+          sx={{ mt: 2, mb: 2 }}
+        >
+          <Button
+            color="inherit"
+            onClick={handleBack}
+            // disabled={activeStep === 0}
+            sx={{
+              mr: 1,
+              border: "1px solid #002152",
+              borderRadius: "4px",
+              px: 2,
+              py: 1,
+              color: "#002152",
+              fontSize: "16px",
+              fontWeight: "600",
+              lineHeight: "22px",
+              textTransform: "none",
+            }}
+          >
+            {t["come back"]}
+          </Button>
+
+          <Button
+            onClick={handleAnaliseNext}
+            sx={{
+              background: "#7450F0",
+              borderRadius: "4px",
+              px: 2,
+              py: 1,
+              color: "#ffffff",
+              fontSize: "16px",
+              fontWeight: "600",
+              lineHeight: "22px",
+              textTransform: "none",
+              boxShadow: "0px 4px 8px rgba(81, 51, 182, 0.32)",
+              "&:hover": {
+                background: "#7450F0",
+                borderRadius: "4px",
+                px: 2,
+                py: 1,
+                color: "#ffffff",
+                fontSize: "16px",
+                fontWeight: "600",
+                lineHeight: "22px",
+                textTransform: "none",
+                boxShadow: "0px 4px 8px rgba(81, 51, 182, 0.32)",
+              },
+            }}
+          >
+            {nextLoading && <CircularProgress size={22} color="inherit" />}
+            {!nextLoading && t["Next"]}
+          </Button>
         </Grid>
       </Box>
       <BaseModal isShowing={analysisPdfOpen} isClose={handlePdfClose}>
