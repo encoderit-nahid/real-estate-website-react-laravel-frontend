@@ -76,6 +76,7 @@ export default function ProjectView({
   singleProjectData,
   language,
 }) {
+  console.log({ singleProjectData });
   const [myValue, setMyValue] = useState(language || "en");
 
   const t = myValue === "en" ? en : pt;
@@ -378,24 +379,30 @@ export default function ProjectView({
             }}
           >
             {singleProjectData?.propject_wise_properties?.map((data, index) => (
-              <ImageListItem
-                key={index}
-                cols={2}
-                sx={{
-                  width: {
-                    xl: "90%",
-                    lg: "90%",
-                    md: "70%",
-                    sm: "90%",
-                    xs: "90%",
-                  },
-                }}
+              <Link
+                key={data.id}
+                href={`/property_view/${data.id}`}
+                as={`/property_view/${data.id}`}
               >
-                <HouseCard
-                  propertyInfo={data}
-                  shadow={"0px 4px 18px rgba(0, 0, 0, 0.1)"}
-                />
-              </ImageListItem>
+                <ImageListItem
+                  key={index}
+                  cols={2}
+                  sx={{
+                    width: {
+                      xl: "90%",
+                      lg: "90%",
+                      md: "70%",
+                      sm: "90%",
+                      xs: "90%",
+                    },
+                  }}
+                >
+                  <HouseCard
+                    propertyInfo={data}
+                    shadow={"0px 4px 18px rgba(0, 0, 0, 0.1)"}
+                  />
+                </ImageListItem>
+              </Link>
             ))}
           </ImageList>
         </Box>
