@@ -23,8 +23,11 @@ import BaseModal from "../../../../reuseable/baseModal/BaseModal";
 import ContractPdfModal from "../ContractPdfModal/ContractPdfModal";
 import DigitalNotaryPdfModal from "../digitalNotaryPdfModal/DigitalNotaryPdfModal";
 import { useRouter } from "next/router";
+import en from "locales/en";
+import pt from "locales/pt";
 
-function DigitalNotaryFinalContent({ singlePropertyData }) {
+function DigitalNotaryFinalContent({ singlePropertyData, languageName }) {
+  const t = languageName === "en" ? en : pt;
   const dispatch = useDispatch();
   const router = useRouter();
   const { query } = router;
@@ -68,7 +71,7 @@ function DigitalNotaryFinalContent({ singlePropertyData }) {
             ml: 1,
           }}
         >
-          Digital notary
+          {t["Digital notary"]}
         </Typography>
       </Grid>
       <Box sx={{ mt: { xs: 2, sm: 2, md: 2, lg: 4 } }}>
@@ -286,7 +289,7 @@ function DigitalNotaryFinalContent({ singlePropertyData }) {
                         fontWeight: "400",
                       }}
                     >
-                      Contract
+                      {t["Contract"]}
                     </Typography>
                   </Button>
                 </Box>
@@ -355,7 +358,7 @@ function DigitalNotaryFinalContent({ singlePropertyData }) {
                     },
                   }}
                 >
-                  Details
+                  {t["Details"]}
                 </Button>
               </Grid>
             </Box>
@@ -369,7 +372,7 @@ function DigitalNotaryFinalContent({ singlePropertyData }) {
                   lineHeight: "22px",
                 }}
               >
-                Documents sent
+                {t["Documents sent"]}
               </Typography>
             </Box>
 
@@ -440,7 +443,7 @@ function DigitalNotaryFinalContent({ singlePropertyData }) {
                                     fontWeight: "400",
                                   }}
                                 >
-                                  Document sent
+                                  {t["Document sent"]}
                                 </Typography>
                               </Button>
                             </Box>
@@ -510,7 +513,7 @@ function DigitalNotaryFinalContent({ singlePropertyData }) {
                                   },
                                 }}
                               >
-                                Details
+                                {t["Details"]}
                               </Button>
                             </Grid>
                           </Grid>

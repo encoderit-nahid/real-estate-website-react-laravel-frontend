@@ -60,7 +60,7 @@ function CompletedCard({ propertyData }) {
               mr: 1,
             }}
           >
-            sale
+            {propertyData?.ad_type}
           </Button>
         </Box>
       </Grid>
@@ -80,7 +80,7 @@ function CompletedCard({ propertyData }) {
             lineHeight: "32px",
           }}
         >
-          BRL 1,700,000.00
+          {` R$  ${propertyData?.brl_rent}`}
         </Typography>
         <Typography
           variant="p"
@@ -92,7 +92,7 @@ function CompletedCard({ propertyData }) {
             mt: 1,
           }}
         >
-          Jaceguai Street, Bela Vista, São Paulo - SP - CEP 01315010
+          {propertyData?.address?.address}
         </Typography>
       </Grid>
 

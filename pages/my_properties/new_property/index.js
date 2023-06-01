@@ -836,7 +836,10 @@ export default function NewProperty({ language }) {
               <BaseModal isShowing={sentModalOpen} isClose={handleClose}>
                 <Tooltip title="Something">
                   <>
-                    <PropertySubmittedModal handleClose={handleClose} />
+                    <PropertySubmittedModal
+                      handleClose={handleClose}
+                      languageName={myValue.toString()}
+                    />
                   </>
                 </Tooltip>
               </BaseModal>

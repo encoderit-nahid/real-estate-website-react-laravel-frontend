@@ -348,7 +348,7 @@ export default function SearchRealEstate({
               fontWeight: "700",
             }}
           >
-            Filters
+            {t["filters"]}
           </Typography>
           <CloseIcon onClick={toggleDrawer(anchor, false)} />
         </Grid>
@@ -364,7 +364,7 @@ export default function SearchRealEstate({
                 lineHeight: "19px",
               }}
             >
-              Property Type
+              {t["Property type"]}
             </Typography>
             <Grid
               container
@@ -421,7 +421,7 @@ export default function SearchRealEstate({
                 lineHeight: "19px",
               }}
             >
-              Value
+              {t["Value"]}
             </Typography>
             <Grid container spacing={2} sx={{ mt: 0.5 }}>
               <Grid item xs={12} sm={12} md={12} lg={6} xl={6}>
@@ -520,7 +520,7 @@ export default function SearchRealEstate({
                     lineHeight: "19px",
                   }}
                 >
-                  Bedrooms
+                  {t["bedrooms"]}
                 </Typography>
               </Grid>
               <Grid item xs={12} sm={12} md={12} lg={8} xl={8}>
@@ -577,7 +577,7 @@ export default function SearchRealEstate({
                     lineHeight: "19px",
                   }}
                 >
-                  Bathrooms
+                  {t["bathrooms"]}
                 </Typography>
               </Grid>
               <Grid item xs={12} sm={12} md={12} lg={8} xl={8}>
@@ -636,24 +636,30 @@ export default function SearchRealEstate({
                     lineHeight: "19px",
                   }}
                 >
-                  Furnished
+                  {t["furnished"]}
                 </Typography>
               </Grid>
               <Grid item xs={12} sm={12} md={12} lg={8} xl={8}>
-                {["Yes", "No", "Whatever"].map((data, index) => (
+                {[
+                  { name: "Yes", slug: t["yes"] },
+                  { name: "No", slug: t["no"] },
+                  { name: "Whatever", slug: t["whatever"] },
+                ].map((data, index) => (
                   // <Grid xs={6} sm={6} md={6} lg={3} xl={3} key={index}>
                   <Button
                     key={index}
-                    onClick={() => setFurnished(data)}
+                    onClick={() => setFurnished(data?.name)}
                     sx={{
                       background: `${
-                        data === furnished ? "#7450F0" : "transparent"
+                        data?.name === furnished ? "#7450F0" : "transparent"
                       }`,
                       borderRadius: "56px",
                       // width: "100%",
-                      color: `${data === furnished ? "#ffffff" : "#32414C"}`,
+                      color: `${
+                        data?.name === furnished ? "#ffffff" : "#32414C"
+                      }`,
                       border: `${
-                        data === furnished ? "" : "1px solid #9FAAB1"
+                        data?.name === furnished ? "" : "1px solid #9FAAB1"
                       }`,
                       ml: 0.5,
                       fontSize: {
@@ -675,7 +681,7 @@ export default function SearchRealEstate({
                       },
                     }}
                   >
-                    {data}
+                    {data?.slug}
                   </Button>
                   // </Grid>
                 ))}
@@ -695,23 +701,29 @@ export default function SearchRealEstate({
                     lineHeight: "19px",
                   }}
                 >
-                  Do you accept pets?
+                  {t["do you accept pets"]}
                 </Typography>
               </Grid>
               <Grid item xs={12} sm={12} md={12} lg={8} xl={8}>
-                {["Yes", "No", "Whatever"].map((data, index) => (
+                {[
+                  { name: "Yes", slug: t["yes"] },
+                  { name: "No", slug: t["no"] },
+                  { name: "Whatever", slug: t["whatever"] },
+                ].map((data, index) => (
                   // <Grid xs={6} sm={6} md={6} lg={3} xl={3} key={index}>
                   <Button
                     key={index}
-                    onClick={() => setPets(data)}
+                    onClick={() => setPets(data?.name)}
                     sx={{
                       background: `${
-                        data === pets ? "#7450F0" : "transparent"
+                        data?.name === pets ? "#7450F0" : "transparent"
                       }`,
                       borderRadius: "56px",
                       // width: "100%",
-                      color: `${data === pets ? "#ffffff" : "#32414C"}`,
-                      border: `${data === pets ? "" : "1px solid #9FAAB1"}`,
+                      color: `${data?.name === pets ? "#ffffff" : "#32414C"}`,
+                      border: `${
+                        data?.name === pets ? "" : "1px solid #9FAAB1"
+                      }`,
                       ml: 0.5,
                       fontSize: {
                         xs: "12px",
@@ -732,7 +744,7 @@ export default function SearchRealEstate({
                       },
                     }}
                   >
-                    {data}
+                    {data?.slug}
                   </Button>
                   // </Grid>
                 ))}
@@ -839,26 +851,34 @@ export default function SearchRealEstate({
                     lineHeight: "19px",
                   }}
                 >
-                  Close to the metro?
+                  {t["close to the metro"]}
                 </Typography>
               </Grid>
               <Grid item xs={12} sm={12} md={12} lg={8} xl={8}>
-                {["Yes", "No", "Whatever"].map((data, index) => (
+                {[
+                  { name: "Yes", slug: t["yes"] },
+                  { name: "No", slug: t["no"] },
+                  { name: "Whatever", slug: t["whatever"] },
+                ].map((data, index) => (
                   // <Grid xs={6} sm={6} md={6} lg={3} xl={3} key={index}>
                   <Button
-                    onClick={() => setCloseToTheMetro(data)}
+                    onClick={() => setCloseToTheMetro(data?.name)}
                     key={index}
                     sx={{
                       background: `${
-                        data === closeToTheMetro ? "#7450F0" : "transparent"
+                        data?.name === closeToTheMetro
+                          ? "#7450F0"
+                          : "transparent"
                       }`,
                       borderRadius: "56px",
                       // width: "100%",
                       color: `${
-                        data === closeToTheMetro ? "#ffffff" : "#32414C"
+                        data?.name === closeToTheMetro ? "#ffffff" : "#32414C"
                       }`,
                       border: `${
-                        data === closeToTheMetro ? "" : "1px solid #9FAAB1"
+                        data?.name === closeToTheMetro
+                          ? ""
+                          : "1px solid #9FAAB1"
                       }`,
                       ml: 0.5,
                       fontSize: {
@@ -880,7 +900,7 @@ export default function SearchRealEstate({
                       },
                     }}
                   >
-                    {data}
+                    {data?.slug}
                   </Button>
                   // </Grid>
                 ))}
@@ -900,24 +920,30 @@ export default function SearchRealEstate({
                     lineHeight: "19px",
                   }}
                 >
-                  Availability
+                  {t["Availability"]}
                 </Typography>
               </Grid>
               <Grid item xs={12} sm={12} md={12} lg={8} xl={8}>
-                {["Immediate", "Shortly", "Whatever"].map((data, index) => (
+                {[
+                  { name: "Immediate", slug: t["immediate"] },
+                  { name: "Shortly", slug: t["shortly"] },
+                  { name: "Whatever", slug: t["whatever"] },
+                ].map((data, index) => (
                   // <Grid xs={6} sm={6} md={6} lg={3} xl={3} key={index}>
                   <Button
                     key={index}
-                    onClick={() => setAvailability(data)}
+                    onClick={() => setAvailability(data?.name)}
                     sx={{
                       background: `${
-                        data === availability ? "#7450F0" : "transparent"
+                        data?.name === availability ? "#7450F0" : "transparent"
                       }`,
                       borderRadius: "56px",
                       // width: "100%",
-                      color: `${data === availability ? "#ffffff" : "#32414C"}`,
+                      color: `${
+                        data?.name === availability ? "#ffffff" : "#32414C"
+                      }`,
                       border: `${
-                        data === availability ? "" : "1px solid #9FAAB1"
+                        data?.name === availability ? "" : "1px solid #9FAAB1"
                       }`,
                       ml: 0.5,
                       fontSize: {
@@ -939,7 +965,7 @@ export default function SearchRealEstate({
                       },
                     }}
                   >
-                    {data}
+                    {data?.slug}
                   </Button>
                   // </Grid>
                 ))}
@@ -958,12 +984,12 @@ export default function SearchRealEstate({
                   lineHeight: "19px",
                 }}
               >
-                {(key === "condominium" ||
-                  key === "amenities" ||
-                  key === "wellbeing" ||
-                  key === "appliances" ||
-                  key === "rooms" ||
-                  key === "accessibility") &&
+                {(key === "Condomínio" ||
+                  key === "Comodidades" ||
+                  key === "Bem-estar" ||
+                  key === "Eletrodomésticos" ||
+                  key === "Cômodos" ||
+                  key === "Acessibilidade") &&
                   key}
               </Typography>
               <Grid
@@ -974,12 +1000,12 @@ export default function SearchRealEstate({
                 gap={1}
                 sx={{ mt: 2 }}
               >
-                {(key === "condominium" ||
-                  key === "amenities" ||
-                  key === "wellbeing" ||
-                  key === "appliances" ||
-                  key === "rooms" ||
-                  key === "accessibility") &&
+                {(key === "Condomínio" ||
+                  key === "Comodidades" ||
+                  key === "Bem-estar" ||
+                  key === "Eletrodomésticos" ||
+                  key === "Cômodos" ||
+                  key === "Acessibilidade") &&
                   featureData[key].map((data, index) => (
                     <Button
                       key={index}
@@ -1073,7 +1099,7 @@ export default function SearchRealEstate({
                   },
                 }}
               >
-                Cancel filter
+                {t["cancel filter"]}
               </Button>
             </Grid>
             <Grid item xs={12} sm={12} md={12} lg={6}>
@@ -1096,7 +1122,7 @@ export default function SearchRealEstate({
                   },
                 }}
               >
-                Apply filter
+                {t["apply filters"]}
               </Button>
             </Grid>
           </Grid>

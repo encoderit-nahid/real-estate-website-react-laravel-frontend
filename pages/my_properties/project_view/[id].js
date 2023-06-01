@@ -127,6 +127,35 @@ export default function ProjectView({
           <Grid
             container
             direction="row"
+            justifyContent="flex-end"
+            alignItems="flex-start"
+          >
+            <Link href="/my_properties">
+              <Button
+                color="inherit"
+                // disabled={activeStep === 0}
+                //   onClick={handleBack}
+                sx={{
+                  mr: 1,
+                  border: "1px solid #38bdf8",
+                  borderRadius: "4px",
+                  px: 2,
+                  py: 1,
+                  my: 1,
+                  color: "#38bdf8",
+                  fontSize: "16px",
+                  fontWeight: "600",
+                  lineHeight: "22px",
+                  textTransform: "none",
+                }}
+              >
+                {t["come back"]}
+              </Button>
+            </Link>
+          </Grid>
+          <Grid
+            container
+            direction="row"
             justifyContent="flex-start"
             alignItems="flex-start"
           >
@@ -369,35 +398,6 @@ export default function ProjectView({
               </ImageListItem>
             ))}
           </ImageList>
-          <Grid
-            container
-            direction="row"
-            justifyContent="flex-end"
-            alignItems="flex-start"
-          >
-            <Link href="/my_properties">
-              <Button
-                color="inherit"
-                // disabled={activeStep === 0}
-                //   onClick={handleBack}
-                sx={{
-                  mr: 1,
-                  border: "1px solid #38bdf8",
-                  borderRadius: "4px",
-                  px: 2,
-                  py: 1,
-                  my: 2,
-                  color: "#38bdf8",
-                  fontSize: "16px",
-                  fontWeight: "600",
-                  lineHeight: "22px",
-                  textTransform: "none",
-                }}
-              >
-                back
-              </Button>
-            </Link>
-          </Grid>
         </Box>
         <Footer />
       </main>

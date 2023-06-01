@@ -151,6 +151,8 @@ function AnalysisPdfModal({
     (state) => state?.viewCertificate?.viewCertificateData
   );
 
+  console.log({ viewData });
+
   const [open, setOpen] = React.useState(true);
 
   const handleDrawerOpen = () => {
@@ -461,7 +463,6 @@ function AnalysisPdfModal({
           >
             Waiting for signature
           </Button>
-
           <Button
             sx={{
               mx: 2,
@@ -489,7 +490,6 @@ function AnalysisPdfModal({
               {viewData?.name}
             </Typography>
           </Button>
-
           <Divider />
           <Box sx={{ mx: 2, my: 1, background: "#E6F0FF" }}>
             <Grid
@@ -510,58 +510,57 @@ function AnalysisPdfModal({
                   ml: 0.5,
                 }}
               >
-                6 items to review
+                1 items to review
               </Typography>
             </Grid>
           </Box>
-          {[0, 1, 2].map((data, index) => (
-            <Box key={index} sx={{ mx: 2, my: 1 }}>
-              <Grid
-                container
-                direction="column"
-                justifyContent="flex-start"
-                alignItems="flex-start"
+          {/* {[0, 1, 2].map((data, index) => ( */}
+          <Box sx={{ mx: 2, my: 1 }}>
+            <Grid
+              container
+              direction="column"
+              justifyContent="flex-start"
+              alignItems="flex-start"
+            >
+              <Button
+                sx={{
+                  display: "flex",
+                  textTransform: "none",
+                  py: 0.5,
+                  px: 0.5,
+                  mt: 0,
+                  mb: 0,
+                  background: "#FFF7E6",
+                }}
               >
-                <Button
-                  sx={{
-                    display: "flex",
-                    textTransform: "none",
-                    py: 0.5,
-                    px: 0.5,
-                    mt: 0,
-                    mb: 0,
-                    background: "#FFF7E6",
-                  }}
-                >
-                  <HighlightOffIcon sx={{ color: "#664400" }} />
-                  <Typography
-                    variant="p"
-                    sx={{
-                      color: "#664400",
-                      fontSize: "12px",
-                      fontWeight: "400",
-                      lineHeight: "22px",
-                    }}
-                  >
-                    page 2
-                  </Typography>
-                </Button>
+                <HighlightOffIcon sx={{ color: "#664400" }} />
                 <Typography
                   variant="p"
                   sx={{
-                    color: "#6C7A84",
-                    fontSize: "16px",
+                    color: "#664400",
+                    fontSize: "12px",
                     fontWeight: "400",
                     lineHeight: "22px",
                   }}
                 >
-                  (...) Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-                  Viverra.
+                  page 2
                 </Typography>
-              </Grid>
-              <Divider />
-            </Box>
-          ))}
+              </Button>
+              <Typography
+                variant="p"
+                sx={{
+                  color: "#6C7A84",
+                  fontSize: "16px",
+                  fontWeight: "400",
+                  lineHeight: "22px",
+                }}
+              >
+                {viewData?.remarks || "No comment available"}
+              </Typography>
+            </Grid>
+            <Divider />
+          </Box>
+          {/* ))} */}
           <Box sx={{ px: 2 }}>
             <Button
               fullWidth

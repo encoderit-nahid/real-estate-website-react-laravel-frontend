@@ -221,7 +221,7 @@ function PendantsCard({ propertyData, languageName }) {
                     fontWeight: "500",
                   }}
                 >
-                  {`BRL ${propertyData?.brl_rent}`}
+                  {`R$ ${propertyData?.brl_rent}`}
                 </Typography>
                 <Typography
                   variant="p"
@@ -511,7 +511,7 @@ function PendantsCard({ propertyData, languageName }) {
             lineHeight: "32px",
           }}
         >
-          {`BRL ${propertyData?.brl_rent}`}
+          {`R$ ${propertyData?.brl_rent}`}
         </Typography>
         <Typography
           variant="p"
@@ -623,7 +623,7 @@ function PendantsCard({ propertyData, languageName }) {
                             width: "100%",
                           }}
                         >
-                          {`BRL ${data?.total_amount}`}
+                          {`R$ ${data?.total_amount}`}
                         </Typography>
                       }
                     />

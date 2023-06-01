@@ -271,6 +271,7 @@ export default function PropertyJourney({ language }) {
                 {activeStep === steps.length ? (
                   <DigitalNotaryFinalContent
                     singlePropertyData={singlePropertyData}
+                    languageName={myValue.toString()}
                   />
                 ) : (
                   <Fragment>

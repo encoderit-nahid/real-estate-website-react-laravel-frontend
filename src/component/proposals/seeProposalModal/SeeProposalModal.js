@@ -196,7 +196,7 @@ function SeeProposalModal({
                   fontWeight: "500",
                 }}
               >
-                {`BRL ${propertyData?.brl_rent}`}
+                {`R$ ${propertyData?.brl_rent}`}
               </Typography>
               <Typography
                 variant="p"
@@ -286,7 +286,7 @@ function SeeProposalModal({
             fontWeight: "700",
           }}
         >
-          {`BRL ${proposalData?.total_amount}`}
+          {`R$ ${proposalData?.total_amount}`}
         </Typography>
       </Grid>
       <Divider sx={{ mx: 2 }} />

@@ -550,7 +550,10 @@ export default function NewVenture({ language }) {
             <BaseModal isShowing={sentModalOpen} isClose={handleClose}>
               <Tooltip title="Something">
                 <>
-                  <NewVentureSentModal handleClose={handleClose} />
+                  <NewVentureSentModal
+                    handleClose={handleClose}
+                    languageName={myValue.toString()}
+                  />
                 </>
               </Tooltip>
             </BaseModal>

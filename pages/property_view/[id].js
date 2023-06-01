@@ -157,6 +157,35 @@ export default function PropertyView({
           <Grid
             container
             direction="row"
+            justifyContent="flex-end"
+            alignItems="flex-start"
+          >
+            <Link href="/search_real_estate">
+              <Button
+                color="inherit"
+                // disabled={activeStep === 0}
+                //   onClick={handleBack}
+                sx={{
+                  mr: 1,
+                  border: "1px solid #38bdf8",
+                  borderRadius: "4px",
+                  px: 2,
+                  py: 1,
+                  my: 1,
+                  color: "#38bdf8",
+                  fontSize: "16px",
+                  fontWeight: "600",
+                  lineHeight: "22px",
+                  textTransform: "none",
+                }}
+              >
+                {t["come back"]}
+              </Button>
+            </Link>
+          </Grid>
+          <Grid
+            container
+            direction="row"
             justifyContent="flex-start"
             alignItems="flex-start"
           >
@@ -340,7 +369,10 @@ export default function PropertyView({
         <Box sx={{ mx: 3, mt: 4 }}>
           <Grid container spacing={2}>
             <Grid item xs={12} sm={12} md={12} lg={9} xl={9}>
-              <Features singlePropertyData={singlePropertyData} />
+              <Features
+                singlePropertyData={singlePropertyData}
+                languageName={myValue.toString()}
+              />
 
               {Object.keys(singlePropertyData?.propertyFeatures).map(
                 (key, index) => (
@@ -408,35 +440,6 @@ export default function PropertyView({
               </Link>
             ))}
           </ImageList>
-          <Grid
-            container
-            direction="row"
-            justifyContent="flex-end"
-            alignItems="flex-start"
-          >
-            <Link href="/search_real_estate">
-              <Button
-                color="inherit"
-                // disabled={activeStep === 0}
-                //   onClick={handleBack}
-                sx={{
-                  mr: 1,
-                  border: "1px solid #38bdf8",
-                  borderRadius: "4px",
-                  px: 2,
-                  py: 1,
-                  my: 2,
-                  color: "#38bdf8",
-                  fontSize: "16px",
-                  fontWeight: "600",
-                  lineHeight: "22px",
-                  textTransform: "none",
-                }}
-              >
-                back
-              </Button>
-            </Link>
-          </Grid>
         </Box>
         <Footer />
 
@@ -446,6 +449,7 @@ export default function PropertyView({
               <ProposalModal
                 handleProposalClose={handleProposalClose}
                 singlePropertyId={singlePropertyData?.property?.id}
+                languageName={myValue.toString()}
               />
             </>
           </Tooltip>

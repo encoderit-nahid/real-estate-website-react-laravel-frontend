@@ -3,8 +3,11 @@ import Image from "next/image";
 import React from "react";
 import submitProperty from "../../../../public/Images/animation_500_koervb1n 2.png";
 import Link from "next/link";
+import en from "locales/en";
+import pt from "locales/pt";
 
-function PropertySubmittedModal({ handleClose }) {
+function PropertySubmittedModal({ handleClose, languageName }) {
+  const t = languageName === "en" ? en : pt;
   const style = {
     position: "absolute",
     top: "50%",
@@ -49,7 +52,7 @@ function PropertySubmittedModal({ handleClose }) {
               lineHeight: "32px",
             }}
           >
-            Property submitted for approval
+            {t["Property submitted for approval"]}
           </Typography>
         </Grid>
         <Link href="/my_properties">
@@ -78,7 +81,7 @@ function PropertySubmittedModal({ handleClose }) {
             }}
             // onClick={handleProposalClose}
           >
-            Continue
+            {t["Continue"]}
           </Button>
         </Link>
       </Box>

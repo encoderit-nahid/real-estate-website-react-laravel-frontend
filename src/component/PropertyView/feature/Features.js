@@ -8,8 +8,11 @@ import bath from "../../../../public/Images/bath.png";
 import building from "../../../../public/Images//building.svg";
 import car from "../../../../public/Images/car.png";
 import BusinessOutlinedIcon from "@mui/icons-material/BusinessOutlined";
+import en from "locales/en";
+import pt from "locales/pt";
 
-function Features({ singlePropertyData }) {
+function Features({ singlePropertyData, languageName }) {
+  const t = languageName === "en" ? en : pt;
   return (
     <Grid
       container
@@ -41,7 +44,7 @@ function Features({ singlePropertyData }) {
               ml: 0.4,
             }}
           >
-            {`${singlePropertyData?.property?.no_of_rooms} bedrooms`}
+            {`${singlePropertyData?.property?.no_of_rooms} ${t["bedrooms"]}`}
           </Typography>
         </Box>
         <Box sx={{ pl: 2, mt: 0.5 }}>
@@ -70,7 +73,7 @@ function Features({ singlePropertyData }) {
               ml: 0.4,
             }}
           >
-            6th floor
+            {`6th ${t["floor"]}`}
           </Typography>
         </Box>
         <Box>
@@ -84,7 +87,7 @@ function Features({ singlePropertyData }) {
               ml: 0.4,
             }}
           >
-            {`${singlePropertyData?.property?.no_of_bathrooms} bathrooms`}
+            {`${singlePropertyData?.property?.no_of_bathrooms} ${t["bathrooms"]}`}
           </Typography>
         </Box>
         <Box sx={{ pl: 2, mt: 0.5 }}>
@@ -98,7 +101,7 @@ function Features({ singlePropertyData }) {
               ml: 0.4,
             }}
           >
-            {`${singlePropertyData?.property?.no_of_bathrooms} parking space`}
+            {`${singlePropertyData?.property?.no_of_bathrooms} ${t["parking space"]}`}
           </Typography>
         </Box>
       </Grid>

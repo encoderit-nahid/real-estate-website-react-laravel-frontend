@@ -101,7 +101,7 @@ function ScheduleCard({ data, languageName }) {
                       lineHeight: "32px",
                     }}
                   >
-                    {`BRL ${data?.property?.brl_rent}`}
+                    {`R$ ${data?.property?.brl_rent}`}
                   </Typography>
                   <Typography
                     variant="h6"
@@ -135,9 +135,9 @@ function ScheduleCard({ data, languageName }) {
                       lineHeight: "22px",
                     }}
                   >
-                    {` created on: ${dayjs(data?.property?.created_at).format(
-                      "MM/DD/YYYY"
-                    )}
+                    {` ${t["created on"]}: ${dayjs(
+                      data?.property?.created_at
+                    ).format("MM/DD/YYYY")}
                       `}
                   </Typography>
                 </Grid>

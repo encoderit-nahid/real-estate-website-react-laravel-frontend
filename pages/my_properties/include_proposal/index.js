@@ -534,7 +534,10 @@ export default function IncludeProposal({ language }) {
               <BaseModal isShowing={sentModalOpen} isClose={handleClose}>
                 <Tooltip title="Something">
                   <>
-                    <ProposalSentModal handleClose={handleClose} />
+                    <ProposalSentModal
+                      handleClose={handleClose}
+                      languageName={myValue.toString()}
+                    />
                   </>
                 </Tooltip>
               </BaseModal>

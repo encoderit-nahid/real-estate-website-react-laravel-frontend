@@ -176,7 +176,7 @@ function NewRegistrationCard({ propertyData, newProperty, languageName }) {
                       ml: "3px",
                     }}
                   >
-                    published
+                    {t["published"]}
                   </Button>
                 )}
               </Box>
@@ -250,7 +250,7 @@ function NewRegistrationCard({ propertyData, newProperty, languageName }) {
                 mt: 0.5,
               }}
             >
-              {`created on: ${dayjs(propertyData?.created_at).format(
+              {`${t["created on"]}: ${dayjs(propertyData?.created_at).format(
                 "DD/MM/YYYY"
               )}`}
             </Typography>

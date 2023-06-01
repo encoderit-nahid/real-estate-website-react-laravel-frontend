@@ -7,8 +7,11 @@ import check from "../../../../public/Images/check.png";
 import Image from "next/image";
 import Footer from "../../shared/Footer/Footer";
 import { _baseURL, _imageURL } from "../../../../consts";
+import en from "locales/en";
+import pt from "locales/pt";
 
-function HouseCard({ shadow, marginTop, propertyInfo }) {
+function HouseCard({ shadow, marginTop, propertyInfo, languageName }) {
+  const t = languageName === "en" ? en : pt;
   const myLoader = ({ src }) => {
     return `${_imageURL}/${src}`;
   };
@@ -62,7 +65,7 @@ function HouseCard({ shadow, marginTop, propertyInfo }) {
             pt: 2,
           }}
         >
-          Sale value:
+          {`${t["sale value"]}:`}
         </Typography>
         <Typography
           variant="p"
@@ -75,7 +78,7 @@ function HouseCard({ shadow, marginTop, propertyInfo }) {
               color: "#0E97F7",
             }}
           >
-            BRL
+            R$
           </span>
           {` ${propertyInfo?.brl_rent}`}
         </Typography>
@@ -98,7 +101,7 @@ function HouseCard({ shadow, marginTop, propertyInfo }) {
               ml: "0.5vh",
             }}
           >
-            {`${propertyInfo?.no_of_rooms} bedrooms`}
+            {`${propertyInfo?.no_of_rooms} ${t["bedrooms"]}`}
           </Typography>
         </Box>
         <Box sx={{ pl: 1, pr: 1 }}>
@@ -126,7 +129,7 @@ function HouseCard({ shadow, marginTop, propertyInfo }) {
               ml: "0.5vh",
             }}
           >
-            {`${propertyInfo?.property_type}`}
+            {`${t[propertyInfo?.property_type]}`}
           </Typography>
         </Box>
       </Grid>

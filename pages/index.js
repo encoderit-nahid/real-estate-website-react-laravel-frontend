@@ -467,7 +467,10 @@ export default function App({
                       as={`/property_view/${stateInfo.id}`}
                     >
                       <Box sx={{ pl: 5 }}>
-                        <HouseCard propertyInfo={stateInfo} />
+                        <HouseCard
+                          propertyInfo={stateInfo}
+                          languageName={myValue.toString()}
+                        />
                       </Box>
                     </Link>
                   ))}

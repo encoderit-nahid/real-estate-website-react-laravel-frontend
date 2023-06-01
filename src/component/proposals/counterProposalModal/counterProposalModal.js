@@ -206,7 +206,7 @@ function CounterProposalModal({
               fontWeight: "700",
             }}
           >
-            {`BRL ${proposalData?.total_amount}`}
+            {`R$ ${proposalData?.total_amount}`}
           </Typography>
         </Grid>
         <Divider sx={{ mx: 2 }} />

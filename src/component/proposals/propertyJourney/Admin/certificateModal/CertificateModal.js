@@ -2,6 +2,7 @@ import {
   Box,
   Button,
   CircularProgress,
+  Container,
   Grid,
   TextareaAutosize,
   Typography,
@@ -20,6 +21,9 @@ import { useForm } from "react-hook-form";
 import { certificateUploadApi } from "../../../../../api";
 import { useDispatch } from "react-redux";
 import { findRequireCertificateData } from "../../../../../redux/requireCertificate/actions";
+import BaseTextArea from "@/component/reuseable/baseTextArea/BaseTextArea";
+import en from "locales/en";
+import pt from "locales/pt";
 
 const baseStyle = {
   display: "flex",
@@ -56,7 +60,9 @@ function CertificateModal({
   handleClose,
   certificateData,
   singlePropertyData,
+  languageName,
 }) {
+  const t = languageName === "en" ? en : pt;
   const dispatch = useDispatch();
   const styleModal = {
     position: "absolute",
@@ -120,15 +126,26 @@ function CertificateModal({
     formState: { errors },
   } = useForm();
 
+  const omitEmpties = (obj) => {
+    return Object.entries(obj).reduce((carry, [key, value]) => {
+      if (![null, undefined, "", []].includes(value)) {
+        carry[key] = value;
+      }
+      return carry;
+    }, {});
+  };
+
+  const [comment, setComment] = useState("");
+
   const handleSubmit = async () => {
     setLoading(true);
 
-    const requireData = {
+    const requireData = omitEmpties({
       contract_id: +singlePropertyData?.contract?.id,
       certificate_file: files[files.length - 1],
       certificate_type_id: certificateData?.tag?.id,
-      remarks: "abcdefgsdgfdsfsdfds",
-    };
+      remarks: comment,
+    });
 
     const formData = serialize(requireData, { indices: true });
     const [error, response] = await certificateUploadApi(formData);
@@ -221,7 +238,7 @@ function CertificateModal({
                 lineHeight: "18px",
               }}
             >
-              select document
+              {t["select document"]}
             </Button>
           </Box>
           <Typography
@@ -301,6 +318,28 @@ function CertificateModal({
           }}
         />
       </Box> */}
+      <Box sx={{ mx: 4 }}>
+        <BaseTextArea
+          minRows={3}
+          onChange={(e) => {
+            // field.onChange(e.target.value);
+            setComment(e.target.value);
+          }}
+          name={"remarks"}
+          style={{
+            // marginTop: "1vh",
+            width: "100%",
+            // margin: "2vh 0",
+            color: "rgba(0, 0, 0, 0.87)",
+            fontSize: "17px",
+            outlineColor: "#1976d2",
+            border: `1px solid silver`,
+            borderRadius: "5px",
+            padding: "0.4vh 1.4vh",
+          }}
+          placeholder={t["Comment"]}
+        />
+      </Box>
       <Grid
         container
         direction="row"
@@ -332,7 +371,7 @@ function CertificateModal({
           }}
           onClick={handleClose}
         >
-          Cancel
+          {t["Cancel"]}
         </Button>
         <Button
           onClick={handleSubmit}
@@ -363,7 +402,7 @@ function CertificateModal({
           }}
         >
           {loading && <CircularProgress size={22} color="inherit" />}
-          {!loading && "To send"}
+          {!loading && t["To send"]}
         </Button>
       </Grid>
     </Box>

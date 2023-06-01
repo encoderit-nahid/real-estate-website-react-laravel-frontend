@@ -69,7 +69,7 @@ function SaleCard({ singlePropertyData }) {
                 mt: 1,
               }}
             >
-              {`BRL ${singlePropertyData?.brl_rent}`}
+              {`R$ ${singlePropertyData?.brl_rent}`}
             </Typography>
             <Typography
               variant="h1"

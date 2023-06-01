@@ -4,8 +4,11 @@ import React from "react";
 import submitProposal from "../../../../public/Images/submit_proposal.png";
 import stepFinish from "../../../../public/Images/step_finish.png";
 import Link from "next/link";
+import en from "locales/en";
+import pt from "locales/pt";
 
-function NewVentureSentModal({ handleClose }) {
+function NewVentureSentModal({ handleClose, languageName }) {
+  const t = languageName === "en" ? en : pt;
   const style = {
     position: "absolute",
     top: "50%",
@@ -43,7 +46,7 @@ function NewVentureSentModal({ handleClose }) {
               mt: 2,
             }}
           >
-            New project created
+            novo projeto criado
           </Typography>
           <Typography
             variant="p"
@@ -56,7 +59,7 @@ function NewVentureSentModal({ handleClose }) {
               mt: 2,
             }}
           >
-            Thank you for creating the project
+            Obrigado por criar o projeto
           </Typography>
         </Grid>
         <Link

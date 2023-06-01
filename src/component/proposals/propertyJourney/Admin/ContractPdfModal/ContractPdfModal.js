@@ -647,7 +647,13 @@ function ContractPdfModal({
                           disabled={
                             session?.user?.role === "broker" ? true : false
                           }
-                          checked={data?.is_signed === 0 ? false : true}
+                          checked={
+                            data?.is_signed === 0
+                              ? false
+                              : data?.is_signed === 1
+                              ? true
+                              : false
+                          }
                           sx={{
                             "& .MuiSwitch-switchBase.Mui-checked": {
                               color: "#34BE84",

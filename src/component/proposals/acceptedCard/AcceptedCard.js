@@ -25,11 +25,13 @@ function AcceptedCard({ propertyData, languageName }) {
     return `${_imageURL}/${src}`;
   };
 
+  console.log({ propertyData });
+
   const Status = [
     { name: "Announcement", slug: "announcement" },
     { name: "Proposal", slug: "proposal" },
     { name: "Contract", slug: "contract_uploaded" },
-    { name: "Certificates and Documents", slug: "certificate_uploaded" },
+    { name: "Certificates and Documents", slug: "certificate" },
     { name: "Pre-analysis", slug: "certificate_validated" },
     { name: "Digital notary", slug: "notary" },
   ];
@@ -77,7 +79,7 @@ function AcceptedCard({ propertyData, languageName }) {
               mr: 1,
             }}
           >
-            rent
+            {propertyData?.ad_type}
           </Button>
           <Button
             sx={{
@@ -92,7 +94,7 @@ function AcceptedCard({ propertyData, languageName }) {
               ml: "3px",
             }}
           >
-            proposal accepted
+            {t["proposal accepted"]}
           </Button>
         </Box>
       </Grid>
@@ -112,7 +114,7 @@ function AcceptedCard({ propertyData, languageName }) {
             lineHeight: "32px",
           }}
         >
-          {` BRL  ${propertyData?.brl_rent}`}
+          {` R$  ${propertyData?.brl_rent}`}
         </Typography>
         <Typography
           variant="p"

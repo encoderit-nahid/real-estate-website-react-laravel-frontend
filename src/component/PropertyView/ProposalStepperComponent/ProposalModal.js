@@ -10,10 +10,17 @@ import ProposalStep from "../proposalStep/ProposalStep";
 import BuyerStep from "../BuyerStep/BuyerStep";
 import submitProposal from "../../../../public/Images/submit_proposal.png";
 import BaseStepper from "../../reuseable/baseStepper/BaseStepper";
+import en from "locales/en";
+import pt from "locales/pt";
 
-const steps = ["Proposal Values"];
+function ProposalModal({
+  handleProposalClose,
+  singlePropertyId,
+  languageName,
+}) {
+  const t = languageName === "en" ? en : pt;
 
-function ProposalModal({ handleProposalClose, singlePropertyId }) {
+  const steps = [t["proposal values"]];
   const [activeStep, setActiveStep] = React.useState(0);
   const [skipped, setSkipped] = React.useState(new Set());
 
@@ -91,7 +98,7 @@ function ProposalModal({ handleProposalClose, singlePropertyId }) {
               color: "#002152",
             }}
           >
-            Proposal
+            {t["Proposal"]}
           </Typography>
           <Button onClick={handleProposalClose}>
             <CloseIcon sx={{ color: "#6C7A84" }} />
@@ -151,7 +158,7 @@ function ProposalModal({ handleProposalClose, singlePropertyId }) {
                   lineHeight: "32px",
                 }}
               >
-                Proposal sent!
+                {t["proposal sent"]}
               </Typography>
             </Grid>
             <Button
@@ -168,7 +175,7 @@ function ProposalModal({ handleProposalClose, singlePropertyId }) {
               }}
               onClick={handleProposalClose}
             >
-              Close
+              {t["Close"]}
             </Button>
             {/* <Box sx={{ display: "flex", flexDirection: "row", pt: 2 }}>
               <Box sx={{ flex: "1 1 auto" }} />
@@ -184,6 +191,7 @@ function ProposalModal({ handleProposalClose, singlePropertyId }) {
                 activeStep={activeStep}
                 setActiveStep={setActiveStep}
                 singlePropertyId={singlePropertyId}
+                languageName={languageName}
               />
             )}
             <Grid

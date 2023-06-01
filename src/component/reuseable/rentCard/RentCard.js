@@ -141,7 +141,7 @@ function RentCard({ propertyData, languageName }) {
                       ml: "3px",
                     }}
                   >
-                    published
+                    {t["published"]}
                   </Button>
                 )}
               </Box>
@@ -190,7 +190,7 @@ function RentCard({ propertyData, languageName }) {
                 mt: 1,
               }}
             >
-              {`BRL ${propertyData?.brl_rent}`}
+              {`R$ ${propertyData?.brl_rent}`}
             </Typography>
             <Typography
               variant="p"
@@ -215,7 +215,7 @@ function RentCard({ propertyData, languageName }) {
                 mt: 0.5,
               }}
             >
-              {`created on: ${dayjs(propertyData?.created_at).format(
+              {`${t["created on"]}: ${dayjs(propertyData?.created_at).format(
                 "DD/MM/YYYY"
               )}`}
             </Typography>
@@ -268,7 +268,8 @@ function RentCard({ propertyData, languageName }) {
                 </Button>
                 {/* </a> */}
               </Link>
-              {((parseInt(session?.user?.userId) === propertyData?.user?.id) ||( session?.user?.role === "admin"))&& (
+              {(parseInt(session?.user?.userId) === propertyData?.user?.id ||
+                session?.user?.role === "admin") && (
                 <Link
                   href={{
                     pathname: "/my_properties/new_property",

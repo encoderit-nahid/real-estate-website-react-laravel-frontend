@@ -3,8 +3,11 @@ import Image from "next/image";
 import React from "react";
 import submitProposal from "../../../../public/Images/submit_proposal.png";
 import Link from "next/link";
+import en from "locales/en";
+import pt from "locales/pt";
 
-function ProposalSentModal({ handleClose }) {
+function ProposalSentModal({ handleClose, languageName }) {
+  const t = languageName === "en" ? en : pt;
   const style = {
     position: "absolute",
     top: "50%",
@@ -49,7 +52,7 @@ function ProposalSentModal({ handleClose }) {
               lineHeight: "32px",
             }}
           >
-            Proposal sent!
+            {t["proposal sent"]}
           </Typography>
         </Grid>
         <Link href="/my_properties">
@@ -68,7 +71,7 @@ function ProposalSentModal({ handleClose }) {
             }}
             // onClick={handleProposalClose}
           >
-            Close
+            {t["Close"]}
           </Button>
         </Link>
       </Box>

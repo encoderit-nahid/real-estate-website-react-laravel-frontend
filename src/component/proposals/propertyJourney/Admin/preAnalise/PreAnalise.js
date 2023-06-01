@@ -60,7 +60,7 @@ function PreAnalise({
   const uploadCertificateData = useSelector(
     (state) => state?.uploadCertificate?.uploadCertificateData
   );
-
+  console.log({ uploadCertificateData });
   const Loading = useSelector((state) => state?.uploadCertificate?.loading);
 
   const [certificateData, setCertificateData] = useState("");
@@ -106,6 +106,8 @@ function PreAnalise({
       }
     }
   };
+
+  console.log({ singlePropertyData });
 
   return (
     <Box sx={{ mt: 4, mb: 2 }}>
@@ -537,118 +539,116 @@ function PreAnalise({
                         </Grid>
                       </Box>
 
-                      {/* <Grid container spacing={1}>
-        <Grid item xs={12} sm={12} md={12} lg={3}>
-          <Box
-            sx={{
-              background: "#E6F0FF",
-              width: "100%",
-              display: "flex",
-              flexDirection: "column",
-              justifyContent: "center",
-              alignItems: "center",
-              px: 3,
-              py: 3.4,
-            }}
-          >
-            <Image
-              height={50}
-              width={50}
-              src={analise}
-              alt="analise"
-            />
-            <Typography
-              variant="p"
-              sx={{
-                color: "#7450F0",
-                fontWeight: "400",
-                fontSize: "10px",
-                lineHeight: "14px",
-              }}
-            >
-              lukka
-            </Typography>
-            <Typography
-              variant="p"
-              sx={{
-                color: "#1A1859",
-                fontWeight: "400",
-                fontSize: "14px",
-                lineHeight: "24px",
-              }}
-            >
-              6 items to review
-            </Typography>
-          </Box>
-        </Grid>
-        <Grid item xs={12} sm={12} md={12} lg={9}>
-          <Box
-            sx={{
-              background: "#FFF7E6",
-              borderRadius: "4px",
-              px: 2,
-              py: { xs: 1, sm: 1, md: 1, lg: 2.6, xl: 1 },
-              width: "100%",
-            }}
-          >
-            <Grid
-              container
-              direction="row"
-              justifyContent="flex-start"
-              alignItems="flex-start"
-            >
-              <Typography
-                variant="p"
-                sx={{
-                  color: "#1A1859",
-                  fontWeight: "400",
-                  fontSize: "14px",
-                  lineHeight: "22px",
-                }}
-              >
-                Analysis result:
-              </Typography>
-            </Grid>
-            <Grid container spacing={1} sx={{ mt: 1 }}>
-              {[0, 1, 2, 3, 4, 5].map((data, index) => (
-                <Grid
-                  item
-                  xs={12}
-                  sm={12}
-                  md={12}
-                  lg={6}
-                  key={index}
-                  className="analysis-card"
-                >
-                  <Button
-                    sx={{
-                      display: "flex",
-                      textTransform: "none",
-                      py: 0.5,
-                      px: 0.5,
-                      mt: 0,
-                      mb: 0,
-                    }}
-                  >
-                    <HighlightOffIcon sx={{ color: "#664400" }} />
-                    <Typography
-                      variant="p"
-                      sx={{
-                        color: "#664400",
-                        fontSize: "12px",
-                        fontWeight: "400",
-                        lineHeight: "22px",
-                      }}
-                    >
-                      Mortgage, page 2
-                    </Typography>
-                  </Button>
-                </Grid>
-              ))}
-            </Grid>
-          </Box>
-        </Grid>
-      </Grid> */}
+                      <Grid container spacing={1}>
+                        <Grid item xs={12} sm={12} md={12} lg={3}>
+                          <Box
+                            sx={{
+                              background: "#E6F0FF",
+                              width: "100%",
+                              display: "flex",
+                              flexDirection: "column",
+                              justifyContent: "center",
+                              alignItems: "center",
+                              px: 3,
+                              py: 3.4,
+                            }}
+                          >
+                            <Image
+                              height={50}
+                              width={50}
+                              src={analise}
+                              alt="analise"
+                            />
+                            <Typography
+                              variant="p"
+                              sx={{
+                                color: "#7450F0",
+                                fontWeight: "400",
+                                fontSize: "10px",
+                                lineHeight: "14px",
+                              }}
+                            >
+                              lukka
+                            </Typography>
+                            <Typography
+                              variant="p"
+                              sx={{
+                                color: "#1A1859",
+                                fontWeight: "400",
+                                fontSize: "14px",
+                                lineHeight: "24px",
+                              }}
+                            >
+                              1 items to review
+                            </Typography>
+                          </Box>
+                        </Grid>
+                        <Grid item xs={12} sm={12} md={12} lg={9}>
+                          <Box
+                            sx={{
+                              background: "#FFF7E6",
+                              borderRadius: "4px",
+                              px: 2,
+                              py: { xs: 1, sm: 1, md: 1, lg: 2.6, xl: 1 },
+                              width: "100%",
+                            }}
+                          >
+                            <Grid
+                              container
+                              direction="row"
+                              justifyContent="flex-start"
+                              alignItems="flex-start"
+                            >
+                              <Typography
+                                variant="p"
+                                sx={{
+                                  color: "#1A1859",
+                                  fontWeight: "400",
+                                  fontSize: "14px",
+                                  lineHeight: "22px",
+                                }}
+                              >
+                                Analysis result:
+                              </Typography>
+                            </Grid>
+                            <Grid container spacing={1} sx={{ mt: 1 }}>
+                              <Grid
+                                item
+                                xs={12}
+                                sm={12}
+                                md={12}
+                                lg={6}
+                                key={index}
+                                className="analysis-card"
+                              >
+                                <Button
+                                  sx={{
+                                    display: "flex",
+                                    textTransform: "none",
+                                    py: 0.5,
+                                    px: 0.5,
+                                    mt: 0,
+                                    mb: 0,
+                                  }}
+                                >
+                                  <HighlightOffIcon sx={{ color: "#664400" }} />
+                                  <Typography
+                                    variant="p"
+                                    sx={{
+                                      color: "#664400",
+                                      fontSize: "12px",
+                                      fontWeight: "400",
+                                      lineHeight: "22px",
+                                    }}
+                                  >
+                                    {data?.remarks || "No comment available"}
+                                  </Typography>
+                                </Button>
+                              </Grid>
+                            </Grid>
+                          </Box>
+                        </Grid>
+                      </Grid>
                       <Grid container spacing={1} sx={{ mt: 1 }}>
                         <Grid item xs={12} sm={12} md={12} lg={3}>
                           <Button

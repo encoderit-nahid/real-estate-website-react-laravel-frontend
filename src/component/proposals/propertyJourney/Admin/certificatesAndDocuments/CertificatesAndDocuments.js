@@ -307,7 +307,7 @@ function CertificatesAndDocuments({
                                       color: "#ffffff",
                                       textTransform: "none",
                                       py: 0.5,
-                                      px: 2,
+                                      px: 1,
                                       mt: {
                                         xs: 0,
                                         sm: 0,
@@ -521,6 +521,7 @@ function CertificatesAndDocuments({
               handleClose={handleClose}
               certificateData={certificateData}
               singlePropertyData={singlePropertyData}
+              languageName={languageName}
             />
           </>
         </Tooltip>
