@@ -364,10 +364,6 @@ export default function NewProperty({ language }) {
     });
 
     const newDocuments = documents?.filter((data) => data instanceof File);
-    // console.log({ newDocuments })
-    // const newImages = newArr?.filter((data) => data instanceof File)
-    // console.log({ newImages })
-    // console.log({ newArr })
 
     const firstPartData = omitEmpties({
       user_id: +session?.user?.userId,

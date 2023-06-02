@@ -76,7 +76,6 @@ export default function ProjectView({
   singleProjectData,
   language,
 }) {
-  console.log({ singleProjectData });
   const [myValue, setMyValue] = useState(language || "en");
 
   const t = myValue === "en" ? en : pt;

@@ -28,7 +28,6 @@ function RentCard({ propertyData, languageName }) {
     return `${_imageURL}/${src}`;
   };
 
-  console.log({ propertyData });
   return (
     <Box
       sx={{

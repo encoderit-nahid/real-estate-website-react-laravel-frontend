@@ -46,6 +46,14 @@ body {
 	}
 }
 
+@media only screen and (max-width: 500px) {
+	.pnlm-container {
+		width: 350px !important;
+		height: 200px !important;
+		margin-bottom: 1vh!important ;
+	}
+}
+
 .step-complete .MuiStepLabel-iconContainer .Mui-completed {
 	color: #16a34a !important;
 }
@@ -104,6 +112,8 @@ input[type='number'] {
 	padding-top: 0 !important;
 	padding-left: 0 !important;
 }
+
+
 
 /* .MuiButtonBase-root .MuiTab-root .Mui-selected{
   color: transparent !important;

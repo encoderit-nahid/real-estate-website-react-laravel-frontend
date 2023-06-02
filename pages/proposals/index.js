@@ -6,7 +6,17 @@ import Tab from "@mui/material/Tab";
 import Typography from "@mui/material/Typography";
 import Box from "@mui/material/Box";
 import ResponsiveDrawer from "../../src/component/sharedProposal/ResponsiveDrawer/ResponsiveDrawer";
-import { Button, Container, Grid } from "@mui/material";
+import {
+  Badge,
+  Button,
+  Container,
+  Grid,
+  ListItem,
+  ListItemButton,
+  ListItemIcon,
+  ListItemText,
+  Popover,
+} from "@mui/material";
 import { useState } from "react";
 import Releases from "../../src/component/properties/Releases/Releases";
 import ThirdTab from "../../src/component/properties/Third/ThirdTab";
@@ -17,7 +27,7 @@ import KeyboardDoubleArrowUpIcon from "@mui/icons-material/KeyboardDoubleArrowUp
 import Pendants from "../../src/component/proposals/pendants/Pendants";
 import Accepted from "../../src/component/proposals/accepted/Accepted";
 import Completed from "../../src/component/proposals/completed/Completed";
-import { getSession } from "next-auth/react";
+import { getSession, useSession } from "next-auth/react";
 import { useRouter } from "next/router";
 import { useEffect } from "react";
 import { proposalCountApi } from "../../src/api";
@@ -25,6 +35,10 @@ import { useDispatch, useSelector } from "react-redux";
 import { findProposalCountData } from "../../src/redux/proposalCount/actions";
 import en from "locales/en";
 import pt from "locales/pt";
+import { GetAllNotification } from "@/redux/all-notification/actions";
+import { findNotificationCountData } from "@/redux/notificationCount/actions";
+import useChannel from "@/hooks/useChannel";
+import NotificationsNoneOutlinedIcon from "@mui/icons-material/NotificationsNoneOutlined";
 
 const drawerWidth = 240;
 
@@ -64,6 +78,7 @@ function a11yProps(index) {
 export default function Proposals({ language }) {
   const router = useRouter();
   const { query } = router;
+  const { data: session } = useSession();
 
   const [myValue, setMyValue] = useState(language || "en");
 
@@ -71,8 +86,62 @@ export default function Proposals({ language }) {
 
   const dispatch = useDispatch();
   useEffect(() => {
+    dispatch(findNotificationCountData());
+    dispatch(GetAllNotification());
     dispatch(findProposalCountData());
   }, [dispatch]);
+
+  const notificationCountData = useSelector(
+    (state) => state?.notificationCount?.notificationCountData
+  );
+
+  const notificationData = useSelector(
+    (state) => state?.notification?.notificationData
+  );
+
+  useChannel("notification-broadcast." + session.user.userId, (channel) => {
+    // console.log('useChannel', channel)
+    channel
+      // .here((...args) => {
+      // 	console.log('notification-broadcast:here', ...args)
+      // })
+      // .joining((...args) => {
+      // 	console.log('notification-broadcast:joining', ...args)
+      // })
+      // .leaving((...args) => {
+      // 	console.log('notification-broadcast:leaving', ...args)
+      // })
+      .listen(".OnCreateNewSchedule", (event) => {
+        console.log("notification-broadcast:NotificationEvent", event);
+        dispatch(notificationAddPusherItem(event.notification));
+        dispatch(notificationAddCount(1));
+      });
+    // .listenForWhisper('ping', (event) => {
+    // 	console.log('notification-broadcast:ping', event)
+    // })
+  });
+
+  const handleReadNotification = async (data) => {
+    const [error, response] = await NotificationReadApi(data?.id);
+    if (!error) {
+      dispatch(notificationRemove(data?.id));
+      dispatch(notificationAddCount(-1));
+    }
+  };
+
+  const [anchorEl, setAnchorEl] = useState(null);
+
+  const handleClick = (event) => {
+    setAnchorEl(event.currentTarget);
+  };
+
+  const handleClose = () => {
+    setAnchorEl(null);
+  };
+
+  const open = Boolean(anchorEl);
+  const id = open ? "simple-popover" : undefined;
+
   const proposalCountData = useSelector((state) => state?.count?.countData);
 
   const countLoading = useSelector((state) => state?.count?.loading);
@@ -183,6 +252,77 @@ export default function Proposals({ language }) {
                 {t["Proposals"]}
               </Typography>
               <Image src={notifyImage} alt="notify" />
+              <Button
+                aria-describedby={id}
+                variant="contained"
+                onClick={handleClick}
+                sx={{
+                  p: 0,
+                  background: "transparent",
+                  boxShadow: "none",
+                  "&:hover": {
+                    boxShadow: "none",
+                    background: "transparent",
+                  },
+                }}
+              >
+                <Badge
+                  badgeContent={notificationCountData?.count}
+                  color="primary"
+                >
+                  <Image src={notifyImage} alt="notify" />
+                </Badge>
+              </Button>
+              <Popover
+                id={id}
+                open={open}
+                anchorEl={anchorEl}
+                onClose={handleClose}
+                anchorOrigin={{
+                  vertical: "bottom",
+                  horizontal: "left",
+                }}
+              >
+                <Box
+                  sx={{
+                    width: "100%",
+                    height: 350,
+                    maxWidth: 360,
+                    minWidth: 360,
+                    bgcolor: "background.paper",
+                  }}
+                >
+                  {/* <FixedSizeList
+										height={400}
+										width={360}
+										itemSize={46}
+										itemCount={200}
+										overscanCount={10}
+									>
+										{renderRow}
+									</FixedSizeList> */}
+                  {notificationData?.map((data, index) => (
+                    <ListItem
+                      // style={style}
+                      key={index}
+                      component="div"
+                      disablePadding
+                      sx={{ width: 360 }}
+                    >
+                      <ListItemButton
+                        onClick={() => handleReadNotification(data)}
+                      >
+                        <ListItemIcon>
+                          <NotificationsNoneOutlinedIcon
+                            sx={{ color: "#7dd3fc" }}
+                          />
+                        </ListItemIcon>
+                        <ListItemText primary={data?.data} />
+                      </ListItemButton>
+                    </ListItem>
+                  ))}
+                </Box>
+              </Popover>
             </Grid>
             <Container maxWidth="xl">
               <Box sx={{ width: "100%" }}>

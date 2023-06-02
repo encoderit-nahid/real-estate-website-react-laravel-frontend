@@ -13,7 +13,6 @@ import { _baseURL, _imageURL } from "../../../../consts";
 import Link from "next/link";
 
 function SaleCard({ singlePropertyData }) {
-  console.log({ singlePropertyData });
   const myLoader = ({ src }) => {
     const filterData = singlePropertyData?.attachments?.filter(
       (data) => data?.title === "logo"

@@ -53,7 +53,6 @@ function PendantsCard({ propertyData, languageName }) {
   const dispatch = useDispatch();
   const { data: session } = useSession();
 
-  console.log({ propertyData });
   //add_see_proposal_modal
   const [seeProposalOpen, setSeeProposalOpen] = useState(false);
   const [selectProposal, setSelectProposal] = useState("");

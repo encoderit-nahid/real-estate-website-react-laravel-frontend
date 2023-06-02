@@ -151,8 +151,6 @@ function AnalysisPdfModal({
     (state) => state?.viewCertificate?.viewCertificateData
   );
 
-  console.log({ viewData });
-
   const [open, setOpen] = React.useState(true);
 
   const handleDrawerOpen = () => {

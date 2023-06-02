@@ -118,8 +118,6 @@ export default function SearchRealEstate({
   query,
   language,
 }) {
-  // console.log({ propertyData });
-
   const [myValue, setMyValue] = useState(language || "pt");
 
   const t = myValue === "en" ? en : pt;
@@ -280,10 +278,6 @@ export default function SearchRealEstate({
     const sp = new URLSearchParams(fd.entries());
     const spEntries = Object.fromEntries(sp.entries());
 
-    // console.log({
-    // 	encoded: $params.encode(omitEmpties(allFilterData)).toString(),
-    // 	decoded: $params.decode(),
-    // })
     router.replace({
       pathname: "/search_real_estate",
       query: $params.encode(omitEmpties(allFilterData)).toString(),

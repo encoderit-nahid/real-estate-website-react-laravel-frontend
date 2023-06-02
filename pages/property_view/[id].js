@@ -85,7 +85,6 @@ export default function PropertyView({
   const [proposalOpen, setProposalOpen] = useState(false);
   const handleProposalOpen = () => setProposalOpen(true);
   const handleProposalClose = () => setProposalOpen(false);
-  console.log({ singlePropertyData });
 
   const [negotiate, setNegotiate] = useState(true);
   const [schedule, setSchedule] = useState(false);

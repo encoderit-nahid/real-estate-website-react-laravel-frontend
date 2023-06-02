@@ -63,7 +63,6 @@ function BrokerCertificateAndDocument({
   const allCertificateData = useSelector(
     (state) => state?.certificate?.certificateData
   );
-  console.log({ allCertificateData });
 
   const Loading = useSelector((state) => state?.certificate?.loading);
 
@@ -80,8 +79,6 @@ function BrokerCertificateAndDocument({
       const [error, response] = await certificateSubmitApi(requireData);
       setLoading(false);
       if (!error) {
-        // handleNext();
-        console.log({ response });
         setOpen(true);
         setNextErrorMessage(response?.data?.message);
       } else {
@@ -110,7 +107,6 @@ function BrokerCertificateAndDocument({
         handleNext();
         setOpen(false);
       } else {
-        console.log("rrr", resp?.data?.message);
         setOpen(true);
         setNextErrorMessage(resp?.data?.message);
       }

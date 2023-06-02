@@ -13,7 +13,6 @@ function Pendants({ languageName }) {
   const { query } = router;
 
   const { data: session } = useSession();
-  console.log({ session });
 
   const [page, setPage] = React.useState(+query?.page || 1);
 
@@ -30,8 +29,6 @@ function Pendants({ languageName }) {
   }, [dispatch, query]);
 
   const pendingProperty = useSelector((state) => state.property.propertyData);
-
-  console.log({ pendingProperty });
 
   const Loading = useSelector((state) => state.property.loading);
 

@@ -60,7 +60,7 @@ function PreAnalise({
   const uploadCertificateData = useSelector(
     (state) => state?.uploadCertificate?.uploadCertificateData
   );
-  console.log({ uploadCertificateData });
+
   const Loading = useSelector((state) => state?.uploadCertificate?.loading);
 
   const [certificateData, setCertificateData] = useState("");
@@ -100,14 +100,11 @@ function PreAnalise({
         handleNext();
         setOpen(false);
       } else {
-        console.log("rrr", resp?.data?.message);
         setOpen(true);
         setNextErrorMessage(resp?.data?.message);
       }
     }
   };
-
-  console.log({ singlePropertyData });
 
   return (
     <Box sx={{ mt: 4, mb: 2 }}>

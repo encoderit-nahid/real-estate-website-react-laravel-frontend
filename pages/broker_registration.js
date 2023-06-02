@@ -115,11 +115,8 @@ export default function BrokerRegistration({
       if (query?.token) {
         const [err, resp] = await emailVerifyApi(query?.token);
         if (!err) {
-          // console.log({ resp })
           localStorage.setItem("token", resp?.data?.token);
           const [error, response] = await userDetailsApi();
-
-          console.log("rr", response);
 
           if (!error) {
             return signIn("credentials", {
@@ -280,8 +277,6 @@ export default function BrokerRegistration({
       address: addressData,
     };
 
-    console.log({ requireData });
-
     const formData = serialize(requireData, { indices: true });
     const [error, responseToken] = await userInfoRegistrationApi(formData);
 
@@ -295,7 +290,7 @@ export default function BrokerRegistration({
       localStorage.removeItem("registration_id");
     } else {
       const errors = error?.response?.data?.errors ?? {};
-      console.log({ error });
+
       Object.entries(errors).forEach(([name, messages]) => {
         setError(name, { type: "manual", message: messages[0] });
       });

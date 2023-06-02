@@ -12,4 +12,3 @@ export const PERM = {
 export const pusher = new Pusher(process.env.NEXT_PUBLIC_PUSHER_KEY, {
   cluster: process.env.NEXT_PUBLIC_PUSHER_CLUSTER,
 });
-// console.log({ pusher });

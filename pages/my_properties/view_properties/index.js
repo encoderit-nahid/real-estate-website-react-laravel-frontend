@@ -133,7 +133,6 @@ export default function ViewProperties({
 }) {
   const dispatch = useDispatch();
   const router = useRouter();
-  console.log({ projectPropertyData });
 
   const [myValue, setMyValue] = useState(language || "en");
 
@@ -221,17 +220,6 @@ export default function ViewProperties({
     setValue("min_area", searchParams.min_area || 22);
     setValue("max_area", searchParams.max_area || 37);
   }, [setValue]);
-
-  // console.log({ selectval });
-  // useEffect(() => {
-  //   if (selectval !== null) {
-  //     setValue("min_val", selectval.min_val),
-  //       setValue("max_val", selectval.max_val);
-  //     setType(selectval.type);
-  //   }
-  // }, [selectval, setValue]);
-
-  // console.log("d", $params.decode());
 
   const [state, setState] = useState({
     top: false,
@@ -1409,7 +1397,6 @@ export async function getServerSideProps(context) {
   const res = await fetch(url);
 
   const data = await res.json();
-  console.log({ data });
 
   const cookies = context.req.cookies["language"] || "pt";
 

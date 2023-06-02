@@ -52,7 +52,6 @@ function DigitalNotary({
   const validateCount = useSelector(
     (state) => state?.uploadCertificate?.validateCount
   );
-  console.log({ validateCount });
 
   const [certificateData, setCertificateData] = useState("");
   const Loading = useSelector((state) => state?.uploadCertificate?.loading);

@@ -177,7 +177,6 @@ export default function Registration({ language }) {
 
   const onSubmit = async (data) => {
     setLoading(true);
-    // console.log(window.location.href);
 
     const allData = {
       ...data,
@@ -188,34 +187,12 @@ export default function Registration({ language }) {
     const [errorToken, responseToken] = await registrationApi(allData);
     setLoading(false);
     if (!errorToken) {
-      // console.log(responseToken?.data);
       setSuccessMessage(responseToken?.data?.message);
       handleClickSuccessSnackbar();
       localStorage.setItem("registration_id", responseToken?.data?.user?.id);
       localStorage.setItem("user_role", responseToken?.data?.userRole);
       localStorage.setItem("Reg_user_name", data?.name);
       router.push("/broker_registration");
-      // const [error, response] = await userDetailsApi()
-      // setLoading(false)
-      // if (!error) {
-      // 	return signIn('credentials', {
-      // 		userId: response.data.user.id,
-      // 		userEmail: response.data.user.email,
-      // 		name: response.data.user.name,
-      // 		phone: response.data.user.phone,
-      // 		status: response.data.user.status,
-      // 		role: response.data.user.roles[0].slug,
-      // 		roleId: response.data.user.roles[0].id,
-      // 		permissions: JSON.stringify(
-      // 			response.data.user.roles[0].permissions
-      // 		),
-      // 		callbackUrl:
-      // 			response.data.user.roles[0].slug === 'buyer'
-      // 				? '/'
-      // 				: '/my_properties',
-      // 	})
-      // }
-      //
     } else {
       const errors = errorToken?.response?.data?.errors ?? {};
       Object.entries(errors).forEach(([name, messages]) => {

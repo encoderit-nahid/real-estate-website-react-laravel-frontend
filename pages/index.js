@@ -65,7 +65,6 @@ export default function App({
   const [myValue, setMyValue] = useState(language || "pt");
 
   useEffect(() => {
-    // console.log("myValue", myValue);
     SetCookie("language", myValue);
   }, [myValue]);
 
@@ -489,15 +488,6 @@ export async function getServerSideProps(context) {
   const data = await res.json();
 
   const cookies = context.req.cookies["language"] || "pt";
-
-  // console.log('sfas', data)
-  // if (!data) {
-  // 	return {
-  // 		notFound: true,
-  // 	}
-  // }
-
-  // console.log({ cookies })
 
   return {
     props: { data: data, language: cookies }, // will be passed to the page component as props

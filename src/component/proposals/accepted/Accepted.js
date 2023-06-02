@@ -25,7 +25,6 @@ function Accepted({ languageName }) {
   }, [dispatch, query]);
 
   const acceptedProperty = useSelector((state) => state.property.propertyData);
-  console.log({ acceptedProperty });
 
   const Loading = useSelector((state) => state.property.loading);
 

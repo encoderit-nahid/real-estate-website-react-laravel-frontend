@@ -25,8 +25,6 @@ function AcceptedCard({ propertyData, languageName }) {
     return `${_imageURL}/${src}`;
   };
 
-  console.log({ propertyData });
-
   const Status = [
     { name: "Announcement", slug: "announcement" },
     { name: "Proposal", slug: "proposal" },
