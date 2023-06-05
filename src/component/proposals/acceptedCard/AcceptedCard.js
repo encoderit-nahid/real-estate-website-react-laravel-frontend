@@ -26,12 +26,12 @@ function AcceptedCard({ propertyData, languageName }) {
   };
 
   const Status = [
-    { name: "Announcement", slug: "announcement" },
-    { name: "Proposal", slug: "proposal" },
-    { name: "Contract", slug: "contract_uploaded" },
-    { name: "Certificates and Documents", slug: "certificate" },
-    { name: "Pre-analysis", slug: "certificate_validated" },
-    { name: "Digital notary", slug: "notary" },
+    { name: t["Announce"], slug: "announcement" },
+    { name: t["Proposal"], slug: "proposal" },
+    { name: t["Contract"], slug: "contract_uploaded" },
+    { name: t["Certificates and documents"], slug: "certificate" },
+    { name: t["Pre analysis"], slug: "certificate_validated" },
+    { name: t["Digital notery"], slug: "notary" },
   ];
 
   const Statusindex = Status.findIndex((object) => {

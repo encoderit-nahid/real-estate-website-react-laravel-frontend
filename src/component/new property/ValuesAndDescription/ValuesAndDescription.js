@@ -26,6 +26,13 @@ function ValuesAndDescription({
 }) {
   const t = languageName === "en" ? en : pt;
 
+  const top100Films = [
+    { label: t["Buyer's agent agreement"], year: 1994 },
+    { label: t["Purchase Agreement"], year: 1972 },
+    { label: t["Building Approval Plan"], year: 1974 },
+    { label: t["Land Receipts"], year: 2008 },
+  ];
+
   const [disableBtn, setDisableBtn] = useState(true);
   useEffect(() => {
     if (
@@ -492,9 +499,3 @@ function ValuesAndDescription({
 }
 
 export default ValuesAndDescription;
-const top100Films = [
-  { label: "Buyer's agent agreement", year: 1994 },
-  { label: "Purchase Agreement", year: 1972 },
-  { label: "Building Approval Plan", year: 1974 },
-  { label: " Land Receipts", year: 2008 },
-];

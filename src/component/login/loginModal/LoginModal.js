@@ -28,6 +28,7 @@ import { loginApi, userDetailsApi } from "../../../api";
 import { useRouter } from "next/router";
 import BaseModal from "../../reuseable/baseModal/BaseModal";
 import ForgotPasswordModal from "../../forgotPassword/ForgotPasswordModal";
+import CloseIcon from "@mui/icons-material/Close";
 import en from "locales/en";
 import pt from "locales/pt";
 
@@ -134,6 +135,15 @@ function LoginModal({ handleLoginClose, myValue }) {
 
   return (
     <Box sx={style}>
+      <Grid
+        container
+        direction="row"
+        justifyContent="flex-end"
+        alignItems="center"
+        sx={{ pr: 5, mb: 2 }}
+      >
+        <CloseIcon onClick={handleLoginClose} />
+      </Grid>
       <form onSubmit={handleSubmit(onSubmit)}>
         <Grid
           container

@@ -357,4 +357,10 @@ export default {
   "Documents sent": "Documentos enviados",
   "Document sent": "Documentos enviado",
   "Property submitted for approval": "Imóvel submetido a aprovação",
+  "See documentation": "Ver documentação",
+  "Copy information": "Copiar informações",
+  "Buyer's agent agreement": "Contrato de agente do comprador",
+  "Purchase Agreement": "Acordo de compra",
+  "Building Approval Plan": "Plano de Aprovação de Construção",
+  "Land Receipts": "Recibos de Terra",
 };

@@ -16,11 +16,15 @@ import cardMedia from "../../../../public/Images/pendant.png";
 import CheckIcon from "@mui/icons-material/Check";
 import FiberManualRecordIcon from "@mui/icons-material/FiberManualRecord";
 import { _baseURL, _imageURL } from "../../../../consts";
+import en from "locales/en";
+import pt from "locales/pt";
 
-function CompletedCard({ propertyData }) {
+function CompletedCard({ propertyData, languageName }) {
   const myLoader = ({ src }) => {
     return `${_imageURL}/${src}`;
   };
+
+  const t = languageName === "en" ? en : pt;
   return (
     <Box
       sx={{
@@ -108,7 +112,7 @@ function CompletedCard({ propertyData }) {
               lineHeight: "18px",
             }}
           >
-            Announcement
+            {t["Announce"]}
           </Typography>
         </Button>
         <Button sx={{ display: "flex", textTransform: "none" }}>
@@ -122,7 +126,7 @@ function CompletedCard({ propertyData }) {
               lineHeight: "18px",
             }}
           >
-            Proposal
+            {t["Proposal"]}
           </Typography>
         </Button>
         <Button sx={{ display: "flex", textTransform: "none" }}>
@@ -136,7 +140,7 @@ function CompletedCard({ propertyData }) {
               lineHeight: "18px",
             }}
           >
-            Contract
+            {t["Contract"]}
           </Typography>
         </Button>
         <Button sx={{ display: "flex", textTransform: "none" }}>
@@ -150,7 +154,7 @@ function CompletedCard({ propertyData }) {
               lineHeight: "18px",
             }}
           >
-            Certificates and documents
+            {t["Certificates and documents"]}
           </Typography>
         </Button>
         <Button sx={{ display: "flex", textTransform: "none" }}>
@@ -164,7 +168,7 @@ function CompletedCard({ propertyData }) {
               lineHeight: "18px",
             }}
           >
-            Pre-analysis
+            {t["Pre analysis"]}
           </Typography>
         </Button>
         <Button sx={{ display: "flex", textTransform: "none" }}>
@@ -178,7 +182,7 @@ function CompletedCard({ propertyData }) {
               lineHeight: "18px",
             }}
           >
-            Digital notery
+            {t["Digital notery"]}
           </Typography>
         </Button>
       </Box>
@@ -218,7 +222,7 @@ function CompletedCard({ propertyData }) {
                 },
               }}
             >
-              See Documentation
+              {t["See documentation"]}
             </Button>
           </Link>
         </Grid>

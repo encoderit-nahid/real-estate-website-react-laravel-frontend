@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import Image from "next/image";
 import Typography from "@mui/material/Typography";
 import Box from "@mui/material/Box";
@@ -33,6 +33,64 @@ function ScheduleCard({ data, languageName }) {
   const myLoader = ({ src }) => {
     return `${_imageURL}/${src}`;
   };
+
+  const [pastedObject, setPastedObject] = useState(null);
+
+  const handleCopy = (data) => {
+    const copiedString = JSON.stringify({
+      "brl rent": data?.property?.brl_rent,
+      "Created time": data?.property?.created_at,
+      address: data?.property?.address?.address,
+      "Buyer name": data?.buyer?.name,
+      "Buyer Email": data?.buyer?.email,
+      "Buyer Phone": data?.buyer?.phone,
+      observation: data?.buyer?.observation,
+    });
+    navigator.clipboard
+      .writeText(copiedString)
+      .then(() => {
+        console.log("Object copied successfully");
+      })
+      .catch((error) => {
+        console.error("Error copying object:", error);
+      });
+  };
+
+  const handlePaste = () => {
+    navigator.clipboard
+      .readText()
+      .then((text) => {
+        const parsedObject = JSON.parse(text);
+        setPastedObject(parsedObject);
+        console.log("Object pasted successfully:", parsedObject);
+      })
+      .catch((error) => {
+        console.error("Error pasting object:", error);
+      });
+  };
+
+  useEffect(() => {
+    const handleContextMenu = (event) => {
+      event.preventDefault();
+      handleCopy();
+    };
+
+    const handleKeyDown = (event) => {
+      if (event.ctrlKey && event.key === "c") {
+        handleCopy();
+      } else if (event.ctrlKey && event.key === "v") {
+        handlePaste();
+      }
+    };
+
+    window.addEventListener("contextmenu", handleContextMenu);
+    window.addEventListener("keydown", handleKeyDown);
+
+    return () => {
+      window.removeEventListener("contextmenu", handleContextMenu);
+      window.removeEventListener("keydown", handleKeyDown);
+    };
+  }, []);
 
   return (
     <Container maxWidth="xl" sx={{ marginTop: 5 }}>
@@ -392,20 +450,21 @@ function ScheduleCard({ data, languageName }) {
                 {loading && <CircularProgress size={22} color="inherit" />}
                 {!loading && t["Cancel visit"]}
               </Button>
-              {/* <Button
-              variant="contained"
-              sx={{
-                textTransform: "none",
-                mt: { xs: 3, sm: 3, md: 3, lg: 0, xl: 3 },
-                mb: 1,
+              <Button
+                onClick={() => handleCopy(data)}
+                variant="contained"
+                sx={{
+                  textTransform: "none",
+                  mt: { xs: 3, sm: 3, md: 3, lg: 0, xl: 3 },
+                  mb: 1,
 
-                fontSize: "16px",
-                fontWeight: "600",
-                lineHeight: "22px",
-              }}
-            >
-              Copy Information
-            </Button> */}
+                  fontSize: "16px",
+                  fontWeight: "600",
+                  lineHeight: "22px",
+                }}
+              >
+                {t["Copy information"]}
+              </Button>
             </Grid>
           </Grid>
         </Grid>
