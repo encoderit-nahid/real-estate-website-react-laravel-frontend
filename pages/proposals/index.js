@@ -251,7 +251,7 @@ export default function Proposals({ language }) {
               >
                 {t["Proposals"]}
               </Typography>
-              <Image src={notifyImage} alt="notify" />
+
               <Button
                 aria-describedby={id}
                 variant="contained"

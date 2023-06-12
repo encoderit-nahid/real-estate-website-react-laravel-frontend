@@ -42,40 +42,6 @@ import GetCookie from "@/hooks/getCookie";
 import en from "locales/en";
 import pt from "locales/pt";
 
-const facilitiesData = [
-  {
-    name: "ready customers",
-    content: "Get customers who are ready to close deals",
-    image: usersColor,
-  },
-  {
-    name: "highest commission",
-    content:
-      "Receive the highest commission on the market, keep up to 70% of the full amount",
-    image: moneyColor,
-  },
-  {
-    name: "Flexibility",
-    content: "Work wherever you are and with flexible hours and total autonomy",
-    image: timeColor,
-  },
-];
-
-const facilitiesBottomData = [
-  {
-    name: "Properties",
-    content:
-      "Get access to the property database, with third-party properties, launches by land developers, builders and developers in several cities",
-    image: houseColor,
-  },
-  {
-    name: "Good Business",
-    content:
-      "Receive customers who have already negotiated price and payment method and are ready to close the deal",
-    image: dealColor,
-  },
-];
-
 // const becomeBrokerData = [
 // 	{
 // 		name: 'free of bureaucracy',
@@ -113,38 +79,46 @@ export default function Broker({
   const becomeBrokerData = [
     {
       name: t["free of bureaucracy"],
-      info: "You will receive qualified Leads not only from your properties, but from all in your region, as well as scheduling visits, proposals, directly in your control panel.",
+      info: t[
+        "You will receive qualified Leads not only from your properties, but from all in your region, as well as scheduling visits, proposals, directly in your control panel"
+      ],
     },
     {
       name: t["Highest commission on the market"],
-      info: "You receive 70% of the commission negotiated with the property owner (raising and commission).",
+      info: t[
+        "You receive 70% of the commission negotiated with the property owner (raising and commission)"
+      ],
     },
     {
       name: t["Autonomy"],
-      info: "At Lokkan you are the owner of your business, you don't have a boss, you don't have to pay for the phone, ads, lawyers, documents and you still receive the highest commission on the market.",
+      info: t[
+        "At Lokkan you are the owner of your business, you don't have a boss, you don't have to pay for the phone, ads, lawyers, documents and you still receive the highest commission on the market"
+      ],
     },
-    {
-      name: t["Access to the entire property database"],
-      info: "You will have access to Lokkan's property database, which is made up of properties registered by owner, launches by land developers, builders and developers in several cities.",
-    },
+    // {
+    //   name: t["Access to the entire property database"],
+    //   info: "You will have access to Lokkan's property database, which is made up of properties registered by owner, launches by land developers, builders and developers in several cities.",
+    // },
   ];
 
   const facilitiesData = [
     {
       name: t["ready customers"],
-      content: "Get customers who are ready to close deals",
+      content: t["Get customers who are ready to close deals"],
       image: usersColor,
     },
     {
       name: t["highest commission"],
       content:
-        "Receive the highest commission on the market, keep up to 70% of the full amount",
+        t[
+          "Receive the highest commission on the market, keep up to 70% of the full amount"
+        ],
       image: moneyColor,
     },
     {
       name: t["Flexibility"],
       content:
-        "Work wherever you are and with flexible hours and total autonomy",
+        t["Work wherever you are and with flexible hours and total autonomy"],
       image: timeColor,
     },
   ];
@@ -153,13 +127,17 @@ export default function Broker({
     {
       name: t["Properties"],
       content:
-        "Get access to the property database, with third-party properties, launches by land developers, builders and developers in several cities",
+        t[
+          "Get access to the property database, with third-party properties, launches by land developers, builders and developers in several cities"
+        ],
       image: houseColor,
     },
     {
       name: t["Good Business"],
       content:
-        "Receive customers who have already negotiated price and payment method and are ready to close the deal",
+        t[
+          "Receive customers who have already negotiated price and payment method and are ready to close the deal"
+        ],
       image: dealColor,
     },
   ];
@@ -197,12 +175,7 @@ export default function Broker({
           <Grid item xs={12} sm={12} md={12} xl={6} lg={6}>
             <BrokerHelp
               name={t["Help revolutionize the real estate market"]}
-              content="By connecting to the network, you will have the most modern and
-            technological real estate platform in Brazil. The only platform that
-            offers the 100% digital buying and selling process, from scheduling a
-            visit, proposal to the public deed, without leaving home. Eliminating
-            bureaucracy and providing more time so you can dedicate yourself to what
-            matters, the customer"
+              content="conectando se à plataforma imobiliária mais tecnologica do mercado, além de contar com maior comissão do mercado, você terá acesso a um processo de compra e venda 100% digital, sem burocracias ou complicações"
               fieldItem={false}
               buttonName={t["Be a partner"]}
               handleLoginOpen={handleLoginOpen}

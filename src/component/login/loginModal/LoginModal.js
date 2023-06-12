@@ -142,7 +142,7 @@ function LoginModal({ handleLoginClose, myValue }) {
         alignItems="center"
         sx={{ pr: 5, mb: 2 }}
       >
-        <CloseIcon onClick={handleLoginClose} />
+        <CloseIcon onClick={handleLoginClose} sx={{ cursor: "pointer" }} />
       </Grid>
       <form onSubmit={handleSubmit(onSubmit)}>
         <Grid

@@ -400,7 +400,7 @@ function CertificatesAndDocuments({
                                     ml: 0.5,
                                   }}
                                 >
-                                  Send document
+                                  {t["send documents"]}
                                 </Typography>
                               </Button>
                             </Box>
@@ -511,7 +511,7 @@ function CertificatesAndDocuments({
           severity="error"
           sx={{ width: "100%" }}
         >
-          Please upload all requested documents
+          {t["Please upload all requested documents"]}
         </Alert>
       </Snackbar>
       <BaseModal isShowing={contractModalOpen} isClose={handleClose}>

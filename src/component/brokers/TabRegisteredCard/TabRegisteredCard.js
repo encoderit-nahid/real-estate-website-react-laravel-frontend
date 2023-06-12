@@ -1,4 +1,5 @@
 import {
+  Avatar,
   Box,
   Button,
   Divider,
@@ -91,13 +92,18 @@ function TabRegisteredCard({ brokerInfo, languageName }) {
         sx={{ px: 1.5, py: 1 }}
       >
         <Box>
-          <Image
-            loader={myLoader}
-            src={`${brokerInfo?.attachments[0]?.file_path}`}
-            alt="brokerImahe"
-            height={70}
-            width={70}
-          />
+          {brokerInfo?.attachments[0]?.file_path ? (
+            <Image
+              loader={myLoader}
+              src={`${brokerInfo?.attachments[0]?.file_path}`}
+              alt="brokerImahe"
+              height={70}
+              width={70}
+              style={{ borderRadius: "50px" }}
+            />
+          ) : (
+            <Avatar />
+          )}
         </Box>
       </Grid>
       <Grid
@@ -239,13 +245,18 @@ function TabRegisteredCard({ brokerInfo, languageName }) {
         sx={{ px: 1.5, py: 1 }}
       >
         <Box>
-          <Image
-            loader={myLoader}
-            src={`${brokerInfo?.attachments[0]?.file_path}`}
-            alt="brokerImahe"
-            height={70}
-            width={70}
-          />
+          {brokerInfo?.attachments[0]?.file_path ? (
+            <Image
+              loader={myLoader}
+              src={`${brokerInfo?.attachments[0]?.file_path}`}
+              alt="brokerImahe"
+              height={70}
+              width={70}
+              style={{ borderRadius: "50px" }}
+            />
+          ) : (
+            <Avatar sx={{ height: "72px", width: "72px" }} />
+          )}
         </Box>
       </Grid>
       <Grid

@@ -73,17 +73,23 @@ export default function App({
   const brokerData = [
     {
       name: t["High technology and low bureaucracy"],
-      info: "Digital and simplified sales process, which provides agility and transparency, allowing you to focus on your customer.",
+      info: t[
+        "Digital and simplified sales process, which provides agility and transparency, allowing you to focus on your customer"
+      ],
       imageSrc: technologyImage,
     },
     {
       name: t["Clients and full assistance"],
-      info: "Simple ad system combined with complete assistance in the end-to-end buying and selling process. From announcement to public deed.",
+      info: t[
+        "Simple ad system combined with complete assistance in the end-to-end buying and selling process. From announcement to public deed"
+      ],
       imageSrc: clientsImage,
     },
     {
       name: t["earn more"],
-      info: "We offer the best technologies, the most complete and agile advice on the market and the highest commission, the broker gets up to 70% of the total commission.",
+      info: t[
+        "We offer the best technologies, the most complete and agile advice on the market and the highest commission, the broker gets up to 70% of the total commission"
+      ],
       imageSrc: earnImage,
     },
   ];

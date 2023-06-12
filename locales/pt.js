@@ -7,15 +7,16 @@ export default {
   "Make your": "Encontre seu",
   "Dream!": "sonho!",
   Location: "Localização",
-  "For those who want to sell": "Pra quem quer vender seu imóvel",
-  "track everything online": "Acompanhe tudo online",
-  "100% digital processes": "Compra e venda 100% online",
-  "Fast sale!": "venda rápido",
+  "For those who want to sell": "pra quem deseja vender",
+  "track everything online": "acompanhe sua venda online em tempo real",
+  "100% digital processes": "venda seu imóvel sem sair do sofá, 100% digital",
+  "Fast sale!": "venda em tempo recorde",
   Advertise: "Anúncio",
   "For anyone who is a broker": "Torne-se um corretor completo e digital",
-  "High technology and low bureaucracy": "Alta tecnologia e baixa burocracia",
-  "Clients and full assistance": "Clientes e assessoria completa",
-  "earn more": "Ganhe mais",
+  "High technology and low bureaucracy":
+    "venda sem complicação: alta tecnologia e baixa burocracia",
+  "Clients and full assistance": "assessoria completa e focada nos clientes",
+  "earn more": "maximize seus lucros com a lokkan",
   Register: "Cadastre-se",
   "The best deals for you": "OS melhores negocios pra você.",
   "property for sale in": "imóvel a venda em",
@@ -32,14 +33,15 @@ export default {
   properties: "Imóveis",
   filter: "filtro",
   "Help revolutionize the real estate market":
-    "Conecte-se ao novo mercado imobiliário!",
+    "negócios imbatíveis feitos sob medida para você: descubra com a lokkan!",
   "Be a partner": "Seja um corretor parceiro",
   "Become a super broker": "Torne-se um corretor completo e digital",
-  "free of bureaucracy": "Livre de burocracia",
-  "Highest commission on the market": "maior comissão do mercado imobiliário",
-  Autonomy: "autonomia",
+  "free of bureaucracy": "zero burocracia, 100% agilidade",
+  "Highest commission on the market":
+    "aumente seus lucros com a comissão mais alta do mercado",
+  Autonomy: "seja seu próprio chefe com a Lokkan total autonomia!",
   "Access to the entire property database":
-    "acesso ao banco de dados de imóveis",
+    "descubra as melhores oportunidades com acesso completo ao nosso banco de dados de imóveis!",
   "Maximize your results": "maximize seus resultados",
   "Simulate a sale here": "simule sua venda aqui",
   "Sale value": "valor de venda",
@@ -53,10 +55,12 @@ export default {
   Flexibility: "Flexibilidade",
   "Properties found": "Imóveis achado",
   "Good Business": "Bom negócio",
-  "The best experience for you!": "Melhor experiência pra você",
+  "The best experience for you!":
+    "descubra a experiência imobiliária perfeita, pensada exclusivamente para você",
   "Zip code": "CEP",
   "I want to advertise": "Eu quero anunciar",
-  "Lokkan for your property": "Lokkan para seu imóvel",
+  "Lokkan for your property":
+    "aposte na lokkan para vender ou comprar seu imóvel com facilidade e segurança!",
   "Practical, simple and easy": "Prática, simples e fácil",
   Practicality: "Praticidade",
   "100% digital": "100% online",
@@ -363,4 +367,39 @@ export default {
   "Purchase Agreement": "Acordo de compra",
   "Building Approval Plan": "Plano de Aprovação de Construção",
   "Land Receipts": "Recibos de Terra",
+  "To schedule": "confirmar",
+  "Please upload all requested documents":
+    "Faça o upload de todos os documentos solicitados",
+  "Analysis result": "resultado da análise",
+  "items to review": "itens para revisar",
+  "Thank you for Creating a Schedule": "Obrigado por criar uma programação!",
+  "Announcements, schedules of visits and proposals all in the palm of your hands":
+    "venda seu imóvel com transparênca e comodidade",
+  "Value up to": "valor até",
+  "Signing of contracts, issuance of certificates, documents and even public deed of purchase and sale, all digitally, without leaving home":
+    "Todo tramite burocrático é realizado automaticamente e sem esforço.",
+  "Fastest sales process on the market":
+    "simplifique a venda de seu imóvel e receve propostas em tempo recorde",
+  "Digital and simplified sales process, which provides agility and transparency, allowing you to focus on your customer":
+    "com a lokkan, vender um imóvel é sinônimo de facilidade e tecnologia avançada. Eliminamos a burocracia do processo de venda, permitindo que você alcance o resultado desejado com rapidez e segurança",
+  "Simple ad system combined with complete assistance in the end-to-end buying and selling process. From announcement to public deed":
+    "Na Lokkan, acreditamos que cada cliente merece atenção individualizada e assessoria completa em cada passo da venda do seu imóvel, do começo ao fim.",
+  "We offer the best technologies, the most complete and agile advice on the market and the highest commission, the broker gets up to 70% of the total commission":
+    "Por que se contentar com menos? Com a Lokkan, você pode ganhar muito mais, ficamos com a burocracia e repassamos 70% da comissão, oferecemos programa de recompensa por cada corretor indicado (saiba mais)",
+  "You will receive qualified Leads not only from your properties, but from all in your region, as well as scheduling visits, proposals, directly in your control panel":
+    "Diga adeus à papelada e aos processos morosos! Na Lokkan, você terá uma experiência livre de burocracias! Além disso, receberá leads qualificados da sua região direto, com controle de agendamentos, propostas e visitas no seu painel de controle.",
+  "You receive 70% of the commission negotiated with the property owner (raising and commission)":
+    "trabalhe com quem valoriza o seu trabalho e reconhece o seu esforço. Na Lokkan, você terá a oportunidade de ganhar a maior comissão do mercado imobiliário, com 70% do valor da comissão. Seja recompensado pelo seu talento e dedicação!",
+  "At Lokkan you are the owner of your business, you don't have a boss, you don't have to pay for the phone, ads, lawyers, documents and you still receive the highest commission on the market":
+    "liberdade é essencial para quem quer crescer no mercado imobiliário. com a lokkan, você terá total autonomia para tomar suas próprias decisões e ser dono do seu negócio. tenha controle sobre a sua carreira e alcance o sucesso que sempre desejou.",
+  "Get customers who are ready to close deals":
+    "receba clientes prontos para fechar negócio",
+  "Receive the highest commission on the market, keep up to 70% of the full amount":
+    "receba a maior comissão do mercado, fique com 70% do total",
+  "Work wherever you are and with flexible hours and total autonomy":
+    "trabalhe de onde estiver e com horários flexiveis, total autonomia",
+  "Get access to the property database, with third-party properties, launches by land developers, builders and developers in several cities":
+    "tenha acesso a carteira de imóveis mais diversificada, contendo imóveis de terceiros, lançamentos de loteamentos de lotes, prédios de apartamentos, escritórios, etc.",
+  "Receive customers who have already negotiated price and payment method and are ready to close the deal":
+    "gratificação por indicação de corretor, conheça o programa.",
 };

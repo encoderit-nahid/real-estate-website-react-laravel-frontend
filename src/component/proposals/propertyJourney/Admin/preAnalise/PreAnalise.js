@@ -576,7 +576,7 @@ function PreAnalise({
                                 lineHeight: "24px",
                               }}
                             >
-                              1 items to review
+                              {`1 ${t["items to review"]}`}
                             </Typography>
                           </Box>
                         </Grid>
@@ -605,7 +605,7 @@ function PreAnalise({
                                   lineHeight: "22px",
                                 }}
                               >
-                                Analysis result:
+                                {t["Analysis result"]}
                               </Typography>
                             </Grid>
                             <Grid container spacing={1} sx={{ mt: 1 }}>

@@ -96,36 +96,40 @@ export default function Advertise({
   const advertiseData = [
     {
       name: t["Practicality"],
-      info: "Advertise your property and find out about everything that happens through the application.",
+      info: "descomplicar a compra e venda de imóveis é com a gente! todo o processo é feito online, de forma 100% digital e sem burocracia. conheça a facilidade que a lokkan pode trazer para sua vida!",
     },
     {
-      name: t["100% digital"],
-      info: "100% digital buying and selling process (scheduling visits, proposals, contracts, certificates, public deed)",
+      name: "100% digital: faça transações mais rápidas e seguras!",
+      info: "com a lokkan, você pode esquecer a papelada e a burocracia. oferecemos todo o processo de compra e venda de imóveis 100% digital, incluindo documentação e assinatura. aproveite a facilidade e agilidade que a lokkan oferece!",
     },
     {
-      name: t["Documentation and digital signature"],
-      info: "Contract, registrations, certificates, consultations (SERASA, SPC - seller) with a click. Elaboration and signature of the deed digitally (without having to go to the notary).",
+      name: "documentação digital: agilize suas transações com a lokkan!",
+      info: "não perca mais tempo com a papelada e idas ao cartório! com a lokkan, a documentação para compra e venda de imóveis é digital, incluindo contratos, matrículas, certidões e consultas ao SPC e Serasa (vendedor). até a elaboração de escritura e assinatura são digitais, tudo para tornar sua vida mais fácil!",
     },
     {
-      name: t["Fast selling process"],
-      info: "Receive the down payment right after the analysis of the documents. Fastest sales process on the market.",
+      name: "Processo de venda rápido: venda seu imóvel com facilidade e rapidez",
+      info: "Vender seu imóvel nunca foi tão fácil! Com a Lokkan, todo o processo é feito online, de forma 100% digital e sem burocracia, incluindo documentação e assinatura digital. Ganhe tempo e agilidade!",
     },
   ];
 
   const PracticalData = [
     {
       name: t["track everything online"],
-      info: "Announcements, schedules of visits and proposals all in the palm of your hands",
+      info: t[
+        "Announcements, schedules of visits and proposals all in the palm of your hands"
+      ],
       imageSrc: trackImage,
     },
     {
       name: t["100% digital processes"],
-      info: "Signing of contracts, issuance of certificates, documents and even public deed of purchase and sale, all digitally, without leaving home",
+      info: t[
+        "Signing of contracts, issuance of certificates, documents and even public deed of purchase and sale, all digitally, without leaving home"
+      ],
       imageSrc: digitalImage,
     },
     {
       name: t["Fast sale!"],
-      info: "Fastest sales process on the market",
+      info: t["Fastest sales process on the market"],
       imageSrc: fastImage,
     },
   ];
@@ -159,7 +163,7 @@ export default function Advertise({
           <Grid item xs={12} sm={12} md={12} xl={6} lg={6}>
             <BrokerHelp
               name={t["The best experience for you!"]}
-              content="We reduce bureaucracy and digitize the process of buying and selling real estate, from scheduling visits, proposals, contracts, certificates, documents to the public deed, everything 100% digital, without leaving home"
+              content="Com a Lokkan, a compra e venda de imóveis nunca foi tão fácil e rápida. Todo o processo é 100% digital e sem burocracia, desde o agendamento de visitas até a escritura pública. Não perca mais tempo com documentos e processos demorados, descubra a facilidade que a Lokkan pode proporcionar para você!"
               fieldItem={true}
               buttonName={t["I want to advertise"]}
               loginOpen={loginOpen}
@@ -185,7 +189,15 @@ export default function Advertise({
           sx={{
             backgroundColor: "#F9F9FB",
             paddingTop: { xs: 0, sm: 0, md: 5, lg: 5, xl: 5 },
-            marginTop: { xs: 25, sm: 25, md: 15, lg: 15, xl: 15,xxl:15,xxxl:35 },
+            marginTop: {
+              xs: 25,
+              sm: 25,
+              md: 15,
+              lg: 15,
+              xl: 15,
+              xxl: 15,
+              xxxl: 35,
+            },
 
             paddingBottom: { xs: 2, sm: 2, md: 20, lg: 20, xl: 20 },
             // clipPath:

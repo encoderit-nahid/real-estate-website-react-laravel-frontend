@@ -357,4 +357,38 @@ export default {
   "Purchase Agreement": "Purchase Agreement",
   "Building Approval Plan": "Building Approval Plan",
   "Land Receipts": "Land Receipts",
+  "To schedule": "To schedule",
+  "Please upload all requested documents":
+    "Please upload all requested documents",
+  "Analysis result": "Analysis result",
+  "items to review": "items to review",
+  "Thank you for Creating a Schedule": "Thank you for Creating a Schedule!",
+  "Announcements, schedules of visits and proposals all in the palm of your hands":
+    "Announcements, schedules of visits and proposals all in the palm of your hands.",
+  "Value up to": "Value up to",
+  "Signing of contracts, issuance of certificates, documents and even public deed of purchase and sale, all digitally, without leaving home":
+    "Signing of contracts, issuance of certificates, documents and even public deed of purchase and sale, all digitally, without leaving home.",
+  "Fastest sales process on the market": "Fastest sales process on the market",
+  "Digital and simplified sales process, which provides agility and transparency, allowing you to focus on your customer":
+    "Digital and simplified sales process, which provides agility and transparency, allowing you to focus on your customer",
+  "Simple ad system combined with complete assistance in the end-to-end buying and selling process. From announcement to public deed":
+    "Simple ad system combined with complete assistance in the end-to-end buying and selling process. From announcement to public deed",
+  "We offer the best technologies, the most complete and agile advice on the market and the highest commission, the broker gets up to 70% of the total commission":
+    "We offer the best technologies, the most complete and agile advice on the market and the highest commission, the broker gets up to 70% of the total commission.",
+  "You will receive qualified Leads not only from your properties, but from all in your region, as well as scheduling visits, proposals, directly in your control panel":
+    "You will receive qualified Leads not only from your properties, but from all in your region, as well as scheduling visits, proposals, directly in your control panel",
+  "You receive 70% of the commission negotiated with the property owner (raising and commission)":
+    "You receive 70% of the commission negotiated with the property owner (raising and commission).",
+  "At Lokkan you are the owner of your business, you don't have a boss, you don't have to pay for the phone, ads, lawyers, documents and you still receive the highest commission on the market":
+    "At Lokkan you are the owner of your business, you don't have a boss, you don't have to pay for the phone, ads, lawyers, documents and you still receive the highest commission on the market",
+  "Get customers who are ready to close deals":
+    "Get customers who are ready to close deals",
+  "Receive the highest commission on the market, keep up to 70% of the full amount":
+    "Receive the highest commission on the market, keep up to 70% of the full amount",
+  "Work wherever you are and with flexible hours and total autonomy":
+    "Work wherever you are and with flexible hours and total autonomy",
+  "Get access to the property database, with third-party properties, launches by land developers, builders and developers in several cities":
+    "Get access to the property database, with third-party properties, launches by land developers, builders and developers in several cities",
+  "Receive customers who have already negotiated price and payment method and are ready to close the deal":
+    "Receive customers who have already negotiated price and payment method and are ready to close the deal",
 };

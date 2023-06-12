@@ -537,7 +537,7 @@ function ContractPdfModal({
                   render={({ field }) => (
                     <BaseTextField
                       size={"medium"}
-                      placeholder={"Name"}
+                      placeholder={t["Name"]}
                       onChange={(e) => {
                         field.onChange(e.target.value);
                       }}
@@ -560,7 +560,7 @@ function ContractPdfModal({
                   render={({ field }) => (
                     <BaseTextField
                       size={"medium"}
-                      placeholder={"Email"}
+                      placeholder={t["Email"]}
                       onChange={(e) => {
                         field.onChange(e.target.value);
                       }}

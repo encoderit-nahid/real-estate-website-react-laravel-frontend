@@ -231,13 +231,17 @@ function SeeProposalModal({
         </Typography>
       </Box>
       <Box>
-        <List
-        // sx={{ width: "100%", maxWidth: 360, bgcolor: "background.paper" }}
-        >
+        <List>
           <ListItem sx={{ margin: 0, paddingY: "1px" }}>
             <ListItemAvatar>
               <Avatar>
-                <Image src={avatar} alt="avatar" />
+                <Image
+                  loader={myLoader}
+                  src={proposalData?.user?.attachments[0]?.file_path || avatar}
+                  alt="avatar"
+                  width={50}
+                  height={50}
+                />
               </Avatar>
             </ListItemAvatar>
             <ListItemText

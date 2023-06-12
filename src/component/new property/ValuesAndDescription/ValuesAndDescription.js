@@ -100,7 +100,7 @@ function ValuesAndDescription({
             render={({ field }) => (
               <BaseTextField
                 size={"medium"}
-                placeholder={`${t["BRL Rent"]}*`}
+                placeholder={`${t["Value"]}*`}
                 type={"number"}
                 onChange={(e) => {
                   field.onChange(e.target.value);

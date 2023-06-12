@@ -49,7 +49,7 @@ function ScheduleModal({ handleClose }) {
               lineHeight: "32px",
             }}
           >
-            Thank you for Creating a Schedule!
+            {t["Thank you for Creating a Schedule"]}
           </Typography>
         </Grid>
 
@@ -67,7 +67,7 @@ function ScheduleModal({ handleClose }) {
             textTransform: "none",
           }}
         >
-          Close
+          {t["Close"]}
         </Button>
       </Box>
     </Box>
