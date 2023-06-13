@@ -52,6 +52,8 @@ import { useForm, Controller } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as Yup from "yup";
 import { useSession } from "next-auth/react";
+import en from "locales/en";
+import pt from "locales/pt";
 const PDFViewer = dynamic(
   () => import("../../../../reuseable/PDFComponent/pdf-viewer"),
   {
@@ -135,9 +137,11 @@ function ContractPdfModal({
   handlePdfOpen,
   handleNext,
   singlePropertyData,
+  languageName,
 }) {
   const { data: session } = useSession();
   const dispatch = useDispatch();
+  const t = languageName === "en" ? en : pt;
   useEffect(() => {
     dispatch(findContractDetailsData(+singlePropertyData?.contract?.id));
   }, [dispatch, singlePropertyData]);

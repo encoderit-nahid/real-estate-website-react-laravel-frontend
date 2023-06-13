@@ -245,12 +245,12 @@ function Negotiate({
               lineHeight: "32px",
             }}
           >
-            Proposal
+            {t["Proposal"]}
           </Typography>
           <BaseTextField
             size={"small"}
             type={"number"}
-            placeholder={"BRL"}
+            placeholder={"R$"}
             value={brlValue}
             onChange={(e) => {
               setBrlValue(e.target.value);
@@ -427,7 +427,10 @@ function Negotiate({
       <BaseModal isShowing={scheduleModalOpen} isClose={handleClose}>
         <Tooltip title="Something">
           <>
-            <ScheduleModal handleClose={handleClose} />
+            <ScheduleModal
+              languageName={languageName}
+              handleClose={handleClose}
+            />
           </>
         </Tooltip>
       </BaseModal>

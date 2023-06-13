@@ -3,8 +3,11 @@ import Image from "next/image";
 import React from "react";
 import submitProposal from "../../../../public/Images/submit_proposal.png";
 import Link from "next/link";
+import en from "locales/en";
+import pt from "locales/pt";
 
-function ScheduleModal({ handleClose }) {
+function ScheduleModal({ handleClose, languageName }) {
+  const t = languageName === "en" ? en : pt;
   const style = {
     position: "absolute",
     top: "50%",

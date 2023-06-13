@@ -1258,7 +1258,18 @@ export default function ViewProperties({
                   languageName={myValue.toString()}
                 />
               </Grid>
-              <Grid item xs={12} sm={12} md={12} lg={2} xl={2}>
+              <Grid
+                item
+                xs={12}
+                sm={12}
+                md={12}
+                lg={2}
+                xl={2}
+                sx={{
+                  mr: { xs: 2, sm: 2, md: 2, lg: 0 },
+                  ml: { xs: 2, sm: 2, md: 2, lg: 0 },
+                }}
+              >
                 <Button
                   onClick={toggleDrawer("left", true)}
                   fullWidth

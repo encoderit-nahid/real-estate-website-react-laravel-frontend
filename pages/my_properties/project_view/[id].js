@@ -31,6 +31,7 @@ import { getSession } from "next-auth/react";
 import en from "locales/en";
 import pt from "locales/pt";
 import Link from "next/link";
+import SlideImageMobile from "@/component/PropertyView/SlideImageMobile/SlideImageMobile";
 
 const aboutProperty = [
   "Heater",
@@ -215,13 +216,18 @@ export default function ProjectView({
             }}
           >
             <Grid item xs={12}>
-              <SliderViewMobile />
+              <SliderViewMobile
+                sideTabValue={sideTabValue}
+                setSideTabValue={setSideTabValue}
+                selectImage={selectImage}
+                languageName={myValue.toString()}
+              />
             </Grid>
-            <Grid item xs={12} sx={{ mb: 1 }}>
+            {/* <Grid item xs={12} sx={{ mb: 1 }}>
               <Image src={sliderView} layout="responsive" alt="sliderView" />
-            </Grid>
+            </Grid> */}
           </Grid>
-          <Grid container spacing={1}>
+          {/* <Grid container spacing={1}>
             {[0, 1, 2, 3].map((data, index) => (
               <Grid
                 item
@@ -240,7 +246,10 @@ export default function ProjectView({
                 <Image src={sliderViewSmall} alt="sliderView" />
               </Grid>
             ))}
-          </Grid>
+          </Grid> */}
+          <Box>
+            <SlideImageMobile Images={Images} setSelectImage={setSelectImage} />
+          </Box>
           <Grid
             container
             spacing={2}
@@ -330,7 +339,7 @@ export default function ProjectView({
                     lineHeight: "38px",
                   }}
                 >
-                  Yellow Empreendimentos imobiliários
+                  {singleProjectData?.project?.name}
                 </Typography>
                 <Typography
                   variant="h6"
@@ -354,10 +363,7 @@ export default function ProjectView({
                     mt: 4,
                   }}
                 >
-                  Tudo que desperta a singularidade, num projeto único e no
-                  melhor bairro de São Paulo: Saúde. Conexões que, juntas,
-                  compõem um design único. Tudo o que você procuta em um
-                  apartamento na Saúde!
+                  {singleProjectData?.project?.description}
                 </Typography>
               </Grid>
             </Grid>

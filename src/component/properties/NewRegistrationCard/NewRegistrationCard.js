@@ -225,7 +225,7 @@ function NewRegistrationCard({ propertyData, newProperty, languageName }) {
                 mt: 1,
               }}
             >
-              {`BRL ${propertyData?.brl_rent}`}
+              {`R$ ${propertyData?.brl_rent}`}
             </Typography>
             <Typography
               variant="p"

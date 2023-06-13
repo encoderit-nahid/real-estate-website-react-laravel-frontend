@@ -61,7 +61,7 @@ function ReleaseCard({ projectData, languageName }) {
               py: 1,
             }}
           >
-            {`${projectData?.properties_count} ${t["Properties"]} registered`}
+            {`${projectData?.properties_count} ${t["Properties"]} cadastrados`}
           </Typography>
           <Typography
             variant="p"
@@ -74,7 +74,7 @@ function ReleaseCard({ projectData, languageName }) {
               py: 1,
             }}
           >
-            {`${projectData?.sold} ${t["Properties"]} sold`}
+            {`${projectData?.sold} ${t["Properties"]} vendidos`}
           </Typography>
 
           <Link

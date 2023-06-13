@@ -247,7 +247,7 @@ export default {
   documents: "documento*",
   "registry office": "cartório*",
   "registration number": "Número de registro*",
-  "BRL Rent": "Aluguel",
+  "BRL Rent": "R$ Valor",
   Features: "caracteristicas",
   "select property features": "Selecionar as características",
   "Add feature": "Adicionar",

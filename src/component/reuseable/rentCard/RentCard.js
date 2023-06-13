@@ -91,8 +91,10 @@ function RentCard({ propertyData, languageName }) {
           <Box>
             <Image
               alt="rent"
-              src={rentImage}
-              width={400}
+              loader={myLoader}
+              src={`${propertyData?.attachments[0]?.file_path}`}
+              height={200}
+              width={500}
               //   style={{ borderRadius: "8px 0 0 8px" }}
             />
           </Box>

@@ -450,6 +450,7 @@ function Contract({
               handlePdfOpen={handlePdfOpen}
               handleNext={handleNext}
               singlePropertyData={singlePropertyData}
+              languageName={languageName}
             />
           </>
         </Tooltip>

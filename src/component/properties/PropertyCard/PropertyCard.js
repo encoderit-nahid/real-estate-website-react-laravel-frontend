@@ -72,7 +72,7 @@ function PropertyCard({ srcImage, amount }) {
                 lineHeight: "32px",
               }}
             >
-              {`BRL ${amount}`}
+              {`R$ ${amount}`}
             </Typography>
             <Typography
               variant="p"

@@ -118,7 +118,7 @@ function DigitalNotaryModal({ handleClose, handleNext, singlePropertyData }) {
                 mt: 2,
               }}
             >
-              Confirm submission to notary
+              confirma envio dos documentos para o cartório registro de imóveis?
             </Typography>
           </Box>
         </Grid>
@@ -145,7 +145,7 @@ function DigitalNotaryModal({ handleClose, handleNext, singlePropertyData }) {
                 },
               }}
             >
-              Cancel
+              cancelar
             </Button>
           </Grid>
           <Grid item xs={12} sm={12} md={12} lg={6} xl={6}>
@@ -173,7 +173,7 @@ function DigitalNotaryModal({ handleClose, handleNext, singlePropertyData }) {
               }}
             >
               {loading && <CircularProgress size={22} color="inherit" />}
-              {!loading && "To send"}
+              {!loading && "enviar"}
             </Button>
           </Grid>
         </Grid>
