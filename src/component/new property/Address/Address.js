@@ -2,6 +2,7 @@ import {
   Autocomplete,
   Box,
   Button,
+  Container,
   Divider,
   FormControl,
   Grid,
@@ -470,8 +471,8 @@ function Address({
           </Grid>
         </Grid>
       </Grid>
-      <Grid container spacing={1} sx={{ mt: 2 }}>
-        <Grid item xs={12}>
+      {/* <Grid container spacing={1} sx={{ mt: 2 }}> */}
+      {/* <Grid item xs={12}>
           <Grid
             container
             direction="column"
@@ -488,73 +489,83 @@ function Address({
               }}
             >
               {`${t["Property detail"]}:`}
-            </Typography>
-            <Box sx={{ mt: 1 }}>
-              <Grid container spacing={1}>
-                {propertyDetail?.map((data, index) => (
-                  <Grid item xs={3} key={index}>
-                    <Button
-                      onClick={() => {
-                        setPropertyDetailId(data.id);
-                      }}
-                      sx={{
-                        width: "100%",
-                        background:
-                          property_detail_id === data.id
-                            ? "#0362F0"
-                            : "#F2F5F6",
-                        borderRadius: "152px",
-                        color:
-                          property_detail_id === data.id
-                            ? "#ffffff"
-                            : "#002152",
-                        fontSize: {
-                          xs: "12px",
-                          sm: "13px",
-                          md: "16px",
-                          lg: "13px",
-                          xl: "16px",
-                        },
-                        fontWeight: "400",
-                        lineHeight: "22px",
-                        textTransform: "none",
-                        px: { xs: 0, sm: 2, md: 2, lg: 2, xl: 2 },
-                        py: 1,
-                        "&:hover": {
-                          width: "100%",
-                          background: "#0362F0",
-                          borderRadius: "152px",
-                          color: "#ffffff",
-                          fontSize: {
-                            xs: "12px",
-                            sm: "13px",
-                            md: "16px",
-                            lg: "13px",
-                            xl: "16px",
-                          },
-                          fontWeight: "400",
-                          lineHeight: "22px",
-                          textTransform: "none",
-                          px: {
-                            xs: 0,
-                            sm: 2,
-                            md: 2,
-                            lg: 2,
-                            xl: 2,
-                          },
-                          py: 1,
-                        },
-                      }}
-                    >
-                      {data?.name}
-                    </Button>
-                  </Grid>
-                ))}
+            </Typography> */}
+      <Box sx={{ mt: 1 }}>
+        <Typography
+          variant="p"
+          sx={{
+            color: "#002152",
+            fontSize: "16px",
+            fontWeight: "400",
+            lineHeight: "22px",
+          }}
+        >
+          {`${t["Property detail"]}:`}
+        </Typography>
+
+        <Box sx={{ mt: 1 }}>
+          <Grid container spacing={1}>
+            {propertyDetail?.map((data, index) => (
+              <Grid item xs={6} sm={6} md={6} lg={3} key={index}>
+                <Button
+                  onClick={() => {
+                    setPropertyDetailId(data.id);
+                  }}
+                  sx={{
+                    width: "100%",
+                    background:
+                      property_detail_id === data.id ? "#0362F0" : "#F2F5F6",
+                    borderRadius: "152px",
+                    color:
+                      property_detail_id === data.id ? "#ffffff" : "#002152",
+                    fontSize: {
+                      xs: "12px",
+                      sm: "13px",
+                      md: "16px",
+                      lg: "13px",
+                      xl: "16px",
+                    },
+                    fontWeight: "400",
+                    lineHeight: "22px",
+                    textTransform: "none",
+                    px: { xs: 0, sm: 2, md: 2, lg: 2, xl: 2 },
+                    py: 1,
+                    "&:hover": {
+                      width: "100%",
+                      background: "#0362F0",
+                      borderRadius: "152px",
+                      color: "#ffffff",
+                      fontSize: {
+                        xs: "12px",
+                        sm: "13px",
+                        md: "16px",
+                        lg: "13px",
+                        xl: "16px",
+                      },
+                      fontWeight: "400",
+                      lineHeight: "22px",
+                      textTransform: "none",
+                      px: {
+                        xs: 0,
+                        sm: 2,
+                        md: 2,
+                        lg: 2,
+                        xl: 2,
+                      },
+                      py: 1,
+                    },
+                  }}
+                >
+                  {data?.name}
+                </Button>
               </Grid>
-            </Box>
+            ))}
           </Grid>
-        </Grid>
-      </Grid>
+        </Box>
+      </Box>
+      {/* </Grid>
+        </Grid> */}
+      {/* </Grid> */}
 
       <Controller
         name="project_id"

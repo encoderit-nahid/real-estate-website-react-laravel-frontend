@@ -320,7 +320,7 @@ function CertificatesAndDocuments({
                                         color: "#ffffff",
                                         textTransform: "none",
                                         py: 0.5,
-                                        px: 2,
+                                        px: 1,
                                       },
                                     }}
                                   >

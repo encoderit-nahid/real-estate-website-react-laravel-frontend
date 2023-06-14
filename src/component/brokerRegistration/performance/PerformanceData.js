@@ -126,10 +126,10 @@ function PerformanceData({
             mt: 2,
           }}
         >
-          Choosing &quot;both&quot;, we will understand that your performance
-          can be both in leasing and in sales and your accreditation will be
-          carried out in the segment that we have demand at the moment. We do
-          not accredit brokers to operate in both models.
+          Escolhendo ambos, entenderemos que a sua atuação pode ser tanto em
+          locação quanto em vendas e seu credenciamento será realizado no
+          segmento que tivermos demanda no momento. Não credenciamos corretores
+          para atuar nos dois modelos.
         </Typography>
         <Grid
           container

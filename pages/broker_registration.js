@@ -43,12 +43,12 @@ import en from "locales/en";
 import pt from "locales/pt";
 
 const aboutLokkanData = [
-  "Refer a friend",
+  "Indicação de amigo",
   "Facebook",
   "Instagram",
   "Linkedin",
-  "News",
-  "Partnership",
+  "Notícias",
+  "Parcerias",
 ];
 
 const omitEmpties = (obj) => {

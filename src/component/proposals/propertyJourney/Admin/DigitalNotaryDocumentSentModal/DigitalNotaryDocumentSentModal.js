@@ -52,7 +52,7 @@ function DigitalNotaryDocumentSentModal({
               lineHeight: "32px",
             }}
           >
-            Documents sent!
+            documentos enviados!
           </Typography>
         </Grid>
         <Button
@@ -74,7 +74,7 @@ function DigitalNotaryDocumentSentModal({
           }}
           // onClick={handleProposalClose}
         >
-          Close
+          fechar
         </Button>
       </Box>
     </Box>

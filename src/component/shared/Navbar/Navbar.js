@@ -229,7 +229,17 @@ function Navbar({
               mr: 1,
             }}
           >
-            <Image src={logoIcon} height={25} width={100} alt="logo" />
+            <Link href="/">
+              <a
+                style={{
+                  textDecoration: "none",
+                  listStyle: "none",
+                  cursor: "pointer",
+                }}
+              >
+                <Image src={logoIcon} height={25} width={100} alt="logo" />
+              </a>
+            </Link>
           </Grid>
           {/* <AdbIcon sx={{ display: { xs: "flex", md: "none" }, mr: 1 }} />
           <Typography
