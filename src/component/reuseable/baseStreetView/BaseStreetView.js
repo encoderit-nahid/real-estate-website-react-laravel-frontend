@@ -1,6 +1,7 @@
 import React from "react";
 import { _baseMAP } from "../../../../consts";
 import ReactStreetview from "react-streetview";
+import { Box } from "@mui/material";
 
 function BaseStreetView({ addressData }) {
   const googleMapsApiKey = _baseMAP;
@@ -15,9 +16,9 @@ function BaseStreetView({ addressData }) {
   };
 
   return (
-    <div
-      style={{
-        width: { xs: "200px", md: "850px" },
+    <Box
+      sx={{
+        width: { xs: "100%", md: "850px" },
         height: "450px",
         backgroundColor: "#eeeeee",
       }}
@@ -26,7 +27,7 @@ function BaseStreetView({ addressData }) {
         apiKey={googleMapsApiKey}
         streetViewPanoramaOptions={streetViewPanoramaOptions}
       />
-    </div>
+    </Box>
   );
 }
 

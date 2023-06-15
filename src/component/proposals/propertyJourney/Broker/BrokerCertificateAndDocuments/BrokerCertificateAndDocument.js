@@ -69,6 +69,8 @@ function BrokerCertificateAndDocument({
   const [nextErrormessage, setNextErrorMessage] = useState("");
   const [open, setOpen] = React.useState(false);
 
+  const [success, setSuccess] = useState(false);
+
   const handleRequestSubmit = async () => {
     if (certificateTypes.length > 0) {
       setLoading(true);
@@ -80,6 +82,7 @@ function BrokerCertificateAndDocument({
       setLoading(false);
       if (!error) {
         setOpen(true);
+        setSuccess(true);
         setNextErrorMessage(response?.data?.message);
       } else {
         setOpen(true);
@@ -344,7 +347,7 @@ function BrokerCertificateAndDocument({
           >
             <Alert
               onClose={handleSnackbarClose}
-              severity="error"
+              severity={success ? "success" : "error"}
               sx={{ width: "100%" }}
             >
               {nextErrormessage}
