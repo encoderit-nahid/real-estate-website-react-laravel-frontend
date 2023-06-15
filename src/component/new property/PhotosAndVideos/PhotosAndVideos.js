@@ -24,6 +24,7 @@ import { _baseURL, _imageURL } from "../../../../consts";
 import { useRouter } from "next/router";
 import en from "locales/en";
 import pt from "locales/pt";
+import { useSession } from "next-auth/react";
 
 const baseStyle = {
   flex: 1,
@@ -73,6 +74,7 @@ function PhotosAndVideos({
 }) {
   const dispatch = useDispatch();
   const { query } = useRouter();
+  const { data: session } = useSession();
   const t = languageName === "en" ? en : pt;
   useEffect(() => {
     dispatch(GetPhotoTypeData());
@@ -422,48 +424,38 @@ function PhotosAndVideos({
           </Grid>
         </Grid>
       ))}
-      <Grid
-        container
-        direction="row"
-        justifyContent="flex-end"
-        alignItems="center"
-        sx={{ mt: 2, mb: 2 }}
-      >
-        <Button
-          color="inherit"
-          onClick={handleBack}
-          // disabled={activeStep === 0}
-          sx={{
-            mr: 1,
-            border: "1px solid #002152",
-            borderRadius: "4px",
-            px: 2,
-            py: 1,
-            color: "#002152",
-            fontSize: "16px",
-            fontWeight: "600",
-            lineHeight: "22px",
-            textTransform: "none",
-          }}
+      {session?.user.role !== "owner" ? (
+        <Grid
+          container
+          direction="row"
+          justifyContent="flex-end"
+          alignItems="center"
+          sx={{ mt: 2, mb: 2 }}
         >
-          {t["come back"]}
-        </Button>
+          <Button
+            color="inherit"
+            onClick={handleBack}
+            // disabled={activeStep === 0}
+            sx={{
+              mr: 1,
+              border: "1px solid #002152",
+              borderRadius: "4px",
+              px: 2,
+              py: 1,
+              color: "#002152",
+              fontSize: "16px",
+              fontWeight: "600",
+              lineHeight: "22px",
+              textTransform: "none",
+            }}
+          >
+            {t["come back"]}
+          </Button>
 
-        <Button
-          onClick={handleNext}
-          disabled={disableBtn}
-          sx={{
-            background: "#7450F0",
-            borderRadius: "4px",
-            px: 2,
-            py: 1,
-            color: "#ffffff",
-            fontSize: "16px",
-            fontWeight: "600",
-            lineHeight: "22px",
-            textTransform: "none",
-            boxShadow: "0px 4px 8px rgba(81, 51, 182, 0.32)",
-            "&:hover": {
+          <Button
+            onClick={handleNext}
+            disabled={disableBtn}
+            sx={{
               background: "#7450F0",
               borderRadius: "4px",
               px: 2,
@@ -474,12 +466,26 @@ function PhotosAndVideos({
               lineHeight: "22px",
               textTransform: "none",
               boxShadow: "0px 4px 8px rgba(81, 51, 182, 0.32)",
-            },
-          }}
-        >
-          {t["Next"]}
-        </Button>
-      </Grid>
+              "&:hover": {
+                background: "#7450F0",
+                borderRadius: "4px",
+                px: 2,
+                py: 1,
+                color: "#ffffff",
+                fontSize: "16px",
+                fontWeight: "600",
+                lineHeight: "22px",
+                textTransform: "none",
+                boxShadow: "0px 4px 8px rgba(81, 51, 182, 0.32)",
+              },
+            }}
+          >
+            {t["Next"]}
+          </Button>
+        </Grid>
+      ) : (
+        ""
+      )}
     </Box>
   );
 }

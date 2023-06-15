@@ -315,6 +315,7 @@ export default function PropertyView({
                 selectImage={selectImage}
                 addressData={singlePropertyData?.property?.address}
                 languageName={myValue.toString()}
+                others={true}
               />
             </Grid>
             <Grid

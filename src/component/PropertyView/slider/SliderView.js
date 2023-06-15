@@ -63,6 +63,7 @@ function SliderView({
   selectImage,
   addressData,
   languageName,
+  others,
 }) {
   const t = languageName === "en" ? en : pt;
 
@@ -222,70 +223,74 @@ function SliderView({
           label={t["Condominium"]}
           {...a11yProps(2)}
         />
-        <Tab
-          sx={{
-            fontSize: "14px",
-            color: "#4B4B66",
-            fontWeight: "400",
-            px: 3,
-            py: 2,
-            textTransform: "none",
-            width: `${value === 3 ? "20vh" : "20vh"}`,
-            boxShadow: `${
-              value === 3 ? "0px 4px 24px rgba(69, 38, 177, 0.13)" : ""
-            }`,
-            borderLeft: `${value === 3 ? "2px solid #0E97F7" : ""}`,
-            clipPath: `${
-              value === 3
-                ? "polygon(0% 0%, 90% 0, 100% 50%, 91% 100%, 0% 100%)"
-                : ""
-            }`,
-            borderRight: `${value === 3 ? "2px solid #F9F9FB" : ""}`,
-            borderBottom: `${value === 3 ? "2px solid #F9F9FB" : ""}`,
-            borderTop: `${value === 3 ? "2px solid #F9F9FB" : ""}`,
-          }}
-          label={t["Location"]}
-          icon={
-            <MapOutlinedIcon
-              sx={{ color: `${value === 3 ? "#0E97F7" : ""}` }}
-            />
-          }
-          onClick={() => handleTabClick("location")}
-          iconPosition="start"
-          {...a11yProps(3)}
-        />
-        <Tab
-          sx={{
-            fontSize: "14px",
-            color: "#4B4B66",
-            fontWeight: "400",
-            px: 3,
-            py: 2,
-            textTransform: "none",
-            width: `${value === 4 ? "20vh" : "20vh"}`,
-            boxShadow: `${
-              value === 4 ? "0px 4px 24px rgba(69, 38, 177, 0.13)" : ""
-            }`,
-            borderLeft: `${value === 4 ? "2px solid #0E97F7" : ""}`,
-            clipPath: `${
-              value === 4
-                ? "polygon(0% 0%, 90% 0, 100% 50%, 91% 100%, 0% 100%)"
-                : ""
-            }`,
-            borderRight: `${value === 4 ? "2px solid #F9F9FB" : ""}`,
-            borderBottom: `${value === 4 ? "2px solid #F9F9FB" : ""}`,
-            borderTop: `${value === 4 ? "2px solid #F9F9FB" : ""}`,
-          }}
-          icon={
-            <SignpostOutlinedIcon
-              sx={{ color: `${value === 4 ? "#0E97F7" : ""}` }}
-            />
-          }
-          iconPosition="start"
-          label={t["Street view"]}
-          onClick={() => handleTabClick("street_view")}
-          {...a11yProps(4)}
-        />
+        {others === true && (
+          <Tab
+            sx={{
+              fontSize: "14px",
+              color: "#4B4B66",
+              fontWeight: "400",
+              px: 3,
+              py: 2,
+              textTransform: "none",
+              width: `${value === 3 ? "20vh" : "20vh"}`,
+              boxShadow: `${
+                value === 3 ? "0px 4px 24px rgba(69, 38, 177, 0.13)" : ""
+              }`,
+              borderLeft: `${value === 3 ? "2px solid #0E97F7" : ""}`,
+              clipPath: `${
+                value === 3
+                  ? "polygon(0% 0%, 90% 0, 100% 50%, 91% 100%, 0% 100%)"
+                  : ""
+              }`,
+              borderRight: `${value === 3 ? "2px solid #F9F9FB" : ""}`,
+              borderBottom: `${value === 3 ? "2px solid #F9F9FB" : ""}`,
+              borderTop: `${value === 3 ? "2px solid #F9F9FB" : ""}`,
+            }}
+            label={t["Location"]}
+            icon={
+              <MapOutlinedIcon
+                sx={{ color: `${value === 3 ? "#0E97F7" : ""}` }}
+              />
+            }
+            onClick={() => handleTabClick("location")}
+            iconPosition="start"
+            {...a11yProps(3)}
+          />
+        )}
+        {others === true && (
+          <Tab
+            sx={{
+              fontSize: "14px",
+              color: "#4B4B66",
+              fontWeight: "400",
+              px: 3,
+              py: 2,
+              textTransform: "none",
+              width: `${value === 4 ? "20vh" : "20vh"}`,
+              boxShadow: `${
+                value === 4 ? "0px 4px 24px rgba(69, 38, 177, 0.13)" : ""
+              }`,
+              borderLeft: `${value === 4 ? "2px solid #0E97F7" : ""}`,
+              clipPath: `${
+                value === 4
+                  ? "polygon(0% 0%, 90% 0, 100% 50%, 91% 100%, 0% 100%)"
+                  : ""
+              }`,
+              borderRight: `${value === 4 ? "2px solid #F9F9FB" : ""}`,
+              borderBottom: `${value === 4 ? "2px solid #F9F9FB" : ""}`,
+              borderTop: `${value === 4 ? "2px solid #F9F9FB" : ""}`,
+            }}
+            icon={
+              <SignpostOutlinedIcon
+                sx={{ color: `${value === 4 ? "#0E97F7" : ""}` }}
+              />
+            }
+            iconPosition="start"
+            label={t["Street view"]}
+            onClick={() => handleTabClick("street_view")}
+            {...a11yProps(4)}
+          />
+        )}
       </Tabs>
       <TabPanel value={value} index={0}>
         {selectImage != null ? (

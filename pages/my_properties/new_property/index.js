@@ -56,13 +56,22 @@ export default function NewProperty({ language }) {
     { stage: t["My Properties"], route: "my_properties" },
   ];
 
-  const steps = [
+  const otherSteps = [
     t["Address"],
     t["Values and description"],
     t["Features"],
     t["Photos and videos"],
     t["Owner"],
   ];
+
+  const ownerSteps = [
+    t["Address"],
+    t["Values and description"],
+    t["Features"],
+    t["Photos and videos"],
+  ];
+
+  const steps = session?.user?.role === "owner" ? ownerSteps : otherSteps;
 
   const validationSchema = Yup.object().shape({
     zip_code: Yup.string().required(t["Zip code is required"]),
@@ -116,26 +125,26 @@ export default function NewProperty({ language }) {
       .nullable()
       .required("Registration number office is required"),
 
-    owner_name: Yup.string().required(t["Owner Full Name is required"]),
-    owner_rg: Yup.string().required(t["Owner Rg is required"]),
-    owner_cpf: Yup.string().required(t["Owner cpf is required"]),
+    // owner_name: Yup.string().required(t["Owner Full Name is required"]),
+    // owner_rg: Yup.string().required(t["Owner Rg is required"]),
+    // owner_cpf: Yup.string().required(t["Owner cpf is required"]),
     // owner_spouse_name: Yup.string().required(
     //   t["Owner spouse full name is required"]
     // ),
     // owner_spouse_rg: Yup.string().required(t["Owner spouse RG is required"]),
     // owner_spouse_cpf: Yup.string().required(t["Owner spouse CPF is required"]),
-    owner_zip_code: Yup.string().required(t["Owner Zip code is required"]),
-    owner_address: Yup.string().required(t["Owner Address is required"]),
-    owner_number: Yup.number()
-      .transform((value) => (Number.isNaN(value) ? null : value))
-      .nullable()
-      .required(t["Owner Number is required"]),
-    owner_neighbourhood: Yup.string().required(
-      t["Owner Neighbourhood is required"]
-    ),
+    // owner_zip_code: Yup.string().required(t["Owner Zip code is required"]),
+    // owner_address: Yup.string().required(t["Owner Address is required"]),
+    // owner_number: Yup.number()
+    //   .transform((value) => (Number.isNaN(value) ? null : value))
+    //   .nullable()
+    //   .required(t["Owner Number is required"]),
+    // owner_neighbourhood: Yup.string().required(
+    //   t["Owner Neighbourhood is required"]
+    // ),
 
-    owner_city: Yup.string().required(t["Owner City is required"]),
-    owner_state: Yup.object().required(t["Owner State is required"]),
+    // owner_city: Yup.string().required(t["Owner City is required"]),
+    // owner_state: Yup.object().required(t["Owner State is required"]),
   });
 
   const dispatch = useDispatch();
@@ -433,15 +442,18 @@ export default function NewProperty({ language }) {
     //   registry_number: data?.owner_registration_number,
     //   document_title: data?.owner_documnentation?.label,
     // });
-    const requireData = {
+    const requireData = omitEmpties({
       ...firstPartData,
       registry_data: registryData,
       address: addressData,
-      owner_datas: {
-        ...ownerData,
-        address: ownerDataAddress,
-      },
-    };
+      owner_datas:
+        session?.user?.role !== "owner"
+          ? {
+              ...ownerData,
+              address: ownerDataAddress,
+            }
+          : null,
+    });
 
     const formData = serialize(requireData, { indices: true });
     if (query?.property_id) {
@@ -721,7 +733,7 @@ export default function NewProperty({ language }) {
                           <Box>
                             <Button
                               type="submit"
-                              disabled={disableBtn}
+                              // disabled={disableBtn}
                               onClick={() => setAction("draft")}
                               sx={{
                                 background: "#DBE1E5",
@@ -756,7 +768,7 @@ export default function NewProperty({ language }) {
                             </Button>
                             <Button
                               type="submit"
-                              disabled={disableBtn}
+                              // disabled={disableBtn}
                               onClick={() => setAction("new")}
                               sx={{
                                 background: "#7450F0",

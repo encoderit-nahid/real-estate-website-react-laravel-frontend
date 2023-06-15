@@ -32,6 +32,7 @@ import en from "locales/en";
 import pt from "locales/pt";
 import Link from "next/link";
 import SlideImageMobile from "@/component/PropertyView/SlideImageMobile/SlideImageMobile";
+import { _imageURL } from "consts";
 
 const aboutProperty = [
   "Heater",
@@ -81,6 +82,17 @@ export default function ProjectView({
 
   const t = myValue === "en" ? en : pt;
   const [sideTabValue, setSideTabValue] = useState("photos");
+
+  console.log({ singleProjectData });
+
+  const filterLogo = singleProjectData?.project?.attachments?.filter(
+    (data) => data.title === "logo"
+  );
+  console.log({ filterLogo });
+
+  const myLoader = ({ src }) => {
+    return `${_imageURL}/${src}`;
+  };
 
   const Images = useMemo(() => {
     return singleProjectData?.project?.attachments?.filter((data) => {
@@ -193,7 +205,7 @@ export default function ProjectView({
             alignItems="flex-start"
             sx={{ marginTop: 1 }}
           >
-            <TabView />
+            {/* <TabView /> */}
           </Grid>
         </Box>
         <Box
@@ -281,6 +293,7 @@ export default function ProjectView({
                 setSideTabValue={setSideTabValue}
                 selectImage={selectImage}
                 languageName={myValue.toString()}
+                others={false}
               />
             </Grid>
             <Grid
@@ -326,7 +339,14 @@ export default function ProjectView({
             >
               <Grid item xs={12} sm={12} md={12} lg={2}>
                 <Box>
-                  <Image src={yellowImage} alt="yellowImage" />
+                  <Image
+                    loader={myLoader}
+                    src={filterLogo[0]?.file_path}
+                    width={100}
+                    height={100}
+                    style={{ borderRadius: "50px" }}
+                    alt="yellowImage"
+                  />
                 </Box>
               </Grid>
               <Grid item xs={12} sm={12} md={12} lg={10}>
@@ -341,7 +361,7 @@ export default function ProjectView({
                 >
                   {singleProjectData?.project?.name}
                 </Typography>
-                <Typography
+                {/* <Typography
                   variant="h6"
                   sx={{
                     color: "#FFFFFF",
@@ -352,7 +372,7 @@ export default function ProjectView({
                   }}
                 >
                   📍AV. AFONSO MARIANO FAGUNDES, 417 SAÚDE, SÃO PAULO - SP
-                </Typography>
+                </Typography> */}
                 <Typography
                   variant="h6"
                   sx={{
@@ -360,7 +380,7 @@ export default function ProjectView({
                     fontWeight: "500",
                     fontSize: "20px",
                     lineHeight: "28px",
-                    mt: 4,
+                    mt: 2,
                   }}
                 >
                   {singleProjectData?.project?.description}
