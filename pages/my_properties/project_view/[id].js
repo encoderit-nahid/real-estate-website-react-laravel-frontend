@@ -83,12 +83,9 @@ export default function ProjectView({
   const t = myValue === "en" ? en : pt;
   const [sideTabValue, setSideTabValue] = useState("photos");
 
-  console.log({ singleProjectData });
-
   const filterLogo = singleProjectData?.project?.attachments?.filter(
     (data) => data.title === "logo"
   );
-  console.log({ filterLogo });
 
   const myLoader = ({ src }) => {
     return `${_imageURL}/${src}`;

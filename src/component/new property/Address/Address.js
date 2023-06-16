@@ -177,6 +177,8 @@ function Address({
     }
   }, [allValues, documents]);
 
+  console.log({ documents });
+
   return (
     <Box sx={{ mt: 4 }}>
       <Grid
@@ -250,7 +252,7 @@ function Address({
       {documents?.length > 0 && (
         <Grid container spacing={1} sx={{ mt: 3 }}>
           {documents?.map((file, index) => (
-            <Grid item xs={12} sm={12} md={4} lg={3} xl={3} key={file.id}>
+            <Grid item xs={12} sm={12} md={4} lg={3} xl={3} key={index}>
               <Box
                 sx={{
                   p: 2,

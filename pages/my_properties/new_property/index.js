@@ -640,7 +640,7 @@ export default function NewProperty({ language }) {
                           setMarried={setMarried}
                         />
                       )}
-                      {errors && (
+                      {/* {errors && (
                         <Stack sx={{ width: "100%", mt: 2 }} spacing={2}>
                           {Object.keys(errors).map((key, index) => (
                             <Alert key={index} severity="error">
@@ -648,7 +648,7 @@ export default function NewProperty({ language }) {
                             </Alert>
                           ))}
                         </Stack>
-                      )}
+                      )} */}
                       <Grid
                         container
                         direction="row"
@@ -733,7 +733,9 @@ export default function NewProperty({ language }) {
                           <Box>
                             <Button
                               type="submit"
-                              // disabled={disableBtn}
+                              disabled={
+                                session?.user?.role !== "owner" && disableBtn
+                              }
                               onClick={() => setAction("draft")}
                               sx={{
                                 background: "#DBE1E5",
@@ -768,7 +770,9 @@ export default function NewProperty({ language }) {
                             </Button>
                             <Button
                               type="submit"
-                              // disabled={disableBtn}
+                              disabled={
+                                session?.user?.role !== "owner" && disableBtn
+                              }
                               onClick={() => setAction("new")}
                               sx={{
                                 background: "#7450F0",

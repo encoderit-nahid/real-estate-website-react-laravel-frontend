@@ -231,7 +231,7 @@ function PhotosAndVideos({
       {files?.length > 0 && (
         <Grid container spacing={1} sx={{ mt: 3 }}>
           {files?.map((file, index) => (
-            <Grid item xs={12} sm={12} md={4} lg={3} xl={3} key={file.id}>
+            <Grid item xs={12} sm={12} md={4} lg={3} xl={3} key={index}>
               <Box
                 sx={{
                   p: 2,
