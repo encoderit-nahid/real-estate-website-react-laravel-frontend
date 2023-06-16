@@ -49,13 +49,15 @@ export const findRequireCertificateData = (id) => async (dispatch) => {
 //deleteSchedule
 export const deleteCertificate =
   (contract_id, certificate_type_id) => async (dispatch) => {
+    dispatch(requireCertificateRequest());
     const [error, response] = await certificateDeleteApi(
       contract_id,
       certificate_type_id
     );
 
     if (!error) {
-      dispatch(certificateRemove(certificate_type_id));
+      // dispatch(certificateRemove(certificate_type_id));
+      dispatch(findRequireCertificateData(contract_id));
     } else {
       const errorMassage =
         error?.response?.data?.data || error?.response?.data?.status;

@@ -579,7 +579,7 @@ function Address({
             getOptionLabel={(option) => option.name || ""}
             isOptionEqualToValue={(option, value) => option.id === value.id}
             size={"medium"}
-            placeholder={`${t["select enterprise name"]}*`}
+            placeholder={`${t["select enterprise name"]}`}
             onChange={(e, v, r, d) => field.onChange(v)}
             value={field.value || null}
           />

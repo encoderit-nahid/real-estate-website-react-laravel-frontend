@@ -42,8 +42,8 @@ import en from "locales/en";
 import pt from "locales/pt";
 
 const validationSchema = Yup.object().shape({
-  name: Yup.string().required("Enterprise Name is required"),
-  description: Yup.string().required("Description is required"),
+  name: Yup.string().required("O nome da empresa é obrigatório"),
+  description: Yup.string().required("A descrição é necessária"),
 });
 
 const baseStyle = {
@@ -192,7 +192,7 @@ export default function NewVenture({ language }) {
       }
     } else {
       setImageError(true);
-      setImageErrorMessage("Image file is required");
+      setImageErrorMessage("O arquivo de imagem é obrigatório");
     }
   };
 
