@@ -313,7 +313,7 @@ export default function MyProperties({ language }) {
                     variant="scrollable"
                   >
                     <Tab
-                      sx={{ fontWeight: "600" }}
+                      sx={{ fontWeight: "600", textTransform: "none" }}
                       label={
                         countLoading
                           ? t["Releases"]
@@ -324,7 +324,7 @@ export default function MyProperties({ language }) {
                       {...a11yProps(0)}
                     />
                     <Tab
-                      sx={{ fontWeight: "600" }}
+                      sx={{ fontWeight: "600", textTransform: "none" }}
                       label={
                         countLoading
                           ? t["Third"]
@@ -334,7 +334,7 @@ export default function MyProperties({ language }) {
                     />
                     {session.user?.role === "admin" && (
                       <Tab
-                        sx={{ fontWeight: "600" }}
+                        sx={{ fontWeight: "600", textTransform: "none" }}
                         label={
                           countLoading
                             ? t["New Registration"]

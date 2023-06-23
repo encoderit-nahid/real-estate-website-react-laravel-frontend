@@ -91,8 +91,6 @@ export default function Proposals({ language }) {
     dispatch(findProposalCountData());
   }, [dispatch]);
 
-  
-
   const notificationCountData = useSelector(
     (state) => state?.notificationCount?.notificationCountData
   );
@@ -336,7 +334,7 @@ export default function Proposals({ language }) {
                     variant="scrollable"
                   >
                     <Tab
-                      sx={{ fontWeight: "600" }}
+                      sx={{ fontWeight: "600", textTransform: "none" }}
                       label={
                         countLoading
                           ? t["Pending"]
@@ -347,7 +345,7 @@ export default function Proposals({ language }) {
                       {...a11yProps(0)}
                     />
                     <Tab
-                      sx={{ fontWeight: "600" }}
+                      sx={{ fontWeight: "600", textTransform: "none" }}
                       label={
                         countLoading
                           ? t["Accepted"]
@@ -358,7 +356,7 @@ export default function Proposals({ language }) {
                       {...a11yProps(1)}
                     />
                     <Tab
-                      sx={{ fontWeight: "600" }}
+                      sx={{ fontWeight: "600", textTransform: "none" }}
                       label={
                         countLoading
                           ? t["Completed"]
