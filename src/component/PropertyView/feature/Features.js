@@ -25,7 +25,7 @@ function Features({ singlePropertyData, languageName }) {
         variant="p"
         sx={{ color: "#1A1859", fontWeight: "700", fontSize: "18px" }}
       >
-        Features
+        características
       </Typography>
       <Grid
         container
@@ -62,7 +62,7 @@ function Features({ singlePropertyData, languageName }) {
           </Typography>
         </Box>
 
-        <Box sx={{ pl: 2, pr: 2 }}>
+        {/* <Box sx={{ pl: 2, pr: 2 }}>
           <Image src={building} alt="bed" />
           <Typography
             variant="p"
@@ -75,7 +75,7 @@ function Features({ singlePropertyData, languageName }) {
           >
             {`6th ${t["floor"]}`}
           </Typography>
-        </Box>
+        </Box> */}
         <Box>
           <Image src={bath} alt="bath" />
           <Typography

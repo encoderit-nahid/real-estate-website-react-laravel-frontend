@@ -49,7 +49,7 @@ function SendModal({ handleSendModalClose }) {
               lineHeight: "32px",
             }}
           >
-            Against proposal sent!
+            contra proposta enviada!
           </Typography>
         </Grid>
         <Link href="/proposals">
@@ -68,7 +68,7 @@ function SendModal({ handleSendModalClose }) {
             }}
             // onClick={handleProposalClose}
           >
-            Close
+            fechar
           </Button>
         </Link>
       </Box>

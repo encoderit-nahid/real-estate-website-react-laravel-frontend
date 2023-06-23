@@ -240,15 +240,19 @@ function BrokerCertificateAndDocument({
                       <Box
                         onClick={() => {
                           if (!certificateTypes?.includes(data.id)) {
-                            setCertificateTypes((current) => [
-                              ...current,
-                              data.id,
-                            ]);
+                            if (session?.user?.role === "buyer") {
+                              setCertificateTypes((current) => [
+                                ...current,
+                                data.id,
+                              ]);
+                            }
                           } else {
                             const newArray = certificateTypes?.filter(
                               (value) => value !== data.id
                             );
-                            setCertificateTypes(newArray);
+                            if (session?.user?.role === "buyer") {
+                              setCertificateTypes(newArray);
+                            }
                           }
                         }}
                         sx={{

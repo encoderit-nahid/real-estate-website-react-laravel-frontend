@@ -84,26 +84,29 @@ function ProposalModal({
   return (
     <Box sx={style}>
       <Box sx={{ width: "100%" }}>
-        <Grid
-          container
-          direction="row"
-          justifyContent="space-between"
-          alignItems="center"
-        >
-          <Typography
-            variant="p"
-            sx={{
-              fontSize: "24px",
-              fontWeight: "700",
-              color: "#002152",
-            }}
+        {activeStep === 0 && (
+          <Grid
+            container
+            direction="row"
+            justifyContent="space-between"
+            alignItems="center"
           >
-            {t["Proposal"]}
-          </Typography>
-          <Button onClick={handleProposalClose}>
-            <CloseIcon sx={{ color: "#6C7A84" }} />
-          </Button>
-        </Grid>
+            <Typography
+              variant="p"
+              sx={{
+                fontSize: "24px",
+                fontWeight: "700",
+                color: "#002152",
+              }}
+            >
+              {t["Proposal"]}
+            </Typography>
+
+            <Button onClick={handleProposalClose}>
+              <CloseIcon sx={{ color: "#6C7A84" }} />
+            </Button>
+          </Grid>
+        )}
 
         {/* <Stepper activeStep={activeStep} sx={{ marginTop: 2 }}>
           {steps.map((label, index) => {
@@ -124,13 +127,15 @@ function ProposalModal({
             );
           })}
         </Stepper> */}
-        <BaseStepper
-          steps={steps}
-          activeStep={activeStep}
-          isStepSkipped={isStepSkipped}
-          setActiveStep={setActiveStep}
-          marginTop={"2vh"}
-        />
+        {activeStep === 0 && (
+          <BaseStepper
+            steps={steps}
+            activeStep={activeStep}
+            isStepSkipped={isStepSkipped}
+            setActiveStep={setActiveStep}
+            marginTop={"2vh"}
+          />
+        )}
         {activeStep === steps.length ? (
           <React.Fragment>
             <Grid
@@ -158,7 +163,8 @@ function ProposalModal({
                   lineHeight: "32px",
                 }}
               >
-                {t["proposal sent"]}
+                proposta enviada com sucesso
+                {/* {t["proposal sent"]} */}
               </Typography>
             </Grid>
             <Button

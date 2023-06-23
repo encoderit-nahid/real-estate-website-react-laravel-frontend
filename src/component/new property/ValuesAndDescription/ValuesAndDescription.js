@@ -27,10 +27,12 @@ function ValuesAndDescription({
   const t = languageName === "en" ? en : pt;
 
   const top100Films = [
-    { label: t["Buyer's agent agreement"], year: 1994 },
-    { label: t["Purchase Agreement"], year: 1972 },
-    { label: t["Building Approval Plan"], year: 1974 },
-    { label: t["Land Receipts"], year: 2008 },
+    { label: "escritura definitiva registrada", year: 1994 },
+    { label: "escritura definitiva sem registro", year: 1972 },
+    { label: "escritura de posse", year: 1974 },
+    { label: "escritura de cessão de direitos hereditários", year: 2008 },
+    { label: "contrato de compra e venda", year: 2003 },
+    { label: "outros", year: 2005 },
   ];
 
   const [disableBtn, setDisableBtn] = useState(true);

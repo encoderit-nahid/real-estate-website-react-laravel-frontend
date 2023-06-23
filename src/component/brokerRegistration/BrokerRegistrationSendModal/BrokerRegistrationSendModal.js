@@ -43,7 +43,7 @@ function BrokerRegistrationSentModal({ handleClose }) {
               mt: 2,
             }}
           >
-            We send your registration for approval
+            enviamos seu cadastro para aprovação
           </Typography>
           <Typography
             variant="p"
@@ -56,8 +56,8 @@ function BrokerRegistrationSentModal({ handleClose }) {
               mt: 2,
             }}
           >
-            You will soon receive an email with more information, keep an eye on
-            your spam folder.
+            em breve você receberá um e-mail com mais informações, fique de olho
+            na sua caixa de spam
           </Typography>
         </Grid>
         <Link href="/">

@@ -195,7 +195,7 @@ function ScheduleCard({ data, languageName }) {
                   >
                     {` ${t["created on"]}: ${dayjs(
                       data?.property?.created_at
-                    ).format("MM/DD/YYYY")}
+                    ).format("DD/MM/YYYY")}
                       `}
                   </Typography>
                 </Grid>

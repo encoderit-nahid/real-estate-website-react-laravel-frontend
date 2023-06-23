@@ -24,6 +24,7 @@ import BrokerCountReducer from "./brokerCount/reducer";
 import NotificationReducer from "./all-notification/reducer";
 import NotificationCountReducer from "./notificationCount/reducer";
 import VideoTypeReducer from "./video/reducer";
+import PropertyCountReducer from "./propertyCount/reducer";
 
 const RootReducer = combineReducers({
   state: StateReducer,
@@ -47,6 +48,7 @@ const RootReducer = combineReducers({
   viewCertificate: ViewCertificateReducer,
   finalSubmit: FinalSubmittedDataReducer,
   count: CountReducer,
+  propertyCount: PropertyCountReducer,
   brokerCount: BrokerCountReducer,
   notification: NotificationReducer,
   notificationCount: NotificationCountReducer,

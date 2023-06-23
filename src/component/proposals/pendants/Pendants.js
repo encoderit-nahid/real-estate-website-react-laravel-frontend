@@ -6,6 +6,7 @@ import { findPropertyData } from "../../../redux/property/actions";
 import { useRouter } from "next/router";
 import { Language } from "@mui/icons-material";
 import { useSession } from "next-auth/react";
+import dayjs from "dayjs";
 
 function Pendants({ languageName }) {
   const dispatch = useDispatch();
@@ -29,6 +30,11 @@ function Pendants({ languageName }) {
   }, [dispatch, query]);
 
   const pendingProperty = useSelector((state) => state.property.propertyData);
+  // console.log({ pendingProperty });
+  // const timeString = dayjs(
+  //   "2023-06-14T07:36:38.000000Z",
+  //   "YYYY-MM-DD+h:mm"
+  // ).format("HH:mm:00");
 
   const Loading = useSelector((state) => state.property.loading);
 

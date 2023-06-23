@@ -24,8 +24,10 @@ import BaseTextArea from "../../reuseable/baseTextArea/BaseTextArea";
 import { formatISO } from "date-fns";
 import { DateTimePicker } from "@mui/x-date-pickers";
 import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
+
 import { Controller } from "react-hook-form";
 import { createScheduleApi } from "../../../api";
+import { ptBR } from "date-fns/locale";
 import en from "locales/en";
 import pt from "locales/pt";
 
@@ -59,7 +61,7 @@ function Negotiate({
   const handleToSchedule = async () => {
     setLoading(true);
     const dateString = dayjs(value, "YYYY-MM-DD+h:mm").format("YYYY-MM-DD");
-    const timeString = dayjs(value, "YYYY-MM-DD+h:mm").format("hh:mm");
+    const timeString = dayjs(value, "YYYY-MM-DD+h:mm").format("HH:mm:00");
     const allData = {
       date: dateString,
       time: timeString,
@@ -370,7 +372,7 @@ function Negotiate({
               mx: 4,
             }}
           >
-            <LocalizationProvider dateAdapter={AdapterDateFns}>
+            <LocalizationProvider locale={ptBR} dateAdapter={AdapterDateFns}>
               <Stack spacing={3}>
                 <DateTimePicker
                   inputFormat="dd/MM/yyyy hh:mm a"

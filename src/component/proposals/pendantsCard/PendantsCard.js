@@ -282,8 +282,10 @@ function PendantsCard({ propertyData, languageName }) {
                     <ListItemText
                       primary={`${data?.user?.name}`}
                       secondary={`${dayjs(data?.created_at).format(
-                        "MM/DD/YYYY"
-                      )}, ${dayjs(data?.created_at).format("h:mm  ")}`}
+                        "DD/MM/YYYY"
+                      )}, ${dayjs(data?.created_at, "YYYY-MM-DD+h:mm").format(
+                        "HH:mm:00"
+                      )}`}
                     />
                   </ListItem>
                 </List>
@@ -597,8 +599,11 @@ function PendantsCard({ propertyData, languageName }) {
                           }}
                         >
                           {`${dayjs(data?.created_at).format(
-                            "MM/DD/YYYY"
-                          )}, ${dayjs(data?.created_at).format("h:mm   ")}`}
+                            "DD/MM/YYYY"
+                          )}, ${dayjs(
+                            data?.created_at,
+                            "YYYY-MM-DD+h:mm"
+                          ).format("HH:mm:00")}`}
                         </Typography>
                       }
                     />

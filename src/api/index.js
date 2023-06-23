@@ -659,6 +659,16 @@ export const proposalCountApi = async () => {
   }
 };
 
+//property_count
+export const propertyCountApi = async () => {
+  try {
+    const response = await apiInstance.get(`/property/register-count`);
+    return [false, response];
+  } catch (error) {
+    return [error, null];
+  }
+};
+
 //broker_count
 export const brokerCountApi = async () => {
   try {

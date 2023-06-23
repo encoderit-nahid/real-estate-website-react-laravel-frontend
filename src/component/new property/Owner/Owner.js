@@ -216,7 +216,7 @@ function Owner({
                   lineHeight: "22px",
                 }}
               >
-                Spouse details:
+                dados do cônjuge:
               </Typography>
             </Grid>
           </Grid>
@@ -317,7 +317,7 @@ function Owner({
               lineHeight: "22px",
             }}
           >
-            Address:
+            endereço:
           </Typography>
         </Grid>
       </Grid>

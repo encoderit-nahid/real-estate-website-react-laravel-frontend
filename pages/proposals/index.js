@@ -91,6 +91,8 @@ export default function Proposals({ language }) {
     dispatch(findProposalCountData());
   }, [dispatch]);
 
+  
+
   const notificationCountData = useSelector(
     (state) => state?.notificationCount?.notificationCountData
   );

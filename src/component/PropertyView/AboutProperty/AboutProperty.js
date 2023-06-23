@@ -10,7 +10,7 @@ function AboutProperty({ name, array }) {
         variant="p"
         sx={{ color: "#1A1859", fontWeight: "700", fontSize: "18px" }}
       >
-        {name}
+        {name === "feature" ? "características" : name}
       </Typography>
       <Grid container sx={{ mt: 2 }}>
         {array?.map((data, index) => (

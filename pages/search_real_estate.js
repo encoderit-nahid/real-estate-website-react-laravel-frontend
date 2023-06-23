@@ -1307,10 +1307,10 @@ export default function SearchRealEstate({
 }
 
 const relevant = [
-  { value: "most_relevant", label: "Most Relevant" },
-  { value: "latest", label: "Latest" },
-  { value: "cheapest", label: "Cheapest" },
-  { value: "most_expensive", label: "Most Expensive" },
+  { value: "most_relevant", label: "mais relevante" },
+  { value: "latest", label: "recentes" },
+  { value: "cheapest", label: "mais barato" },
+  { value: "most_expensive", label: "mais caro" },
 ];
 
 export async function getServerSideProps(context) {

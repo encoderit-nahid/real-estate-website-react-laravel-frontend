@@ -187,6 +187,7 @@ export default function Registration({ language }) {
     const [errorToken, responseToken] = await registrationApi(allData);
     setLoading(false);
     if (!errorToken) {
+      // console.log("pp", responseToken);
       setSuccessMessage(responseToken?.data?.message);
       handleClickSuccessSnackbar();
       localStorage.setItem("registration_id", responseToken?.data?.user?.id);

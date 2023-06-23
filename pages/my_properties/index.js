@@ -43,6 +43,7 @@ import { NOTIFICATION_ADD_COUNT } from "@/redux/notificationCount/types";
 import { NotificationReadApi } from "@/api";
 import en from "locales/en";
 import pt from "locales/pt";
+import { findPropertyCountData } from "@/redux/propertyCount/actions";
 
 const drawerWidth = 240;
 
@@ -104,6 +105,7 @@ export default function MyProperties({ language }) {
   useEffect(() => {
     dispatch(findNotificationCountData());
     dispatch(GetAllNotification());
+    dispatch(findPropertyCountData());
   }, [dispatch]);
   const notificationCountData = useSelector(
     (state) => state?.notificationCount?.notificationCountData
@@ -155,6 +157,13 @@ export default function MyProperties({ language }) {
 
   const open = Boolean(anchorEl);
   const id = open ? "simple-popover" : undefined;
+
+  const propertyCountData = useSelector(
+    (state) => state?.propertyCount?.countData
+  );
+  console.log({ propertyCountData });
+
+  const countLoading = useSelector((state) => state?.propertyCount?.loading);
 
   const [value, setValue] = useState(+query?.value || 0);
 
@@ -305,18 +314,34 @@ export default function MyProperties({ language }) {
                   >
                     <Tab
                       sx={{ fontWeight: "600" }}
-                      label={t["Releases"]}
+                      label={
+                        countLoading
+                          ? t["Releases"]
+                          : `${t["Releases"]}(${
+                              propertyCountData?.project || 0
+                            })`
+                      }
                       {...a11yProps(0)}
                     />
                     <Tab
                       sx={{ fontWeight: "600" }}
-                      label={t["Third"]}
+                      label={
+                        countLoading
+                          ? t["Third"]
+                          : `${t["Third"]}(${propertyCountData?.third || 0})`
+                      }
                       {...a11yProps(1)}
                     />
                     {session.user?.role === "admin" && (
                       <Tab
                         sx={{ fontWeight: "600" }}
-                        label={t["New Registration"]}
+                        label={
+                          countLoading
+                            ? t["New Registration"]
+                            : `${t["New Registration"]}(${
+                                propertyCountData?.register_property || 0
+                              })`
+                        }
                         {...a11yProps(2)}
                       />
                     )}
@@ -429,7 +454,7 @@ export async function getServerSideProps(context) {
       },
     };
   }
-  const cookies = context.req.cookies["language"] || 'pt';
+  const cookies = context.req.cookies["language"] || "pt";
 
   return {
     props: {

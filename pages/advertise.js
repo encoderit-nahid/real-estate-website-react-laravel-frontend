@@ -163,7 +163,7 @@ export default function Advertise({
           <Grid item xs={12} sm={12} md={12} xl={6} lg={6}>
             <BrokerHelp
               name={t["The best experience for you!"]}
-              content="Com a Lokkan, a compra e venda de imóveis nunca foi tão fácil e rápida. Todo o processo é 100% digital e sem burocracia, desde o agendamento de visitas até a escritura pública. Não perca mais tempo com documentos e processos demorados, descubra a facilidade que a Lokkan pode proporcionar para você!"
+              content="com a Lokkan, a compra e venda de imóveis nunca foi tão fácil e rápida. Todo o processo é 100% digital e sem burocracia, desde o agendamento de visitas até a escritura pública. Não perca mais tempo com documentos e processos demorados, descubra a facilidade que a Lokkan pode proporcionar para você!"
               fieldItem={true}
               buttonName={t["I want to advertise"]}
               loginOpen={loginOpen}

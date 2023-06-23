@@ -439,7 +439,7 @@ function Navbar({
           }}
           onClick={handleLogout}
         >
-          Log out
+          {t["Log out"]}
         </Typography>
         <Link
           href={{
@@ -460,7 +460,7 @@ function Navbar({
               },
             }}
           >
-            Dashboard
+            painel
           </Typography>
         </Link>
       </Popover>
