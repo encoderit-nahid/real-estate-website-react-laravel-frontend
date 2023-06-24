@@ -2,12 +2,14 @@ import "../styles/globals.css";
 import "@fontsource/lato";
 
 import { createTheme, CssBaseline, ThemeProvider } from "@mui/material";
-import { useState } from "react";
+import React, { useState } from "react";
 import { SessionProvider } from "next-auth/react";
 import { Provider } from "react-redux";
 import { configureStore } from "../src/redux/store";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
+import { useRouter } from "next/router";
+import { _gaId } from "consts";
 
 function MyApp({ Component, pageProps: { session, ...pageProps } }) {
   const theme = createTheme({
@@ -23,7 +25,7 @@ function MyApp({ Component, pageProps: { session, ...pageProps } }) {
         lg: 1024,
         xl: 1280,
         xxl: 1536,
-        xxxl:2100
+        xxxl: 2100,
       },
     },
   });
@@ -31,6 +33,19 @@ function MyApp({ Component, pageProps: { session, ...pageProps } }) {
   const [loginOpen, setLoginOpen] = useState(false);
   const handleLoginOpen = () => setLoginOpen(true);
   const handleLoginClose = () => setLoginOpen(false);
+
+  const router = useRouter();
+  React.useEffect(() => {
+    const handleRouteChange = (url) => {
+      window.gtag("config", _gaId, {
+        page_path: url,
+      });
+    };
+    router.events.on("routeChangeComplete", handleRouteChange);
+    return () => {
+      router.events.off("routeChangeComplete", handleRouteChange);
+    };
+  }, [router.events]);
 
   return (
     <ThemeProvider theme={theme}>

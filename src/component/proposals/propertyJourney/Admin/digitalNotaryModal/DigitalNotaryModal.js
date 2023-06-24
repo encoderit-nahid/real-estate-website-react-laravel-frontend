@@ -106,6 +106,14 @@ function DigitalNotaryModal({ handleClose, handleNext, singlePropertyData }) {
           <Box>
             <Image src={notaryImage} alt="notaryImage" />
           </Box>
+        </Grid>
+        <Grid
+          container
+          direction="column"
+          justifyContent="center"
+          alignItems="center"
+          sx={{ ml: 2 }}
+        >
           <Box sx={{ px: { xs: 2, sm: 2, md: 2, lg: 0 } }}>
             <Typography
               variant="p"
@@ -118,7 +126,8 @@ function DigitalNotaryModal({ handleClose, handleNext, singlePropertyData }) {
                 mt: 2,
               }}
             >
-              confirma envio dos documentos para o cartório registro de imóveis?
+              confirma envio dos documentos para o cartório registro de imóveis
+              ?
             </Typography>
           </Box>
         </Grid>

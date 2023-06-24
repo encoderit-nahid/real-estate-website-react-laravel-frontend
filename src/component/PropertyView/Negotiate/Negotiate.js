@@ -291,6 +291,10 @@ function Negotiate({
           )}
 
           <Button
+            disabled={
+              session?.user?.role === "broker" ||
+              session?.user?.role === "owner"
+            }
             fullWidth
             sx={{
               background: "#00C1B4",
@@ -333,6 +337,9 @@ function Negotiate({
         sx={{ px: 4, py: 1 }}
       >
         <Button
+          disabled={
+            session?.user?.role === "broker" || session?.user?.role === "owner"
+          }
           variant="contained"
           color="secondary"
           fullWidth

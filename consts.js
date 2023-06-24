@@ -9,6 +9,8 @@ export const PERM = {
   CAN_USER_UPDATE: "can-user-update",
 };
 
+export const _gaId = process.env.NEXT_PUBLIC_GA_ID;
+
 export const pusher = new Pusher(process.env.NEXT_PUBLIC_PUSHER_KEY, {
   cluster: process.env.NEXT_PUBLIC_PUSHER_CLUSTER,
 });

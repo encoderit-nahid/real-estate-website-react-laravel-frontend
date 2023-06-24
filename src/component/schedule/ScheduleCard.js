@@ -16,10 +16,12 @@ import { cancelSchedule } from "../../redux/schedules/actions";
 import { _baseURL, _imageURL } from "../../../consts";
 import en from "locales/en";
 import pt from "locales/pt";
+import { useSession } from "next-auth/react";
 
 function ScheduleCard({ data, languageName }) {
   const t = languageName === "en" ? en : pt;
   const [loading, setLoading] = useState(false);
+  const { data: session } = useSession();
   const dispatch = useDispatch();
   const handleCancelSchedule = (id) => {
     setLoading(true);
@@ -367,7 +369,7 @@ function ScheduleCard({ data, languageName }) {
                     }}
                   >
                     <span style={{ fontWeight: "400" }}>Date:</span>
-                    {` ${dayjs(data?.buyer?.created_at).format("MM/DD/YYYY")}
+                    {` ${dayjs(data?.date).format("DD/MM/YYYY")}
                       `}
                   </Typography>
                   <Typography
@@ -387,8 +389,9 @@ function ScheduleCard({ data, languageName }) {
                     }}
                   >
                     <span style={{ fontWeight: "400" }}>Time:</span>
-                    {` ${dayjs(data?.buyer?.created_at).format("h:mm   ")}
-                      `}
+                    {/* {` $${dayjs(data?.time).format("HH:mm:00")}
+                      `} */}
+                    {data?.time}
                   </Typography>
                   {data?.buyer?.observation && (
                     <Typography
@@ -430,6 +433,7 @@ function ScheduleCard({ data, languageName }) {
               sx={{ ml: { xs: 1, sm: 1, md: 1, lg: 0 } }}
             >
               <Button
+                disabled={session?.user?.role === "broker"}
                 onClick={() => handleCancelSchedule(data?.id)}
                 variant="outlined"
                 sx={{

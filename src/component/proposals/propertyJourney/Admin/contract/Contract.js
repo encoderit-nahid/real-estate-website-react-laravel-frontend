@@ -41,7 +41,7 @@ function Contract({
   const { data: session } = useSession();
   const router = useRouter();
   const { query } = router;
-  console.log({ query });
+
   const t = languageName === "en" ? en : pt;
   //contract_modal_open
   const [contractModalOpen, setContractModalOpen] = React.useState(false);
@@ -93,7 +93,6 @@ function Contract({
         handleNext();
         setOpen(false);
       } else {
-        console.log("rrr", resp?.data?.message);
         setOpen(true);
         setNextErrorMessage(resp?.data?.message);
       }

@@ -216,7 +216,7 @@ export default function PropertyJourney({ language }) {
                     return (
                       <Step
                         key={label}
-                        onClick={() => setActiveStep(index)}
+                        // onClick={() => setActiveStep(index)}
                         {...stepProps}
                         sx={{
                           background: `${

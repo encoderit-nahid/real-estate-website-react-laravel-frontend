@@ -45,7 +45,6 @@ function TabRegisteredCard({ brokerInfo, languageName }) {
 
     setState({ ...state, [anchor]: open });
   };
-  console.log({ brokerInfo });
 
   const list = (anchor) => (
     <Box

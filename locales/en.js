@@ -319,6 +319,7 @@ export default {
   "proposal accepted": "proposal accepted",
   bedrooms: "bedrooms",
   residential: "residential",
+  commercial: "commercial",
   floor: "floor",
   apartament: "apartament",
   home: "home",

@@ -88,7 +88,7 @@ function TabView({ tabArray, upperTabValue, setUpperTabValue }) {
             <AntTab
               key={index}
               sx={{ borderRight: 1, paddingX: 4 }}
-              label={data.name}
+              label={data?.name}
               onClick={() => handleClick(data)}
               {...a11yProps(index)}
             />

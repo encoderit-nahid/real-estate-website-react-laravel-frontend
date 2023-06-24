@@ -4,6 +4,7 @@ import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { DesktopDatePicker } from "@mui/x-date-pickers/DesktopDatePicker";
 import { MobileDatePicker } from "@mui/x-date-pickers";
 import { Stack, TextField } from "@mui/material";
+import { ptBR } from "date-fns/locale";
 
 function BaseDateField({
   onChange,
@@ -15,7 +16,7 @@ function BaseDateField({
   sx,
 }) {
   return (
-    <LocalizationProvider dateAdapter={AdapterDateFns}>
+    <LocalizationProvider locale={ptBR} dateAdapter={AdapterDateFns}>
       <Stack>
         {/* <Controller
           name="Date_Purchased"

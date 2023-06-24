@@ -177,8 +177,6 @@ function Address({
     }
   }, [allValues, documents]);
 
-  console.log({ documents });
-
   return (
     <Box sx={{ mt: 4 }}>
       <Grid

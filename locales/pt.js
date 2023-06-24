@@ -218,6 +218,8 @@ export default {
   Sale: "venda",
   Residential: "residencial",
   Commercial: "comercial",
+  residential: "residencial",
+  commercial: "comercial",
   Apartment: "apartamento",
   Home: "casa",
   Farm: "sítio",
