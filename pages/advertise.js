@@ -108,7 +108,7 @@ export default function Advertise({
     },
     {
       name: "Processo de venda rápido: venda seu imóvel com facilidade e rapidez",
-      info: "Vender seu imóvel nunca foi tão fácil! Com a Lokkan, todo o processo é feito online, de forma 100% digital e sem burocracia, incluindo documentação e assinatura digital. Ganhe tempo e agilidade!",
+      info: "vender seu imóvel nunca foi tão fácil! Com a lokkan, todo o processo é feito online, de forma 100% digital e sem burocracia, incluindo documentação e assinatura digital. Ganhe tempo e agilidade!",
     },
   ];
 
@@ -163,7 +163,7 @@ export default function Advertise({
           <Grid item xs={12} sm={12} md={12} xl={6} lg={6}>
             <BrokerHelp
               name={t["The best experience for you!"]}
-              content="com a Lokkan, a compra e venda de imóveis nunca foi tão fácil e rápida. Todo o processo é 100% digital e sem burocracia, desde o agendamento de visitas até a escritura pública. Não perca mais tempo com documentos e processos demorados, descubra a facilidade que a Lokkan pode proporcionar para você!"
+              content="com a lokkan, a compra e venda de imóveis nunca foi tão fácil e rápida. todo o processo é 100% digital e sem burocracia, desde o agendamento de visitas até a escritura pública. não perca mais tempo com documentos e processos demorados, descubra a facilidade que a lokkan pode proporcionar para você!"
               fieldItem={true}
               buttonName={t["I want to advertise"]}
               loginOpen={loginOpen}

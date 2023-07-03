@@ -631,7 +631,7 @@ export default function Registration({ language }) {
                     alignItems="center"
                     sx={{ height: "8vh" }}
                   >
-                    Or
+                    ou
                   </Grid>
                   <Grid container spacing={1}>
                     <Grid item xs={12} sm={12} md={12} lg={6} xl={6}>

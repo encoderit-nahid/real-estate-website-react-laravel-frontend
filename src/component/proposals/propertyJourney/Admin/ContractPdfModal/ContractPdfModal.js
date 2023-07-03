@@ -63,8 +63,8 @@ const PDFViewer = dynamic(
 const drawerWidth = 300;
 
 const validationSchema = Yup.object().shape({
-  name: Yup.string().required("Name is required"),
-  details: Yup.string().required("Email is required"),
+  name: Yup.string().required("nome é obrigatório"),
+  details: Yup.string().required("e-mail é obrigatório"),
 });
 
 const Main = styled("main", { shouldForwardProp: (prop) => prop !== "open" })(

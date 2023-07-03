@@ -7,7 +7,7 @@ export default {
   "Make your": "encontre seu",
   "Dream!": "sonho!",
   Location: "localização",
-  "For those who want to sell": "pra quem deseja vender",
+  "For those who want to sell": "pra quem de seja vender",
   "track everything online": "acompanhe sua venda online em tempo real",
   "100% digital processes": "venda seu imóvel sem sair do sofá, 100% digital",
   "Fast sale!": "venda em tempo recorde",
@@ -39,7 +39,7 @@ export default {
   "free of bureaucracy": "zero burocracia, 100% agilidade",
   "Highest commission on the market":
     "aumente seus lucros com a comissão mais alta do mercado",
-  Autonomy: "seja seu próprio chefe com a Lokkan total autonomia!",
+  Autonomy: "seja seu próprio chefe com a lokkan total autonomia!",
   "Access to the entire property database":
     "descubra as melhores oportunidades com acesso completo ao nosso banco de dados de imóveis!",
   "Maximize your results": "maximize seus resultados",
@@ -50,8 +50,8 @@ export default {
   "your commission": "sua comissão",
   "calculate my commission": "calcular minha comissão",
   sale: "venda",
-  "ready customers": "clientes Prontos",
-  "highest commission": "maior Comissão",
+  "ready customers": "clientes prontos",
+  "highest commission": "maior comissão",
   Flexibility: "flexibilidade",
   "Properties found": "imóveis achado",
   "Good Business": "bom negócio",
@@ -72,7 +72,7 @@ export default {
   "Already have registration?": "já tem cadastro?",
   "Register now": "registrar",
   Register: "registrar",
-  "To enter": "Entrar",
+  "To enter": "entrar",
   "Forgot your password ?": "esqueci minha senha ?",
   Submit: "enviar",
   "Reset your password": "mudar sua senha",
@@ -83,7 +83,7 @@ export default {
   Owner: "proprietário",
   Broker: "corretor",
   profile: "perfil",
-  "Personal data": "data pessoal",
+  "Personal data": "dados pessoais",
   Address: "endereço",
   Performance: "performance",
   "Profile picture": "foto do perfil",
@@ -99,8 +99,8 @@ export default {
   Continue: "continuar",
   "Add-on": "adicionar",
   "What is your acting preference?": "qual é a sua preferência de atuação?",
-  "How did you find out about Lokkan opportunities?":
-    "como você descobriu as oportunidades de Lokkan?",
+  "How did you find out about lokkan opportunities?":
+    "como você descobriu as oportunidades de lokkan?",
   rent: "alugar",
   sale: "vender",
   both: "alugar e vender",
@@ -256,7 +256,7 @@ export default {
   "Photos and videos": "fotos e vídeos",
   "Images of the property": "fotos do imóvel",
   "videos of the property": "vídeo do imóvel",
-  "paste the url of the video": "cole a URL do youtube",
+  "paste the url of the video": "cole a url do youtube",
   Convenient: "descrição",
   "drag and drop images here": "arraste e solte aqui",
   "select images": "selecionar imagens",
@@ -268,7 +268,7 @@ export default {
   "Enterprise Name": "nome do empreendimento",
   Description: "descrição",
   "Logo and images of the enterprise": "imagens do empreendimento",
-  Select: "selecione",
+  Select: "selecionar",
   Next: "próximo",
   "come back": "voltar",
   "Document data": "dados do documento",
@@ -285,7 +285,7 @@ export default {
   "Proposal values": "valores da proposta",
   "In Cash": "a vista",
   Installments: "parcelado",
-  "Total amount": "R$ Valor total",
+  "Total amount": "R$ valor total",
   Observation: "observação",
   "Buyer data": "dados do comprador(a)",
   Proposal: "proposta",
@@ -383,15 +383,15 @@ export default {
   "Fastest sales process on the market":
     "simplifique a venda de seu imóvel e receve propostas em tempo recorde",
   "Digital and simplified sales process, which provides agility and transparency, allowing you to focus on your customer":
-    "com a lokkan, vender um imóvel é sinônimo de facilidade e tecnologia avançada. Eliminamos a burocracia do processo de venda, permitindo que você alcance o resultado desejado com rapidez e segurança",
+    "com a lokkan, vender um imóvel é sinônimo de facilidade e tecnologia avançada. eliminamos a burocracia do processo de venda, permitindo que você alcance o resultado desejado com rapidez e segurança",
   "Simple ad system combined with complete assistance in the end-to-end buying and selling process. From announcement to public deed":
-    "na Lokkan, acreditamos que cada cliente merece atenção individualizada e assessoria completa em cada passo da venda do seu imóvel, do começo ao fim.",
+    "na lokkan, acreditamos que cada cliente merece atenção individualizada e assessoria completa em cada passo da venda do seu imóvel, do começo ao fim.",
   "We offer the best technologies, the most complete and agile advice on the market and the highest commission, the broker gets up to 70% of the total commission":
-    "por que se contentar com menos? Com a Lokkan, você pode ganhar muito mais, ficamos com a burocracia e repassamos 70% da comissão, oferecemos programa de recompensa por cada corretor indicado (saiba mais)",
-  "You will receive qualified Leads not only from your properties, but from all in your region, as well as scheduling visits, proposals, directly in your control panel":
-    "diga adeus à papelada e aos processos morosos! Na Lokkan, você terá uma experiência livre de burocracias! Além disso, receberá leads qualificados da sua região direto, com controle de agendamentos, propostas e visitas no seu painel de controle.",
+    "por que se contentar com menos? com a lokkan, você pode ganhar muito mais, ficamos com a burocracia e repassamos 70% da comissão, oferecemos programa de recompensa por cada corretor indicado (saiba mais)",
+  "You will receive qualified leads not only from your properties, but from all in your region, as well as scheduling visits, proposals, directly in your control panel":
+    "diga adeus à papelada e aos processos morosos! na lokkan, você terá uma experiência livre de burocracias! além disso, receberá leads qualificados da sua região direto, com controle de agendamentos, propostas e visitas no seu painel de controle.",
   "You receive 70% of the commission negotiated with the property owner (raising and commission)":
-    "trabalhe com quem valoriza o seu trabalho e reconhece o seu esforço. Na Lokkan, você terá a oportunidade de ganhar a maior comissão do mercado imobiliário, com 70% do valor da comissão. Seja recompensado pelo seu talento e dedicação!",
+    "trabalhe com quem valoriza o seu trabalho e reconhece o seu esforço. na lokkan, você terá a oportunidade de ganhar a maior comissão do mercado imobiliário, com 70% do valor da comissão. seja recompensado pelo seu talento e dedicação!",
   "At Lokkan you are the owner of your business, you don't have a boss, you don't have to pay for the phone, ads, lawyers, documents and you still receive the highest commission on the market":
     "liberdade é essencial para quem quer crescer no mercado imobiliário. com a lokkan, você terá total autonomia para tomar suas próprias decisões e ser dono do seu negócio. tenha controle sobre a sua carreira e alcance o sucesso que sempre desejou.",
   "Get customers who are ready to close deals":

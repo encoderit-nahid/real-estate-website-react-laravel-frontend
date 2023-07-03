@@ -32,13 +32,13 @@ function Footer() {
             sx={{ color: "#ffffff", fontSize: "14px" }}
           >
             <Typography variant="p">
-              Lokkan Serviços Imobiliários LTDA.
+              lokkan serviços imobiliários LTDA.
             </Typography>
             <Typography variant="p">
-              Avenida Paulista, 1439 - 1 andar - conj. 12
+              avenida paulista, 1439 - 1 andar - conj. 12
             </Typography>
             <Typography variant="p">
-              Jardim Paulista - CEP 01311-200 - São Paulo / SP
+              jardim paulista - CEP 01311-200 - São Paulo / SP
             </Typography>
             <Typography variant="p">CRECI - SP 28810J</Typography>
           </Grid>
@@ -53,22 +53,22 @@ function Footer() {
           >
             <Link href="/terms">
               <Typography variant="p" sx={{ cursor: "pointer" }}>
-                Termos de Uso
+                termos de uso
               </Typography>
             </Link>
             <Link href="/privacy">
               <Typography variant="p" sx={{ cursor: "pointer" }}>
-                Política de Privacidade
+                política de privacidade
               </Typography>
             </Link>
             <Link href="/user_manual">
               <Typography variant="p" sx={{ cursor: "pointer" }}>
-                Manual dos usuários
+                manual dos usuários
               </Typography>
             </Link>
             <Link href="/cookie_policy">
               <Typography variant="p" sx={{ cursor: "pointer" }}>
-                Política de cookies
+                política de cookies
               </Typography>
             </Link>
           </Grid>
@@ -83,19 +83,19 @@ function Footer() {
             sx={{ color: "#ffffff", fontSize: "14px" }}
           >
             <Typography variant="p" sx={{ cursor: "pointer" }}>
-              Minha conta
+              minha conta
             </Typography>
             <Link href="/advertise">
               <Typography variant="p" sx={{ cursor: "pointer" }}>
-                Anuncie seu imóvel
+                anuncie seu imóvel
               </Typography>
             </Link>
             <Typography variant="p" sx={{ cursor: "pointer" }}>
-              Seja um consultor
+              seja um consultor
             </Typography>
             <Link href="/blog">
               <Typography variant="p" sx={{ cursor: "pointer" }}>
-                Blog
+                blog
               </Typography>
             </Link>
           </Grid>
@@ -153,7 +153,7 @@ function Footer() {
         sx={{ paddingY: 2, paddingX: 3 }}
       >
         <Typography variant="p" sx={{ color: "#ffffff", fontSize: "14px" }}>
-          © 2019. Todos os direitos reservados a Lokkan Serviços Imobiliários
+          © 2019. todos os direitos reservados a lokkan serviços imobiliários
           LTDA.
         </Typography>
       </Grid>

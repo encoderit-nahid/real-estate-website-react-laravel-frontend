@@ -190,7 +190,7 @@ function PersonalData({
                     },
                   }}
                 >
-                  Select
+                  {t["Select"]}
                   <Controller
                     name="image"
                     control={control}

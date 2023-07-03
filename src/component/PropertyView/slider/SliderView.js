@@ -317,7 +317,7 @@ function SliderView({
                 fontSize: "20px",
               }}
             >
-              No Image Found
+              nenhuma imagem encontrada
             </Typography>
           </Grid>
         )}
@@ -358,7 +358,7 @@ function SliderView({
                 fontSize: "20px",
               }}
             >
-              No Image Found
+              nenhuma imagem encontrada
             </Typography>
           </Grid>
         )}
@@ -388,7 +388,7 @@ function SliderView({
                 fontSize: "20px",
               }}
             >
-              No Image Found
+              nenhuma imagem encontrada
             </Typography>
           </Grid>
         )}

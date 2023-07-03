@@ -33,6 +33,7 @@ import pt from "locales/pt";
 import Link from "next/link";
 import SlideImageMobile from "@/component/PropertyView/SlideImageMobile/SlideImageMobile";
 import { _imageURL } from "consts";
+import { useRouter } from "next/router";
 
 const aboutProperty = [
   "Heater",
@@ -79,7 +80,7 @@ export default function ProjectView({
   language,
 }) {
   const [myValue, setMyValue] = useState(language || "en");
-
+  const router = useRouter();
   const t = myValue === "en" ? en : pt;
   const [sideTabValue, setSideTabValue] = useState("photos");
 
@@ -113,6 +114,10 @@ export default function ProjectView({
     }
   }, [Images]);
 
+  const goBack = () => {
+    router.back();
+  };
+
   return (
     <div>
       <Head>
@@ -140,28 +145,27 @@ export default function ProjectView({
             justifyContent="flex-end"
             alignItems="flex-start"
           >
-            <Link href="/my_properties">
-              <Button
-                color="inherit"
-                // disabled={activeStep === 0}
-                //   onClick={handleBack}
-                sx={{
-                  mr: 1,
-                  border: "1px solid #38bdf8",
-                  borderRadius: "4px",
-                  px: 2,
-                  py: 1,
-                  my: 1,
-                  color: "#38bdf8",
-                  fontSize: "16px",
-                  fontWeight: "600",
-                  lineHeight: "22px",
-                  textTransform: "none",
-                }}
-              >
-                {t["come back"]}
-              </Button>
-            </Link>
+            <Button
+              color="inherit"
+              // disabled={activeStep === 0}
+              //   onClick={handleBack}
+              onClick={goBack}
+              sx={{
+                mr: 1,
+                border: "1px solid #38bdf8",
+                borderRadius: "4px",
+                px: 2,
+                py: 1,
+                my: 1,
+                color: "#38bdf8",
+                fontSize: "16px",
+                fontWeight: "600",
+                lineHeight: "22px",
+                textTransform: "none",
+              }}
+            >
+              {t["come back"]}
+            </Button>
           </Grid>
           <Grid
             container

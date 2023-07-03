@@ -20,16 +20,14 @@ import en from "locales/en";
 import pt from "locales/pt";
 
 const validationSchemaCash = Yup.object().shape({
-  total_amount: Yup.number().required("BRL amount is required"),
+  total_amount: Yup.number().required("valor é obrigatório"),
 });
 
 const validationSchemaInstallment = Yup.object().shape({
-  total_amount: Yup.number().required("Name is required"),
-  cash_amount: Yup.number().required("Cash Value is required"),
-  payment_per_installment: Yup.number().required("Term Value is required"),
-  no_of_installment: Yup.number().required(
-    "Number of Installments is required"
-  ),
+  total_amount: Yup.number().required("nome é obrigatório"),
+  cash_amount: Yup.number().required("valor é obrigatório"),
+  payment_per_installment: Yup.number().required("valor é obrigatório"),
+  no_of_installment: Yup.number().required("valor é obrigatório"),
 });
 
 function ProposalStep({
