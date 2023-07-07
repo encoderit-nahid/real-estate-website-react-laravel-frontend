@@ -93,7 +93,7 @@ export default function NewVenture({ language }) {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    dispatch(GetPhotoTypeData());
+    dispatch(GetPhotoTypeData("project"));
   }, [dispatch]);
 
   const photoType = useSelector((state) => state?.photoType?.photoTypeData);

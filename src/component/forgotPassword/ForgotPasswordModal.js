@@ -84,16 +84,18 @@ function ForgotPasswordModal({ handleForgotClose }) {
       ...data,
       redirect_url: `${baseRedirectUrl}/reset_password`,
     });
+
     setLoading(false);
     if (!error) {
       setSnackbarOpen(true);
+      console.log({ response });
       // router.push("/reset_password");
 
-      setMessage("Password reset link sent to the email.");
+      setMessage(response?.data?.message);
       setSeverity(true);
     } else {
       setSnackbarOpen(true);
-      setMessage("Invalid Email");
+      setMessage("Os dados fornecidos eram inválidos");
       setSeverity(false);
     }
   };

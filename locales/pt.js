@@ -140,7 +140,7 @@ export default {
   "visit data": "data da visita",
   "Cancel visit": "cancelar visita",
   Registered: "registrado",
-  "See all data": "ver todas as datas",
+  "See all data": "ver todas as dados",
   "Approve Registration": "aprovar registro",
   fail: "falha",
   "Log out": "sair",

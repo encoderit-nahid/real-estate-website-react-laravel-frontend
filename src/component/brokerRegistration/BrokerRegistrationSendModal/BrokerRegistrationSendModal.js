@@ -77,7 +77,7 @@ function BrokerRegistrationSentModal({ handleClose }) {
             }}
             //   onClick={handleProposalClose}
           >
-            Conclude
+            concluído
           </Button>
         </Link>
       </Box>

@@ -286,7 +286,7 @@ function Negotiate({
                 padding: "0.4vh 1.4vh",
               }}
               value={condition}
-              placeholder={"Condition"}
+              placeholder={"condição"}
             />
           )}
 

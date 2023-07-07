@@ -205,9 +205,13 @@ export const createProjectApi = async (body) => {
 };
 
 //photo_type
-export const photoTypeApi = async () => {
+export const photoTypeApi = async (type) => {
   try {
-    const response = await apiInstance.get(`property/photo-type`);
+    const response = await apiInstance.get(`property/photo-type`, {
+      params: omitEmpties({
+        type: type,
+      }),
+    });
     return [false, response];
   } catch (error) {
     return [error, null];

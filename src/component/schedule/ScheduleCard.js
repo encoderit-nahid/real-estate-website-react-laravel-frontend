@@ -40,13 +40,13 @@ function ScheduleCard({ data, languageName }) {
 
   const handleCopy = (data) => {
     const copiedString = JSON.stringify({
-      "brl rent": data?.property?.brl_rent,
-      "Created time": data?.property?.created_at,
-      address: data?.property?.address?.address,
-      "Buyer name": data?.buyer?.name,
-      "Buyer Email": data?.buyer?.email,
-      "Buyer Phone": data?.buyer?.phone,
-      observation: data?.buyer?.observation,
+      aluguel: data?.property?.brl_rent,
+      "hora criada": data?.property?.created_at,
+      endereço: data?.property?.address?.address,
+      "nome do comprador": data?.buyer?.name,
+      "e-mail do comprador": data?.buyer?.email,
+      "telefone do Comprador": data?.buyer?.phone,
+      observação: data?.buyer?.observation,
     });
     navigator.clipboard
       .writeText(copiedString)

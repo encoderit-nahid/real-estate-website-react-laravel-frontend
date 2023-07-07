@@ -85,7 +85,7 @@ export default function ProjectView({
   const [sideTabValue, setSideTabValue] = useState("photos");
 
   const filterLogo = singleProjectData?.project?.attachments?.filter(
-    (data) => data.title === "logo"
+    (data) => data.title === "project_photo"
   );
 
   const myLoader = ({ src }) => {

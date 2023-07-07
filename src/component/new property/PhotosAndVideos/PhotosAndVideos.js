@@ -77,7 +77,7 @@ function PhotosAndVideos({
   const { data: session } = useSession();
   const t = languageName === "en" ? en : pt;
   useEffect(() => {
-    dispatch(GetPhotoTypeData());
+    dispatch(GetPhotoTypeData("property"));
   }, [dispatch]);
 
   const photoType = useSelector((state) => state.photoType.photoTypeData);
