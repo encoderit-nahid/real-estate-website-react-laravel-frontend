@@ -24,7 +24,7 @@ import CloseIcon from "@mui/icons-material/Close";
 
 const validationSchema = Yup.object().shape({
   email: Yup.string()
-    .required("Email is required")
+    .required("e-mail é obrigatório")
     .matches(/.+@.+\.[A-Za-z]+$/, "Email is invalid"),
 });
 
