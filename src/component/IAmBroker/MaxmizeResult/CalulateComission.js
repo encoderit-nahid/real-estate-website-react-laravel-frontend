@@ -6,6 +6,8 @@ import { useState } from 'react'
 import BaseTextField from '../../reuseable/baseTextField/BaseTextField'
 import en from 'locales/en'
 import pt from 'locales/pt'
+import { getAllScenes } from 'react-pannellum'
+import { parse } from 'date-fns'
 
 function CalulateComission({
 	setFullCommission,
@@ -26,7 +28,10 @@ function CalulateComission({
 	}
 
 	const handleSaleValueChange = (e) => {
-		setSaleValue(e.target.value)
+		setSaleValue(e.target.value.replaceAll(".",""))
+		if(e.target.value != "" && e.target.value != null) {
+		e.target.value =parseInt(e.target.value.replaceAll(".","")).toLocaleString()
+		}
 	}
 
 	const handleCalculation = () => {
@@ -74,7 +79,6 @@ function CalulateComission({
 				label={t['Sale value']}
 				placeholder={t['Sale value']}
 				size={'medium'}
-				type={'number'}
 				onChange={handleSaleValueChange}
 				sx={{ mt: 4 }}
 				InputProps={{

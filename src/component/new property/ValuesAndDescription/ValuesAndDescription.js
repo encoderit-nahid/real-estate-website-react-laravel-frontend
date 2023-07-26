@@ -7,7 +7,7 @@ import {
   Typography,
 } from "@mui/material";
 import Image from "next/image";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import valueImage from "../../../../public/Images/proposal_modal.png";
 import ventureImage from "../../../../public/Images/certidoes.png";
 import BaseTextField from "../../reuseable/baseTextField/BaseTextField";
@@ -15,6 +15,7 @@ import { Controller } from "react-hook-form";
 import BaseAutocomplete from "../../reuseable/baseAutocomplete/BaseAutocomplete";
 import en from "locales/en";
 import pt from "locales/pt";
+import { Sync } from "@mui/icons-material";
 
 function ValuesAndDescription({
   control,
@@ -25,6 +26,27 @@ function ValuesAndDescription({
   allValues,
 }) {
   const t = languageName === "en" ? en : pt;
+
+  var valor = useRef();
+  var condominio = useRef();
+  var iptu = useRef();
+
+  const trocarValor = ((tipo)=>{
+    if(tipo = "valor"){
+    if(allValues.brl_rent!=null && allValues.brl_rent!=''){
+      valor.current.value = parseInt(allValues.brl_rent.replaceAll(".","")).toLocaleString("pt-BR");
+    }}
+    if(tipo = "condominio"){
+      if(allValues.condominium!=null && allValues.condominium!=''){
+        condominio.current.value = parseInt(allValues.condominium.replaceAll(".","")).toLocaleString("pt-BR");
+      }
+    }
+    if(tipo = "iptu"){
+      if(allValues.brl_iptu!=null && allValues.brl_iptu!=''){
+        iptu.current.value = parseInt(allValues.brl_iptu.replaceAll(".","")).toLocaleString("pt-BR");
+      }
+    }
+  }) 
 
   const top100Films = [
     { label: "escritura definitiva registrada", year: 1994 },
@@ -99,11 +121,12 @@ function ValuesAndDescription({
             name="brl_rent"
             control={control}
             defaultValue={""}
+            onChange={trocarValor("valor")}
             render={({ field }) => (
               <BaseTextField
+                referencia={valor}
                 size={"medium"}
                 placeholder={`${t["BRL Rent"]}*`}
-                type={"number"}
                 onChange={(e) => {
                   field.onChange(e.target.value);
                 }}
@@ -125,11 +148,12 @@ function ValuesAndDescription({
             name="condominium"
             control={control}
             defaultValue={""}
+            onChange={trocarValor(condominio)}
             render={({ field }) => (
               <BaseTextField
                 size={"medium"}
+                referencia={condominio}
                 placeholder={`R$ ${t["Condominium"]}*`}
-                type={"number"}
                 onChange={(e) => {
                   field.onChange(e.target.value);
                 }}
@@ -152,12 +176,13 @@ function ValuesAndDescription({
           <Controller
             name="brl_iptu"
             control={control}
+            onChange={trocarValor("iptu")}
             defaultValue={""}
             render={({ field }) => (
               <BaseTextField
                 size={"medium"}
+                referencia={iptu}
                 placeholder={"R$ IPTU*"}
-                type={"number"}
                 onChange={(e) => {
                   field.onChange(e.target.value);
                 }}

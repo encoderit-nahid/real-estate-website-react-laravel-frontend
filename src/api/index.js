@@ -3,8 +3,14 @@ import { _baseURL } from "../../consts";
 
 const baseURL = `${_baseURL}/api`;
 
+const baseCEP = `http://viacep.com.br/`;
+
 export const apiInstance = axios.create({
   baseURL: baseURL,
+});
+
+export const apiInstanceCEP = axios.create({
+  baseURL: baseCEP,
 });
 apiInstance.interceptors.request.use((config) => {
   const token = localStorage.getItem("token");
@@ -715,3 +721,15 @@ export const NotificationReadApi = async (id) => {
     return [error, null];
   }
 };
+
+
+//buscarCEP
+export const buscaCEP = async (cep) => {
+  try {
+    const response = await apiInstanceCEP.get(`ws/${cep}/json/`);
+    return [false, response];
+  } catch (error) {
+    return [error, null];
+  }
+};
+

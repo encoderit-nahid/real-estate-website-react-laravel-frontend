@@ -13,6 +13,8 @@ function BaseTextField({
   InputProps,
   error,
   required,
+  desabilitado,
+  referencia
 }) {
   return (
     <TextField
@@ -29,6 +31,8 @@ function BaseTextField({
       InputProps={InputProps}
       error={error}
       required={required}
+      disabled={desabilitado}
+      inputRef={referencia}
     />
   );
 }

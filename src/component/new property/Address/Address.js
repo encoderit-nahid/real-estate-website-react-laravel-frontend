@@ -10,7 +10,7 @@ import {
   Typography,
 } from "@mui/material";
 import Image from "next/image";
-import React, { useEffect } from "react";
+import React, { useEffect, useRef } from "react";
 import pinImage from "../../../../public/Images/pin.png";
 import DeleteOutlineOutlinedIcon from "@mui/icons-material/DeleteOutlineOutlined";
 import { useDropzone } from "react-dropzone";
@@ -28,6 +28,7 @@ import BaseAutocomplete from "../../reuseable/baseAutocomplete/BaseAutocomplete"
 import { findStateData } from "../../../redux/state/actions";
 import en from "locales/en";
 import pt from "locales/pt";
+import{ buscaCEP } from "@/api";
 
 const baseStyle = {
   flex: 1,
@@ -97,6 +98,8 @@ function Address({
 
   const [valid, setValid] = useState(false);
 
+  
+
   const handleValidation = (e) => {
     setValid(/^[0-9]{5}-[0-9]{3}$/.test(e.target.value));
 
@@ -106,6 +109,27 @@ function Address({
   // console.log({ documents })
   // const filterDocs = documents?.filter((d) => d instanceof File)
   // console.log({ filterDocs })
+
+  const endereco = useRef();
+  const cidade = useRef();
+  const estado = useRef();
+  const bairro = useRef();
+
+  const carregaCEP = async () => {
+    if(allValues.zip_code!=null && allValues.zip_code!='') {
+    if(allValues.zip_code.length > 8){
+      const [error, response] = await buscaCEP(allValues.zip_code);
+      endereco.current.value = response.data.logradouro;
+      endereco.current.disabled = true;
+      cidade.current.value = response.data.localidade;
+      cidade.current.disabled = true;
+      estado.current.value = response.data.uf;
+      estado.current.disabled = true;
+      bairro.current.value= response.data.bairro;
+      bairro.current.disabled = true;
+   }}
+       
+  };
 
   const onDrop = (acceptedFiles) => {
     acceptedFiles.map((file) =>
@@ -155,22 +179,14 @@ function Address({
   useEffect(() => {
     if (
       allValues?.zip_code != null &&
-      allValues?.address != null &&
       allValues?.number != null &&
-      allValues?.neighbourhood != null &&
-      allValues?.city != null &&
-      allValues?.state != null &&
       documents?.length > 0
     ) {
       setDisableBtn(false);
     }
     if (
       allValues?.zip_code === "" ||
-      allValues?.address === "" ||
       allValues?.number === "" ||
-      allValues?.neighbourhood === "" ||
-      allValues?.city === "" ||
-      allValues?.state === "" ||
       documents?.length < 1
     ) {
       setDisableBtn(true);
@@ -632,6 +648,7 @@ function Address({
               name="zip_code"
               control={control}
               defaultValue={""}
+              onChange={ carregaCEP() }
               render={({ field }) => (
                 <BaseOutlinedZipInput
                   placeholder={`${t["Zip code"]}*`}
@@ -662,11 +679,12 @@ function Address({
             render={({ field }) => (
               <BaseTextField
                 size={"medium"}
-                placeholder={`${t["Address"]}*`}
+                referencia={endereco}
+                placeholder={`${t["Address"]}`}
                 onChange={(e) => {
                   field.onChange(e.target.value);
                 }}
-                name={"address"}
+                name={"address_field"}
                 value={field.value}
               />
             )}
@@ -714,6 +732,7 @@ function Address({
             defaultValue={""}
             render={({ field }) => (
               <BaseTextField
+                referencia={bairro}
                 size={"medium"}
                 placeholder={`${t["Neighborhood"]}*`}
                 onChange={(e) => {
@@ -766,10 +785,11 @@ function Address({
             defaultValue={""}
             render={({ field }) => (
               <BaseTextField
+              referencia={cidade}
                 size={"medium"}
                 placeholder={`${t["City"]}*`}
                 onChange={(e) => {
-                  field.onChange(e.target.value);
+                  field.onChange(allValues.city);
                 }}
                 name={"city"}
                 value={field.value}
@@ -792,12 +812,16 @@ function Address({
             render={({ field }) => (
               <BaseAutocomplete
                 //   sx={{ margin: "0.6vh 0" }}
+                estado={estado}
                 options={allStateData || []}
                 getOptionLabel={(option) => option.name || ""}
                 isOptionEqualToValue={(option, value) => option.id === value.id}
                 size={"medium"}
                 placeholder={`${t["State"]}*`}
-                onChange={(e, v, r, d) => field.onChange(v)}
+                onChange={(e, v, r, d) => {
+                   field.onChange(v)
+                  
+                   console.log(v)}}
                 value={field.value || null}
               />
             )}
