@@ -185,8 +185,8 @@ export default function NewProperty({ language }) {
   const [skipped, setSkipped] = useState(new Set());
   const [featuretypes, setFeatureTypes] = useState([]);
   const [documents, setDocuments] = useState([]);
-  const [adType, setAdType] = useState("Rent");
-  const [propertyType, setPropertyType] = useState("Residential");
+  const [adType, setAdType] = useState(1);
+  const [propertyType, setPropertyType] = useState(1);
   const [property_detail_id, setPropertyDetailId] = useState(1);
   const [files, setFiles] = useState([]);
   const [imageError, setImageError] = useState(false);

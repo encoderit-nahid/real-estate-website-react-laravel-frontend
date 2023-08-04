@@ -117,16 +117,31 @@ function Address({
 
   const carregaCEP = async () => {
     if(allValues.zip_code!=null && allValues.zip_code!='') {
+    endereco.current.disabled = false;
+    cidade.current.disabled = false;
+    estado.current.disabled = false;
+    bairro.current.disabled = false;
     if(allValues.zip_code.length > 8){
+      if(allValues.zip_code != cep){
       const [error, response] = await buscaCEP(allValues.zip_code);
       endereco.current.value = response.data.logradouro;
+      cep = response.data.cep;
+      if(response.data.logradouro!=""&& response.data.logradouro != null){
       endereco.current.disabled = true;
+      }
       cidade.current.value = response.data.localidade;
-      cidade.current.disabled = true;
+      if(response.data.localidade!=""&& response.data.localidade != null){
+        cidade.current.disabled = true;
+        }
       estado.current.value = response.data.uf;
-      estado.current.disabled = true;
+      if(response.data.uf!=""&& response.data.uf != null){
+        estado.current.disabled = true;
+        }
       bairro.current.value= response.data.bairro;
-      bairro.current.disabled = true;
+      if(response.data.bairro!=""&& response.data.bairro != null){
+        bairro.current.disabled = true;
+        }
+      }
    }}
        
   };
@@ -348,18 +363,18 @@ function Address({
             <Box sx={{ mt: 1 }}>
               <Grid container spacing={1}>
                 {[
-                  { name: "Rent", slug: t["Rent"] },
-                  { name: "Sale", slug: t["Sale"] },
+                  { name: "Rent", slug: t["Rent"], id :1 },
+                  { name: "Sale", slug: t["Sale"], id :2 },
                 ].map((data, index) => (
                   <Grid item xs={6} key={index}>
                     <Button
-                      onClick={() => setAdType(data?.name)}
+                      onClick={() => setAdType(data?.id)}
                       sx={{
                         width: "100%",
                         background:
-                          adType === data?.name ? "#0362F0" : "#F2F5F6",
+                          adType === data?.id ? "#0362F0" : "#F2F5F6",
                         borderRadius: "152px",
-                        color: adType === data?.name ? "#ffffff" : "#002152",
+                        color: adType === data?.id ? "#ffffff" : "#002152",
                         fontSize: {
                           xs: "12px",
                           sm: "13px",
@@ -427,19 +442,19 @@ function Address({
             <Box sx={{ mt: 1 }}>
               <Grid container spacing={1}>
                 {[
-                  { name: "Residential", slug: t["Residential"] },
-                  { name: "Commercial", slug: t["Commercial"] },
+                  { name: "Residential", slug: t["Residential"] , id: 1},
+                  { name: "Commercial", slug: t["Commercial"] , id: 2},
                 ].map((data, index) => (
                   <Grid item xs={6} key={index}>
                     <Button
-                      onClick={() => setPropertyType(data?.name)}
+                      onClick={() => setPropertyType(data?.id)}
                       sx={{
                         width: "100%",
                         background:
-                          propertyType === data?.name ? "#0362F0" : "#F2F5F6",
+                          propertyType === data?.id ? "#0362F0" : "#F2F5F6",
                         borderRadius: "152px",
                         color:
-                          propertyType === data?.name ? "#ffffff" : "#002152",
+                          propertyType === data?.id ? "#ffffff" : "#002152",
                         fontSize: {
                           xs: "12px",
                           sm: "13px",
@@ -521,8 +536,10 @@ function Address({
 
         <Box sx={{ mt: 1 }}>
           <Grid container spacing={1}>
-            {propertyDetail?.map((data, index) => (
-              <Grid item xs={6} sm={6} md={6} lg={3} key={index}>
+            {propertyDetail?.map((data, index) => {
+              if(data.tipo_propriedade == propertyType){
+                
+              return <Grid item xs={6} sm={6} md={6} lg={3} key={index}>
                 <Button
                   onClick={() => {
                     setPropertyDetailId(data.id);
@@ -575,7 +592,7 @@ function Address({
                   {data?.name}
                 </Button>
               </Grid>
-            ))}
+  }})}
           </Grid>
         </Box>
       </Box>
