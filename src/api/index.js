@@ -3,7 +3,7 @@ import { _baseURL } from "../../consts";
 
 const baseURL = `${_baseURL}/api`;
 
-const baseCEP = `http://viacep.com.br/`;
+const baseCEP = `https://viacep.com.br/`;
 
 export const apiInstance = axios.create({
   baseURL: baseURL,
