@@ -122,10 +122,8 @@ function Address({
     estado.current.disabled = false;
     bairro.current.disabled = false;
     if(allValues.zip_code.length > 8){
-      if(allValues.zip_code != cep){
       const [error, response] = await buscaCEP(allValues.zip_code);
       endereco.current.value = response.data.logradouro;
-      cep = response.data.cep;
       if(response.data.logradouro!=""&& response.data.logradouro != null){
       endereco.current.disabled = true;
       }
@@ -141,7 +139,6 @@ function Address({
       if(response.data.bairro!=""&& response.data.bairro != null){
         bairro.current.disabled = true;
         }
-      }
    }}
        
   };
@@ -836,9 +833,7 @@ function Address({
                 size={"medium"}
                 placeholder={`${t["State"]}*`}
                 onChange={(e, v, r, d) => {
-                   field.onChange(v)
-                  
-                   console.log(v)}}
+                   field.onChange(v)}}
                 value={field.value || null}
               />
             )}
