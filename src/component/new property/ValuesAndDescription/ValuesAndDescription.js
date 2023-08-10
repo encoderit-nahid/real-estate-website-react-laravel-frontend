@@ -41,11 +41,7 @@ function ValuesAndDescription({
   var bloqueia = false;
 
   if(tipoVenda == 9 || tipoVenda == 10){
-<<<<<<< Updated upstream
   bloqueia = true;
-=======
-    bloqueia = true;
->>>>>>> Stashed changes
   allValues.property_area = 0;
   allValues.no_of_rooms = 0;
   allValues.no_of_suites = 0;
@@ -55,12 +51,7 @@ function ValuesAndDescription({
   allValues.registry = 0;
   allValues.registration_number = 0;
   }else{
-<<<<<<< Updated upstream
   bloqueia = false;
-=======
-    var land_area = useRef(""); 
-    bloqueia = false;
->>>>>>> Stashed changes
   }
   
   const t = languageName === "en" ? en : pt;
