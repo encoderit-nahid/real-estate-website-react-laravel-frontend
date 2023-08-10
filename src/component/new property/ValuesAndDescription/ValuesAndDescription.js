@@ -38,10 +38,11 @@ function ValuesAndDescription({
   var documentation = useRef();
   var registry = useRef();
   var registration_number = useRef();
-  var bloqueia = false;
+  var land_area = useRef();
+ 
 
   if(tipoVenda == 9 || tipoVenda == 10){
-  bloqueia = true;
+  var bloqueia = true;
   allValues.property_area = 0;
   allValues.no_of_rooms = 0;
   allValues.no_of_suites = 0;
@@ -51,7 +52,7 @@ function ValuesAndDescription({
   allValues.registry = 0;
   allValues.registration_number = 0;
   }else{
-  bloqueia = false;
+    var bloqueia = false;
   }
   
   const t = languageName === "en" ? en : pt;

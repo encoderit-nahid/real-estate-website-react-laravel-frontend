@@ -115,10 +115,10 @@ function Address({
   const estado = useRef();
   const bairro = useRef();
   var desabilitado = false;
-
+  if(allValues.zip_code!=null && allValues.zip_code!='') {
   if(allValues.zip_code.length > 8){
     desabilitado = true;
-  }
+  }}
 
   const carregaCEP = async () => {
     if(allValues.zip_code!=null && allValues.zip_code!='') {
