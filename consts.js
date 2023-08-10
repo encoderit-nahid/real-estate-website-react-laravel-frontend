@@ -1,6 +1,6 @@
 import Pusher from "pusher-js";
 
-export const _baseURL = process.env.NEXT_PUBLIC_API_URL;
+export const _baseURL = process.env.NEXT_PUBLIC_API_URL_TESTE;
 export const _imageURL = process.env.NEXT_PUBLIC_IMAGE_URL;
 export const _baseMAP = process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY;
 export const PERM = {
