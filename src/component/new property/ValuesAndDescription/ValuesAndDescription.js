@@ -38,10 +38,18 @@ function ValuesAndDescription({
   var documentation = useRef();
   var registry = useRef();
   var registration_number = useRef();
-  var bloqueia = false;
 
   if(tipoVenda == 9 || tipoVenda == 10){
-    bloqueia = true;
+    var land_area = useRef("");
+    var bloqueia = true;
+    var property_area= useRef("");
+  var no_of_rooms= useRef("");
+  var no_of_suites= useRef("");
+  var no_of_bathrooms= useRef("");
+  var no_of_parking_spaces= useRef("");
+  var documentation = useRef("");
+  var registry = useRef("");
+  var registration_number = useRef("");
   allValues.property_area = 0;
   allValues.no_of_rooms = 0;
   allValues.no_of_suites = 0;
@@ -52,7 +60,7 @@ function ValuesAndDescription({
   allValues.registration_number = 0;
   }else{
     var land_area = useRef(""); 
-    bloqueia = false;
+    var bloqueia = false;
   }
   
   const t = languageName === "en" ? en : pt;

@@ -468,7 +468,7 @@ export default function PropertyView({
 
 export async function getServerSideProps(context) {
   const { id } = context.query;
-  const base_url = process.env.NEXT_PUBLIC_API_URL_TESTE;
+  const base_url = process.env.NEXT_PUBLIC_API_URL;
   // console.log("paramId", id);
   const res = await fetch(`${base_url}/api/property/show/${id}`);
   const singlePropertyData = await res.json();
