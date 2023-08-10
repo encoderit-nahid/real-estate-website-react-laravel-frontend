@@ -114,30 +114,43 @@ function Address({
   const cidade = useRef();
   const estado = useRef();
   const bairro = useRef();
+  var desabilitado = false;
+
+  if(allValues.zip_code.length > 8){
+    desabilitado = true;
+  }
 
   const carregaCEP = async () => {
     if(allValues.zip_code!=null && allValues.zip_code!='') {
-    endereco.current.disabled = false;
-    cidade.current.disabled = false;
-    estado.current.disabled = false;
-    bairro.current.disabled = false;
+
     if(allValues.zip_code.length > 8){
       const [error, response] = await buscaCEP(allValues.zip_code);
-      endereco.current.value = response.data.logradouro;
-      if(response.data.logradouro!=""&& response.data.logradouro != null){
+    if(endereco.current!=undefined){
+      endereco.current.disabled = false;
+      cidade.current.disabled = false;
+      estado.current.disabled = false;
+      bairro.current.disabled = false;
+      }
+      
+      if(response.data.logradouro!=""&& response.data.logradouro != null && endereco.current!= undefined){
+        endereco.current.value = response.data.logradouro;
       endereco.current.disabled = true;
       }
-      cidade.current.value = response.data.localidade;
-      if(response.data.localidade!=""&& response.data.localidade != null){
+      
+      if(response.data.localidade!=""&& response.data.localidade != null && cidade.current!=undefined){
+        cidade.current.value = response.data.localidade;
         cidade.current.disabled = true;
         }
-      estado.current.value = response.data.uf;
-      if(response.data.uf!=""&& response.data.uf != null){
+      
+      if(response.data.uf!=""&& response.data.uf != null && estado.current!=undefined){
+        estado.current.value = response.data.uf;
         estado.current.disabled = true;
         }
-      bairro.current.value= response.data.bairro;
-      if(response.data.bairro!=""&& response.data.bairro != null){
+      
+      if(response.data.bairro!=""&& response.data.bairro != null && bairro.current!=undefined){
+        bairro.current.value= response.data.bairro;
         bairro.current.disabled = true;
+        desabilitado = true;
         }
    }}
        
@@ -662,7 +675,7 @@ function Address({
               name="zip_code"
               control={control}
               defaultValue={""}
-              onChange={ carregaCEP() }
+              onBlur={ carregaCEP() }
               render={({ field }) => (
                 <BaseOutlinedZipInput
                   placeholder={`${t["Zip code"]}*`}
@@ -832,6 +845,7 @@ function Address({
                 isOptionEqualToValue={(option, value) => option.id === value.id}
                 size={"medium"}
                 placeholder={`${t["State"]}*`}
+                desabilitado={desabilitado}
                 onChange={(e, v, r, d) => {
                    field.onChange(v)}}
                 value={field.value || null}

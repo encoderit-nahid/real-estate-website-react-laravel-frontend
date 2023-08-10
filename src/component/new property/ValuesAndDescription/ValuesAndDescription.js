@@ -24,29 +24,46 @@ function ValuesAndDescription({
   handleNext,
   handleBack,
   allValues,
+  tipoVenda,
 }) {
-  const t = languageName === "en" ? en : pt;
 
   var valor = useRef();
   var condominio = useRef();
   var iptu = useRef();
+  var property_area= useRef();
+  var no_of_rooms= useRef();
+  var no_of_suites= useRef();
+  var no_of_bathrooms= useRef();
+  var no_of_parking_spaces= useRef();
+  var documentation = useRef();
+  var registry = useRef();
+  var registration_number = useRef();
 
-  const trocarValor = ((tipo)=>{
-    if(tipo = "valor"){
-    if(allValues.brl_rent!=null && allValues.brl_rent!=''){
-      valor.current.value = parseInt(allValues.brl_rent.replaceAll(".","")).toLocaleString("pt-BR");
-    }}
-    if(tipo = "condominio"){
-      if(allValues.condominium!=null && allValues.condominium!=''){
-        condominio.current.value = parseInt(allValues.condominium.replaceAll(".","")).toLocaleString("pt-BR");
-      }
-    }
-    if(tipo = "iptu"){
-      if(allValues.brl_iptu!=null && allValues.brl_iptu!=''){
-        iptu.current.value = parseInt(allValues.brl_iptu.replaceAll(".","")).toLocaleString("pt-BR");
-      }
-    }
-  }) 
+  if(tipoVenda == 9 || tipoVenda == 10){
+    var land_area = useRef("");
+    var bloqueia = true;
+    var property_area= useRef("");
+  var no_of_rooms= useRef("");
+  var no_of_suites= useRef("");
+  var no_of_bathrooms= useRef("");
+  var no_of_parking_spaces= useRef("");
+  var documentation = useRef("");
+  var registry = useRef("");
+  var registration_number = useRef("");
+  allValues.property_area = 0;
+  allValues.no_of_rooms = 0;
+  allValues.no_of_suites = 0;
+  allValues.no_of_bathrooms = 0;
+  allValues.no_of_parking_spaces = 0;
+  allValues.documentation = 0;
+  allValues.registry = 0;
+  allValues.registration_number = 0;
+  }else{
+    var land_area = useRef(""); 
+    var bloqueia = false;
+  }
+  
+  const t = languageName === "en" ? en : pt;
 
   const top100Films = [
     { label: "escritura definitiva registrada", year: 1994 },
@@ -91,6 +108,22 @@ function ValuesAndDescription({
     ) {
       setDisableBtn(true);
     }
+    if (
+      allValues?.brl_rent != null &&
+      allValues?.condominium != null &&
+      allValues?.brl_iptu != null &&
+      allValues?.land_area != null &&
+      bloqueia) {
+      setDisableBtn(false);
+    }
+    if (
+      (allValues?.brl_rent === "" ||
+      allValues?.condominium === "" ||
+      allValues?.brl_iptu === "" ||
+      allValues?.land_area ==="") &&
+      bloqueia) {
+      setDisableBtn(true);
+    }
   }, [allValues]);
 
   return (
@@ -121,7 +154,6 @@ function ValuesAndDescription({
             name="brl_rent"
             control={control}
             defaultValue={""}
-            onChange={trocarValor("valor")}
             render={({ field }) => (
               <BaseTextField
                 referencia={valor}
@@ -129,6 +161,9 @@ function ValuesAndDescription({
                 placeholder={`${t["BRL Rent"]}*`}
                 onChange={(e) => {
                   field.onChange(e.target.value);
+                }}
+                onBlur={(e) => {
+                  field.onChange(parseInt(e.target.value.replaceAll(".","").replaceAll("R$","").replaceAll(",00","")).toLocaleString("pt-BR",{ style: 'currency', currency: 'BRL' }));
                 }}
                 name={"brl_rent"}
                 value={field.value}
@@ -148,7 +183,6 @@ function ValuesAndDescription({
             name="condominium"
             control={control}
             defaultValue={""}
-            onChange={trocarValor(condominio)}
             render={({ field }) => (
               <BaseTextField
                 size={"medium"}
@@ -156,6 +190,9 @@ function ValuesAndDescription({
                 placeholder={`R$ ${t["Condominium"]}*`}
                 onChange={(e) => {
                   field.onChange(e.target.value);
+                }}
+                onBlur={(e) => {
+                  field.onChange(parseInt(e.target.value.replaceAll(".","").replaceAll("R$","").replaceAll(",00","")).toLocaleString("pt-BR",{ style: 'currency', currency: 'BRL' }));
                 }}
                 name={"condominium"}
                 value={field.value}
@@ -176,7 +213,6 @@ function ValuesAndDescription({
           <Controller
             name="brl_iptu"
             control={control}
-            onChange={trocarValor("iptu")}
             defaultValue={""}
             render={({ field }) => (
               <BaseTextField
@@ -185,6 +221,9 @@ function ValuesAndDescription({
                 placeholder={"R$ IPTU*"}
                 onChange={(e) => {
                   field.onChange(e.target.value);
+                }}
+                onBlur={(e) => {
+                  field.onChange(parseInt(e.target.value.replaceAll(".","").replaceAll("R$","").replaceAll(",00","")).toLocaleString("pt-BR",{ style: 'currency', currency: 'BRL' }));
                 }}
                 name={"brl_iptu"}
                 value={field.value}
@@ -223,7 +262,7 @@ function ValuesAndDescription({
       </Grid>
 
       <Grid container spacing={1} sx={{ mt: 2 }}>
-        <Grid item xs={12} sm={12} md={12} lg={5}>
+        <Grid  item xs={12} sm={12} md={12} lg={5}>
           <Controller
             name="land_area"
             control={control}
@@ -233,8 +272,9 @@ function ValuesAndDescription({
                 size={"medium"}
                 placeholder={`m² ${t["Land area"]}*`}
                 type={"number"}
+                referencia={land_area}
                 onChange={(e) => {
-                  field.onChange(e.target.value);
+                    field.onChange(e.target.value);
                 }}
                 name={"land_area"}
                 value={field.value}
@@ -254,18 +294,21 @@ function ValuesAndDescription({
             name="property_area"
             control={control}
             defaultValue={""}
-            render={({ field }) => (
+            render={({ field }) => { if(!bloqueia){
+              return(
               <BaseTextField
                 size={"medium"}
                 placeholder={`m² ${t["Size of the property"]}*`}
                 type={"number"}
+                desabilitado={bloqueia}
+                referencia={property_area}
                 onChange={(e) => {
                   field.onChange(e.target.value);
                 }}
                 name={"property_area"}
                 value={field.value}
               />
-            )}
+            )}}}
           />
           <Typography
             variant="inherit"
@@ -280,18 +323,21 @@ function ValuesAndDescription({
             name="no_of_rooms"
             control={control}
             defaultValue={""}
-            render={({ field }) => (
+            render={({ field }) =>  { if(!bloqueia){
+              return (
               <BaseTextField
                 size={"medium"}
                 placeholder={`${t["number of rooms"]}*`}
                 type={"number"}
+                desabilitado={bloqueia}
+                referencia={no_of_rooms}
                 onChange={(e) => {
                   field.onChange(e.target.value);
                 }}
                 name={"no_of_rooms*"}
                 value={field.value}
               />
-            )}
+            )}}}
           />
           <Typography
             variant="inherit"
@@ -308,18 +354,21 @@ function ValuesAndDescription({
             name="no_of_suites"
             control={control}
             defaultValue={""}
-            render={({ field }) => (
+            render={({ field }) =>  { if(!bloqueia){
+              return(
               <BaseTextField
                 size={"medium"}
                 placeholder={`${t["number of suites"]}*`}
                 type={"number"}
+                desabilitado={bloqueia}
+                referencia={no_of_suites}
                 onChange={(e) => {
                   field.onChange(e.target.value);
                 }}
                 name={"no_of_suites"}
                 value={field.value}
               />
-            )}
+            )}}}
           />
           <Typography
             variant="inherit"
@@ -334,18 +383,21 @@ function ValuesAndDescription({
             name="no_of_bathrooms"
             control={control}
             defaultValue={""}
-            render={({ field }) => (
+            render={({ field }) =>  { if(!bloqueia){
+              return(
               <BaseTextField
                 size={"medium"}
                 placeholder={`${t["bathrooms"]}*`}
                 type={"number"}
+                desabilitado={bloqueia}
+                referencia={no_of_bathrooms}
                 onChange={(e) => {
                   field.onChange(e.target.value);
                 }}
                 name={"no_of_bathrooms"}
                 value={field.value}
               />
-            )}
+            )}}}
           />
           <Typography
             variant="inherit"
@@ -360,18 +412,21 @@ function ValuesAndDescription({
             name="no_of_parking_spaces"
             control={control}
             defaultValue={""}
-            render={({ field }) => (
+            render={({ field }) =>  { if(!bloqueia){
+              return(
               <BaseTextField
                 size={"medium"}
                 placeholder={`${t["number of parking spaces"]}*`}
                 type={"number"}
+                desabilitado={bloqueia}
+                referencia={no_of_parking_spaces}
                 onChange={(e) => {
                   field.onChange(e.target.value);
                 }}
                 name={"no_of_parking_spaces"}
                 value={field.value}
               />
-            )}
+            )}}}
           />
           <Typography
             variant="inherit"
@@ -387,7 +442,8 @@ function ValuesAndDescription({
           <Controller
             name="documentation"
             control={control}
-            render={({ field }) => (
+            render={({ field }) =>  { if(!bloqueia){
+              return(
               <BaseAutocomplete
                 //   sx={{ margin: "0.6vh 0" }}
                 options={top100Films || []}
@@ -397,11 +453,13 @@ function ValuesAndDescription({
                 }
                 name="documentation"
                 size={"medium"}
+                referencia={documentation}
+                desabilitado={bloqueia}
                 placeholder={t["documents"]}
                 onChange={(e, v, r, d) => field.onChange(v)}
                 value={field.value || null}
               />
-            )}
+            )}}}
           />
           <Typography
             variant="inherit"
@@ -416,17 +474,20 @@ function ValuesAndDescription({
             name="registry"
             control={control}
             defaultValue={""}
-            render={({ field }) => (
+            render={({ field }) =>  { if(!bloqueia){
+              return(
               <BaseTextField
                 size={"medium"}
                 placeholder={t["registry office"]}
+                desabilitado={bloqueia}
+                referencia={registry}
                 onChange={(e) => {
                   field.onChange(e.target.value);
                 }}
                 name={"registry"}
                 value={field.value}
               />
-            )}
+            )}}}
           />
           <Typography
             variant="inherit"
@@ -441,18 +502,21 @@ function ValuesAndDescription({
             name="registration_number"
             control={control}
             defaultValue={""}
-            render={({ field }) => (
+            render={({ field }) =>  { if(!bloqueia){
+              return(
               <BaseTextField
                 size={"medium"}
                 placeholder={t["registration number"]}
                 type={"number"}
+                desabilitado={bloqueia}
+                referencia={registration_number}
                 onChange={(e) => {
                   field.onChange(e.target.value);
                 }}
                 name={"registartion_number"}
                 value={field.value}
               />
-            )}
+            )}}}
           />
           <Typography
             variant="inherit"

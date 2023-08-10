@@ -11,7 +11,9 @@ function BaseAutocomplete({
   getOptionLabel,
   isOptionEqualToValue,
   defaultValue,
-  estado
+  estado,
+  desabilitado,
+  referencia
 }) {
   return (
     <Autocomplete
@@ -26,8 +28,9 @@ function BaseAutocomplete({
       onChange={onChange}
       defaultValue={defaultValue}
       value={value}
+      disabled={desabilitado}
       renderInput={(params) => (
-        <TextField {...params} inputRef={estado} placeholder={placeholder} />
+        <TextField {...params} inputRef={estado} placeholder={placeholder} ref={referencia} disabled={desabilitado} />
       )}
     />
   );

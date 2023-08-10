@@ -592,6 +592,7 @@ export default function NewProperty({ language }) {
                         />
                       ) : activeStep === 1 ? (
                         <ValuesAndDescription
+                          tipoVenda={property_detail_id}
                           handleNext={handleNext}
                           handleBack={handleBack}
                           control={control}

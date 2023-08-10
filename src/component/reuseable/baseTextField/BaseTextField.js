@@ -14,7 +14,8 @@ function BaseTextField({
   error,
   required,
   desabilitado,
-  referencia
+  referencia,
+  onBlur
 }) {
   return (
     <TextField
@@ -25,6 +26,7 @@ function BaseTextField({
       placeholder={placeholder}
       value={value}
       onChange={onChange}
+      onBlur={onBlur}
       name={name}
       variant="outlined"
       sx={sx}
