@@ -489,7 +489,7 @@ export default function App({
 }
 
 export async function getServerSideProps(context) {
-  const base_url = process.env.NEXT_PUBLIC_API_URL_TESTE;
+  const base_url = process.env.NEXT_PUBLIC_API_URL;
   const res = await fetch(`${base_url}/api/property/best-deals`);
   const data = await res.json();
 

@@ -440,7 +440,7 @@ export default function ProjectView({
 
 export async function getServerSideProps(context) {
   const { id } = context.query;
-  const base_url = process.env.NEXT_PUBLIC_API_URL_TESTE;
+  const base_url = process.env.NEXT_PUBLIC_API_URL;
 
   const res = await fetch(`${base_url}/api/project/show/${id}`);
   const singleProjectData = await res.json();
