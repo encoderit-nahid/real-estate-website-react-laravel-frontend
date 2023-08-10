@@ -1314,7 +1314,7 @@ const relevant = [
 ];
 
 export async function getServerSideProps(context) {
-  const base_url = process.env.NEXT_PUBLIC_API_URL;
+  const base_url = process.env.NEXT_PUBLIC_API_URL_TESTE;
   const queryValue = context.query;
 
   var url = new URL(`${base_url}/api/property/index`),
