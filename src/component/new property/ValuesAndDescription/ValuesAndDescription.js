@@ -51,7 +51,6 @@ function ValuesAndDescription({
   allValues.registry = 0;
   allValues.registration_number = 0;
   }else{
-    var land_area = useRef(""); 
   bloqueia = false;
   }
   
