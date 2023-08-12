@@ -43,7 +43,9 @@ function ValuesAndDescription({
 
   if(tipoVenda == 9 || tipoVenda == 10){
   var bloqueia = true;
-  allValues.property_area = 0;
+  if(property_area.current!=undefined){
+    property_area.current.value = 0;
+  }
   allValues.no_of_rooms = 0;
   allValues.no_of_suites = 0;
   allValues.no_of_bathrooms = 0;

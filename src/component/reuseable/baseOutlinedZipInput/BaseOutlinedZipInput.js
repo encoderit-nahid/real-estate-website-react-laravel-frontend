@@ -24,7 +24,7 @@ function BaseOutlinedZipInput({
 	value,
 	onChange,
 	size,
-
+	referencia,
 	name,
 	error,
 }) {
@@ -38,6 +38,7 @@ function BaseOutlinedZipInput({
 			inputComponent={TextMaskCustom}
 			label={label}
 			size={size}
+			inputRef={referencia}
 			// startAdornment={
 			//   <InputAdornment position="start">
 			//     <Typography variant="p" sx={{ color: "#7450F0" }}>

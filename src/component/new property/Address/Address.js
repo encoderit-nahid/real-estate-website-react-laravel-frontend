@@ -75,11 +75,16 @@ function Address({
   languageName,
   allValues,
   handleNext,
+  setV_cep,
+  setV_endereco,
+  setV_cidade,
+  setV_estado,
+  setV_bairro,
+  setV_setMeuendereco
 }) {
   const dispatch = useDispatch();
 
   const t = languageName === "en" ? en : pt;
-
   useEffect(() => {
     dispatch(findPropertyTypeData());
     dispatch(findProjectsData({ page: 1, per_page: 10 }));
@@ -109,22 +114,27 @@ function Address({
   // console.log({ documents })
   // const filterDocs = documents?.filter((d) => d instanceof File)
   // console.log({ filterDocs })
-
+  const cep = useRef();
   const endereco = useRef();
   const cidade = useRef();
   const estado = useRef();
   const bairro = useRef();
   var desabilitado = false;
-  if(allValues.zip_code!=null && allValues.zip_code!='') {
-  if(allValues.zip_code.length > 8){
+
+  if(cep.current!=undefined && cep.current.value!=null && cep.current.value!='') {
+  if(cep.current.value.length > 8){
+    endereco.current.disabled = false;
+      cidade.current.disabled = false;
+      estado.current.disabled = false;
+      bairro.current.disabled = false;
     desabilitado = true;
   }}
 
   const carregaCEP = async () => {
-    if(allValues.zip_code!=null && allValues.zip_code!='') {
+    if(cep.current!=undefined && cep.current.value!=null && cep.current.value!='') {
 
-    if(allValues.zip_code.length > 8){
-      const [error, response] = await buscaCEP(allValues.zip_code);
+    if(cep.current.value.length > 8){
+      const [error, response] = await buscaCEP(cep.current.value);
     if(endereco.current!=undefined){
       endereco.current.disabled = false;
       cidade.current.disabled = false;
@@ -135,22 +145,36 @@ function Address({
       if(response.data.logradouro!=""&& response.data.logradouro != null && endereco.current!= undefined){
         endereco.current.value = response.data.logradouro;
       endereco.current.disabled = true;
+      allValues.address = endereco.current.value;
+      setV_endereco(response.data.logradouro);
       }
       
       if(response.data.localidade!=""&& response.data.localidade != null && cidade.current!=undefined){
         cidade.current.value = response.data.localidade;
         cidade.current.disabled = true;
+        allValues.city = cidade.current.value;
+        setV_cidade(cidade.current.value)
         }
       
-      if(response.data.uf!=""&& response.data.uf != null && estado.current!=undefined){
-        estado.current.value = response.data.uf;
+      if(response.data.uf!=""&& response.data.uf != null && estado.current!=undefined && allStateData!=undefined){
         estado.current.disabled = true;
+        const valor_estado_lista = "";
+        allStateData.forEach(element => {
+          if(element.name ===  response.data.uf){
+            valor_estado_lista = element;
+          }
+        }); 
+        allValues.state = valor_estado_lista;
+        estado.current.value = valor_estado_lista.name;
+        setV_estado(valor_estado_lista);
         }
       
       if(response.data.bairro!=""&& response.data.bairro != null && bairro.current!=undefined){
         bairro.current.value= response.data.bairro;
         bairro.current.disabled = true;
         desabilitado = true;
+        allValues.neighbourhood = bairro.current.value;
+        setV_bairro(response.data.bairro);
         }
    }}
        
@@ -674,12 +698,12 @@ function Address({
             <Controller
               name="zip_code"
               control={control}
-              defaultValue={""}
-              onBlur={ carregaCEP() }
+              onChange={carregaCEP()}
               render={({ field }) => (
                 <BaseOutlinedZipInput
                   placeholder={`${t["Zip code"]}*`}
                   size={"medium"}
+                  referencia={cep}
                   onChange={(e) => {
                     field.onChange(e.target.value);
                   }}
@@ -702,7 +726,6 @@ function Address({
           <Controller
             name="address"
             control={control}
-            defaultValue={""}
             render={({ field }) => (
               <BaseTextField
                 size={"medium"}
@@ -711,7 +734,7 @@ function Address({
                 onChange={(e) => {
                   field.onChange(e.target.value);
                 }}
-                name={"address_field"}
+                name={"address"}
                 value={field.value}
               />
             )}
@@ -728,7 +751,7 @@ function Address({
           <Controller
             name="number"
             control={control}
-            defaultValue={""}
+            //defaultValue={""}
             render={({ field }) => (
               <BaseTextField
                 size={"medium"}
@@ -756,7 +779,7 @@ function Address({
           <Controller
             name="neighbourhood"
             control={control}
-            defaultValue={""}
+            //defaultValue={""}
             render={({ field }) => (
               <BaseTextField
                 referencia={bairro}
@@ -782,7 +805,7 @@ function Address({
           <Controller
             name="complement"
             control={control}
-            defaultValue={""}
+           // defaultValue={""}
             render={({ field }) => (
               <BaseTextField
                 size={"medium"}
@@ -809,14 +832,14 @@ function Address({
           <Controller
             name="city"
             control={control}
-            defaultValue={""}
+            //defaultValue={""}
             render={({ field }) => (
               <BaseTextField
               referencia={cidade}
                 size={"medium"}
                 placeholder={`${t["City"]}*`}
                 onChange={(e) => {
-                  field.onChange(allValues.city);
+                  field.onChange(e.target.value);
                 }}
                 name={"city"}
                 value={field.value}
@@ -842,13 +865,14 @@ function Address({
                 estado={estado}
                 options={allStateData || []}
                 getOptionLabel={(option) => option.name || ""}
-                isOptionEqualToValue={(option, value) => option.id === value.id}
+                isOptionEqualToValue={(option, value) => {option.id === value.id }}
                 size={"medium"}
                 placeholder={`${t["State"]}*`}
                 desabilitado={desabilitado}
                 onChange={(e, v, r, d) => {
                    field.onChange(v)}}
                 value={field.value || null}
+                name="state"
               />
             )}
           />

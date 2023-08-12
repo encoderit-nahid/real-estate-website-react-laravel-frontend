@@ -8,7 +8,7 @@ import {
   Typography,
 } from "@mui/material";
 import Image from "next/image";
-import React, { useEffect } from "react";
+import React, { useEffect, useRef } from "react";
 import buyerProfile from "../../../../public/Images/buyer_profile.png";
 import { useState } from "react";
 import BaseOutlinedZipInput from "../../reuseable/baseOutlinedZipInput/BaseOutlinedZipInput";
@@ -21,6 +21,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { findStateData } from "../../../redux/state/actions";
 import pt from "locales/pt";
 import en from "locales/en";
+import{ buscaCEP } from "@/api";
 
 function Owner({
   control,
@@ -32,6 +33,12 @@ function Owner({
   single,
   married,
   setMarried,
+  allValues,
+  setV_owner_cep,
+  setV_owner_endereco,
+  setV_owner_cidade,
+  setV_owner_estado,
+  setV_owner_bairro
 }) {
   const t = languageName === "en" ? en : pt;
   const dispatch = useDispatch();
@@ -39,6 +46,72 @@ function Owner({
     dispatch(findStateData());
   }, [dispatch]);
   const allStateData = useSelector((state) => state.state.stateData);
+
+  const owner_cep = useRef();
+  const owner_endereco = useRef();
+  const owner_cidade = useRef();
+  const owner_estado = useRef();
+  const owner_bairro = useRef();
+
+  var desabilitado = false;
+
+  var desabilitado = false;
+  if(owner_cep.current!=undefined && owner_cep.current!=null && owner_cep.current!='') {
+  if(owner_cep.current.value.length > 8){
+    desabilitado = true;
+  }}
+
+  const carregaCEP = async () => {
+    if(owner_cep.current!=undefined && owner_cep.current.value!=null && owner_cep.current.value!='') {
+    if(owner_cep.current.value.length > 8){
+      setV_owner_cep(owner_cep.current.value);
+      const [error, response] = await buscaCEP(owner_cep.current.value);
+    if(owner_endereco.current!=undefined){
+      owner_endereco.current.disabled = false;
+      owner_cidade.current.disabled = false;
+      owner_estado.current.disabled = false;
+      owner_bairro.current.disabled = false;
+      }
+      
+      if(response.data.logradouro!=""&& response.data.logradouro != null && owner_endereco.current!= undefined){
+        owner_endereco.current.value = response.data.logradouro;
+        owner_endereco.current.disabled = true;
+        allValues.owner_address = response.data.logradouro;
+        setV_owner_endereco(response.data.logradouro);
+      }
+      
+      if(response.data.localidade!=""&& response.data.localidade != null && owner_cidade.current!=undefined){
+        owner_cidade.current.value = response.data.localidade;
+        owner_cidade.current.disabled = true;
+        allValues.owner_city = response.data.localidade;
+        setV_owner_cidade(owner_cidade.current.value)
+        }
+      
+      if(response.data.uf!=""&& response.data.uf != null && owner_estado.current!=undefined){
+        owner_estado.current.value = response.data.uf;
+     
+        
+        const valor_estado_lista = "";
+        allStateData.forEach(element => {
+          if(element.name ===  response.data.uf){
+            valor_estado_lista = element;
+          }
+        }); 
+        setV_owner_estado(valor_estado_lista);
+        allValues.owner_state = valor_estado_lista;
+        owner_estado.current.disabled = true;
+        }
+      
+      if(response.data.bairro!=""&& response.data.bairro != null && owner_bairro.current!=undefined){
+        owner_bairro.current.value= response.data.bairro;
+        owner_bairro.current.disabled = true;
+        desabilitado = true;
+        allValues.owner_neighbourhood = response.data.bairro;
+        setV_owner_bairro(response.data.bairro);
+        }
+   }}
+       
+  };
 
   return (
     <Box sx={{ mt: 4 }}>
@@ -327,10 +400,13 @@ function Owner({
             <Controller
               name="owner_zip_code"
               control={control}
+              onBlur={ carregaCEP() }
+              defaultValue={""}
               render={({ field }) => (
                 <BaseOutlinedZipInput
                   placeholder={`${t["Zip code"]}*`}
                   size={"medium"}
+                  referencia={owner_cep}
                   onChange={(e) => {
                     field.onChange(e.target.value);
                   }}
@@ -357,6 +433,7 @@ function Owner({
             render={({ field }) => (
               <BaseTextField
                 size={"medium"}
+                referencia={owner_endereco}
                 placeholder={`${t["Address"]}*`}
                 onChange={(e) => {
                   field.onChange(e.target.value);
@@ -410,6 +487,7 @@ function Owner({
             render={({ field }) => (
               <BaseTextField
                 size={"medium"}
+                referencia={owner_bairro}
                 placeholder={`${t["Neighborhood"]}*`}
                 onChange={(e) => {
                   field.onChange(e.target.value);
@@ -462,6 +540,7 @@ function Owner({
             render={({ field }) => (
               <BaseTextField
                 size={"medium"}
+                referencia={owner_cidade}
                 placeholder={`${t["City"]}*`}
                 onChange={(e) => {
                   field.onChange(e.target.value);
@@ -483,17 +562,19 @@ function Owner({
           <Controller
             name="owner_state"
             control={control}
-            defaultValue={""}
             render={({ field }) => (
               <BaseAutocomplete
                 //   sx={{ margin: "0.6vh 0" }}
+                estado={owner_estado}
                 options={allStateData || []}
                 getOptionLabel={(option) => option.name || ""}
                 isOptionEqualToValue={(option, value) => option.id === value.id}
                 size={"medium"}
+                desabilitado={desabilitado}
                 placeholder={`${t["State"]}*`}
                 onChange={(e, v, r, d) => field.onChange(v)}
                 value={field.value}
+                name="owner_state"
               />
             )}
           />
@@ -502,7 +583,7 @@ function Owner({
             color="textSecondary"
             sx={{ color: "#b91c1c" }}
           >
-            {errors.state?.message}
+            {errors.owner_state?.message}
           </Typography>
         </Grid>
       </Grid>
