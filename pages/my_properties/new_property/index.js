@@ -15,7 +15,7 @@ import ResponsiveDrawer from "../../../src/component/sharedProposal/ResponsiveDr
 import logo from "../../../public/Images/logo.png";
 import BasicBreadcrumbs from "../../../src/component/reuseable/baseBreadCrumb/BaseBreadCrumb";
 import BaseStepper from "../../../src/component/reuseable/baseStepper/BaseStepper";
-import { Fragment, useEffect, useState } from "react";
+import { Fragment, useEffect, useState , useRef } from "react";
 import ProposalValueStep from "../../../src/component/properties/ProposalValueStep/ProposalValueStep";
 import BuyerDataStep from "../../../src/component/properties/BuyerDataStep/BuyerDataStep";
 import BaseModal from "../../../src/component/reuseable/baseModal/BaseModal";
@@ -72,6 +72,8 @@ export default function NewProperty({ language }) {
   ];
 
   const steps = session?.user?.role === "owner" ? ownerSteps : otherSteps;
+
+
 
   const validationSchema = Yup.object().shape({
     zip_code: Yup.string().required(t["Zip code is required"]),
@@ -198,6 +200,20 @@ export default function NewProperty({ language }) {
   const [action, setAction] = useState("");
   const handleOpen = () => setSentModalOpen(true);
   const handleClose = () => setSentModalOpen(false);
+  const [v_cep , setV_cep] = useState("");
+  const [v_endereco , setV_endereco] = useState("");
+  const [v_cidade , setV_cidade] = useState("");
+  const [v_estado , setV_estado] = useState("");
+  const [v_bairro , setV_bairro] = useState("");
+
+  const [v_owner_cep , setV_owner_cep] = useState("");
+  const [v_owner_endereco , setV_owner_endereco] = useState("");
+  const [v_owner_cidade , setV_owner_cidade] = useState("");
+  const [v_owner_estado , setV_owner_estado] = useState("");
+  const [v_owner_bairro , setV_owner_bairro] = useState("");
+
+
+
 
   useEffect(() => {
     if (files?.length > 0) {
@@ -227,8 +243,8 @@ export default function NewProperty({ language }) {
       setValue("project_id", singleData?.project);
       setValue("zip_code", singleData?.address?.zip_code);
       setValue("address", singleData?.address?.address);
-      setValue("number", singleData?.address?.number),
-        setValue("neighbourhood", singleData?.address?.neighbourhood);
+      setValue("number", singleData?.address?.number);
+      setValue("neighbourhood", singleData?.address?.neighbourhood);
       setValue("complement", singleData?.address?.complement);
       setValue("city", singleData?.address?.city);
       setValue("complement", singleData?.address?.complement);
@@ -363,7 +379,7 @@ export default function NewProperty({ language }) {
 
   const onSubmit = async (data) => {
     action === "new" ? setLoading(true) : setDraftLoading(true);
-
+console.log("esta validando");
     // if (files.length > 0 && featuretypes.length > 0) {
     let newArr = [];
     files?.forEach((data, index) => {
@@ -374,6 +390,7 @@ export default function NewProperty({ language }) {
 
     const newDocuments = documents?.filter((data) => data instanceof File);
 
+    
     const firstPartData = omitEmpties({
       user_id: +session?.user?.userId,
       project_id: data?.project_id?.id && +data?.project_id?.id,
@@ -454,7 +471,7 @@ export default function NewProperty({ language }) {
             }
           : null,
     });
-
+   
     const formData = serialize(requireData, { indices: true });
     if (query?.property_id) {
       const [error, response] = await propertyUpdateApi(formData);
@@ -488,6 +505,22 @@ export default function NewProperty({ language }) {
 
   const [disableBtn, setDisableBtn] = useState(true);
   useEffect(() => {
+    if(property_detail_id == 9 || property_detail_id == 10){
+      allValues.no_of_bathrooms = 0;
+      allValues.no_of_parking_spaces = 0;
+      allValues.no_of_rooms = 0;
+      allValues.no_of_suites = 0;
+    
+    }
+
+        allValues.owner_address = v_owner_endereco
+        allValues.owner_neighbourhood = v_owner_bairro;
+        allValues.owner_city = v_owner_cidade;
+        allValues.address = v_endereco
+        allValues.neighbourhood = v_bairro;
+        allValues.city = v_cidade;
+        allValues.state = v_estado;
+
     if (
       allValues?.owner_name != null &&
       allValues?.owner_cpf != null &&
@@ -589,6 +622,11 @@ export default function NewProperty({ language }) {
                           setPropertyDetailId={setPropertyDetailId}
                           languageName={myValue.toString()}
                           allValues={allValues}
+                          setV_cep={setV_cep}
+                          setV_endereco={setV_endereco}
+                          setV_cidade={setV_cidade}
+                          setV_estado={setV_estado}
+                          setV_bairro={setV_bairro}
                         />
                       ) : activeStep === 1 ? (
                         <ValuesAndDescription
@@ -639,6 +677,12 @@ export default function NewProperty({ language }) {
                           single={single}
                           married={married}
                           setMarried={setMarried}
+                          allValues={allValues}
+                          setV_owner_cep={setV_owner_cep}
+                          setV_owner_endereco={setV_owner_endereco}
+                          setV_owner_cidade={setV_owner_cidade}
+                          setV_owner_estado={setV_owner_estado}
+                          setV_owner_bairro={setV_owner_bairro}
                         />
                       )}
                       {/* {errors && (
@@ -774,7 +818,7 @@ export default function NewProperty({ language }) {
                               disabled={
                                 session?.user?.role !== "owner" && disableBtn
                               }
-                              onClick={() => setAction("new")}
+                              onClick={() => { console.log("entrou aqui"); setAction("new")}}
                               sx={{
                                 background: "#7450F0",
                                 borderRadius: "4px",
