@@ -74,51 +74,48 @@ export default function NewProperty({ language }) {
   const steps = session?.user?.role === "owner" ? ownerSteps : otherSteps;
 
 
-
   const validationSchema = Yup.object().shape({
     zip_code: Yup.string().required(t["Zip code is required"]),
-    address: Yup.string().required(t["Address is required"]),
     number: Yup.string().required(t["Number is required"]),
-    neighbourhood: Yup.string().required(t["Neighbourhood is required"]),
     // complement: Yup.string().required("Complement is required"),
     city: Yup.string().required(t["City is required"]),
-    state: Yup.object().required(t["State is required"]),
-    brl_rent: Yup.number()
-      .transform((value) => (Number.isNaN(value) ? null : value))
-      .nullable()
-      .required(t["BRL rent is required"]),
-    condominium: Yup.number()
-      .transform((value) => (Number.isNaN(value) ? null : value))
-      .nullable()
-      .required(t["Condominium is required"]),
-    brl_iptu: Yup.number()
-      .transform((value) => (Number.isNaN(value) ? null : value))
-      .nullable()
-      .required(t["IPTU is required"]),
-    land_area: Yup.number()
-      .transform((value) => (Number.isNaN(value) ? null : value))
-      .nullable()
-      .required(t["Land area is required"]),
-    property_area: Yup.number()
-      .transform((value) => (Number.isNaN(value) ? null : value))
-      .nullable()
-      .required(t["Property area is required"]),
-    no_of_rooms: Yup.number()
-      .transform((value) => (Number.isNaN(value) ? null : value))
-      .nullable()
-      .required(t["No of rooms is required"]),
-    no_of_suites: Yup.number()
-      .transform((value) => (Number.isNaN(value) ? null : value))
-      .nullable()
-      .required(t["NO of suites is required"]),
-    no_of_bathrooms: Yup.number()
-      .transform((value) => (Number.isNaN(value) ? null : value))
-      .nullable()
-      .required(t["NO of bathrooms is required"]),
-    no_of_parking_spaces: Yup.number()
-      .transform((value) => (Number.isNaN(value) ? null : value))
-      .nullable()
-      .required(t["NO of parking spaces is required"]),
+    //state: Yup.object().required(t["State is required"]),
+    //brl_rent: Yup.number()
+     // .transform((value) => (Number.isNaN(value) ? null : value))
+     // .nullable()
+     // .required(t["BRL rent is required"]),
+   // condominium: Yup.number()
+    //  .transform((value) => (Number.isNaN(value) ? null : value))
+    //  .nullable()
+    //  .required(t["Condominium is required"]),
+   // brl_iptu: Yup.number()
+    //  .transform((value) => (Number.isNaN(value) ? null : value))
+  //    .nullable()
+    //  .required(t["IPTU is required"]),
+   // land_area: Yup.number()
+   //   .transform((value) => (Number.isNaN(value) ? null : value))
+    //  .nullable()
+    //  .required(t["Land area is required"]),
+    //property_area: Yup.number()
+    //  .transform((value) => (Number.isNaN(value) ? null : value))
+    //  .nullable()
+    //  .required(t["Property area is required"]),
+   // no_of_rooms: Yup.number()
+    //  .transform((value) => (Number.isNaN(value) ? null : value))
+    //  .nullable()
+    //  .required(t["No of rooms is required"]),
+   // no_of_suites: Yup.number()
+    //  .transform((value) => (Number.isNaN(value) ? null : value))
+    //  .nullable()
+    //  .required(t["NO of suites is required"]),
+   // no_of_bathrooms: Yup.number()
+   //   .transform((value) => (Number.isNaN(value) ? null : value))
+   //   .nullable()
+   //   .required(t["NO of bathrooms is required"]),
+  //  no_of_parking_spaces: Yup.number()
+    //  .transform((value) => (Number.isNaN(value) ? null : value))
+    //  .nullable()
+    //  .required(t["NO of parking spaces is required"]),
 
     documentation: Yup.object().required("Documentation is required"),
     registry: Yup.string().required("Registry office is required"),
@@ -230,12 +227,10 @@ export default function NewProperty({ language }) {
   useEffect(() => {
     if (query?.property_id) {
       setAdType(
-        singleData?.ad_type?.charAt(0).toUpperCase() +
-          singleData?.ad_type?.slice(1)
+        singleData?.ad_type.toString()
       );
       setPropertyType(
-        singleData?.property_type?.charAt(0).toUpperCase() +
-          singleData?.property_type?.slice(1)
+        singleData?.property_type.toString()
       );
       setDocuments(singleData?.documents);
       setPropertyDetailId(+singleData?.property_detail_id);
@@ -379,7 +374,6 @@ export default function NewProperty({ language }) {
 
   const onSubmit = async (data) => {
     action === "new" ? setLoading(true) : setDraftLoading(true);
-console.log("esta validando");
     // if (files.length > 0 && featuretypes.length > 0) {
     let newArr = [];
     files?.forEach((data, index) => {
@@ -389,24 +383,23 @@ console.log("esta validando");
     });
 
     const newDocuments = documents?.filter((data) => data instanceof File);
-
     
     const firstPartData = omitEmpties({
       user_id: +session?.user?.userId,
       project_id: data?.project_id?.id && +data?.project_id?.id,
       property_id: query?.property_id,
       property_detail_id: +property_detail_id,
-      ad_type: adType.toLocaleLowerCase(),
-      property_type: propertyType.toLocaleLowerCase(),
-      condominium: data?.condominium,
-      brl_rent: data?.brl_rent,
-      brl_iptu: data?.brl_iptu,
-      land_area: data?.land_area,
-      property_area: data?.property_area,
-      no_of_rooms: data?.no_of_rooms,
-      no_of_suites: data?.no_of_suites,
-      no_of_bathrooms: data?.no_of_bathrooms,
-      no_of_parking_spaces: data?.no_of_parking_spaces,
+      ad_type: adType,
+      property_type: propertyType,
+      condominium: allValues?.condominium,
+      brl_rent: parseInt(allValues.brl_rent.toString().replaceAll(".","").replaceAll("R$ ","").replaceAll(",00","")),
+      brl_iptu: parseInt(allValues.brl_iptu.toString().replaceAll(".","").replaceAll("R$ ","").replaceAll(",00","")),
+      land_area: allValues?.land_area,
+      property_area: allValues?.property_area,
+      no_of_rooms: allValues?.no_of_rooms,
+      no_of_suites: allValues?.no_of_suites,
+      no_of_bathrooms: allValues?.no_of_bathrooms,
+      no_of_parking_spaces: allValues?.no_of_parking_spaces,
       features: featuretypes,
       // deprecated_images: singleData?.attachments?.map((data) => data.id),
       // status: action,
@@ -419,13 +412,13 @@ console.log("esta validando");
     });
 
     const addressData = omitEmpties({
-      zip_code: data?.zip_code,
-      address: data?.address,
-      city: data?.city,
-      state_id: data?.state?.id,
-      number: data?.number,
-      neighbourhood: data?.neighbourhood,
-      complement: data?.complement,
+      zip_code: allValues?.zip_code,
+      address: allValues?.address,
+      city: allValues?.city,
+      state_id: allValues?.state?.id,
+      number: allValues?.number,
+      neighbourhood: allValues?.neighbourhood,
+      complement: allValues?.complement,
     });
 
     const registryData = omitEmpties({
@@ -436,22 +429,22 @@ console.log("esta validando");
 
     const ownerData = omitEmpties({
       maritalStatus: maritalStatus,
-      name: data?.owner_name,
-      rg: data?.owner_rg,
-      cpf: data?.owner_cpf,
-      spouse_name: data?.owner_spouse_name,
-      spouse_rg: data?.owner_spouse_rg,
-      spouse_cpf: data?.owner_spouse_cpf,
+      name: allValues?.owner_name,
+      rg: allValues?.owner_rg,
+      cpf: allValues?.owner_cpf,
+      spouse_name: allValues?.owner_spouse_name,
+      spouse_rg: allValues?.owner_spouse_rg,
+      spouse_cpf: allValues?.owner_spouse_cpf,
     });
 
     const ownerDataAddress = omitEmpties({
-      zip_code: data?.owner_zip_code,
-      address: data?.owner_address,
-      city: data?.owner_city,
-      state_id: data?.owner_state?.id,
-      number: data?.number,
-      neighbourhood: data?.neighbourhood,
-      complement: data?.complement,
+      zip_code: allValues?.owner_zip_code,
+      address: allValues?.owner_address,
+      city: allValues?.owner_city,
+      state_id: allValues?.owner_state?.id,
+      number: allValues?.number,
+      neighbourhood: allValues?.neighbourhood,
+      complement: allValues?.complement,
     });
 
     // const ownerRegistryData = omitEmpties({
@@ -512,10 +505,10 @@ console.log("esta validando");
       allValues.no_of_suites = 0;
     
     }
-
         allValues.owner_address = v_owner_endereco
         allValues.owner_neighbourhood = v_owner_bairro;
         allValues.owner_city = v_owner_cidade;
+
         allValues.address = v_endereco
         allValues.neighbourhood = v_bairro;
         allValues.city = v_cidade;
@@ -818,7 +811,7 @@ console.log("esta validando");
                               disabled={
                                 session?.user?.role !== "owner" && disableBtn
                               }
-                              onClick={() => { console.log("entrou aqui"); setAction("new")}}
+                              onClick={() => {setAction("new")}}
                               sx={{
                                 background: "#7450F0",
                                 borderRadius: "4px",

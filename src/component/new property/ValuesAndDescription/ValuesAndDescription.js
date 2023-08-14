@@ -27,9 +27,6 @@ function ValuesAndDescription({
   tipoVenda,
 }) {
 
-  var valor = useRef();
-  var condominio = useRef();
-  var iptu = useRef();
   var property_area= useRef();
   var no_of_rooms= useRef();
   var no_of_suites= useRef();
@@ -150,7 +147,6 @@ function ValuesAndDescription({
             defaultValue={""}
             render={({ field }) => (
               <BaseTextField
-                referencia={valor}
                 size={"medium"}
                 placeholder={`${t["BRL Rent"]}*`}
                 onChange={(e) => {
@@ -180,7 +176,6 @@ function ValuesAndDescription({
             render={({ field }) => (
               <BaseTextField
                 size={"medium"}
-                referencia={condominio}
                 placeholder={`R$ ${t["Condominium"]}*`}
                 onChange={(e) => {
                   field.onChange(e.target.value);
@@ -211,7 +206,6 @@ function ValuesAndDescription({
             render={({ field }) => (
               <BaseTextField
                 size={"medium"}
-                referencia={iptu}
                 placeholder={"R$ IPTU*"}
                 onChange={(e) => {
                   field.onChange(e.target.value);
