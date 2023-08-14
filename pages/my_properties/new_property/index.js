@@ -499,11 +499,11 @@ export default function NewProperty({ language }) {
   const [disableBtn, setDisableBtn] = useState(true);
   useEffect(() => {
     if(property_detail_id == 9 || property_detail_id == 10){
-      allValues.no_of_bathrooms = 0;
-      allValues.no_of_parking_spaces = 0;
-      allValues.no_of_rooms = 0;
-      allValues.no_of_suites = 0;
-    
+      allValues.no_of_bathrooms = "0";
+      allValues.no_of_parking_spaces = "0";
+      allValues.no_of_rooms = "0";
+      allValues.no_of_suites = "0";
+      allValues.number = "0";
     }
         allValues.owner_address = v_owner_endereco
         allValues.owner_neighbourhood = v_owner_bairro;
@@ -514,16 +514,18 @@ export default function NewProperty({ language }) {
         allValues.city = v_cidade;
         allValues.state = v_estado;
 
+        console.log(allValues);
+
     if (
-      allValues?.owner_name != null &&
-      allValues?.owner_cpf != null &&
-      allValues?.owner_rg != null &&
-      allValues?.owner_zip_code != null &&
-      allValues?.owner_address != null &&
-      allValues?.owner_number != null &&
-      allValues?.owner_neighbourhood != null &&
-      allValues?.owner_city != null &&
-      allValues?.owner_state != null
+      allValues?.owner_name != null || allValues?.owner_name != "" &&
+      allValues?.owner_cpf != null || allValues?.owner_cpf != "" &&
+      allValues?.owner_rg != null || allValues?.owner_rg != "" &&
+      allValues?.owner_zip_code != null || allValues?.owner_zip_code != "" &&
+      allValues?.owner_address != null|| allValues?.owner_address != "" &&
+      allValues?.owner_number != null || allValues?.owner_number != "" &&
+      allValues?.owner_neighbourhood != null || allValues?.owner_neighbourhood != "" &&
+      allValues?.owner_city != null || allValues?.owner_city != "" &&
+      allValues?.owner_state != null || allValues?.owner_state != ""
     ) {
       setDisableBtn(false);
     }

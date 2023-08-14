@@ -228,18 +228,21 @@ function Address({
   useEffect(() => {
     if (
       allValues?.zip_code != null &&
-      allValues?.number != null &&
+      (((allValues?.number != null && allValues?.number != "") && (property_detail_id != 9 && property_detail_id != 10)) 
+      || ((allValues?.number == "" ||  allValues?.number == null) && (property_detail_id == 9 || property_detail_id == 10)))  &&
       documents?.length > 0
     ) {
       setDisableBtn(false);
     }
     if (
       allValues?.zip_code === "" ||
-      allValues?.number === "" ||
+      !(((allValues?.number != null && allValues?.number != "") && (property_detail_id != 9 && property_detail_id != 10)) 
+      || ((allValues?.number == "" ||  allValues?.number == null) && (property_detail_id == 9 || property_detail_id == 10))) ||
       documents?.length < 1
     ) {
       setDisableBtn(true);
     }
+   
   }, [allValues, documents]);
 
   return (
@@ -752,18 +755,19 @@ function Address({
             name="number"
             control={control}
             //defaultValue={""}
-            render={({ field }) => (
+            render={({ field }) => {  if(property_detail_id != 9 && property_detail_id != 10) {
+              return (
               <BaseTextField
                 size={"medium"}
                 placeholder={`${t["Number"]}*`}
                 onChange={(e) => {
-                  field.onChange(e.target.value);
+                    field.onChange(e.target.value);
                 }}
                 name={"number"}
                 type={"number"}
                 value={field.value}
-              />
-            )}
+              />)
+            }}}
           />
           <Typography
             variant="inherit"
