@@ -156,6 +156,8 @@ function Address({
       endereco.current.disabled = true;
       allValues.address = endereco.current.value;
       setV_endereco(response.data.logradouro);
+      }else{
+        allValues.address = endereco.current.value;
       }
       
       if(response.data.localidade!=""&& response.data.localidade != null && cidade.current!=undefined){
@@ -163,6 +165,8 @@ function Address({
         cidade.current.disabled = true;
         allValues.city = cidade.current.value;
         setV_cidade(cidade.current.value)
+        }else{
+          allValues.city = cidade.current.value;
         }
       
       if(response.data.uf!=""&& response.data.uf != null && estado.current!=undefined && allStateData!=undefined){
@@ -184,6 +188,8 @@ function Address({
         desabilitado = true;
         allValues.neighbourhood = bairro.current.value;
         setV_bairro(response.data.bairro);
+        }else{
+          allValues.neighbourhood = bairro.current.value;
         }
    }}
        

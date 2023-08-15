@@ -91,6 +91,9 @@ function Owner({
         owner_endereco.current.disabled = true;
         allValues.owner_address = response.data.logradouro;
         setV_owner_endereco(response.data.logradouro);
+      }else{
+        allValues.owner_address = owner_endereco.current.value;
+        allValues.teste = owner_endereco.current.value;
       }
       
       if(response.data.localidade!=""&& response.data.localidade != null && owner_cidade.current!=undefined){
@@ -98,6 +101,8 @@ function Owner({
         owner_cidade.current.disabled = true;
         allValues.owner_city = response.data.localidade;
         setV_owner_cidade(owner_cidade.current.value)
+        }else{
+          allValues.owner_city = owner_cidade.current.value;
         }
       
       if(response.data.uf!=""&& response.data.uf != null && owner_estado.current!=undefined){
@@ -121,6 +126,8 @@ function Owner({
         desabilitado = true;
         allValues.owner_neighbourhood = response.data.bairro;
         setV_owner_bairro(response.data.bairro);
+        }else{
+          allValues.owner_neighbourhood = owner_bairro.current.value;
         }
    }}
        

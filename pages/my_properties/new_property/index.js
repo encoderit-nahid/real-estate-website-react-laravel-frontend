@@ -382,9 +382,6 @@ export default function NewProperty({ language }) {
     });
 
     const newDocuments = documents?.filter((data) => data instanceof File);
-
-    console.log("data : "+data)
-    console.log(data)
     
     const firstPartData = omitEmpties({
       user_id: +session?.user?.userId,
@@ -510,17 +507,27 @@ export default function NewProperty({ language }) {
       allValues.number = "0";
       }
     }
+    if(v_owner_endereco!="" && v_owner_endereco != null){
         allValues.owner_address = v_owner_endereco
+    }
+    if(v_owner_bairro!="" && v_owner_bairro != null){
         allValues.owner_neighbourhood = v_owner_bairro;
+    }
+    if(v_owner_cidade!="" && v_owner_cidade != null){
         allValues.owner_city = v_owner_cidade;
-
+    }
+    if(v_endereco!="" && v_endereco != null){
         allValues.address = v_endereco
+    }
+    if(v_bairro!="" && v_bairro != null){
         allValues.neighbourhood = v_bairro;
+    }
+    if(v_cidade!="" && v_cidade != null){
         allValues.city = v_cidade;
-        allValues.state = v_estado;
-
-        console.log(allValues);
-
+    }
+    if(v_estado!="" && v_estado != null){ 
+    allValues.state = v_estado;
+    }
     if (
       allValues?.owner_name != null || allValues?.owner_name != "" &&
       allValues?.owner_cpf != null || allValues?.owner_cpf != "" &&
@@ -544,7 +551,7 @@ export default function NewProperty({ language }) {
       allValues?.owner_neighbourhood === "" ||
       allValues?.owner_city === "" ||
       allValues?.owner_state === ""
-    ) {
+    ) {     
       setDisableBtn(true);
     }
   }, [allValues]);
