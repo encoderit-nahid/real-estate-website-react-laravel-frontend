@@ -76,9 +76,8 @@ export default function NewProperty({ language }) {
 
   const validationSchema = Yup.object().shape({
     zip_code: Yup.string().required(t["Zip code is required"]),
-    number: Yup.string().required(t["Number is required"]),
     // complement: Yup.string().required("Complement is required"),
-    city: Yup.string().required(t["City is required"]),
+    //city: Yup.string().required(t["City is required"]),
     //state: Yup.object().required(t["State is required"]),
     //brl_rent: Yup.number()
      // .transform((value) => (Number.isNaN(value) ? null : value))
@@ -92,14 +91,14 @@ export default function NewProperty({ language }) {
     //  .transform((value) => (Number.isNaN(value) ? null : value))
   //    .nullable()
     //  .required(t["IPTU is required"]),
-   // land_area: Yup.number()
-   //   .transform((value) => (Number.isNaN(value) ? null : value))
-    //  .nullable()
-    //  .required(t["Land area is required"]),
+    land_area: Yup.number()
+      .transform((value) => (Number.isNaN(value) ? null : value))
+      .nullable()
+      .required(t["Land area is required"]),
     //property_area: Yup.number()
-    //  .transform((value) => (Number.isNaN(value) ? null : value))
-    //  .nullable()
-    //  .required(t["Property area is required"]),
+     // .transform((value) => (Number.isNaN(value) ? null : value))
+     // .nullable()
+     // .required(t["Property area is required"]),
    // no_of_rooms: Yup.number()
     //  .transform((value) => (Number.isNaN(value) ? null : value))
     //  .nullable()
@@ -383,6 +382,9 @@ export default function NewProperty({ language }) {
     });
 
     const newDocuments = documents?.filter((data) => data instanceof File);
+
+    console.log("data : "+data)
+    console.log(data)
     
     const firstPartData = omitEmpties({
       user_id: +session?.user?.userId,
@@ -503,7 +505,10 @@ export default function NewProperty({ language }) {
       allValues.no_of_parking_spaces = "0";
       allValues.no_of_rooms = "0";
       allValues.no_of_suites = "0";
+      allValues.property_area = "0";
+      if(allValues.number == "" || allValues.number == null){
       allValues.number = "0";
+      }
     }
         allValues.owner_address = v_owner_endereco
         allValues.owner_neighbourhood = v_owner_bairro;

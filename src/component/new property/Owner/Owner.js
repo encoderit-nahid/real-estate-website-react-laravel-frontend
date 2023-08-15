@@ -58,7 +58,20 @@ function Owner({
   var desabilitado = false;
   if(owner_cep.current!=undefined && owner_cep.current!=null && owner_cep.current!='') {
   if(owner_cep.current.value.length > 8){
+    owner_endereco.current.disabled = false;
+    owner_cidade.current.disabled = false;
+    owner_estado.current.disabled = false;
+    owner_bairro.current.disabled = false;
     desabilitado = true;
+  }else{
+    owner_endereco.current.value = "";
+    owner_cidade.current.value = "";
+    owner_estado.current.value = "";
+    owner_bairro.current.value = "";
+    owner_endereco.current.disabled = false;
+    owner_cidade.current.disabled = false;
+    owner_estado.current.disabled = false;
+    owner_bairro.current.disabled = false;
   }}
 
   const carregaCEP = async () => {

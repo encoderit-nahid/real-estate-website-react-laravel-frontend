@@ -128,6 +128,15 @@ function Address({
       estado.current.disabled = false;
       bairro.current.disabled = false;
     desabilitado = true;
+  }else{
+    endereco.current.value = "";
+    cidade.current.value = "";
+    estado.current.value = "";
+    bairro.current.value = "";
+    endereco.current.disabled = false;
+      cidade.current.disabled = false;
+      estado.current.disabled = false;
+      bairro.current.disabled = false;
   }}
 
   const carregaCEP = async () => {
@@ -237,7 +246,8 @@ function Address({
     if (
       allValues?.zip_code === "" ||
       !(((allValues?.number != null && allValues?.number != "") && (property_detail_id != 9 && property_detail_id != 10)) 
-      || ((allValues?.number == "" ||  allValues?.number == null) && (property_detail_id == 9 || property_detail_id == 10))) ||
+      || ((allValues?.number == "" ||  allValues?.number == null) && (property_detail_id == 9 || property_detail_id == 10))
+      || ((allValues?.number != null && allValues?.number != "") && (property_detail_id == 9 || property_detail_id == 10))) ||
       documents?.length < 1
     ) {
       setDisableBtn(true);
@@ -755,8 +765,7 @@ function Address({
             name="number"
             control={control}
             //defaultValue={""}
-            render={({ field }) => {  if(property_detail_id != 9 && property_detail_id != 10) {
-              return (
+            render={({ field }) => (
               <BaseTextField
                 size={"medium"}
                 placeholder={`${t["Number"]}*`}
@@ -767,7 +776,7 @@ function Address({
                 type={"number"}
                 value={field.value}
               />)
-            }}}
+            }
           />
           <Typography
             variant="inherit"

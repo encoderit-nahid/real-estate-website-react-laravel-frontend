@@ -430,8 +430,7 @@ function ValuesAndDescription({
           <Controller
             name="documentation"
             control={control}
-            render={({ field }) =>  { if(!bloqueia){
-              return(
+            render={({ field }) =>(
               <BaseAutocomplete
                 //   sx={{ margin: "0.6vh 0" }}
                 options={top100Films || []}
@@ -442,12 +441,11 @@ function ValuesAndDescription({
                 name="documentation"
                 size={"medium"}
                 referencia={documentation}
-                desabilitado={bloqueia}
                 placeholder={t["documents"]}
                 onChange={(e, v, r, d) => field.onChange(v)}
                 value={field.value || null}
               />
-            )}}}
+            )}
           />
           <Typography
             variant="inherit"
@@ -462,12 +460,10 @@ function ValuesAndDescription({
             name="registry"
             control={control}
             defaultValue={""}
-            render={({ field }) =>  { if(!bloqueia){
-              return(
+            render={({ field }) =>  (
               <BaseTextField
                 size={"medium"}
                 placeholder={t["registry office"]}
-                desabilitado={bloqueia}
                 referencia={registry}
                 onChange={(e) => {
                   field.onChange(e.target.value);
@@ -475,7 +471,7 @@ function ValuesAndDescription({
                 name={"registry"}
                 value={field.value}
               />
-            )}}}
+            )}
           />
           <Typography
             variant="inherit"
@@ -490,13 +486,11 @@ function ValuesAndDescription({
             name="registration_number"
             control={control}
             defaultValue={""}
-            render={({ field }) =>  { if(!bloqueia){
-              return(
+            render={({ field }) => (
               <BaseTextField
                 size={"medium"}
                 placeholder={t["registration number"]}
                 type={"number"}
-                desabilitado={bloqueia}
                 referencia={registration_number}
                 onChange={(e) => {
                   field.onChange(e.target.value);
@@ -504,7 +498,7 @@ function ValuesAndDescription({
                 name={"registartion_number"}
                 value={field.value}
               />
-            )}}}
+            )}
           />
           <Typography
             variant="inherit"
