@@ -225,7 +225,7 @@ function NewRegistrationCard({ propertyData, newProperty, languageName }) {
                 mt: 1,
               }}
             >
-              {`R$ ${propertyData?.brl_rent}`}
+              {`${parseInt(propertyData?.brl_rent.replaceAll(".00","").replaceAll(".","").replaceAll("R$","")).toLocaleString("pt-BR",{ style: 'currency', currency: 'BRL' })}`}
             </Typography>
             <Typography
               variant="p"

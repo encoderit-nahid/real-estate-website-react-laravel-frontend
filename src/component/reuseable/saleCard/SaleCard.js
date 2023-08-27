@@ -68,7 +68,7 @@ function SaleCard({ singlePropertyData }) {
                 mt: 1,
               }}
             >
-              {`R$ ${singlePropertyData?.brl_rent}`}
+              {`${parseInt(singlePropertyData?.brl_rent.replaceAll(".00","").replaceAll(".","").replaceAll("R$","")).toLocaleString("pt-BR",{ style: 'currency', currency: 'BRL' })}`}
             </Typography>
             <Typography
               variant="h1"

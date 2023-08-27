@@ -51,7 +51,7 @@ function AmountView({
               color: "#1A1859",
             }}
           >
-            {`R$ ${singlePropertyData?.property?.brl_rent}`}
+            {`${parseInt(singlePropertyData?.property?.brl_rent.replaceAll(".00","").replaceAll(".","").replaceAll("R$","")).toLocaleString("pt-BR",{ style: 'currency', currency: 'BRL' })}`}
           </Typography>
         </Grid>
       </Grid>
@@ -80,7 +80,7 @@ function AmountView({
               color: "#1A1859",
             }}
           >
-            {`R$ ${singlePropertyData?.property?.condominium}`}
+            {`${parseInt(singlePropertyData?.property?.condominium.replaceAll(".00","").replaceAll(".","").replaceAll("R$","")).toLocaleString("pt-BR",{ style: 'currency', currency: 'BRL' })}`}
           </Typography>
         </Grid>
       </Grid>
@@ -109,7 +109,7 @@ function AmountView({
               color: "#1A1859",
             }}
           >
-            {`R$ ${singlePropertyData?.property?.brl_iptu}`}
+            {`${parseInt(singlePropertyData?.property?.brl_iptu.replaceAll(".00","").replaceAll(".","").replaceAll("R$","")).toLocaleString("pt-BR",{ style: 'currency', currency: 'BRL' })}`}
           </Typography>
         </Grid>
       </Grid>

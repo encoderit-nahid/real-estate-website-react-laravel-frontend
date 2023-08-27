@@ -342,70 +342,7 @@ function Navbar({
               />
             )}
           </Grid>
-          {language && (
-            <Typography variant="p" sx={{ marginLeft: "3vh" }}>
-              <FormControl fullWidth size="small">
-                <InputLabel id="demo-simple-select-label">Select</InputLabel>
-                <Select
-                  labelId="demo-simple-select-label"
-                  id="demo-simple-select"
-                  value={myValue}
-                  sx={{
-                    color: {
-                      xs: "#334155",
-                      sm: "#334155",
-                      md: "#334155",
-                      lg: "white",
-                    },
-                    ".MuiOutlinedInput-notchedOutline": {
-                      borderColor: {
-                        xs: "#334155",
-                        sm: "#334155",
-                        md: "#334155",
-                        lg: "rgba(228, 219, 233, 0.25)",
-                      },
-                    },
-                    "&.Mui-focused .MuiOutlinedInput-notchedOutline": {
-                      borderColor: {
-                        xs: "#334155",
-                        sm: "#334155",
-                        md: "#334155",
-                        lg: "rgba(228, 219, 233, 0.25)",
-                      },
-                    },
-                    "&:hover .MuiOutlinedInput-notchedOutline": {
-                      borderColor: {
-                        xs: "#334155",
-                        sm: "#334155",
-                        md: "#334155",
-                        lg: "rgba(228, 219, 233, 0.25)",
-                      },
-                    },
-                    ".MuiSvgIcon-root ": {
-                      fill: {
-                        xs: "#334155 !important",
-                        sm: "#334155 !important",
-                        md: "#334155 !important",
-                        lg: "white !important",
-                      },
-                    },
-                  }}
-                  // value={locale}
-                  onChange={(e) => {
-                    setMyValue(e.target.value);
-                    languageChangeApi(e.target.value);
-
-                    // setCookie('language', e.target.value)
-                    // Cookies.set('language', e.target.value)
-                  }}
-                  label="language"
-                >
-                  <MenuItem value="en">English</MenuItem>
-                  <MenuItem value="pt">Brazil</MenuItem>
-                </Select>
-              </FormControl>
-            </Typography>
-          )}
+          
         </Toolbar>
         <BaseModal isShowing={loginOpen} isClose={handleLoginClose}>
           <Tooltip title="Something">

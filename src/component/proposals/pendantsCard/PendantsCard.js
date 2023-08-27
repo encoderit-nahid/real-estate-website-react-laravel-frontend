@@ -220,7 +220,7 @@ function PendantsCard({ propertyData, languageName }) {
                     fontWeight: "500",
                   }}
                 >
-                  {`R$ ${propertyData?.brl_rent}`}
+                  {`${parseInt(propertyData?.brl_rent.replaceAll(".00","").replaceAll(".","").replaceAll("R$","")).toLocaleString("pt-BR",{ style: 'currency', currency: 'BRL' })}}`}
                 </Typography>
                 <Typography
                   variant="p"
@@ -512,7 +512,7 @@ function PendantsCard({ propertyData, languageName }) {
             lineHeight: "32px",
           }}
         >
-          {`R$ ${propertyData?.brl_rent}`}
+          {`${parseInt(propertyData?.brl_rent.replaceAll(".00","").replaceAll(".","").replaceAll("R$","")).toLocaleString("pt-BR",{ style: 'currency', currency: 'BRL' })}`}
         </Typography>
         <Typography
           variant="p"
@@ -627,7 +627,7 @@ function PendantsCard({ propertyData, languageName }) {
                             width: "100%",
                           }}
                         >
-                          {`R$ ${data?.total_amount}`}
+                          {`${parseInt(data?.total_amount.replaceAll(".00","").replaceAll(".","").replaceAll("R$","")).toLocaleString("pt-BR",{ style: 'currency', currency: 'BRL' })}`}
                         </Typography>
                       }
                     />

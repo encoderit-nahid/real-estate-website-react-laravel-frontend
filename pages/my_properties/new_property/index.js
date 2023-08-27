@@ -226,10 +226,10 @@ export default function NewProperty({ language }) {
   useEffect(() => {
     if (query?.property_id) {
       setAdType(
-        singleData?.ad_type.toString()
+        singleData?.ad_type
       );
       setPropertyType(
-        singleData?.property_type.toString()
+        singleData?.property_type
       );
       setDocuments(singleData?.documents);
       setPropertyDetailId(+singleData?.property_detail_id);

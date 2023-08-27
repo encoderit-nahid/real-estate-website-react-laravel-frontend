@@ -72,7 +72,7 @@ function PropertyCard({ srcImage, amount }) {
                 lineHeight: "32px",
               }}
             >
-              {`R$ ${amount}`}
+              {`${parseInt(amount.replaceAll(".00","").replaceAll(".","").replaceAll("R$","")).toLocaleString("pt-BR",{ style: 'currency', currency: 'BRL' })}`}
             </Typography>
             <Typography
               variant="p"

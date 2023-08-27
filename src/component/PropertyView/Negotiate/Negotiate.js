@@ -105,7 +105,7 @@ function Negotiate({
           variant="p"
           sx={{ fontSize: "14px", fontWeight: "700", color: "#1A1859" }}
         >
-          {`R$ ${singlePropertyData?.property?.brl_rent}`}
+          {`${parseInt(singlePropertyData?.property?.brl_rent.replaceAll(".00","").replaceAll(".","").replaceAll("R$","")).toLocaleString("pt-BR",{ style: 'currency', currency: 'BRL' })}`}
         </Typography>
       </Grid>
       <Box sx={{ borderBottom: "1px dashed #D3D3DF" }}></Box>
@@ -126,7 +126,7 @@ function Negotiate({
           variant="p"
           sx={{ fontSize: "14px", fontWeight: "700", color: "#1A1859" }}
         >
-          {`R$ ${singlePropertyData?.property?.condominium}`}
+          {`${parseInt(singlePropertyData?.property?.condominium.replaceAll(".00","").replaceAll(".","").replaceAll("R$","")).toLocaleString("pt-BR",{ style: 'currency', currency: 'BRL' })}`}
         </Typography>
       </Grid>
       <Box sx={{ borderBottom: "1px dashed #D3D3DF" }}></Box>
@@ -147,7 +147,7 @@ function Negotiate({
           variant="p"
           sx={{ fontSize: "14px", fontWeight: "700", color: "#1A1859" }}
         >
-          {`R$ ${singlePropertyData?.property?.brl_iptu}`}
+          {`${parseInt(singlePropertyData?.property?.brl_iptu.replaceAll(".00","").replaceAll(".","").replaceAll("R$","")).toLocaleString("pt-BR",{ style: 'currency', currency: 'BRL' })}`}
         </Typography>
       </Grid>
       <Grid
