@@ -80,7 +80,7 @@ function HouseCard({ shadow, marginTop, propertyInfo, languageName }) {
           >
             R$
           </span>
-          {` ${propertyInfo?.brl_rent}`}
+          {` ${parseInt(propertyInfo?.brl_rent.replaceAll(".00","").replaceAll(".","").replaceAll("R$","")).toLocaleString("pt-BR",{ style: 'currency', currency: 'BRL' })}`}
         </Typography>
       </Grid>
       <Grid

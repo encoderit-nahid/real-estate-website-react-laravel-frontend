@@ -189,8 +189,8 @@ export default function IncludeProposal({ language }) {
       property_id: query?.property_id,
       payment_type: (cash && "cash") || (installment && "installment"),
       proposal_type: "general",
-      total_amount: data?.total_amount,
-      cash_amount: data?.cash_amount,
+      total_amount: data?.total_amount.replaceAll(".00","").replaceAll(".","").replaceAll("R$",""),
+      cash_amount: data?.cash_amount.replaceAll(".00","").replaceAll(".","").replaceAll("R$",""),
       payment_per_installment: data?.payment_per_installment,
       no_of_installment: data?.no_of_installment,
       proposal_buyer: {

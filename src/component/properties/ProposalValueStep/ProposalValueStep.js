@@ -116,6 +116,9 @@ function ProposalValueStep({
                   onChange={(e) => {
                     field.onChange(e.target.value);
                   }}
+                  onBlur={(e) => {
+                    field.onChange(parseInt(e.target.value.replaceAll(".","").replaceAll("R$","").replaceAll(",00","")).toLocaleString("pt-BR",{ style: 'currency', currency: 'BRL' }));
+                  }}
                 />
               )}
             />
@@ -174,6 +177,9 @@ function ProposalValueStep({
                       onChange={(e) => {
                         field.onChange(e.target.value);
                       }}
+                      onBlur={(e) => {
+                        field.onChange(parseInt(e.target.value.replaceAll(".","").replaceAll("R$","").replaceAll(",00","")).toLocaleString("pt-BR",{ style: 'currency', currency: 'BRL' }));
+                      }}
                     />
                   )}
                 />
@@ -199,6 +205,9 @@ function ProposalValueStep({
                       name={"cash_amount"}
                       onChange={(e) => {
                         field.onChange(e.target.value);
+                      }}
+                      onBlur={(e) => {
+                        field.onChange(parseInt(e.target.value.replaceAll(".","").replaceAll("R$","").replaceAll(",00","")).toLocaleString("pt-BR",{ style: 'currency', currency: 'BRL' }));
                       }}
                     />
                   )}

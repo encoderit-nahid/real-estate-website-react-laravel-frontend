@@ -290,7 +290,7 @@ function SeeProposalModal({
             fontWeight: "700",
           }}
         >
-          {`R$ ${proposalData?.total_amount}`}
+          {`${parseInt(proposalData?.total_amount.replaceAll(".00","").replaceAll(".","").replaceAll("R$","")).toLocaleString("pt-BR",{ style: 'currency', currency: 'BRL' })}`}
         </Typography>
       </Grid>
       <Divider sx={{ mx: 2 }} />

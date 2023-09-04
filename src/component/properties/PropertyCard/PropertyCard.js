@@ -5,6 +5,8 @@ import propertyImage from "../../../../public/Images/propertyImage.png";
 import { _baseURL, _imageURL } from "../../../../consts";
 
 function PropertyCard({ srcImage, amount }) {
+
+  if(amount!= undefined){
   const myLoader = ({ src }) => {
     return `${_imageURL}/${src}`;
   };
@@ -125,6 +127,7 @@ function PropertyCard({ srcImage, amount }) {
       </Grid>
     </Box>
   );
+}
 }
 
 export default PropertyCard;

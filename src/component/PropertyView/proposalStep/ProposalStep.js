@@ -198,11 +198,13 @@ function ProposalStep({
                 size={"small"}
                 placeholder={t["Total amount"]}
                 variant={"outlined"}
-                type={"number"}
                 name={"total_amount"}
                 value={field.value}
                 onChange={(e) => {
                   field.onChange(e.target.value);
+                }}
+                onBlur={(e) => {
+                  field.onChange(parseInt(e.target.value.replaceAll(".","").replaceAll("R$","").replaceAll(",00","")).toLocaleString("pt-BR",{ style: 'currency', currency: 'BRL' }));
                 }}
               />
             )}
@@ -229,6 +231,9 @@ function ProposalStep({
                     name={"cash_amount"}
                     onChange={(e) => {
                       field.onChange(e.target.value);
+                    }}
+                    onBlur={(e) => {
+                      field.onChange(parseInt(e.target.value.replaceAll(".","").replaceAll("R$","").replaceAll(",00","")).toLocaleString("pt-BR",{ style: 'currency', currency: 'BRL' }));
                     }}
                   />
                 )}

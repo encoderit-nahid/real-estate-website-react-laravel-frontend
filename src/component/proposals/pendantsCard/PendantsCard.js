@@ -220,7 +220,7 @@ function PendantsCard({ propertyData, languageName }) {
                     fontWeight: "500",
                   }}
                 >
-                  {`${parseInt(propertyData?.brl_rent.replaceAll(".00","").replaceAll(".","").replaceAll("R$","")).toLocaleString("pt-BR",{ style: 'currency', currency: 'BRL' })}}`}
+                  {`${parseInt(propertyData?.brl_rent.replaceAll(".00","").replaceAll(".","").replaceAll("R$","")).toLocaleString("pt-BR",{ style: 'currency', currency: 'BRL' })}`}
                 </Typography>
                 <Typography
                   variant="p"
@@ -296,7 +296,7 @@ function PendantsCard({ propertyData, languageName }) {
                 >
                   <ListItem>
                     <ListItemText
-                      primary={`${data?.total_amount}`}
+                      primary={`${parseInt(data?.total_amount.replaceAll(".00","").replaceAll(".","").replaceAll("R$","")).toLocaleString("pt-BR",{ style: 'currency', currency: 'BRL' })}`}
                       secondary={`${data?.payment_type}`}
                     />
                   </ListItem>
