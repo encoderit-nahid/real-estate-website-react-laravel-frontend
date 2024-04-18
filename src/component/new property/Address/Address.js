@@ -120,6 +120,7 @@ function Address({
   const estado = useRef();
   const bairro = useRef();
   var desabilitado = false;
+  console.log('test')
 
   if(cep.current!=undefined && cep.current.value!=null && cep.current.value!='') {
   if(cep.current.value.length > 8){
