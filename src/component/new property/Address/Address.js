@@ -93,6 +93,8 @@ function Address({
 
   const allStateData = useSelector((state) => state.state.stateData);
 
+  console.log({ allStateData });
+
   const [value, setValue] = useState("");
 
   const [valid, setValid] = useState(false);
