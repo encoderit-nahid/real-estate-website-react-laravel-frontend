@@ -11,7 +11,11 @@ import Link from "next/link";
 
 function Footer() {
   return (
-    <Box sx={{ backgroundColor: "#1A1859" }}>
+    <Box
+      sx={{
+        backgroundColor: "#1A1859",
+      }}
+    >
       <Grid
         container
         direction="row"

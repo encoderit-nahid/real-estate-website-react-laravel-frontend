@@ -53,48 +53,30 @@ function FulfillDream({ languageName }) {
       container
       direction="column"
       justifyContent="center"
-      alignItems="flex-start"
-      sx={{ ml: 3, mt: { xs: 3, sm: 3, md: 15, lg: 15, xl: 15 } }}
+      alignItems="center"
+      sx={{ height: "75vh" }}
     >
-      <Typography
-        variant="h1"
-        sx={{
-          color: "#1A1859",
-          fontSize: {
-            xs: "56px",
-            sm: "56px",
-            md: "56px",
-            lg: "72px",
-            xl: "72px",
-          },
-          fontWeight: "800",
-        }}
-      >
-        {t["Make your"]}
-      </Typography>
-      <Typography
-        variant="h1"
-        sx={{
-          color: "#1A1859",
-          fontSize: {
-            xs: "56px",
-            sm: "56px",
-            md: "56px",
-            lg: "72px",
-            xl: "72px",
-          },
-          fontWeight: "800",
-        }}
-      >
-        {t["Dream!"]}
-      </Typography>
       <BaseTextField
         fullWidth
-        label={t["Location"]}
+        label={"Onde você que o imóvel?"}
         placeholder={"procure por rua, bairro ou cidade"}
+        InputLabelProps={{
+          sx: {
+            color: "#ffffff", // Change label color here
+          },
+        }}
         sx={{
           mt: 4,
-          width: { xs: "90%", sm: "90%", md: "90%", xl: "90%", lg: "75%" },
+          width: { xs: "90%", sm: "90%", md: "50%", xl: "30%", lg: "35%" },
+          "& .MuiOutlinedInput-root": {
+            "& fieldset": {
+              borderColor: "#ffffff",
+              borderRadius: "25px",
+            },
+          },
+        }}
+        inputProps={{
+          style: { color: "#ffffff" }, // Change placeholder color here
         }}
         onChange={(e) => handleLocationChange(e)}
         InputProps={{
@@ -108,16 +90,27 @@ function FulfillDream({ languageName }) {
 
       <BaseAutocomplete
         options={valueUpto || []}
+        label={"Faixa de preço"}
         getOptionLabel={(option) => option.label || ""}
         sx={{
           mt: 4,
-          width: { xs: "90%", sm: "90%", md: "90%", xl: "90%", lg: "75%" },
+          width: { xs: "90%", sm: "90%", md: "50%", xl: "30%", lg: "35%" },
+          "& .MuiOutlinedInput-root": {
+            "& fieldset": {
+              borderColor: "#ffffff", // Change border color here
+              borderRadius: "25px",
+            },
+          },
+          "& .MuiSvgIcon-root": {
+            color: "#ffffff", // Change arrow icon color here
+          },
         }}
         isOptionEqualToValue={(option, value) => option.value === value.value}
         size={"medium"}
         placeholder={t["Value up to"]}
         onChange={(e, v, r, d) => handleValueChange(v)}
         value={value}
+        inputTextColor={{ color: "#ffffff" }}
       />
       <Link
         href={{
@@ -136,6 +129,9 @@ function FulfillDream({ languageName }) {
             textDecoration: "none",
             listStyle: "none",
             width: "100%",
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
           }}
         >
           <BaseButton
@@ -143,15 +139,30 @@ function FulfillDream({ languageName }) {
             width={{
               xs: "90%",
               sm: "90%",
-              md: "90%",
-              xl: "90%",
-              lg: "75%",
+              md: "50%",
+              xl: "30%",
+              lg: "35%",
             }}
             fontSize={"24px"}
+            borderRadius={"25px"}
             margin={"4vh 0 0 0"}
           />
         </a>
       </Link>
+
+      <BaseButton
+        name={"Saiba mais"}
+        width={{
+          xs: "90%",
+          sm: "90%",
+          md: "50%",
+          xl: "30%",
+          lg: "35%",
+        }}
+        fontSize={"24px"}
+        borderRadius={"25px"}
+        margin={"4vh 0 0 0"}
+      />
     </Grid>
   );
 }

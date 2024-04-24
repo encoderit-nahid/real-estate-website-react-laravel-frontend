@@ -27,6 +27,7 @@ import HouseCard from "../src/component/reuseable/HouseCard/HouseCard";
 import MobileSideContent from "../src/component/home/FullfillSideContent/MobileSideContent";
 import BrokerImageContentMobile from "../src/component/home/whoIsBroker/brokerContent/BrokerImageContentMobile";
 import whoBroker from "../public/Images/who_broker.png";
+import backgroundImage from "../public/Images/background.png";
 import whoBrokerMobile from "../public/Images/who_broker_mobile.png";
 import technologyImage from "../public/Images/technology.png";
 import clientsImage from "../public/Images/clients.png";
@@ -131,31 +132,7 @@ export default function App({
       </Head>
 
       <main className="section">
-        <Grid
-          className="box box1"
-          sx={{
-            display: {
-              xs: "none",
-              sm: "none",
-              md: "none",
-              xl: "inline",
-              lg: "inline",
-            },
-          }}
-        ></Grid>
-        <Navbar
-          shape={true}
-          loginOpen={loginOpen}
-          setLoginOpen={setLoginOpen}
-          handleLoginClose={handleLoginClose}
-          handleLoginOpen={handleLoginOpen}
-          session={session}
-          language={true}
-          languageName={language}
-          setMyValue={setMyValue}
-          myValue={myValue}
-        />
-        <Grid
+        {/* <Grid
           container
           spacing={2}
           sx={{ paddingRight: { xs: 5, sm: 5, md: 10, xl: 10, lg: 10 } }}
@@ -198,289 +175,41 @@ export default function App({
           >
             <MobileSideContent />
           </Grid>
-        </Grid>
+        </Grid> */}
         <Box
           sx={{
-            // backgroundColor: "#F9F9FB",
-            paddingTop: { xs: 5, sm: 5, md: 15, lg: 25, xl: 25 },
-            paddingBottom: 5,
-            // clipPath:
-            //   "polygon(0 0, 13% 5%, 30% 10%, 53% 13%, 71% 10%, 100% 0, 100% 85%, 100% 100%, 85% 100%, 15% 100%, 0 100%, 0% 85%)",
-            // clipPath: "circle(15em at 10% 40%)",
             backgroundImage: {
               xs: `url(${mobileGray.src})`,
               sm: `url(${mobileGray.src})`,
-              md: `url("data:image/svg+xml,${svgString}")`,
-              lg: `url("data:image/svg+xml,${svgString}")`,
-              xl: `url("data:image/svg+xml,${svgString}")`,
+              md: `url(${backgroundImage.src})`,
+              lg: `url(${backgroundImage.src})`,
+              xl: `url(${backgroundImage.src})`,
             },
             backgroundRepeat: "no-repeat",
-            backgroundSize: "cover",
+            backgroundSize: "100% 100%", // Set backgroundSize to cover the entire area
+            minHeight: "100vh", // Ensure the box covers at least the viewport height
+            // display: "flex",
+            // flexDirection: "column",
+            // justifyContent: "center", // Center content vertically
+            // alignItems: "center", // Center content horizontally
           }}
         >
-          <Grid
-            container
-            direction="row"
-            justifyContent="center"
-            alignItems="center"
-            sx={{
-              mt: { xs: 8, sm: 8, md: 8, xl: 0, lg: 0 },
-              pb: 5,
-              px: { xs: "2.5vh", sm: "2.5vh" },
-            }}
-          >
-            <Typography
-              variant="p"
-              sx={{
-                fontSize: {
-                  sm: "32px",
-                  xs: "32px",
-                  md: "40px",
-                  lg: "40px",
-                  xl: "40px",
-                },
-                color: "#1A1859",
-                fontWeight: "800",
-              }}
-            >
-              {t["For those who want to sell"]}
-            </Typography>
-          </Grid>
-          <Container
-            maxWidth="lg"
-            sx={{
-              mt: { xs: 8, sm: 8, md: 8, xl: 0, lg: 0 },
-              paddingLeft: 0,
-            }}
-          >
-            <Grid
-              container
-              spacing={1}
-              sx={{ ml: { xs: 0, sm: 0, md: 0, lg: 2, xl: 2 } }}
+          <Navbar
+            shape={true}
+            loginOpen={loginOpen}
+            setLoginOpen={setLoginOpen}
+            handleLoginClose={handleLoginClose}
+            handleLoginOpen={handleLoginOpen}
+            session={session}
+            language={true}
+            languageName={language}
+            setMyValue={setMyValue}
+            myValue={myValue}
+          />
 
-              // className="shape-circle"
-            >
-              <Grid item xs={12} sm={12} md={12} xl={5} lg={5}>
-                <SellSideContent />
-              </Grid>
-              <Grid item xs={12} sm={12} md={12} xl={6} lg={6}>
-                <WantToSell languageName={myValue.toString()} />
-              </Grid>
-            </Grid>
-          </Container>
-        </Box>
-
-        <Box>
-          <Grid
-            container
-            direction="row"
-            justifyContent="center"
-            alignItems="center"
-            sx={{
-              pb: { xs: 4, sm: 4, md: 5, lg: 5, xl: 5 },
-              pt: { xs: 2, sm: 2, md: 6, lg: 6, xl: 6 },
-              px: { xs: "2.5vh", sm: "2.5vh" },
-            }}
-          >
-            <Typography
-              variant="p"
-              sx={{
-                fontSize: {
-                  sm: "32px",
-                  xs: "32px",
-                  md: "40px",
-                  lg: "40px",
-                  xl: "40px",
-                },
-                color: "#1A1859",
-                fontWeight: "800",
-              }}
-            >
-              {t["For anyone who is a broker"]}
-            </Typography>
-          </Grid>
-          <Container maxWidth="lg" sx={{ paddingLeft: 0 }}>
-            <Grid
-              container
-              spacing={2}
-              sx={{
-                mt: { xs: 10, sm: 10, md: 9, xl: 0, lg: 0 },
-                ml: { xs: 0, sm: 0, md: 0, lg: 2, xl: 2 },
-              }}
-              // className="shape-circle"
-            >
-              <Grid
-                className="broker"
-                item
-                xs={12}
-                sm={12}
-                md={12}
-                xl={6}
-                lg={6}
-                sx={{
-                  display: {
-                    xl: "none",
-                    lg: "none",
-                    md: "inline",
-                    xs: "inline",
-                    sm: "inline",
-                  },
-                }}
-              >
-                <BrokerImageContentMobile imageSrc={whoBrokerMobile} />
-              </Grid>
-              <Grid
-                item
-                xs={12}
-                sm={12}
-                md={12}
-                xl={6}
-                lg={6}
-                className="broker"
-                sx={{
-                  ml: { xs: 1.1, sm: 1.1, md: 0, lg: 0, xl: 0 },
-                  mr: { xs: 0.9, sm: 0.9, md: 0, lg: 0, xl: 0 },
-                }}
-              >
-                <BrokerRegisterContent
-                  languageName={myValue.toString()}
-                  contentData={brokerData}
-                  buttonVisible={true}
-                />
-              </Grid>
-              <Grid
-                item
-                xs={12}
-                sm={12}
-                md={12}
-                xl={6}
-                lg={6}
-                sx={{
-                  display: {
-                    xl: "inline",
-                    lg: "inline",
-                    md: "none",
-                    xs: "none",
-                    sm: "none",
-                  },
-                }}
-              >
-                {/* <WantToSell /> */}
-                <BrokerImageContent imageSrc={whoBroker} />
-              </Grid>
-            </Grid>
-          </Container>
-        </Box>
-        <Grid
-          container
-          direction="row"
-          justifyContent="center"
-          alignItems="center"
-          sx={{
-            pb: { xs: 2, sm: 2, md: 5, lg: 5, xl: 5 },
-            pt: { xs: 2, sm: 2, md: 6, lg: 6, xl: 6 },
-            px: { xs: "2.5vh", sm: "2.5vh" },
-          }}
-        >
-          <Typography
-            variant="p"
-            sx={{
-              fontSize: {
-                sm: "32px",
-                xs: "32px",
-                md: "40px",
-                lg: "40px",
-                xl: "40px",
-              },
-              color: "#1A1859",
-              fontWeight: "800",
-            }}
-          >
-            {t["The best deals for you"]}
-          </Typography>
-        </Grid>
-        <Box
-          sx={{
-            // backgroundColor: "#F9F9FB",
-            paddingBottom: 5,
-            paddingTop: { xs: 5, sm: 5, md: 0, lg: 0, xl: 0 },
-            // clipPath:
-            //   "polygon(0 0, 13% 5%, 30% 10%, 53% 13%, 71% 10%, 100% 0, 100% 85%, 100% 100%, 85% 100%, 15% 100%, 0 100%, 0% 85%)",
-            // clipPath: "circle(15em at 10% 40%)",
-            backgroundImage: {
-              xs: `url(${mobileBlue.src})`,
-              sm: `url(${mobileBlue.src})`,
-              md: `url("data:image/svg+xml,${svgDealsString}")`,
-              lg: `url("data:image/svg+xml,${svgDealsString}")`,
-              xl: `url("data:image/svg+xml,${svgDealsString}")`,
-            },
-            backgroundRepeat: "no-repeat",
-            backgroundSize: "cover",
-          }}
-        >
-          <Container maxWidth="xl">
-            <Slider {...settings}>
-              {/* <ImageList
-							container
-							spacing={3}
-
-							cols={3}
-							gap={4}
-							sx={{
-								gridAutoFlow: 'column',
-								gridTemplateColumns:
-									'repeat(auto-fill,minmax(110px,1fr)) !important',
-								gridAutoColumns: 'minmax(110px, 1fr)',
-							}}
-							> */}
-              {isLoading
-                ? [0, 1, 2, 3].map((data, index) => (
-                    <Box
-                      key={index}
-                      cols={3}
-                      sx={{
-                        width: {
-                          xl: "95%",
-                          lg: "95%",
-                          md: "70%",
-                          sm: "70%",
-                          xs: "70%",
-                        },
-                      }}
-                    >
-                      <Skeleton
-                        variant="rect"
-                        height={220}
-                        sx={{
-                          mx: 2,
-                          my: 2,
-                          borderRadius: "8px",
-                        }}
-                      />
-                      <Box sx={{ mx: 2, my: 1 }}>
-                        <Skeleton width="60%" />
-                        <Skeleton width="60%" />
-                        <Skeleton width="60%" />
-                        <Skeleton />
-                      </Box>
-                    </Box>
-                  ))
-                : data?.property?.map((stateInfo, index) => (
-                    <Link
-                      key={stateInfo.id}
-                      href={`/property_view/${stateInfo.id}`}
-                      as={`/property_view/${stateInfo.id}`}
-                    >
-                      <Box sx={{ pl: 5 }}>
-                        <HouseCard
-                          propertyInfo={stateInfo}
-                          languageName={myValue.toString()}
-                        />
-                      </Box>
-                    </Link>
-                  ))}
-            </Slider>
-          </Container>
+          <Box>
+            <FulfillDream />
+          </Box>
         </Box>
         <Footer />
       </main>

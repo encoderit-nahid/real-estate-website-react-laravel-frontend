@@ -11,6 +11,8 @@ function BaseTextField({
   type,
   sx,
   InputProps,
+  InputLabelProps,
+  inputProps,
   error,
   required,
 }) {
@@ -20,6 +22,8 @@ function BaseTextField({
       size={size}
       label={label}
       type={type}
+      InputLabelProps={InputLabelProps}
+      inputProps={inputProps}
       placeholder={placeholder}
       value={value}
       onChange={onChange}
