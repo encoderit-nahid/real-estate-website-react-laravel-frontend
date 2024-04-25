@@ -2,7 +2,7 @@
 export default {
   "search real estate": "buscar imóveis",
   "I am broker": "sou corretor",
-  "I am owner": "sou proprietário",
+  "I am owner": "Quero vender meu imóvel",
   login: "entrar",
   "Make your": "encontre seu",
   "Dream!": "sonho!",

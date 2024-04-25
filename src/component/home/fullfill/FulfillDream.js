@@ -17,6 +17,7 @@ import BaseTextField from "../../reuseable/baseTextField/BaseTextField";
 import BaseAutocomplete from "../../reuseable/baseAutocomplete/BaseAutocomplete";
 import en from "locales/en";
 import pt from "locales/pt";
+import BaseHomeButton from "@/component/reuseable/button/BaseHomeButton";
 
 // const AutoComplete = styled(Autocomplete)`
 //   & .MuiInputBase-input {
@@ -33,7 +34,7 @@ const omitEmpties = (obj) => {
   }, {});
 };
 
-function FulfillDream({ languageName }) {
+function FulfillDream({ languageName, setKnowMoreModal }) {
   const [value, setValue] = useState(null);
 
   const t = languageName === "en" ? en : pt;
@@ -150,7 +151,7 @@ function FulfillDream({ languageName }) {
         </a>
       </Link>
 
-      <BaseButton
+      <BaseHomeButton
         name={"Saiba mais"}
         width={{
           xs: "90%",
@@ -159,9 +160,12 @@ function FulfillDream({ languageName }) {
           xl: "30%",
           lg: "35%",
         }}
-        fontSize={"24px"}
+        fontSize={"20px"}
         borderRadius={"25px"}
         margin={"4vh 0 0 0"}
+        color={"#ffffff"}
+        background={"transparent"}
+        handleFunction={() => setKnowMoreModal(true)}
       />
     </Grid>
   );

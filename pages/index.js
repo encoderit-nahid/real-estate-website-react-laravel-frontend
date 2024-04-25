@@ -11,6 +11,7 @@ import {
   ImageList,
   ImageListItem,
   Skeleton,
+  Tooltip,
 } from "@mui/material";
 import FulfillDream from "../src/component/home/fullfill/FulfillDream";
 import SideContent from "../src/component/home/FullfillSideContent/SideContent";
@@ -43,6 +44,8 @@ import Cookies from "js-cookie";
 import SetCookie from "@/hooks/setCookie";
 import en from "locales/en";
 import pt from "locales/pt";
+import BaseModal from "@/component/reuseable/baseModal/BaseModal";
+import KnowMoreContent from "@/component/home/knowMoreContent/KnowMoreContent";
 // import 'slick-carousel/slick/slick.css'
 // import 'slick-carousel/slick/slick-theme.css'
 
@@ -52,15 +55,7 @@ export default function App({
   handleLoginOpen,
   handleLoginClose,
   language,
-  data,
 }) {
-  const svgString = encodeURIComponent(
-    renderToStaticMarkup(<WantSellSvgBackground />)
-  );
-  const svgDealsString = encodeURIComponent(
-    renderToStaticMarkup(<BestDealSvgBackground />)
-  );
-  const [isLoading, setIsLoading] = useState(true);
   const { data: session } = useSession();
 
   const [myValue, setMyValue] = useState(language || "pt");
@@ -71,56 +66,12 @@ export default function App({
 
   const t = myValue === "en" ? en : pt;
 
-  const brokerData = [
-    {
-      name: t["High technology and low bureaucracy"],
-      info: t[
-        "Digital and simplified sales process, which provides agility and transparency, allowing you to focus on your customer"
-      ],
-      imageSrc: technologyImage,
-    },
-    {
-      name: t["Clients and full assistance"],
-      info: t[
-        "Simple ad system combined with complete assistance in the end-to-end buying and selling process. From announcement to public deed"
-      ],
-      imageSrc: clientsImage,
-    },
-    {
-      name: t["earn more"],
-      info: t[
-        "We offer the best technologies, the most complete and agile advice on the market and the highest commission, the broker gets up to 70% of the total commission"
-      ],
-      imageSrc: earnImage,
-    },
-  ];
-
-  useEffect(() => {
-    setIsLoading(false);
-  }, [data]);
-
-  const settings = {
-    infinite: false,
-    speed: 500,
-    slidesToShow: 3,
-    slidesToScroll: 1,
-    initialSlide: 0,
-    responsive: [
-      {
-        breakpoint: 768,
-        settings: {
-          arrows: false,
-          slidesToShow: 3,
-        },
-      },
-      {
-        breakpoint: 480,
-        settings: {
-          arrows: false,
-          slidesToShow: 1,
-        },
-      },
-    ],
+  const [knowMoreModal, setKnowMoreModal] = useState(false);
+  const handleKnowMoreModalOpen = () => {
+    setKnowMoreModal(true);
+  };
+  const handleKnowMoreModalClose = () => {
+    setKnowMoreModal(false);
   };
 
   return (
@@ -132,50 +83,6 @@ export default function App({
       </Head>
 
       <main className="section">
-        {/* <Grid
-          container
-          spacing={2}
-          sx={{ paddingRight: { xs: 5, sm: 5, md: 10, xl: 10, lg: 10 } }}
-        >
-          <Grid item xs={12} sm={12} md={12} xl={6} lg={6}>
-            <FulfillDream languageName={myValue.toString()} />
-          </Grid>
-          <Grid
-            item
-            xl={6}
-            lg={6}
-            md={12}
-            sx={{
-              display: {
-                xs: "none",
-                sm: "none",
-                xl: "inline",
-                lg: "inline",
-                md: "inline",
-              },
-            }}
-          >
-            <SideContent />
-          </Grid>
-          <Grid
-            item
-            xs={12}
-            sm={12}
-            sx={{
-              marginLeft: { xs: 2, sm: 2, md: 5, lg: 5, xl: 5 },
-
-              display: {
-                xl: "none",
-                lg: "none",
-                md: "none",
-                xs: "inline",
-                sm: "inline",
-              },
-            }}
-          >
-            <MobileSideContent />
-          </Grid>
-        </Grid> */}
         <Box
           sx={{
             backgroundImage: {
@@ -208,23 +115,30 @@ export default function App({
           />
 
           <Box>
-            <FulfillDream />
+            <FulfillDream setKnowMoreModal={setKnowMoreModal} />
           </Box>
         </Box>
         <Footer />
+
+        <BaseModal isShowing={knowMoreModal} isClose={handleKnowMoreModalClose}>
+          <Tooltip title="Something">
+            <>
+              <KnowMoreContent
+                handleClose={handleKnowMoreModalClose}
+                languageName={myValue.toString()}
+              />
+            </>
+          </Tooltip>
+        </BaseModal>
       </main>
     </div>
   );
 }
 
 export async function getServerSideProps(context) {
-  const base_url = process.env.NEXT_PUBLIC_API_URL;
-  const res = await fetch(`${base_url}/api/property/best-deals`);
-  const data = await res.json();
-
   const cookies = context.req.cookies["language"] || "pt";
 
   return {
-    props: { data: data, language: cookies }, // will be passed to the page component as props
+    props: { language: cookies }, // will be passed to the page component as props
   };
 }

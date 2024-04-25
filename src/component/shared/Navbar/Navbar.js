@@ -106,7 +106,7 @@ function Navbar({
   const t = locale === "en" ? en : pt;
 
   const pagesData = [
-    { name: t["search real estate"], page: "search_real_estate" },
+    { name: "Quero comprar", page: "search_real_estate" },
     { name: t["I am broker"], page: "broker" },
     { name: t["I am owner"], page: "advertise" },
     // { name: "blog", page: "blog" },
