@@ -8,6 +8,11 @@ import { Provider } from "react-redux";
 import { configureStore } from "../src/redux/store";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
+import {
+  QueryCache,
+  QueryClient,
+  QueryClientProvider,
+} from "@tanstack/react-query";
 import { useRouter } from "next/router";
 import { _gaId } from "consts";
 
@@ -47,19 +52,41 @@ function MyApp({ Component, pageProps: { session, ...pageProps } }) {
     };
   }, [router.events]);
 
+  const queryClient = new QueryClient({
+    defaultOptions: {
+      queries: {
+        retry: false,
+        refetchOnmount: false,
+        refetchOnReconnect: false,
+        refetchOnWindowFocus: false,
+        staleTime: 5 * 60 * 1000,
+      },
+    },
+    queryCache: new QueryCache({
+      onError(error, query) {
+        query.meta?.onError?.(error);
+      },
+      onSuccess(data, query) {
+        query.meta?.onSuccess?.(data);
+      },
+    }),
+  });
+
   return (
     <ThemeProvider theme={theme}>
       <CssBaseline />
       <SessionProvider session={session} refetchInterval={5 * 60}>
-        <Provider store={configureStore()}>
-          <Component
-            {...pageProps}
-            loginOpen={loginOpen}
-            setLoginOpen={setLoginOpen}
-            handleLoginClose={handleLoginClose}
-            handleLoginOpen={handleLoginOpen}
-          />
-        </Provider>
+        <QueryClientProvider client={queryClient}>
+          <Provider store={configureStore()}>
+            <Component
+              {...pageProps}
+              loginOpen={loginOpen}
+              setLoginOpen={setLoginOpen}
+              handleLoginClose={handleLoginClose}
+              handleLoginOpen={handleLoginOpen}
+            />
+          </Provider>
+        </QueryClientProvider>
       </SessionProvider>
     </ThemeProvider>
   );

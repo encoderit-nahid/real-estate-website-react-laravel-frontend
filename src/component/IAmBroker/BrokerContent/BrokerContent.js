@@ -5,7 +5,7 @@ import Image from "next/image";
 import Link from "next/link";
 import BaseHomeButton from "@/component/reuseable/button/BaseHomeButton";
 
-function OwnerContent({ languageName, setKnowMoreModal }) {
+function BrokerContent({ languageName, setKnowMoreModal }) {
   return (
     <Grid
       container
@@ -23,7 +23,7 @@ function OwnerContent({ languageName, setKnowMoreModal }) {
           color: "#ffffff",
         }}
       >
-        Venda 100% digital
+        Maior comissão do mercado!
       </Typography>
       <Typography
         variant="h1"
@@ -35,13 +35,13 @@ function OwnerContent({ languageName, setKnowMoreModal }) {
           color: "#ffffff",
         }}
       >
-        Facilidade em agendamento de visitas e escritura pública
+        Processo de compra e venda todo digital e automatizado
       </Typography>
       <Link
         href={{
           pathname: "/registration",
           query: {
-            user_type: "owner",
+            user_type: "broker",
           },
         }}
       >
@@ -56,7 +56,7 @@ function OwnerContent({ languageName, setKnowMoreModal }) {
           }}
         >
           <BaseButton
-            name={"Quero vender agora"}
+            name={"Cadastro de corretor"}
             width={{
               xs: "90%",
               sm: "90%",
@@ -91,4 +91,4 @@ function OwnerContent({ languageName, setKnowMoreModal }) {
   );
 }
 
-export default OwnerContent;
+export default BrokerContent;

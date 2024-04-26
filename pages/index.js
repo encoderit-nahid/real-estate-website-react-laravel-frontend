@@ -1,53 +1,18 @@
 import Navbar from "../src/component/shared/Navbar/Navbar";
 import Footer from "../src/component/shared/Footer/Footer";
-import shapeIcon from "../public/Images/eclipseShape.png";
 import Head from "next/head";
-import dynamic from "next/dynamic";
-import {
-  Box,
-  Grid,
-  Typography,
-  Container,
-  ImageList,
-  ImageListItem,
-  Skeleton,
-  Tooltip,
-} from "@mui/material";
+import { Box, Tooltip } from "@mui/material";
 import FulfillDream from "../src/component/home/fullfill/FulfillDream";
-import SideContent from "../src/component/home/FullfillSideContent/SideContent";
-import SellSideContent from "../src/component/home/wantToSellSideContent/SellSideContent";
 import mobileGray from "../public/Images/mobileGray.png";
-import mobileBlue from "../public/Images/mobileBlue.png";
-import WantSellSvgBackground from "../src/component/svg/WantSellSvgBackground";
-import { renderToStaticMarkup } from "react-dom/server";
-import WantToSell from "../src/component/home/wantToSell/WantToSell";
-import BrokerRegisterContent from "../src/component/home/whoIsBroker/brokerRegister/BrokerRegisterContent";
-import BrokerImageContent from "../src/component/home/whoIsBroker/brokerContent/BrokerImageContent";
-import BestDealSvgBackground from "../src/component/svg/BestDealSvgBackground";
-import HouseCard from "../src/component/reuseable/HouseCard/HouseCard";
-import MobileSideContent from "../src/component/home/FullfillSideContent/MobileSideContent";
-import BrokerImageContentMobile from "../src/component/home/whoIsBroker/brokerContent/BrokerImageContentMobile";
-import whoBroker from "../public/Images/who_broker.png";
 import backgroundImage from "../public/Images/background.png";
-import whoBrokerMobile from "../public/Images/who_broker_mobile.png";
-import technologyImage from "../public/Images/technology.png";
-import clientsImage from "../public/Images/clients.png";
-import earnImage from "../public/Images/earn.png";
 import { useSession, signIn, signOut } from "next-auth/react";
 import { _baseURL } from "../consts";
-import { bestDealsApi } from "../src/api";
 import { useEffect, useState } from "react";
-import Link from "next/link";
-import Slider from "react-slick";
-import GetCookie from "@/hooks/getCookie";
-import Cookies from "js-cookie";
 import SetCookie from "@/hooks/setCookie";
 import en from "locales/en";
 import pt from "locales/pt";
 import BaseModal from "@/component/reuseable/baseModal/BaseModal";
 import KnowMoreContent from "@/component/home/knowMoreContent/KnowMoreContent";
-// import 'slick-carousel/slick/slick.css'
-// import 'slick-carousel/slick/slick-theme.css'
 
 export default function App({
   loginOpen,
@@ -126,6 +91,9 @@ export default function App({
               <KnowMoreContent
                 handleClose={handleKnowMoreModalClose}
                 languageName={myValue.toString()}
+                href={{
+                  pathname: "/search_real_estate",
+                }}
               />
             </>
           </Tooltip>

@@ -1,6 +1,5 @@
 import Navbar from "../src/component/shared/Navbar/Navbar";
 import Footer from "../src/component/shared/Footer/Footer";
-
 import Head from "next/head";
 import {
   Box,
@@ -60,7 +59,7 @@ const omitEmpties = (obj) => {
   }, {});
 };
 
-export default function BrokerRegistration({
+export default function OtherInformation({
   loginOpen,
   setLoginOpen,
   handleLoginOpen,

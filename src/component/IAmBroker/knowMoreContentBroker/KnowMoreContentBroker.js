@@ -3,10 +3,9 @@ import Image from "next/image";
 import React from "react";
 import submitProposal from "../../../../public/Images/submit_proposal.png";
 import stepFinish from "../../../../public/Images/step_finish.png";
-import technologyImage from "../../../../public/Images/track.png";
-import clientsImage from "../../../../public/Images/clients.png";
-import colaborateImage from "../../../../public/Images/colaborate.png";
-import earnImage from "../../../../public/Images/fast.png";
+import technologyImage from "../../../../public/Images/advertise.png";
+import clientsImage from "../../../../public/Images/handshake.png";
+import earnImage from "../../../../public/Images/broker_help.png";
 
 import Link from "next/link";
 import CloseIcon from "@mui/icons-material/Close";
@@ -14,7 +13,12 @@ import en from "locales/en";
 import pt from "locales/pt";
 import BaseButton from "@/component/reuseable/button/BaseButton";
 
-function KnowMoreContent({ handleClose, languageName, buttonName, href }) {
+function KnowMoreContentBroker({
+  handleClose,
+  languageName,
+  buttonName,
+  href,
+}) {
   const style = {
     position: "absolute",
     top: "45%",
@@ -36,8 +40,8 @@ function KnowMoreContent({ handleClose, languageName, buttonName, href }) {
 
   const brokerData = [
     {
-      name: "Praticidade",
-      info: "descomplicar a compra e venda de imóveis é com a gente! todo o processo é feito online, de forma 100% digital e sem burocracia. conheça a facilidade que a lokkan pode trazer para sua vida!",
+      name: "zero burocracia, 100% agilidade aumente seus lucros com a comissão mais alta do mercado",
+      info: "Trabalhe com quem valoriza o seu trabalho e reconhece o seu esforço. na lokkan, você terá a oportunidade de ganhar a maior comissão do mercado imobiliário, com 70% do valor da comissão. seja recompensado pelo seu talento e dedicação!",
       imageSrc: clientsImage,
     },
     {
@@ -50,11 +54,6 @@ function KnowMoreContent({ handleClose, languageName, buttonName, href }) {
       name: "Documentação digital: agilize suas transações com a lokkan!",
       info: "tempo com a papelada e idas ao cartório! com a lokkan, a documentação para compra e venda de imóveis é digital, incluindo contratos, matrículas, certidões e consultas ao SPC e Serasa (vendedor). até a elaboração de escritura e assinatura são digitais, tudo para tornar sua vida mais fácil!",
       imageSrc: earnImage,
-    },
-    {
-      name: "100% digital: faça transações mais rápidas e seguras!",
-      info: "com a lokkan, você pode esquecer a papelada e a burocracia. oferecemos todo o processo de compra e venda de imóveis 100% digital, incluindo documentação e assinatura. aproveite a facilidade e agilidade que a lokkan oferece!",
-      imageSrc: colaborateImage,
     },
   ];
   return (
@@ -75,13 +74,13 @@ function KnowMoreContent({ handleClose, languageName, buttonName, href }) {
               color: "#002152",
             }}
           >
-            Quero comprar
+            Quero evoluir
           </Typography>
           <CloseIcon sx={{ cursor: "pointer" }} onClick={handleClose} />
         </Grid>
         <Grid container spacing={4} sx={{ pt: 2 }}>
           {brokerData?.map((data, index) => (
-            <Grid item xs={12} md={6} key={index}>
+            <Grid item xs={12} md={6} lg={index === 0 ? 12 : 6} key={index}>
               <Grid
                 container
                 spacing={1}
@@ -91,14 +90,17 @@ function KnowMoreContent({ handleClose, languageName, buttonName, href }) {
                   paddingX: 4,
                   paddingY: 2.5,
                   position: { xs: "relative", sm: "relative" },
-                  paddingBottom: `${
-                    index === 0 ? "4.5vh" : index === 3 ? "5.5vh" : "0.5vh"
-                  }`,
+                  paddingBottom: `${index < 2 ? "4.5vh" : "1.5vh"}`,
                   //   mb: { xs: 2, xm: 2, md: 5, xl: 5, lg: 5 },
                 }}
               >
                 <Grid item xs={12}>
-                  <Image src={data.imageSrc} alt="track" />
+                  <Image
+                    src={data.imageSrc}
+                    alt="track"
+                    height={index > 0 ? "125px" : ""}
+                    width={index > 0 ? "200px" : ""}
+                  />
                 </Grid>
                 <Grid item xs={12}>
                   <Grid
@@ -156,4 +158,4 @@ function KnowMoreContent({ handleClose, languageName, buttonName, href }) {
   );
 }
 
-export default KnowMoreContent;
+export default KnowMoreContentBroker;

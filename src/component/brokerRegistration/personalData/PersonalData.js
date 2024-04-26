@@ -1,14 +1,18 @@
 import {
+  Avatar,
   Box,
   Button,
   Divider,
   FormControl,
   Grid,
+  ListItemAvatar,
+  Rating,
   TextField,
   Typography,
 } from "@mui/material";
 import accountIcon from "../../../../public/Images/account.png";
 import React, { useEffect, useState } from "react";
+import CloseIcon from "@mui/icons-material/Close";
 import Image from "next/image";
 import BaseOutlinedRgInput from "../../reuseable/baseOutlinedRgInput/BaseOutlinedRgInput";
 import BaseOutlinedCpfInput from "../../reuseable/baseOutlinedCpfInput/BaseOutlinedCpfInput";
@@ -18,7 +22,19 @@ import BaseDateField from "../../reuseable/baseDateField/BaseDateField";
 import { formatISO } from "date-fns";
 import en from "locales/en";
 import pt from "locales/pt";
-import { useMemo } from "react";
+import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
+import SwipeableDrawer from "@mui/material/SwipeableDrawer";
+import List from "@mui/material/List";
+import ListItem from "@mui/material/ListItem";
+import ListItemButton from "@mui/material/ListItemButton";
+import ListItemIcon from "@mui/material/ListItemIcon";
+import ListItemText from "@mui/material/ListItemText";
+import InboxIcon from "@mui/icons-material/MoveToInbox";
+import MailIcon from "@mui/icons-material/Mail";
+import demoImage from "../../../../public/Images/broker-image.png";
+import { InputAdornment, IconButton } from "@mui/material";
+import SearchIcon from "@mui/icons-material/Search";
+import BorderColorOutlinedIcon from "@mui/icons-material/BorderColorOutlined";
 
 function PersonalData({
   handleNext,
@@ -35,6 +51,8 @@ function PersonalData({
     setRGValid(/^W(\d(\d(\d[A-Z]?)?)?$)/.test(e.target.value));
     setRGValue(e.target.value);
   };
+
+  const [selectedBroker, setSelectedBroker] = useState(null);
 
   const [preview, setPreview] = useState();
 
@@ -84,6 +102,120 @@ function PersonalData({
     }
   }, [allValues]);
 
+  const [state, setState] = React.useState({
+    top: false,
+    left: false,
+    bottom: false,
+    right: false,
+  });
+
+  const toggleDrawer = (anchor, open) => (event) => {
+    if (
+      event &&
+      event.type === "keydown" &&
+      (event.key === "Tab" || event.key === "Shift")
+    ) {
+      return;
+    }
+
+    setState({ ...state, [anchor]: open });
+  };
+
+  const list = (anchor) => (
+    <Box
+      sx={{ width: anchor === "top" || anchor === "bottom" ? "auto" : 380 }}
+      role="presentation"
+      // onClick={toggleDrawer(anchor, false)}
+      // onKeyDown={toggleDrawer(anchor, false)}
+    >
+      <Grid
+        container
+        direction="row"
+        justifyContent="space-between"
+        alignItems="center"
+        sx={{ mt: 2, px: 2 }}
+      >
+        <Typography
+          variant="p"
+          sx={{
+            color: "#1A1859",
+            fontSize: "24px",
+            lineHeight: "32px",
+            fontWeight: "700",
+          }}
+        >
+          Select Broker
+        </Typography>
+        <CloseIcon onClick={toggleDrawer("right", false)} />
+      </Grid>
+      <Box sx={{ px: 2, mt: 1 }}>
+        <TextField
+          variant="outlined"
+          placeholder="Search by broker name"
+          size="small"
+          fullWidth
+          InputProps={{
+            endAdornment: (
+              <InputAdornment position="end">
+                <IconButton edge="end" aria-label="Search by broker name">
+                  <SearchIcon />
+                </IconButton>
+              </InputAdornment>
+            ),
+          }}
+        />
+      </Box>
+      <Box sx={{ px: 2 }}>
+        <List
+          sx={{
+            width: "100%",
+            bgcolor: "background.paper",
+          }}
+        >
+          {[0, 1, 2]?.map((data, index) => (
+            <Box key={index} onClick={() => setSelectedBroker(index)}>
+              <ListItem
+                sx={{
+                  background: `${
+                    selectedBroker === index ? "#bae6fd" : "#ffffff"
+                  }`,
+                  "&:hover": {
+                    background: "#bae6fd",
+                  },
+                }}
+              >
+                <ListItemAvatar>
+                  <Avatar>
+                    <Image src={demoImage} alt="demo" />
+                  </Avatar>
+                </ListItemAvatar>
+                <ListItemText
+                  primary={
+                    <Typography
+                      variant="body1"
+                      sx={{
+                        fontSize: "16px",
+                        fontWeight: 700,
+                        lineHeight: "22px",
+                        color: "#002152",
+                      }}
+                    >
+                      Ronald Richards
+                    </Typography>
+                  }
+                  secondary={
+                    <Rating name="size-large" defaultValue={4} readOnly />
+                  }
+                />
+              </ListItem>
+              <Divider />
+            </Box>
+          ))}
+        </List>
+      </Box>
+    </Box>
+  );
+
   return (
     <Box sx={{ mt: 4 }}>
       <Grid
@@ -105,44 +237,17 @@ function PersonalData({
         </Typography>
       </Grid>
 
-      <Grid container spacing={1} sx={{ mt: 2 }}>
+      <Grid container spacing={3} sx={{ mt: 2 }}>
         <Grid item xs={12} sm={12} md={3}>
           <Box
             sx={{
-              height: {
-                xs: "20vh",
-                sm: "20vh",
-                md: "20vh",
-                lg: "25vh",
-                xl: "20vh",
-              },
-              width: {
-                xs: "100%",
-                sm: "100%",
-
-                md: "20vh",
-                lg: "25vh",
-                xl: "20vh",
-              },
               border: "1px dashed #DBE1E5",
-              p: 1,
+              background: "#F2F5F6",
+              borderRadius: "4px",
+              pt: 3,
             }}
           >
-            <Box
-              sx={{
-                background: "#F2F5F6",
-                borderRadius: "4px",
-                px: 1,
-                py: 2,
-                height: {
-                  xs: "17.5vh",
-                  sm: "17.5vh",
-                  md: "17.5vh",
-                  lg: "22vh",
-                  xl: "17.5vh",
-                },
-              }}
-            >
+            <Box>
               <Grid
                 container
                 direction="column"
@@ -173,7 +278,7 @@ function PersonalData({
                   variant="contained"
                   component="label"
                   sx={{
-                    mt: 1,
+                    mt: 3,
                     background: "#0362F0",
                     borderRadius: "4px",
                     fontSize: "14px",
@@ -227,7 +332,6 @@ function PersonalData({
             direction="row"
             justifyContent="flex-start"
             alignItems="flex-start"
-            sx={{ mb: 1, ml: { xxl: 4 } }}
           >
             <Typography
               variant="p"
@@ -249,7 +353,6 @@ function PersonalData({
             render={({ field }) => (
               <BaseTextField
                 size={"small"}
-                sx={{ ml: { xxl: 4 } }}
                 placeholder={t["Full Name"]}
                 // sx={{ mb: 2 }}
                 onChange={(e) => {
@@ -263,7 +366,7 @@ function PersonalData({
           <Typography
             variant="inherit"
             color="textSecondary"
-            sx={{ color: "#b91c1c", ml: { xxl: 4 } }}
+            sx={{ color: "#b91c1c" }}
           >
             {errors.full_name?.message}
           </Typography>
@@ -272,7 +375,7 @@ function PersonalData({
             direction="row"
             justifyContent="flex-start"
             alignItems="flex-start"
-            sx={{ mb: 1, mt: 1, ml: { xxl: 4 } }}
+            sx={{ mb: 1, mt: 1 }}
           >
             <Typography
               variant="p"
@@ -303,7 +406,7 @@ function PersonalData({
               <BaseTextField
                 size={"small"}
                 placeholder={t["Social Name"]}
-                sx={{ mb: 1, ml: { xxl: 4 } }}
+                sx={{ mb: 1 }}
                 onChange={(e) => {
                   field.onChange(e.target.value);
                 }}
@@ -509,6 +612,126 @@ function PersonalData({
             {errors?.dob?.message}
           </Typography>
         </Grid>
+        {userRole === "broker" && (
+          <Grid container spacing={1} sx={{ mt: 2 }}>
+            <Grid item xs={12} sm={12} md={selectedBroker ? 12 : 6}>
+              <Grid
+                container
+                direction="row"
+                justifyContent="flex-start"
+                alignItems="flex-start"
+                sx={{ mb: 1 }}
+              >
+                <Typography
+                  variant="p"
+                  sx={{
+                    color: "#253858",
+                    fontSize: "14px",
+                    fontWeight: "400",
+                    lineHeight: "16px",
+                  }}
+                >
+                  Name of the broker you referred
+                </Typography>
+              </Grid>
+              {selectedBroker ? (
+                <Box
+                  sx={{
+                    border: "1px solid #000F1A",
+                    borderRadius: "4px",
+                    padding: "8px 16px 8px 16px",
+                  }}
+                >
+                  <Grid
+                    container
+                    direction="row"
+                    justifyContent="space-between"
+                    alignItems="center"
+                  >
+                    <List>
+                      <ListItem>
+                        <ListItemAvatar>
+                          <Avatar>
+                            <Image src={demoImage} alt="demo" />
+                          </Avatar>
+                        </ListItemAvatar>
+                        <ListItemText
+                          primary={
+                            <Typography
+                              variant="body1"
+                              sx={{
+                                fontSize: "16px",
+                                fontWeight: 700,
+                                lineHeight: "22px",
+                                color: "#002152",
+                              }}
+                            >
+                              Ronald Richards
+                            </Typography>
+                          }
+                          secondary={
+                            <Rating
+                              name="size-large"
+                              defaultValue={4}
+                              readOnly
+                            />
+                          }
+                        />
+                      </ListItem>
+                    </List>
+                    <BorderColorOutlinedIcon
+                      onClick={toggleDrawer("right", true)}
+                    />
+                    <SwipeableDrawer
+                      anchor={"right"}
+                      open={state["right"]}
+                      onClose={toggleDrawer("right", false)}
+                      onOpen={toggleDrawer("right", true)}
+                    >
+                      {list("right")}
+                    </SwipeableDrawer>
+                  </Grid>
+                </Box>
+              ) : (
+                <Box
+                  sx={{
+                    border: "1px solid #000F1A",
+                    borderRadius: "4px",
+                    padding: "8px 16px 8px 16px",
+                  }}
+                >
+                  <Grid
+                    container
+                    direction="row"
+                    justifyContent="space-between"
+                    alignItems="center"
+                  >
+                    <Typography
+                      variant="p"
+                      sx={{
+                        fontSize: "14px",
+                        fontWeight: "400",
+                        lineHeight: "24px",
+                        color: "#253858",
+                      }}
+                    >
+                      Select broker
+                    </Typography>
+                    <ArrowForwardIcon onClick={toggleDrawer("right", true)} />
+                    <SwipeableDrawer
+                      anchor={"right"}
+                      open={state["right"]}
+                      onClose={toggleDrawer("right", false)}
+                      onOpen={toggleDrawer("right", true)}
+                    >
+                      {list("right")}
+                    </SwipeableDrawer>
+                  </Grid>
+                </Box>
+              )}
+            </Grid>
+          </Grid>
+        )}
 
         <Grid container spacing={1} sx={{ mt: 2, mb: 5 }}>
           <Grid item xs={6} sm={6} md={6}>

@@ -6,7 +6,14 @@ import Tab from "@mui/material/Tab";
 import Typography from "@mui/material/Typography";
 import Box from "@mui/material/Box";
 import ResponsiveDrawer from "../src/component/sharedProposal/ResponsiveDrawer/ResponsiveDrawer";
-import { Button, Container, Grid } from "@mui/material";
+import {
+  Button,
+  Container,
+  Grid,
+  IconButton,
+  InputAdornment,
+  TextField,
+} from "@mui/material";
 import { useState } from "react";
 import Releases from "../src/component/properties/Releases/Releases";
 import ThirdTab from "../src/component/properties/Third/ThirdTab";
@@ -23,6 +30,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { useEffect } from "react";
 import { findBrokerCountData } from "@/redux/brokerCount/actions";
 import { getSession, useSession } from "next-auth/react";
+import SearchIcon from "@mui/icons-material/Search";
 import pt from "locales/pt";
 import en from "locales/en";
 
@@ -158,6 +166,52 @@ export default function Brokers({ language }) {
                       />
                     )}
                   </Tabs>
+                </Box>
+                <Box sx={{ mt: 2 }}>
+                  <Grid container spacing={2}>
+                    <Grid item xs={10}>
+                      <TextField
+                        variant="outlined"
+                        placeholder="Search by business name or address..."
+                        size="small"
+                        fullWidth
+                        InputProps={{
+                          endAdornment: (
+                            <InputAdornment position="end">
+                              <IconButton
+                                edge="end"
+                                aria-label="Search by business name or address..."
+                              >
+                                <SearchIcon />
+                              </IconButton>
+                            </InputAdornment>
+                          ),
+                        }}
+                      />
+                    </Grid>
+                    <Grid item xs={2}>
+                      <Button
+                        variant="outlined"
+                        fullWidth
+                        sx={{
+                          fontSize: "16px",
+                          fontWeight: "600",
+                          lineHeight: "22px",
+                          color: "#002152",
+                          textTransform: "none",
+                          borderColor: "#002152",
+                          px: 2,
+                          py: 1,
+                          "&:hover": {
+                            color: "#002152",
+                            borderColor: "#002152",
+                          },
+                        }}
+                      >
+                        Filter
+                      </Button>
+                    </Grid>
+                  </Grid>
                 </Box>
 
                 <TabPanel value={value} index={0}>

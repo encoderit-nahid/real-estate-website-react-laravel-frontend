@@ -4,6 +4,10 @@ import {
   Button,
   Divider,
   Grid,
+  ListItem,
+  ListItemAvatar,
+  ListItemText,
+  Rating,
   SwipeableDrawer,
   Typography,
 } from "@mui/material";
@@ -244,18 +248,50 @@ function TabRegisteredCard({ brokerInfo, languageName }) {
         sx={{ px: 1.5, py: 1 }}
       >
         <Box>
-          {brokerInfo?.attachments[0]?.file_path ? (
-            <Image
-              loader={myLoader}
-              src={`${brokerInfo?.attachments[0]?.file_path}`}
-              alt="brokerImahe"
-              height={70}
-              width={70}
-              style={{ borderRadius: "50px" }}
+          <ListItem>
+            <ListItemAvatar>
+              <Avatar>
+                {brokerInfo?.attachments[0]?.file_path ? (
+                  <Image
+                    loader={myLoader}
+                    src={`${brokerInfo?.attachments[0]?.file_path}`}
+                    alt="brokerImahe"
+                    height={70}
+                    width={70}
+                    style={{ borderRadius: "50px" }}
+                  />
+                ) : (
+                  <Avatar />
+                )}
+              </Avatar>
+            </ListItemAvatar>
+            <ListItemText
+              primary={
+                <Typography
+                  variant="body1"
+                  sx={{
+                    fontSize: "16px",
+                    fontWeight: 700,
+                    lineHeight: "22px",
+                    color: "#6C7A84",
+                  }}
+                >
+                  4.5{" "}
+                  <span
+                    style={{
+                      fontSize: "14px",
+                      fontWeight: 400,
+                      lineHeight: "18px",
+                      color: "#6C7A84",
+                    }}
+                  >
+                    (32 reviews)
+                  </span>
+                </Typography>
+              }
+              secondary={<Rating name="size-large" defaultValue={4} readOnly />}
             />
-          ) : (
-            <Avatar sx={{ height: "72px", width: "72px" }} />
-          )}
+          </ListItem>
         </Box>
       </Grid>
       <Grid

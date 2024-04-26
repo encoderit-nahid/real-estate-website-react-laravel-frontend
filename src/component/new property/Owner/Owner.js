@@ -1,16 +1,7 @@
-import {
-  Autocomplete,
-  Box,
-  Button,
-  FormControl,
-  Grid,
-  TextField,
-  Typography,
-} from "@mui/material";
+import { Box, Button, FormControl, Grid, Typography } from "@mui/material";
 import Image from "next/image";
 import React, { useEffect } from "react";
 import buyerProfile from "../../../../public/Images/buyer_profile.png";
-import { useState } from "react";
 import BaseOutlinedZipInput from "../../reuseable/baseOutlinedZipInput/BaseOutlinedZipInput";
 import BaseOutlinedCpfInput from "../../reuseable/baseOutlinedCpfInput/BaseOutlinedCpfInput";
 import BaseOutlinedRgInput from "../../reuseable/baseOutlinedRgInput/BaseOutlinedRgInput";

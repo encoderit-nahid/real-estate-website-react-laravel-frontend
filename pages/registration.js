@@ -193,7 +193,7 @@ export default function Registration({ language }) {
       localStorage.setItem("registration_id", responseToken?.data?.user?.id);
       localStorage.setItem("user_role", responseToken?.data?.userRole);
       localStorage.setItem("Reg_user_name", data?.name);
-      router.push("/broker_registration");
+      router.push("/other_information");
     } else {
       const errors = errorToken?.response?.data?.errors ?? {};
       Object.entries(errors).forEach(([name, messages]) => {
