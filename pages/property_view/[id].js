@@ -96,16 +96,32 @@ export default function PropertyView({
   const [sideTabValue, setSideTabValue] = useState("photos");
 
   const Images = useMemo(() => {
+    const regexPatternThreeSixtyImages = /^[a-zA-Z_]+_vision_360$/;
+    const regexPatternImages = /^[a-zA-Z_]+$/;
     return singlePropertyData?.property?.attachments?.filter((data) => {
       return sideTabValue === "vision_360"
-        ? data?.title?.includes(`${upperTabValue}_${sideTabValue}`)
+        ? regexPatternThreeSixtyImages.test(data?.title)
         : sideTabValue === "photos"
-        ? data?.title === upperTabValue
+        ? data?.title && regexPatternImages.test(data?.title)
         : sideTabValue === "condominium"
-        ? data?.title === sideTabValue
+        ? data?.photo_type?.type === "condominium"
+        : sideTabValue === "videos"
+        ? !data?.title
         : null;
     });
-  }, [singlePropertyData, upperTabValue, sideTabValue]);
+  }, [singlePropertyData, sideTabValue]);
+
+  const Videos = useMemo(() => {
+    if (sideTabValue === "videos") {
+      return singlePropertyData?.property?.attachments?.filter((data) => {
+        return data?.title === null;
+      });
+    } else {
+      return;
+    }
+  }, [sideTabValue, singlePropertyData]);
+
+  console.log({ sideTabValue });
 
   const [selectImage, setSelectImage] = useState(() => Images[0]?.file_path);
 
@@ -120,6 +136,8 @@ export default function PropertyView({
   const goBack = () => {
     router.back();
   };
+
+  console.log({ singlePropertyData });
 
   // useEffect(() => {
   //   let showData = [];
@@ -220,7 +238,7 @@ export default function PropertyView({
               </Typography>
             </Button>
           </Grid>
-          <Grid
+          {/* <Grid
             container
             direction="row"
             justifyContent="flex-start"
@@ -232,7 +250,7 @@ export default function PropertyView({
               upperTabValue={upperTabValue}
               setUpperTabValue={setUpperTabValue}
             />
-          </Grid>
+          </Grid> */}
         </Box>
         <Box
           sx={{
@@ -257,6 +275,7 @@ export default function PropertyView({
               <SliderViewMobile
                 sideTabValue={sideTabValue}
                 setSideTabValue={setSideTabValue}
+                videos={Videos}
                 selectImage={selectImage}
                 addressData={singlePropertyData?.property?.address}
                 languageName={myValue.toString()}
@@ -289,22 +308,10 @@ export default function PropertyView({
           <Box>
             <SlideImageMobile Images={Images} setSelectImage={setSelectImage} />
           </Box>
-          <Grid
-            container
-            spacing={2}
-            // sx={{
-            //   display: {
-            //     xs: "none",
-            //     sm: "none",
-            //     md: "inline",
-            //     lg: "inline",
-            //     xl: "inline",
-            //   },
-            // }}
-          >
+          <Grid container>
             <Grid
               item
-              xs={10}
+              xs={12}
               sx={{
                 display: {
                   xs: "none",
@@ -321,23 +328,10 @@ export default function PropertyView({
                 selectImage={selectImage}
                 addressData={singlePropertyData?.property?.address}
                 languageName={myValue.toString()}
+                videos={Videos}
+                images={Images}
                 others={true}
               />
-            </Grid>
-            <Grid
-              item
-              xs={2}
-              sx={{
-                display: {
-                  xs: "none",
-                  sm: "none",
-                  md: "inline",
-                  lg: "inline",
-                  xl: "inline",
-                },
-              }}
-            >
-              <SlideImage Images={Images} setSelectImage={setSelectImage} />
             </Grid>
           </Grid>
         </Box>
@@ -357,9 +351,8 @@ export default function PropertyView({
               background: "#0E97F7",
 
               px: { xs: 2, sm: 2, md: 2, lg: 2, xl: 20 },
-              pt: { xs: 2, sm: 2, md: 2, lg: 0, xl: 0 },
+              pt: { xs: 2, sm: 2, md: 0, lg: 0, xl: 0 },
               // pb: { xs: 0.5, sm: 0.5, md: 0, lg: 0, xl: 0 },
-              mt: 1,
             }}
           >
             <AmountView

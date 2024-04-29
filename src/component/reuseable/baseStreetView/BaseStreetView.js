@@ -18,8 +18,8 @@ function BaseStreetView({ addressData }) {
   return (
     <Box
       sx={{
-        width: { xs: "100%", md: "850px" },
-        height: "450px",
+        width: "80vw",
+        height: "70vh",
         backgroundColor: "#eeeeee",
       }}
     >
