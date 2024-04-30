@@ -188,8 +188,8 @@ export default function Registration({ language }) {
     setLoading(false);
     if (!errorToken) {
       // console.log("pp", responseToken);
-      setSuccessMessage(responseToken?.data?.message);
-      handleClickSuccessSnackbar();
+      // // setSuccessMessage(responseToken?.data?.message);
+      // handleClickSuccessSnackbar();
       localStorage.setItem("registration_id", responseToken?.data?.user?.id);
       localStorage.setItem("user_role", responseToken?.data?.userRole);
       localStorage.setItem("Reg_user_name", data?.name);

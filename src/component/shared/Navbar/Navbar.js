@@ -145,7 +145,7 @@ function Navbar({
                   cursor: "pointer",
                 }}
               >
-                <Image src={logoIcon} height={25} width={110} alt="logo" />
+                <Image src={logoIcon} height={35} width={150} alt="logo" />
               </Box>
             </a>
           </Link>

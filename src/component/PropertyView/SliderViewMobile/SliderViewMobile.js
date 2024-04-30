@@ -259,7 +259,7 @@ function SliderViewMobile({
       <TabPanel value={value} index={3}>
         <BaseGoogleMap
           height={"59vh"}
-          width={"55vw"}
+          width={"100%"}
           markersData={markersData}
         />
       </TabPanel>
@@ -267,10 +267,10 @@ function SliderViewMobile({
         {/* <Typography variant="p" sx={{ visibility: "hidden", width: "100%" }}>
           dfsfffffffffffffffffffffffdsfffffffffffffffffffffffffffffffffffdsdsdsdsdsdsdsdsdsdsdsdsdsdsdsdsfsdfsdfsd
         </Typography> */}
-        <BaseStreetView addressData={addressData} />
+        <BaseStreetView addressData={addressData} widthDevice={"mobile"} />
       </TabPanel>
       <TabPanel value={value} index={5}>
-        <VideoCarousel videoLinks={videoIds} />
+        <VideoCarousel videoLinks={videoIds} widthDevice={"mobile"} />
       </TabPanel>
     </Container>
   );

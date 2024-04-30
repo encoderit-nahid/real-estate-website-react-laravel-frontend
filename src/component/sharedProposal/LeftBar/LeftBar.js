@@ -149,7 +149,7 @@ function LeftBar(props) {
                 }}
               >
                 <Box sx={{ cursor: "pointer" }}>
-                  <Image height={30} width={120} src={logo} alt="logo" />
+                  <Image height={35} width={130} src={logo} alt="logo" />
                 </Box>
               </a>
             </Link>

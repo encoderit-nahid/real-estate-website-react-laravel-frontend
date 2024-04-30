@@ -189,6 +189,7 @@ export default function NewProperty({ language }) {
   const [propertyType, setPropertyType] = useState("Residential");
   const [property_detail_id, setPropertyDetailId] = useState(1);
   const [files, setFiles] = useState([]);
+  const [videoFiles, setVideoFiles] = useState([]);
   const [imageError, setImageError] = useState(false);
   const [imageErrorMessage, setImageErrorMessage] = useState("");
   const [ErrorsData, setErrorsData] = useState(false);
@@ -210,6 +211,8 @@ export default function NewProperty({ language }) {
       delete errors?.document_files;
     }
   });
+
+  console.log({ singleData });
 
   useEffect(() => {
     if (query?.property_id) {
@@ -258,12 +261,20 @@ export default function NewProperty({ language }) {
         (data) => data?.file_type === "url"
       );
 
-      const urlEditData = allSelectVideos?.map((info) => {
-        return {
-          url: info?.file_path,
-        };
-      });
-      setValue("videos", urlEditData);
+      setVideoFiles(
+        allSelectVideos?.map((data) => {
+          return {
+            url: data?.file_path,
+          };
+        })
+      );
+
+      // const urlEditData = allSelectVideos?.map((info) => {
+      //   return {
+      //     url: info?.file_path,
+      //   };
+      // });
+      // setValue("videos", urlEditData);
       setValue("owner_name", singleData?.property_owner?.name);
       setValue("owner_rg", singleData?.property_owner?.rg);
       setValue("owner_cpf", singleData?.property_owner?.cpf);
@@ -372,6 +383,14 @@ export default function NewProperty({ language }) {
       }
     });
 
+    let newVideoArr = [];
+    videoFiles?.forEach((data, index) => {
+      newVideoArr.push({
+        url: data?.url,
+        title: allValues[`video_title_${index}`].slug,
+      });
+    });
+
     const newDocuments = documents?.filter((data) => data instanceof File);
 
     const firstPartData = omitEmpties({
@@ -394,7 +413,7 @@ export default function NewProperty({ language }) {
       // deprecated_images: singleData?.attachments?.map((data) => data.id),
       // status: action,
       document_files: newDocuments,
-      content_url: data?.videos[0]?.url !== "" ? data?.videos : null,
+      content_url: newVideoArr,
       images: newArr,
       // documents: "",
       // registry: "",
@@ -455,7 +474,10 @@ export default function NewProperty({ language }) {
           : null,
     });
 
+    console.log({ requireData });
+
     const formData = serialize(requireData, { indices: true });
+    console.log({ formData });
     if (query?.property_id) {
       const [error, response] = await propertyUpdateApi(formData);
       setLoading(false);
@@ -617,6 +639,8 @@ export default function NewProperty({ language }) {
                           errors={errors}
                           files={files}
                           setFiles={setFiles}
+                          videoFiles={videoFiles}
+                          setVideoFiles={setVideoFiles}
                           imageError={imageError}
                           imageErrorMessage={imageErrorMessage}
                           fields={fields}

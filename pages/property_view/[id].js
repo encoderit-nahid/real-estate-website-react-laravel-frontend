@@ -114,7 +114,7 @@ export default function PropertyView({
   const Videos = useMemo(() => {
     if (sideTabValue === "videos") {
       return singlePropertyData?.property?.attachments?.filter((data) => {
-        return data?.title === null;
+        return data?.file_type === "url";
       });
     } else {
       return;

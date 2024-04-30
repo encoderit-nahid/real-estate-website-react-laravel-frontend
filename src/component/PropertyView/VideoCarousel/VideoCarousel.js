@@ -3,7 +3,7 @@ import React, { useState } from "react";
 import ArrowBackIosOutlinedIcon from "@mui/icons-material/ArrowBackIosOutlined";
 import ArrowForwardIosOutlinedIcon from "@mui/icons-material/ArrowForwardIosOutlined";
 
-const VideoCarousel = ({ videoLinks }) => {
+const VideoCarousel = ({ videoLinks, widthDevice }) => {
   const [currentVideoIndex, setCurrentVideoIndex] = useState(0);
 
   const { width } = useWindowDimensions();
@@ -63,7 +63,7 @@ const VideoCarousel = ({ videoLinks }) => {
       {/* Embedded YouTube iframe */}
       <iframe
         title="YouTube Video"
-        width={`${width - 300}px`}
+        width={widthDevice === "mobile" ? `100%` : `${width - 300}px`}
         height="500"
         src={`https://www.youtube.com/embed/${videoLinks[currentVideoIndex]}?autoplay=1`}
         frameborder="0"

@@ -25,6 +25,7 @@ import { useRouter } from "next/router";
 import en from "locales/en";
 import pt from "locales/pt";
 import { useSession } from "next-auth/react";
+import { getVideoIdFromLink } from "@/utils/getVideoIdFromLink";
 
 const baseStyle = {
   flex: 1,
@@ -62,6 +63,8 @@ function PhotosAndVideos({
   errors,
   files,
   setFiles,
+  videoFiles,
+  setVideoFiles,
   imageError,
   imageErrorMessage,
   fields,
@@ -111,6 +114,12 @@ function PhotosAndVideos({
     const filterItem = files.filter((file, fileIndex) => fileIndex !== index);
     setFiles(filterItem);
   };
+  const handleDeleteVideo = (index) => {
+    const filterItem = videoFiles.filter(
+      (file, fileIndex) => fileIndex !== index
+    );
+    setVideoFiles(filterItem);
+  };
 
   const style = useMemo(
     () => ({
@@ -142,6 +151,8 @@ function PhotosAndVideos({
       setDisableBtn(true);
     }
   }, [files]);
+
+  console.log({ videoFiles });
 
   return (
     <Box sx={{ mt: 4 }}>
@@ -316,7 +327,7 @@ function PhotosAndVideos({
           {`${t["videos of the property"]}:`}
         </Typography>
       </Box>
-      {fields?.map((item, index) => (
+      {/* {fields?.map((item, index) => (
         <Grid
           key={item.id}
           container
@@ -349,28 +360,7 @@ function PhotosAndVideos({
               />
             )}
           />
-          {/* <Controller
-            name={`videos[${index}].title`}
-            control={control}
-            defaultValue={videoType[0] || {}}
-            render={({ field }) => (
-              <BaseAutocomplete
-                //   sx={{ margin: "0.6vh 0" }}
-                options={videoType || []}
-                getOptionLabel={(option) => option.name || ""}
-                sx={{ width: "20%", ml: 1, mr: 1 }}
-                isOptionEqualToValue={(option, value) =>
-                  option.slug === value.slug
-                }
-                size={"medium"}
-                placeholder={t["Convenient"]}
-                onChange={(e, v, r, d) => {
-                  field.onChange(v);
-                }}
-                value={field.value}
-              />
-            )}
-          /> */}
+
           {index === fields?.length - 1 && (
             <Button
               sx={{
@@ -423,7 +413,139 @@ function PhotosAndVideos({
             </Grid>
           </Grid>
         </Grid>
-      ))}
+      ))} */}
+
+      <Grid
+        container
+        direction="row"
+        justifyContent="flex-start"
+        alignItems="flex-start"
+        sx={{ mt: 1 }}
+      >
+        <Controller
+          name={`videos_url`}
+          control={control}
+          defaultValue={""}
+          render={({ field }) => (
+            <BaseTextField
+              sx={{
+                width: "50%",
+
+                "& .MuiOutlinedInput-root": {
+                  // - The Input-root, inside the TextField-root
+                  "& fieldset": {
+                    borderRadius: "4px 0px 0px 4px", // - The <fieldset> inside the Input-root
+                    // - Set the Input border
+                  },
+                },
+              }}
+              size={"medium"}
+              placeholder={t["paste the url of the video"]}
+              onChange={field.onChange}
+              value={field.value}
+            />
+          )}
+        />
+
+        <Button
+          sx={{
+            backgroundColor: "#DBE1E5",
+            py: 2,
+            borderRadius: "0px 4px 4px 0px",
+            "&:hover": {
+              backgroundColor: "#DBE1E5",
+              py: 2,
+              borderRadius: "0px 4px 4px 0px",
+            },
+          }}
+          onClick={() =>
+            setVideoFiles([...videoFiles, { url: allValues.videos_url }])
+          }
+        >
+          <AddOutlinedIcon sx={{ color: "#002152" }} />
+        </Button>
+      </Grid>
+      {videoFiles?.length > 0 && (
+        <Grid container spacing={1} sx={{ mt: 3 }}>
+          {videoFiles?.map((file, index) => (
+            <Grid item xs={12} sm={12} md={4} lg={3} xl={3} key={index}>
+              <Box
+                sx={{
+                  p: 2,
+                  boxSizing: "border-box",
+                  border: "1px solid #DBE1E5",
+                  borderRadius: "6px",
+                }}
+              >
+                <Grid
+                  container
+                  direction="row"
+                  justifyContent="flex-end"
+                  alignItems="flex-start"
+                >
+                  <DeleteOutlineOutlinedIcon
+                    sx={{
+                      background: "#F44336",
+                      color: "#ffffff",
+                      borderRadius: "50%",
+                      height: "3vh",
+                      width: "3vh",
+                      paddingY: "3px",
+                      mb: 0.5,
+                    }}
+                    onClick={() => handleDeleteVideo(index)}
+                  />
+                </Grid>
+                <iframe
+                  title="YouTube Video"
+                  // width={widthDevice === "mobile" ? `100%` : `${width - 300}px`}
+                  // height="500"
+                  height={100}
+                  width={200}
+                  src={`https://www.youtube.com/embed/${getVideoIdFromLink(
+                    file?.url
+                  )}?autoplay=1`}
+                  frameborder="0"
+                  allowfullscreen
+                  // onEnd={onVideoEnd}
+                ></iframe>
+                {/* <Autocomplete
+                              sx={{ mt: 2 }}
+                              disablePortal
+                              fullWidth
+                              size="small"
+                              id="combo-box-demo"
+                              options={top100Films}
+                              renderInput={(params) => (
+                                <TextField {...params} label="Convenient" />
+                              )}
+                            /> */}
+                <Controller
+                  name={`video_title_${index}`}
+                  control={control}
+                  defaultValue={photoType[0] || file.photo_type}
+                  render={({ field }) => (
+                    <BaseAutocomplete
+                      //   sx={{ margin: "0.6vh 0" }}
+                      options={photoType || []}
+                      getOptionLabel={(option) => option.name || ""}
+                      sx={{ mt: 2 }}
+                      isOptionEqualToValue={(option, value) =>
+                        option.id === value.id
+                      }
+                      size={"small"}
+                      placeholder={t["Convenient"]}
+                      onChange={(e, v, r, d) => field.onChange(v)}
+                      value={field.value}
+                    />
+                  )}
+                />
+              </Box>
+            </Grid>
+          ))}
+        </Grid>
+      )}
+
       {session?.user.role !== "owner" ? (
         <Grid
           container
