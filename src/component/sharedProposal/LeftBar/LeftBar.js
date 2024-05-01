@@ -43,6 +43,7 @@ import { _imageURL } from "consts";
 function LeftBar(props) {
   const router = useRouter();
   const { data: session } = useSession();
+  console.log({session})
 
   const myLoader = ({ src }) => {
     return `${_imageURL}/${src}`;

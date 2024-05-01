@@ -5,58 +5,58 @@ import {
   Grid,
   TextField,
   Typography,
-} from "@mui/material";
-import Image from "next/image";
-import React, { useEffect } from "react";
-import orionImage from "../../../../public/Images/orion.png";
-import { useDropzone } from "react-dropzone";
-import DeleteOutlineOutlinedIcon from "@mui/icons-material/DeleteOutlineOutlined";
-import { useState } from "react";
-import { useMemo } from "react";
-import AddOutlinedIcon from "@mui/icons-material/AddOutlined";
-import BaseTextField from "../../reuseable/baseTextField/BaseTextField";
-import BaseAutocomplete from "../../reuseable/baseAutocomplete/BaseAutocomplete";
-import { Controller } from "react-hook-form";
-import { useDispatch, useSelector } from "react-redux";
-import { GetPhotoTypeData } from "../../../redux/photo/actions";
-import CancelOutlinedIcon from "@mui/icons-material/CancelOutlined";
-import { _baseURL, _imageURL } from "../../../../consts";
-import { useRouter } from "next/router";
-import en from "locales/en";
-import pt from "locales/pt";
-import { useSession } from "next-auth/react";
-import { getVideoIdFromLink } from "@/utils/getVideoIdFromLink";
+} from '@mui/material'
+import Image from 'next/image'
+import React, { useEffect } from 'react'
+import orionImage from '../../../../public/Images/orion.png'
+import { useDropzone } from 'react-dropzone'
+import DeleteOutlineOutlinedIcon from '@mui/icons-material/DeleteOutlineOutlined'
+import { useState } from 'react'
+import { useMemo } from 'react'
+import AddOutlinedIcon from '@mui/icons-material/AddOutlined'
+import BaseTextField from '../../reuseable/baseTextField/BaseTextField'
+import BaseAutocomplete from '../../reuseable/baseAutocomplete/BaseAutocomplete'
+import { Controller } from 'react-hook-form'
+import { useDispatch, useSelector } from 'react-redux'
+import { GetPhotoTypeData } from '../../../redux/photo/actions'
+import CancelOutlinedIcon from '@mui/icons-material/CancelOutlined'
+import { _baseURL, _imageURL } from '../../../../consts'
+import { useRouter } from 'next/router'
+import en from 'locales/en'
+import pt from 'locales/pt'
+import { useSession } from 'next-auth/react'
+import { getVideoIdFromLink } from '@/utils/getVideoIdFromLink'
 
 const baseStyle = {
   flex: 1,
-  display: "flex",
-  flexDirection: "column",
-  alignItems: "center",
-  padding: "50px",
+  display: 'flex',
+  flexDirection: 'column',
+  alignItems: 'center',
+  padding: '50px',
   borderWidth: 2,
-  borderRadius: "4px",
-  borderColor: "#DBE1E5",
-  borderStyle: "dashed",
-  backgroundColor: "#F2F5F6",
+  borderRadius: '4px',
+  borderColor: '#DBE1E5',
+  borderStyle: 'dashed',
+  backgroundColor: '#F2F5F6',
 
-  color: "#c4c4c4",
-  outline: "none",
-  transition: "border .24s ease-in-out",
-  width: "70%",
-  marginTop: "2vh",
-};
+  color: '#c4c4c4',
+  outline: 'none',
+  transition: 'border .24s ease-in-out',
+  width: '70%',
+  marginTop: '2vh',
+}
 
 const activeStyle = {
-  borderColor: "#f2f",
-};
+  borderColor: '#f2f',
+}
 
 const acceptStyle = {
-  borderColor: "#f8f",
-};
+  borderColor: '#f8f',
+}
 
 const rejectStyle = {
-  borderColor: "#f2f",
-};
+  borderColor: '#f2f',
+}
 
 function PhotosAndVideos({
   control,
@@ -75,27 +75,27 @@ function PhotosAndVideos({
   handleNext,
   handleBack,
 }) {
-  const dispatch = useDispatch();
-  const { query } = useRouter();
-  const { data: session } = useSession();
-  const t = languageName === "en" ? en : pt;
+  const dispatch = useDispatch()
+  const { query } = useRouter()
+  const { data: session } = useSession()
+  const t = languageName === 'en' ? en : pt
   useEffect(() => {
-    dispatch(GetPhotoTypeData("property"));
-  }, [dispatch]);
+    dispatch(GetPhotoTypeData('property'))
+  }, [dispatch])
 
-  const photoType = useSelector((state) => state.photoType.photoTypeData);
+  const photoType = useSelector((state) => state.photoType.photoTypeData)
 
   const onDrop = (acceptedFiles) => {
     acceptedFiles.map((file) =>
       Object.assign(file, {
         preview: URL.createObjectURL(file),
-      })
-    );
+      }),
+    )
 
-    const allFiles = [...files, ...acceptedFiles]; //save all files here
+    const allFiles = [...files, ...acceptedFiles] //save all files here
 
-    setFiles(allFiles);
-  };
+    setFiles(allFiles)
+  }
   const {
     getRootProps,
     getInputProps,
@@ -105,21 +105,21 @@ function PhotosAndVideos({
   } = useDropzone({
     onDrop,
     accept: {
-      "image/jpeg": [],
-      "image/png": [],
+      'image/jpeg': [],
+      'image/png': [],
     },
-  });
+  })
 
   const handleDelete = (index) => {
-    const filterItem = files.filter((file, fileIndex) => fileIndex !== index);
-    setFiles(filterItem);
-  };
+    const filterItem = files.filter((file, fileIndex) => fileIndex !== index)
+    setFiles(filterItem)
+  }
   const handleDeleteVideo = (index) => {
     const filterItem = videoFiles.filter(
-      (file, fileIndex) => fileIndex !== index
-    );
-    setVideoFiles(filterItem);
-  };
+      (file, fileIndex) => fileIndex !== index,
+    )
+    setVideoFiles(filterItem)
+  }
 
   const style = useMemo(
     () => ({
@@ -128,31 +128,31 @@ function PhotosAndVideos({
       ...(isDragAccept ? acceptStyle : {}),
       ...(isDragReject ? rejectStyle : {}),
     }),
-    [isDragActive, isDragReject, isDragAccept]
-  );
+    [isDragActive, isDragReject, isDragAccept],
+  )
 
   const myLoader = ({ src }) => {
-    return `${_imageURL}/${src}`;
-  };
+    return `${_imageURL}/${src}`
+  }
 
   const ThumbnailLoader = ({ src }) => {
-    const match = src.match(/[?&]v=([^&]+)/);
-    const videoId = match ? match[1] : null;
+    const match = src.match(/[?&]v=([^&]+)/)
+    const videoId = match ? match[1] : null
 
-    return `https://img.youtube.com/vi/${videoId}/maxresdefault.jpg`;
-  };
+    return `https://img.youtube.com/vi/${videoId}/maxresdefault.jpg`
+  }
 
-  const [disableBtn, setDisableBtn] = useState(true);
+  const [disableBtn, setDisableBtn] = useState(true)
   useEffect(() => {
     if (files?.length > 0) {
-      setDisableBtn(false);
+      setDisableBtn(false)
     }
     if (files?.length < 1) {
-      setDisableBtn(true);
+      setDisableBtn(true)
     }
-  }, [files]);
+  }, [files])
 
-  console.log({ videoFiles });
+  console.log({ videoFiles })
 
   return (
     <Box sx={{ mt: 4 }}>
@@ -166,27 +166,27 @@ function PhotosAndVideos({
         <Typography
           variant="p"
           sx={{
-            color: "#002152",
-            fontSize: "24px",
-            fontWeight: "700",
-            lineHeight: "32px",
+            color: '#002152',
+            fontSize: '24px',
+            fontWeight: '700',
+            lineHeight: '32px',
             ml: 1,
           }}
         >
-          {t["Photos and videos"]}
+          {t['Photos and videos']}
         </Typography>
       </Grid>
       <Box sx={{ mt: 3 }}>
         <Typography
           variant="p"
           sx={{
-            color: "#002152",
-            fontSize: "16px",
-            fontWeight: "400",
-            lineHeight: "22px",
+            color: '#002152',
+            fontSize: '16px',
+            fontWeight: '400',
+            lineHeight: '22px',
           }}
         >
-          {`${t["Images of the property"]}:`}
+          {`${t['Images of the property']}:`}
         </Typography>
       </Box>
 
@@ -195,45 +195,45 @@ function PhotosAndVideos({
         <Typography
           variant="p"
           sx={{
-            color: "#6C7A84",
-            fontSize: "14px",
-            fontWeight: "400",
-            lineHeight: "18px",
+            color: '#6C7A84',
+            fontSize: '14px',
+            fontWeight: '400',
+            lineHeight: '18px',
             mt: 1,
           }}
         >
-          {t["drag and drop images here"]}
+          {t['drag and drop images here']}
         </Typography>
         <Typography
           variant="p"
           sx={{
-            color: "#6C7A84",
-            fontSize: "14px",
-            fontWeight: "400",
-            lineHeight: "18px",
+            color: '#6C7A84',
+            fontSize: '14px',
+            fontWeight: '400',
+            lineHeight: '18px',
             mt: 1,
           }}
         >
-          {t["or"]}
+          {t['or']}
         </Typography>
         <Button
           variant="contained"
           sx={{
-            textTransform: "none",
+            textTransform: 'none',
             mt: 1,
-            background: "#0362F0",
-            color: "#ffffff",
-            fontSize: "14px",
-            fontWeight: "600",
-            lineHeight: "18px",
+            background: '#0362F0',
+            color: '#ffffff',
+            fontSize: '14px',
+            fontWeight: '600',
+            lineHeight: '18px',
           }}
         >
-          {t["select images"]}
+          {t['select images']}
         </Button>
         <Typography
           variant="inherit"
           color="textSecondary"
-          sx={{ color: "#b91c1c" }}
+          sx={{ color: '#b91c1c' }}
         >
           {errors?.images?.message}
         </Typography>
@@ -246,9 +246,9 @@ function PhotosAndVideos({
               <Box
                 sx={{
                   p: 2,
-                  boxSizing: "border-box",
-                  border: "1px solid #DBE1E5",
-                  borderRadius: "6px",
+                  boxSizing: 'border-box',
+                  border: '1px solid #DBE1E5',
+                  borderRadius: '6px',
                 }}
               >
                 <Grid
@@ -259,12 +259,13 @@ function PhotosAndVideos({
                 >
                   <DeleteOutlineOutlinedIcon
                     sx={{
-                      background: "#F44336",
-                      color: "#ffffff",
-                      borderRadius: "50%",
-                      height: "3vh",
-                      width: "3vh",
-                      paddingY: "3px",
+                      background: '#F44336',
+                      color: '#ffffff',
+                      borderRadius: '50%',
+                      height: '3vh',
+                      width: '3vh',
+                      paddingY: '3px',
+                      cursor: 'pointer',
                     }}
                     onClick={() => handleDelete(index)}
                   />
@@ -296,13 +297,13 @@ function PhotosAndVideos({
                     <BaseAutocomplete
                       //   sx={{ margin: "0.6vh 0" }}
                       options={photoType || []}
-                      getOptionLabel={(option) => option.name || ""}
+                      getOptionLabel={(option) => option.name || ''}
                       sx={{ mt: 2 }}
                       isOptionEqualToValue={(option, value) =>
                         option.id === value.id
                       }
-                      size={"small"}
-                      placeholder={t["Convenient"]}
+                      size={'small'}
+                      placeholder={t['Convenient']}
                       onChange={(e, v, r, d) => field.onChange(v)}
                       value={field.value}
                     />
@@ -318,13 +319,13 @@ function PhotosAndVideos({
         <Typography
           variant="p"
           sx={{
-            color: "#002152",
-            fontSize: "16px",
-            fontWeight: "400",
-            lineHeight: "22px",
+            color: '#002152',
+            fontSize: '16px',
+            fontWeight: '400',
+            lineHeight: '22px',
           }}
         >
-          {`${t["videos of the property"]}:`}
+          {`${t['videos of the property']}:`}
         </Typography>
       </Box>
       {/* {fields?.map((item, index) => (
@@ -425,22 +426,22 @@ function PhotosAndVideos({
         <Controller
           name={`videos_url`}
           control={control}
-          defaultValue={""}
+          defaultValue={''}
           render={({ field }) => (
             <BaseTextField
               sx={{
-                width: "50%",
+                width: '50%',
 
-                "& .MuiOutlinedInput-root": {
+                '& .MuiOutlinedInput-root': {
                   // - The Input-root, inside the TextField-root
-                  "& fieldset": {
-                    borderRadius: "4px 0px 0px 4px", // - The <fieldset> inside the Input-root
+                  '& fieldset': {
+                    borderRadius: '4px 0px 0px 4px', // - The <fieldset> inside the Input-root
                     // - Set the Input border
                   },
                 },
               }}
-              size={"medium"}
-              placeholder={t["paste the url of the video"]}
+              size={'medium'}
+              placeholder={t['paste the url of the video']}
               onChange={field.onChange}
               value={field.value}
             />
@@ -449,20 +450,20 @@ function PhotosAndVideos({
 
         <Button
           sx={{
-            backgroundColor: "#DBE1E5",
+            backgroundColor: '#DBE1E5',
             py: 2,
-            borderRadius: "0px 4px 4px 0px",
-            "&:hover": {
-              backgroundColor: "#DBE1E5",
+            borderRadius: '0px 4px 4px 0px',
+            '&:hover': {
+              backgroundColor: '#DBE1E5',
               py: 2,
-              borderRadius: "0px 4px 4px 0px",
+              borderRadius: '0px 4px 4px 0px',
             },
           }}
           onClick={() =>
             setVideoFiles([...videoFiles, { url: allValues.videos_url }])
           }
         >
-          <AddOutlinedIcon sx={{ color: "#002152" }} />
+          <AddOutlinedIcon sx={{ color: '#002152' }} />
         </Button>
       </Grid>
       {videoFiles?.length > 0 && (
@@ -472,9 +473,9 @@ function PhotosAndVideos({
               <Box
                 sx={{
                   p: 2,
-                  boxSizing: "border-box",
-                  border: "1px solid #DBE1E5",
-                  borderRadius: "6px",
+                  boxSizing: 'border-box',
+                  border: '1px solid #DBE1E5',
+                  borderRadius: '6px',
                 }}
               >
                 <Grid
@@ -485,13 +486,14 @@ function PhotosAndVideos({
                 >
                   <DeleteOutlineOutlinedIcon
                     sx={{
-                      background: "#F44336",
-                      color: "#ffffff",
-                      borderRadius: "50%",
-                      height: "3vh",
-                      width: "3vh",
-                      paddingY: "3px",
+                      background: '#F44336',
+                      color: '#ffffff',
+                      borderRadius: '50%',
+                      height: '3vh',
+                      width: '3vh',
+                      paddingY: '3px',
                       mb: 0.5,
+                      cursor: 'pointer',
                     }}
                     onClick={() => handleDeleteVideo(index)}
                   />
@@ -503,7 +505,7 @@ function PhotosAndVideos({
                   height={100}
                   width={200}
                   src={`https://www.youtube.com/embed/${getVideoIdFromLink(
-                    file?.url
+                    file?.url,
                   )}?autoplay=1`}
                   frameborder="0"
                   allowfullscreen
@@ -528,13 +530,13 @@ function PhotosAndVideos({
                     <BaseAutocomplete
                       //   sx={{ margin: "0.6vh 0" }}
                       options={photoType || []}
-                      getOptionLabel={(option) => option.name || ""}
+                      getOptionLabel={(option) => option.name || ''}
                       sx={{ mt: 2 }}
                       isOptionEqualToValue={(option, value) =>
                         option.id === value.id
                       }
-                      size={"small"}
-                      placeholder={t["Convenient"]}
+                      size={'small'}
+                      placeholder={t['Convenient']}
                       onChange={(e, v, r, d) => field.onChange(v)}
                       value={field.value}
                     />
@@ -546,7 +548,7 @@ function PhotosAndVideos({
         </Grid>
       )}
 
-      {session?.user.role !== "owner" ? (
+      {session?.user.role !== 'owner' ? (
         <Grid
           container
           direction="row"
@@ -560,56 +562,56 @@ function PhotosAndVideos({
             // disabled={activeStep === 0}
             sx={{
               mr: 1,
-              border: "1px solid #002152",
-              borderRadius: "4px",
+              border: '1px solid #002152',
+              borderRadius: '4px',
               px: 2,
               py: 1,
-              color: "#002152",
-              fontSize: "16px",
-              fontWeight: "600",
-              lineHeight: "22px",
-              textTransform: "none",
+              color: '#002152',
+              fontSize: '16px',
+              fontWeight: '600',
+              lineHeight: '22px',
+              textTransform: 'none',
             }}
           >
-            {t["come back"]}
+            {t['come back']}
           </Button>
 
           <Button
             onClick={handleNext}
             disabled={disableBtn}
             sx={{
-              background: "#7450F0",
-              borderRadius: "4px",
+              background: '#7450F0',
+              borderRadius: '4px',
               px: 2,
               py: 1,
-              color: "#ffffff",
-              fontSize: "16px",
-              fontWeight: "600",
-              lineHeight: "22px",
-              textTransform: "none",
-              boxShadow: "0px 4px 8px rgba(81, 51, 182, 0.32)",
-              "&:hover": {
-                background: "#7450F0",
-                borderRadius: "4px",
+              color: '#ffffff',
+              fontSize: '16px',
+              fontWeight: '600',
+              lineHeight: '22px',
+              textTransform: 'none',
+              boxShadow: '0px 4px 8px rgba(81, 51, 182, 0.32)',
+              '&:hover': {
+                background: '#7450F0',
+                borderRadius: '4px',
                 px: 2,
                 py: 1,
-                color: "#ffffff",
-                fontSize: "16px",
-                fontWeight: "600",
-                lineHeight: "22px",
-                textTransform: "none",
-                boxShadow: "0px 4px 8px rgba(81, 51, 182, 0.32)",
+                color: '#ffffff',
+                fontSize: '16px',
+                fontWeight: '600',
+                lineHeight: '22px',
+                textTransform: 'none',
+                boxShadow: '0px 4px 8px rgba(81, 51, 182, 0.32)',
               },
             }}
           >
-            {t["Next"]}
+            {t['Next']}
           </Button>
         </Grid>
       ) : (
-        ""
+        ''
       )}
     </Box>
-  );
+  )
 }
 
-export default PhotosAndVideos;
+export default PhotosAndVideos

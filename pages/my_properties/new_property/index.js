@@ -265,6 +265,7 @@ export default function NewProperty({ language }) {
         allSelectVideos?.map((data) => {
           return {
             url: data?.file_path,
+            photo_type: data?.photo_type
           };
         })
       );
