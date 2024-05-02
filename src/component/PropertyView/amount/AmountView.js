@@ -22,7 +22,7 @@ function AmountView({
         borderRadius: "8px",
         ml: 0,
         px: 4,
-        pt: 4,
+
         pb: 6,
       }}
     >

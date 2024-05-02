@@ -16,12 +16,14 @@ import { Grid } from "@mui/material";
 import { _baseURL, _imageURL } from "../../../../consts";
 import BaseStreetView from "../../reuseable/baseStreetView/BaseStreetView";
 import PropTypes from "prop-types";
-
+import OndemandVideoOutlinedIcon from "@mui/icons-material/OndemandVideoOutlined";
 import Typography from "@mui/material/Typography";
 import Box from "@mui/material/Box";
 import en from "locales/en";
 import pt from "locales/pt";
 import Image from "next/image";
+import VideoCarousel from "../VideoCarousel/VideoCarousel";
+import { getVideoIdFromLink } from "@/utils/getVideoIdFromLink";
 
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
@@ -63,11 +65,18 @@ function SliderViewMobile({
   setSideTabValue,
   selectImage,
   addressData,
+  videos,
   languageName,
 }) {
   const t = languageName === "en" ? en : pt;
 
   const [value, setValue] = React.useState(0);
+
+  const videoIds = videos?.map((data) => {
+    console.log({ data });
+    const videoId = getVideoIdFromLink(data?.file_path);
+    return videoId;
+  });
 
   //   function get_url_extension( selectImage ) {
   //     return selectImage.split(/[#?]/)[0].split('.').pop().trim();
@@ -139,6 +148,11 @@ function SliderViewMobile({
           sx={{ minWidth: "60px" }}
           icon={<SignpostOutlinedIcon />}
           onClick={() => handleTabClick("street_view")}
+        />
+        <Tab
+          sx={{ minWidth: "60px" }}
+          icon={<OndemandVideoOutlinedIcon />}
+          onClick={() => handleTabClick("videos")}
         />
       </Tabs>
       <TabPanel value={value} index={0}>
@@ -245,7 +259,7 @@ function SliderViewMobile({
       <TabPanel value={value} index={3}>
         <BaseGoogleMap
           height={"59vh"}
-          width={"55vw"}
+          width={"100%"}
           markersData={markersData}
         />
       </TabPanel>
@@ -253,7 +267,10 @@ function SliderViewMobile({
         {/* <Typography variant="p" sx={{ visibility: "hidden", width: "100%" }}>
           dfsfffffffffffffffffffffffdsfffffffffffffffffffffffffffffffffffdsdsdsdsdsdsdsdsdsdsdsdsdsdsdsdsfsdfsdfsd
         </Typography> */}
-        <BaseStreetView addressData={addressData} />
+        <BaseStreetView addressData={addressData} widthDevice={"mobile"} />
+      </TabPanel>
+      <TabPanel value={value} index={5}>
+        <VideoCarousel videoLinks={videoIds} widthDevice={"mobile"} />
       </TabPanel>
     </Container>
   );

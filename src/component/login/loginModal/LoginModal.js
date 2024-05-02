@@ -320,6 +320,7 @@ function LoginModal({ handleLoginClose, myValue }) {
                 fontSize: "12px",
                 fontWeight: "600",
                 lineHeight: "16px",
+                cursor:"pointer"
               }}
             >
               {t["I forgot the password"]}

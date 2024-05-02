@@ -1,7 +1,7 @@
 import { Box, Divider, Grid, Typography } from "@mui/material";
 import Image from "next/image";
 import React from "react";
-import logoWhiteIcon from "../../../../public/Images/logoWhite.png";
+import logoWhiteIcon from "../../../../public/Images/branca.png";
 import facebook from "../../../../public/Images/facebook.png";
 import twitter from "../../../../public/Images/twitter.png";
 import instagram from "../../../../public/Images/instagram.png";
@@ -36,7 +36,7 @@ function Footer() {
             sx={{ color: "#ffffff", fontSize: "14px" }}
           >
             <Typography variant="p">
-              lokkan serviços imobiliários LTDA.
+              Lokkan serviços imobiliários LTDA.
             </Typography>
             <Typography variant="p">
               avenida paulista, 1439 - 1 andar - conj. 12
@@ -157,7 +157,7 @@ function Footer() {
         sx={{ paddingY: 2, paddingX: 3 }}
       >
         <Typography variant="p" sx={{ color: "#ffffff", fontSize: "14px" }}>
-          © 2019. todos os direitos reservados a lokkan serviços imobiliários
+          © 2024. todos os direitos reservados a lokkan serviços imobiliários
           LTDA.
         </Typography>
       </Grid>

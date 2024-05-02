@@ -167,3 +167,45 @@ a {
 ::-webkit-scrollbar {
 	display: none;
 }
+
+.video-carousel-container {
+	position: relative;
+  }
+  
+  .nav-icons {
+	position: absolute;
+	bottom: 60px;
+	right: 0%;
+	transform: translateX(-50%);
+  }
+
+  .nav-icons button {
+	margin: 0 10px;
+  }
+
+
+  
+  iframe {
+	display: block;
+  }
+
+  .image-carousel {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+  }
+  
+
+  
+  .image-grid {
+	display: flex;
+	flex-wrap: wrap;
+	justify-content: center;
+  }
+  
+  .carousel-image {
+	width: 100px; /* Adjust the width as needed */
+	height: auto;
+	margin: 5px; /* Adjust the margin as needed */
+  }
+  
