@@ -295,7 +295,7 @@ function LoginModal({ handleLoginClose, myValue }) {
               fontSize: "16px",
               lineHeight: "22px",
               fontWeight: "600",
-              mt: 2,
+              mt: 3,
               textTransform: "none",
             }}
           >
@@ -320,14 +320,14 @@ function LoginModal({ handleLoginClose, myValue }) {
                 fontSize: "12px",
                 fontWeight: "600",
                 lineHeight: "16px",
-                cursor:"pointer"
+                cursor: "pointer",
               }}
             >
               {t["I forgot the password"]}
             </Typography>
           </Grid>
         </Grid>
-        <Box sx={{ borderTop: "2px dashed #D3D3DF", mt: 3 }} />
+        {/* <Box sx={{ borderTop: "2px dashed #D3D3DF", mt: 3 }} /> */}
         <Grid
           container
           direction="column"
@@ -335,7 +335,7 @@ function LoginModal({ handleLoginClose, myValue }) {
           alignItems="center"
           sx={{ px: 3, mt: 4 }}
         >
-          <Box>
+          {/* <Box>
             <Image src={loginImage} alt="register" />
           </Box>
           <Typography
@@ -349,8 +349,8 @@ function LoginModal({ handleLoginClose, myValue }) {
             }}
           >
             {t["Register now"]}
-          </Typography>
-          <Link href="/registration">
+          </Typography> */}
+          {/* <Link href="/registration">
             <a
               style={{
                 textDecoration: "none",
@@ -364,7 +364,7 @@ function LoginModal({ handleLoginClose, myValue }) {
                 handleFunction={handleLoginClose}
               />
             </a>
-          </Link>
+          </Link> */}
         </Grid>
       </form>
       <Snackbar

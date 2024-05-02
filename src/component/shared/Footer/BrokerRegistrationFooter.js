@@ -8,7 +8,7 @@ import {
 } from "@mui/material";
 import Image from "next/image";
 import React from "react";
-import logoWhiteIcon from "../../../../public/Images/logoWhite.png";
+import logoWhiteIcon from "../../../../public/Images/branca.png";
 import facebook from "../../../../public/Images/facebook.png";
 import twitter from "../../../../public/Images/twitter.png";
 import instagram from "../../../../public/Images/instagram.png";
@@ -39,8 +39,8 @@ function BrokerRegistrationFooter() {
             alignItems="flex-start"
             sx={{ color: "#ffffff", fontSize: "14px" }}
           >
-            <Box>
-              <Image src={logoWhiteIcon} height={40} width={200} alt="logo" />
+            <Box sx={{ mb: 1 }}>
+              <Image src={logoWhiteIcon} height={40} width={180} alt="logo" />
             </Box>
             <Typography variant="p">
               Lokkan Serviços Imobiliários LTDA.
@@ -162,7 +162,7 @@ function BrokerRegistrationFooter() {
         sx={{ paddingY: 2, paddingX: 3 }}
       >
         <Typography variant="p" sx={{ color: "#ffffff", fontSize: "14px" }}>
-          © 2019. Todos os direitos reservados a Lokkan Serviços Imobiliários
+          © 2024. Todos os direitos reservados a Lokkan Serviços Imobiliários
           LTDA.
         </Typography>
       </Grid>

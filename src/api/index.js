@@ -22,6 +22,19 @@ const omitEmpties = (obj) => {
   }, {});
 };
 
+export const socialLoginApi = async (paramsData, provider) => {
+  try {
+    const responseAuth = await apiInstance.get(`/${provider}/callback`, {
+      params: {
+        ...paramsData,
+      },
+    });
+    return [false, responseAuth];
+  } catch (errorAuth) {
+    return [errorAuth, null];
+  }
+};
+
 //login
 export const loginApi = async (body) => {
   try {

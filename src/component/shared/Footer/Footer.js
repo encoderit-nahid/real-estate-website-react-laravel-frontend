@@ -23,7 +23,7 @@ function Footer() {
         alignItems="center"
       >
         <Box sx={{ paddingX: 4, paddingY: 3 }}>
-          <Image src={logoWhiteIcon} height={40} width={200} alt="logo" />
+          <Image src={logoWhiteIcon} height={40} width={180} alt="logo" />
         </Box>
       </Grid>
       <Grid container spacing={2} sx={{ paddingX: 4, paddingBottom: 4 }}>

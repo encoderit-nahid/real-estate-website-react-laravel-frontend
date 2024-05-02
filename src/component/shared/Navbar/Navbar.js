@@ -15,6 +15,7 @@ import Tooltip from "@mui/material/Tooltip";
 import MenuItem from "@mui/material/MenuItem";
 import AdbIcon from "@mui/icons-material/Adb";
 import logoIcon from "../../../../public/Images/branca.png";
+import logoIconColored from "../../../../public/Images/logo.png";
 import Image from "next/image";
 import BaseButton from "../../reuseable/button/BaseButton";
 import { useState } from "react";
@@ -43,6 +44,7 @@ function Navbar({
   languageName,
   setMyValue,
   myValue,
+  colorLogo,
 }) {
   const { data: session } = useSession();
   const [anchorElNav, setAnchorElNav] = React.useState(null);
@@ -145,7 +147,12 @@ function Navbar({
                   cursor: "pointer",
                 }}
               >
-                <Image src={logoIcon} height={35} width={150} alt="logo" />
+                <Image
+                  src={colorLogo ? logoIconColored : logoIcon}
+                  height={35}
+                  width={150}
+                  alt="logo"
+                />
               </Box>
             </a>
           </Link>

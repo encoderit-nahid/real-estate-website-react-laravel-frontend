@@ -31,6 +31,8 @@ import { useRouter } from "next/router";
 import GetCookie from "@/hooks/getCookie";
 import en from "locales/en";
 import pt from "locales/pt";
+import { _baseURL } from "consts";
+import SetCookie from "@/hooks/setCookie";
 
 export default function Registration({ language }) {
   const router = useRouter();
@@ -88,6 +90,14 @@ export default function Registration({ language }) {
       value: 2,
     },
   ];
+
+  const handleSocialLogin = (provider) => {
+    SetCookie(
+      "role_id",
+      query?.user_type === "broker" ? 2 : query?.user_type === "owner" ? 3 : 4
+    );
+    window.location.replace(`${_baseURL}/api/redirect/${provider}`);
+  };
 
   // useEffect(() => {
   //   const getData = async () => {
@@ -180,7 +190,12 @@ export default function Registration({ language }) {
 
     const allData = {
       ...data,
-      role_id: activeBtn,
+      role_id:
+        query?.user_type === "broker"
+          ? 2
+          : query?.user_type === "owner"
+          ? 3
+          : 4,
       redirect_url: window.location.href,
     };
 
@@ -193,7 +208,9 @@ export default function Registration({ language }) {
       localStorage.setItem("registration_id", responseToken?.data?.user?.id);
       localStorage.setItem("user_role", responseToken?.data?.userRole);
       localStorage.setItem("Reg_user_name", data?.name);
-      router.push("/other_information");
+      router.replace({
+        pathname: "/other_information",
+      });
     } else {
       const errors = errorToken?.response?.data?.errors ?? {};
       Object.entries(errors).forEach(([name, messages]) => {
@@ -446,7 +463,7 @@ export default function Registration({ language }) {
                       {errors.password?.message}
                     </Typography>
 
-                    <Grid
+                    {/* <Grid
                       container
                       direction="row"
                       justifyContent="flex-start"
@@ -464,16 +481,9 @@ export default function Registration({ language }) {
                       >
                         {t["Profile"]}
                       </Typography>
-                    </Grid>
-                    <Grid
-                      container
-                      // direction="row"
-                      // justifyContent="flex-start"
-                      // alignItems="flex-start"
-                      // gap={2}
-                      spacing={1}
-                    >
-                      {UserRoleData?.map((data, index) => (
+                    </Grid> */}
+                    <Grid container spacing={1}>
+                      {/* {UserRoleData?.map((data, index) => (
                         <Grid item xs={4} key={index}>
                           <Button
                             onClick={() => setActiveBtn(data.value)}
@@ -533,72 +543,7 @@ export default function Registration({ language }) {
                             {data.name}
                           </Button>
                         </Grid>
-                      ))}
-
-                      {/* <Grid item xs={4}>
-                        <Link href="/broker_registration">
-                          <Button
-                            disabled={disableBtn}
-                            onClick={() => setActiveBtn(2)}
-                            sx={{
-                              width: "100%",
-                              background: `${
-                                activeBtn === 2 ? "#0362F0" : "#F2F5F6"
-                              }`,
-                              borderRadius: "152px",
-                              color: `${
-                                activeBtn === 2 ? "#ffffff" : "#002152"
-                              }`,
-                              borderRadius: "152px",
-
-                              fontSize: {
-                                xs: "12px",
-                                sm: "13px",
-                                md: "16px",
-                                lg: "13px",
-                                xl: "16px",
-                              },
-                              fontWeight: "400",
-                              lineHeight: "22px",
-                              textTransform: "none",
-                              px: {
-                                xs: 0,
-                                sm: 2,
-                                md: 2,
-                                lg: 2,
-                                xl: 2,
-                              },
-                              py: 1,
-                              "&:hover": {
-                                width: "100%",
-                                background: "#0362F0",
-                                borderRadius: "152px",
-                                color: "#ffffff",
-                                fontSize: {
-                                  xs: "12px",
-                                  sm: "13px",
-                                  md: "16px",
-                                  lg: "13px",
-                                  xl: "16px",
-                                },
-                                fontWeight: "400",
-                                lineHeight: "22px",
-                                textTransform: "none",
-                                px: {
-                                  xs: 0,
-                                  sm: 2,
-                                  md: 2,
-                                  lg: 2,
-                                  xl: 2,
-                                },
-                                py: 1,
-                              },
-                            }}
-                          >
-                            {t["Broker"]}
-                          </Button>
-                        </Link>
-                      </Grid> */}
+                      ))} */}
                     </Grid>
 
                     <Button
@@ -613,7 +558,7 @@ export default function Registration({ language }) {
                         fontSize: "16px",
                         lineHeight: "22px",
                         fontWeight: "600",
-                        mt: 3,
+                        mt: 5,
                         textTransform: "none",
                         py: 1,
                       }}
@@ -653,6 +598,7 @@ export default function Registration({ language }) {
                             width: "100%",
                           },
                         }}
+                        onClick={() => handleSocialLogin("google")}
                       >
                         <GoogleIcon sx={{ color: "#ffffff" }} />
                         <Typography
@@ -693,6 +639,7 @@ export default function Registration({ language }) {
                             width: "100%",
                           },
                         }}
+                        onClick={() => handleSocialLogin("facebook")}
                       >
                         <FacebookOutlinedIcon sx={{ color: "#ffffff" }} />
                         <Typography
