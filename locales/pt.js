@@ -60,7 +60,7 @@ export default {
   "Zip code": "CEP",
   "I want to advertise": "Eu quero anunciar",
   "Lokkan for your property":
-    "Aposte na lokkan para vender ou comprar seu imóvel com facilidade e segurança!",
+    "Aposte na Lokkan para vender ou comprar seu imóvel com facilidade e segurança!",
   "Practical, simple and easy": "Prática, simples e fácil",
   Practicality: "Praticidade",
   "100% digital": "100% online",
@@ -383,11 +383,11 @@ export default {
   "Fastest sales process on the market":
     "Simplifique a venda de seu imóvel e receve propostas em tempo recorde",
   "Digital and simplified sales process, which provides agility and transparency, allowing you to focus on your customer":
-    "Com a lokkan, vender um imóvel é sinônimo de facilidade e tecnologia avançada. eliminamos a burocracia do processo de venda, permitindo que você alcance o resultado desejado com rapidez e segurança",
+    "Com a Lokkan, vender um imóvel é sinônimo de facilidade e tecnologia avançada. eliminamos a burocracia do processo de venda, permitindo que você alcance o resultado desejado com rapidez e segurança",
   "Simple ad system combined with complete assistance in the end-to-end buying and selling process. From announcement to public deed":
-    "Na lokkan, acreditamos que cada cliente merece atenção individualizada e assessoria completa em cada passo da venda do seu imóvel, do começo ao fim.",
+    "Na Lokkan, acreditamos que cada cliente merece atenção individualizada e assessoria completa em cada passo da venda do seu imóvel, do começo ao fim.",
   "We offer the best technologies, the most complete and agile advice on the market and the highest commission, the broker gets up to 70% of the total commission":
-    "Por que se contentar com menos? com a lokkan, você pode ganhar muito mais, ficamos com a burocracia e repassamos 70% da comissão, oferecemos programa de recompensa por cada corretor indicado (saiba mais)",
+    "Por que se contentar com menos? com a Lokkan, você pode ganhar muito mais, ficamos com a burocracia e repassamos 70% da comissão, oferecemos programa de recompensa por cada corretor indicado (saiba mais)",
   "You will receive qualified leads not only from your properties, but from all in your region, as well as scheduling visits, proposals, directly in your control panel":
     "Diga adeus à papelada e aos processos morosos! na lokkan, você terá uma experiência livre de burocracias! além disso, receberá leads qualificados da sua região direto, com controle de agendamentos, propostas e visitas no seu painel de controle.",
   "You receive 70% of the commission negotiated with the property owner (raising and commission)":
