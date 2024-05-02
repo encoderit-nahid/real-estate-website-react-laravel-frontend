@@ -14,7 +14,7 @@ import Button from "@mui/material/Button";
 import Tooltip from "@mui/material/Tooltip";
 import MenuItem from "@mui/material/MenuItem";
 import AdbIcon from "@mui/icons-material/Adb";
-import logoIcon from "../../../../public/Images/logo.png";
+import logoIcon from "../../../../public/Images/branca.png";
 import Image from "next/image";
 import BaseButton from "../../reuseable/button/BaseButton";
 import { useState } from "react";
