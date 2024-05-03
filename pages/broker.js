@@ -52,8 +52,8 @@ export default function Broker({
         <Box
           sx={{
             backgroundImage: {
-              xs: `url(${mobileGray.src})`,
-              sm: `url(${mobileGray.src})`,
+              xs: `url(${brokerBackgroundImage.src})`,
+              sm: `url(${brokerBackgroundImage.src})`,
               md: `url(${brokerBackgroundImage.src})`,
               lg: `url(${brokerBackgroundImage.src})`,
               xl: `url(${brokerBackgroundImage.src})`,

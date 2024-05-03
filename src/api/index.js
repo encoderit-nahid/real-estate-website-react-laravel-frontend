@@ -13,7 +13,7 @@ apiInstance.interceptors.request.use((config) => {
   return config;
 });
 
-const omitEmpties = (obj) => {
+export const omitEmpties = (obj) => {
   return Object.entries(obj).reduce((carry, [key, value]) => {
     if (![null, undefined, "", []].includes(value)) {
       carry[key] = value;

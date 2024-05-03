@@ -51,8 +51,8 @@ export default function App({
         <Box
           sx={{
             backgroundImage: {
-              xs: `url(${mobileGray.src})`,
-              sm: `url(${mobileGray.src})`,
+              xs: `url(${backgroundImage.src})`,
+              sm: `url(${backgroundImage.src})`,
               md: `url(${backgroundImage.src})`,
               lg: `url(${backgroundImage.src})`,
               xl: `url(${backgroundImage.src})`,

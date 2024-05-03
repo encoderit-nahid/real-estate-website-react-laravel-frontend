@@ -12,7 +12,7 @@ function BrokerContent({ languageName, setKnowMoreModal }) {
       direction="column"
       justifyContent="center"
       alignItems="center"
-      sx={{ height: "75vh" }}
+      sx={{ height: "75vh",px:{xs:2,sm:2,md:0}  }}
     >
       <Typography
         variant="h1"

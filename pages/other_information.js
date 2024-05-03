@@ -68,6 +68,8 @@ export default function OtherInformation({
 }) {
   const router = useRouter();
   const { query } = router;
+  
+  const [selectedBroker, setSelectedBroker] = useState(null)
 
   const [myValue, setMyValue] = useState(language || "pt");
 
@@ -251,6 +253,7 @@ export default function OtherInformation({
       social_name: data.social_name,
       broker_type: actingPreferenceBtn,
       referred_from: aboutLokkanBtn,
+      broker_referral_id: selectedBroker?.id
     });
     const addressData = omitEmpties({
       zip_code: data.zip_code,
@@ -347,6 +350,8 @@ export default function OtherInformation({
                       allValues={allValues}
                       activeStep={activeStep}
                       languageName={myValue.toString()}
+                      selectedBroker={selectedBroker}
+                      setSelectedBroker={setSelectedBroker}
                     />
                   ) : activeStep === 1 ? (
                     <AddressData

@@ -9,32 +9,36 @@ import {
   Rating,
   TextField,
   Typography,
-} from "@mui/material";
-import accountIcon from "../../../../public/Images/account.png";
-import React, { useEffect, useState } from "react";
-import CloseIcon from "@mui/icons-material/Close";
-import Image from "next/image";
-import BaseOutlinedRgInput from "../../reuseable/baseOutlinedRgInput/BaseOutlinedRgInput";
-import BaseOutlinedCpfInput from "../../reuseable/baseOutlinedCpfInput/BaseOutlinedCpfInput";
-import BaseTextField from "../../reuseable/baseTextField/BaseTextField";
-import { Controller } from "react-hook-form";
-import BaseDateField from "../../reuseable/baseDateField/BaseDateField";
-import { formatISO } from "date-fns";
-import en from "locales/en";
-import pt from "locales/pt";
-import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
-import SwipeableDrawer from "@mui/material/SwipeableDrawer";
-import List from "@mui/material/List";
-import ListItem from "@mui/material/ListItem";
-import ListItemButton from "@mui/material/ListItemButton";
-import ListItemIcon from "@mui/material/ListItemIcon";
-import ListItemText from "@mui/material/ListItemText";
-import InboxIcon from "@mui/icons-material/MoveToInbox";
-import MailIcon from "@mui/icons-material/Mail";
-import demoImage from "../../../../public/Images/broker-image.png";
-import { InputAdornment, IconButton } from "@mui/material";
-import SearchIcon from "@mui/icons-material/Search";
-import BorderColorOutlinedIcon from "@mui/icons-material/BorderColorOutlined";
+} from '@mui/material'
+import accountIcon from '../../../../public/Images/account.png'
+import React, { useEffect, useState } from 'react'
+import CloseIcon from '@mui/icons-material/Close'
+import Image from 'next/image'
+import BaseOutlinedRgInput from '../../reuseable/baseOutlinedRgInput/BaseOutlinedRgInput'
+import BaseOutlinedCpfInput from '../../reuseable/baseOutlinedCpfInput/BaseOutlinedCpfInput'
+import BaseTextField from '../../reuseable/baseTextField/BaseTextField'
+import { Controller } from 'react-hook-form'
+import BaseDateField from '../../reuseable/baseDateField/BaseDateField'
+import { formatISO } from 'date-fns'
+import en from 'locales/en'
+import pt from 'locales/pt'
+import ArrowForwardIcon from '@mui/icons-material/ArrowForward'
+import SwipeableDrawer from '@mui/material/SwipeableDrawer'
+import List from '@mui/material/List'
+import ListItem from '@mui/material/ListItem'
+import ListItemButton from '@mui/material/ListItemButton'
+import ListItemIcon from '@mui/material/ListItemIcon'
+import ListItemText from '@mui/material/ListItemText'
+import InboxIcon from '@mui/icons-material/MoveToInbox'
+import MailIcon from '@mui/icons-material/Mail'
+import demoImage from '../../../../public/Images/broker-image.png'
+import { InputAdornment, IconButton } from '@mui/material'
+import SearchIcon from '@mui/icons-material/Search'
+import BorderColorOutlinedIcon from '@mui/icons-material/BorderColorOutlined'
+import { _imageURL } from 'consts'
+import { useGetAllReferralBrokerQuery } from '@/queries/useGetAllReferralBrokerQuery'
+import { debounce } from '@/utils/debounce'
+import { omitEmpties } from '@/api'
 
 function PersonalData({
   handleNext,
@@ -42,47 +46,67 @@ function PersonalData({
   errors,
   allValues,
   languageName,
+  selectedBroker,
+  setSelectedBroker,
   activeStep,
 }) {
   //rg
-  const [rgValue, setRGValue] = useState("");
-  const [rgValid, setRGValid] = useState(false);
+  const [rgValue, setRGValue] = useState('')
+  const [rgValid, setRGValid] = useState(false)
   const handleRGValidation = (e) => {
-    setRGValid(/^W(\d(\d(\d[A-Z]?)?)?$)/.test(e.target.value));
-    setRGValue(e.target.value);
-  };
+    setRGValid(/^W(\d(\d(\d[A-Z]?)?)?$)/.test(e.target.value))
+    setRGValue(e.target.value)
+  }
 
-  const [selectedBroker, setSelectedBroker] = useState(null);
 
-  const [preview, setPreview] = useState();
+  const [preview, setPreview] = useState()
 
-  const t = languageName === "en" ? en : pt;
+  const t = languageName === 'en' ? en : pt
 
-  // const userRole = localStorage.getItem("user_role");
+  const [userRole, setUserRole] = useState('')
 
-  const [userRole, setUserRole] = useState("");
+  const [searchValue,setSearchValue] = useState(null)
+
+  const {
+    data: brokerUserData,
+    isLoading: brokerLoading,
+    refetch,
+    isFetched,
+    isFetching,
+  } = useGetAllReferralBrokerQuery(omitEmpties({
+    user_type: userRole === "broker" ? "broker" : null,
+    status: 'active',
+    name: searchValue
+  }))
+
+  useEffect(() => {
+    if(searchValue !== null){
+      refetch()
+    }
+  },[searchValue,refetch])
+
 
   useEffect(() => {
     // Perform localStorage action
-    const role = localStorage.getItem("user_role");
-    setUserRole(role);
-  }, []);
+    const role = localStorage.getItem('user_role')
+    setUserRole(role)
+  }, [])
 
   // create a preview as a side effect, whenever selected file is changed
   useEffect(() => {
     if (!allValues.image) {
-      setPreview(undefined);
-      return;
+      setPreview(undefined)
+      return
     }
 
-    const objectUrl = URL.createObjectURL(allValues.image);
-    setPreview(objectUrl);
+    const objectUrl = URL.createObjectURL(allValues.image)
+    setPreview(objectUrl)
 
     // free memory when ever this component is unmounted
-    return () => URL.revokeObjectURL(objectUrl);
-  }, [allValues.image]);
+    return () => URL.revokeObjectURL(objectUrl)
+  }, [allValues.image])
 
-  const [disableBtn, setDisableBtn] = useState(true);
+  const [disableBtn, setDisableBtn] = useState(true)
   useEffect(() => {
     if (
       allValues?.full_name != null &&
@@ -90,40 +114,52 @@ function PersonalData({
       allValues?.rg_number != null &&
       allValues?.dob != null
     ) {
-      setDisableBtn(false);
+      setDisableBtn(false)
     }
     if (
-      allValues?.full_name === "" ||
-      allValues?.cpf_number === "" ||
-      allValues?.rg_number === "" ||
-      allValues?.dob === ""
+      allValues?.full_name === '' ||
+      allValues?.cpf_number === '' ||
+      allValues?.rg_number === '' ||
+      allValues?.dob === ''
     ) {
-      setDisableBtn(true);
+      setDisableBtn(true)
     }
-  }, [allValues]);
+  }, [allValues])
 
   const [state, setState] = React.useState({
     top: false,
     left: false,
     bottom: false,
     right: false,
-  });
+  })
 
   const toggleDrawer = (anchor, open) => (event) => {
     if (
       event &&
-      event.type === "keydown" &&
-      (event.key === "Tab" || event.key === "Shift")
+      event.type === 'keydown' &&
+      (event.key === 'Tab' || event.key === 'Shift')
     ) {
-      return;
+      return
     }
 
-    setState({ ...state, [anchor]: open });
-  };
+    setState({ ...state, [anchor]: open })
+  }
+
+  const myLoader = ({ src }) => {
+    return `${_imageURL}/${src}`
+  }
+
+
+  const handleSearchBroker = (e) => {
+    setSearchValue(e.target.value)
+    refetch({})
+  }
+
+  const debouncedHandleChangeBroker = debounce(handleSearchBroker);
 
   const list = (anchor) => (
     <Box
-      sx={{ width: anchor === "top" || anchor === "bottom" ? "auto" : 380 }}
+      sx={{ width: anchor === 'top' || anchor === 'bottom' ? 'auto' : 380 }}
       role="presentation"
       // onClick={toggleDrawer(anchor, false)}
       // onKeyDown={toggleDrawer(anchor, false)}
@@ -138,21 +174,22 @@ function PersonalData({
         <Typography
           variant="p"
           sx={{
-            color: "#1A1859",
-            fontSize: "24px",
-            lineHeight: "32px",
-            fontWeight: "700",
+            color: '#1A1859',
+            fontSize: '24px',
+            lineHeight: '32px',
+            fontWeight: '700',
           }}
         >
           Select Broker
         </Typography>
-        <CloseIcon onClick={toggleDrawer("right", false)} />
+        <CloseIcon onClick={toggleDrawer('right', false)} sx={{cursor:"pointer"}} />
       </Grid>
       <Box sx={{ px: 2, mt: 1 }}>
         <TextField
           variant="outlined"
           placeholder="Search by broker name"
           size="small"
+          onChange={debouncedHandleChangeBroker}
           fullWidth
           InputProps={{
             endAdornment: (
@@ -168,39 +205,50 @@ function PersonalData({
       <Box sx={{ px: 2 }}>
         <List
           sx={{
-            width: "100%",
-            bgcolor: "background.paper",
+            width: '100%',
+            bgcolor: 'background.paper',
           }}
         >
-          {[0, 1, 2]?.map((data, index) => (
-            <Box key={index} onClick={() => setSelectedBroker(index)}>
+          {brokerUserData?.data?.users?.data?.map((brokerInfo, index) => (
+            <Box key={index} onClick={() => setSelectedBroker(brokerInfo)}>
               <ListItem
                 sx={{
                   background: `${
-                    selectedBroker === index ? "#bae6fd" : "#ffffff"
+                    selectedBroker?.id === brokerInfo?.id
+                      ? '#bae6fd'
+                      : '#ffffff'
                   }`,
-                  "&:hover": {
-                    background: "#bae6fd",
+                  '&:hover': {
+                    background: '#bae6fd',
                   },
                 }}
               >
                 <ListItemAvatar>
-                  <Avatar>
-                    <Image src={demoImage} alt="demo" />
-                  </Avatar>
+                  {brokerInfo?.attachments[0]?.file_path ? (
+                    <Image
+                      loader={myLoader}
+                      src={`${brokerInfo?.attachments[0]?.file_path}`}
+                      alt="brokerImahe"
+                      height={70}
+                      width={70}
+                      style={{ borderRadius: '50px' }}
+                    />
+                  ) : (
+                    <Avatar />
+                  )}
                 </ListItemAvatar>
                 <ListItemText
                   primary={
                     <Typography
                       variant="body1"
                       sx={{
-                        fontSize: "16px",
+                        fontSize: '16px',
                         fontWeight: 700,
-                        lineHeight: "22px",
-                        color: "#002152",
+                        lineHeight: '22px',
+                        color: '#002152',
                       }}
                     >
-                      Ronald Richards
+                      {brokerInfo?.name}
                     </Typography>
                   }
                   secondary={
@@ -214,7 +262,7 @@ function PersonalData({
         </List>
       </Box>
     </Box>
-  );
+  )
 
   return (
     <Box sx={{ mt: 4 }}>
@@ -227,13 +275,13 @@ function PersonalData({
         <Typography
           variant="p"
           sx={{
-            color: "#1A1859",
-            fontSize: "24px",
-            fontWeight: "700",
-            lineHeight: "29px",
+            color: '#1A1859',
+            fontSize: '24px',
+            fontWeight: '700',
+            lineHeight: '29px',
           }}
         >
-          {t["Personal data"]}
+          {t['Personal data']}
         </Typography>
       </Grid>
 
@@ -241,9 +289,9 @@ function PersonalData({
         <Grid item xs={12} sm={12} md={3}>
           <Box
             sx={{
-              border: "1px dashed #DBE1E5",
-              background: "#F2F5F6",
-              borderRadius: "4px",
+              border: '1px dashed #DBE1E5',
+              background: '#F2F5F6',
+              borderRadius: '4px',
               pt: 3,
             }}
           >
@@ -265,13 +313,13 @@ function PersonalData({
                 <Typography
                   variant="p"
                   sx={{
-                    color: "#6C7A84",
-                    fontSize: "14px",
-                    fontWeight: "400",
-                    lineHeight: "18px",
+                    color: '#6C7A84',
+                    fontSize: '14px',
+                    fontWeight: '400',
+                    lineHeight: '18px',
                   }}
                 >
-                  {t["Profile picture"]}
+                  {t['Profile picture']}
                 </Typography>
 
                 <Button
@@ -279,23 +327,23 @@ function PersonalData({
                   component="label"
                   sx={{
                     mt: 3,
-                    background: "#0362F0",
-                    borderRadius: "4px",
-                    fontSize: "14px",
-                    fontWeight: "600",
-                    color: "#ffffff",
-                    lineHeight: "18px",
-                    textTransform: "none",
-                    "&: hover": {
-                      background: "#0362F0",
-                      borderRadius: "4px",
-                      fontSize: "14px",
-                      fontWeight: "600",
-                      color: "#ffffff",
+                    background: '#0362F0',
+                    borderRadius: '4px',
+                    fontSize: '14px',
+                    fontWeight: '600',
+                    color: '#ffffff',
+                    lineHeight: '18px',
+                    textTransform: 'none',
+                    '&: hover': {
+                      background: '#0362F0',
+                      borderRadius: '4px',
+                      fontSize: '14px',
+                      fontWeight: '600',
+                      color: '#ffffff',
                     },
                   }}
                 >
-                  {t["Select"]}
+                  {t['Select']}
                   <Controller
                     name="image"
                     control={control}
@@ -308,10 +356,10 @@ function PersonalData({
                           type="file"
                           // value={field.value}
                           onChange={(e) => {
-                            field.onChange(e.target.files[0]);
+                            field.onChange(e.target.files[0])
                           }}
                         />
-                      );
+                      )
                     }}
                   />
                 </Button>
@@ -319,7 +367,7 @@ function PersonalData({
               <Typography
                 variant="inherit"
                 color="textSecondary"
-                sx={{ color: "#b91c1c", mt: 4.5 }}
+                sx={{ color: '#b91c1c', mt: 4.5 }}
               >
                 {errors.image?.message}
               </Typography>
@@ -336,29 +384,29 @@ function PersonalData({
             <Typography
               variant="p"
               sx={{
-                color: "#253858",
-                fontSize: "14px",
-                fontWeight: "400",
-                lineHeight: "16px",
+                color: '#253858',
+                fontSize: '14px',
+                fontWeight: '400',
+                lineHeight: '16px',
               }}
             >
-              {t["Full Name"]}
-              <span style={{ color: "#E63333" }}>*</span>
+              {t['Full Name']}
+              <span style={{ color: '#E63333' }}>*</span>
             </Typography>
           </Grid>
           <Controller
             name="full_name"
             control={control}
-            defaultValue={""}
+            defaultValue={''}
             render={({ field }) => (
               <BaseTextField
-                size={"small"}
-                placeholder={t["Full Name"]}
+                size={'small'}
+                placeholder={t['Full Name']}
                 // sx={{ mb: 2 }}
                 onChange={(e) => {
-                  field.onChange(e.target.value);
+                  field.onChange(e.target.value)
                 }}
-                name={"full_name"}
+                name={'full_name'}
                 value={field.value}
               />
             )}
@@ -366,7 +414,7 @@ function PersonalData({
           <Typography
             variant="inherit"
             color="textSecondary"
-            sx={{ color: "#b91c1c" }}
+            sx={{ color: '#b91c1c' }}
           >
             {errors.full_name?.message}
           </Typography>
@@ -380,18 +428,18 @@ function PersonalData({
             <Typography
               variant="p"
               sx={{
-                color: "#253858",
-                fontSize: "14px",
-                fontWeight: "400",
-                lineHeight: "16px",
+                color: '#253858',
+                fontSize: '14px',
+                fontWeight: '400',
+                lineHeight: '16px',
               }}
             >
-              {t["Social Name"]}
+              {t['Social Name']}
               <span
                 style={{
-                  color: "#7C7C99",
-                  fontSize: "14px",
-                  fontWeight: "400",
+                  color: '#7C7C99',
+                  fontSize: '14px',
+                  fontWeight: '400',
                 }}
               >
                 (optional)
@@ -401,17 +449,17 @@ function PersonalData({
           <Controller
             name="social_name"
             control={control}
-            defaultValue={""}
+            defaultValue={''}
             render={({ field }) => (
               <BaseTextField
-                size={"small"}
-                placeholder={t["Social Name"]}
+                size={'small'}
+                placeholder={t['Social Name']}
                 sx={{ mb: 1 }}
                 onChange={(e) => {
-                  field.onChange(e.target.value);
+                  field.onChange(e.target.value)
                 }}
                 value={field.value}
-                name={"social_name"}
+                name={'social_name'}
               />
             )}
           />
@@ -421,7 +469,7 @@ function PersonalData({
         <Divider />
       </Box>
       <Grid container spacing={1} sx={{ mt: 3 }}>
-        {userRole === "broker" && (
+        {userRole === 'broker' && (
           <Grid item xs={12} sm={12} md={6}>
             <Grid
               container
@@ -433,42 +481,42 @@ function PersonalData({
               <Typography
                 variant="p"
                 sx={{
-                  color: "#253858",
-                  fontSize: "14px",
-                  fontWeight: "400",
-                  lineHeight: "16px",
+                  color: '#253858',
+                  fontSize: '14px',
+                  fontWeight: '400',
+                  lineHeight: '16px',
                 }}
               >
-                CRECI number<span style={{ color: "#E63333" }}>*</span>
+                CRECI number<span style={{ color: '#E63333' }}>*</span>
               </Typography>
             </Grid>
             <Controller
               name="creci_number"
               control={control}
-              defaultValue={""}
+              defaultValue={''}
               render={({ field }) => (
                 <BaseTextField
-                  size={"small"}
-                  type={"number"}
-                  placeholder={"CRECI Number"}
+                  size={'small'}
+                  type={'number'}
+                  placeholder={'CRECI Number'}
                   onChange={(e) => {
-                    field.onChange(e.target.value);
+                    field.onChange(e.target.value)
                   }}
                   value={field.value}
-                  name={"creci_number"}
+                  name={'creci_number'}
                 />
               )}
             />
             <Typography
               variant="inherit"
               color="textSecondary"
-              sx={{ color: "#b91c1c" }}
+              sx={{ color: '#b91c1c' }}
             >
               {errors?.creci_number?.message}
             </Typography>
           </Grid>
         )}
-        <Grid item xs={12} sm={12} md={userRole !== "broker" ? 12 : 6}>
+        <Grid item xs={12} sm={12} md={userRole !== 'broker' ? 12 : 6}>
           <Grid
             container
             direction="row"
@@ -479,27 +527,27 @@ function PersonalData({
             <Typography
               variant="p"
               sx={{
-                color: "#253858",
-                fontSize: "14px",
-                fontWeight: "400",
-                lineHeight: "16px",
+                color: '#253858',
+                fontSize: '14px',
+                fontWeight: '400',
+                lineHeight: '16px',
               }}
             >
-              CPF<span style={{ color: "#E63333" }}>*</span>
+              CPF<span style={{ color: '#E63333' }}>*</span>
             </Typography>
           </Grid>
-          <FormControl variant="outlined" sx={{ width: "100%" }}>
+          <FormControl variant="outlined" sx={{ width: '100%' }}>
             <Controller
               name="cpf_number"
               control={control}
               render={({ field }) => (
                 <BaseOutlinedCpfInput
-                  placeholder={"CPF"}
-                  size={"small"}
+                  placeholder={'CPF'}
+                  size={'small'}
                   onChange={(e) => {
-                    field.onChange(e.target.value);
+                    field.onChange(e.target.value)
                   }}
-                  name={"cpf_number"}
+                  name={'cpf_number'}
                   value={field.value}
                   // error={errors.cpf_number ? true : false}
                 />
@@ -508,7 +556,7 @@ function PersonalData({
             <Typography
               variant="inherit"
               color="textSecondary"
-              sx={{ color: "#b91c1c" }}
+              sx={{ color: '#b91c1c' }}
             >
               {errors.cpf_number?.message}
             </Typography>
@@ -527,30 +575,30 @@ function PersonalData({
             <Typography
               variant="p"
               sx={{
-                color: "#253858",
-                fontSize: "14px",
-                fontWeight: "400",
-                lineHeight: "16px",
+                color: '#253858',
+                fontSize: '14px',
+                fontWeight: '400',
+                lineHeight: '16px',
               }}
             >
-              RG<span style={{ color: "#E63333" }}>*</span>
+              RG<span style={{ color: '#E63333' }}>*</span>
             </Typography>
           </Grid>
           <FormControl
             variant="outlined"
-            sx={{ width: "100%", marginBottom: 1 }}
+            sx={{ width: '100%', marginBottom: 1 }}
           >
             <Controller
               name="rg_number"
               control={control}
               render={({ field }) => (
                 <BaseOutlinedRgInput
-                  placeholder={"RG"}
-                  size={"small"}
+                  placeholder={'RG'}
+                  size={'small'}
                   onChange={(e) => {
-                    field.onChange(e.target.value);
+                    field.onChange(e.target.value)
                   }}
-                  name={"RG_number"}
+                  name={'RG_number'}
                   value={field.value}
                   // error={errors?.rg_number ? true : false}
                 />
@@ -559,7 +607,7 @@ function PersonalData({
             <Typography
               variant="inherit"
               color="textSecondary"
-              sx={{ color: "#b91c1c" }}
+              sx={{ color: '#b91c1c' }}
             >
               {errors?.rg_number?.message}
             </Typography>
@@ -576,14 +624,14 @@ function PersonalData({
             <Typography
               variant="p"
               sx={{
-                color: "#253858",
-                fontSize: "14px",
-                fontWeight: "400",
-                lineHeight: "16px",
+                color: '#253858',
+                fontSize: '14px',
+                fontWeight: '400',
+                lineHeight: '16px',
               }}
             >
-              {t["Date of Birth"]}
-              <span style={{ color: "#E63333" }}>*</span>
+              {t['Date of Birth']}
+              <span style={{ color: '#E63333' }}>*</span>
             </Typography>
           </Grid>
           <Controller
@@ -592,13 +640,13 @@ function PersonalData({
             defaultValue={formatISO(new Date())}
             render={({ field }) => (
               <BaseDateField
-                placeholder={"Date of Birth"}
-                size={"small"}
+                placeholder={'Date of Birth'}
+                size={'small'}
                 onChange={(value) => {
-                  field.onChange(value);
+                  field.onChange(value)
                 }}
                 // sx={{ mb: 1 }}
-                name={"dob"}
+                name={'dob'}
                 value={field.value}
                 // error={errors.dob ? true : false}
               />
@@ -607,12 +655,12 @@ function PersonalData({
           <Typography
             variant="inherit"
             color="textSecondary"
-            sx={{ color: "#b91c1c" }}
+            sx={{ color: '#b91c1c' }}
           >
             {errors?.dob?.message}
           </Typography>
         </Grid>
-        {userRole === "broker" && (
+        {userRole === 'broker' && (
           <Grid container spacing={1} sx={{ mt: 2 }}>
             <Grid item xs={12} sm={12} md={selectedBroker ? 12 : 6}>
               <Grid
@@ -625,10 +673,10 @@ function PersonalData({
                 <Typography
                   variant="p"
                   sx={{
-                    color: "#253858",
-                    fontSize: "14px",
-                    fontWeight: "400",
-                    lineHeight: "16px",
+                    color: '#253858',
+                    fontSize: '14px',
+                    fontWeight: '400',
+                    lineHeight: '16px',
                   }}
                 >
                   Name of the broker you referred
@@ -637,9 +685,9 @@ function PersonalData({
               {selectedBroker ? (
                 <Box
                   sx={{
-                    border: "1px solid #000F1A",
-                    borderRadius: "4px",
-                    padding: "8px 16px 8px 16px",
+                    border: '1px solid #000F1A',
+                    borderRadius: '4px',
+                    padding: '8px 16px 8px 16px',
                   }}
                 >
                   <Grid
@@ -651,22 +699,27 @@ function PersonalData({
                     <List>
                       <ListItem>
                         <ListItemAvatar>
-                          <Avatar>
-                            <Image src={demoImage} alt="demo" />
-                          </Avatar>
+                          <Image
+                            loader={myLoader}
+                            src={`${selectedBroker?.attachments[0]?.file_path}`}
+                            alt="brokerImahe"
+                            height={70}
+                            width={70}
+                            style={{ borderRadius: '50px' }}
+                          />
                         </ListItemAvatar>
                         <ListItemText
                           primary={
                             <Typography
                               variant="body1"
                               sx={{
-                                fontSize: "16px",
+                                fontSize: '16px',
                                 fontWeight: 700,
-                                lineHeight: "22px",
-                                color: "#002152",
+                                lineHeight: '22px',
+                                color: '#002152',
                               }}
                             >
-                              Ronald Richards
+                              {selectedBroker?.name}
                             </Typography>
                           }
                           secondary={
@@ -680,24 +733,24 @@ function PersonalData({
                       </ListItem>
                     </List>
                     <BorderColorOutlinedIcon
-                      onClick={toggleDrawer("right", true)}
+                      onClick={toggleDrawer('right', true)}
                     />
                     <SwipeableDrawer
-                      anchor={"right"}
-                      open={state["right"]}
-                      onClose={toggleDrawer("right", false)}
-                      onOpen={toggleDrawer("right", true)}
+                      anchor={'right'}
+                      open={state['right']}
+                      onClose={toggleDrawer('right', false)}
+                      onOpen={toggleDrawer('right', true)}
                     >
-                      {list("right")}
+                      {list('right')}
                     </SwipeableDrawer>
                   </Grid>
                 </Box>
               ) : (
                 <Box
                   sx={{
-                    border: "1px solid #000F1A",
-                    borderRadius: "4px",
-                    padding: "8px 16px 8px 16px",
+                    border: '1px solid #000F1A',
+                    borderRadius: '4px',
+                    padding: '8px 16px 8px 16px',
                   }}
                 >
                   <Grid
@@ -709,22 +762,22 @@ function PersonalData({
                     <Typography
                       variant="p"
                       sx={{
-                        fontSize: "14px",
-                        fontWeight: "400",
-                        lineHeight: "24px",
-                        color: "#253858",
+                        fontSize: '14px',
+                        fontWeight: '400',
+                        lineHeight: '24px',
+                        color: '#253858',
                       }}
                     >
                       Select broker
                     </Typography>
-                    <ArrowForwardIcon onClick={toggleDrawer("right", true)} />
+                    <ArrowForwardIcon onClick={toggleDrawer('right', true)} />
                     <SwipeableDrawer
-                      anchor={"right"}
-                      open={state["right"]}
-                      onClose={toggleDrawer("right", false)}
-                      onOpen={toggleDrawer("right", true)}
+                      anchor={'right'}
+                      open={state['right']}
+                      onClose={toggleDrawer('right', false)}
+                      onOpen={toggleDrawer('right', true)}
                     >
-                      {list("right")}
+                      {list('right')}
                     </SwipeableDrawer>
                   </Grid>
                 </Box>
@@ -743,17 +796,17 @@ function PersonalData({
                 //   mr: 1,
                 //   border: "1px solid #002152",
                 //   borderRadius: "4px",
-                background: "#ffffff",
+                background: '#ffffff',
                 px: 2,
                 py: 1,
-                color: "#4B4B66",
-                fontSize: "16px",
-                fontWeight: "600",
-                lineHeight: "22px",
-                textTransform: "none",
+                color: '#4B4B66',
+                fontSize: '16px',
+                fontWeight: '600',
+                lineHeight: '22px',
+                textTransform: 'none',
               }}
             >
-              {t["Come back"]}
+              {t['Come back']}
             </Button>
           </Grid>
           <Grid item xs={6} sm={6} md={6}>
@@ -762,31 +815,31 @@ function PersonalData({
               disabled={disableBtn}
               fullWidth
               sx={{
-                background: "#00C1B4",
-                boxShadow: "0px 4px 34px rgba(0, 0, 0, 0.08)",
-                borderRadius: "4px",
-                color: "#ffffff",
-                fontSize: "16px",
-                lineHeight: "22px",
-                fontWeight: "600",
+                background: '#00C1B4',
+                boxShadow: '0px 4px 34px rgba(0, 0, 0, 0.08)',
+                borderRadius: '4px',
+                color: '#ffffff',
+                fontSize: '16px',
+                lineHeight: '22px',
+                fontWeight: '600',
                 //   mt: 3,
-                textTransform: "none",
+                textTransform: 'none',
                 py: 1,
-                "&:hover": {
-                  background: "#00C1B4",
-                  boxShadow: "0px 4px 34px rgba(0, 0, 0, 0.08)",
-                  borderRadius: "4px",
-                  color: "#ffffff",
-                  fontSize: "16px",
-                  lineHeight: "22px",
-                  fontWeight: "600",
+                '&:hover': {
+                  background: '#00C1B4',
+                  boxShadow: '0px 4px 34px rgba(0, 0, 0, 0.08)',
+                  borderRadius: '4px',
+                  color: '#ffffff',
+                  fontSize: '16px',
+                  lineHeight: '22px',
+                  fontWeight: '600',
                   // mt: 3,
-                  textTransform: "none",
+                  textTransform: 'none',
                   py: 1,
                 },
               }}
             >
-              {t["Continue"]}
+              {t['Continue']}
             </Button>
           </Grid>
         </Grid>
@@ -824,7 +877,7 @@ function PersonalData({
         Continue
       </Button> */}
     </Box>
-  );
+  )
 }
 
-export default PersonalData;
+export default PersonalData

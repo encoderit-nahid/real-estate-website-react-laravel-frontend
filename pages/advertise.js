@@ -51,8 +51,8 @@ export default function Advertise({
         <Box
           sx={{
             backgroundImage: {
-              xs: `url(${mobileGray.src})`,
-              sm: `url(${mobileGray.src})`,
+              xs: `url(${ownerBackgroundImage.src})`,
+              sm: `url(${ownerBackgroundImage.src})`,
               md: `url(${ownerBackgroundImage.src})`,
               lg: `url(${ownerBackgroundImage.src})`,
               xl: `url(${ownerBackgroundImage.src})`,
