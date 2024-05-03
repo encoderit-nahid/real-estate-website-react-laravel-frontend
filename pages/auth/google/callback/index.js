@@ -6,7 +6,7 @@ import { useSession, signIn, signOut } from "next-auth/react";
 
 import { useRouter } from "next/router";
 import { useEffect } from "react";
-import { socialLoginApi, userDetailsApi } from "@/api";
+import { apiInstance, socialLoginApi, userDetailsApi } from "@/api";
 import useWindowDimensions from "@/hooks/useCurrentDisplaySize";
 
 export default function Google({ roleId }) {
@@ -32,6 +32,7 @@ export default function Google({ roleId }) {
       const [errorAuth, responseAuth] = await socialLoginApi(query, "google");
       if (!errorAuth) {
         localStorage.setItem("token", responseAuth?.data?.token);
+        apiInstance.defaults.headers.common["Authorization"] = `Bearer ${responseAuth?.data?.token}`;
         const [error, response] = await userDetailsApi();
         if (!error) {
           signIn("credentials", {
@@ -45,9 +46,10 @@ export default function Google({ roleId }) {
             userImage: response?.data?.user?.attachments[0]?.file_path,
             callbackUrl: response.data.user.roles[0].slug === "buyer" ? "/" : "/my_properties",
           });
-        } else {
-          router.replace({ pathname: "/" });
-        }
+        } 
+        // else {
+        //   router.replace({ pathname: "/" });
+        // }
       } else {
         console.log(errorAuth?.response);
         localStorage.setItem(
