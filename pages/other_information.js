@@ -111,7 +111,6 @@ export default function OtherInformation({
 
   useEffect(() => {
     const getData = async () => {
-      console.log(query);
       if (query?.token) {
         const [err, resp] = await emailVerifyApi(query?.token);
         if (!err) {
