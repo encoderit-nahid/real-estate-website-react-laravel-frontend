@@ -1,3 +1,4 @@
+import dynamic from "next/dynamic";
 import Head from "next/head";
 import React, { useMemo, useState } from "react";
 import Image from "next/image";
@@ -15,8 +16,12 @@ import {
   Typography,
 } from "@mui/material";
 import { Box } from "@mui/material";
-import ResponsiveDrawer from "../../../src/component/sharedProposal/ResponsiveDrawer/ResponsiveDrawer";
-import BasicBreadcrumbs from "../../../src/component/reuseable/baseBreadCrumb/BaseBreadCrumb";
+const ResponsiveDrawer = dynamic(() =>
+  import("@/component/sharedProposal/ResponsiveDrawer/ResponsiveDrawer")
+);
+const BasicBreadcrumbs = dynamic(() =>
+  import("@/component/reuseable/baseBreadCrumb/BaseBreadCrumb")
+);
 import ventureImage from "../../../public/Images/certidoes.png";
 import DeleteOutlineOutlinedIcon from "@mui/icons-material/DeleteOutlineOutlined";
 import { useDropzone } from "react-dropzone";
@@ -28,8 +33,9 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import * as Yup from "yup";
 import BaseTextArea from "../../../src/component/reuseable/baseTextArea/BaseTextArea";
 import { useEffect } from "react";
-import BaseModal from "../../../src/component/reuseable/baseModal/BaseModal";
-import BrokerRegistrationSentModal from "../../../src/component/brokerRegistration/BrokerRegistrationSendModal/BrokerRegistrationSendModal";
+const BaseModal = dynamic(() =>
+  import("@/component/reuseable/baseModal/BaseModal")
+);
 import { serialize } from "object-to-formdata";
 import { createProjectApi } from "../../../src/api";
 import BaseAutocomplete from "../../../src/component/reuseable/baseAutocomplete/BaseAutocomplete";
@@ -37,7 +43,9 @@ import { Topic } from "@mui/icons-material";
 import { useDispatch, useSelector } from "react-redux";
 import { findPropertyTypeData } from "../../../src/redux/propertyType/actions";
 import { GetPhotoTypeData } from "../../../src/redux/photo/actions";
-import NewVentureSentModal from "../../../src/component/new venture/NewVentureSentModal/NewVentureSentModal";
+const NewVentureSentModal = dynamic(() =>
+  import("@/component/new venture/NewVentureSentModal/NewVentureSentModal")
+);
 import en from "locales/en";
 import pt from "locales/pt";
 

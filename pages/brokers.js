@@ -1,3 +1,7 @@
+import dynamic from "next/dynamic";
+const ResponsiveDrawer = dynamic(() =>
+  import("@/component/sharedProposal/ResponsiveDrawer/ResponsiveDrawer")
+);
 import Head from "next/head";
 import Image from "next/image";
 import PropTypes from "prop-types";
@@ -5,7 +9,6 @@ import Tabs from "@mui/material/Tabs";
 import Tab from "@mui/material/Tab";
 import Typography from "@mui/material/Typography";
 import Box from "@mui/material/Box";
-import ResponsiveDrawer from "../src/component/sharedProposal/ResponsiveDrawer/ResponsiveDrawer";
 import {
   Button,
   Container,
@@ -15,17 +18,13 @@ import {
   TextField,
 } from "@mui/material";
 import { useState } from "react";
-import Releases from "../src/component/properties/Releases/Releases";
-import ThirdTab from "../src/component/properties/Third/ThirdTab";
-import NewRegistration from "../src/component/properties/NewRegistration/NewRegistration";
 import notifyImage from "../public/Images/notify.png";
-import KeyboardDoubleArrowDownIcon from "@mui/icons-material/KeyboardDoubleArrowDown";
-import KeyboardDoubleArrowUpIcon from "@mui/icons-material/KeyboardDoubleArrowUp";
-import Pendants from "../src/component/proposals/pendants/Pendants";
-import Accepted from "../src/component/proposals/accepted/Accepted";
-import Completed from "../src/component/proposals/completed/Completed";
-import TabRegistered from "../src/component/brokers/TabRegistered/TabRegistered";
-import TabPendant from "../src/component/brokers/TabPendant/TabPendant";
+const TabRegistered = dynamic(() =>
+  import("@/component/brokers/TabRegistered/TabRegistered")
+);
+const TabPendant = dynamic(() =>
+  import("@/component/brokers/TabPendant/TabPendant")
+);
 import { useDispatch, useSelector } from "react-redux";
 import { useEffect } from "react";
 import { findBrokerCountData } from "@/redux/brokerCount/actions";

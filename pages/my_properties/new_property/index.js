@@ -1,5 +1,5 @@
+import dynamic from "next/dynamic";
 import Head from "next/head";
-import Image from "next/image";
 import {
   Alert,
   Button,
@@ -11,29 +11,42 @@ import {
   Typography,
 } from "@mui/material";
 import { Box } from "@mui/material";
-import ResponsiveDrawer from "../../../src/component/sharedProposal/ResponsiveDrawer/ResponsiveDrawer";
-import logo from "../../../public/Images/logo.png";
-import BasicBreadcrumbs from "../../../src/component/reuseable/baseBreadCrumb/BaseBreadCrumb";
-import BaseStepper from "../../../src/component/reuseable/baseStepper/BaseStepper";
+const ResponsiveDrawer = dynamic(() =>
+  import("@/component/sharedProposal/ResponsiveDrawer/ResponsiveDrawer")
+);
+const BasicBreadcrumbs = dynamic(() =>
+  import("@/component/reuseable/baseBreadCrumb/BaseBreadCrumb")
+);
+const BaseStepper = dynamic(() =>
+  import("@/component/reuseable/baseStepper/BaseStepper")
+);
 import { Fragment, useEffect, useState } from "react";
-import ProposalValueStep from "../../../src/component/properties/ProposalValueStep/ProposalValueStep";
-import BuyerDataStep from "../../../src/component/properties/BuyerDataStep/BuyerDataStep";
-import BaseModal from "../../../src/component/reuseable/baseModal/BaseModal";
-import ProposalSentModal from "../../../src/component/properties/ProposalSentModal/ProposalSentModal";
-import Address from "../../../src/component/new property/Address/Address";
-import ValuesAndDescription from "../../../src/component/new property/ValuesAndDescription/ValuesAndDescription";
-import PhotosAndVideos from "../../../src/component/new property/PhotosAndVideos/PhotosAndVideos";
-import Features from "../../../src/component/new property/Features/Features";
-import Owner from "../../../src/component/new property/Owner/Owner";
-import PropertySubmittedModal from "../../../src/component/new property/PropertySubmittedModal/PropertySubmittedModal";
-import Link from "next/link";
+const BaseModal = dynamic(() =>
+  import("@/component/reuseable/baseModal/BaseModal")
+);
+const Address = dynamic(() =>
+  import("@/component/new property/Address/Address")
+);
+const ValuesAndDescription = dynamic(() =>
+  import("@/component/new property/ValuesAndDescription/ValuesAndDescription")
+);
+const PhotosAndVideos = dynamic(() =>
+  import("@/component/new property/PhotosAndVideos/PhotosAndVideos")
+);
+const Features = dynamic(() =>
+  import("@/component/new property/Features/Features")
+);
+const Owner = dynamic(() => import("@/component/new property/Owner/Owner"));
+const PropertySubmittedModal = dynamic(() =>
+  import(
+    "@/component/new property/PropertySubmittedModal/PropertySubmittedModal"
+  )
+);
 import { getSession, useSession } from "next-auth/react";
 import { useForm, Controller, useFieldArray } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as Yup from "yup";
 import { useDispatch, useSelector } from "react-redux";
-import { findProjectsData } from "../../../src/redux/projects/actions";
-import { findPropertyTypeData } from "../../../src/redux/propertyType/actions";
 import { propertyCreateApi, propertyUpdateApi } from "../../../src/api";
 import { serialize } from "object-to-formdata";
 import { useRouter } from "next/router";
@@ -265,7 +278,7 @@ export default function NewProperty({ language }) {
         allSelectVideos?.map((data) => {
           return {
             url: data?.file_path,
-            photo_type: data?.photo_type
+            photo_type: data?.photo_type,
           };
         })
       );

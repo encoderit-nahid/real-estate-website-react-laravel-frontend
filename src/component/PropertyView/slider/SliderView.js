@@ -360,7 +360,7 @@ function SliderView({
           //   width={800}
           //   height={400}
           // />
-          <ImageCarousel imageUrls={imageUrls} imagesPerSlide={3} />
+          <ImageCarousel imageUrls={imageUrls} imagesPerSlide={1} />
         ) : (
           <Grid
             container
@@ -424,7 +424,7 @@ function SliderView({
       </TabPanel>
       <TabPanel value={value} index={2}>
         {selectImage != null ? (
-          <ImageCarousel imageUrls={imageUrls} imagesPerSlide={3} />
+          <ImageCarousel imageUrls={imageUrls} imagesPerSlide={1} />
         ) : (
           <Grid
             container

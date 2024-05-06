@@ -1,11 +1,12 @@
+import dynamic from "next/dynamic";
 import Head from "next/head";
 import Image from "next/image";
 import PropTypes from "prop-types";
-import Tabs from "@mui/material/Tabs";
-import Tab from "@mui/material/Tab";
 import Typography from "@mui/material/Typography";
 import Box from "@mui/material/Box";
-import ResponsiveDrawer from "../../../src/component/sharedProposal/ResponsiveDrawer/ResponsiveDrawer";
+const ResponsiveDrawer = dynamic(() =>
+  import("@/component/sharedProposal/ResponsiveDrawer/ResponsiveDrawer")
+);
 import {
   Button,
   Container,
@@ -20,27 +21,32 @@ import {
   SwipeableDrawer,
 } from "@mui/material";
 import React, { useEffect, useState } from "react";
-import Releases from "../../../src/component/properties/Releases/Releases";
-import ThirdTab from "../../../src/component/properties/Third/ThirdTab";
-import NewRegistration from "../../../src/component/properties/NewRegistration/NewRegistration";
 import notifyImage from "../../../public/Images/notify.png";
-import BasicBreadcrumbs from "../../../src/component/reuseable/baseBreadCrumb/BaseBreadCrumb";
+const BasicBreadcrumbs = dynamic(() =>
+  import("@/component/reuseable/baseBreadCrumb/BaseBreadCrumb")
+);
 import ArrowBackIosNewOutlinedIcon from "@mui/icons-material/ArrowBackIosNewOutlined";
 import Link from "next/link";
-import searchIcon from "../../../public/Images/SearchBlack.png";
-import RentCard from "../../../src/component/reuseable/rentCard/RentCard";
+const RentCard = dynamic(() =>
+  import("@/component/reuseable/rentCard/RentCard")
+);
 import FilterAltOutlinedIcon from "@mui/icons-material/FilterAltOutlined";
-import BaseOutlinedCurrencyInput from "../../../src/component/reuseable/baseOutlinedCurrencyInput/BaseOutlinedCurrencyInput";
+const BaseOutlinedCurrencyInput = dynamic(() =>
+  import(
+    "@/component/reuseable/baseOutlinedCurrencyInput/BaseOutlinedCurrencyInput"
+  )
+);
 import CloseIcon from "@mui/icons-material/Close";
 import { getSession } from "next-auth/react";
 import { useDispatch, useSelector } from "react-redux";
 import { useRouter } from "next/router";
-import { findProjectPropertyData } from "../../../src/redux/projectProperty/actions";
 import { Controller, useForm } from "react-hook-form";
 import { findPropertyTypeData } from "../../../src/redux/propertyType/actions";
 import { findFeatureData } from "../../../src/redux/features/actions";
 import { serialize } from "object-to-formdata";
-import SearchComponent from "../../../src/component/reuseable/SearchComponent/SearchComponent";
+const SearchComponent = dynamic(() =>
+  import("@/component/reuseable/SearchComponent/SearchComponent")
+);
 import en from "locales/en";
 import pt from "locales/pt";
 

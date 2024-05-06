@@ -1,3 +1,4 @@
+import dynamic from "next/dynamic";
 import Head from "next/head";
 import Image from "next/image";
 import PropTypes from "prop-types";
@@ -5,7 +6,9 @@ import Tabs from "@mui/material/Tabs";
 import Tab from "@mui/material/Tab";
 import Typography from "@mui/material/Typography";
 import Box from "@mui/material/Box";
-import ResponsiveDrawer from "../../src/component/sharedProposal/ResponsiveDrawer/ResponsiveDrawer";
+const ResponsiveDrawer = dynamic(() =>
+  import("@/component/sharedProposal/ResponsiveDrawer/ResponsiveDrawer")
+);
 import {
   Badge,
   Button,
@@ -18,19 +21,19 @@ import {
   Popover,
 } from "@mui/material";
 import { useState } from "react";
-import Releases from "../../src/component/properties/Releases/Releases";
-import ThirdTab from "../../src/component/properties/Third/ThirdTab";
-import NewRegistration from "../../src/component/properties/NewRegistration/NewRegistration";
 import notifyImage from "../../public/Images/notify.png";
 import KeyboardDoubleArrowDownIcon from "@mui/icons-material/KeyboardDoubleArrowDown";
-import KeyboardDoubleArrowUpIcon from "@mui/icons-material/KeyboardDoubleArrowUp";
-import Pendants from "../../src/component/proposals/pendants/Pendants";
-import Accepted from "../../src/component/proposals/accepted/Accepted";
-import Completed from "../../src/component/proposals/completed/Completed";
+const Pendants = dynamic(() =>
+  import("@/component/proposals/pendants/Pendants")
+);
+const Accepted = dynamic(() =>
+  import("@/component/proposals/accepted/Accepted")
+);
+const Completed = dynamic(() =>
+  import("@/component/proposals/completed/Completed")
+);
 import { getSession, useSession } from "next-auth/react";
-import { useRouter } from "next/router";
 import { useEffect } from "react";
-import { proposalCountApi } from "../../src/api";
 import { useDispatch, useSelector } from "react-redux";
 import { findProposalCountData } from "../../src/redux/proposalCount/actions";
 import en from "locales/en";
@@ -39,6 +42,7 @@ import { GetAllNotification } from "@/redux/all-notification/actions";
 import { findNotificationCountData } from "@/redux/notificationCount/actions";
 import useChannel from "@/hooks/useChannel";
 import NotificationsNoneOutlinedIcon from "@mui/icons-material/NotificationsNoneOutlined";
+import { useRouter } from "next/router";
 
 const drawerWidth = 240;
 

@@ -329,11 +329,13 @@ function Navbar({
                 sx={{ display: "flex", textTransform: "none" }}
                 onClick={handleClick}
               >
-                <PersonOutlineOutlinedIcon sx={{ color: "#1A1859" }} />
+                <PersonOutlineOutlinedIcon
+                  sx={{ color: `${colorLogo ? "#1A1859" : "#ffffff"}` }}
+                />
                 <Typography
                   variant="p"
                   sx={{
-                    color: `${"#1A1859"}`,
+                    color: `${colorLogo ? "#1A1859" : "#ffffff"}`,
                     fontSize: "16px",
                   }}
                 >

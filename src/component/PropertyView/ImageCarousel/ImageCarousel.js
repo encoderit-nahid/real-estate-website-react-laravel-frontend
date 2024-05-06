@@ -43,7 +43,7 @@ const ImageCarousel = ({ imageUrls, imagesPerSlide }) => {
               loader={myLoader}
               src={imageUrl}
               alt={`image_${index}`}
-              width={500}
+              width={`${width - 300}px`}
               height={`${600}`}
               layout="intrinsic" // Make the image responsive
             />

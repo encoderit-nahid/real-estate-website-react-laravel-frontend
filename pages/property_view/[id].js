@@ -1,4 +1,6 @@
-import Navbar from "../../src/component/shared/Navbar/Navbar";
+import dynamic from "next/dynamic";
+const Navbar = dynamic(() => import("@/component/shared/Navbar/Navbar"));
+const Footer = dynamic(() => import("@/component/shared/Footer/Footer"));
 import Head from "next/head";
 import {
   Box,
@@ -12,26 +14,41 @@ import {
 } from "@mui/material";
 import orionImage from "../../public/Images/orion_view.svg";
 import Image from "next/image";
-import TabView from "../../src/component/PropertyView/tab/TabView";
-import AmountView from "../../src/component/PropertyView/amount/AmountView";
-import Features from "../../src/component/PropertyView/feature/Features";
-import AboutProperty from "../../src/component/PropertyView/AboutProperty/AboutProperty";
-import Negotiate from "../../src/component/PropertyView/Negotiate/Negotiate";
-import HouseCard from "../../src/component/reuseable/HouseCard/HouseCard";
-import Footer from "../../src/component/shared/Footer/Footer";
-import SliderView from "../../src/component/PropertyView/slider/SliderView";
-import SlideImage from "../../src/component/PropertyView/slideImage/SlideImage";
-import SliderViewMobile from "../../src/component/PropertyView/SliderViewMobile/SliderViewMobile";
-import sliderView from "../../public/Images/sliderView.png";
-import sliderViewSmall from "../../public/Images/sliderViewSmall.png";
-import BaseModal from "../../src/component/reuseable/baseModal/BaseModal";
-import ProposalModal from "../../src/component/PropertyView/ProposalStepperComponent/ProposalModal";
+const AmountView = dynamic(() =>
+  import("@/component/PropertyView/amount/AmountView")
+);
+const Features = dynamic(() =>
+  import("@/component/PropertyView/feature/Features")
+);
+const AboutProperty = dynamic(() =>
+  import("@/component/PropertyView/AboutProperty/AboutProperty")
+);
+const Negotiate = dynamic(() =>
+  import("@/component/PropertyView/Negotiate/Negotiate")
+);
+const HouseCard = dynamic(() =>
+  import("@/component/reuseable/HouseCard/HouseCard")
+);
+const SliderView = dynamic(() =>
+  import("@/component/PropertyView/slider/SliderView")
+);
+const SliderViewMobile = dynamic(() =>
+  import("@/component/PropertyView/SliderViewMobile/SliderViewMobile")
+);
+const BaseModal = dynamic(() =>
+  import("@/component/reuseable/baseModal/BaseModal")
+);
+const ProposalModal = dynamic(() =>
+  import("@/component/PropertyView/ProposalStepperComponent/ProposalModal")
+);
 import { useMemo, useState } from "react";
 import { useEffect } from "react";
 import Link from "next/link";
 import en from "locales/en";
 import pt from "locales/pt";
-import SlideImageMobile from "@/component/PropertyView/SlideImageMobile/SlideImageMobile";
+const SlideImageMobile = dynamic(() =>
+  import("@/component/PropertyView/SlideImageMobile/SlideImageMobile")
+);
 import { useRouter } from "next/router";
 
 const aboutProperty = [

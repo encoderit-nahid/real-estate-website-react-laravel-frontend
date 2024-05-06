@@ -1,3 +1,4 @@
+import dynamic from "next/dynamic";
 import Head from "next/head";
 import Image from "next/image";
 import {
@@ -5,36 +6,59 @@ import {
   Container,
   Grid,
   Step,
-  StepConnector,
   StepLabel,
   Stepper,
   Tooltip,
   Typography,
 } from "@mui/material";
 import { Box } from "@mui/material";
-import ResponsiveDrawer from "../../../src/component/sharedProposal/ResponsiveDrawer/ResponsiveDrawer";
-import logo from "../../../public/Images/logo.png";
-import BasicBreadcrumbs from "../../../src/component/reuseable/baseBreadCrumb/BaseBreadCrumb";
-import BaseStepper from "../../../src/component/reuseable/baseStepper/BaseStepper";
+const ResponsiveDrawer = dynamic(() =>
+  import("@/component/sharedProposal/ResponsiveDrawer/ResponsiveDrawer")
+);
+const BasicBreadcrumbs = dynamic(() =>
+  import("@/component/reuseable/baseBreadCrumb/BaseBreadCrumb")
+);
 import { Fragment, useEffect, useState } from "react";
-import ProposalValueStep from "../../../src/component/properties/ProposalValueStep/ProposalValueStep";
-import BuyerDataStep from "../../../src/component/properties/BuyerDataStep/BuyerDataStep";
-import BaseModal from "../../../src/component/reuseable/baseModal/BaseModal";
-import ProposalSentModal from "../../../src/component/properties/ProposalSentModal/ProposalSentModal";
-import Address from "../../../src/component/new property/Address/Address";
-import ValuesAndDescription from "../../../src/component/new property/ValuesAndDescription/ValuesAndDescription";
-import PhotosAndVideos from "../../../src/component/new property/PhotosAndVideos/PhotosAndVideos";
-import Features from "../../../src/component/new property/Features/Features";
-import Owner from "../../../src/component/new property/Owner/Owner";
-import PropertySubmittedModal from "../../../src/component/new property/PropertySubmittedModal/PropertySubmittedModal";
-import Contract from "../../../src/component/proposals/propertyJourney/Admin/contract/Contract";
-import CertificatesAndDocuments from "../../../src/component/proposals/propertyJourney/Admin/certificatesAndDocuments/CertificatesAndDocuments";
-import PreAnalise from "../../../src/component/proposals/propertyJourney/Admin/preAnalise/PreAnalise";
-import DigitalNotary from "../../../src/component/proposals/propertyJourney/Admin/digitalNotary/DigitalNotary";
-import DigitalNotaryFinalContent from "../../../src/component/proposals/propertyJourney/Admin/digitalNotaryFinalContent/DigitalNotaryFinalContent";
-import BrokerCertificateAndDocument from "../../../src/component/proposals/propertyJourney/Broker/BrokerCertificateAndDocuments/BrokerCertificateAndDocument";
-import Announce from "../../../src/component/proposals/propertyJourney/Admin/Announce/Announce";
-import Proposal from "../../../src/component/proposals/propertyJourney/Admin/Proposal/Proposal";
+const BaseModal = dynamic(() =>
+  import("@/component/reuseable/baseModal/BaseModal")
+);
+const PropertySubmittedModal = dynamic(() =>
+  import(
+    "@/component/new property/PropertySubmittedModal/PropertySubmittedModal"
+  )
+);
+const Contract = dynamic(() =>
+  import("@/component/proposals/propertyJourney/Admin/contract/Contract")
+);
+const CertificatesAndDocuments = dynamic(() =>
+  import(
+    "@/component/proposals/propertyJourney/Admin/certificatesAndDocuments/CertificatesAndDocuments"
+  )
+);
+const PreAnalise = dynamic(() =>
+  import("@/component/proposals/propertyJourney/Admin/preAnalise/PreAnalise")
+);
+const DigitalNotary = dynamic(() =>
+  import(
+    "@/component/proposals/propertyJourney/Admin/digitalNotary/DigitalNotary"
+  )
+);
+const DigitalNotaryFinalContent = dynamic(() =>
+  import(
+    "@/component/proposals/propertyJourney/Admin/digitalNotaryFinalContent/DigitalNotaryFinalContent"
+  )
+);
+const BrokerCertificateAndDocument = dynamic(() =>
+  import(
+    "@/component/proposals/propertyJourney/Broker/BrokerCertificateAndDocuments/BrokerCertificateAndDocument"
+  )
+);
+const Announce = dynamic(() =>
+  import("@/component/proposals/propertyJourney/Admin/Announce/Announce")
+);
+const Proposal = dynamic(() =>
+  import("@/component/proposals/propertyJourney/Admin/Proposal/Proposal")
+);
 import { getSession, useSession } from "next-auth/react";
 import { useRouter } from "next/router";
 import { useDispatch, useSelector } from "react-redux";

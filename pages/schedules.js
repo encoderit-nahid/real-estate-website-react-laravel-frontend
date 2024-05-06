@@ -1,9 +1,11 @@
+import dynamic from "next/dynamic";
+const ResponsiveDrawer = dynamic(() =>
+  import("@/component/sharedProposal/ResponsiveDrawer/ResponsiveDrawer")
+);
 import Head from "next/head";
 import Image from "next/image";
-
 import Typography from "@mui/material/Typography";
 import Box from "@mui/material/Box";
-import ResponsiveDrawer from "../src/component/sharedProposal/ResponsiveDrawer/ResponsiveDrawer";
 import { Button, Container, Grid, Skeleton } from "@mui/material";
 import notifyImage from "../public/Images/notify.png";
 import { getSession } from "next-auth/react";

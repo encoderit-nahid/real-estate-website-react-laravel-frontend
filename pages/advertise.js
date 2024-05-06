@@ -1,5 +1,6 @@
-import Navbar from "../src/component/shared/Navbar/Navbar";
-import Footer from "../src/component/shared/Footer/Footer";
+import dynamic from "next/dynamic";
+const Navbar = dynamic(() => import("@/component/shared/Navbar/Navbar"));
+const Footer = dynamic(() => import("@/component/shared/Footer/Footer"));
 import Head from "next/head";
 import { Box, Tooltip } from "@mui/material";
 import mobileGray from "../public/Images/mobileGray.png";
@@ -10,9 +11,15 @@ import { useEffect, useState } from "react";
 import SetCookie from "@/hooks/setCookie";
 import en from "locales/en";
 import pt from "locales/pt";
-import BaseModal from "@/component/reuseable/baseModal/BaseModal";
-import KnowMoreContent from "@/component/home/knowMoreContent/KnowMoreContent";
-import OwnerContent from "@/component/IAmOwner/ownerContent/OwnerContent";
+const BaseModal = dynamic(() =>
+  import("@/component/reuseable/baseModal/BaseModal")
+);
+const KnowMoreContent = dynamic(() =>
+  import("@/component/home/knowMoreContent/KnowMoreContent")
+);
+const OwnerContent = dynamic(() =>
+  import("@/component/IAmOwner/ownerContent/OwnerContent")
+);
 
 export default function Advertise({
   loginOpen,

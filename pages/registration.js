@@ -34,7 +34,7 @@ import pt from "locales/pt";
 import { _baseURL } from "consts";
 import SetCookie from "@/hooks/setCookie";
 
-export default function Registration({ language }) {
+export default function Registration({ language, handleLoginOpen }) {
   const router = useRouter();
   const { query } = router;
   const [myValue, setMyValue] = useState(language || "pt");
@@ -659,6 +659,32 @@ export default function Registration({ language }) {
                         >
                           Login with Facebook
                         </Typography>
+                      </Button>
+                    </Grid>
+                  </Grid>
+                  <Grid container>
+                    <Grid item xs={12}>
+                      <Button
+                        fullWidth
+                        sx={{
+                          background:
+                            "linear-gradient(270deg, #0ea5e9 1.2%, #083344 98.7%)",
+                          boxShadow: "0px 4px 34px rgba(0, 0, 0, 0.08)",
+                          borderRadius: "4px",
+                          color: "#ffffff",
+                          fontSize: "16px",
+                          lineHeight: "22px",
+                          fontWeight: "600",
+                          mt: 5,
+                          textTransform: "none",
+                          py: 1,
+                        }}
+                        onClick={() => {
+                          router.replace({ pathname: "/" });
+                          handleLoginOpen();
+                        }}
+                      >
+                        Do you have an account?
                       </Button>
                     </Grid>
                   </Grid>

@@ -1,3 +1,4 @@
+import dynamic from "next/dynamic";
 import Head from "next/head";
 import Image from "next/image";
 import PropTypes from "prop-types";
@@ -5,7 +6,9 @@ import Tabs from "@mui/material/Tabs";
 import Tab from "@mui/material/Tab";
 import Typography from "@mui/material/Typography";
 import Box from "@mui/material/Box";
-import ResponsiveDrawer from "../../src/component/sharedProposal/ResponsiveDrawer/ResponsiveDrawer";
+const ResponsiveDrawer = dynamic(() =>
+  import("@/component/sharedProposal/ResponsiveDrawer/ResponsiveDrawer")
+);
 import {
   Badge,
   Button,
@@ -17,9 +20,13 @@ import {
   ListItemText,
 } from "@mui/material";
 import { useEffect, useState } from "react";
-import Releases from "../../src/component/properties/Releases/Releases";
-import ThirdTab from "../../src/component/properties/Third/ThirdTab";
-import NewRegistration from "../../src/component/properties/NewRegistration/NewRegistration";
+const Releases = dynamic(() =>
+  import("@/component/properties/Releases/Releases")
+);
+const ThirdTab = dynamic(() => import("@/component/properties/Third/ThirdTab"));
+const NewRegistration = dynamic(() =>
+  import("@/component/properties/NewRegistration/NewRegistration")
+);
 import notifyImage from "../../public/Images/notify.png";
 import Link from "next/link";
 import { getSession, useSession } from "next-auth/react";
@@ -27,7 +34,6 @@ import { useRouter } from "next/router";
 import { _baseURL } from "../../consts";
 import useChannel from "@/hooks/useChannel";
 import Popover from "@mui/material/Popover";
-
 import { useDispatch, useSelector } from "react-redux";
 import NotificationsNoneOutlinedIcon from "@mui/icons-material/NotificationsNoneOutlined";
 import {

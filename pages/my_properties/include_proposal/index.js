@@ -1,3 +1,4 @@
+import dynamic from "next/dynamic";
 import Head from "next/head";
 import Image from "next/image";
 import {
@@ -9,15 +10,26 @@ import {
   Typography,
 } from "@mui/material";
 import { Box } from "@mui/material";
-import ResponsiveDrawer from "../../../src/component/sharedProposal/ResponsiveDrawer/ResponsiveDrawer";
-import logo from "../../../public/Images/logo.png";
-import BasicBreadcrumbs from "../../../src/component/reuseable/baseBreadCrumb/BaseBreadCrumb";
+const ResponsiveDrawer = dynamic(() =>
+  import("@/component/sharedProposal/ResponsiveDrawer/ResponsiveDrawer")
+);
+const BasicBreadcrumbs = dynamic(() =>
+  import("@/component/reuseable/baseBreadCrumb/BaseBreadCrumb")
+);
 import BaseStepper from "../../../src/component/reuseable/baseStepper/BaseStepper";
 import { Fragment, useEffect, useState } from "react";
-import ProposalValueStep from "../../../src/component/properties/ProposalValueStep/ProposalValueStep";
-import BuyerDataStep from "../../../src/component/properties/BuyerDataStep/BuyerDataStep";
-import BaseModal from "../../../src/component/reuseable/baseModal/BaseModal";
-import ProposalSentModal from "../../../src/component/properties/ProposalSentModal/ProposalSentModal";
+const ProposalValueStep = dynamic(() =>
+  import("@/component/properties/ProposalValueStep/ProposalValueStep")
+);
+const BuyerDataStep = dynamic(() =>
+  import("@/component/properties/BuyerDataStep/BuyerDataStep")
+);
+const BaseModal = dynamic(() =>
+  import("@/component/reuseable/baseModal/BaseModal")
+);
+const ProposalSentModal = dynamic(() =>
+  import("@/component/properties/ProposalSentModal/ProposalSentModal")
+);
 import Link from "next/link";
 import { getSession, useSession } from "next-auth/react";
 import { useForm, Controller } from "react-hook-form";
@@ -28,7 +40,9 @@ import { proposalCreateApi } from "../../../src/api";
 import { useDispatch, useSelector } from "react-redux";
 import { findSinglePropertyData } from "../../../src/redux/singleProperty/actions";
 import { useMemo } from "react";
-import PropertyCard from "@/component/properties/PropertyCard/PropertyCard";
+const PropertyCard = dynamic(() =>
+  import("@/component/properties/PropertyCard/PropertyCard")
+);
 import en from "locales/en";
 import pt from "locales/pt";
 

@@ -68,8 +68,8 @@ export default function OtherInformation({
 }) {
   const router = useRouter();
   const { query } = router;
-  
-  const [selectedBroker, setSelectedBroker] = useState(null)
+
+  const [selectedBroker, setSelectedBroker] = useState(null);
 
   const [myValue, setMyValue] = useState(language || "pt");
 
@@ -110,44 +110,6 @@ export default function OtherInformation({
     }
     setSuccessSnackbarOpen(false);
   };
-
-  useEffect(() => {
-    const getData = async () => {
-      if (query?.token) {
-        const [err, resp] = await emailVerifyApi(query?.token);
-        if (!err) {
-          localStorage.setItem("token", resp?.data?.token);
-          const [error, response] = await userDetailsApi();
-
-          if (!error) {
-            return signIn("credentials", {
-              userId: response?.data?.user?.id,
-              userEmail: response?.data?.user?.email,
-              name: response?.data?.user?.name,
-              phone: response?.data?.user?.phone,
-              status: response?.data?.user?.status,
-              role: response?.data?.user?.roles[0]?.slug,
-              roleId: response?.data?.user?.roles[0]?.id,
-              userImage: response?.data?.user?.attachments[0]?.file_path,
-              // image: response?.data?.user?.attachments[0],
-              // permissions: JSON.stringify(
-              //   response?.data?.user?.roles[0]?.permissions
-              // ),
-              callbackUrl:
-                response.data?.user?.roles[0]?.slug === "buyer"
-                  ? "/"
-                  : "/my_properties",
-            });
-          } else {
-            router.push("/");
-          }
-        }
-      } else {
-        return;
-      }
-    };
-    getData();
-  }, [query?.token, router]);
 
   const [activeStep, setActiveStep] = useState(0);
   const [skipped, setSkipped] = useState(new Set());
@@ -253,7 +215,7 @@ export default function OtherInformation({
       social_name: data.social_name,
       broker_type: actingPreferenceBtn,
       referred_from: aboutLokkanBtn,
-      broker_referral_id: selectedBroker?.id
+      broker_referral_id: selectedBroker?.id,
     });
     const addressData = omitEmpties({
       zip_code: data.zip_code,
@@ -270,7 +232,7 @@ export default function OtherInformation({
 
       user_id: registrationId,
       broker_url: window.location.origin,
-      redirect_url: window.location.href,
+      redirect_url: `${window.location.origin}/user_loading`,
     });
 
     const requireData = {
@@ -278,6 +240,8 @@ export default function OtherInformation({
       additional_info: additionalInfoData,
       address: addressData,
     };
+
+    console.log(requireData);
 
     const formData = serialize(requireData, { indices: true });
     const [error, responseToken] = await userInfoRegistrationApi(formData);

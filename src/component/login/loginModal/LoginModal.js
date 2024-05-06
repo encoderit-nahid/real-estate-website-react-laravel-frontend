@@ -114,13 +114,10 @@ function LoginModal({ handleLoginClose, myValue }) {
           role: response?.data?.user?.roles[0]?.slug,
           roleId: response?.data?.user?.roles[0]?.id,
           userImage: response?.data?.user?.attachments[0]?.file_path,
-          // permissions: JSON.stringify(
-          //   response?.data?.user?.roles[0]?.permissions
-          // ),
-          callbackUrl: router.asPath,
-          // response.data.user.roles[0].slug === "buyer"
-          //   ? router.asPath
-          //   : "/my_properties",
+          callbackUrl:
+            response.data?.user?.roles[0]?.slug === "buyer"
+              ? "/"
+              : "/my_properties",
         });
       }
     } else {

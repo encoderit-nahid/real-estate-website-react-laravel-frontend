@@ -1,19 +1,12 @@
-import Navbar from "../src/component/shared/Navbar/Navbar";
-import Footer from "../src/component/shared/Footer/Footer";
+import dynamic from "next/dynamic";
+const Footer = dynamic(() => import("@/component/shared/Footer/Footer"));
 import Head from "next/head";
-import { Box, Tooltip } from "@mui/material";
-import mobileGray from "../public/Images/mobileGray.png";
-import brokerBackgroundImage from "../public/Images/brokerBackground.png";
 import { useSession, signIn, signOut } from "next-auth/react";
 import { _baseURL } from "../consts";
 import { useEffect, useState } from "react";
 import SetCookie from "@/hooks/setCookie";
 import en from "locales/en";
 import pt from "locales/pt";
-import BaseModal from "@/component/reuseable/baseModal/BaseModal";
-import KnowMoreContent from "@/component/home/knowMoreContent/KnowMoreContent";
-import BrokerContent from "@/component/IAmBroker/BrokerContent/BrokerContent";
-import KnowMoreContentBroker from "@/component/IAmBroker/knowMoreContentBroker/KnowMoreContentBroker";
 
 export default function BrokerDetails({ language }) {
   const { data: session } = useSession();

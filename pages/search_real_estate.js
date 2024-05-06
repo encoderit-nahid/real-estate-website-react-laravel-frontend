@@ -1,6 +1,5 @@
-import Navbar from "../src/component/shared/Navbar/Navbar";
-import Footer from "../src/component/shared/Footer/Footer";
-import shapeIcon from "../public/Images/eclipseShape.png";
+import dynamic from "next/dynamic";
+const Navbar = dynamic(() => import("@/component/shared/Navbar/Navbar"));
 import Head from "next/head";
 import {
   Box,
@@ -13,45 +12,24 @@ import {
   Button,
   SwipeableDrawer,
 } from "@mui/material";
-import FulfillDream from "../src/component/home/fullfill/FulfillDream";
-import SideContent from "../src/component/home/FullfillSideContent/SideContent";
-import SellSideContent from "../src/component/home/wantToSellSideContent/SellSideContent";
-import mobileGray from "../public/Images/mobileGray.png";
-import mobileBlue from "../public/Images/mobileBlue.png";
-import WantSellSvgBackground from "../src/component/svg/WantSellSvgBackground";
-import { renderToStaticMarkup } from "react-dom/server";
-import WantToSell from "../src/component/home/wantToSell/WantToSell";
-import BrokerRegisterContent from "../src/component/home/whoIsBroker/brokerRegister/BrokerRegisterContent";
-import BrokerImageContent from "../src/component/home/whoIsBroker/brokerContent/BrokerImageContent";
-import BestDealSvgBackground from "../src/component/svg/BestDealSvgBackground";
-import HouseCard from "../src/component/reuseable/HouseCard/HouseCard";
-import MobileSideContent from "../src/component/home/FullfillSideContent/MobileSideContent";
-import BrokerImageContentMobile from "../src/component/home/whoIsBroker/brokerContent/BrokerImageContentMobile";
-import BrokerHelp from "../src/component/IAmBroker/BrokerHelp/BrokerHelp";
-import BrokerHelpContent from "../src/component/IAmBroker/BrokerHelp/BrokerHelpContent";
-import BecomeBrokerContent from "../src/component/IAmBroker/BecomeBroker/BecomeBrokerContent";
-import BecomeBroker from "../src/component/IAmBroker/BecomeBroker/BecomeBroker";
-import CalulateComission from "../src/component/IAmBroker/MaxmizeResult/CalulateComission";
-import ComissionResult from "../src/component/IAmBroker/MaxmizeResult/ComissionResult";
-import BrokerFacilities from "../src/component/IAmBroker/BrokerFacilities/BrokerFacilities";
-import advertiseImage from "../public/Images/advertise.png";
-import wantImageMobile from "../public/Images/mobileWant.png";
-import trackImage from "../public/Images/track.png";
-import digitalImage from "../public/Images/digital.png";
-import fastImage from "../public/Images/fast.png";
-import PropertyList from "../src/component/IAmOwner/propertyList/PropertyList";
-import dynamic from "next/dynamic";
+const PropertyList = dynamic(() =>
+  import("@/component/IAmOwner/propertyList/PropertyList")
+);
+const SearchComponent = dynamic(() =>
+  import("@/component/reuseable/SearchComponent/SearchComponent")
+);
+const BaseOutlinedCurrencyInput = dynamic(() =>
+  import(
+    "@/component/reuseable/baseOutlinedCurrencyInput/BaseOutlinedCurrencyInput"
+  )
+);
 import Pagination from "@mui/material/Pagination";
 import Stack from "@mui/material/Stack";
-import SearchComponent from "../src/component/reuseable/SearchComponent/SearchComponent";
-import Router, { useRouter } from "next/router";
+import { useRouter } from "next/router";
 import FilterAltOutlinedIcon from "@mui/icons-material/FilterAltOutlined";
-import Autocomplete from "@mui/material/Autocomplete";
-import TextField from "@mui/material/TextField";
 import CloseIcon from "@mui/icons-material/Close";
 import React, { useState } from "react";
 import { useForm, Controller } from "react-hook-form";
-import BaseOutlinedCurrencyInput from "../src/component/reuseable/baseOutlinedCurrencyInput/BaseOutlinedCurrencyInput";
 
 const BaseGoogleMap = dynamic(
   () => import("../src/component/IAmOwner/map/BaseGoogleMap"),
@@ -1144,6 +1122,7 @@ export default function SearchRealEstate({
           languageName={language}
           setMyValue={setMyValue}
           myValue={myValue}
+          colorLogo={true}
         />
         <Grid
           container
