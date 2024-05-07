@@ -242,30 +242,23 @@ export default function Registration({ language, handleLoginOpen }) {
                 alignItems="flex-start"
                 sx={{ py: 4 }}
               >
-                <Link href="/">
-                  <a
-                    style={{
-                      textDecoration: "none",
-                      listStyle: "none",
-                      width: "100%",
+                <Button
+                  sx={{ textTransform: "none" }}
+                  onClick={() => router.back()}
+                >
+                  <ArrowBackIosNewOutlinedIcon sx={{ color: "#7450F0" }} />
+                  <Typography
+                    variant="p"
+                    sx={{
+                      color: "#7450F0",
+                      fontSize: "14px",
+                      fontWeight: "600",
+                      lineHeight: "17px",
                     }}
                   >
-                    <Button sx={{ textTransform: "none" }}>
-                      <ArrowBackIosNewOutlinedIcon sx={{ color: "#7450F0" }} />
-                      <Typography
-                        variant="p"
-                        sx={{
-                          color: "#7450F0",
-                          fontSize: "14px",
-                          fontWeight: "600",
-                          lineHeight: "17px",
-                        }}
-                      >
-                        {t["Cancel registration"]}
-                      </Typography>
-                    </Button>
-                  </a>
-                </Link>
+                    {t["Cancel registration"]}
+                  </Typography>
+                </Button>
                 <Container maxWidth="xs">
                   <form onSubmit={handleSubmit(onSubmit)}>
                     <Grid
@@ -684,7 +677,7 @@ export default function Registration({ language, handleLoginOpen }) {
                           handleLoginOpen();
                         }}
                       >
-                        Do you have an account?
+                        Entrar
                       </Button>
                     </Grid>
                   </Grid>

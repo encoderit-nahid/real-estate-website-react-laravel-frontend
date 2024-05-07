@@ -1,4 +1,11 @@
-import { Box, Grid, Pagination, Skeleton, Stack } from "@mui/material";
+import {
+  Box,
+  Grid,
+  LinearProgress,
+  Pagination,
+  Skeleton,
+  Stack,
+} from "@mui/material";
 import React from "react";
 import RentCard from "../../reuseable/rentCard/RentCard";
 import { useDispatch, useSelector } from "react-redux";
@@ -6,6 +13,7 @@ import { useRouter } from "next/router";
 import { useEffect } from "react";
 import { findPropertyData } from "../../../redux/property/actions";
 import Link from "next/link";
+import { useGetPropertyQuery } from "@/queries/useGetPropertyQuery";
 
 function ThirdTab({ languageName }) {
   const dispatch = useDispatch();
@@ -14,23 +22,25 @@ function ThirdTab({ languageName }) {
 
   const [page, setPage] = React.useState(+query?.page || 1);
 
-  useEffect(() => {
-    dispatch(findPropertyData(query));
-  }, [dispatch, query]);
-
-  const thirdProperty = useSelector((state) => state.property.propertyData);
-
-  const Loading = useSelector((state) => state.property.loading);
+  const {
+    data: thirdProperty,
+    isLoading: Loading,
+    refetch,
+    isFetched,
+    isFetching,
+  } = useGetPropertyQuery({ status: "third", page: page, per_page: 9 });
 
   const handlePageChange = (event, value) => {
     setPage(value);
-    dispatch(findPropertyData({ status: "third", page: value, per_page: 5 }));
     router.replace({
       pathname: "/my_properties",
-      query: { ...router.query, page: value, per_page: 9 },
+      query: { status: "third", page: value, per_page: 9 },
     });
-    // setData(datas.slice(firstIndex + pageSize * (value - 1), pageSize * value));
   };
+
+  useEffect(() => {
+    refetch();
+  }, [page, refetch]);
 
   if (Loading) {
     return (
@@ -45,6 +55,14 @@ function ThirdTab({ languageName }) {
           </Grid>
         ))}
       </Grid>
+    );
+  }
+
+  if (isFetched && isFetching) {
+    return (
+      <Box sx={{ width: "100%" }}>
+        <LinearProgress />
+      </Box>
     );
   }
 

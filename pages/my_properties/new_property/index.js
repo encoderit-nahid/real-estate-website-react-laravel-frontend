@@ -210,6 +210,7 @@ export default function NewProperty({ language }) {
   const [maritalStatus, setMaritalStatus] = useState("Married");
   const [sentModalOpen, setSentModalOpen] = useState(false);
   const [action, setAction] = useState("");
+  const [deletedContent, setDeletedContent] = useState([]);
   const handleOpen = () => setSentModalOpen(true);
   const handleClose = () => setSentModalOpen(false);
 
@@ -224,8 +225,6 @@ export default function NewProperty({ language }) {
       delete errors?.document_files;
     }
   });
-
-  console.log({ singleData });
 
   useEffect(() => {
     if (query?.property_id) {
@@ -279,6 +278,7 @@ export default function NewProperty({ language }) {
           return {
             url: data?.file_path,
             photo_type: data?.photo_type,
+            id: data?.id,
           };
         })
       );
@@ -389,6 +389,35 @@ export default function NewProperty({ language }) {
   const onSubmit = async (data) => {
     action === "new" ? setLoading(true) : setDraftLoading(true);
 
+    const filterNewImageTitleData = [];
+    files.forEach((data, index) => {
+      if (data?.title !== allValues[`title_${index}`]?.slug) {
+        if (data?.id) {
+          filterNewImageTitleData.push({
+            attachment_id: data?.id,
+            title: allValues[`title_${index}`].slug,
+          });
+        }
+      }
+    });
+
+    const filterNewVideoTitleData = [];
+    videoFiles?.forEach((data, index) => {
+      if (data?.title !== allValues[`video_title_${index}`]?.slug) {
+        if (data?.id) {
+          filterNewVideoTitleData.push({
+            attachment_id: data?.id,
+            title: allValues[`video_title_${index}`].slug,
+          });
+        }
+      }
+    });
+
+    const filterNewTitleData = [
+      ...filterNewImageTitleData,
+      ...filterNewVideoTitleData,
+    ];
+
     // if (files.length > 0 && featuretypes.length > 0) {
     let newArr = [];
     files?.forEach((data, index) => {
@@ -399,10 +428,12 @@ export default function NewProperty({ language }) {
 
     let newVideoArr = [];
     videoFiles?.forEach((data, index) => {
-      newVideoArr.push({
-        url: data?.url,
-        title: allValues[`video_title_${index}`].slug,
-      });
+      if (!data?.id) {
+        newVideoArr.push({
+          url: data?.url,
+          title: allValues[`video_title_${index}`].slug,
+        });
+      }
     });
 
     const newDocuments = documents?.filter((data) => data instanceof File);
@@ -424,11 +455,11 @@ export default function NewProperty({ language }) {
       no_of_bathrooms: data?.no_of_bathrooms,
       no_of_parking_spaces: data?.no_of_parking_spaces,
       features: featuretypes,
-      // deprecated_images: singleData?.attachments?.map((data) => data.id),
-      // status: action,
+      deprecated_images: deletedContent,
       document_files: newDocuments,
       content_url: newVideoArr,
       images: newArr,
+      new_title: filterNewTitleData,
       // documents: "",
       // registry: "",
       // registration_number: "",
@@ -488,10 +519,7 @@ export default function NewProperty({ language }) {
           : null,
     });
 
-    console.log({ requireData });
-
     const formData = serialize(requireData, { indices: true });
-    console.log({ formData });
     if (query?.property_id) {
       const [error, response] = await propertyUpdateApi(formData);
       setLoading(false);
@@ -655,6 +683,8 @@ export default function NewProperty({ language }) {
                           setFiles={setFiles}
                           videoFiles={videoFiles}
                           setVideoFiles={setVideoFiles}
+                          setDeletedContent={setDeletedContent}
+                          deletedContent={deletedContent}
                           imageError={imageError}
                           imageErrorMessage={imageErrorMessage}
                           fields={fields}

@@ -430,7 +430,7 @@ function AddressData({
           </Typography>
         </Grid>
       </Grid>
-      <Grid container spacing={1} sx={{ mt: 2, mb: 5 }}>
+      {/* <Grid container spacing={1} sx={{ mt: 2, mb: 5 }}>
         <Grid item xs={6} sm={6} md={6}>
           <Button
             color="inherit"
@@ -485,7 +485,7 @@ function AddressData({
             {t["Continue"]}
           </Button>
         </Grid>
-      </Grid>
+      </Grid> */}
     </Box>
   );
 }

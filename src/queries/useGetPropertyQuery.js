@@ -1,9 +1,9 @@
 import { apiInstance } from "@/api";
 import { useQuery } from "@tanstack/react-query";
 
-export const useGetBrokerDataQuery = (params) => {
+export const useGetPropertyQuery = (params) => {
   return useQuery({
-    queryKey: ["/get-broker"],
+    queryKey: ["/get-all-property"],
     // enabled: !!q,'
     retry: 2,
     refetchOnWindowFocus: true,
@@ -11,9 +11,11 @@ export const useGetBrokerDataQuery = (params) => {
     staleTime: 0,
     // initialData: () => [],
     queryFn: async () => {
-      return await apiInstance.get(`/users/index`, {
-        params,
-      });
+      return (
+        await apiInstance.get(`property/index`, {
+          params,
+        })
+      )?.data?.properties;
     },
   });
 };

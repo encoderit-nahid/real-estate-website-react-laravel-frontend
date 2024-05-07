@@ -86,18 +86,24 @@ export default function ProjectView({
     (data) => data.title === "logo"
   );
 
+  console.log({ singleProjectData });
+
   const myLoader = ({ src }) => {
     return `${_imageURL}/${src}`;
   };
 
   const Images = useMemo(() => {
+    const regexPatternThreeSixtyImages = /^[a-zA-Z_]+_vision_360$/;
+    const regexPatternImages = /^[a-zA-Z_]+$/;
     return singleProjectData?.project?.attachments?.filter((data) => {
       return sideTabValue === "vision_360"
-        ? data.title.includes(`project_${sideTabValue}`)
+        ? regexPatternThreeSixtyImages.test(data?.title)
         : sideTabValue === "photos"
-        ? data.title === "project_photo"
+        ? data?.photo_type?.type === "project"
         : sideTabValue === "condominium"
-        ? data.title === sideTabValue
+        ? data?.photo_type?.type === "condominium"
+        : sideTabValue === "videos"
+        ? !data?.title
         : null;
     });
   }, [singleProjectData, sideTabValue]);
@@ -135,6 +141,7 @@ export default function ProjectView({
           languageName={language}
           setMyValue={setMyValue}
           myValue={myValue}
+          colorLogo={true}
         />
         <Box sx={{ ml: 3 }}>
           <Grid
@@ -276,7 +283,7 @@ export default function ProjectView({
           >
             <Grid
               item
-              xs={10}
+              xs={12}
               sx={{
                 display: {
                   xs: "none",
@@ -291,11 +298,14 @@ export default function ProjectView({
                 sideTabValue={sideTabValue}
                 setSideTabValue={setSideTabValue}
                 selectImage={selectImage}
+                addressData={singleProjectData?.project?.address}
                 languageName={myValue.toString()}
-                others={false}
+                // videos={Videos}
+                images={Images}
+                others={true}
               />
             </Grid>
-            <Grid
+            {/* <Grid
               item
               xs={2}
               sx={{
@@ -309,7 +319,7 @@ export default function ProjectView({
               }}
             >
               <SlideImage Images={Images} setSelectImage={setSelectImage} />
-            </Grid>
+            </Grid> */}
           </Grid>
         </Box>
 

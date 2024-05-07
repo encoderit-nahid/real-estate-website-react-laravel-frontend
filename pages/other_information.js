@@ -95,7 +95,7 @@ export default function OtherInformation({
     { name: "both", slug: t["both"] },
   ];
 
-  const steps = [t["Personal data"], t["Address"], t["Performance"]];
+  const steps = [t["Personal data"], t["Address"]];
 
   const [successMessage, setSuccessMessage] = useState("");
   const [successSnackbarOpen, setSuccessSnackbarOpen] = useState(false);
@@ -306,45 +306,49 @@ export default function OtherInformation({
             ) : (
               <Fragment>
                 <form onSubmit={handleSubmit(onSubmit)}>
-                  {activeStep === 0 ? (
-                    <PersonalData
-                      handleNext={handleNext}
-                      control={control}
-                      errors={errors}
-                      allValues={allValues}
-                      activeStep={activeStep}
-                      languageName={myValue.toString()}
-                      selectedBroker={selectedBroker}
-                      setSelectedBroker={setSelectedBroker}
-                    />
-                  ) : activeStep === 1 ? (
-                    <AddressData
-                      handleNext={handleNext}
-                      handleBack={handleBack}
-                      control={control}
-                      errors={errors}
-                      allValues={allValues}
-                      setValue={setValue}
-                      activeStep={activeStep}
-                      languageName={myValue.toString()}
-                      // allStateData={allStateData}
-                    />
-                  ) : (
-                    <PerformanceData
-                      handleNext={handleNext}
-                      handleBack={handleBack}
-                      handleOpen={handleOpen}
-                      activeStep={activeStep}
-                      steps={steps}
-                      preferenceData={preferenceData}
-                      aboutLokkanData={aboutLokkanData}
-                      actingPreferenceBtn={actingPreferenceBtn}
-                      setActingPreferenceBtn={setActingPreferenceBtn}
-                      aboutLokkanBtn={aboutLokkanBtn}
-                      setAboutLokkanBtn={setAboutLokkanBtn}
-                      languageName={myValue.toString()}
-                    />
-                  )}
+                  {
+                    activeStep === 0 ? (
+                      <PersonalData
+                        handleNext={handleNext}
+                        control={control}
+                        errors={errors}
+                        allValues={allValues}
+                        activeStep={activeStep}
+                        languageName={myValue.toString()}
+                        selectedBroker={selectedBroker}
+                        setSelectedBroker={setSelectedBroker}
+                      />
+                    ) : (
+                      <AddressData
+                        handleNext={handleNext}
+                        handleBack={handleBack}
+                        control={control}
+                        errors={errors}
+                        allValues={allValues}
+                        setValue={setValue}
+                        activeStep={activeStep}
+                        languageName={myValue.toString()}
+                        // allStateData={allStateData}
+                      />
+                    )
+                    // :
+                    // (
+                    //   <PerformanceData
+                    //     handleNext={handleNext}
+                    //     handleBack={handleBack}
+                    //     handleOpen={handleOpen}
+                    //     activeStep={activeStep}
+                    //     steps={steps}
+                    //     preferenceData={preferenceData}
+                    //     aboutLokkanData={aboutLokkanData}
+                    //     actingPreferenceBtn={actingPreferenceBtn}
+                    //     setActingPreferenceBtn={setActingPreferenceBtn}
+                    //     aboutLokkanBtn={aboutLokkanBtn}
+                    //     setAboutLokkanBtn={setAboutLokkanBtn}
+                    //     languageName={myValue.toString()}
+                    //   />
+                    // )
+                  }
                   {errors && (
                     <Stack sx={{ width: "100%", mt: 2 }} spacing={2}>
                       {Object.keys(errors).map((key, index) => (
@@ -354,7 +358,7 @@ export default function OtherInformation({
                       ))}
                     </Stack>
                   )}
-                  {activeStep === 2 && (
+                  {activeStep === 1 && (
                     <Grid container spacing={1} sx={{ mt: 2, mb: 5 }}>
                       <Grid item xs={6} sm={6} md={6}>
                         <Button

@@ -192,6 +192,7 @@ export default function PropertyView({
           languageName={language}
           setMyValue={setMyValue}
           myValue={myValue}
+          colorLogo={true}
         />
         <Box sx={{ ml: 3 }}>
           <Grid

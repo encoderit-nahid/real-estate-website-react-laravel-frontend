@@ -43,7 +43,7 @@ import { _imageURL } from "consts";
 function LeftBar(props) {
   const router = useRouter();
   const { data: session } = useSession();
-  console.log({session})
+  console.log({ session });
 
   const myLoader = ({ src }) => {
     return `${_imageURL}/${src}`;
@@ -121,7 +121,7 @@ function LeftBar(props) {
     setSelectedLabel(name);
   }, [router.isReady]);
 
-  const handleListItemClick = (event, index, leftData) => {
+  const handleListItemClick = (index, leftData) => {
     setSelectedIndex(index);
     router.push(`/${leftData.route}`);
   };
@@ -206,7 +206,7 @@ function LeftBar(props) {
                 onClick={
                   index === 5
                     ? handleLogout
-                    : (event) => handleListItemClick(event, index, leftData)
+                    : () => handleListItemClick(index, leftData)
                 }
                 to={`/${leftData?.route}`}
                 sx={{

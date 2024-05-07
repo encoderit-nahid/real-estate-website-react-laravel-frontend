@@ -374,7 +374,7 @@ export default function Proposals({ language }) {
                 </Box>
                 <Container maxWidth="xl" sx={{ mt: 2 }}>
                   <Grid container spacing={1}>
-                    <Grid item xs={12} sm={12} md={12} lg={5} xl={4}>
+                    {/* <Grid item xs={12} sm={12} md={12} lg={5} xl={4}>
                       <Grid
                         container
                         direction="row"
@@ -407,32 +407,8 @@ export default function Proposals({ language }) {
                             {data?.slug}
                           </Button>
                         ))}
-                        {/* <Button
-                          sx={{
-                            textTransform: "none",
-                            padding: "3px 6px",
-                            backgroundColor: "#DBE1E5",
-                            color: "#002152",
-                            borderRadius: "56px",
-                            ml: 1,
-                          }}
-                        >
-                          rent
-                        </Button>
-                        <Button
-                          sx={{
-                            textTransform: "none",
-                            padding: "3px 6px",
-                            backgroundColor: "#DBE1E5",
-                            color: "#002152",
-                            borderRadius: "56px",
-                            ml: 1,
-                          }}
-                        >
-                          sell
-                        </Button> */}
                       </Grid>
-                    </Grid>
+                    </Grid> */}
                     <Grid item xs={12} sm={12} md={12} lg={5} xl={4}>
                       <Grid
                         container
@@ -467,20 +443,6 @@ export default function Proposals({ language }) {
                             <Typography variant="p">{data?.name}</Typography>
                           </Button>
                         ))}
-
-                        {/* <Button
-                          sx={{
-                            textTransform: "none",
-                            padding: "3px 6px",
-                            backgroundColor: "transparent",
-                            color: "#9FAAB1",
-                            borderRadius: "56px",
-                            ml: 1,
-                          }}
-                        >
-                          <KeyboardDoubleArrowUpIcon />
-                          <Typography variant="p">higher value</Typography>
-                        </Button> */}
                       </Grid>
                     </Grid>
                   </Grid>
