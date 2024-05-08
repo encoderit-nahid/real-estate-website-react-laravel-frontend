@@ -64,7 +64,7 @@ function NewVentureSentModal({ handleClose, languageName }) {
         </Grid>
         <Link
           href={{
-            pathname: "/my_properties",
+            pathname: "/my-properties",
             query: {
               page: 1,
               per_page: 9,

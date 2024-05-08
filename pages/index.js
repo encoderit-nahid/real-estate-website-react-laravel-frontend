@@ -99,7 +99,7 @@ export default function App({
                 handleClose={handleKnowMoreModalClose}
                 languageName={myValue.toString()}
                 href={{
-                  pathname: "/search_real_estate",
+                  pathname: "/search-real-estate",
                 }}
               />
             </>

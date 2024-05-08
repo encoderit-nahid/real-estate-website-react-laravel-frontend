@@ -1,6 +1,5 @@
 import dynamic from "next/dynamic";
 const Navbar = dynamic(() => import("@/component/shared/Navbar/Navbar"));
-const Footer = dynamic(() => import("@/component/shared/Footer/Footer"));
 import Head from "next/head";
 import {
   Box,
@@ -10,45 +9,28 @@ import {
   ImageList,
   ImageListItem,
   Button,
-  Tooltip,
 } from "@mui/material";
-import orionImage from "../../public/Images/orion_view.svg";
+import orionImage from "../../../public/Images/orion_view.svg";
 import Image from "next/image";
-const AmountView = dynamic(() =>
-  import("@/component/PropertyView/amount/AmountView")
-);
-const Features = dynamic(() =>
-  import("@/component/PropertyView/feature/Features")
-);
-const AboutProperty = dynamic(() =>
-  import("@/component/PropertyView/AboutProperty/AboutProperty")
-);
-const Negotiate = dynamic(() =>
-  import("@/component/PropertyView/Negotiate/Negotiate")
-);
 const HouseCard = dynamic(() =>
   import("@/component/reuseable/HouseCard/HouseCard")
 );
+const Footer = dynamic(() => import("@/component/shared/Footer/Footer"));
 const SliderView = dynamic(() =>
   import("@/component/PropertyView/slider/SliderView")
 );
+import SlideImage from "../../../src/component/PropertyView/slideImage/SlideImage";
 const SliderViewMobile = dynamic(() =>
   import("@/component/PropertyView/SliderViewMobile/SliderViewMobile")
 );
-const BaseModal = dynamic(() =>
-  import("@/component/reuseable/baseModal/BaseModal")
-);
-const ProposalModal = dynamic(() =>
-  import("@/component/PropertyView/ProposalStepperComponent/ProposalModal")
-);
-import { useMemo, useState } from "react";
-import { useEffect } from "react";
-import Link from "next/link";
+import { useEffect, useMemo, useState } from "react";
 import en from "locales/en";
 import pt from "locales/pt";
+import Link from "next/link";
 const SlideImageMobile = dynamic(() =>
   import("@/component/PropertyView/SlideImageMobile/SlideImageMobile")
 );
+import { _imageURL } from "consts";
 import { useRouter } from "next/router";
 
 const aboutProperty = [
@@ -87,91 +69,58 @@ const surroundings = [
   "Museum",
 ];
 
-export default function PropertyView({
+export default function ProjectView({
   loginOpen,
   setLoginOpen,
   handleLoginOpen,
   handleLoginClose,
-  singlePropertyData,
-  tabArrayData,
+  singleProjectData,
   language,
 }) {
   const [myValue, setMyValue] = useState(language || "en");
   const router = useRouter();
-
   const t = myValue === "en" ? en : pt;
-  //add_proposal_modal
-  const [proposalOpen, setProposalOpen] = useState(false);
-  const handleProposalOpen = () => setProposalOpen(true);
-  const handleProposalClose = () => setProposalOpen(false);
-
-  const [negotiate, setNegotiate] = useState(true);
-  const [schedule, setSchedule] = useState(false);
-
-  const [upperTabValue, setUpperTabValue] = useState(tabArrayData[0].slug);
-
   const [sideTabValue, setSideTabValue] = useState("photos");
+
+  const filterLogo = singleProjectData?.project?.attachments?.filter(
+    (data) => data.title === "logo"
+  );
+
+  console.log({ singleProjectData });
+
+  const myLoader = ({ src }) => {
+    return `${_imageURL}/${src}`;
+  };
 
   const Images = useMemo(() => {
     const regexPatternThreeSixtyImages = /^[a-zA-Z_]+_vision_360$/;
     const regexPatternImages = /^[a-zA-Z_]+$/;
-    return singlePropertyData?.property?.attachments?.filter((data) => {
+    return singleProjectData?.project?.attachments?.filter((data) => {
       return sideTabValue === "vision_360"
         ? regexPatternThreeSixtyImages.test(data?.title)
         : sideTabValue === "photos"
-        ? data?.title && regexPatternImages.test(data?.title)
+        ? data?.photo_type?.type === "project"
         : sideTabValue === "condominium"
         ? data?.photo_type?.type === "condominium"
         : sideTabValue === "videos"
         ? !data?.title
         : null;
     });
-  }, [singlePropertyData, sideTabValue]);
+  }, [singleProjectData, sideTabValue]);
 
-  const Videos = useMemo(() => {
-    if (sideTabValue === "videos") {
-      return singlePropertyData?.property?.attachments?.filter((data) => {
-        return data?.file_type === "url";
-      });
-    } else {
-      return;
-    }
-  }, [sideTabValue, singlePropertyData]);
-
-  console.log({ sideTabValue });
-
-  const [selectImage, setSelectImage] = useState(() => Images[0]?.file_path);
+  const [selectImage, setSelectImage] = useState(() => Images?.[0]?.file_path);
 
   useEffect(() => {
-    if (Images.length > 0) {
-      setSelectImage(Images[0]?.file_path);
+    if (Images?.length > 0) {
+      setSelectImage(Images?.[0]?.file_path);
     } else {
-      setSelectImage(Images[0]?.lofi);
+      setSelectImage(Images?.[0]?.lofi);
     }
   }, [Images]);
 
   const goBack = () => {
     router.back();
   };
-
-  console.log({ singlePropertyData });
-
-  // useEffect(() => {
-  //   let showData = [];
-
-  //   if (sideTabValue === "photos") {
-  //     showData = singlePropertyData?.property?.attachments?.filter(
-  //       (data) => data.title === upperTabValue
-  //     );
-  //   }
-  //   if (sideTabValue === "vision_360") {
-  //     showData = singlePropertyData?.property?.attachments?.filter((data) =>
-  //       data.title.includes(`${upperTabValue}_${sideTabValue}`)
-  //     );
-  //   }
-  //   setImages(showData);
-  //   console.log({ showData });
-  // }, [singlePropertyData, upperTabValue, sideTabValue]);
 
   return (
     <div>
@@ -201,10 +150,10 @@ export default function PropertyView({
             justifyContent="flex-end"
             alignItems="flex-start"
           >
-            {/* <Link href="/search_real_estate"> */}
             <Button
               color="inherit"
               // disabled={activeStep === 0}
+              //   onClick={handleBack}
               onClick={goBack}
               sx={{
                 mr: 1,
@@ -222,7 +171,6 @@ export default function PropertyView({
             >
               {t["come back"]}
             </Button>
-            {/* </Link> */}
           </Grid>
           <Grid
             container
@@ -252,23 +200,19 @@ export default function PropertyView({
                   color: "#1A1859",
                 }}
               >
-                {`${singlePropertyData?.property?.address?.address} | ${singlePropertyData?.property?.address?.city}`}
+                {singleProjectData?.project?.name}
               </Typography>
             </Button>
           </Grid>
-          {/* <Grid
+          <Grid
             container
             direction="row"
             justifyContent="flex-start"
             alignItems="flex-start"
             sx={{ marginTop: 1 }}
           >
-            <TabView
-              tabArray={tabArrayData}
-              upperTabValue={upperTabValue}
-              setUpperTabValue={setUpperTabValue}
-            />
-          </Grid> */}
+            {/* <TabView /> */}
+          </Grid>
         </Box>
         <Box
           sx={{
@@ -293,9 +237,7 @@ export default function PropertyView({
               <SliderViewMobile
                 sideTabValue={sideTabValue}
                 setSideTabValue={setSideTabValue}
-                videos={Videos}
                 selectImage={selectImage}
-                addressData={singlePropertyData?.property?.address}
                 languageName={myValue.toString()}
               />
             </Grid>
@@ -326,7 +268,19 @@ export default function PropertyView({
           <Box>
             <SlideImageMobile Images={Images} setSelectImage={setSelectImage} />
           </Box>
-          <Grid container>
+          <Grid
+            container
+            spacing={2}
+            // sx={{
+            //   display: {
+            //     xs: "none",
+            //     sm: "none",
+            //     md: "inline",
+            //     lg: "inline",
+            //     xl: "inline",
+            //   },
+            // }}
+          >
             <Grid
               item
               xs={12}
@@ -344,77 +298,105 @@ export default function PropertyView({
                 sideTabValue={sideTabValue}
                 setSideTabValue={setSideTabValue}
                 selectImage={selectImage}
-                addressData={singlePropertyData?.property?.address}
+                addressData={singleProjectData?.project?.address}
                 languageName={myValue.toString()}
-                videos={Videos}
+                // videos={Videos}
                 images={Images}
                 others={true}
               />
             </Grid>
+            {/* <Grid
+              item
+              xs={2}
+              sx={{
+                display: {
+                  xs: "none",
+                  sm: "none",
+                  md: "inline",
+                  lg: "inline",
+                  xl: "inline",
+                },
+              }}
+            >
+              <SlideImage Images={Images} setSelectImage={setSelectImage} />
+            </Grid> */}
           </Grid>
         </Box>
-        <Box sx={{ mx: { xs: 1, sm: 3, md: 3, lg: 3, xl: 3 } }}>
-          <Grid
-            container
-            direction="row"
-            alignItems="center"
-            sx={{
-              height: {
-                xs: "60vh",
-                sm: "60vh",
-                md: "60vh",
-                lg: "40vh",
-                xl: "40vh",
-              },
-              background: "#0E97F7",
 
-              px: { xs: 2, sm: 2, md: 2, lg: 2, xl: 20 },
-              pt: { xs: 2, sm: 2, md: 0, lg: 0, xl: 0 },
-              // pb: { xs: 0.5, sm: 0.5, md: 0, lg: 0, xl: 0 },
-            }}
-          >
-            <AmountView
-              negotiate={negotiate}
-              setNegotiate={setNegotiate}
-              schedule={schedule}
-              setSchedule={setSchedule}
-              singlePropertyData={singlePropertyData}
-              languageName={myValue.toString()}
-            />
-          </Grid>
-        </Box>
-        <Box sx={{ mx: 3, mt: 4 }}>
-          <Grid container spacing={2}>
-            <Grid item xs={12} sm={12} md={12} lg={9} xl={9}>
-              <Features
-                singlePropertyData={singlePropertyData}
-                languageName={myValue.toString()}
-              />
+        <Box
+          sx={{
+            mx: 3,
+            mt: 4,
 
-              {Object.keys(singlePropertyData?.propertyFeatures).map(
-                (key, index) => (
-                  <AboutProperty
-                    key={index}
-                    name={key}
-                    array={singlePropertyData?.propertyFeatures[key]}
+            background: "linear-gradient(90deg, #20BAF6 0%, #7450F0 100%);",
+          }}
+        >
+          <Container maxWidth="lg">
+            <Grid
+              container
+              spacing={2}
+              sx={{
+                height: {
+                  xs: "auto",
+                  sm: "auto",
+                  md: "auto",
+                  lg: "40vh",
+                },
+                pt: 1,
+                pb: 1,
+              }}
+            >
+              <Grid item xs={12} sm={12} md={12} lg={2}>
+                <Box>
+                  <Image
+                    loader={myLoader}
+                    src={filterLogo[0]?.file_path}
+                    width={100}
+                    height={100}
+                    style={{ borderRadius: "50px" }}
+                    alt="yellowImage"
                   />
-                )
-              )}
+                </Box>
+              </Grid>
+              <Grid item xs={12} sm={12} md={12} lg={10}>
+                <Typography
+                  variant="h6"
+                  sx={{
+                    color: "#FFFFFF",
+                    fontWeight: "800",
+                    fontSize: "32px",
+                    lineHeight: "38px",
+                  }}
+                >
+                  {singleProjectData?.project?.name}
+                </Typography>
+                {/* <Typography
+                  variant="h6"
+                  sx={{
+                    color: "#FFFFFF",
+                    fontWeight: "500",
+                    fontSize: "20px",
+                    lineHeight: "28px",
+                    mt: 2,
+                  }}
+                >
+                  📍AV. AFONSO MARIANO FAGUNDES, 417 SAÚDE, SÃO PAULO - SP
+                </Typography> */}
+                <Typography
+                  variant="h6"
+                  sx={{
+                    color: "#FFFFFF",
+                    fontWeight: "500",
+                    fontSize: "20px",
+                    lineHeight: "28px",
+                    mt: 2,
+                  }}
+                >
+                  {singleProjectData?.project?.description}
+                </Typography>
+              </Grid>
             </Grid>
-            <Grid item xs={12} sm={12} md={12} lg={3} xl={3}>
-              <Negotiate
-                negotiate={negotiate}
-                setNegotiate={setNegotiate}
-                schedule={schedule}
-                setSchedule={setSchedule}
-                handleProposalOpen={handleProposalOpen}
-                singlePropertyData={singlePropertyData}
-                handleLoginOpen={handleLoginOpen}
-                singlePropertyId={singlePropertyData?.property?.id}
-                languageName={myValue.toString()}
-              />
-            </Grid>
-          </Grid>
+          </Container>
         </Box>
         <Box>
           <ImageList
@@ -430,18 +412,18 @@ export default function PropertyView({
               pb: 4,
             }}
           >
-            {singlePropertyData?.similarProperties?.map((stateInfo, index) => (
+            {singleProjectData?.propject_wise_properties?.map((data, index) => (
               <Link
-                key={stateInfo.id}
-                href={`/property_view/${stateInfo.id}`}
-                as={`/property_view/${stateInfo.id}`}
+                key={data.id}
+                href={`/property-view/${data.id}`}
+                as={`/property-view/${data.id}`}
               >
                 <ImageListItem
                   key={index}
                   cols={2}
                   sx={{
                     width: {
-                      xl: "100%",
+                      xl: "90%",
                       lg: "90%",
                       md: "70%",
                       sm: "90%",
@@ -450,8 +432,8 @@ export default function PropertyView({
                   }}
                 >
                   <HouseCard
+                    propertyInfo={data}
                     shadow={"0px 4px 18px rgba(0, 0, 0, 0.1)"}
-                    propertyInfo={stateInfo}
                   />
                 </ImageListItem>
               </Link>
@@ -459,42 +441,28 @@ export default function PropertyView({
           </ImageList>
         </Box>
         <Footer />
-
-        <BaseModal isShowing={proposalOpen} isClose={handleProposalClose}>
-          <Tooltip title="Something">
-            <>
-              <ProposalModal
-                handleProposalClose={handleProposalClose}
-                singlePropertyId={singlePropertyData?.property?.id}
-                languageName={myValue.toString()}
-              />
-            </>
-          </Tooltip>
-        </BaseModal>
       </main>
     </div>
   );
 }
-49;
 
 export async function getServerSideProps(context) {
   const { id } = context.query;
   const base_url = process.env.NEXT_PUBLIC_API_URL;
-  // console.log("paramId", id);
-  const res = await fetch(`${base_url}/api/property/show/${id}`);
-  const singlePropertyData = await res.json();
+
+  const res = await fetch(`${base_url}/api/project/show/${id}`);
+  const singleProjectData = await res.json();
 
   const cookies = context.req.cookies["language"];
 
-  // console.log("single", singlePropertyData);
   return {
     props: {
-      singlePropertyData: singlePropertyData,
-      tabArrayData:
-        singlePropertyData?.property?.property_detail?.photo_types?.filter(
-          (data) => data.slug.substr(data.slug.length - 3) !== "360"
-        ),
+      singleProjectData: singleProjectData,
       language: cookies,
+      // tabArrayData:
+      //   singlePropertyData?.property?.property_detail?.photo_types?.filter(
+      //     (data) => data.slug.substr(data.slug.length - 3) !== "360"
+      //   ),
     },
   };
 }

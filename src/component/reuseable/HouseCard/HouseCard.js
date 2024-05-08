@@ -1,5 +1,5 @@
-import React from "react";
-import { Box, Grid, Typography, Container } from "@mui/material";
+import React, { useState } from "react";
+import { Box, Grid, Typography, Container, IconButton } from "@mui/material";
 import houseImage from "../../../../public/Images/house.png";
 import bed from "../../../../public/Images/bed.png";
 import rule from "../../../../public/Images/rule.png";
@@ -7,13 +7,24 @@ import check from "../../../../public/Images/check.png";
 import Image from "next/image";
 import Footer from "../../shared/Footer/Footer";
 import { _baseURL, _imageURL } from "../../../../consts";
+import FavoriteBorderOutlinedIcon from "@mui/icons-material/FavoriteBorderOutlined";
 import en from "locales/en";
 import pt from "locales/pt";
+import FavoriteIcon from "@mui/icons-material/Favorite";
 
 function HouseCard({ shadow, marginTop, propertyInfo, languageName }) {
   const t = languageName === "en" ? en : pt;
   const myLoader = ({ src }) => {
     return `${_imageURL}/${src}`;
+  };
+
+  console.log({ propertyInfo });
+
+  const [isFavorite, setIsFavorite] = useState(false);
+
+  const handleFavoriteClick = (event) => {
+    event.preventDefault();
+    setIsFavorite(!isFavorite);
   };
 
   return (
@@ -25,8 +36,22 @@ function HouseCard({ shadow, marginTop, propertyInfo, languageName }) {
         boxShadow: shadow,
         marginTop: marginTop,
         cursor: "pointer",
+        position: "relative", // Ensure the positioning context for absolute positioning of the favorite icon
       }}
     >
+      <IconButton
+        sx={{
+          position: "absolute",
+          bottom: { xs: 220, sm: 220, md: 200, lg: 190 },
+          right: 0,
+          zIndex: "1",
+        }} // Position the favorite icon at the top right corner
+        aria-label="favorite"
+        color="primary" // Set the color of the icon
+        onClick={handleFavoriteClick} // Handle click event
+      >
+        <FavoriteIcon sx={{ color: "red" }} />
+      </IconButton>
       <Box sx={{ width: "100%" }}>
         {/* <Image src={houseImage} layout="responsive" alt="house" /> */}
         <Image

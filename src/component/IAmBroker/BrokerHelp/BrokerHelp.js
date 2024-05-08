@@ -23,7 +23,7 @@ function BrokerHelp({
 
   const handleAdvertise = () => {
     if (!broker) {
-      router.push("/my_properties/new_property");
+      router.push("/my-properties/new-property");
       localStorage.setItem("Zip_code", value);
     } else {
       router.push("/brokers");

@@ -66,7 +66,7 @@ export default function NewProperty({ language }) {
 
   const BreadCrumbsData = [
     { stage: t["Start"], route: "" },
-    { stage: t["My Properties"], route: "my_properties" },
+    { stage: t["My Properties"], route: "my-properties" },
   ];
 
   const otherSteps = [
@@ -754,7 +754,7 @@ export default function NewProperty({ language }) {
                           </Button>
                         )}
                         {/* {activeStep === 0 && (
-                          <Link href="/my_properties">
+                          <Link href="/my-properties">
                             <Button
                               color="inherit"
                               // disabled={activeStep === 0}

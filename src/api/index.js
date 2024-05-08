@@ -75,7 +75,7 @@ export const languageChangeApi = async (language) => {
   }
 };
 
-//reset_password
+//reset-password
 export const resetPasswordApi = async (body) => {
   try {
     const responseReset = await apiInstance.post(`/password/reset`, body);
@@ -283,7 +283,7 @@ export const propertyStatusApi = async (body) => {
   }
 };
 
-//include_proposal_create
+//include-proposal_create
 export const proposalCreateApi = async (body) => {
   try {
     const response = await apiInstance.post(`proposal/store`, body);
@@ -313,7 +313,7 @@ export const featureCreateApi = async (body) => {
   }
 };
 
-//create_new_property
+//create_new-property
 export const propertyCreateApi = async (body) => {
   try {
     const response = await apiInstance.post(`property/store`, body);
@@ -323,7 +323,7 @@ export const propertyCreateApi = async (body) => {
   }
 };
 
-//update_new_property
+//update_new-property
 export const propertyUpdateApi = async (body) => {
   try {
     const response = await apiInstance.post(`property/update`, body);

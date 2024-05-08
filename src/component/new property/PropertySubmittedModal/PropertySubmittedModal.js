@@ -55,7 +55,7 @@ function PropertySubmittedModal({ handleClose, languageName }) {
             {t["Property submitted for approval"]}
           </Typography>
         </Grid>
-        <Link href="/my_properties">
+        <Link href="/my-properties">
           <Button
             onClick={handleClose}
             fullWidth

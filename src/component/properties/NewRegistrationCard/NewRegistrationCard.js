@@ -81,8 +81,8 @@ function NewRegistrationCard({ propertyData, newProperty, languageName }) {
             <Image src={rentImage} layout="responsive" alt="rent" />
           </Box> */}
           <Link
-            href={`/property_view/${propertyData?.id}`}
-            as={`/property_view/${propertyData?.id}`}
+            href={`/property-view/${propertyData?.id}`}
+            as={`/property-view/${propertyData?.id}`}
           >
             <Box
               style={{
@@ -289,7 +289,7 @@ function NewRegistrationCard({ propertyData, newProperty, languageName }) {
               </Button>
               <Link
                 href={{
-                  pathname: "/my_properties/new_property",
+                  pathname: "/my-properties/new-property",
                   query: omitEmpties({
                     property_id: propertyData?.id,
                   }),

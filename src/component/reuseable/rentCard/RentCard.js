@@ -223,7 +223,7 @@ function RentCard({ propertyData, languageName }) {
             <Box sx={{ mt: 1, mb: { xs: 0, sm: 0, md: 0, lg: 2, xl: 2 } }}>
               <Link
                 href={{
-                  pathname: "/my_properties/include_proposal",
+                  pathname: "/my-properties/include-proposal",
                   query: omitEmpties({
                     property_id: propertyData?.id,
                   }),
@@ -273,7 +273,7 @@ function RentCard({ propertyData, languageName }) {
                 session?.user?.role === "admin") && (
                 <Link
                   href={{
-                    pathname: "/my_properties/new_property",
+                    pathname: "/my-properties/new-property",
                     query: omitEmpties({
                       property_id: propertyData?.id,
                     }),

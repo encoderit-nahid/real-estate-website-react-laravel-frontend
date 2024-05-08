@@ -34,7 +34,7 @@ export default function UserLoading() {
               callbackUrl:
                 response.data?.user?.roles[0]?.slug === "buyer"
                   ? "/"
-                  : "/my_properties",
+                  : "/my-properties",
             });
           } else {
             router.push("/");

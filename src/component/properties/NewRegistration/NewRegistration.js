@@ -31,7 +31,7 @@ function NewRegistration({ languageName }) {
   const handlePageChange = (event, value) => {
     setPage(value);
     router.replace({
-      pathname: "/my_properties",
+      pathname: "/my-properties",
       query: { status: "new", page: value, per_page: 9 },
     });
   };

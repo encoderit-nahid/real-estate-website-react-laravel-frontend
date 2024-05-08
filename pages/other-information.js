@@ -232,7 +232,7 @@ export default function OtherInformation({
 
       user_id: registrationId,
       broker_url: window.location.origin,
-      redirect_url: `${window.location.origin}/user_loading`,
+      redirect_url: `${window.location.origin}/user-loading`,
     });
 
     const requireData = {

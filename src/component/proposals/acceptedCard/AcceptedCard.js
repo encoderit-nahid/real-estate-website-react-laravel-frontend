@@ -242,7 +242,7 @@ function AcceptedCard({ propertyData, languageName }) {
         <Grid item xs={12} sm={12} md={12} lg={6} xl={6}>
           <Link
             href={{
-              pathname: "/proposals/property_journey",
+              pathname: "/proposals/property-journey",
               query: {
                 propertyId: propertyData?.id,
                 contractId: propertyData?.contract?.id,
@@ -281,7 +281,7 @@ function AcceptedCard({ propertyData, languageName }) {
         <Grid item xs={12} sm={12} md={12} lg={6} xl={6}>
           <Link
             href={{
-              pathname: "/proposals/property_journey",
+              pathname: "/proposals/property-journey",
               query: {
                 propertyId: propertyData?.id,
                 contractId: propertyData?.contract?.id,

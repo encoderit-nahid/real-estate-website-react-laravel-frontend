@@ -33,7 +33,7 @@ function Releases({ queryData, languageName }) {
   const handlePageChange = (event, value) => {
     setPage(value);
     router.replace({
-      pathname: "/my_properties",
+      pathname: "/my-properties",
       query: { page: value, per_page: 9 },
     });
     // setData(datas.slice(firstIndex + pageSize * (value - 1), pageSize * value));

@@ -177,7 +177,7 @@ export default function MyProperties({ language }) {
     setValue(newValue);
     newValue === 1
       ? router.replace({
-          pathname: "/my_properties",
+          pathname: "/my-properties",
           query: {
             status: "third",
             page: 1,
@@ -187,11 +187,11 @@ export default function MyProperties({ language }) {
         })
       : newValue === 2
       ? router.replace({
-          pathname: "/my_properties",
+          pathname: "/my-properties",
           query: { status: "new", page: 1, per_page: 9, value: newValue },
         })
       : router.replace({
-          pathname: "/my_properties",
+          pathname: "/my-properties",
           query: { page: 1, per_page: 9, value: newValue },
         });
   };
@@ -368,7 +368,7 @@ export default function MyProperties({ language }) {
                     sx={{ mt: 3 }}
                   >
                     {session?.user?.role !== "buyer" && (
-                      <Link href="/my_properties/new_property">
+                      <Link href="/my-properties/new-property">
                         <Button
                           sx={{
                             textTransform: "none",
@@ -399,7 +399,7 @@ export default function MyProperties({ language }) {
                     )}
 
                     {session?.user?.role === "admin" && (
-                      <Link href="/my_properties/new_venture">
+                      <Link href="/my-properties/new-venture">
                         <Button
                           sx={{
                             textTransform: "none",

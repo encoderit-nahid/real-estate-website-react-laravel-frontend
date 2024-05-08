@@ -134,7 +134,7 @@ export default function SearchRealEstate({
   const handlePageChange = (event, value) => {
     setPage(value);
     router.replace({
-      pathname: "/search_real_estate",
+      pathname: "/search-real-estate",
       query: { ...router.query, page: value },
     });
     // setData(datas.slice(firstIndex + pageSize * (value - 1), pageSize * value));
@@ -218,7 +218,7 @@ export default function SearchRealEstate({
 
   const handleSearchBtn = () => {
     router.replace({
-      pathname: "/search_real_estate",
+      pathname: "/search-real-estate",
       query: { ...router.query, all: searchValue },
     });
   };
@@ -257,14 +257,14 @@ export default function SearchRealEstate({
     const spEntries = Object.fromEntries(sp.entries());
 
     router.replace({
-      pathname: "/search_real_estate",
+      pathname: "/search-real-estate",
       query: $params.encode(omitEmpties(allFilterData)).toString(),
     });
   };
 
   const handleCancelFilter = () => {
     router.replace({
-      pathname: "/search_real_estate",
+      pathname: "/search-real-estate",
       query: omitEmpties({
         location: query?.location,
         value_up_to: query?.value_up_to,
@@ -288,7 +288,7 @@ export default function SearchRealEstate({
   const handleRelevantValueChange = (v) => {
     setRelevantValue(v);
     router.replace({
-      pathname: "/search_real_estate",
+      pathname: "/search-real-estate",
       query: omitEmpties({
         ...router.query,
         relevant_filter: v?.value,

@@ -117,7 +117,7 @@ function LoginModal({ handleLoginClose, myValue }) {
           callbackUrl:
             response.data?.user?.roles[0]?.slug === "buyer"
               ? "/"
-              : "/my_properties",
+              : "/my-properties",
         });
       }
     } else {
@@ -272,7 +272,7 @@ function LoginModal({ handleLoginClose, myValue }) {
             {errors.password?.message}
           </Typography>
 
-          {/* <Link href="/my_properties">
+          {/* <Link href="/my-properties">
             <a
               style={{
                 textDecoration: "none",

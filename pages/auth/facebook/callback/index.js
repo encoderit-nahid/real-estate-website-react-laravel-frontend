@@ -32,7 +32,9 @@ export default function Facebook({ roleId }) {
       const [errorAuth, responseAuth] = await socialLoginApi(query, "google");
       if (!errorAuth) {
         localStorage.setItem("token", responseAuth?.data?.token);
-        apiInstance.defaults.headers.common["Authorization"] = `Bearer ${responseAuth?.data?.token}`;
+        apiInstance.defaults.headers.common[
+          "Authorization"
+        ] = `Bearer ${responseAuth?.data?.token}`;
         const [error, response] = await userDetailsApi();
         if (!error) {
           signIn("credentials", {
@@ -44,9 +46,12 @@ export default function Facebook({ roleId }) {
             role: response?.data?.user?.roles[0]?.slug,
             roleId: response?.data?.user?.roles[0]?.id,
             userImage: response?.data?.user?.attachments[0]?.file_path,
-            callbackUrl: response.data.user.roles[0].slug === "buyer" ? "/" : "/my_properties",
+            callbackUrl:
+              response.data.user.roles[0].slug === "buyer"
+                ? "/"
+                : "/my-properties",
           });
-        } 
+        }
         // else {
         //   router.replace({ pathname: "/" });
         // }
@@ -69,7 +74,7 @@ export default function Facebook({ roleId }) {
           errorAuth?.response?.data?.user?.name
         );
         router.replace({
-          pathname: "/other_information",
+          pathname: "/other-information",
         });
       }
     };

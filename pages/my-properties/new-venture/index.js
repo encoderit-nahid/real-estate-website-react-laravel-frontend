@@ -95,7 +95,7 @@ export default function NewVenture({ language }) {
 
   const BreadCrumbsData = [
     { stage: t["Start"], route: "" },
-    { stage: t["My Properties"], route: "my_properties" },
+    { stage: t["My Properties"], route: "my-properties" },
   ];
 
   const dispatch = useDispatch();
@@ -491,7 +491,7 @@ export default function NewVenture({ language }) {
                     alignItems="flex-end"
                     sx={{ mt: 2 }}
                   >
-                    <Link href="/my_properties">
+                    <Link href="/my-properties">
                       <Button
                         variant="outlined"
                         sx={{

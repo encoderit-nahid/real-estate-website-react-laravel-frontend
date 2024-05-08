@@ -82,14 +82,14 @@ function ForgotPasswordModal({ handleForgotClose }) {
     setLoading(true);
     const [error, response] = await forgotPasswordApi({
       ...data,
-      redirect_url: `${baseRedirectUrl}/reset_password`,
+      redirect_url: `${baseRedirectUrl}/reset-password`,
     });
 
     setLoading(false);
     if (!error) {
       setSnackbarOpen(true);
       console.log({ response });
-      // router.push("/reset_password");
+      // router.push("/reset-password");
 
       setMessage(response?.data?.message);
       setSeverity(true);

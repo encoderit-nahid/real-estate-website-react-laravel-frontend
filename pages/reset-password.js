@@ -104,7 +104,7 @@ export default function ResetPassword() {
             callbackUrl:
               response.data.user.roles[0].slug === "buyer"
                 ? "/"
-                : "/my_properties",
+                : "/my-properties",
           });
         }
         //

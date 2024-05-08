@@ -108,7 +108,7 @@ function Navbar({
   const t = locale === "en" ? en : pt;
 
   const pagesData = [
-    { name: "Quero comprar", page: "search_real_estate" },
+    { name: "Quero comprar", page: "search-real-estate" },
     { name: t["I am broker"], page: "broker" },
     { name: t["I am owner"], page: "advertise" },
     // { name: "blog", page: "blog" },
@@ -196,7 +196,7 @@ function Navbar({
                 <Link
                   href={{
                     pathname: `/${data.page}`,
-                    query: data.page === "search_real_estate" && {
+                    query: data.page === "search-real-estate" && {
                       status: "approved",
                       page: 1,
                       per_page: 9,
@@ -292,7 +292,7 @@ function Navbar({
               <Link
                 href={{
                   pathname: `/${data.page}`,
-                  query: data.page === "search_real_estate" && {
+                  query: data.page === "search-real-estate" && {
                     status: "approved",
                     page: 1,
                     per_page: 9,
@@ -452,7 +452,7 @@ function Navbar({
         </Typography>
         <Link
           href={{
-            pathname: "/my_properties",
+            pathname: "/my-properties",
             query: {
               page: 1,
               per_page: 9,

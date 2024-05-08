@@ -369,7 +369,7 @@ export default function IncludeProposal({ language }) {
                             ) : (
                               <Grid item xs={6} sm={6} md={6}>
                                 <Link
-                                  href={`/my_properties`}
+                                  href={`/my-properties`}
 
                                   // href="/material-ui/getting-started/installation/"
                                 >
@@ -460,7 +460,7 @@ export default function IncludeProposal({ language }) {
                             session?.user?.role === "admin") && (
                             <Grid container spacing={1} sx={{ mt: 2, mb: 5 }}>
                               <Grid item xs={6} sm={6} md={6}>
-                                <Link href="/my_properties">
+                                <Link href="/my-properties">
                                   <Button
                                     color="inherit"
                                     // disabled={activeStep === 0}

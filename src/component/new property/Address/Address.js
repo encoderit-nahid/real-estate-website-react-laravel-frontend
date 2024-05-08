@@ -604,7 +604,7 @@ function Address({
         )}
       /> */}
       <Box sx={{ mt: 1 }}>
-        <Link href="/my_properties/new_venture">
+        <Link href="/my-properties/new-venture">
           <a
             style={{
               textDecoration: "none",
@@ -819,7 +819,7 @@ function Address({
           alignItems="center"
           sx={{ mt: 2, mb: 2 }}
         >
-          <Link href="/my_properties">
+          <Link href="/my-properties">
             <Button
               color="inherit"
               // disabled={activeStep === 0}

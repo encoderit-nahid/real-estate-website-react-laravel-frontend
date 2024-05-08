@@ -115,7 +115,7 @@ function FulfillDream({ languageName, setKnowMoreModal }) {
       />
       <Link
         href={{
-          pathname: "/search_real_estate",
+          pathname: "/search-real-estate",
           query: omitEmpties({
             status: "approved",
             location: locationName && locationName,

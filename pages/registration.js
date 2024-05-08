@@ -99,40 +99,6 @@ export default function Registration({ language, handleLoginOpen }) {
     window.location.replace(`${_baseURL}/api/redirect/${provider}`);
   };
 
-  // useEffect(() => {
-  //   const getData = async () => {
-  //     if (query?.token) {
-  //       const [err, resp] = await emailVerifyApi(query?.token);
-  //       if (!err) {
-  //         router.push("/broker_registration");
-  //         // localStorage.setItem("token", resp?.data?.token);
-  //         // const [error, response] = await userDetailsApi();
-  //         // if (!error) {
-  //         //   return signIn("credentials", {
-  //         //     userId: response.data.user.id,
-  //         //     userEmail: response.data.user.email,
-  //         //     name: response.data.user.name,
-  //         //     phone: response.data.user.phone,
-  //         //     status: response.data.user.status,
-  //         //     role: response.data.user.roles[0].slug,
-  //         //     roleId: response.data.user.roles[0].id,
-  //         //     permissions: JSON.stringify(
-  //         //       response.data.user.roles[0].permissions
-  //         //     ),
-  //         //     callbackUrl:
-  //         //       response.data.user.roles[0].slug === "buyer"
-  //         //         ? "/"
-  //         //         : "/my_properties",
-  //         //   });
-  //         // }
-  //       }
-  //     } else {
-  //       return;
-  //     }
-  //   };
-  //   getData();
-  // }, [query?.token, router]);
-
   const [activeBtn, setActiveBtn] = useState(4);
   const [disableBtn, setDisableBtn] = useState(true);
 
@@ -209,7 +175,7 @@ export default function Registration({ language, handleLoginOpen }) {
       localStorage.setItem("user_role", responseToken?.data?.userRole);
       localStorage.setItem("Reg_user_name", data?.name);
       router.replace({
-        pathname: "/other_information",
+        pathname: "/other-information",
       });
     } else {
       const errors = errorToken?.response?.data?.errors ?? {};

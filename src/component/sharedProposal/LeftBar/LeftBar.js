@@ -75,7 +75,7 @@ function LeftBar(props) {
     {
       icon: <CampaignOutlinedIcon />,
       label: t["Properties"],
-      route: "my_properties",
+      route: "my-properties",
     },
     {
       icon: <ArticleOutlinedIcon />,

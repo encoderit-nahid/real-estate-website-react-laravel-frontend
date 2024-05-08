@@ -643,7 +643,7 @@ function PendantsCard({ propertyData, languageName }) {
         <Grid item xs={12} sm={12} md={12} lg={6} xl={6}>
           <Link
             href={{
-              pathname: "/my_properties/include_proposal",
+              pathname: "/my-properties/include-proposal",
               query: omitEmpties({
                 property_id: propertyData?.id,
               }),

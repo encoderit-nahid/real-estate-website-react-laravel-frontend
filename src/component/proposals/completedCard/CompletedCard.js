@@ -190,7 +190,7 @@ function CompletedCard({ propertyData, languageName }) {
         <Grid item xs={12} sm={12} md={12} lg={12} xl={12}>
           <Link
             href={{
-              pathname: "/proposals/property_journey",
+              pathname: "/proposals/property-journey",
               query: {
                 propertyId: propertyData?.id,
                 contractId: propertyData?.contract?.id,

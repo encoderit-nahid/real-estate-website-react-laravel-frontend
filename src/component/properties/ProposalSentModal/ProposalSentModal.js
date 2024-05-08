@@ -55,7 +55,7 @@ function ProposalSentModal({ handleClose, languageName }) {
             {t["proposal sent"]}
           </Typography>
         </Grid>
-        <Link href="/my_properties">
+        <Link href="/my-properties">
           <Button
             // onClick={handleClose}
             fullWidth

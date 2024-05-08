@@ -33,7 +33,7 @@ function ThirdTab({ languageName }) {
   const handlePageChange = (event, value) => {
     setPage(value);
     router.replace({
-      pathname: "/my_properties",
+      pathname: "/my-properties",
       query: { status: "third", page: value, per_page: 9 },
     });
   };
@@ -81,7 +81,7 @@ function ThirdTab({ languageName }) {
             xxl={6}
             sx={{ cursor: "pointer" }}
           >
-            <Link href={`/property_view/${data?.id}`}>
+            <Link href={`/property-view/${data?.id}`}>
               <a
                 style={{
                   textDecoration: "none",

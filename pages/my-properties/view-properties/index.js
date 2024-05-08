@@ -169,7 +169,7 @@ export default function ViewProperties({
   const handlePageChange = (event, value) => {
     setPage(value);
     router.replace({
-      pathname: "/search_real_estate",
+      pathname: "/search-real-estate",
       query: { ...router.query, page: value },
     });
     // setData(datas.slice(firstIndex + pageSize * (value - 1), pageSize * value));
@@ -252,7 +252,7 @@ export default function ViewProperties({
 
   const handleSearchBtn = () => {
     router.replace({
-      pathname: "/my_properties/view_properties",
+      pathname: "/my-properties/view-properties",
       query: { ...router.query, all: searchValue },
     });
   };
@@ -295,14 +295,14 @@ export default function ViewProperties({
       decoded: $params.decode(),
     });
     router.replace({
-      pathname: "/my_properties/view_properties",
+      pathname: "/my-properties/view-properties",
       query: $params.encode(omitEmpties(allFilterData)).toString(),
     });
   };
 
   const handleCancelFilter = () => {
     router.replace({
-      pathname: "/my_properties/view_properties",
+      pathname: "/my-properties/view-properties",
       query: omitEmpties({
         project_id: query?.project_id,
         page: 1,
@@ -1179,7 +1179,7 @@ export default function ViewProperties({
               sx={{ mt: 1 }}
             >
               <Grid item xs={12} sm={12} md={12} lg={2} xl={2}>
-                <Link href="/my_properties">
+                <Link href="/my-properties">
                   <a
                     style={{
                       textDecoration: "none",
@@ -1316,7 +1316,7 @@ export default function ViewProperties({
                 xl={2}
                 sx={{ mx: { xs: 2, sm: 2, md: 0 } }}
               >
-                <Link href="/my_properties/new_property">
+                <Link href="/my-properties/new-property">
                   <Button
                     sx={{
                       textTransform: "none",
@@ -1353,7 +1353,7 @@ export default function ViewProperties({
                     xl={6}
                     xxl={6}
                   >
-                    <Link href={`/property_view/${data?.id}`}>
+                    <Link href={`/property-view/${data?.id}`}>
                       <a
                         style={{
                           textDecoration: "none",
