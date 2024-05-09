@@ -1,0 +1,15 @@
+import { apiInstance } from "@/api";
+import { useQuery } from "@tanstack/react-query";
+
+export const useGetPropertyCountQuery = () => {
+  return useQuery({
+    queryKey: ["/count-property"],
+    refetchOnMount: true,
+    // retry: 2,
+    refetchOnWindowFocus: true,
+    staleTime: 0,
+    queryFn: async () => {
+      return await apiInstance.get(`/property/register-count`);
+    },
+  });
+};

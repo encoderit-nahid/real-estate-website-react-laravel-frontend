@@ -19,6 +19,7 @@ export default NextAuth({
           roleId: credentials.roleId,
           permissions: credentials.permissions,
           userImage: credentials.userImage,
+          wishList: credentials.wishList,
         };
       },
     }),

@@ -104,6 +104,7 @@ function LoginModal({ handleLoginClose, myValue }) {
       localStorage.setItem("token", responseToken?.data?.token);
       const [error, response] = await userDetailsApi();
       setLoading(false);
+
       if (!error) {
         signIn("credentials", {
           userId: response?.data?.user?.id,
@@ -114,6 +115,7 @@ function LoginModal({ handleLoginClose, myValue }) {
           role: response?.data?.user?.roles[0]?.slug,
           roleId: response?.data?.user?.roles[0]?.id,
           userImage: response?.data?.user?.attachments[0]?.file_path,
+          wishList: response?.data?.wishlists,
           callbackUrl:
             response.data?.user?.roles[0]?.slug === "buyer"
               ? "/"

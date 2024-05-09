@@ -46,10 +46,12 @@ import {
   notificationAddCount,
 } from "@/redux/notificationCount/actions";
 import { NOTIFICATION_ADD_COUNT } from "@/redux/notificationCount/types";
-import { NotificationReadApi } from "@/api";
+import { NotificationReadApi, userDetailsApi } from "@/api";
 import en from "locales/en";
 import pt from "locales/pt";
 import { findPropertyCountData } from "@/redux/propertyCount/actions";
+import WishProperty from "@/component/properties/WishProperty/WishProperty";
+import { useGetPropertyCountQuery } from "@/queries/useGetPropertyCountQuery";
 
 const drawerWidth = 240;
 
@@ -102,6 +104,10 @@ export default function MyProperties({ language }) {
   const router = useRouter();
   const { query } = router;
   const { data: session } = useSession();
+
+  useEffect(() => {
+    userDetailsApi();
+  }, []);
 
   const [myValue, setMyValue] = useState(language || "en");
 
@@ -164,12 +170,12 @@ export default function MyProperties({ language }) {
   const open = Boolean(anchorEl);
   const id = open ? "simple-popover" : undefined;
 
-  const propertyCountData = useSelector(
-    (state) => state?.propertyCount?.countData
-  );
-  console.log({ propertyCountData });
-
-  const countLoading = useSelector((state) => state?.propertyCount?.loading);
+  const {
+    data,
+    isLoading: countLoading,
+    refetch: loadingRefetch,
+  } = useGetPropertyCountQuery();
+  const propertyCountData = data?.data;
 
   const [value, setValue] = useState(+query?.value || 0);
 
@@ -351,6 +357,20 @@ export default function MyProperties({ language }) {
                         {...a11yProps(2)}
                       />
                     )}
+
+                    <Tab
+                      sx={{ fontWeight: "600", textTransform: "none" }}
+                      label={
+                        countLoading
+                          ? `${"My Property"}(${
+                              propertyCountData?.wish_property || 0
+                            })`
+                          : `${"My Property"}(${
+                              propertyCountData?.wish_property || 0
+                            })`
+                      }
+                      {...a11yProps(3)}
+                    />
                   </Tabs>
                 </Box>
                 <Container maxWidth="xl">
@@ -435,7 +455,16 @@ export default function MyProperties({ language }) {
                   <ThirdTab languageName={myValue.toString()} />
                 </TabPanel>
                 <TabPanel value={value} index={2}>
-                  <NewRegistration languageName={myValue.toString()} />
+                  <NewRegistration
+                    languageName={myValue.toString()}
+                    loadingRefetch={loadingRefetch}
+                  />
+                </TabPanel>
+                <TabPanel value={value} index={3}>
+                  <WishProperty
+                    languageName={myValue.toString()}
+                    loadingRefetch={loadingRefetch}
+                  />
                 </TabPanel>
               </Box>
             </Container>

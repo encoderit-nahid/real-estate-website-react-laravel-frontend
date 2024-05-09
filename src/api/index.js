@@ -121,8 +121,14 @@ export const userInfoRegistrationApi = async (body) => {
 
 //user_details_with_token;
 export const userDetailsApi = async () => {
+  const token = localStorage.getItem("token");
+  if (!token) {
+    return;
+  }
   try {
     const response = await apiInstance.get(`auth-user`);
+    localStorage.setItem("wishList", response?.data?.wishlists);
+    localStorage.setItem("user", JSON.stringify(response?.data?.user));
     return [false, response];
   } catch (error) {
     return [error, null];

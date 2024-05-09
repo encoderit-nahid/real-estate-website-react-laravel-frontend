@@ -3,7 +3,7 @@ import React from "react";
 import HouseCard from "../../reuseable/HouseCard/HouseCard";
 import Link from "next/link";
 
-function PropertyList({ propertyData, isLoading }) {
+function PropertyList({ propertyData, isLoading, handleLoginOpen }) {
   return (
     <Box>
       <Grid container spacing={1}>
@@ -50,6 +50,7 @@ function PropertyList({ propertyData, isLoading }) {
                       shadow={"0px 4px 18px rgba(0, 0, 0, 0.1)"}
                       marginTop={"4vh"}
                       propertyInfo={data}
+                      handleLoginOpen={handleLoginOpen}
                     />
                   </a>
                 </Link>

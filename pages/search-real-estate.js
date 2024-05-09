@@ -48,6 +48,8 @@ import BaseAutocomplete from "../src/component/reuseable/baseAutocomplete/BaseAu
 import en from "locales/en";
 import pt from "locales/pt";
 import BaseOutlinedAreaInput from "@/component/reuseable/baseOutlinedAreaInput/BaseOutlinedAreaInput";
+import { userDetailsApi } from "@/api";
+import useCurrentUser from "@/hooks/useCurrentUser";
 
 const unflatten = require("flat").unflatten;
 
@@ -99,6 +101,10 @@ export default function SearchRealEstate({
   const [myValue, setMyValue] = useState(language || "pt");
 
   const t = myValue === "en" ? en : pt;
+
+  useEffect(() => {
+    userDetailsApi();
+  }, []);
 
   const [isLoading, setIsLoading] = useState(true);
   useEffect(() => {
@@ -1251,7 +1257,11 @@ export default function SearchRealEstate({
                 value={relevantValue}
               />
             </Grid>
-            <PropertyList propertyData={propertyData} isLoading={isLoading} />
+            <PropertyList
+              propertyData={propertyData}
+              isLoading={isLoading}
+              handleLoginOpen={handleLoginOpen}
+            />
             <Stack spacing={2} sx={{ marginY: 8 }}>
               <Pagination
                 count={Math.ceil(propertyData?.properties?.total / 9) || 4}

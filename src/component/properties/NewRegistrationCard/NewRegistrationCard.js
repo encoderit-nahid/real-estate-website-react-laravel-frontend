@@ -17,6 +17,8 @@ import { ChangePropertyStatus } from "../../../redux/propertyStatus/actions";
 import { findPropertyData } from "../../../redux/property/actions";
 import en from "locales/en";
 import pt from "locales/pt";
+import { useMutation } from "@tanstack/react-query";
+import { usePropertyStatusUpdateMutation } from "@/queries/usePropertyStatusUpdateMutation";
 
 const omitEmpties = (obj) => {
   return Object.entries(obj).reduce((carry, [key, value]) => {
@@ -27,32 +29,63 @@ const omitEmpties = (obj) => {
   }, {});
 };
 
-function NewRegistrationCard({ propertyData, newProperty, languageName }) {
+function NewRegistrationCard({
+  propertyData,
+  newProperty,
+  languageName,
+  loadingRefetch,
+  page,
+  refetch,
+}) {
   const t = languageName === "en" ? en : pt;
   const [progress, setProgress] = React.useState(87);
   const dispatch = useDispatch();
   const [approveid, setApproveId] = useState("");
   const [rejectid, setRejectId] = useState("");
 
+  const mutation = usePropertyStatusUpdateMutation(page);
+
   const handleReject = (id) => {
-    setRejectId(id);
-    dispatch(ChangePropertyStatus({ property_id: id, status: "rejected" }));
-    // dispatch(findPropertyData({ status: "new", page: 1, per_page: 9 }));
+    const body = {
+      property_id: id,
+      status: "approved",
+    };
+    mutation.mutate(body, {
+      onError(error) {
+        console.log(error);
+      },
+      onSuccess: async (data) => {
+        await refetch();
+        await loadingRefetch;
+      },
+    });
   };
 
   const handleApprove = (id) => {
-    setApproveId(id);
-    dispatch(ChangePropertyStatus({ property_id: id, status: "approved" }));
+    const body = {
+      property_id: id,
+      status: "approved",
+    };
+    mutation.mutate(body, {
+      onError(error) {
+        console.log(error);
+      },
+      onSuccess: async (data) => {
+        await refetch();
+        await loadingRefetch;
+      },
+    });
+    // setApproveId(id);
     // dispatch(findPropertyData({ status: "new", page: 1, per_page: 9 }));
   };
 
-  const rejectLoading = useSelector(
-    (state) => state?.propertyStatus?.rejectLoading
-  );
+  // const rejectLoading = useSelector(
+  //   (state) => state?.propertyStatus?.rejectLoading
+  // );
 
-  const approveLoading = useSelector(
-    (state) => state?.propertyStatus?.approveLoading
-  );
+  // // const approveLoading = useSelector(
+  // //   (state) => state?.propertyStatus?.approveLoading
+  // // );
 
   const myLoader = ({ src }) => {
     return `${_imageURL}/${src}`;
@@ -281,7 +314,7 @@ function NewRegistrationCard({ propertyData, newProperty, languageName }) {
                   },
                 }}
               >
-                {rejectLoading && rejectid === propertyData.id ? (
+                {mutation?.isLoading ? (
                   <CircularProgress size={22} color="inherit" />
                 ) : (
                   t["reject"]
@@ -348,7 +381,7 @@ function NewRegistrationCard({ propertyData, newProperty, languageName }) {
                   },
                 }}
               >
-                {approveLoading && approveid === propertyData.id ? (
+                {mutation?.isLoading ? (
                   <CircularProgress size={22} color="inherit" />
                 ) : (
                   t["approve"]

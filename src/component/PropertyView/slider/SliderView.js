@@ -184,7 +184,7 @@ function SliderView({
           iconPosition="start"
           {...a11yProps(0)}
         />
-        <Tab
+        {/* <Tab
           sx={{
             fontSize: "14px",
             color: "#4B4B66",
@@ -215,7 +215,7 @@ function SliderView({
           }
           iconPosition="start"
           {...a11yProps(1)}
-        />
+        /> */}
         <Tab
           sx={{
             fontSize: "14px",
@@ -246,7 +246,7 @@ function SliderView({
           iconPosition="start"
           onClick={() => handleTabClick("condominium")}
           label={t["Condominium"]}
-          {...a11yProps(2)}
+          {...a11yProps(1)}
         />
         {others === true && (
           <Tab
@@ -279,7 +279,7 @@ function SliderView({
             }
             onClick={() => handleTabClick("location")}
             iconPosition="start"
-            {...a11yProps(3)}
+            {...a11yProps(2)}
           />
         )}
         {others === true && (
@@ -313,7 +313,7 @@ function SliderView({
             iconPosition="start"
             label={t["Street view"]}
             onClick={() => handleTabClick("street_view")}
-            {...a11yProps(4)}
+            {...a11yProps(3)}
           />
         )}
 
@@ -348,7 +348,7 @@ function SliderView({
           // icon={<Image src={photos} alt="photos" />}
           onClick={() => handleTabClick("videos")}
           iconPosition="start"
-          {...a11yProps(5)}
+          {...a11yProps(4)}
         />
       </Tabs>
       <TabPanel value={value} index={0}>
@@ -382,18 +382,10 @@ function SliderView({
           </Grid>
         )}
       </TabPanel>
-      <TabPanel value={value} index={1}>
+      {/* <TabPanel value={value} index={1}>
         {selectImage != null &&
         selectImage?.split(/[#?]/)[0].split(".").pop().trim() !== "webp" ? (
           <div key={selectImage} style={{ width: "100%" }}>
-            {/* {`${_baseURL}/storage/${selectImage}`}
-						<Image
-							loader={myLoader}
-							src={`${_baseURL}/storage/${selectImage}`}
-							alt="home"
-							width={800}
-							height={400}
-						/> */}
             <ReactPannellum
               id="1"
               sceneId="firstScene"
@@ -421,8 +413,8 @@ function SliderView({
             </Typography>
           </Grid>
         )}
-      </TabPanel>
-      <TabPanel value={value} index={2}>
+      </TabPanel> */}
+      <TabPanel value={value} index={1}>
         {selectImage != null ? (
           <ImageCarousel imageUrls={imageUrls} imagesPerSlide={1} />
         ) : (
@@ -446,20 +438,20 @@ function SliderView({
           </Grid>
         )}
       </TabPanel>
-      <TabPanel value={value} index={3}>
+      <TabPanel value={value} index={2}>
         <BaseGoogleMap
           height={"70vh"}
           width={"80vw"}
           markersData={markersData}
         />
       </TabPanel>
-      <TabPanel value={value} index={4}>
+      <TabPanel value={value} index={3}>
         {/* <Typography variant="p" sx={{ visibility: "hidden", width: "100%" }}>
           dfsfffffffffffffffffffffffdsfffffffffffffffffffffffffffffffffffdsdsdsdsdsdsdsdsdsdsdsdsdsdsdsdsfsdfsdfsd
         </Typography> */}
         <BaseStreetView addressData={addressData} />
       </TabPanel>
-      <TabPanel value={value} index={5}>
+      <TabPanel value={value} index={4}>
         <VideoCarousel videoLinks={videoIds} />
       </TabPanel>
     </Box>

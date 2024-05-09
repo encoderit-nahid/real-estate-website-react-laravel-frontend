@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import { Box, Grid, Typography, Container, IconButton } from "@mui/material";
 import houseImage from "../../../../public/Images/house.png";
 import bed from "../../../../public/Images/bed.png";
@@ -16,18 +16,23 @@ import { useSelector } from "react-redux";
 import { useSession } from "next-auth/react";
 import useCurrentUser from "@/hooks/useCurrentUser";
 import { userDetailsApi } from "@/api";
+import { Data } from "@react-google-maps/api";
+import { DataArrayRounded } from "@mui/icons-material";
+import { useQueryClient } from "@tanstack/react-query";
 
-function HouseCard({
+function WishPropertyCard({
   shadow,
   marginTop,
   propertyInfo,
   languageName,
-  handleLoginOpen,
+  loadingRefetch,
+  refetch,
 }) {
   const t = languageName === "en" ? en : pt;
   const myLoader = ({ src }) => {
     return `${_imageURL}/${src}`;
   };
+  const queryClient = useQueryClient();
 
   const currentUser = useCurrentUser();
 
@@ -42,23 +47,34 @@ function HouseCard({
     }
   }, [currentUser]);
 
-  // Function to toggle favorite status
-  const toggleFavorite = (event, itemId) => {
-    event.preventDefault();
-    if (!currentUser?.id) {
-      handleLoginOpen();
-    } else {
-      if (favoriteList?.includes(itemId)) {
-        // Item is in favorite list, remove it
-        setFavoriteList(favoriteList.filter((id) => id !== itemId));
-        setPropertyId(itemId);
-      } else {
-        // Item is not in favorite list, add it
-        setFavoriteList([...favoriteList, itemId]);
-        setPropertyId(itemId);
-      }
-    }
-  };
+  // const toggleFavorite = useCallback(
+  //   async (event, itemId) => {
+  //     event.preventDefault();
+  //     setFavoriteList(favoriteList.filter((id) => id !== itemId));
+  //     setPropertyId(itemId);
+  //     setTimeout(async () => {
+  //       await refetch();
+  //       await userDetailsApi();
+  //       queryClient.invalidateQueries(["/count-property"]);
+  //     }, 1000);
+  //   },
+  //   [favoriteList, setFavoriteList, setPropertyId, refetch, queryClient]
+  // );
+  const toggleFavorite = useCallback(
+    async (event, itemId) => {
+      event.preventDefault();
+      setFavoriteList(favoriteList.filter((id) => id !== itemId));
+      setPropertyId(itemId);
+
+      await new Promise((resolve) => {
+        setTimeout(resolve, 1000);
+      });
+
+      // Wait for all async operations to complete before proceeding
+      await Promise.all([refetch(), userDetailsApi(), loadingRefetch()]);
+    },
+    [favoriteList, setFavoriteList, setPropertyId, refetch, loadingRefetch]
+  );
 
   return (
     <Box
@@ -85,9 +101,7 @@ function HouseCard({
       >
         <FavoriteIcon
           sx={{
-            color: `${
-              favoriteList?.includes(propertyInfo.id) ? "red" : "#ffffff"
-            }`,
+            color: `red`,
           }}
         />
       </IconButton>
@@ -201,4 +215,4 @@ function HouseCard({
   );
 }
 
-export default HouseCard;
+export default WishPropertyCard;

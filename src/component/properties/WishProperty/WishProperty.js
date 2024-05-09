@@ -13,8 +13,10 @@ import { useRouter } from "next/router";
 import { findPropertyData } from "../../../redux/property/actions";
 import { useEffect } from "react";
 import { useGetPropertyQuery } from "@/queries/useGetPropertyQuery";
+import HouseCard from "@/component/reuseable/HouseCard/HouseCard";
+import WishPropertyCard from "../WishPropertyCard/WishPropertyCard";
 
-function NewRegistration({ languageName }) {
+function WishProperty({ languageName, loadingRefetch }) {
   const router = useRouter();
   const { query } = router;
 
@@ -25,15 +27,16 @@ function NewRegistration({ languageName }) {
     isLoading: Loading,
     refetch,
     isFetched,
-    loadingRefetch,
     isFetching,
-  } = useGetPropertyQuery({ status: "new", page: page, per_page: 9 });
+  } = useGetPropertyQuery({ status: "wishlist", page: page, per_page: 9 });
+
+  console.log({ newProperty });
 
   const handlePageChange = (event, value) => {
     setPage(value);
     router.replace({
       pathname: "/my-properties",
-      query: { status: "new", page: value, per_page: 9 },
+      query: { status: "wishlist", page: value, per_page: 9 },
     });
   };
 
@@ -68,14 +71,12 @@ function NewRegistration({ languageName }) {
     <Box>
       <Grid container spacing={4}>
         {newProperty?.data?.map((data, index) => (
-          <Grid key={index} item xs={12} sm={12} md={12} lg={6} xl={6} xxl={6}>
-            <NewRegistrationCard
-              refetch={refetch}
-              propertyData={data}
-              newProperty={newProperty}
+          <Grid key={index} item xs={12} sm={12} md={12} lg={6} xl={4} xxl={4}>
+            <WishPropertyCard
+              propertyInfo={data}
               languageName={languageName}
+              refetch={refetch}
               loadingRefetch={loadingRefetch}
-              page={page}
             />
           </Grid>
         ))}
@@ -93,4 +94,4 @@ function NewRegistration({ languageName }) {
   );
 }
 
-export default NewRegistration;
+export default WishProperty;
