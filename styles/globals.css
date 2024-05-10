@@ -13,6 +13,10 @@ body {
 
 } */
 
+.demo-editor{
+	height:100px
+}
+
 .box {
 	position: absolute;
 	width: 100%;

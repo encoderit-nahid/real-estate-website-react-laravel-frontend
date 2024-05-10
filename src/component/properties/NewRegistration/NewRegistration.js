@@ -18,7 +18,10 @@ function NewRegistration({ languageName }) {
   const router = useRouter();
   const { query } = router;
 
-  const [page, setPage] = React.useState(+query?.page || 1);
+  const [page, setPage] = React.useState(1);
+  useEffect(() => {
+    setPage(+query?.page)
+  },[query])
 
   const {
     data: newProperty,
@@ -32,8 +35,7 @@ function NewRegistration({ languageName }) {
   const handlePageChange = (event, value) => {
     setPage(value);
     router.replace({
-      pathname: "/my-properties",
-      query: { status: "new", page: value, per_page: 9 },
+      query: { ...router.query,page:value },
     });
   };
 

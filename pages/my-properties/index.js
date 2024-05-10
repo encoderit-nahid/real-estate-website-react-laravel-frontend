@@ -46,12 +46,13 @@ import {
   notificationAddCount,
 } from "@/redux/notificationCount/actions";
 import { NOTIFICATION_ADD_COUNT } from "@/redux/notificationCount/types";
-import { NotificationReadApi, userDetailsApi } from "@/api";
+import { NotificationReadApi, omitEmpties, userDetailsApi } from "@/api";
 import en from "locales/en";
 import pt from "locales/pt";
 import { findPropertyCountData } from "@/redux/propertyCount/actions";
 import WishProperty from "@/component/properties/WishProperty/WishProperty";
 import { useGetPropertyCountQuery } from "@/queries/useGetPropertyCountQuery";
+import useParams from "@/hooks/useParams";
 
 const drawerWidth = 240;
 
@@ -104,6 +105,7 @@ export default function MyProperties({ language }) {
   const router = useRouter();
   const { query } = router;
   const { data: session } = useSession();
+  const { setParams } = useParams();
 
   useEffect(() => {
     userDetailsApi();
@@ -181,26 +183,15 @@ export default function MyProperties({ language }) {
 
   const handleChange = (event, newValue) => {
     setValue(newValue);
-    newValue === 1
-      ? router.replace({
-          pathname: "/my-properties",
-          query: {
-            status: "third",
-            page: 1,
-            per_page: 9,
-            value: newValue,
-          },
-        })
-      : newValue === 2
-      ? router.replace({
-          pathname: "/my-properties",
-          query: { status: "new", page: 1, per_page: 9, value: newValue },
-        })
-      : router.replace({
-          pathname: "/my-properties",
-          query: { page: 1, per_page: 9, value: newValue },
-        });
+    setParams(
+      omitEmpties({
+        status: newValue === 1 ? "wishlist" : newValue === 3 ? "third" : newValue === 4 ? "new" : null,
+        page:1,
+        per_page:9,
+      })
+    )
   };
+  
   return (
     <div>
       <Head>
@@ -324,40 +315,7 @@ export default function MyProperties({ language }) {
                     aria-label="basic tabs example"
                     variant="scrollable"
                   >
-                    <Tab
-                      sx={{ fontWeight: "600", textTransform: "none" }}
-                      label={
-                        countLoading
-                          ? t["Releases"]
-                          : `${t["Releases"]}(${
-                              propertyCountData?.project || 0
-                            })`
-                      }
-                      {...a11yProps(0)}
-                    />
-                    <Tab
-                      sx={{ fontWeight: "600", textTransform: "none" }}
-                      label={
-                        countLoading
-                          ? t["Third"]
-                          : `${t["Third"]}(${propertyCountData?.third || 0})`
-                      }
-                      {...a11yProps(1)}
-                    />
-                    {session.user?.role === "admin" && (
-                      <Tab
-                        sx={{ fontWeight: "600", textTransform: "none" }}
-                        label={
-                          countLoading
-                            ? t["New Registration"]
-                            : `${t["New Registration"]}(${
-                                propertyCountData?.register_property || 0
-                              })`
-                        }
-                        {...a11yProps(2)}
-                      />
-                    )}
-
+                    
                     <Tab
                       sx={{ fontWeight: "600", textTransform: "none" }}
                       label={
@@ -369,8 +327,42 @@ export default function MyProperties({ language }) {
                               propertyCountData?.wish_property || 0
                             })`
                       }
-                      {...a11yProps(3)}
+                      {...a11yProps(0)}
                     />
+                    <Tab
+                      sx={{ fontWeight: "600", textTransform: "none" }}
+                      label={
+                        countLoading
+                          ? t["Releases"]
+                          : `${t["Releases"]}(${
+                              propertyCountData?.project || 0
+                            })`
+                      }
+                      {...a11yProps(1)}
+                    />
+                    <Tab
+                      sx={{ fontWeight: "600", textTransform: "none" }}
+                      label={
+                        countLoading
+                          ? t["Third"]
+                          : `${t["Third"]}(${propertyCountData?.third || 0})`
+                      }
+                      {...a11yProps(2)}
+                    />
+                    {session.user?.role === "admin" && (
+                      <Tab
+                        sx={{ fontWeight: "600", textTransform: "none" }}
+                        label={
+                          countLoading
+                            ? t["New Registration"]
+                            : `${t["New Registration"]}(${
+                                propertyCountData?.register_property || 0
+                              })`
+                        }
+                        {...a11yProps(3)}
+                      />
+                    )}
+
                   </Tabs>
                 </Box>
                 <Container maxWidth="xl">
@@ -446,26 +438,27 @@ export default function MyProperties({ language }) {
                   </Grid>
                 </Container>
                 <TabPanel value={value} index={0}>
-                  <Releases
-                    queryData={query}
-                    languageName={myValue.toString()}
-                  />
-                </TabPanel>
-                <TabPanel value={value} index={1}>
-                  <ThirdTab languageName={myValue.toString()} />
-                </TabPanel>
-                <TabPanel value={value} index={2}>
-                  <NewRegistration
-                    languageName={myValue.toString()}
-                    loadingRefetch={loadingRefetch}
-                  />
-                </TabPanel>
-                <TabPanel value={value} index={3}>
                   <WishProperty
                     languageName={myValue.toString()}
                     loadingRefetch={loadingRefetch}
                   />
                 </TabPanel>
+                <TabPanel value={value} index={1}>
+                  <Releases
+                    queryData={query}
+                    languageName={myValue.toString()}
+                  />
+                </TabPanel>
+                <TabPanel value={value} index={2}>
+                  <ThirdTab languageName={myValue.toString()} />
+                </TabPanel>
+                <TabPanel value={value} index={3}>
+                  <NewRegistration
+                    languageName={myValue.toString()}
+                    loadingRefetch={loadingRefetch}
+                  />
+                </TabPanel>
+           
               </Box>
             </Container>
           </Box>

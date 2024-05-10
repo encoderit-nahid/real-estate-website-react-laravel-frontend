@@ -98,10 +98,10 @@ export default function NewProperty({ language }) {
       .transform((value) => (Number.isNaN(value) ? null : value))
       .nullable()
       .required(t["BRL rent is required"]),
-    condominium: Yup.number()
-      .transform((value) => (Number.isNaN(value) ? null : value))
-      .nullable()
-      .required(t["Condominium is required"]),
+    // condominium: Yup.number()
+    //   .transform((value) => (Number.isNaN(value) ? null : value))
+    //   .nullable()
+    //   .required(t["Condominium is required"]),
     brl_iptu: Yup.number()
       .transform((value) => (Number.isNaN(value) ? null : value))
       .nullable()
@@ -198,7 +198,7 @@ export default function NewProperty({ language }) {
   const [skipped, setSkipped] = useState(new Set());
   const [featuretypes, setFeatureTypes] = useState([]);
   const [documents, setDocuments] = useState([]);
-  const [adType, setAdType] = useState("Rent");
+  const [adType, setAdType] = useState("New");
   const [propertyType, setPropertyType] = useState("Residential");
   const [property_detail_id, setPropertyDetailId] = useState(1);
   const [files, setFiles] = useState([]);
@@ -440,12 +440,14 @@ export default function NewProperty({ language }) {
 
     const firstPartData = omitEmpties({
       user_id: +session?.user?.userId,
-      project_id: data?.project_id?.id && +data?.project_id?.id,
+      project_id: data?.project_id?.id && +data?.project_id?.id || 1,
       property_id: query?.property_id,
+      property_title: "Hello Condominium",
+      property_description: "<p>sdfasdfsdff</p>",
       property_detail_id: +property_detail_id,
       ad_type: adType.toLocaleLowerCase(),
       property_type: propertyType.toLocaleLowerCase(),
-      condominium: data?.condominium,
+      condominium: 2000,
       brl_rent: data?.brl_rent,
       brl_iptu: data?.brl_iptu,
       land_area: data?.land_area,
@@ -646,6 +648,7 @@ export default function NewProperty({ language }) {
                           documents={documents}
                           setDocuments={setDocuments}
                           adType={adType}
+                          setValue={setValue}
                           setAdType={setAdType}
                           propertyType={propertyType}
                           setPropertyType={setPropertyType}
@@ -659,6 +662,7 @@ export default function NewProperty({ language }) {
                           handleNext={handleNext}
                           handleBack={handleBack}
                           control={control}
+                          property_detail_id={property_detail_id}
                           errors={errors}
                           allValues={allValues}
                           languageName={myValue.toString()}

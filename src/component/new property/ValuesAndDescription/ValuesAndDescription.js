@@ -16,6 +16,9 @@ import BaseAutocomplete from "../../reuseable/baseAutocomplete/BaseAutocomplete"
 import en from "locales/en";
 import pt from "locales/pt";
 
+
+const matchedForCondominio = [ 10,11,15,16,1,3,4,7,8]
+
 function ValuesAndDescription({
   control,
   errors,
@@ -23,6 +26,7 @@ function ValuesAndDescription({
   handleNext,
   handleBack,
   allValues,
+  property_detail_id,
 }) {
   const t = languageName === "en" ? en : pt;
 
@@ -39,7 +43,7 @@ function ValuesAndDescription({
   useEffect(() => {
     if (
       allValues?.brl_rent != null &&
-      allValues?.condominium != null &&
+      // allValues?.condominium != null &&
       allValues?.brl_iptu != null &&
       allValues?.land_area != null &&
       allValues?.property_area != null &&
@@ -55,7 +59,7 @@ function ValuesAndDescription({
     }
     if (
       allValues?.brl_rent === "" ||
-      allValues?.condominium === "" ||
+      // allValues?.condominium === "" ||
       allValues?.brl_iptu === "" ||
       allValues?.land_area === "" ||
       allValues?.property_area === "" ||
@@ -94,7 +98,7 @@ function ValuesAndDescription({
         </Typography>
       </Grid>
       <Grid container spacing={1} sx={{ mt: 2 }}>
-        <Grid item xs={6}>
+        <Grid item xs={matchedForCondominio.includes(property_detail_id) ? 6 : 12}>
           <Controller
             name="brl_rent"
             control={control}
@@ -120,32 +124,35 @@ function ValuesAndDescription({
             {errors.brl_rent?.message}
           </Typography>
         </Grid>
-        <Grid item xs={6}>
-          <Controller
-            name="condominium"
-            control={control}
-            defaultValue={""}
-            render={({ field }) => (
-              <BaseTextField
-                size={"medium"}
-                placeholder={`R$ ${t["Condominium"]}*`}
-                type={"number"}
-                onChange={(e) => {
-                  field.onChange(e.target.value);
-                }}
-                name={"condominium"}
-                value={field.value}
-              />
-            )}
-          />
-          <Typography
-            variant="inherit"
-            color="textSecondary"
-            sx={{ color: "#b91c1c" }}
-          >
-            {errors.condominium?.message}
-          </Typography>
-        </Grid>
+  {
+    matchedForCondominio.includes(property_detail_id) &&
+    <Grid item xs={6}>
+    <Controller
+      name="condominium"
+      control={control}
+      defaultValue={""}
+      render={({ field }) => (
+        <BaseTextField
+          size={"medium"}
+          placeholder={`R$ ${t["Condominium"]}*`}
+          type={"number"}
+          onChange={(e) => {
+            field.onChange(e.target.value);
+          }}
+          name={"condominium"}
+          value={field.value}
+        />
+      )}
+    />
+    <Typography
+      variant="inherit"
+      color="textSecondary"
+      sx={{ color: "#b91c1c" }}
+    >
+      {errors.condominium?.message}
+    </Typography>
+  </Grid>
+  }
       </Grid>
       <Grid container spacing={1} sx={{ mt: 2 }}>
         <Grid item xs={6}>

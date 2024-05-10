@@ -146,9 +146,12 @@ export const stateApi = async () => {
 };
 
 //find_property_type
-export const propertyTypeApi = async () => {
+export const propertyTypeApi = async (category='commercial') => {
+  const params = { category };
   try {
-    const response = await apiInstance.get(`property/property-type`);
+    const response = await apiInstance.get(`property/property-type`, {
+      params
+    });
     return [false, response];
   } catch (error) {
     return [error, null];

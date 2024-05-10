@@ -20,7 +20,12 @@ import { useGetAllProjectsQuery } from "@/queries/useGetAllProjectsQuery";
 
 function Releases({ queryData, languageName }) {
   const router = useRouter();
-  const [page, setPage] = React.useState(+queryData?.page || 1);
+  const { query } = router;
+  const [page, setPage] = React.useState(1);
+  
+  useEffect(() => {
+    setPage(+query?.page)
+  },[query])
 
   const {
     data: AllProjects,
@@ -33,8 +38,7 @@ function Releases({ queryData, languageName }) {
   const handlePageChange = (event, value) => {
     setPage(value);
     router.replace({
-      pathname: "/my-properties",
-      query: { page: value, per_page: 9 },
+      query: { ...router.query,page:value },
     });
     // setData(datas.slice(firstIndex + pageSize * (value - 1), pageSize * value));
   };

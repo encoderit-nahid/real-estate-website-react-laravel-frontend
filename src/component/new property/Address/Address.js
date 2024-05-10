@@ -8,57 +8,66 @@ import {
   Grid,
   TextField,
   Typography,
-} from "@mui/material";
-import Image from "next/image";
-import React, { useEffect } from "react";
-import pinImage from "../../../../public/Images/pin.png";
-import DeleteOutlineOutlinedIcon from "@mui/icons-material/DeleteOutlineOutlined";
-import { useDropzone } from "react-dropzone";
-import { useState } from "react";
-import { useMemo } from "react";
-import BaseOutlinedZipInput from "../../reuseable/baseOutlinedZipInput/BaseOutlinedZipInput";
-import Link from "next/link";
-import BaseTextField from "../../reuseable/baseTextField/BaseTextField";
-import InsertDriveFileOutlinedIcon from "@mui/icons-material/InsertDriveFileOutlined";
-import { findPropertyTypeData } from "../../../redux/propertyType/actions";
-import { useDispatch, useSelector } from "react-redux";
-import { findProjectsData } from "../../../redux/projects/actions";
-import { Controller } from "react-hook-form";
-import BaseAutocomplete from "../../reuseable/baseAutocomplete/BaseAutocomplete";
-import { findStateData } from "../../../redux/state/actions";
-import en from "locales/en";
-import pt from "locales/pt";
+} from '@mui/material'
+import Image from 'next/image'
+import React, { useEffect } from 'react'
+import pinImage from '../../../../public/Images/pin.png'
+import DeleteOutlineOutlinedIcon from '@mui/icons-material/DeleteOutlineOutlined'
+import { useDropzone } from 'react-dropzone'
+import { useState } from 'react'
+import { useMemo } from 'react'
+import BaseOutlinedZipInput from '../../reuseable/baseOutlinedZipInput/BaseOutlinedZipInput'
+import Link from 'next/link'
+import BaseTextField from '../../reuseable/baseTextField/BaseTextField'
+import InsertDriveFileOutlinedIcon from '@mui/icons-material/InsertDriveFileOutlined'
+import { findPropertyTypeData } from '../../../redux/propertyType/actions'
+import { useDispatch, useSelector } from 'react-redux'
+import { findProjectsData } from '../../../redux/projects/actions'
+import { Controller } from 'react-hook-form'
+import BaseAutocomplete from '../../reuseable/baseAutocomplete/BaseAutocomplete'
+import { findStateData } from '../../../redux/state/actions'
+import en from 'locales/en'
+import pt from 'locales/pt'
+import dynamic from 'next/dynamic'
+const BaseTextEditor = dynamic(
+  () => import('@/component/reuseable/baseTextEditor/BaseTextEditor'),
+  {
+    ssr: false, // This ensures that the component is not rendered on the server
+  },
+)
 
 const baseStyle = {
   flex: 1,
-  display: "flex",
-  flexDirection: "column",
-  alignItems: "center",
-  padding: "50px",
+  display: 'flex',
+  flexDirection: 'column',
+  alignItems: 'center',
+  padding: '50px',
   borderWidth: 2,
-  borderRadius: "4px",
-  borderColor: "#DBE1E5",
-  borderStyle: "dashed",
-  backgroundColor: "#F2F5F6",
+  borderRadius: '4px',
+  borderColor: '#DBE1E5',
+  borderStyle: 'dashed',
+  backgroundColor: '#F2F5F6',
 
-  color: "#c4c4c4",
-  outline: "none",
-  transition: "border .24s ease-in-out",
-  width: "70%",
-  marginTop: "2vh",
-};
+  color: '#c4c4c4',
+  outline: 'none',
+  transition: 'border .24s ease-in-out',
+  width: '70%',
+  marginTop: '2vh',
+}
 
 const activeStyle = {
-  borderColor: "#f2f",
-};
+  borderColor: '#f2f',
+}
 
 const acceptStyle = {
-  borderColor: "#f8f",
-};
+  borderColor: '#f8f',
+}
 
 const rejectStyle = {
-  borderColor: "#f2f",
-};
+  borderColor: '#f2f',
+}
+
+const matchedPropertyType = [11, 10, 13, 6, 1, 2, 4, 8]
 
 function Address({
   control,
@@ -73,37 +82,34 @@ function Address({
   setDocuments,
   languageName,
   allValues,
+  setValue,
   handleNext,
 }) {
-  const dispatch = useDispatch();
+  const dispatch = useDispatch()
 
-  const t = languageName === "en" ? en : pt;
+  const t = languageName === 'en' ? en : pt
+
+  console.log({ allValues })
 
   useEffect(() => {
-    dispatch(findPropertyTypeData());
-    dispatch(findProjectsData({ page: 1, per_page: 10 }));
-    dispatch(findStateData());
-  }, [dispatch]);
+    dispatch(
+      findPropertyTypeData(
+        propertyType === 'Residential' ? 'residential' : 'commercial',
+      ),
+    )
+    dispatch(findProjectsData({ page: 1, per_page: 10 }))
+    dispatch(findStateData())
+  }, [dispatch, propertyType])
 
-  const projectData = useSelector((state) => state?.project?.projectData?.data);
+  const projectData = useSelector((state) => state?.project?.projectData?.data)
 
   const propertyDetail = useSelector(
-    (state) => state?.propertyType?.propertyTypeData
-  );
+    (state) => state?.propertyType?.propertyTypeData,
+  )
 
-  const allStateData = useSelector((state) => state.state.stateData);
+  const allStateData = useSelector((state) => state.state.stateData)
 
-  console.log({ allStateData });
-
-  const [value, setValue] = useState("");
-
-  const [valid, setValid] = useState(false);
-
-  const handleValidation = (e) => {
-    setValid(/^[0-9]{5}-[0-9]{3}$/.test(e.target.value));
-
-    setValue(e.target.value);
-  };
+  console.log({ allStateData })
 
   // console.log({ documents })
   // const filterDocs = documents?.filter((d) => d instanceof File)
@@ -113,13 +119,13 @@ function Address({
     acceptedFiles.map((file) =>
       Object.assign(file, {
         preview: URL.createObjectURL(file),
-      })
-    );
+      }),
+    )
 
-    const allFiles = [...documents, ...acceptedFiles]; //save all files here
+    const allFiles = [...documents, ...acceptedFiles] //save all files here
 
-    setDocuments(allFiles);
-  };
+    setDocuments(allFiles)
+  }
   const {
     getRootProps,
     getInputProps,
@@ -129,19 +135,18 @@ function Address({
   } = useDropzone({
     onDrop,
     accept: {
-      "application/pdf": [],
-      "application/vnd.openxmlformats-officedocument.wordprocessingml.document":
-        [],
-      "application/msword": [],
+      'application/pdf': [],
+      'application/vnd.openxmlformats-officedocument.wordprocessingml.document': [],
+      'application/msword': [],
     },
-  });
+  })
 
   const handleDelete = (index) => {
     const filterItem = documents.filter(
-      (file, fileIndex) => fileIndex !== index
-    );
-    setDocuments(filterItem);
-  };
+      (file, fileIndex) => fileIndex !== index,
+    )
+    setDocuments(filterItem)
+  }
 
   const style = useMemo(
     () => ({
@@ -150,10 +155,10 @@ function Address({
       ...(isDragAccept ? acceptStyle : {}),
       ...(isDragReject ? rejectStyle : {}),
     }),
-    [isDragActive, isDragReject, isDragAccept]
-  );
+    [isDragActive, isDragReject, isDragAccept],
+  )
 
-  const [disableBtn, setDisableBtn] = useState(true);
+  const [disableBtn, setDisableBtn] = useState(true)
   useEffect(() => {
     if (
       allValues?.zip_code != null &&
@@ -164,20 +169,20 @@ function Address({
       allValues?.state != null &&
       documents?.length > 0
     ) {
-      setDisableBtn(false);
+      setDisableBtn(false)
     }
     if (
-      allValues?.zip_code === "" ||
-      allValues?.address === "" ||
-      allValues?.number === "" ||
-      allValues?.neighbourhood === "" ||
-      allValues?.city === "" ||
-      allValues?.state === "" ||
+      allValues?.zip_code === '' ||
+      allValues?.address === '' ||
+      allValues?.number === '' ||
+      allValues?.neighbourhood === '' ||
+      allValues?.city === '' ||
+      allValues?.state === '' ||
       documents?.length < 1
     ) {
-      setDisableBtn(true);
+      setDisableBtn(true)
     }
-  }, [allValues, documents]);
+  }, [allValues, documents])
 
   return (
     <Box sx={{ mt: 4 }}>
@@ -191,14 +196,14 @@ function Address({
         <Typography
           variant="p"
           sx={{
-            color: "#002152",
-            fontSize: "24px",
-            fontWeight: "700",
-            lineHeight: "32px",
+            color: '#002152',
+            fontSize: '24px',
+            fontWeight: '700',
+            lineHeight: '32px',
             ml: 1,
           }}
         >
-          {t["sales authorization document"]}
+          {t['sales authorization document']}
         </Typography>
       </Grid>
       <Box {...getRootProps({ style })}>
@@ -206,45 +211,45 @@ function Address({
         <Typography
           variant="p"
           sx={{
-            color: "#6C7A84",
-            fontSize: "14px",
-            fontWeight: "400",
-            lineHeight: "18px",
+            color: '#6C7A84',
+            fontSize: '14px',
+            fontWeight: '400',
+            lineHeight: '18px',
             mt: 1,
           }}
         >
-          {t["Drag and drop documents here"]}
+          {t['Drag and drop documents here']}
         </Typography>
         <Typography
           variant="p"
           sx={{
-            color: "#6C7A84",
-            fontSize: "14px",
-            fontWeight: "400",
-            lineHeight: "18px",
+            color: '#6C7A84',
+            fontSize: '14px',
+            fontWeight: '400',
+            lineHeight: '18px',
             mt: 1,
           }}
         >
-          {t["or"]}
+          {t['or']}
         </Typography>
         <Button
           variant="contained"
           sx={{
-            textTransform: "none",
+            textTransform: 'none',
             mt: 1,
-            background: "#0362F0",
-            color: "#ffffff",
-            fontSize: "14px",
-            fontWeight: "600",
-            lineHeight: "18px",
+            background: '#0362F0',
+            color: '#ffffff',
+            fontSize: '14px',
+            fontWeight: '600',
+            lineHeight: '18px',
           }}
         >
-          {t["select documents"]}
+          {t['select documents']}
         </Button>
         <Typography
           variant="inherit"
           color="textSecondary"
-          sx={{ color: "#b91c1c" }}
+          sx={{ color: '#b91c1c' }}
         >
           {errors?.document_files?.message}
         </Typography>
@@ -256,9 +261,9 @@ function Address({
               <Box
                 sx={{
                   p: 2,
-                  boxSizing: "border-box",
-                  border: "1px solid #DBE1E5",
-                  borderRadius: "6px",
+                  boxSizing: 'border-box',
+                  border: '1px solid #DBE1E5',
+                  borderRadius: '6px',
                 }}
               >
                 <Grid
@@ -269,12 +274,12 @@ function Address({
                 >
                   <DeleteOutlineOutlinedIcon
                     sx={{
-                      background: "#F44336",
-                      color: "#ffffff",
-                      borderRadius: "50%",
-                      height: "3vh",
-                      width: "3vh",
-                      paddingY: "3px",
+                      background: '#F44336',
+                      color: '#ffffff',
+                      borderRadius: '50%',
+                      height: '3vh',
+                      width: '3vh',
+                      paddingY: '3px',
                     }}
                     onClick={() => handleDelete(index)}
                   />
@@ -282,7 +287,7 @@ function Address({
                 {/* <InsertDriveFileOutlinedIcon/> */}
                 <Typography
                   variant="p"
-                  sx={{ color: "#38bdf8", fontWeight: "600" }}
+                  sx={{ color: '#38bdf8', fontWeight: '600' }}
                 >
                   {file?.name?.slice(0, 15) || file?.title?.slice(0, 15)}
                 </Typography>
@@ -302,14 +307,14 @@ function Address({
         <Typography
           variant="p"
           sx={{
-            color: "#002152",
-            fontSize: "24px",
-            fontWeight: "700",
-            lineHeight: "32px",
+            color: '#002152',
+            fontSize: '24px',
+            fontWeight: '700',
+            lineHeight: '32px',
             ml: 1,
           }}
         >
-          {t["property type and address"]}
+          {t['property type and address']}
         </Typography>
       </Grid>
       <Grid container sx={{ mt: 2 }}>
@@ -323,56 +328,56 @@ function Address({
             <Typography
               variant="p"
               sx={{
-                color: "#002152",
-                fontSize: "16px",
-                fontWeight: "400",
-                lineHeight: "22px",
+                color: '#002152',
+                fontSize: '16px',
+                fontWeight: '400',
+                lineHeight: '22px',
               }}
             >
-              {`${t["Ad type"]}:`}
+              {`${t['Ad type']}:`}
             </Typography>
             <Box sx={{ mt: 1 }}>
               <Grid container spacing={1}>
                 {[
-                  { name: "Rent", slug: t["Rent"] },
-                  { name: "Sale", slug: t["Sale"] },
+                  { name: 'New', slug: 'New' },
+                  { name: 'Used', slug: 'Used' },
                 ].map((data, index) => (
                   <Grid item xs={6} key={index}>
                     <Button
                       onClick={() => setAdType(data?.name)}
                       sx={{
-                        width: "100%",
+                        width: '100%',
                         background:
-                          adType === data?.name ? "#0362F0" : "#F2F5F6",
-                        borderRadius: "152px",
-                        color: adType === data?.name ? "#ffffff" : "#002152",
+                          adType === data?.name ? '#0362F0' : '#F2F5F6',
+                        borderRadius: '152px',
+                        color: adType === data?.name ? '#ffffff' : '#002152',
                         fontSize: {
-                          xs: "12px",
-                          sm: "13px",
-                          md: "16px",
-                          lg: "13px",
-                          xl: "16px",
+                          xs: '12px',
+                          sm: '13px',
+                          md: '16px',
+                          lg: '13px',
+                          xl: '16px',
                         },
-                        fontWeight: "400",
-                        lineHeight: "22px",
-                        textTransform: "none",
+                        fontWeight: '400',
+                        lineHeight: '22px',
+                        textTransform: 'none',
                         px: { xs: 0, sm: 2, md: 2, lg: 2, xl: 2 },
                         py: 1,
-                        "&:hover": {
-                          width: "100%",
-                          background: "#0362F0",
-                          borderRadius: "152px",
-                          color: "#ffffff",
+                        '&:hover': {
+                          width: '100%',
+                          background: '#0362F0',
+                          borderRadius: '152px',
+                          color: '#ffffff',
                           fontSize: {
-                            xs: "12px",
-                            sm: "13px",
-                            md: "16px",
-                            lg: "13px",
-                            xl: "16px",
+                            xs: '12px',
+                            sm: '13px',
+                            md: '16px',
+                            lg: '13px',
+                            xl: '16px',
                           },
-                          fontWeight: "400",
-                          lineHeight: "22px",
-                          textTransform: "none",
+                          fontWeight: '400',
+                          lineHeight: '22px',
+                          textTransform: 'none',
                           px: {
                             xs: 0,
                             sm: 2,
@@ -402,57 +407,57 @@ function Address({
             <Typography
               variant="p"
               sx={{
-                color: "#002152",
-                fontSize: "16px",
-                fontWeight: "400",
-                lineHeight: "22px",
+                color: '#002152',
+                fontSize: '16px',
+                fontWeight: '400',
+                lineHeight: '22px',
               }}
             >
-              {`${t["Property type"]}:`}
+              {`${t['Property type']}:`}
             </Typography>
             <Box sx={{ mt: 1 }}>
               <Grid container spacing={1}>
                 {[
-                  { name: "Residential", slug: t["Residential"] },
-                  { name: "Commercial", slug: t["Commercial"] },
+                  { name: 'Residential', slug: t['Residential'] },
+                  { name: 'Commercial', slug: t['Commercial'] },
                 ].map((data, index) => (
                   <Grid item xs={6} key={index}>
                     <Button
                       onClick={() => setPropertyType(data?.name)}
                       sx={{
-                        width: "100%",
+                        width: '100%',
                         background:
-                          propertyType === data?.name ? "#0362F0" : "#F2F5F6",
-                        borderRadius: "152px",
+                          propertyType === data?.name ? '#0362F0' : '#F2F5F6',
+                        borderRadius: '152px',
                         color:
-                          propertyType === data?.name ? "#ffffff" : "#002152",
+                          propertyType === data?.name ? '#ffffff' : '#002152',
                         fontSize: {
-                          xs: "12px",
-                          sm: "13px",
-                          md: "16px",
-                          lg: "13px",
-                          xl: "16px",
+                          xs: '12px',
+                          sm: '13px',
+                          md: '16px',
+                          lg: '13px',
+                          xl: '16px',
                         },
-                        fontWeight: "400",
-                        lineHeight: "22px",
-                        textTransform: "none",
+                        fontWeight: '400',
+                        lineHeight: '22px',
+                        textTransform: 'none',
                         px: { xs: 0, sm: 2, md: 2, lg: 2, xl: 2 },
                         py: 1,
-                        "&:hover": {
-                          width: "100%",
-                          background: "#0362F0",
-                          borderRadius: "152px",
-                          color: "#ffffff",
+                        '&:hover': {
+                          width: '100%',
+                          background: '#0362F0',
+                          borderRadius: '152px',
+                          color: '#ffffff',
                           fontSize: {
-                            xs: "12px",
-                            sm: "13px",
-                            md: "16px",
-                            lg: "13px",
-                            xl: "16px",
+                            xs: '12px',
+                            sm: '13px',
+                            md: '16px',
+                            lg: '13px',
+                            xl: '16px',
                           },
-                          fontWeight: "400",
-                          lineHeight: "22px",
-                          textTransform: "none",
+                          fontWeight: '400',
+                          lineHeight: '22px',
+                          textTransform: 'none',
                           px: {
                             xs: 0,
                             sm: 2,
@@ -473,36 +478,18 @@ function Address({
           </Grid>
         </Grid>
       </Grid>
-      {/* <Grid container spacing={1} sx={{ mt: 2 }}> */}
-      {/* <Grid item xs={12}>
-          <Grid
-            container
-            direction="column"
-            justifyContent="flex-start"
-            alignItems="flex-start"
-          >
-            <Typography
-              variant="p"
-              sx={{
-                color: "#002152",
-                fontSize: "16px",
-                fontWeight: "400",
-                lineHeight: "22px",
-              }}
-            >
-              {`${t["Property detail"]}:`}
-            </Typography> */}
+
       <Box sx={{ mt: 1 }}>
         <Typography
           variant="p"
           sx={{
-            color: "#002152",
-            fontSize: "16px",
-            fontWeight: "400",
-            lineHeight: "22px",
+            color: '#002152',
+            fontSize: '16px',
+            fontWeight: '400',
+            lineHeight: '22px',
           }}
         >
-          {`${t["Property detail"]}:`}
+          {`${t['Property detail']}:`}
         </Typography>
 
         <Box sx={{ mt: 1 }}>
@@ -511,42 +498,42 @@ function Address({
               <Grid item xs={6} sm={6} md={6} lg={3} key={index}>
                 <Button
                   onClick={() => {
-                    setPropertyDetailId(data.id);
+                    setPropertyDetailId(data.id)
                   }}
                   sx={{
-                    width: "100%",
+                    width: '100%',
                     background:
-                      property_detail_id === data.id ? "#0362F0" : "#F2F5F6",
-                    borderRadius: "152px",
+                      property_detail_id === data.id ? '#0362F0' : '#F2F5F6',
+                    borderRadius: '152px',
                     color:
-                      property_detail_id === data.id ? "#ffffff" : "#002152",
+                      property_detail_id === data.id ? '#ffffff' : '#002152',
                     fontSize: {
-                      xs: "12px",
-                      sm: "13px",
-                      md: "16px",
-                      lg: "13px",
-                      xl: "16px",
+                      xs: '12px',
+                      sm: '13px',
+                      md: '16px',
+                      lg: '13px',
+                      xl: '16px',
                     },
-                    fontWeight: "400",
-                    lineHeight: "22px",
-                    textTransform: "none",
+                    fontWeight: '400',
+                    lineHeight: '22px',
+                    textTransform: 'none',
                     px: { xs: 0, sm: 2, md: 2, lg: 2, xl: 2 },
                     py: 1,
-                    "&:hover": {
-                      width: "100%",
-                      background: "#0362F0",
-                      borderRadius: "152px",
-                      color: "#ffffff",
+                    '&:hover': {
+                      width: '100%',
+                      background: '#0362F0',
+                      borderRadius: '152px',
+                      color: '#ffffff',
                       fontSize: {
-                        xs: "12px",
-                        sm: "13px",
-                        md: "16px",
-                        lg: "13px",
-                        xl: "16px",
+                        xs: '12px',
+                        sm: '13px',
+                        md: '16px',
+                        lg: '13px',
+                        xl: '16px',
                       },
-                      fontWeight: "400",
-                      lineHeight: "22px",
-                      textTransform: "none",
+                      fontWeight: '400',
+                      lineHeight: '22px',
+                      textTransform: 'none',
                       px: {
                         xs: 0,
                         sm: 2,
@@ -569,30 +556,34 @@ function Address({
         </Grid> */}
       {/* </Grid> */}
 
-      <Controller
-        name="project_id"
-        control={control}
-        render={({ field }) => (
-          <BaseAutocomplete
-            sx={{ mt: 3, width: "70%" }}
-            options={projectData || []}
-            getOptionLabel={(option) => option.name || ""}
-            isOptionEqualToValue={(option, value) => option.id === value.id}
-            size={"medium"}
-            placeholder={`${t["select enterprise name"]}`}
-            onChange={(e, v, r, d) => field.onChange(v)}
-            value={field.value || null}
+      {matchedPropertyType.includes(property_detail_id) && (
+        <Box>
+          <Controller
+            name="project_id"
+            control={control}
+            render={({ field }) => (
+              <BaseAutocomplete
+                sx={{ mt: 3, width: '70%' }}
+                options={projectData || []}
+                getOptionLabel={(option) => option.name || ''}
+                isOptionEqualToValue={(option, value) => option.id === value.id}
+                size={'medium'}
+                placeholder={`${t['select enterprise name']}`}
+                onChange={(e, v, r, d) => field.onChange(v)}
+                value={field.value || null}
+              />
+            )}
           />
-        )}
-      />
 
-      <Typography
-        variant="inherit"
-        color="textSecondary"
-        sx={{ color: "#b91c1c" }}
-      >
-        {errors.project_id?.message}
-      </Typography>
+          <Typography
+            variant="inherit"
+            color="textSecondary"
+            sx={{ color: '#b91c1c' }}
+          >
+            {errors.project_id?.message}
+          </Typography>
+        </Box>
+      )}
       {/* <Autocomplete
         sx={{ mt: 3, width: '70%' }}
         disablePortal
@@ -607,41 +598,87 @@ function Address({
         <Link href="/my-properties/new-venture">
           <a
             style={{
-              textDecoration: "none",
-              listStyle: "none",
-              width: "100%",
+              textDecoration: 'none',
+              listStyle: 'none',
+              width: '100%',
             }}
           >
             <Typography
               variant="p"
               sx={{
-                color: "#7450F0",
-                fontSize: "16px",
-                lineHeight: "22px",
-                fontWeight: "400",
+                color: '#7450F0',
+                fontSize: '16px',
+                lineHeight: '22px',
+                fontWeight: '400',
               }}
             >
-              {t["New venture"]}
+              {t['New venture']}
             </Typography>
           </a>
         </Link>
-        <Divider sx={{ mt: 1, background: "#DBE1E5" }} />
+        <Divider sx={{ mt: 1, background: '#DBE1E5' }} />
       </Box>
       <Grid container spacing={1} sx={{ mt: 3 }}>
+        <Grid item xs={12}>
+          <Controller
+            name="property_title"
+            control={control}
+            defaultValue={''}
+            render={({ field }) => (
+              <BaseTextField
+                size={'medium'}
+                placeholder={`Property Title`}
+                onChange={(e) => {
+                  field.onChange(e.target.value)
+                }}
+                name="property_title"
+                value={field.value}
+              />
+            )}
+          />
+          <Typography
+            variant="inherit"
+            color="textSecondary"
+            sx={{ color: '#b91c1c' }}
+          >
+            {errors.property_title?.message}
+          </Typography>
+        </Grid>
+      </Grid>
+      <Grid container spacing={1} sx={{ mt: 3 }}>
+        <Grid item xs={12}>
+          <Controller
+            name="property_description"
+            control={control}
+            defaultValue={''}
+            render={({ field }) => (
+              <BaseTextEditor field={field} setValue={setValue} />
+            )}
+          />
+          <Typography
+            variant="inherit"
+            color="textSecondary"
+            sx={{ color: '#b91c1c' }}
+          >
+            {errors.property_description?.message}
+          </Typography>
+        </Grid>
+      </Grid>
+      <Grid container spacing={1} sx={{ mt: 3 }}>
         <Grid item xs={12} sm={12} md={12} lg={3}>
-          <FormControl variant="outlined" sx={{ width: "100%" }}>
+          <FormControl variant="outlined" sx={{ width: '100%' }}>
             <Controller
               name="zip_code"
               control={control}
-              defaultValue={""}
+              defaultValue={''}
               render={({ field }) => (
                 <BaseOutlinedZipInput
-                  placeholder={`${t["Zip code"]}*`}
-                  size={"medium"}
+                  placeholder={`${t['Zip code']}*`}
+                  size={'medium'}
                   onChange={(e) => {
-                    field.onChange(e.target.value);
+                    field.onChange(e.target.value)
                   }}
-                  name={"zip_code"}
+                  name={'zip_code'}
                   value={field.value}
                   // error={errors.cpf_number ? true : false}
                 />
@@ -650,25 +687,26 @@ function Address({
             <Typography
               variant="inherit"
               color="textSecondary"
-              sx={{ color: "#b91c1c" }}
+              sx={{ color: '#b91c1c' }}
             >
               {errors.zip_code?.message}
             </Typography>
           </FormControl>
         </Grid>
+
         <Grid item xs={12} sm={12} md={12} lg={6}>
           <Controller
             name="address"
             control={control}
-            defaultValue={""}
+            defaultValue={''}
             render={({ field }) => (
               <BaseTextField
-                size={"medium"}
-                placeholder={`${t["Address"]}*`}
+                size={'medium'}
+                placeholder={`${t['Address']}*`}
                 onChange={(e) => {
-                  field.onChange(e.target.value);
+                  field.onChange(e.target.value)
                 }}
-                name={"address"}
+                name={'address'}
                 value={field.value}
               />
             )}
@@ -676,7 +714,7 @@ function Address({
           <Typography
             variant="inherit"
             color="textSecondary"
-            sx={{ color: "#b91c1c" }}
+            sx={{ color: '#b91c1c' }}
           >
             {errors.address?.message}
           </Typography>
@@ -685,16 +723,16 @@ function Address({
           <Controller
             name="number"
             control={control}
-            defaultValue={""}
+            defaultValue={''}
             render={({ field }) => (
               <BaseTextField
-                size={"medium"}
-                placeholder={`${t["Number"]}*`}
+                size={'medium'}
+                placeholder={`${t['Number']}*`}
                 onChange={(e) => {
-                  field.onChange(e.target.value);
+                  field.onChange(e.target.value)
                 }}
-                name={"number"}
-                type={"number"}
+                name={'number'}
+                type={'number'}
                 value={field.value}
               />
             )}
@@ -702,7 +740,7 @@ function Address({
           <Typography
             variant="inherit"
             color="textSecondary"
-            sx={{ color: "#b91c1c" }}
+            sx={{ color: '#b91c1c' }}
           >
             {errors.number?.message}
           </Typography>
@@ -713,15 +751,15 @@ function Address({
           <Controller
             name="neighbourhood"
             control={control}
-            defaultValue={""}
+            defaultValue={''}
             render={({ field }) => (
               <BaseTextField
-                size={"medium"}
-                placeholder={`${t["Neighborhood"]}*`}
+                size={'medium'}
+                placeholder={`${t['Neighborhood']}*`}
                 onChange={(e) => {
-                  field.onChange(e.target.value);
+                  field.onChange(e.target.value)
                 }}
-                name={"neighbourhood"}
+                name={'neighbourhood'}
                 value={field.value}
               />
             )}
@@ -729,7 +767,7 @@ function Address({
           <Typography
             variant="inherit"
             color="textSecondary"
-            sx={{ color: "#b91c1c" }}
+            sx={{ color: '#b91c1c' }}
           >
             {errors.neighbourhood?.message}
           </Typography>
@@ -738,15 +776,15 @@ function Address({
           <Controller
             name="complement"
             control={control}
-            defaultValue={""}
+            defaultValue={''}
             render={({ field }) => (
               <BaseTextField
-                size={"medium"}
-                placeholder={t["Complement"]}
+                size={'medium'}
+                placeholder={t['Complement']}
                 onChange={(e) => {
-                  field.onChange(e.target.value);
+                  field.onChange(e.target.value)
                 }}
-                name={"complement"}
+                name={'complement'}
                 value={field.value}
               />
             )}
@@ -754,7 +792,7 @@ function Address({
           <Typography
             variant="inherit"
             color="textSecondary"
-            sx={{ color: "#b91c1c" }}
+            sx={{ color: '#b91c1c' }}
           >
             {errors.complement?.message}
           </Typography>
@@ -765,15 +803,15 @@ function Address({
           <Controller
             name="city"
             control={control}
-            defaultValue={""}
+            defaultValue={''}
             render={({ field }) => (
               <BaseTextField
-                size={"medium"}
-                placeholder={`${t["City"]}*`}
+                size={'medium'}
+                placeholder={`${t['City']}*`}
                 onChange={(e) => {
-                  field.onChange(e.target.value);
+                  field.onChange(e.target.value)
                 }}
-                name={"city"}
+                name={'city'}
                 value={field.value}
               />
             )}
@@ -781,7 +819,7 @@ function Address({
           <Typography
             variant="inherit"
             color="textSecondary"
-            sx={{ color: "#b91c1c" }}
+            sx={{ color: '#b91c1c' }}
           >
             {errors.city?.message}
           </Typography>
@@ -795,10 +833,10 @@ function Address({
               <BaseAutocomplete
                 //   sx={{ margin: "0.6vh 0" }}
                 options={allStateData || []}
-                getOptionLabel={(option) => option.name || ""}
+                getOptionLabel={(option) => option.name || ''}
                 isOptionEqualToValue={(option, value) => option.id === value.id}
-                size={"medium"}
-                placeholder={`${t["State"]}*`}
+                size={'medium'}
+                placeholder={`${t['State']}*`}
                 onChange={(e, v, r, d) => field.onChange(v)}
                 value={field.value || null}
               />
@@ -807,7 +845,7 @@ function Address({
           <Typography
             variant="inherit"
             color="textSecondary"
-            sx={{ color: "#b91c1c" }}
+            sx={{ color: '#b91c1c' }}
           >
             {errors.state?.message}
           </Typography>
@@ -825,54 +863,54 @@ function Address({
               // disabled={activeStep === 0}
               sx={{
                 mr: 1,
-                border: "1px solid #002152",
-                borderRadius: "4px",
+                border: '1px solid #002152',
+                borderRadius: '4px',
                 px: 2,
                 py: 1,
-                color: "#002152",
-                fontSize: "16px",
-                fontWeight: "600",
-                lineHeight: "22px",
-                textTransform: "none",
+                color: '#002152',
+                fontSize: '16px',
+                fontWeight: '600',
+                lineHeight: '22px',
+                textTransform: 'none',
               }}
             >
-              {t["Cancel"]}
+              {t['Cancel']}
             </Button>
           </Link>
           <Button
             onClick={handleNext}
             disabled={disableBtn}
             sx={{
-              background: "#7450F0",
-              borderRadius: "4px",
+              background: '#7450F0',
+              borderRadius: '4px',
               px: 2,
               py: 1,
-              color: "#ffffff",
-              fontSize: "16px",
-              fontWeight: "600",
-              lineHeight: "22px",
-              textTransform: "none",
-              boxShadow: "0px 4px 8px rgba(81, 51, 182, 0.32)",
-              "&:hover": {
-                background: "#7450F0",
-                borderRadius: "4px",
+              color: '#ffffff',
+              fontSize: '16px',
+              fontWeight: '600',
+              lineHeight: '22px',
+              textTransform: 'none',
+              boxShadow: '0px 4px 8px rgba(81, 51, 182, 0.32)',
+              '&:hover': {
+                background: '#7450F0',
+                borderRadius: '4px',
                 px: 2,
                 py: 1,
-                color: "#ffffff",
-                fontSize: "16px",
-                fontWeight: "600",
-                lineHeight: "22px",
-                textTransform: "none",
-                boxShadow: "0px 4px 8px rgba(81, 51, 182, 0.32)",
+                color: '#ffffff',
+                fontSize: '16px',
+                fontWeight: '600',
+                lineHeight: '22px',
+                textTransform: 'none',
+                boxShadow: '0px 4px 8px rgba(81, 51, 182, 0.32)',
               },
             }}
           >
-            {t["Next"]}
+            {t['Next']}
           </Button>
         </Grid>
       </Grid>
     </Box>
-  );
+  )
 }
 
-export default Address;
+export default Address
