@@ -556,7 +556,7 @@ function PhotosAndVideos({
         </Grid>
       )}
 
-      {session?.user.role !== "owner" ? (
+      {session?.user?.role !== "owner" ? (
         <Grid
           container
           direction="row"

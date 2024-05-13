@@ -1,6 +1,6 @@
 import dynamic from "next/dynamic";
 import Head from "next/head";
-import React, { useMemo, useState } from "react";
+import React, { Fragment, useMemo, useState } from "react";
 import Image from "next/image";
 import {
   Autocomplete,
@@ -28,7 +28,7 @@ import { useDropzone } from "react-dropzone";
 import Link from "next/link";
 import BaseTextField from "../../../src/component/reuseable/baseTextField/BaseTextField";
 import { getSession } from "next-auth/react";
-import { useForm, Controller } from "react-hook-form";
+import { useForm, Controller, useFieldArray } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as Yup from "yup";
 import BaseTextArea from "../../../src/component/reuseable/baseTextArea/BaseTextArea";
@@ -43,11 +43,16 @@ import { Topic } from "@mui/icons-material";
 import { useDispatch, useSelector } from "react-redux";
 import { findPropertyTypeData } from "../../../src/redux/propertyType/actions";
 import { GetPhotoTypeData } from "../../../src/redux/photo/actions";
+
 const NewVentureSentModal = dynamic(() =>
   import("@/component/new venture/NewVentureSentModal/NewVentureSentModal")
 );
 import en from "locales/en";
 import pt from "locales/pt";
+import BaseStepper from "@/component/reuseable/baseStepper/BaseStepper";
+import PhotosAndVideos from "@/component/new property/PhotosAndVideos/PhotosAndVideos";
+import Features from "@/component/new property/Features/Features";
+import Address from "@/component/new venture/Address/Address";
 
 const validationSchema = Yup.object().shape({
   name: Yup.string().required("O nome da empresa é obrigatório"),
@@ -86,12 +91,17 @@ const rejectStyle = {
 
 const drawerWidth = 240;
 
-export default function NewVenture({ language }) {
+export default function NewVenture({ language, session }) {
   //   const [files, setFiles] = useState([]);
   //   console.log({ files });
-
   const [myValue, setMyValue] = useState(language || "pt");
   const t = myValue === "en" ? en : pt;
+  const steps = [t["Address"], t["Features"], t["Photos and videos"]];
+  const [activeStep, setActiveStep] = useState(0);
+  const [skipped, setSkipped] = useState(new Set());
+  const [adType, setAdType] = useState("New");
+  const [disableBtn, setDisableBtn] = useState(true);
+  const [draftloading, setDraftLoading] = useState(false);
 
   const BreadCrumbsData = [
     { stage: t["Start"], route: "" },
@@ -121,6 +131,11 @@ export default function NewVenture({ language }) {
 
   const [loading, setLoading] = useState(false);
   const [files, setFiles] = useState([]);
+  const [videoFiles, setVideoFiles] = useState([]);
+  const [deletedContent, setDeletedContent] = useState([]);
+  const [featuretypes, setFeatureTypes] = useState([]);
+  const [propertyType, setPropertyType] = useState("Residential");
+  const [property_detail_id, setPropertyDetailId] = useState(1);
 
   const [imageError, setImageError] = useState(false);
   const [imageErrorMessage, setImageErrorMessage] = useState("");
@@ -203,7 +218,27 @@ export default function NewVenture({ language }) {
       setImageErrorMessage("O arquivo de imagem é obrigatório");
     }
   };
+  const isStepSkipped = (step) => {
+    return skipped.has(step);
+  };
+  const handleNext = () => {
+    let newSkipped = skipped;
+    if (isStepSkipped(activeStep)) {
+      newSkipped = new Set(newSkipped.values());
+      newSkipped.delete(activeStep);
+    }
 
+    setActiveStep((prevActiveStep) => prevActiveStep + 1);
+    setSkipped(newSkipped);
+  };
+
+  const handleBack = () => {
+    setActiveStep((prevActiveStep) => prevActiveStep - 1);
+  };
+  const { fields, append, remove } = useFieldArray({
+    control,
+    name: "videos",
+  });
   return (
     <div>
       <Head>
@@ -239,7 +274,202 @@ export default function NewVenture({ language }) {
                 />
               </Grid>
               <Box sx={{ mt: 3 }}>
-                <form onSubmit={handleSubmit(onSubmit)}>
+                {/* 👇 */}
+                <Box sx={{ mt: 3 }}>
+                  <BaseStepper
+                    steps={steps}
+                    activeStep={activeStep}
+                    isStepSkipped={isStepSkipped}
+                    setActiveStep={setActiveStep}
+                    marginTop={"2vh"}
+                  />
+                  {activeStep === steps.length ? (
+                    <Container maxWidth="xs">
+                      <Fragment>
+                        {/* <Typography sx={{ mt: 2, mb: 1 }}>
+                  All steps completed - you&apos;re finished
+                </Typography> */}
+
+                        {/* <Box sx={{ display: "flex", flexDirection: "row", pt: 2 }}>
+              <Box sx={{ flex: "1 1 auto" }} />
+              <Button onClick={handleReset}>Reset</Button>
+            </Box> */}
+                      </Fragment>
+                    </Container>
+                  ) : (
+                    <Fragment>
+                      <form onSubmit={handleSubmit(onSubmit)}>
+                        {activeStep === 0 ? (
+                          <Address
+                            handleNext={handleNext}
+                            control={control}
+                            errors={errors}
+                            adType={adType}
+                            setValue={setValue}
+                            setAdType={setAdType}
+                            propertyType={propertyType}
+                            setPropertyType={setPropertyType}
+                            property_detail_id={property_detail_id}
+                            setPropertyDetailId={setPropertyDetailId}
+                            languageName={myValue.toString()}
+                            allValues={allValues}
+                          />
+                        ) : activeStep === 1 ? (
+                          <Features
+                            handleNext={handleNext}
+                            handleBack={handleBack}
+                            control={control}
+                            errors={errors}
+                            featuretypes={featuretypes}
+                            setFeatureTypes={setFeatureTypes}
+                            languageName={myValue.toString()}
+                          />
+                        ) : (
+                          <PhotosAndVideos
+                            handleNext={handleNext}
+                            handleBack={handleBack}
+                            control={control}
+                            errors={errors}
+                            files={files}
+                            setFiles={setFiles}
+                            videoFiles={videoFiles}
+                            setVideoFiles={setVideoFiles}
+                            setDeletedContent={setDeletedContent}
+                            deletedContent={deletedContent}
+                            imageError={imageError}
+                            imageErrorMessage={imageErrorMessage}
+                            fields={fields}
+                            append={append}
+                            // hideNextButton={true}
+                            remove={remove}
+                            allValues={allValues}
+                            languageName={myValue.toString()}
+                          />
+                        )}
+                        {/* 
+                        <Grid
+                          container
+                          direction="row"
+                          justifyContent={{
+                            xs: "flex-start",
+                            sm: "flex-start",
+                            md: "flex-start",
+                            lg: "flex-end",
+                            xl: "flex-end",
+                          }}
+                          alignItems="center"
+                          sx={{
+                            pt: 2,
+                          }}
+                        >
+                          {activeStep === steps.length - 1 && (
+                            <Button
+                              color="inherit"
+                              // disabled={activeStep === 0}
+                              onClick={handleBack}
+                              sx={{
+                                mr: 1,
+                                border: "1px solid #002152",
+                                borderRadius: "4px",
+                                px: 2,
+                                py: 1,
+                                color: "#002152",
+                                fontSize: "16px",
+                                fontWeight: "600",
+                                lineHeight: "22px",
+                                textTransform: "none",
+                              }}
+                            >
+                              {t["come back"]}
+                            </Button>
+                          )}
+
+                          {activeStep === steps.length - 1 && (
+                            <Box>
+                              <Button
+                                type="submit"
+                                disabled={
+                                  session?.user?.role !== "owner" && disableBtn
+                                }
+                                onClick={() => setAction("draft")}
+                                sx={{
+                                  background: "#DBE1E5",
+                                  borderRadius: "4px",
+                                  px: 2,
+                                  py: 1,
+                                  mr: 1,
+                                  color: "#002152",
+                                  fontSize: "16px",
+                                  fontWeight: "600",
+                                  lineHeight: "22px",
+                                  textTransform: "none",
+
+                                  "&:hover": {
+                                    background: "#DBE1E5",
+                                    borderRadius: "4px",
+                                    px: 2,
+                                    py: 1,
+                                    color: "#002152",
+                                    fontSize: "16px",
+                                    fontWeight: "600",
+                                    lineHeight: "22px",
+                                    textTransform: "none",
+                                    mr: 1,
+                                  },
+                                }}
+                              >
+                                {draftloading && (
+                                  <CircularProgress size={22} color="inherit" />
+                                )}
+                                {!draftloading && t["Save as draft"]}
+                              </Button>
+                              <Button
+                                type="submit"
+                                disabled={
+                                  session?.user?.role !== "owner" && disableBtn
+                                }
+                                onClick={() => setAction("new")}
+                                sx={{
+                                  background: "#7450F0",
+                                  borderRadius: "4px",
+                                  px: 2,
+                                  py: 1,
+                                  color: "#ffffff",
+                                  fontSize: "16px",
+                                  fontWeight: "600",
+                                  lineHeight: "22px",
+                                  textTransform: "none",
+                                  boxShadow:
+                                    "0px 4px 8px rgba(81, 51, 182, 0.32)",
+                                  "&:hover": {
+                                    background: "#7450F0",
+                                    borderRadius: "4px",
+                                    px: 2,
+                                    py: 1,
+                                    color: "#ffffff",
+                                    fontSize: "16px",
+                                    fontWeight: "600",
+                                    lineHeight: "22px",
+                                    textTransform: "none",
+                                    boxShadow:
+                                      "0px 4px 8px rgba(81, 51, 182, 0.32)",
+                                  },
+                                }}
+                              >
+                                {loading && (
+                                  <CircularProgress size={22} color="inherit" />
+                                )}
+                                {!loading && t["Submit approval"]}
+                              </Button>
+                            </Box>
+                          )}
+                        </Grid> */}
+                      </form>
+                    </Fragment>
+                  )}
+                </Box>
+                {/*👆 */}
+                {/* <form onSubmit={handleSubmit(onSubmit)}>
                   <Grid
                     container
                     direction="row"
@@ -306,7 +536,7 @@ export default function NewVenture({ language }) {
                           style={{
                             marginTop: "1vh",
                             width: "100%",
-                            // margin: "2vh 0",
+                            
                             color: "rgba(0, 0, 0, 0.87)",
                             fontSize: "17px",
                             outlineColor: "#1976d2",
@@ -434,17 +664,7 @@ export default function NewVenture({ language }) {
                               layout="responsive"
                               alt="file"
                             />
-                            {/* <Autocomplete
-                              sx={{ mt: 2 }}
-                              disablePortal
-                              fullWidth
-                              size="small"
-                              id="combo-box-demo"
-                              options={top100Films}
-                              renderInput={(params) => (
-                                <TextField {...params} label="Convenient" />
-                              )}
-                            /> */}
+                         
                             {!Loading ? (
                               <Controller
                                 name={`title_${index}`}
@@ -452,7 +672,6 @@ export default function NewVenture({ language }) {
                                 defaultValue={photoType[0] || {}}
                                 render={({ field }) => (
                                   <BaseAutocomplete
-                                    //   sx={{ margin: "0.6vh 0" }}
                                     options={photoType || []}
                                     getOptionLabel={(option) =>
                                       option.name || ""
@@ -552,7 +771,7 @@ export default function NewVenture({ language }) {
                       {!loading && t["Save"]}
                     </Button>
                   </Grid>
-                </form>
+                </form> */}
               </Box>
             </Container>
             <BaseModal isShowing={sentModalOpen} isClose={handleClose}>
