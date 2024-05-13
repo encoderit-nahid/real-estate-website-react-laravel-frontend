@@ -24,14 +24,35 @@ const matchedForBanheiro = [1, 2, 3, 4, 5, 7, 8, 9, 11, 12];
 const matchedForVagas = [1, 2, 3, 4, 5, 7, 8, 9, 11, 12];
 const matchedForTerrenoAreaM2 = [2, 3, 5, 7, 8, 9, 11, 12];
 // const matchedForDimensoes = [5, 6];
-function checkObjectValues(obj) {
-  for (const key in obj) {
-    if (obj[key] === null || obj[key] === "") {
-      return true;
-    }
-  }
-  return false;
+function shouldDisableButton(allValues) {
+  const requiredFields = [
+    "brl_rent",
+    "condominium",
+    "brl_iptu",
+    "land_area",
+    "property_area",
+    "no_of_rooms",
+    "no_of_suites",
+    "no_of_bathrooms",
+    "no_of_parking_spaces",
+    "documentation",
+    "registry",
+    "registration_number",
+  ];
+
+  // Filter out hidden fields from the list of required fields
+  const visibleFields = requiredFields.filter(
+    (field) => allValues[field] !== undefined
+  );
+
+  // Check if any of the visible fields are empty
+  const isAnyFieldEmpty = visibleFields.some(
+    (field) => allValues[field] === ""
+  );
+
+  return isAnyFieldEmpty;
 }
+
 function ValuesAndDescription({
   control,
   errors,
@@ -55,29 +76,7 @@ function ValuesAndDescription({
   const [disableBtn, setDisableBtn] = useState(true);
 
   useEffect(() => {
-    console.log("🟥 ~ useEffect ~ allValues:", allValues);
-
-    if (checkObjectValues(allValues)) {
-      setDisableBtn(true);
-    } else {
-      setDisableBtn(false);
-    }
-    // if (
-    //   allValues?.brl_rent === "" ||
-    //   // allValues?.condominium === "" ||
-    //   allValues?.brl_iptu === "" ||
-    //   allValues?.land_area === "" ||
-    //   allValues?.property_area === "" ||
-    //   allValues?.no_of_rooms === "" ||
-    //   allValues?.no_of_suites === "" ||
-    //   allValues?.no_of_bathrooms === "" ||
-    //   allValues?.no_of_parking_spaces === "" ||
-    //   allValues?.documentation === "" ||
-    //   allValues?.registry === "" ||
-    //   allValues?.registration_number === ""
-    // ) {
-    //   setDisableBtn(true);
-    // }
+    setDisableBtn(shouldDisableButton(allValues));
   }, [allValues]);
 
   return (

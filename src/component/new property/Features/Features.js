@@ -24,6 +24,7 @@ import { findFeatureData } from "../../../redux/features/actions";
 import en from "locales/en";
 import pt from "locales/pt";
 import { useSession } from "next-auth/react";
+// import BaseAutocomplete from "@/component/reuseable/baseAutocomplete/BaseAutocomplete";
 
 const PropertyFeature = [
   "close to the metro",
@@ -50,6 +51,7 @@ const PropertyFeature = [
   "fireplace",
   "furnish",
 ];
+
 function Features({
   featuretypes,
   setFeatureTypes,
@@ -153,16 +155,19 @@ function Features({
                 sx={{
                   color: "#4B4B66",
                   fontSize: "16px",
-                  fontWeight: "400",
+                  fontWeight: "600",
                   lineHeight: "19px",
                 }}
               >
                 {(key === "condominium" ||
                   key === "accessibility" ||
-                  key === "Bem-estar" ||
-                  key === "Eletrodomésticos" ||
-                  key === "Cômodos" ||
-                  key === "Acessibilidade") &&
+                  key === "amenities" ||
+                  key === "appliances" ||
+                  key === "rooms" ||
+                  key === "rooms" ||
+                  key === "sorrounding" ||
+                  key === "wellbeing" ||
+                  key === "feature") &&
                   key}
               </Typography>
               <Grid
@@ -175,10 +180,13 @@ function Features({
               >
                 {(key === "condominium" ||
                   key === "accessibility" ||
-                  key === "Bem-estar" ||
-                  key === "Eletrodomésticos" ||
-                  key === "Cômodos" ||
-                  key === "Acessibilidade") &&
+                  key === "amenities" ||
+                  key === "appliances" ||
+                  key === "rooms" ||
+                  key === "rooms" ||
+                  key === "sorrounding" ||
+                  key === "wellbeing" ||
+                  key === "feature") &&
                   featureData[key].map((data, index) => (
                     <Button
                       key={index}
@@ -273,6 +281,17 @@ function Features({
             placeholder={t["Add feature"]}
             onChange={(e) => setItem(e.target.value)}
           />
+          {/* <BaseAutocomplete
+            //   sx={{ margin: "0.6vh 0" }}
+            options={photoType || []}
+            getOptionLabel={(option) => option.name || ""}
+            sx={{ mt: 2 }}
+            isOptionEqualToValue={(option, value) => option.slug === value.slug}
+            size={"small"}
+            placeholder={"Convenient"}
+            onChange={(e, v, r, d) => field.onChange(v)}
+            value={field.value}
+          /> */}
           <Button
             onClick={handleAddFeature}
             sx={{

@@ -94,49 +94,49 @@ export default function NewProperty({ language }) {
     // complement: Yup.string().required("Complement is required"),
     city: Yup.string().required(t["City is required"]),
     state: Yup.object().required(t["State is required"]),
-    brl_rent: Yup.number()
-      .transform((value) => (Number.isNaN(value) ? null : value))
-      .nullable()
-      .required(t["BRL rent is required"]),
-    // condominium: Yup.number()
+    // brl_rent: Yup.number()
     //   .transform((value) => (Number.isNaN(value) ? null : value))
     //   .nullable()
-    //   .required(t["Condominium is required"]),
-    brl_iptu: Yup.number()
-      .transform((value) => (Number.isNaN(value) ? null : value))
-      .nullable()
-      .required(t["IPTU is required"]),
-    land_area: Yup.number()
-      .transform((value) => (Number.isNaN(value) ? null : value))
-      .nullable()
-      .required(t["Land area is required"]),
-    property_area: Yup.number()
-      .transform((value) => (Number.isNaN(value) ? null : value))
-      .nullable()
-      .required(t["Property area is required"]),
-    no_of_rooms: Yup.number()
-      .transform((value) => (Number.isNaN(value) ? null : value))
-      .nullable()
-      .required(t["No of rooms is required"]),
-    no_of_suites: Yup.number()
-      .transform((value) => (Number.isNaN(value) ? null : value))
-      .nullable()
-      .required(t["NO of suites is required"]),
-    no_of_bathrooms: Yup.number()
-      .transform((value) => (Number.isNaN(value) ? null : value))
-      .nullable()
-      .required(t["NO of bathrooms is required"]),
-    no_of_parking_spaces: Yup.number()
-      .transform((value) => (Number.isNaN(value) ? null : value))
-      .nullable()
-      .required(t["NO of parking spaces is required"]),
+    //   .required(t["BRL rent is required"]),
+    // // condominium: Yup.number()
+    // //   .transform((value) => (Number.isNaN(value) ? null : value))
+    // //   .nullable()
+    // //   .required(t["Condominium is required"]),
+    // brl_iptu: Yup.number()
+    //   .transform((value) => (Number.isNaN(value) ? null : value))
+    //   .nullable()
+    //   .required(t["IPTU is required"]),
+    // land_area: Yup.number()
+    //   .transform((value) => (Number.isNaN(value) ? null : value))
+    //   .nullable()
+    //   .required(t["Land area is required"]),
+    // property_area: Yup.number()
+    //   .transform((value) => (Number.isNaN(value) ? null : value))
+    //   .nullable()
+    //   .required(t["Property area is required"]),
+    // no_of_rooms: Yup.number()
+    //   .transform((value) => (Number.isNaN(value) ? null : value))
+    //   .nullable()
+    //   .required(t["No of rooms is required"]),
+    // no_of_suites: Yup.number()
+    //   .transform((value) => (Number.isNaN(value) ? null : value))
+    //   .nullable()
+    //   .required(t["NO of suites is required"]),
+    // no_of_bathrooms: Yup.number()
+    //   .transform((value) => (Number.isNaN(value) ? null : value))
+    //   .nullable()
+    //   .required(t["NO of bathrooms is required"]),
+    // no_of_parking_spaces: Yup.number()
+    //   .transform((value) => (Number.isNaN(value) ? null : value))
+    //   .nullable()
+    //   .required(t["NO of parking spaces is required"]),
 
-    documentation: Yup.object().required("Documentation is required"),
-    registry: Yup.string().required("Registry office is required"),
-    registration_number: Yup.number()
-      .transform((value) => (Number.isNaN(value) ? null : value))
-      .nullable()
-      .required("Registration number office is required"),
+    // documentation: Yup.object().required("Documentation is required"),
+    // registry: Yup.string().required("Registry office is required"),
+    // registration_number: Yup.number()
+    //   .transform((value) => (Number.isNaN(value) ? null : value))
+    //   .nullable()
+    //   .required("Registration number office is required"),
 
     // owner_name: Yup.string().required(t["Owner Full Name is required"]),
     // owner_rg: Yup.string().required(t["Owner Rg is required"]),
@@ -439,16 +439,19 @@ export default function NewProperty({ language }) {
 
     const newDocuments = documents?.filter((data) => data instanceof File);
 
+    console.log({ data });
+    console.log({ allValues });
+
     const firstPartData = omitEmpties({
       user_id: +session?.user?.userId,
       project_id: (data?.project_id?.id && +data?.project_id?.id) || 1,
       property_id: query?.property_id,
-      property_title: "Hello Condominium",
-      property_description: "<p>sdfasdfsdff</p>",
+      property_title: data?.property_title,
+      property_description: data?.description?.toString("html"),
       property_detail_id: +property_detail_id,
       ad_type: adType.toLocaleLowerCase(),
       property_type: propertyType.toLocaleLowerCase(),
-      condominium: 2000,
+      condominium: data?.condominium,
       brl_rent: data?.brl_rent,
       brl_iptu: data?.brl_iptu,
       land_area: data?.land_area,
@@ -484,14 +487,22 @@ export default function NewProperty({ language }) {
       document_title: data?.documentation?.label,
     });
 
+    const ownerRegistryData = omitEmpties({
+      registry_office: data?.owner_registry,
+      registry_number: data?.owner_registration_number,
+      document_title: data?.owner_documnentation?.label,
+    });
+
     const ownerData = omitEmpties({
       maritalStatus: maritalStatus,
       name: data?.owner_name,
       rg: data?.owner_rg,
       cpf: data?.owner_cpf,
+      email: data?.owner_email,
       spouse_name: data?.owner_spouse_name,
       spouse_rg: data?.owner_spouse_rg,
       spouse_cpf: data?.owner_spouse_cpf,
+      registry_data: ownerRegistryData,
     });
 
     const ownerDataAddress = omitEmpties({
@@ -504,11 +515,6 @@ export default function NewProperty({ language }) {
       complement: data?.complement,
     });
 
-    // const ownerRegistryData = omitEmpties({
-    //   registry_office: data?.owner_registry,
-    //   registry_number: data?.owner_registration_number,
-    //   document_title: data?.owner_documnentation?.label,
-    // });
     const requireData = omitEmpties({
       ...firstPartData,
       registry_data: registryData,
