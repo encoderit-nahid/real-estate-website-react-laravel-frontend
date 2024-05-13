@@ -566,7 +566,7 @@ function Address({
             control={control}
             render={({ field }) => (
               <BaseAutocomplete
-                sx={{ mt: 3, width: "70%" }}
+                sx={{ mt: 3, width: "100%" }}
                 options={projectData || []}
                 getOptionLabel={(option) => option.name || ""}
                 isOptionEqualToValue={(option, value) => option.id === value.id}

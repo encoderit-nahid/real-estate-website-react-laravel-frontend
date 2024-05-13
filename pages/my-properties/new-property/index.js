@@ -387,6 +387,7 @@ export default function NewProperty({ language }) {
   const allValues = watch();
 
   const onSubmit = async (data) => {
+    console.log("🟥 ~ onSubmit ~ data:", data);
     action === "new" ? setLoading(true) : setDraftLoading(true);
 
     const filterNewImageTitleData = [];
