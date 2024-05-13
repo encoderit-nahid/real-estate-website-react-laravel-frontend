@@ -440,7 +440,7 @@ export default function NewProperty({ language }) {
 
     const firstPartData = omitEmpties({
       user_id: +session?.user?.userId,
-      project_id: data?.project_id?.id && +data?.project_id?.id || 1,
+      project_id: (data?.project_id?.id && +data?.project_id?.id) || 1,
       property_id: query?.property_id,
       property_title: "Hello Condominium",
       property_description: "<p>sdfasdfsdff</p>",
@@ -563,7 +563,8 @@ export default function NewProperty({ language }) {
       allValues?.owner_number != null &&
       allValues?.owner_neighbourhood != null &&
       allValues?.owner_city != null &&
-      allValues?.owner_state != null
+      allValues?.owner_state != null &&
+      documents?.length > 0
     ) {
       setDisableBtn(false);
     }
@@ -576,7 +577,8 @@ export default function NewProperty({ language }) {
       allValues?.owner_number === "" ||
       allValues?.owner_neighbourhood === "" ||
       allValues?.owner_city === "" ||
-      allValues?.owner_state === ""
+      allValues?.owner_state === "" ||
+      documents?.length < 1
     ) {
       setDisableBtn(true);
     }
@@ -645,8 +647,6 @@ export default function NewProperty({ language }) {
                           handleNext={handleNext}
                           control={control}
                           errors={errors}
-                          documents={documents}
-                          setDocuments={setDocuments}
                           adType={adType}
                           setValue={setValue}
                           setAdType={setAdType}
@@ -703,6 +703,8 @@ export default function NewProperty({ language }) {
                           handleBack={handleBack}
                           control={control}
                           errors={errors}
+                          documents={documents}
+                          setDocuments={setDocuments}
                           maritalStatus={maritalStatus}
                           setMaritalStatus={setMaritalStatus}
                           languageName={myValue.toString()}

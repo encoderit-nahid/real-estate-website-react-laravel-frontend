@@ -1,6 +1,6 @@
 import { Box, Button, FormControl, Grid, Typography } from "@mui/material";
 import Image from "next/image";
-import React, { useEffect } from "react";
+import React, { useEffect, useMemo } from "react";
 import buyerProfile from "../../../../public/Images/buyer_profile.png";
 import BaseOutlinedZipInput from "../../reuseable/baseOutlinedZipInput/BaseOutlinedZipInput";
 import BaseOutlinedCpfInput from "../../reuseable/baseOutlinedCpfInput/BaseOutlinedCpfInput";
@@ -12,6 +12,41 @@ import { useDispatch, useSelector } from "react-redux";
 import { findStateData } from "../../../redux/state/actions";
 import pt from "locales/pt";
 import en from "locales/en";
+import { useDropzone } from "react-dropzone";
+import { useSession } from "next-auth/react";
+import DeleteOutlineOutlinedIcon from "@mui/icons-material/DeleteOutlineOutlined";
+import pinImage from "../../../../public/Images/pin.png";
+
+const baseStyle = {
+  flex: 1,
+  display: "flex",
+  flexDirection: "column",
+  alignItems: "center",
+  padding: "50px",
+  borderWidth: 2,
+  borderRadius: "4px",
+  borderColor: "#DBE1E5",
+  borderStyle: "dashed",
+  backgroundColor: "#F2F5F6",
+
+  color: "#c4c4c4",
+  outline: "none",
+  transition: "border .24s ease-in-out",
+  width: "100%",
+  marginTop: "2vh",
+};
+
+const activeStyle = {
+  borderColor: "#f2f",
+};
+
+const acceptStyle = {
+  borderColor: "#f8f",
+};
+
+const rejectStyle = {
+  borderColor: "#f2f",
+};
 
 function Owner({
   control,
@@ -19,6 +54,8 @@ function Owner({
   maritalStatus,
   setMaritalStatus,
   languageName,
+  documents,
+  setDocuments,
   setSingle,
   single,
   married,
@@ -26,6 +63,51 @@ function Owner({
 }) {
   const t = languageName === "en" ? en : pt;
   const dispatch = useDispatch();
+  const session = useSession();
+  const onDrop = (acceptedFiles) => {
+    acceptedFiles.map((file) =>
+      Object.assign(file, {
+        preview: URL.createObjectURL(file),
+      })
+    );
+
+    const allFiles = [...documents, ...acceptedFiles]; //save all files here
+
+    setDocuments(allFiles);
+  };
+  const {
+    getRootProps,
+    getInputProps,
+    isDragActive,
+    isDragAccept,
+    isDragReject,
+  } = useDropzone({
+    onDrop,
+    accept: {
+      "application/pdf": [],
+      "application/vnd.openxmlformats-officedocument.wordprocessingml.document":
+        [],
+      "application/msword": [],
+    },
+  });
+
+  const handleDelete = (index) => {
+    const filterItem = documents.filter(
+      (file, fileIndex) => fileIndex !== index
+    );
+    setDocuments(filterItem);
+  };
+
+  const style = useMemo(
+    () => ({
+      ...baseStyle,
+      ...(isDragActive ? activeStyle : {}),
+      ...(isDragAccept ? acceptStyle : {}),
+      ...(isDragReject ? rejectStyle : {}),
+    }),
+    [isDragActive, isDragReject, isDragAccept]
+  );
+
   useEffect(() => {
     dispatch(findStateData());
   }, [dispatch]);
@@ -136,6 +218,35 @@ function Owner({
           >
             {errors.owner_name?.message}
           </Typography>
+        </Grid>
+      </Grid>
+      <Grid container spacing={1} sx={{ mt: 1 }}>
+        <Grid item xs={12}>
+          <FormControl variant="outlined" sx={{ width: "100%" }}>
+            <Controller
+              name="owner_email"
+              control={control}
+              render={({ field }) => (
+                <BaseTextField
+                  placeholder={"Owner's Email"}
+                  size={"medium"}
+                  onChange={(e) => {
+                    field.onChange(e.target.value);
+                  }}
+                  name={"owner_email"}
+                  value={field.value}
+                  // error={errors?.rg_number ? true : false}
+                />
+              )}
+            />
+            <Typography
+              variant="inherit"
+              color="textSecondary"
+              sx={{ color: "#b91c1c" }}
+            >
+              {errors?.owner_email?.message}
+            </Typography>
+          </FormControl>
         </Grid>
       </Grid>
       <Grid container spacing={1} sx={{ mt: 1 }}>
@@ -497,6 +608,111 @@ function Owner({
           </Typography>
         </Grid>
       </Grid>
+      <Grid container sx={{ mt: 2 }}>
+        <Grid item xs={12} sm={12} md={6} lg={6} xl={6}>
+          <Typography
+            variant="p"
+            sx={{
+              fontSize: "16px",
+              fontWeight: "400",
+              color: "#002152",
+              lineHeight: "22px",
+            }}
+          >
+            Selected document:
+          </Typography>
+        </Grid>
+      </Grid>
+      <Box {...getRootProps({ style })}>
+        <input {...getInputProps()} />
+        <Typography
+          variant="p"
+          sx={{
+            color: "#6C7A84",
+            fontSize: "14px",
+            fontWeight: "400",
+            lineHeight: "18px",
+            mt: 1,
+          }}
+        >
+          {t["Drag and drop documents here"]}
+        </Typography>
+        <Typography
+          variant="p"
+          sx={{
+            color: "#6C7A84",
+            fontSize: "14px",
+            fontWeight: "400",
+            lineHeight: "18px",
+            mt: 1,
+          }}
+        >
+          {t["or"]}
+        </Typography>
+        <Button
+          variant="contained"
+          sx={{
+            textTransform: "none",
+            mt: 1,
+            background: "#0362F0",
+            color: "#ffffff",
+            fontSize: "14px",
+            fontWeight: "600",
+            lineHeight: "18px",
+          }}
+        >
+          {t["select documents"]}
+        </Button>
+        <Typography
+          variant="inherit"
+          color="textSecondary"
+          sx={{ color: "#b91c1c" }}
+        >
+          {errors?.document_files?.message}
+        </Typography>
+      </Box>
+      {documents?.length > 0 && (
+        <Grid container spacing={1} sx={{ mt: 3 }}>
+          {documents?.map((file, index) => (
+            <Grid item xs={12} sm={12} md={4} lg={3} xl={3} key={index}>
+              <Box
+                sx={{
+                  p: 2,
+                  boxSizing: "border-box",
+                  border: "1px solid #DBE1E5",
+                  borderRadius: "6px",
+                }}
+              >
+                <Grid
+                  container
+                  direction="row"
+                  justifyContent="flex-end"
+                  alignItems="flex-start"
+                >
+                  <DeleteOutlineOutlinedIcon
+                    sx={{
+                      background: "#F44336",
+                      color: "#ffffff",
+                      borderRadius: "50%",
+                      height: "3vh",
+                      width: "3vh",
+                      paddingY: "3px",
+                    }}
+                    onClick={() => handleDelete(index)}
+                  />
+                </Grid>
+
+                <Typography
+                  variant="p"
+                  sx={{ color: "#38bdf8", fontWeight: "600" }}
+                >
+                  {file?.name?.slice(0, 15) || file?.title?.slice(0, 15)}
+                </Typography>
+              </Box>
+            </Grid>
+          ))}
+        </Grid>
+      )}
       {/* <Grid container sx={{ mt: 2 }}>
         <Grid item xs={12} sm={12} md={6} lg={6} xl={6}>
           <Typography

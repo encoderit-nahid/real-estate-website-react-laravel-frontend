@@ -2,6 +2,7 @@ import {
   Box,
   Button,
   CircularProgress,
+  Divider,
   FormControl,
   Grid,
   TextField,
@@ -63,10 +64,11 @@ function Features({
   const [item, setItem] = useState("");
   const dispatch = useDispatch();
   useEffect(() => {
-    dispatch(findButtonData());
+    dispatch(findFeatureData());
   }, [dispatch]);
 
-  const featureData = useSelector((state) => state.featureButton?.buttonData);
+  const featureData = useSelector((state) => state.feature.featureData);
+  console.log({ featureData });
 
   const loading = useSelector((state) => state.featureButton?.loading);
 
@@ -144,67 +146,109 @@ function Features({
         </Grid>
       ) : (
         <Grid container spacing={1} sx={{ mt: 2 }}>
-          {featureData?.features?.map((data, index) => (
-            <Grid item xs={4} sm={4} md={4} lg={3} xl={3} key={index}>
-              <Button
-                onClick={() => {
-                  if (!featuretypes?.includes(data.id)) {
-                    setFeatureTypes((current) => [...current, data.id]);
-                  } else {
-                    const newArray = featuretypes?.filter(
-                      (value) => value !== data.id
-                    );
-                    setFeatureTypes(newArray);
-                  }
-                }}
+          {Object.keys(featureData).map((key, index) => (
+            <Box key={index}>
+              <Typography
+                variant="p"
                 sx={{
-                  background: `${
-                    featuretypes?.includes(data.id) ? "#7450F0" : "transparent"
-                  }`,
-                  borderRadius: "56px",
-                  width: "100%",
-                  color: `${
-                    featuretypes?.includes(data.id) ? "#ffffff" : "#32414C"
-                  }`,
-                  border: `${
-                    featuretypes?.includes(data.id) ? "" : "1px solid #9FAAB1"
-                  }`,
-                  fontSize: {
-                    xs: "12px",
-                    sm: "13px",
-                    md: "16px",
-                    lg: "13px",
-                    xl: "16px",
-                  },
+                  color: "#4B4B66",
+                  fontSize: "16px",
                   fontWeight: "400",
-                  lineHeight: "22px",
-                  textTransform: "none",
-                  px: { xs: 0, sm: 2, md: 2, lg: 2, xl: 2 },
-                  py: 1,
-                  "&:hover": {
-                    background: "#7450F0",
-                    borderRadius: "56px",
-                    color: "#ffffff",
-                    border: `${index === 0 ? "" : "1px solid #9FAAB1"}`,
-                    width: "100%",
-                    fontSize: {
-                      xs: "12px",
-                      sm: "13px",
-                      md: "16px",
-                      lg: "13px",
-                      xl: "16px",
-                    },
-                    fontWeight: "400",
-                    lineHeight: "22px",
-                    textTransform: "none",
-                    px: { xs: 0, sm: 2, md: 2, lg: 2, xl: 2 },
-                    py: 1,
-                  },
+                  lineHeight: "19px",
                 }}
               >
-                {data?.name?.slice(0, 20)}
-              </Button>
-            </Grid>
+                {(key === "condominium" ||
+                  key === "accessibility" ||
+                  key === "Bem-estar" ||
+                  key === "Eletrodomésticos" ||
+                  key === "Cômodos" ||
+                  key === "Acessibilidade") &&
+                  key}
+              </Typography>
+              <Grid
+                container
+                direction="row"
+                justifyContent="flex-start"
+                alignItems="flex-start"
+                gap={1}
+                sx={{ mt: 2 }}
+              >
+                {(key === "condominium" ||
+                  key === "accessibility" ||
+                  key === "Bem-estar" ||
+                  key === "Eletrodomésticos" ||
+                  key === "Cômodos" ||
+                  key === "Acessibilidade") &&
+                  featureData[key].map((data, index) => (
+                    <Button
+                      key={index}
+                      onClick={() => {
+                        if (!featuretypes?.includes(data.id)) {
+                          setFeatureTypes((current) => [...current, data.id]);
+                        } else {
+                          const newArray = featuretypes?.filter(
+                            (value) => value !== data.id
+                          );
+                          setFeatureTypes(newArray);
+                        }
+                      }}
+                      sx={{
+                        background: `${
+                          featuretypes?.includes(data.id)
+                            ? "#7450F0"
+                            : "transparent"
+                        }`,
+                        borderRadius: "56px",
+                        // width: "100%",
+                        color: `${
+                          featuretypes?.includes(data.id)
+                            ? "#FFFFFF"
+                            : "#32414C"
+                        }`,
+                        border: `${
+                          featuretypes?.includes(data.id)
+                            ? ""
+                            : "1px solid #9FAAB1"
+                        }`,
+                        fontSize: {
+                          xs: "12px",
+                          sm: "13px",
+                          md: "16px",
+                          lg: "13px",
+                          xl: "16px",
+                        },
+                        fontWeight: "400",
+                        lineHeight: "22px",
+                        textTransform: "none",
+                        px: { xs: 0, sm: 2, md: 2, lg: 2, xl: 2 },
+                        py: 1,
+                        "&:hover": {
+                          background: "#7450F0",
+                          borderRadius: "56px",
+                          color: "#FFFFFF",
+                          border: `${index === 0 ? "" : "1px solid #9FAAB1"}`,
+                          // width: "100%",
+                          fontSize: {
+                            xs: "12px",
+                            sm: "13px",
+                            md: "16px",
+                            lg: "13px",
+                            xl: "16px",
+                          },
+                          fontWeight: "400",
+                          lineHeight: "22px",
+                          textTransform: "none",
+                          px: { xs: 0, sm: 2, md: 2, lg: 2, xl: 2 },
+                          py: 1,
+                        },
+                      }}
+                    >
+                      {data?.name?.slice(0, 20)}
+                    </Button>
+                  ))}
+              </Grid>
+              <Divider sx={{ mt: 1, mb: 1 }} />
+            </Box>
           ))}
         </Grid>
       )}

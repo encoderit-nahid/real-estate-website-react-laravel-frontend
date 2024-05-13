@@ -486,7 +486,7 @@ export async function getServerSideProps(context) {
 
   const cookies = context.req.cookies["language"];
 
-  // console.log("single", singlePropertyData);
+  console.log("single", singlePropertyData);
   return {
     props: {
       singlePropertyData: singlePropertyData,
