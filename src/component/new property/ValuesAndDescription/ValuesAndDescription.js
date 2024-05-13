@@ -15,9 +15,15 @@ import { Controller } from "react-hook-form";
 import BaseAutocomplete from "../../reuseable/baseAutocomplete/BaseAutocomplete";
 import en from "locales/en";
 import pt from "locales/pt";
+const matchedForCondominio = [10, 11, 15, 16, 1, 3, 4, 7, 8];
 
-
-const matchedForCondominio = [ 10,11,15,16,1,3,4,7,8]
+const matchedForAreaM2 = [1, 2, 3, 4, 5, 6, 7, 8, 9, 11, 12];
+const matchedForQuartos = [1, 2, 3, 4, 5, 7, 8, 9];
+const matchedForSuites = [1, 2, 3, 4, 5, 6, 7, 8, 9];
+const matchedForBanheiro = [1, 2, 3, 4, 5, 7, 8, 9, 11, 12];
+const matchedForVagas = [1, 2, 3, 4, 5, 7, 8, 9, 11, 12];
+const matchedForTerrenoAreaM2 = [2, 3, 5, 7, 8, 9, 11, 12];
+// const matchedForDimensoes = [5, 6];
 
 function ValuesAndDescription({
   control,
@@ -98,7 +104,7 @@ function ValuesAndDescription({
         </Typography>
       </Grid>
       <Grid container spacing={1} sx={{ mt: 2 }}>
-        <Grid item xs={matchedForCondominio.includes(property_detail_id) ? 6 : 12}>
+        <Grid item xs={4}>
           <Controller
             name="brl_rent"
             control={control}
@@ -124,38 +130,37 @@ function ValuesAndDescription({
             {errors.brl_rent?.message}
           </Typography>
         </Grid>
-  {
-    matchedForCondominio.includes(property_detail_id) &&
-    <Grid item xs={6}>
-    <Controller
-      name="condominium"
-      control={control}
-      defaultValue={""}
-      render={({ field }) => (
-        <BaseTextField
-          size={"medium"}
-          placeholder={`R$ ${t["Condominium"]}*`}
-          type={"number"}
-          onChange={(e) => {
-            field.onChange(e.target.value);
-          }}
-          name={"condominium"}
-          value={field.value}
-        />
-      )}
-    />
-    <Typography
-      variant="inherit"
-      color="textSecondary"
-      sx={{ color: "#b91c1c" }}
-    >
-      {errors.condominium?.message}
-    </Typography>
-  </Grid>
-  }
+        {matchedForCondominio.includes(property_detail_id) && (
+          <Grid item xs={12} md={6}>
+            <Controller
+              name="condominium"
+              control={control}
+              defaultValue={""}
+              render={({ field }) => (
+                <BaseTextField
+                  size={"medium"}
+                  placeholder={`R$ ${t["Condominium"]}*`}
+                  type={"number"}
+                  onChange={(e) => {
+                    field.onChange(e.target.value);
+                  }}
+                  name={"condominium"}
+                  value={field.value}
+                />
+              )}
+            />
+            <Typography
+              variant="inherit"
+              color="textSecondary"
+              sx={{ color: "#b91c1c" }}
+            >
+              {errors.condominium?.message}
+            </Typography>
+          </Grid>
+        )}
       </Grid>
       <Grid container spacing={1} sx={{ mt: 2 }}>
-        <Grid item xs={6}>
+        <Grid item xs={4}>
           <Controller
             name="brl_iptu"
             control={control}
@@ -188,6 +193,7 @@ function ValuesAndDescription({
         justifyContent="flex-start"
         alignItems="flex-start"
         sx={{ mt: 3 }}
+        xs={4}
       >
         <Image src={ventureImage} alt="venture" />
         <Typography
@@ -205,167 +211,179 @@ function ValuesAndDescription({
       </Grid>
 
       <Grid container spacing={1} sx={{ mt: 2 }}>
-        <Grid item xs={12} sm={12} md={12} lg={5}>
-          <Controller
-            name="land_area"
-            control={control}
-            defaultValue={""}
-            render={({ field }) => (
-              <BaseTextField
-                size={"medium"}
-                placeholder={`m² ${t["Land area"]}*`}
-                type={"number"}
-                onChange={(e) => {
-                  field.onChange(e.target.value);
-                }}
-                name={"land_area"}
-                value={field.value}
-              />
-            )}
-          />
-          <Typography
-            variant="inherit"
-            color="textSecondary"
-            sx={{ color: "#b91c1c" }}
-          >
-            {errors.land_area?.message}
-          </Typography>
-        </Grid>
-        <Grid item xs={12} sm={12} md={12} lg={5}>
-          <Controller
-            name="property_area"
-            control={control}
-            defaultValue={""}
-            render={({ field }) => (
-              <BaseTextField
-                size={"medium"}
-                placeholder={`m² ${t["Size of the property"]}*`}
-                type={"number"}
-                onChange={(e) => {
-                  field.onChange(e.target.value);
-                }}
-                name={"property_area"}
-                value={field.value}
-              />
-            )}
-          />
-          <Typography
-            variant="inherit"
-            color="textSecondary"
-            sx={{ color: "#b91c1c" }}
-          >
-            {errors.property_area?.message}
-          </Typography>
-        </Grid>
-        <Grid item xs={12} sm={12} md={12} lg={2}>
-          <Controller
-            name="no_of_rooms"
-            control={control}
-            defaultValue={""}
-            render={({ field }) => (
-              <BaseTextField
-                size={"medium"}
-                placeholder={`${t["number of rooms"]}*`}
-                type={"number"}
-                onChange={(e) => {
-                  field.onChange(e.target.value);
-                }}
-                name={"no_of_rooms*"}
-                value={field.value}
-              />
-            )}
-          />
-          <Typography
-            variant="inherit"
-            color="textSecondary"
-            sx={{ color: "#b91c1c" }}
-          >
-            {errors.no_of_rooms?.message}
-          </Typography>
-        </Grid>
+        {matchedForTerrenoAreaM2.includes(property_detail_id) && (
+          <Grid item xs={12} md={6}>
+            <Controller
+              name="land_area"
+              control={control}
+              defaultValue={""}
+              render={({ field }) => (
+                <BaseTextField
+                  size={"medium"}
+                  placeholder={`m² ${t["Land area"]}*`}
+                  type={"number"}
+                  onChange={(e) => {
+                    field.onChange(e.target.value);
+                  }}
+                  name={"land_area"}
+                  value={field.value}
+                />
+              )}
+            />
+            <Typography
+              variant="inherit"
+              color="textSecondary"
+              sx={{ color: "#b91c1c" }}
+            >
+              {errors.land_area?.message}
+            </Typography>
+          </Grid>
+        )}
+        {matchedForAreaM2.includes(property_detail_id) && (
+          <Grid item xs={12} md={6}>
+            <Controller
+              name="property_area"
+              control={control}
+              defaultValue={""}
+              render={({ field }) => (
+                <BaseTextField
+                  size={"medium"}
+                  placeholder={`m² ${t["Size of the property"]}*`}
+                  type={"number"}
+                  onChange={(e) => {
+                    field.onChange(e.target.value);
+                  }}
+                  name={"property_area"}
+                  value={field.value}
+                />
+              )}
+            />
+            <Typography
+              variant="inherit"
+              color="textSecondary"
+              sx={{ color: "#b91c1c" }}
+            >
+              {errors.property_area?.message}
+            </Typography>
+          </Grid>
+        )}
+        {matchedForQuartos.includes(property_detail_id) && (
+          <Grid item xs={12} md={6}>
+            <Controller
+              name="no_of_rooms"
+              control={control}
+              defaultValue={""}
+              render={({ field }) => (
+                <BaseTextField
+                  size={"medium"}
+                  placeholder={`${t["number of rooms"]}*`}
+                  type={"number"}
+                  onChange={(e) => {
+                    field.onChange(e.target.value);
+                  }}
+                  name={"no_of_rooms*"}
+                  value={field.value}
+                />
+              )}
+            />
+            <Typography
+              variant="inherit"
+              color="textSecondary"
+              sx={{ color: "#b91c1c" }}
+            >
+              {errors.no_of_rooms?.message}
+            </Typography>
+          </Grid>
+        )}
       </Grid>
       <Grid container spacing={1} sx={{ mt: 2 }}>
-        <Grid item xs={12} sm={12} md={12} lg={5}>
-          <Controller
-            name="no_of_suites"
-            control={control}
-            defaultValue={""}
-            render={({ field }) => (
-              <BaseTextField
-                size={"medium"}
-                placeholder={`${t["number of suites"]}*`}
-                type={"number"}
-                onChange={(e) => {
-                  field.onChange(e.target.value);
-                }}
-                name={"no_of_suites"}
-                value={field.value}
-              />
-            )}
-          />
-          <Typography
-            variant="inherit"
-            color="textSecondary"
-            sx={{ color: "#b91c1c" }}
-          >
-            {errors.no_of_suites?.message}
-          </Typography>
-        </Grid>
-        <Grid item xs={12} sm={12} md={12} lg={2}>
-          <Controller
-            name="no_of_bathrooms"
-            control={control}
-            defaultValue={""}
-            render={({ field }) => (
-              <BaseTextField
-                size={"medium"}
-                placeholder={`${t["bathrooms"]}*`}
-                type={"number"}
-                onChange={(e) => {
-                  field.onChange(e.target.value);
-                }}
-                name={"no_of_bathrooms"}
-                value={field.value}
-              />
-            )}
-          />
-          <Typography
-            variant="inherit"
-            color="textSecondary"
-            sx={{ color: "#b91c1c" }}
-          >
-            {errors.no_of_bathrooms?.message}
-          </Typography>
-        </Grid>
-        <Grid item xs={12} sm={12} md={12} lg={5}>
-          <Controller
-            name="no_of_parking_spaces"
-            control={control}
-            defaultValue={""}
-            render={({ field }) => (
-              <BaseTextField
-                size={"medium"}
-                placeholder={`${t["number of parking spaces"]}*`}
-                type={"number"}
-                onChange={(e) => {
-                  field.onChange(e.target.value);
-                }}
-                name={"no_of_parking_spaces"}
-                value={field.value}
-              />
-            )}
-          />
-          <Typography
-            variant="inherit"
-            color="textSecondary"
-            sx={{ color: "#b91c1c" }}
-          >
-            {errors.no_of_parking_spaces?.message}
-          </Typography>
-        </Grid>
+        {matchedForSuites.includes(property_detail_id) && (
+          <Grid item xs={12} md={6}>
+            <Controller
+              name="no_of_suites"
+              control={control}
+              defaultValue={""}
+              render={({ field }) => (
+                <BaseTextField
+                  size={"medium"}
+                  placeholder={`${t["number of suites"]}*`}
+                  type={"number"}
+                  onChange={(e) => {
+                    field.onChange(e.target.value);
+                  }}
+                  name={"no_of_suites"}
+                  value={field.value}
+                />
+              )}
+            />
+            <Typography
+              variant="inherit"
+              color="textSecondary"
+              sx={{ color: "#b91c1c" }}
+            >
+              {errors.no_of_suites?.message}
+            </Typography>
+          </Grid>
+        )}
+        {matchedForBanheiro.includes(property_detail_id) && (
+          <Grid item xs={12} md={6}>
+            <Controller
+              name="no_of_bathrooms"
+              control={control}
+              defaultValue={""}
+              render={({ field }) => (
+                <BaseTextField
+                  size={"medium"}
+                  placeholder={`${t["bathrooms"]}*`}
+                  type={"number"}
+                  onChange={(e) => {
+                    field.onChange(e.target.value);
+                  }}
+                  name={"no_of_bathrooms"}
+                  value={field.value}
+                />
+              )}
+            />
+            <Typography
+              variant="inherit"
+              color="textSecondary"
+              sx={{ color: "#b91c1c" }}
+            >
+              {errors.no_of_bathrooms?.message}
+            </Typography>
+          </Grid>
+        )}
+        {matchedForVagas.includes(property_detail_id) && (
+          <Grid item xs={12} md={6}>
+            <Controller
+              name="no_of_parking_spaces"
+              control={control}
+              defaultValue={""}
+              render={({ field }) => (
+                <BaseTextField
+                  size={"medium"}
+                  placeholder={`${t["number of parking spaces"]}*`}
+                  type={"number"}
+                  onChange={(e) => {
+                    field.onChange(e.target.value);
+                  }}
+                  name={"no_of_parking_spaces"}
+                  value={field.value}
+                />
+              )}
+            />
+            <Typography
+              variant="inherit"
+              color="textSecondary"
+              sx={{ color: "#b91c1c" }}
+            >
+              {errors.no_of_parking_spaces?.message}
+            </Typography>
+          </Grid>
+        )}
       </Grid>
       <Grid container spacing={1} sx={{ mt: 2 }}>
-        <Grid item xs={12} sm={12} md={12} lg={5}>
+        <Grid item xs={4}>
           <Controller
             name="documentation"
             control={control}
@@ -393,7 +411,7 @@ function ValuesAndDescription({
             {errors.documentation?.message}
           </Typography>
         </Grid>
-        <Grid item xs={12} sm={12} md={12} lg={2}>
+        <Grid item xs={4}>
           <Controller
             name="registry"
             control={control}
@@ -418,7 +436,7 @@ function ValuesAndDescription({
             {errors.registry?.message}
           </Typography>
         </Grid>
-        <Grid item xs={12} sm={12} md={12} lg={5}>
+        <Grid item xs={4}>
           <Controller
             name="registration_number"
             control={control}
