@@ -619,6 +619,102 @@ function Owner({
               lineHeight: "22px",
             }}
           >
+            Property ownership document
+            {/* {`${t["Document data"]}:`} */}
+          </Typography>
+        </Grid>
+      </Grid>
+      <Grid container spacing={1} sx={{ mt: 1 }}>
+        <Grid item xs={12} sm={12} md={6} lg={4} xl={4}>
+          <Controller
+            name="owner_documnentation"
+            control={control}
+            render={({ field }) => (
+              <BaseAutocomplete
+                //   sx={{ margin: "0.6vh 0" }}
+                options={top100Films || []}
+                getOptionLabel={(option) => option.label || ""}
+                isOptionEqualToValue={(option, value) =>
+                  option.year === value.year
+                }
+                size={"medium"}
+                placeholder={t["documents"]}
+                onChange={(e, v, r, d) => field.onChange(v)}
+                value={field.value}
+              />
+            )}
+          />
+          <Typography
+            variant="inherit"
+            color="textSecondary"
+            sx={{ color: "#b91c1c" }}
+          >
+            {errors.owner_documentation?.message}
+          </Typography>
+        </Grid>
+        <Grid item xs={12} sm={12} md={6} lg={4} xl={4}>
+          <Controller
+            name="owner_registry"
+            control={control}
+            defaultValue={""}
+            render={({ field }) => (
+              <BaseTextField
+                size={"medium"}
+                placeholder={t["registry office"]}
+                onChange={(e) => {
+                  field.onChange(e.target.value);
+                }}
+                name={"owner_registry"}
+                value={field.value}
+              />
+            )}
+          />
+          <Typography
+            variant="inherit"
+            color="textSecondary"
+            sx={{ color: "#b91c1c" }}
+          >
+            {errors.owner_registry?.message}
+          </Typography>
+        </Grid>
+        <Grid item xs={12} sm={12} md={6} lg={4} xl={4}>
+          <Controller
+            name="owner_registration_number"
+            control={control}
+            defaultValue={""}
+            render={({ field }) => (
+              <BaseTextField
+                size={"medium"}
+                placeholder={t["registration number"]}
+                onChange={(e) => {
+                  field.onChange(e.target.value);
+                }}
+                name={"owner_registartion_number"}
+                type={"number"}
+                value={field.value}
+              />
+            )}
+          />
+          <Typography
+            variant="inherit"
+            color="textSecondary"
+            sx={{ color: "#b91c1c" }}
+          >
+            {errors.owner_registration_number?.message}
+          </Typography>
+        </Grid>
+      </Grid>
+      <Grid container sx={{ mt: 2 }}>
+        <Grid item xs={12} sm={12} md={6} lg={6} xl={6}>
+          <Typography
+            variant="p"
+            sx={{
+              fontSize: "16px",
+              fontWeight: "400",
+              color: "#002152",
+              lineHeight: "22px",
+            }}
+          >
             Selected document:
           </Typography>
         </Grid>
@@ -713,101 +809,6 @@ function Owner({
           ))}
         </Grid>
       )}
-      {/* <Grid container sx={{ mt: 2 }}>
-        <Grid item xs={12} sm={12} md={6} lg={6} xl={6}>
-          <Typography
-            variant="p"
-            sx={{
-              fontSize: "16px",
-              fontWeight: "400",
-              color: "#002152",
-              lineHeight: "22px",
-            }}
-          >
-            {`${t["Document data"]}:`}
-          </Typography>
-        </Grid>
-      </Grid> */}
-      {/* <Grid container spacing={1} sx={{ mt: 1 }}>
-        <Grid item xs={12} sm={12} md={6} lg={4} xl={4}>
-          <Controller
-            name="owner_documnentation"
-            control={control}
-            render={({ field }) => (
-              <BaseAutocomplete
-                //   sx={{ margin: "0.6vh 0" }}
-                options={top100Films || []}
-                getOptionLabel={(option) => option.label || ""}
-                isOptionEqualToValue={(option, value) =>
-                  option.year === value.year
-                }
-                size={"medium"}
-                placeholder={t["documents"]}
-                onChange={(e, v, r, d) => field.onChange(v)}
-                value={field.value}
-              />
-            )}
-          />
-          <Typography
-            variant="inherit"
-            color="textSecondary"
-            sx={{ color: "#b91c1c" }}
-          >
-            {errors.owner_documentation?.message}
-          </Typography>
-        </Grid>
-        <Grid item xs={12} sm={12} md={6} lg={4} xl={4}>
-          <Controller
-            name="owner_registry"
-            control={control}
-            defaultValue={""}
-            render={({ field }) => (
-              <BaseTextField
-                size={"medium"}
-                placeholder={t["registry office"]}
-                onChange={(e) => {
-                  field.onChange(e.target.value);
-                }}
-                name={"owner_registry"}
-                value={field.value}
-              />
-            )}
-          />
-          <Typography
-            variant="inherit"
-            color="textSecondary"
-            sx={{ color: "#b91c1c" }}
-          >
-            {errors.owner_registry?.message}
-          </Typography>
-        </Grid>
-        <Grid item xs={12} sm={12} md={6} lg={4} xl={4}>
-          <Controller
-            name="owner_registration_number"
-            control={control}
-            defaultValue={""}
-            render={({ field }) => (
-              <BaseTextField
-                size={"medium"}
-                placeholder={t["registration number"]}
-                onChange={(e) => {
-                  field.onChange(e.target.value);
-                }}
-                name={"owner_registartion_number"}
-                type={"number"}
-                value={field.value}
-              />
-            )}
-          />
-          <Typography
-            variant="inherit"
-            color="textSecondary"
-            sx={{ color: "#b91c1c" }}
-          >
-            {errors.owner_registration_number?.message}
-          </Typography>
-        </Grid>
-      </Grid> */}
     </Box>
   );
 }
