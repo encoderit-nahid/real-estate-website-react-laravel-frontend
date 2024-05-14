@@ -50,13 +50,7 @@ const PropertyFeature = [
   "fireplace",
   "furnish",
 ];
-function Features({
-  featuretypes,
-  setFeatureTypes,
-  errors,
-  languageName,
-  control,
-}) {
+function Features({ featuretypes, setFeatureTypes, errors, languageName }) {
   const t = languageName === "en" ? en : pt;
 
   const { data: session } = useSession();

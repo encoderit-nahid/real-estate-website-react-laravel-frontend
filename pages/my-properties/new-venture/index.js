@@ -141,6 +141,7 @@ export default function NewVenture({ language, session }) {
   const [videoFiles, setVideoFiles] = useState([]);
   const [deletedContent, setDeletedContent] = useState([]);
   const [featuretypes, setFeatureTypes] = useState([]);
+  const [documents, setDocuments] = useState([]);
   const [propertyType, setPropertyType] = useState("Residential");
   const [property_detail_id, setPropertyDetailId] = useState(1);
 
@@ -196,35 +197,32 @@ export default function NewVenture({ language, session }) {
   const allValues = watch();
 
   const onSubmit = async (data) => {
-    console.log("🟥 ~ onSubmit ~ data:", data);
-    if (files.length > 0) {
-      setLoading(true);
-      let newArr = [];
-      files?.forEach((data, index) => {
-        newArr.push({ file: data, title: allValues[`title_${index}`].slug });
-      });
-
-      const requireData = {
-        name: data.name,
-        description: data.description,
-        images: newArr,
-      };
-
-      const formData = serialize(requireData, { indices: true });
-      const [error, response] = await createProjectApi(formData);
-      setLoading(false);
-      if (!error) {
-        setSentModalOpen(true);
-      } else {
-        const errors = error?.response?.data?.errors ?? {};
-        Object.entries(errors).forEach(([name, messages]) => {
-          setError(name, { type: "manual", message: messages[0] });
-        });
+    const filterNewImageTitleData = [];
+    files.forEach((data, index) => {
+      if (data?.title !== allValues[`title_${index}`]?.slug) {
+        if (data?.id) {
+          filterNewImageTitleData.push({
+            attachment_id: data?.id,
+            title: allValues[`title_${index}`].slug,
+          });
+        }
       }
-    } else {
-      setImageError(true);
-      setImageErrorMessage("O arquivo de imagem é obrigatório");
-    }
+    });
+    let newArr = [];
+    files?.forEach((data, index) => {
+      if (data instanceof File) {
+        newArr.push({ file: data, title: allValues[`title_${index}`].slug });
+      }
+    });
+    const newDocuments = documents?.filter((data) => data instanceof File);
+
+    const requireData = {
+      ...data,
+      images: newArr,
+      features: featuretypes,
+      document_files: newDocuments,
+    };
+    console.log("🟥 ~ onSubmit ~ requireData:", requireData);
   };
   const isStepSkipped = (step) => {
     return skipped.has(step);
@@ -323,7 +321,7 @@ export default function NewVenture({ language, session }) {
                           />
                         ) : activeStep === 1 ? (
                           <Features
-                            control={control}
+                            // control={control}
                             errors={errors}
                             featuretypes={featuretypes}
                             setFeatureTypes={setFeatureTypes}
@@ -335,15 +333,12 @@ export default function NewVenture({ language, session }) {
                             errors={errors}
                             files={files}
                             setFiles={setFiles}
-                            videoFiles={videoFiles}
-                            setVideoFiles={setVideoFiles}
                             setDeletedContent={setDeletedContent}
                             deletedContent={deletedContent}
                             imageError={imageError}
                             imageErrorMessage={imageErrorMessage}
                             fields={fields}
                             append={append}
-                            // hideNextButton={true}
                             remove={remove}
                             allValues={allValues}
                             languageName={myValue.toString()}
@@ -355,10 +350,8 @@ export default function NewVenture({ language, session }) {
                             adType={adType}
                             setValue={setValue}
                             setAdType={setAdType}
-                            propertyType={propertyType}
-                            setPropertyType={setPropertyType}
-                            property_detail_id={property_detail_id}
-                            setPropertyDetailId={setPropertyDetailId}
+                            documents={documents}
+                            setDocuments={setDocuments}
                             languageName={myValue.toString()}
                             allValues={allValues}
                           />

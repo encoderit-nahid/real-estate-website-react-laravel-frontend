@@ -25,6 +25,7 @@ import { findPropertyTypeData } from "../../../redux/propertyType/actions";
 import { useDispatch, useSelector } from "react-redux";
 import { findProjectsData } from "../../../redux/projects/actions";
 import { Controller } from "react-hook-form";
+import DeleteOutlineOutlinedIcon from "@mui/icons-material/DeleteOutlineOutlined";
 import BaseAutocomplete from "../../reuseable/baseAutocomplete/BaseAutocomplete";
 import { findStateData } from "../../../redux/state/actions";
 import en from "locales/en";
@@ -55,7 +56,7 @@ const baseStyle = {
   color: "#c4c4c4",
   outline: "none",
   transition: "border .24s ease-in-out",
-  width: "70%",
+  width: "100%",
   marginTop: "2vh",
 };
 
@@ -115,10 +116,6 @@ function FinancialData({
 
   console.log({ allStateData });
 
-  // console.log({ documents })
-  // const filterDocs = documents?.filter((d) => d instanceof File)
-  // console.log({ filterDocs })
-
   const onDrop = (acceptedFiles) => {
     acceptedFiles.map((file) =>
       Object.assign(file, {
@@ -139,8 +136,10 @@ function FinancialData({
   } = useDropzone({
     onDrop,
     accept: {
-      "image/jpeg": [],
-      "image/png": [],
+      "application/pdf": [],
+      "application/vnd.openxmlformats-officedocument.wordprocessingml.document":
+        [],
+      "application/msword": [],
     },
   });
 
@@ -317,7 +316,7 @@ function FinancialData({
                 mt: 1,
               }}
             >
-              {t["drag and drop images here"]}
+              {t["Drag and drop documents here"]}
             </Typography>
             <Typography
               variant="p"
@@ -343,16 +342,58 @@ function FinancialData({
                 lineHeight: "18px",
               }}
             >
-              {t["select images"]}
+              {t["select documents"]}
             </Button>
             <Typography
               variant="inherit"
               color="textSecondary"
               sx={{ color: "#b91c1c" }}
             >
-              {errors?.images?.message}
+              {errors?.document_files?.message}
             </Typography>
           </Box>
+          {documents?.length > 0 && (
+            <Grid container spacing={1} sx={{ mt: 3 }}>
+              {documents?.map((file, index) => (
+                <Grid item xs={12} sm={12} md={4} lg={3} xl={3} key={index}>
+                  <Box
+                    sx={{
+                      p: 2,
+                      boxSizing: "border-box",
+                      border: "1px solid #DBE1E5",
+                      borderRadius: "6px",
+                    }}
+                  >
+                    <Grid
+                      container
+                      direction="row"
+                      justifyContent="flex-end"
+                      alignItems="flex-start"
+                    >
+                      <DeleteOutlineOutlinedIcon
+                        sx={{
+                          background: "#F44336",
+                          color: "#ffffff",
+                          borderRadius: "50%",
+                          height: "3vh",
+                          width: "3vh",
+                          paddingY: "3px",
+                        }}
+                        onClick={() => handleDelete(index)}
+                      />
+                    </Grid>
+
+                    <Typography
+                      variant="p"
+                      sx={{ color: "#38bdf8", fontWeight: "600" }}
+                    >
+                      {file?.name?.slice(0, 15) || file?.title?.slice(0, 15)}
+                    </Typography>
+                  </Box>
+                </Grid>
+              ))}
+            </Grid>
+          )}
         </Grid>
       </Grid>
     </Box>
