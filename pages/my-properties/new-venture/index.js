@@ -29,7 +29,27 @@ import { serialize } from "object-to-formdata";
 import { createProjectApi } from "../../../src/api";
 import { useDispatch, useSelector } from "react-redux";
 import { GetPhotoTypeData } from "../../../src/redux/photo/actions";
-
+const requiredFields = [
+  [
+    "address",
+    "city",
+    "complement",
+    "description",
+    "name",
+    "neighbourhood",
+    "number",
+    "state",
+    "zip_code",
+  ],
+  ["features"],
+  ["images"],
+  [
+    "prohibited",
+    "adjustment_index",
+    "number_of_installments",
+    "value_per_square_meter",
+  ],
+];
 const NewVentureSentModal = dynamic(() =>
   import("@/component/new venture/NewVentureSentModal/NewVentureSentModal")
 );
@@ -60,7 +80,7 @@ export default function NewVenture({ language, session }) {
   const [activeStep, setActiveStep] = useState(0);
   const [skipped, setSkipped] = useState(new Set());
   const [adType, setAdType] = useState("New");
-  const [disableBtn, setDisableBtn] = useState(true);
+  const [disableBtn, setDisableBtn] = useState(false);
   const [draftloading, setDraftLoading] = useState(false);
 
   const BreadCrumbsData = [
@@ -86,6 +106,7 @@ export default function NewVenture({ language, session }) {
     formState: { errors },
     setError,
   } = useForm();
+
   //  {
   //   resolver: yupResolver(validationSchema),
   // }
@@ -96,11 +117,11 @@ export default function NewVenture({ language, session }) {
   const [deletedContent, setDeletedContent] = useState([]);
   const [featuretypes, setFeatureTypes] = useState([]);
   const [documents, setDocuments] = useState([]);
+  const [imageError, setImageError] = useState(false);
+  const [imageErrorMessage, setImageErrorMessage] = useState("");
+
   const [propertyType, setPropertyType] = useState("Residential");
   const [property_detail_id, setPropertyDetailId] = useState(1);
-
-  // const [imageError, setImageError] = useState(false);
-  // const [imageErrorMessage, setImageErrorMessage] = useState("");
 
   const [sentModalOpen, setSentModalOpen] = useState(false);
   // const handleOpen = () => setSentModalOpen(true);
@@ -109,6 +130,7 @@ export default function NewVenture({ language, session }) {
   const allValues = watch();
 
   const onSubmit = async (data) => {
+    console.log("🟥 ~ onSubmit ~ data:", data);
     const filterNewImageTitleData = [];
     files.forEach((data, index) => {
       if (data?.title !== allValues[`title_${index}`]?.slug) {
@@ -164,6 +186,7 @@ export default function NewVenture({ language, session }) {
       document_files: newDocuments,
       content_url: newVideoArr,
     };
+    console.log("🟥 ~ onSubmit ~ requireData:", allValues);
     console.log("🟥 ~ onSubmit ~ requireData:", requireData);
     const formData = serialize(requireData, { indices: true });
     const [error, response] = await createProjectApi(formData);
@@ -198,6 +221,18 @@ export default function NewVenture({ language, session }) {
     control,
     name: "videos",
   });
+
+  useEffect(() => {
+    if (activeStep == 0 || activeStep == 3) {
+      setDisableBtn(() =>
+        requiredFields[activeStep].every((field) => !!allValues[field])
+      );
+    } else if (activeStep == 1) {
+      setDisableBtn(() => featuretypes.length > 0);
+    } else if (activeStep == 2) {
+      setDisableBtn(() => files.length > 0);
+    }
+  }, [allValues, activeStep, files, featuretypes]);
   return (
     <div>
       <Head>
@@ -312,7 +347,6 @@ export default function NewVenture({ language, session }) {
                           {activeStep > 0 && activeStep <= steps.length - 1 && (
                             <Button
                               color="inherit"
-                              // disabled={activeStep === 0}
                               onClick={handleBack}
                               sx={{
                                 mr: 1,
@@ -333,6 +367,7 @@ export default function NewVenture({ language, session }) {
                           {activeStep < steps.length - 1 && (
                             <Button
                               color="inherit"
+                              disabled={!disableBtn}
                               onClick={handleNext}
                               sx={{
                                 background: "#7450F0",
@@ -367,6 +402,7 @@ export default function NewVenture({ language, session }) {
                           {activeStep === steps.length - 1 && (
                             <Button
                               type="submit"
+                              disabled={!disableBtn}
                               sx={{
                                 background: "#7450F0",
                                 borderRadius: "4px",
