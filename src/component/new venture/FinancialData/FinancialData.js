@@ -166,7 +166,7 @@ function FinancialData({
             render={({ field }) => (
               <BaseAutocomplete
                 //   sx={{ margin: "0.6vh 0" }}
-                options={featureTypeData || []}
+                options={demoData || []}
                 getOptionLabel={(option) => option.name || ""}
                 isOptionEqualToValue={(option, value) => option.id === value.id}
                 size={"medium"}
@@ -192,7 +192,7 @@ function FinancialData({
             render={({ field }) => (
               <BaseAutocomplete
                 //   sx={{ margin: "0.6vh 0" }}
-                options={featureTypeData || []}
+                options={demoData || []}
                 getOptionLabel={(option) => option.name || ""}
                 isOptionEqualToValue={(option, value) => option.id === value.id}
                 size={"medium"}
@@ -218,7 +218,7 @@ function FinancialData({
             render={({ field }) => (
               <BaseAutocomplete
                 //   sx={{ margin: "0.6vh 0" }}
-                options={featureTypeData || []}
+                options={numberOfInstallment || []}
                 getOptionLabel={(option) => option.name || ""}
                 isOptionEqualToValue={(option, value) => option.id === value.id}
                 size={"medium"}
@@ -382,4 +382,18 @@ const featureTypeData = [
   { id: 6, name: "sorrounding" },
   { id: 7, name: "wellbeing" },
   { id: 8, name: "feature" },
+];
+
+const numberOfInstallment = [
+  { id: 1, name: "2" },
+  { id: 2, name: "4" },
+  { id: 3, name: "6" },
+  { id: 3, name: "8" },
+];
+
+const demoData = [
+  { name: "The Godfather", id: 1972 },
+  { name: "The Godfather: Part II", id: 1974 },
+  { name: "The Dark Knight", id: 2008 },
+  { name: "12 Angry Men", id: 1957 },
 ];

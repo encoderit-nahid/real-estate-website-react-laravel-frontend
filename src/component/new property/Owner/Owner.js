@@ -1,4 +1,12 @@
-import { Box, Button, FormControl, Grid, Typography } from "@mui/material";
+import {
+  Box,
+  Button,
+  Checkbox,
+  FormControl,
+  FormControlLabel,
+  Grid,
+  Typography,
+} from "@mui/material";
 import Image from "next/image";
 import React, { useEffect, useMemo } from "react";
 import buyerProfile from "../../../../public/Images/buyer_profile.png";
@@ -809,6 +817,32 @@ function Owner({
           ))}
         </Grid>
       )}
+      <Grid container sx={{ mt: 1 }}>
+        <Grid item xs={12}>
+          <Controller
+            name="email_authorization"
+            control={control}
+            defaultValue={false}
+            render={({ field }) => (
+              <FormControlLabel
+                control={
+                  <Checkbox
+                    {...field}
+                    checked={field.value}
+                    onChange={(v) => field.onChange(v)}
+                  />
+                }
+                label={
+                  <Typography variant="p" sx={{ color: "#002152" }}>
+                    Send sales authorization by email
+                  </Typography>
+                }
+                labelPlacement="end"
+              />
+            )}
+          />
+        </Grid>
+      </Grid>
     </Box>
   );
 }

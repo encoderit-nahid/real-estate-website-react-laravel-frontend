@@ -34,7 +34,7 @@ function Features({ featuretypes, setFeatureTypes, errors, languageName }) {
   const featureData = useSelector((state) => state.feature.featureData);
   console.log({ featureData });
 
-  const loading = useSelector((state) => state.featureButton?.loading);
+  const loading = useSelector((state) => state.feature?.loading);
 
   useEffect(() => {
     if (featuretypes.length > 0) {
@@ -128,6 +128,7 @@ function Features({ featuretypes, setFeatureTypes, errors, languageName }) {
                   key === "accessibility" ||
                   key === "amenities" ||
                   key === "appliances" ||
+                  key === "room" ||
                   key === "rooms" ||
                   key === "sorrounding" ||
                   key === "wellbeing" ||
@@ -146,7 +147,7 @@ function Features({ featuretypes, setFeatureTypes, errors, languageName }) {
                   key === "accessibility" ||
                   key === "amenities" ||
                   key === "appliances" ||
-                  key === "rooms" ||
+                  key === "room" ||
                   key === "rooms" ||
                   key === "sorrounding" ||
                   key === "wellbeing" ||
@@ -284,10 +285,11 @@ export default Features;
 const featureTypeData = [
   { id: 1, name: "condominium" },
   { id: 2, name: "accessibility" },
-  { id: 3, name: "amenties" },
+  { id: 3, name: "amenities" },
   { id: 4, name: "appliances" },
   { id: 5, name: "room" },
   { id: 6, name: "sorrounding" },
   { id: 7, name: "wellbeing" },
   { id: 8, name: "feature" },
+  { id: 9, name: "rooms" },
 ];

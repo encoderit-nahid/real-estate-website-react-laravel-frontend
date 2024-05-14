@@ -130,7 +130,7 @@ export default function NewVenture({ language, session }) {
   const allValues = watch();
 
   const onSubmit = async (data) => {
-    console.log("🟥 ~ onSubmit ~ data:", data);
+    setLoading(true);
     const filterNewImageTitleData = [];
     files.forEach((data, index) => {
       if (data?.title !== allValues[`title_${index}`]?.slug) {
@@ -180,11 +180,28 @@ export default function NewVenture({ language, session }) {
     const newDocuments = documents?.filter((data) => data instanceof File);
 
     const requireData = {
-      ...data,
       images: newArr,
       features: featuretypes,
       document_files: newDocuments,
       content_url: newVideoArr,
+      description: data?.description,
+      name: data?.name,
+      financial: {
+        prohibited: data?.prohibited?.name,
+        adjustment_index: data?.adjustment_index?.name,
+        number_of_installments: data?.number_of_installments?.name,
+        value_per_square_meter: data?.value_per_square_meter,
+        document_files: newDocuments,
+      },
+      address: {
+        zip_code: data?.zip_code,
+        address: data?.address,
+        city: data?.city,
+        state_id: data?.state?.id,
+        number: data?.number,
+        neighbourhood: data?.neighbourhood,
+        complement: data?.complement,
+      },
     };
     console.log("🟥 ~ onSubmit ~ requireData:", allValues);
     console.log("🟥 ~ onSubmit ~ requireData:", requireData);

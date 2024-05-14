@@ -36,6 +36,7 @@ const PhotosAndVideos = dynamic(() =>
 const Features = dynamic(() =>
   import("@/component/new property/Features/Features")
 );
+
 const Owner = dynamic(() => import("@/component/new property/Owner/Owner"));
 const PropertySubmittedModal = dynamic(() =>
   import(
@@ -53,6 +54,8 @@ import { useRouter } from "next/router";
 import { findSinglePropertyData } from "../../../src/redux/singleProperty/actions";
 import en from "locales/en";
 import pt from "locales/pt";
+
+const RichTextEditor = dynamic(() => import("react-rte"), { ssr: false });
 
 const drawerWidth = 240;
 
@@ -226,6 +229,8 @@ export default function NewProperty({ language }) {
     }
   });
 
+  console.log({ singleData });
+
   useEffect(() => {
     if (query?.property_id) {
       setAdType(
@@ -257,6 +262,9 @@ export default function NewProperty({ language }) {
       setValue("no_of_suites", singleData?.no_of_suites);
       setValue("no_of_bathrooms", singleData?.no_of_bathrooms);
       setValue("no_of_parking_spaces", singleData?.no_of_parking_spaces);
+      setValue("property_title", singleData?.property_title);
+      setValue("owner_email", singleData?.property_owner?.email);
+      setValue("email_authorization", singleData?.is_sales_authorized === 1);
 
       let selectFeatures = [];
       singleData?.features?.forEach((data) => {
@@ -308,18 +316,18 @@ export default function NewProperty({ language }) {
         "owner_complement",
         singleData?.property_owner?.address?.complement
       );
-      // setValue(
-      //   "owner_registry",
-      //   singleData?.property_owner?.registry[0]?.registry_office
-      // );
-      // setValue(
-      //   "owner_registration_number",
-      //   +singleData?.property_owner?.registry[0]?.registry_number
-      // );
-      // setValue("owner_documentation", {
-      //   label: singleData?.property_owner?.registry[0]?.title,
-      //   year: "2009",
-      // });
+      setValue(
+        "owner_registry",
+        singleData?.property_owner?.registry[0]?.registry_office
+      );
+      setValue(
+        "owner_registration_number",
+        +singleData?.property_owner?.registry[0]?.registry_number
+      );
+      setValue("owner_documnentation", {
+        label: singleData?.property_owner?.registry[0]?.title,
+        year: "2009",
+      });
 
       setValue("registry", singleData?.registry?.[0]?.registry_office);
       setValue(
@@ -462,6 +470,7 @@ export default function NewProperty({ language }) {
       no_of_parking_spaces: data?.no_of_parking_spaces,
       features: featuretypes,
       deprecated_images: deletedContent,
+      is_sales_authorized: data?.email_authorization ? 1 : 0,
       document_files: newDocuments,
       content_url: newVideoArr,
       images: newArr,
@@ -662,6 +671,9 @@ export default function NewProperty({ language }) {
                           property_detail_id={property_detail_id}
                           setPropertyDetailId={setPropertyDetailId}
                           languageName={myValue.toString()}
+                          defaultEditorValue={
+                            singleData?.property_description || ""
+                          }
                           allValues={allValues}
                         />
                       ) : activeStep === 1 ? (

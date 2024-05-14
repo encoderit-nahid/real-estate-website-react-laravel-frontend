@@ -83,6 +83,7 @@ function Address({
   languageName,
   allValues,
   setValue,
+  defaultEditorValue = { defaultEditorValue },
   handleNext,
 }) {
   const dispatch = useDispatch();
@@ -651,11 +652,15 @@ function Address({
       <Grid container spacing={1} sx={{ mt: 3 }}>
         <Grid item xs={12}>
           <Controller
-            name="property_description"
+            name="description"
             control={control}
             defaultValue={""}
             render={({ field }) => (
-              <BaseTextEditor name="description" control={control} />
+              <BaseTextEditor
+                name="description"
+                control={control}
+                defaultEditorValue={defaultEditorValue}
+              />
             )}
           />
           <Typography
