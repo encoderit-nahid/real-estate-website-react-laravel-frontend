@@ -50,8 +50,9 @@ const NewVentureSentModal = dynamic(() =>
 import en from "locales/en";
 import pt from "locales/pt";
 import BaseStepper from "@/component/reuseable/baseStepper/BaseStepper";
-import PhotosAndVideos from "@/component/new property/PhotosAndVideos/PhotosAndVideos";
-import Features from "@/component/new property/Features/Features";
+import PhotosAndVideos from "@/component/new venture/PhotosAndVideos/PhotosAndVideos";
+import Features from "@/component/new venture/Features/Features";
+import FinancialData from "@/component/new venture/FinancialData/FinancialData";
 import Address from "@/component/new venture/Address/Address";
 
 const validationSchema = Yup.object().shape({
@@ -96,7 +97,12 @@ export default function NewVenture({ language, session }) {
   //   console.log({ files });
   const [myValue, setMyValue] = useState(language || "pt");
   const t = myValue === "en" ? en : pt;
-  const steps = [t["Address"], t["Features"], t["Photos and videos"]];
+  const steps = [
+    t["Address"],
+    t["Features"],
+    t["Photos and videos"],
+    "Financial data",
+  ];
   const [activeStep, setActiveStep] = useState(0);
   const [skipped, setSkipped] = useState(new Set());
   const [adType, setAdType] = useState("New");
@@ -125,9 +131,10 @@ export default function NewVenture({ language, session }) {
     setValue,
     formState: { errors },
     setError,
-  } = useForm({
-    resolver: yupResolver(validationSchema),
-  });
+  } = useForm();
+  //  {
+  //   resolver: yupResolver(validationSchema),
+  // }
 
   const [loading, setLoading] = useState(false);
   const [files, setFiles] = useState([]);
@@ -189,6 +196,7 @@ export default function NewVenture({ language, session }) {
   const allValues = watch();
 
   const onSubmit = async (data) => {
+    console.log("🟥 ~ onSubmit ~ data:", data);
     if (files.length > 0) {
       setLoading(true);
       let newArr = [];
@@ -301,7 +309,6 @@ export default function NewVenture({ language, session }) {
                       <form onSubmit={handleSubmit(onSubmit)}>
                         {activeStep === 0 ? (
                           <Address
-                            handleNext={handleNext}
                             control={control}
                             errors={errors}
                             adType={adType}
@@ -316,18 +323,14 @@ export default function NewVenture({ language, session }) {
                           />
                         ) : activeStep === 1 ? (
                           <Features
-                            handleNext={handleNext}
-                            handleBack={handleBack}
                             control={control}
                             errors={errors}
                             featuretypes={featuretypes}
                             setFeatureTypes={setFeatureTypes}
                             languageName={myValue.toString()}
                           />
-                        ) : (
+                        ) : activeStep === 2 ? (
                           <PhotosAndVideos
-                            handleNext={handleNext}
-                            handleBack={handleBack}
                             control={control}
                             errors={errors}
                             files={files}
@@ -345,8 +348,21 @@ export default function NewVenture({ language, session }) {
                             allValues={allValues}
                             languageName={myValue.toString()}
                           />
+                        ) : (
+                          <FinancialData
+                            control={control}
+                            errors={errors}
+                            adType={adType}
+                            setValue={setValue}
+                            setAdType={setAdType}
+                            propertyType={propertyType}
+                            setPropertyType={setPropertyType}
+                            property_detail_id={property_detail_id}
+                            setPropertyDetailId={setPropertyDetailId}
+                            languageName={myValue.toString()}
+                            allValues={allValues}
+                          />
                         )}
-                        {/* 
                         <Grid
                           container
                           direction="row"
@@ -362,7 +378,7 @@ export default function NewVenture({ language, session }) {
                             pt: 2,
                           }}
                         >
-                          {activeStep === steps.length - 1 && (
+                          {activeStep > 0 && activeStep <= steps.length - 1 && (
                             <Button
                               color="inherit"
                               // disabled={activeStep === 0}
@@ -383,53 +399,23 @@ export default function NewVenture({ language, session }) {
                               {t["come back"]}
                             </Button>
                           )}
-
-                          {activeStep === steps.length - 1 && (
-                            <Box>
-                              <Button
-                                type="submit"
-                                disabled={
-                                  session?.user?.role !== "owner" && disableBtn
-                                }
-                                onClick={() => setAction("draft")}
-                                sx={{
-                                  background: "#DBE1E5",
-                                  borderRadius: "4px",
-                                  px: 2,
-                                  py: 1,
-                                  mr: 1,
-                                  color: "#002152",
-                                  fontSize: "16px",
-                                  fontWeight: "600",
-                                  lineHeight: "22px",
-                                  textTransform: "none",
-
-                                  "&:hover": {
-                                    background: "#DBE1E5",
-                                    borderRadius: "4px",
-                                    px: 2,
-                                    py: 1,
-                                    color: "#002152",
-                                    fontSize: "16px",
-                                    fontWeight: "600",
-                                    lineHeight: "22px",
-                                    textTransform: "none",
-                                    mr: 1,
-                                  },
-                                }}
-                              >
-                                {draftloading && (
-                                  <CircularProgress size={22} color="inherit" />
-                                )}
-                                {!draftloading && t["Save as draft"]}
-                              </Button>
-                              <Button
-                                type="submit"
-                                disabled={
-                                  session?.user?.role !== "owner" && disableBtn
-                                }
-                                onClick={() => setAction("new")}
-                                sx={{
+                          {activeStep < steps.length - 1 && (
+                            <Button
+                              color="inherit"
+                              onClick={handleNext}
+                              sx={{
+                                background: "#7450F0",
+                                borderRadius: "4px",
+                                px: 2,
+                                py: 1,
+                                color: "#ffffff",
+                                fontSize: "16px",
+                                fontWeight: "600",
+                                lineHeight: "22px",
+                                textTransform: "none",
+                                boxShadow:
+                                  "0px 4px 8px rgba(81, 51, 182, 0.32)",
+                                "&:hover": {
                                   background: "#7450F0",
                                   borderRadius: "4px",
                                   px: 2,
@@ -441,337 +427,54 @@ export default function NewVenture({ language, session }) {
                                   textTransform: "none",
                                   boxShadow:
                                     "0px 4px 8px rgba(81, 51, 182, 0.32)",
-                                  "&:hover": {
-                                    background: "#7450F0",
-                                    borderRadius: "4px",
-                                    px: 2,
-                                    py: 1,
-                                    color: "#ffffff",
-                                    fontSize: "16px",
-                                    fontWeight: "600",
-                                    lineHeight: "22px",
-                                    textTransform: "none",
-                                    boxShadow:
-                                      "0px 4px 8px rgba(81, 51, 182, 0.32)",
-                                  },
-                                }}
-                              >
-                                {loading && (
-                                  <CircularProgress size={22} color="inherit" />
-                                )}
-                                {!loading && t["Submit approval"]}
-                              </Button>
-                            </Box>
+                                },
+                              }}
+                            >
+                              {t["Next"]}
+                            </Button>
                           )}
-                        </Grid> */}
+                          {activeStep === steps.length - 1 && (
+                            <Button
+                              type="submit"
+                              sx={{
+                                background: "#7450F0",
+                                borderRadius: "4px",
+                                px: 2,
+                                py: 1,
+                                color: "#ffffff",
+                                fontSize: "16px",
+                                fontWeight: "600",
+                                lineHeight: "22px",
+                                textTransform: "none",
+                                boxShadow:
+                                  "0px 4px 8px rgba(81, 51, 182, 0.32)",
+                                "&:hover": {
+                                  background: "#7450F0",
+                                  borderRadius: "4px",
+                                  px: 2,
+                                  py: 1,
+                                  color: "#ffffff",
+                                  fontSize: "16px",
+                                  fontWeight: "600",
+                                  lineHeight: "22px",
+                                  textTransform: "none",
+                                  boxShadow:
+                                    "0px 4px 8px rgba(81, 51, 182, 0.32)",
+                                },
+                              }}
+                            >
+                              {loading && (
+                                <CircularProgress size={22} color="inherit" />
+                              )}
+                              {!loading && t["Save"]}
+                            </Button>
+                          )}
+                        </Grid>
                       </form>
                     </Fragment>
                   )}
                 </Box>
                 {/*👆 */}
-                {/* <form onSubmit={handleSubmit(onSubmit)}>
-                  <Grid
-                    container
-                    direction="row"
-                    justifyContent="flex-start"
-                    alignItems="flex-start"
-                  >
-                    <Image src={ventureImage} alt="venture" />
-                    <Typography
-                      variant="p"
-                      sx={{
-                        color: "#002152",
-                        fontSize: "24px",
-                        fontWeight: "700",
-                        lineHeight: "32px",
-                        ml: 1,
-                      }}
-                    >
-                      {t["New venture"]}
-                    </Typography>
-                  </Grid>
-                  <Grid
-                    container
-                    direction="column"
-                    justifyContent="flex-start"
-                    alignItems="flex-start"
-                    sx={{ mt: 4 }}
-                  >
-                    <Controller
-                      name="name"
-                      control={control}
-                      defaultValue={""}
-                      render={({ field }) => (
-                        <BaseTextField
-                          size={"small"}
-                          placeholder={t["Enterprise Name"]}
-                          onChange={(e) => {
-                            field.onChange(e.target.value);
-                          }}
-                          name={"name"}
-                          value={field.value}
-                        />
-                      )}
-                    />
-                    <Typography
-                      variant="inherit"
-                      color="textSecondary"
-                      sx={{ color: "#b91c1c", mt: 0.5 }}
-                    >
-                      {errors.name?.message}
-                    </Typography>
-
-                    <Controller
-                      name="description"
-                      control={control}
-                      defaultValue={""}
-                      render={({ field }) => (
-                        <BaseTextArea
-                          minRows={3}
-                          onChange={(e) => {
-                            field.onChange(e.target.value);
-                          }}
-                          name={"description"}
-                          value={field.value}
-                          style={{
-                            marginTop: "1vh",
-                            width: "100%",
-                            
-                            color: "rgba(0, 0, 0, 0.87)",
-                            fontSize: "17px",
-                            outlineColor: "#1976d2",
-                            border: `1px solid silver`,
-                            borderRadius: "5px",
-                            padding: "0.4vh 1.4vh",
-                          }}
-                          placeholder={t["Description"]}
-                        />
-                      )}
-                    />
-                    <Typography
-                      variant="inherit"
-                      color="textSecondary"
-                      sx={{ color: "#b91c1c", mt: 0.5 }}
-                    >
-                      {errors.description?.message}
-                    </Typography>
-                    <Typography
-                      variant="p"
-                      sx={{
-                        color: "#1A1859",
-                        fontSize: "16px",
-                        lineHeight: "22px",
-                        fontWeight: "400",
-                        mt: 3,
-                      }}
-                    >
-                      {`${t["Logo and images of the enterprise"]} (.png or .jpeg)`}
-                    </Typography>
-
-                    <Box {...getRootProps({ style })}>
-                      <input {...getInputProps()} />
-                      <Typography
-                        variant="p"
-                        sx={{
-                          color: "#6C7A84",
-                          fontSize: "14px",
-                          fontWeight: "400",
-                          lineHeight: "18px",
-                          mt: 1,
-                        }}
-                      >
-                        {t["drag and drop images here"]}
-                      </Typography>
-                      <Typography
-                        variant="p"
-                        sx={{
-                          color: "#6C7A84",
-                          fontSize: "14px",
-                          fontWeight: "400",
-                          lineHeight: "18px",
-                          mt: 1,
-                        }}
-                      >
-                        {t["or"]}
-                      </Typography>
-                      <Button
-                        variant="contained"
-                        sx={{
-                          textTransform: "none",
-                          mt: 1,
-                          background: "#0362F0",
-                          color: "#ffffff",
-                          fontSize: "14px",
-                          fontWeight: "600",
-                          lineHeight: "18px",
-                        }}
-                      >
-                        {t["select images"]}
-                      </Button>
-                      {imageError && (
-                        <Typography
-                          variant="inherit"
-                          color="textSecondary"
-                          sx={{ color: "#b91c1c" }}
-                        >
-                          {imageErrorMessage}
-                        </Typography>
-                      )}
-                    </Box>
-                  </Grid>
-                  {files.length > 0 && (
-                    <Grid container spacing={1} sx={{ mt: 3 }}>
-                      {files.map((file, index) => (
-                        <Grid
-                          item
-                          xs={12}
-                          sm={12}
-                          md={4}
-                          lg={3}
-                          xl={3}
-                          key={index}
-                        >
-                          <Box
-                            sx={{
-                              p: 2,
-                              boxSizing: "border-box",
-                              border: "1px solid #DBE1E5",
-                              borderRadius: "6px",
-                            }}
-                          >
-                            <Grid
-                              container
-                              direction="row"
-                              justifyContent="flex-end"
-                              alignItems="flex-start"
-                            >
-                              <DeleteOutlineOutlinedIcon
-                                sx={{
-                                  background: "#F44336",
-                                  color: "#ffffff",
-                                  borderRadius: "50%",
-                                  height: "3vh",
-                                  width: "3vh",
-                                  paddingY: "3px",
-                                }}
-                                onClick={() => handleDelete(index)}
-                              />
-                            </Grid>
-                            <Image
-                              src={file.preview}
-                              height={70}
-                              width={100}
-                              layout="responsive"
-                              alt="file"
-                            />
-                         
-                            {!Loading ? (
-                              <Controller
-                                name={`title_${index}`}
-                                control={control}
-                                defaultValue={photoType[0] || {}}
-                                render={({ field }) => (
-                                  <BaseAutocomplete
-                                    options={photoType || []}
-                                    getOptionLabel={(option) =>
-                                      option.name || ""
-                                    }
-                                    sx={{ mt: 2 }}
-                                    isOptionEqualToValue={(option, value) =>
-                                      option.slug === value.slug
-                                    }
-                                    size={"small"}
-                                    placeholder={"Convenient"}
-                                    onChange={(e, v, r, d) => field.onChange(v)}
-                                    value={field.value}
-                                  />
-                                )}
-                              />
-                            ) : (
-                              <Grid
-                                container
-                                sx={{ height: "5vh" }}
-                                direction="row"
-                                justifyContent="center"
-                                alignItems="center"
-                              >
-                                <CircularProgress />
-                              </Grid>
-                            )}
-                          </Box>
-                        </Grid>
-                      ))}
-                    </Grid>
-                  )}
-                  <Grid
-                    container
-                    direction="row"
-                    justifyContent="flex-end"
-                    alignItems="flex-end"
-                    sx={{ mt: 2 }}
-                  >
-                    <Link href="/my-properties">
-                      <Button
-                        variant="outlined"
-                        sx={{
-                          borderColor: "#002152",
-                          fontSize: "16px",
-                          fontWeight: "600",
-                          color: "#002152",
-                          textTransform: "none",
-                          paddingX: 4,
-                          paddingY: 0.6,
-                          mr: 1,
-                          "&:hover": {
-                            borderColor: "#002152",
-                            fontSize: "16px",
-                            fontWeight: "600",
-                            color: "#002152",
-                            textTransform: "none",
-                            paddingX: 4,
-                            paddingY: 0.6,
-                            mr: 1,
-                          },
-                        }}
-                      >
-                        {t["Cancel"]}
-                      </Button>
-                    </Link>
-                    <Button
-                      type="submit"
-                      variant="outlined"
-                      sx={{
-                        background: "#34BE84",
-                        boxShadow: "0px 4px 8px rgba(34, 148, 100, 0.32)",
-                        borderRadius: "4px",
-                        fontSize: "16px",
-                        fontWeight: "600",
-                        lineHeight: "22px",
-                        textTransform: "none",
-                        color: "#ffffff",
-                        paddingX: 4,
-                        paddingY: 1,
-                        "&:hover": {
-                          background: "#34BE84",
-                          boxShadow: "0px 4px 8px rgba(34, 148, 100, 0.32)",
-                          borderRadius: "4px",
-                          fontSize: "16px",
-                          fontWeight: "600",
-                          lineHeight: "22px",
-                          textTransform: "none",
-                          color: "#ffffff",
-                          paddingX: 4,
-                          paddingY: 1,
-                        },
-                      }}
-                    >
-                      {loading && (
-                        <CircularProgress size={22} color="inherit" />
-                      )}
-                      {!loading && t["Save"]}
-                    </Button>
-                  </Grid>
-                </form> */}
               </Box>
             </Container>
             <BaseModal isShowing={sentModalOpen} isClose={handleClose}>
