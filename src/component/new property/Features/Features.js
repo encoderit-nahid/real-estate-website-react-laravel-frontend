@@ -24,7 +24,7 @@ import { findFeatureData } from "../../../redux/features/actions";
 import en from "locales/en";
 import pt from "locales/pt";
 import { useSession } from "next-auth/react";
-// import BaseAutocomplete from "@/component/reuseable/baseAutocomplete/BaseAutocomplete";
+import BaseAutocomplete from "@/component/reuseable/baseAutocomplete/BaseAutocomplete";
 
 const PropertyFeature = [
   "close to the metro",
@@ -62,6 +62,7 @@ function Features({
 }) {
   const t = languageName === "en" ? en : pt;
 
+  const [featureSelectData, setFeatureSelectData] = useState(null);
   const { data: session } = useSession();
   const [item, setItem] = useState("");
   const dispatch = useDispatch();
@@ -82,8 +83,10 @@ function Features({
 
   const handleAddFeature = async () => {
     if (item.length > 0) {
-      await dispatch(featureDataCreate({ name: item, type: "feature" }));
-      await dispatch(findButtonData());
+      dispatch(
+        featureDataCreate({ name: item, type: featureSelectData?.name })
+      );
+      dispatch(findFeatureData());
     }
   };
 
@@ -163,7 +166,6 @@ function Features({
                   key === "accessibility" ||
                   key === "amenities" ||
                   key === "appliances" ||
-                  key === "rooms" ||
                   key === "rooms" ||
                   key === "sorrounding" ||
                   key === "wellbeing" ||
@@ -277,21 +279,21 @@ function Features({
           sx={{ mt: 3 }}
         >
           <BaseTextField
-            sx={{ width: "50%" }}
+            sx={{ width: "35%" }}
             placeholder={t["Add feature"]}
             onChange={(e) => setItem(e.target.value)}
           />
-          {/* <BaseAutocomplete
+          <BaseAutocomplete
             //   sx={{ margin: "0.6vh 0" }}
-            options={photoType || []}
+            options={featureTypeData || []}
             getOptionLabel={(option) => option.name || ""}
-            sx={{ mt: 2 }}
-            isOptionEqualToValue={(option, value) => option.slug === value.slug}
-            size={"small"}
-            placeholder={"Convenient"}
-            onChange={(e, v, r, d) => field.onChange(v)}
-            value={field.value}
-          /> */}
+            sx={{ ml: 1, width: "35%" }}
+            isOptionEqualToValue={(option, value) => option.id === value.id}
+            size={"large"}
+            placeholder={"Feature Type"}
+            onChange={(e, v, r, d) => setFeatureSelectData(v)}
+            value={featureSelectData}
+          />
           <Button
             onClick={handleAddFeature}
             sx={{
@@ -374,3 +376,14 @@ function Features({
 }
 
 export default Features;
+
+const featureTypeData = [
+  { id: 1, name: "condominium" },
+  { id: 2, name: "accessibility" },
+  { id: 3, name: "amenties" },
+  { id: 4, name: "appliances" },
+  { id: 5, name: "room" },
+  { id: 6, name: "sorrounding" },
+  { id: 7, name: "wellbeing" },
+  { id: 8, name: "feature" },
+];

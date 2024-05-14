@@ -7,7 +7,7 @@ import {
   Typography,
 } from "@mui/material";
 import Image from "next/image";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import valueImage from "../../../../public/Images/proposal_modal.png";
 import ventureImage from "../../../../public/Images/certidoes.png";
 import BaseTextField from "../../reuseable/baseTextField/BaseTextField";
@@ -15,14 +15,16 @@ import { Controller } from "react-hook-form";
 import BaseAutocomplete from "../../reuseable/baseAutocomplete/BaseAutocomplete";
 import en from "locales/en";
 import pt from "locales/pt";
-const matchedForCondominio = [10, 11, 15, 16, 1, 3, 4, 7, 8];
 
+//matched_with_property_details
+const matchedForCondominio = [10, 11, 15, 16, 1, 3, 4, 7, 8];
 const matchedForAreaM2 = [1, 2, 3, 4, 5, 6, 7, 8, 9, 11, 12];
 const matchedForQuartos = [1, 2, 3, 4, 5, 7, 8, 9];
 const matchedForSuites = [1, 2, 3, 4, 5, 6, 7, 8, 9];
 const matchedForBanheiro = [1, 2, 3, 4, 5, 7, 8, 9, 11, 12];
 const matchedForVagas = [1, 2, 3, 4, 5, 7, 8, 9, 11, 12];
 const matchedForTerrenoAreaM2 = [2, 3, 5, 7, 8, 9, 11, 12];
+
 // const matchedForDimensoes = [5, 6];
 function shouldDisableButton(allValues) {
   const requiredFields = [
@@ -44,13 +46,16 @@ function shouldDisableButton(allValues) {
   const visibleFields = requiredFields.filter(
     (field) => allValues[field] !== undefined
   );
+  if (visibleFields.length === 0) {
+    return true;
+  } else {
+    // Check if any of the visible fields are empty
+    const isAnyFieldEmpty = visibleFields.some(
+      (field) => allValues[field] === ""
+    );
 
-  // Check if any of the visible fields are empty
-  const isAnyFieldEmpty = visibleFields.some(
-    (field) => allValues[field] === ""
-  );
-
-  return isAnyFieldEmpty;
+    return isAnyFieldEmpty;
+  }
 }
 
 function ValuesAndDescription({
@@ -73,10 +78,16 @@ function ValuesAndDescription({
     { label: "outros", year: 2005 },
   ];
 
-  const [disableBtn, setDisableBtn] = useState(true);
+  console.log({ allValues });
 
-  useEffect(() => {
-    setDisableBtn(shouldDisableButton(allValues));
+  // const [disableBtn, setDisableBtn] = useState(true);
+
+  // useEffect(() => {
+  //   setDisableBtn(shouldDisableButton(allValues));
+  // }, [allValues]);
+
+  const disableBtn = useMemo(() => {
+    return shouldDisableButton(allValues);
   }, [allValues]);
 
   return (
@@ -190,7 +201,6 @@ function ValuesAndDescription({
         justifyContent="flex-start"
         alignItems="flex-start"
         sx={{ mt: 3 }}
-        xs={4}
       >
         <Image src={ventureImage} alt="venture" />
         <Typography
