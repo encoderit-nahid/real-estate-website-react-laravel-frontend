@@ -3,56 +3,27 @@ import {
   Button,
   CircularProgress,
   Divider,
-  FormControl,
   Grid,
-  TextField,
   Typography,
 } from "@mui/material";
 import Image from "next/image";
 import React, { useEffect, useState } from "react";
 import buildingImage from "../../../../public/Images/buildingRed.png";
 import AddOutlinedIcon from "@mui/icons-material/AddOutlined";
-import BaseOutlinedZipInput from "../../reuseable/baseOutlinedZipInput/BaseOutlinedZipInput";
 import { useDispatch, useSelector } from "react-redux";
 
 import BaseTextField from "../../reuseable/baseTextField/BaseTextField";
-import {
-  featureDataCreate,
-  findButtonData,
-} from "../../../redux/featureWithoutGroup/actions";
 import { findFeatureData } from "../../../redux/features/actions";
 import en from "locales/en";
 import pt from "locales/pt";
 import { useSession } from "next-auth/react";
+import BaseAutocomplete from "@/component/reuseable/baseAutocomplete/BaseAutocomplete";
+import { featureDataCreate } from "@/redux/featureWithoutGroup/actions";
 
-const PropertyFeature = [
-  "close to the metro",
-  "close to hospital",
-  "silent street",
-  "accept anials",
-  "close to restaurants",
-  "new property",
-  "close to gyms",
-  "close to pharmacies",
-
-  "gas shower",
-  "glass box",
-  "hot tub",
-  "service room",
-  "service bathroom",
-  "removable extra room",
-  "gourmet balcony",
-  "private pool",
-  "barbecue grill",
-  "football field",
-  "lake",
-  "heated pool",
-  "fireplace",
-  "furnish",
-];
 function Features({ featuretypes, setFeatureTypes, errors, languageName }) {
   const t = languageName === "en" ? en : pt;
 
+  const [featureSelectData, setFeatureSelectData] = useState(null);
   const { data: session } = useSession();
   const [item, setItem] = useState("");
   const dispatch = useDispatch();
@@ -72,10 +43,13 @@ function Features({ featuretypes, setFeatureTypes, errors, languageName }) {
   }, [featuretypes, errors]);
 
   const handleAddFeature = async () => {
-    if (item.length > 0) {
-      await dispatch(featureDataCreate({ name: item, type: "feature" }));
-      await dispatch(findButtonData());
-    }
+    console.log({ item });
+    // if (item.length > 0) {
+    //   dispatch(
+    //     featureDataCreate({ name: item, type: featureSelectData?.name })
+    //   );
+    //   dispatch(findFeatureData());
+    // }
   };
 
   const FeatureAddLoading = useSelector(
@@ -146,16 +120,18 @@ function Features({ featuretypes, setFeatureTypes, errors, languageName }) {
                 sx={{
                   color: "#4B4B66",
                   fontSize: "16px",
-                  fontWeight: "400",
+                  fontWeight: "600",
                   lineHeight: "19px",
                 }}
               >
                 {(key === "condominium" ||
                   key === "accessibility" ||
-                  key === "Bem-estar" ||
-                  key === "Eletrodomésticos" ||
-                  key === "Cômodos" ||
-                  key === "Acessibilidade") &&
+                  key === "amenities" ||
+                  key === "appliances" ||
+                  key === "rooms" ||
+                  key === "sorrounding" ||
+                  key === "wellbeing" ||
+                  key === "feature") &&
                   key}
               </Typography>
               <Grid
@@ -168,10 +144,13 @@ function Features({ featuretypes, setFeatureTypes, errors, languageName }) {
               >
                 {(key === "condominium" ||
                   key === "accessibility" ||
-                  key === "Bem-estar" ||
-                  key === "Eletrodomésticos" ||
-                  key === "Cômodos" ||
-                  key === "Acessibilidade") &&
+                  key === "amenities" ||
+                  key === "appliances" ||
+                  key === "rooms" ||
+                  key === "rooms" ||
+                  key === "sorrounding" ||
+                  key === "wellbeing" ||
+                  key === "feature") &&
                   featureData[key].map((data, index) => (
                     <Button
                       key={index}
@@ -262,9 +241,20 @@ function Features({ featuretypes, setFeatureTypes, errors, languageName }) {
           sx={{ mt: 3 }}
         >
           <BaseTextField
-            sx={{ width: "50%" }}
+            sx={{ width: "35%" }}
             placeholder={t["Add feature"]}
             onChange={(e) => setItem(e.target.value)}
+          />
+          <BaseAutocomplete
+            //   sx={{ margin: "0.6vh 0" }}
+            options={featureTypeData || []}
+            getOptionLabel={(option) => option.name || ""}
+            sx={{ ml: 1, width: "35%" }}
+            isOptionEqualToValue={(option, value) => option.id === value.id}
+            size={"large"}
+            placeholder={"Feature Type"}
+            onChange={(e, v, r, d) => setFeatureSelectData(v)}
+            value={featureSelectData}
           />
           <Button
             onClick={handleAddFeature}
@@ -290,3 +280,14 @@ function Features({ featuretypes, setFeatureTypes, errors, languageName }) {
 }
 
 export default Features;
+
+const featureTypeData = [
+  { id: 1, name: "condominium" },
+  { id: 2, name: "accessibility" },
+  { id: 3, name: "amenties" },
+  { id: 4, name: "appliances" },
+  { id: 5, name: "room" },
+  { id: 6, name: "sorrounding" },
+  { id: 7, name: "wellbeing" },
+  { id: 8, name: "feature" },
+];

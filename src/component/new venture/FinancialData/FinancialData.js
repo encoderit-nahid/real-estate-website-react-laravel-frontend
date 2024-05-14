@@ -77,44 +77,16 @@ const matchedPropertyType = [11, 10, 13, 6, 1, 2, 4, 8, 15];
 function FinancialData({
   control,
   errors,
-  adType,
-  setAdType,
-  propertyType,
-  setPropertyType,
-  property_detail_id,
-  setPropertyDetailId,
+
   documents,
   setDocuments,
   languageName,
   allValues,
   setValue,
-  handleNext,
 }) {
-  const dispatch = useDispatch();
-
   const t = languageName === "en" ? en : pt;
 
   console.log({ allValues });
-
-  useEffect(() => {
-    dispatch(
-      findPropertyTypeData(
-        propertyType === "Residential" ? "residential" : "commercial"
-      )
-    );
-    dispatch(findProjectsData({ page: 1, per_page: 10 }));
-    dispatch(findStateData());
-  }, [dispatch, propertyType]);
-
-  const projectData = useSelector((state) => state?.project?.projectData?.data);
-
-  const propertyDetail = useSelector(
-    (state) => state?.propertyType?.propertyTypeData
-  );
-
-  const allStateData = useSelector((state) => state.state.stateData);
-
-  console.log({ allStateData });
 
   const onDrop = (acceptedFiles) => {
     acceptedFiles.map((file) =>
@@ -194,7 +166,7 @@ function FinancialData({
             render={({ field }) => (
               <BaseAutocomplete
                 //   sx={{ margin: "0.6vh 0" }}
-                options={allStateData || []}
+                options={featureTypeData || []}
                 getOptionLabel={(option) => option.name || ""}
                 isOptionEqualToValue={(option, value) => option.id === value.id}
                 size={"medium"}
@@ -220,7 +192,7 @@ function FinancialData({
             render={({ field }) => (
               <BaseAutocomplete
                 //   sx={{ margin: "0.6vh 0" }}
-                options={allStateData || []}
+                options={featureTypeData || []}
                 getOptionLabel={(option) => option.name || ""}
                 isOptionEqualToValue={(option, value) => option.id === value.id}
                 size={"medium"}
@@ -246,7 +218,7 @@ function FinancialData({
             render={({ field }) => (
               <BaseAutocomplete
                 //   sx={{ margin: "0.6vh 0" }}
-                options={allStateData || []}
+                options={featureTypeData || []}
                 getOptionLabel={(option) => option.name || ""}
                 isOptionEqualToValue={(option, value) => option.id === value.id}
                 size={"medium"}
@@ -401,3 +373,13 @@ function FinancialData({
 }
 
 export default FinancialData;
+const featureTypeData = [
+  { id: 1, name: "condominium" },
+  { id: 2, name: "accessibility" },
+  { id: 3, name: "amenties" },
+  { id: 4, name: "appliances" },
+  { id: 5, name: "room" },
+  { id: 6, name: "sorrounding" },
+  { id: 7, name: "wellbeing" },
+  { id: 8, name: "feature" },
+];

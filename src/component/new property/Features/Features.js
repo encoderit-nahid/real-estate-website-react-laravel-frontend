@@ -26,32 +26,6 @@ import pt from "locales/pt";
 import { useSession } from "next-auth/react";
 import BaseAutocomplete from "@/component/reuseable/baseAutocomplete/BaseAutocomplete";
 
-const PropertyFeature = [
-  "close to the metro",
-  "close to hospital",
-  "silent street",
-  "accept anials",
-  "close to restaurants",
-  "new property",
-  "close to gyms",
-  "close to pharmacies",
-
-  "gas shower",
-  "glass box",
-  "hot tub",
-  "service room",
-  "service bathroom",
-  "removable extra room",
-  "gourmet balcony",
-  "private pool",
-  "barbecue grill",
-  "football field",
-  "lake",
-  "heated pool",
-  "fireplace",
-  "furnish",
-];
-
 function Features({
   featuretypes,
   setFeatureTypes,

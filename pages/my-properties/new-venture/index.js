@@ -1,19 +1,12 @@
 import dynamic from "next/dynamic";
 import Head from "next/head";
 import React, { Fragment, useMemo, useState } from "react";
-import Image from "next/image";
 import {
-  Autocomplete,
   Button,
   CircularProgress,
   Container,
   Grid,
-  Pagination,
-  Stack,
-  TextField,
-  TextareaAutosize,
   Tooltip,
-  Typography,
 } from "@mui/material";
 import { Box } from "@mui/material";
 const ResponsiveDrawer = dynamic(() =>
@@ -22,26 +15,19 @@ const ResponsiveDrawer = dynamic(() =>
 const BasicBreadcrumbs = dynamic(() =>
   import("@/component/reuseable/baseBreadCrumb/BaseBreadCrumb")
 );
-import ventureImage from "../../../public/Images/certidoes.png";
-import DeleteOutlineOutlinedIcon from "@mui/icons-material/DeleteOutlineOutlined";
+
 import { useDropzone } from "react-dropzone";
-import Link from "next/link";
-import BaseTextField from "../../../src/component/reuseable/baseTextField/BaseTextField";
 import { getSession } from "next-auth/react";
-import { useForm, Controller, useFieldArray } from "react-hook-form";
-import { yupResolver } from "@hookform/resolvers/yup";
+import { useForm, useFieldArray } from "react-hook-form";
+// import { yupResolver } from "@hookform/resolvers/yup";
 import * as Yup from "yup";
-import BaseTextArea from "../../../src/component/reuseable/baseTextArea/BaseTextArea";
 import { useEffect } from "react";
 const BaseModal = dynamic(() =>
   import("@/component/reuseable/baseModal/BaseModal")
 );
 import { serialize } from "object-to-formdata";
 import { createProjectApi } from "../../../src/api";
-import BaseAutocomplete from "../../../src/component/reuseable/baseAutocomplete/BaseAutocomplete";
-import { Topic } from "@mui/icons-material";
 import { useDispatch, useSelector } from "react-redux";
-import { findPropertyTypeData } from "../../../src/redux/propertyType/actions";
 import { GetPhotoTypeData } from "../../../src/redux/photo/actions";
 
 const NewVentureSentModal = dynamic(() =>
@@ -60,41 +46,9 @@ const validationSchema = Yup.object().shape({
   description: Yup.string().required("A descrição é necessária"),
 });
 
-const baseStyle = {
-  flex: 1,
-  display: "flex",
-  flexDirection: "column",
-  alignItems: "center",
-  padding: "50px",
-  borderWidth: 2,
-  borderRadius: "4px",
-  borderColor: "#DBE1E5",
-  borderStyle: "dashed",
-  backgroundColor: "#F2F5F6",
-  color: "#c4c4c4",
-  outline: "none",
-  transition: "border .24s ease-in-out",
-  width: "100%",
-  marginTop: "2vh",
-};
-
-const activeStyle = {
-  borderColor: "#f2f",
-};
-
-const acceptStyle = {
-  borderColor: "#f8f",
-};
-
-const rejectStyle = {
-  borderColor: "#f2f",
-};
-
 const drawerWidth = 240;
 
 export default function NewVenture({ language, session }) {
-  //   const [files, setFiles] = useState([]);
-  //   console.log({ files });
   const [myValue, setMyValue] = useState(language || "pt");
   const t = myValue === "en" ? en : pt;
   const steps = [
@@ -145,54 +99,12 @@ export default function NewVenture({ language, session }) {
   const [propertyType, setPropertyType] = useState("Residential");
   const [property_detail_id, setPropertyDetailId] = useState(1);
 
-  const [imageError, setImageError] = useState(false);
-  const [imageErrorMessage, setImageErrorMessage] = useState("");
+  // const [imageError, setImageError] = useState(false);
+  // const [imageErrorMessage, setImageErrorMessage] = useState("");
 
   const [sentModalOpen, setSentModalOpen] = useState(false);
-  const handleOpen = () => setSentModalOpen(true);
+  // const handleOpen = () => setSentModalOpen(true);
   const handleClose = () => setSentModalOpen(false);
-
-  const onDrop = (acceptedFiles) => {
-    acceptedFiles.map((file) =>
-      Object.assign(file, {
-        preview: URL.createObjectURL(file),
-      })
-    );
-
-    const allFiles = [...files, ...acceptedFiles];
-
-    //save all files here
-
-    setFiles(allFiles);
-  };
-  const {
-    getRootProps,
-    getInputProps,
-    isDragActive,
-    isDragAccept,
-    isDragReject,
-  } = useDropzone({
-    onDrop,
-    accept: {
-      "image/jpeg": [],
-      "image/png": [],
-    },
-  });
-
-  const handleDelete = (index) => {
-    const filterItem = files.filter((file, fileIndex) => fileIndex !== index);
-    setFiles(filterItem);
-  };
-
-  const style = useMemo(
-    () => ({
-      ...baseStyle,
-      ...(isDragActive ? activeStyle : {}),
-      ...(isDragAccept ? acceptStyle : {}),
-      ...(isDragReject ? rejectStyle : {}),
-    }),
-    [isDragActive, isDragReject, isDragAccept]
-  );
 
   const allValues = watch();
 
@@ -208,10 +120,39 @@ export default function NewVenture({ language, session }) {
         }
       }
     });
+
+    const filterNewVideoTitleData = [];
+    videoFiles?.forEach((data, index) => {
+      if (data?.title !== allValues[`video_title_${index}`]?.slug) {
+        if (data?.id) {
+          filterNewVideoTitleData.push({
+            attachment_id: data?.id,
+            title: allValues[`video_title_${index}`].slug,
+          });
+        }
+      }
+    });
+
+    const filterNewTitleData = [
+      ...filterNewImageTitleData,
+      ...filterNewVideoTitleData,
+    ];
+
+    // if (files.length > 0 && featuretypes.length > 0) {
     let newArr = [];
     files?.forEach((data, index) => {
       if (data instanceof File) {
         newArr.push({ file: data, title: allValues[`title_${index}`].slug });
+      }
+    });
+
+    let newVideoArr = [];
+    videoFiles?.forEach((data, index) => {
+      if (!data?.id) {
+        newVideoArr.push({
+          url: data?.url,
+          title: allValues[`video_title_${index}`].slug,
+        });
       }
     });
     const newDocuments = documents?.filter((data) => data instanceof File);
@@ -221,8 +162,20 @@ export default function NewVenture({ language, session }) {
       images: newArr,
       features: featuretypes,
       document_files: newDocuments,
+      content_url: newVideoArr,
     };
     console.log("🟥 ~ onSubmit ~ requireData:", requireData);
+    const formData = serialize(requireData, { indices: true });
+    const [error, response] = await createProjectApi(formData);
+    setLoading(false);
+    if (!error) {
+      setSentModalOpen(true);
+    } else {
+      const errors = error?.response?.data?.errors ?? {};
+      Object.entries(errors).forEach(([name, messages]) => {
+        setError(name, { type: "manual", message: messages[0] });
+      });
+    }
   };
   const isStepSkipped = (step) => {
     return skipped.has(step);
@@ -291,16 +244,7 @@ export default function NewVenture({ language, session }) {
                   />
                   {activeStep === steps.length ? (
                     <Container maxWidth="xs">
-                      <Fragment>
-                        {/* <Typography sx={{ mt: 2, mb: 1 }}>
-                  All steps completed - you&apos;re finished
-                </Typography> */}
-
-                        {/* <Box sx={{ display: "flex", flexDirection: "row", pt: 2 }}>
-              <Box sx={{ flex: "1 1 auto" }} />
-              <Button onClick={handleReset}>Reset</Button>
-            </Box> */}
-                      </Fragment>
+                      <Fragment></Fragment>
                     </Container>
                   ) : (
                     <Fragment>
@@ -309,19 +253,13 @@ export default function NewVenture({ language, session }) {
                           <Address
                             control={control}
                             errors={errors}
-                            adType={adType}
                             setValue={setValue}
-                            setAdType={setAdType}
-                            propertyType={propertyType}
-                            setPropertyType={setPropertyType}
-                            property_detail_id={property_detail_id}
-                            setPropertyDetailId={setPropertyDetailId}
                             languageName={myValue.toString()}
                             allValues={allValues}
                           />
                         ) : activeStep === 1 ? (
                           <Features
-                            // control={control}
+                            control={control}
                             errors={errors}
                             featuretypes={featuretypes}
                             setFeatureTypes={setFeatureTypes}
@@ -333,6 +271,8 @@ export default function NewVenture({ language, session }) {
                             errors={errors}
                             files={files}
                             setFiles={setFiles}
+                            videoFiles={videoFiles}
+                            setVideoFiles={setVideoFiles}
                             setDeletedContent={setDeletedContent}
                             deletedContent={deletedContent}
                             imageError={imageError}
@@ -347,9 +287,7 @@ export default function NewVenture({ language, session }) {
                           <FinancialData
                             control={control}
                             errors={errors}
-                            adType={adType}
                             setValue={setValue}
-                            setAdType={setAdType}
                             documents={documents}
                             setDocuments={setDocuments}
                             languageName={myValue.toString()}

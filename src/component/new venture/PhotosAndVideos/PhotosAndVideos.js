@@ -286,7 +286,17 @@ function PhotosAndVideos({
                   // layout="responsive"
                   alt="file"
                 />
-
+                {/* <Autocomplete
+                              sx={{ mt: 2 }}
+                              disablePortal
+                              fullWidth
+                              size="small"
+                              id="combo-box-demo"
+                              options={top100Films}
+                              renderInput={(params) => (
+                                <TextField {...params} label="Convenient" />
+                              )}
+                            /> */}
                 <Controller
                   name={`title_${index}`}
                   control={control}
@@ -313,7 +323,7 @@ function PhotosAndVideos({
         </Grid>
       )}
 
-      {/* <Box sx={{ mt: 5 }}>
+      <Box sx={{ mt: 5 }}>
         <Typography
           variant="p"
           sx={{
@@ -325,7 +335,7 @@ function PhotosAndVideos({
         >
           {`${t["videos of the property"]}:`}
         </Typography>
-      </Box> */}
+      </Box>
       {/* {fields?.map((item, index) => (
         <Grid
           key={item.id}
@@ -414,7 +424,7 @@ function PhotosAndVideos({
         </Grid>
       ))} */}
 
-      {/* <Grid
+      <Grid
         container
         direction="row"
         justifyContent="flex-start"
@@ -463,8 +473,8 @@ function PhotosAndVideos({
         >
           <AddOutlinedIcon sx={{ color: "#002152" }} />
         </Button>
-      </Grid> */}
-      {/* {videoFiles?.length > 0 && (
+      </Grid>
+      {videoFiles?.length > 0 && (
         <Grid container spacing={1} sx={{ mt: 3 }}>
           {videoFiles?.map((file, index) => (
             <Grid item xs={12} sm={12} md={4} lg={3} xl={3} key={index}>
@@ -509,7 +519,17 @@ function PhotosAndVideos({
                   allowfullscreen
                   // onEnd={onVideoEnd}
                 ></iframe>
-               
+                {/* <Autocomplete
+                              sx={{ mt: 2 }}
+                              disablePortal
+                              fullWidth
+                              size="small"
+                              id="combo-box-demo"
+                              options={top100Films}
+                              renderInput={(params) => (
+                                <TextField {...params} label="Convenient" />
+                              )}
+                            /> */}
                 <Controller
                   name={`video_title_${index}`}
                   control={control}
@@ -534,7 +554,7 @@ function PhotosAndVideos({
             </Grid>
           ))}
         </Grid>
-      )} */}
+      )}
 
       {/* {session?.user?.role !== "owner" ? (
         <Grid
