@@ -387,7 +387,7 @@ function ValuesAndDescription({
             </Typography>
           </Grid>
         )}
-        <Grid item xs={12} md={6}>
+        {/* <Grid item xs={12} md={6}>
           <Controller
             name="documentation"
             control={control}
@@ -465,7 +465,7 @@ function ValuesAndDescription({
           >
             {errors.registration_number?.message}
           </Typography>
-        </Grid>
+        </Grid> */}
       </Grid>
 
       <Grid container spacing={1} sx={{ mt: 2 }}>

@@ -56,7 +56,7 @@ function NewRegistrationCard({
       },
       onSuccess: async (data) => {
         await refetch();
-        await loadingRefetch;
+        await loadingRefetch();
       },
     });
   };
@@ -72,7 +72,7 @@ function NewRegistrationCard({
       },
       onSuccess: async (data) => {
         await refetch();
-        await loadingRefetch;
+        await loadingRefetch();
       },
     });
     // setApproveId(id);

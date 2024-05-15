@@ -29,6 +29,7 @@ import { findStateData } from "../../../redux/state/actions";
 import en from "locales/en";
 import pt from "locales/pt";
 import dynamic from "next/dynamic";
+import { useSession } from "next-auth/react";
 const BaseTextEditor = dynamic(
   () => import("@/component/reuseable/baseTextEditor/BaseTextEditor"),
   {
@@ -89,6 +90,8 @@ function Address({
   const dispatch = useDispatch();
 
   const t = languageName === "en" ? en : pt;
+
+  const { data: session } = useSession();
 
   console.log({ allValues });
 
@@ -598,30 +601,32 @@ function Address({
           <TextField {...params} label="Select the enterprise" />
         )}
       /> */}
-      <Box sx={{ mt: 1 }}>
-        <Link href="/my-properties/new-venture">
-          <a
-            style={{
-              textDecoration: "none",
-              listStyle: "none",
-              width: "100%",
-            }}
-          >
-            <Typography
-              variant="p"
-              sx={{
-                color: "#7450F0",
-                fontSize: "16px",
-                lineHeight: "22px",
-                fontWeight: "400",
+      {session?.user?.role === "admin" && (
+        <Box sx={{ mt: 1 }}>
+          <Link href="/my-properties/new-venture">
+            <a
+              style={{
+                textDecoration: "none",
+                listStyle: "none",
+                width: "100%",
               }}
             >
-              {t["New venture"]}
-            </Typography>
-          </a>
-        </Link>
-        <Divider sx={{ mt: 1, background: "#DBE1E5" }} />
-      </Box>
+              <Typography
+                variant="p"
+                sx={{
+                  color: "#7450F0",
+                  fontSize: "16px",
+                  lineHeight: "22px",
+                  fontWeight: "400",
+                }}
+              >
+                {t["New venture"]}
+              </Typography>
+            </a>
+          </Link>
+          <Divider sx={{ mt: 1, background: "#DBE1E5" }} />
+        </Box>
+      )}
       <Grid container spacing={1} sx={{ mt: 3 }}>
         <Grid item xs={12}>
           <Controller

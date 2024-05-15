@@ -71,7 +71,7 @@ function Owner({
 }) {
   const t = languageName === "en" ? en : pt;
   const dispatch = useDispatch();
-  const session = useSession();
+  const { data: session } = useSession();
   const onDrop = (acceptedFiles) => {
     acceptedFiles.map((file) =>
       Object.assign(file, {

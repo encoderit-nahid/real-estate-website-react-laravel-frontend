@@ -14,28 +14,27 @@ import { findPropertyData } from "../../../redux/property/actions";
 import { useEffect } from "react";
 import { useGetPropertyQuery } from "@/queries/useGetPropertyQuery";
 
-function NewRegistration({ languageName }) {
+function NewRegistration({ languageName, loadingRefetch }) {
   const router = useRouter();
   const { query } = router;
 
   const [page, setPage] = React.useState(1);
   useEffect(() => {
-    setPage(+query?.page)
-  },[query])
+    setPage(+query?.page);
+  }, [query]);
 
   const {
     data: newProperty,
     isLoading: Loading,
     refetch,
     isFetched,
-    loadingRefetch,
     isFetching,
   } = useGetPropertyQuery({ status: "new", page: page, per_page: 9 });
 
   const handlePageChange = (event, value) => {
     setPage(value);
     router.replace({
-      query: { ...router.query,page:value },
+      query: { ...router.query, page: value },
     });
   };
 
