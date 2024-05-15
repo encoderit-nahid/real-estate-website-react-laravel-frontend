@@ -11,9 +11,21 @@ import {
   ImageListItem,
   Button,
   Tooltip,
+  Stack,
+  IconButton,
+  Menu,
+  MenuItem,
 } from "@mui/material";
+import ShareIcon from "@mui/icons-material/Share";
+import FavoriteIcon from "@mui/icons-material/Favorite";
 import orionImage from "../../public/Images/orion_view.svg";
 import Image from "next/image";
+import {
+  EmailShareButton,
+  FacebookShareButton,
+  WhatsappShareButton,
+} from "react-share";
+import { EmailIcon, FacebookIcon, WhatsappIcon } from "react-share";
 const AmountView = dynamic(() =>
   import("@/component/PropertyView/amount/AmountView")
 );
@@ -50,7 +62,14 @@ const SlideImageMobile = dynamic(() =>
   import("@/component/PropertyView/SlideImageMobile/SlideImageMobile")
 );
 import { useRouter } from "next/router";
+import useCurrentUser from "@/hooks/useCurrentUser";
 
+const BaseFavoriteButton = dynamic(
+  () => import("@/component/reuseable/baseFavoriteButton/BaseFavoriteButton"),
+  {
+    ssr: false,
+  }
+);
 const aboutProperty = [
   "Heater",
   "Dependency",
@@ -154,7 +173,7 @@ export default function PropertyView({
     router.back();
   };
 
-  console.log({ singlePropertyData });
+  console.log("🟥 ~ singlePropertyData:", singlePropertyData);
 
   // useEffect(() => {
   //   let showData = [];
@@ -172,7 +191,14 @@ export default function PropertyView({
   //   setImages(showData);
   //   console.log({ showData });
   // }, [singlePropertyData, upperTabValue, sideTabValue]);
-
+  const [anchorEl, setAnchorEl] = useState(null);
+  const open = Boolean(anchorEl);
+  const handleClick = (event) => {
+    setAnchorEl(event.currentTarget);
+  };
+  const handleClose = () => {
+    setAnchorEl(null);
+  };
   return (
     <div>
       <Head>
@@ -246,8 +272,11 @@ export default function PropertyView({
           <Grid
             container
             direction="row"
-            justifyContent="flex-start"
+            justifyContent="space-between"
             alignItems="flex-start"
+            sx={{
+              pr: 7,
+            }}
           >
             <Button
               sx={{
@@ -271,9 +300,72 @@ export default function PropertyView({
                   color: "#1A1859",
                 }}
               >
-                {`${singlePropertyData?.property?.address?.address} | ${singlePropertyData?.property?.address?.city}`}
+                {`${
+                  singlePropertyData?.property?.property_title ||
+                  "No title found"
+                }`}
               </Typography>
             </Button>
+            <Stack direction="row" spacing={1}>
+              <IconButton
+                id="basic-button"
+                aria-controls={open ? "basic-menu" : undefined}
+                aria-haspopup="true"
+                aria-expanded={open ? "true" : undefined}
+                onClick={handleClick}
+              >
+                <ShareIcon />
+              </IconButton>
+
+              <Menu
+                id="basic-menu"
+                anchorEl={anchorEl}
+                open={open}
+                onClose={handleClose}
+                MenuListProps={{
+                  "aria-labelledby": "basic-button",
+                }}
+                anchorOrigin={{
+                  vertical: "bottom",
+                  horizontal: "",
+                }}
+                transformOrigin={{
+                  vertical: "top",
+                  horizontal: "left",
+                }}
+              >
+                <MenuItem onClick={handleClose}>
+                  <Stack direction="column" spacing={3}>
+                    <Typography
+                      variant="p"
+                      sx={{
+                        fontSize: "16px",
+                        fontWeight: 600,
+                        color: "#1A1859",
+                      }}
+                      align="center"
+                    >
+                      Compartilhar
+                    </Typography>
+                    <Stack direction="row" spacing={3}>
+                      <WhatsappShareButton url="https://www.lokkan.site/">
+                        <WhatsappIcon round size={40} />
+                      </WhatsappShareButton>
+                      <FacebookShareButton url="https://lokkan.site/property-view/52">
+                        <FacebookIcon round size={40} />
+                      </FacebookShareButton>
+                      <EmailShareButton url="https://www.lokkan.site/">
+                        <EmailIcon round size={40} />
+                      </EmailShareButton>
+                    </Stack>
+                  </Stack>
+                </MenuItem>
+              </Menu>
+              <BaseFavoriteButton
+                handleLoginOpen={handleLoginOpen}
+                itemID={singlePropertyData?.property?.id}
+              />
+            </Stack>
           </Grid>
           {/* <Grid
             container
@@ -404,6 +496,15 @@ export default function PropertyView({
         </Box>
         <Box sx={{ mx: 3, mt: 4 }}>
           <Grid container spacing={2}>
+            <Grid item xs={12} sm={12} md={12} lg={9} xl={9}>
+              <Box
+                component="div"
+                sx={{ p: 3, backgroundColor: "#f9f9fb" }}
+                dangerouslySetInnerHTML={{
+                  __html: singlePropertyData?.property?.property_description,
+                }}
+              ></Box>
+            </Grid>
             <Grid item xs={12} sm={12} md={12} lg={9} xl={9}>
               <Features
                 singlePropertyData={singlePropertyData}

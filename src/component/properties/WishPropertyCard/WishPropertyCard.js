@@ -11,11 +11,10 @@ import FavoriteBorderOutlinedIcon from "@mui/icons-material/FavoriteBorderOutlin
 import en from "locales/en";
 import pt from "locales/pt";
 import FavoriteIcon from "@mui/icons-material/Favorite";
-import { useMakeFavouriteQuery } from "@/queries/useMakeFavouriteQuery";
 import { useSelector } from "react-redux";
 import { useSession } from "next-auth/react";
 import useCurrentUser from "@/hooks/useCurrentUser";
-import { userDetailsApi } from "@/api";
+import { MakeFavouriteApi, userDetailsApi } from "@/api";
 import { Data } from "@react-google-maps/api";
 import { DataArrayRounded } from "@mui/icons-material";
 import { useQueryClient } from "@tanstack/react-query";
@@ -36,10 +35,6 @@ function WishPropertyCard({
 
   const currentUser = useCurrentUser();
 
-  const [propertyId, setPropertyId] = useState(null);
-
-  const {} = useMakeFavouriteQuery(propertyId);
-
   const [favoriteList, setFavoriteList] = useState([]);
   useEffect(() => {
     if (currentUser?.wishList) {
@@ -47,33 +42,18 @@ function WishPropertyCard({
     }
   }, [currentUser]);
 
-  // const toggleFavorite = useCallback(
-  //   async (event, itemId) => {
-  //     event.preventDefault();
-  //     setFavoriteList(favoriteList.filter((id) => id !== itemId));
-  //     setPropertyId(itemId);
-  //     setTimeout(async () => {
-  //       await refetch();
-  //       await userDetailsApi();
-  //       queryClient.invalidateQueries(["/count-property"]);
-  //     }, 1000);
-  //   },
-  //   [favoriteList, setFavoriteList, setPropertyId, refetch, queryClient]
-  // );
   const toggleFavorite = useCallback(
     async (event, itemId) => {
       event.preventDefault();
       setFavoriteList(favoriteList.filter((id) => id !== itemId));
-      setPropertyId(itemId);
-
-      await new Promise((resolve) => {
-        setTimeout(resolve, 1000);
-      });
-
-      // Wait for all async operations to complete before proceeding
-      await Promise.all([refetch(), userDetailsApi(), loadingRefetch()]);
+      const [error, response] = await MakeFavouriteApi(itemId);
+      if (!error) {
+        await refetch();
+        await userDetailsApi();
+        await loadingRefetch();
+      }
     },
-    [favoriteList, setFavoriteList, setPropertyId, refetch, loadingRefetch]
+    [favoriteList, setFavoriteList, refetch, loadingRefetch]
   );
 
   return (

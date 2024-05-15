@@ -737,3 +737,14 @@ export const NotificationReadApi = async (id) => {
     return [error, null];
   }
 };
+
+//readNotification
+export const MakeFavouriteApi = async (propertyId) => {
+  try {
+    const response = await apiInstance.get(`property/wishlist/${propertyId}`);
+    // console.log(response)
+    return [false, response];
+  } catch (error) {
+    return [error, null];
+  }
+};

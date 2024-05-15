@@ -11,11 +11,10 @@ import FavoriteBorderOutlinedIcon from "@mui/icons-material/FavoriteBorderOutlin
 import en from "locales/en";
 import pt from "locales/pt";
 import FavoriteIcon from "@mui/icons-material/Favorite";
-import { useMakeFavouriteQuery } from "@/queries/useMakeFavouriteQuery";
 import { useSelector } from "react-redux";
 import { useSession } from "next-auth/react";
 import useCurrentUser from "@/hooks/useCurrentUser";
-import { userDetailsApi } from "@/api";
+import { MakeFavouriteApi, userDetailsApi } from "@/api";
 
 function HouseCard({
   shadow,
@@ -30,10 +29,6 @@ function HouseCard({
   };
 
   const currentUser = useCurrentUser();
-
-  const [propertyId, setPropertyId] = useState(null);
-
-  const {} = useMakeFavouriteQuery(propertyId);
 
   const [favoriteList, setFavoriteList] = useState([]);
   useEffect(() => {
@@ -51,11 +46,11 @@ function HouseCard({
       if (favoriteList?.includes(itemId)) {
         // Item is in favorite list, remove it
         setFavoriteList(favoriteList.filter((id) => id !== itemId));
-        setPropertyId(itemId);
+        MakeFavouriteApi(itemId);
       } else {
         // Item is not in favorite list, add it
         setFavoriteList([...favoriteList, itemId]);
-        setPropertyId(itemId);
+        MakeFavouriteApi(itemId);
       }
     }
   };
