@@ -132,6 +132,16 @@ export default function PropertyView({
 
   const [sideTabValue, setSideTabValue] = useState("photos");
 
+  const [propertyDescription, setPorpertyDescription] = useState("");
+
+  useEffect(() => {
+    if (singlePropertyData?.property?.property_description) {
+      const htmlString = singlePropertyData.property.property_description;
+      const textContent = stripHtmlTags(htmlString);
+      setPorpertyDescription(textContent);
+    }
+  }, [singlePropertyData]);
+
   const Images = useMemo(() => {
     const regexPatternThreeSixtyImages = /^[a-zA-Z_]+_vision_360$/;
     const regexPatternImages = /^[a-zA-Z_]+$/;
@@ -222,10 +232,7 @@ export default function PropertyView({
           property="og:title"
           content={`${singlePropertyData?.property?.property_title}`}
         />
-        <meta
-          property="og:description"
-          content="Description of Your Property"
-        />
+        <meta property="og:description" content={propertyDescription} />
         <meta
           property="og:image"
           content={`${_imageURL}/${seoImage?.file_path}`}
