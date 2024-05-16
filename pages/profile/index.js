@@ -68,8 +68,8 @@ import BaseOutlinedZipInput from "@/component/reuseable/baseOutlinedZipInput/Bas
 
 const drawerWidth = 240;
 
-function onSubmit() {
-  console.log("🟥 ~ onSubmit ~ onSubmit:");
+function onSubmit(data) {
+  console.log("🟥 ~ onSubmit ~ onSubmit:", data);
 }
 function renderRow(props) {
   const { index, style } = props;
@@ -157,27 +157,27 @@ export default function Index({ language }) {
     (state) => state?.notification?.notificationData
   );
 
-  useChannel("notification-broadcast." + session.user.userId, (channel) => {
-    // console.log('useChannel', channel)
-    channel
-      // .here((...args) => {
-      // 	console.log('notification-broadcast:here', ...args)
-      // })
-      // .joining((...args) => {
-      // 	console.log('notification-broadcast:joining', ...args)
-      // })
-      // .leaving((...args) => {
-      // 	console.log('notification-broadcast:leaving', ...args)
-      // })
-      .listen(".OnCreateNewSchedule", (event) => {
-        console.log("notification-broadcast:NotificationEvent", event);
-        dispatch(notificationAddPusherItem(event.notification));
-        dispatch(notificationAddCount(1));
-      });
-    // .listenForWhisper('ping', (event) => {
-    // 	console.log('notification-broadcast:ping', event)
-    // })
-  });
+  // useChannel("notification-broadcast." + session.user.userId, (channel) => {
+  //   // console.log('useChannel', channel)
+  //   channel
+  //     // .here((...args) => {
+  //     // 	console.log('notification-broadcast:here', ...args)
+  //     // })
+  //     // .joining((...args) => {
+  //     // 	console.log('notification-broadcast:joining', ...args)
+  //     // })
+  //     // .leaving((...args) => {
+  //     // 	console.log('notification-broadcast:leaving', ...args)
+  //     // })
+  //     .listen(".OnCreateNewSchedule", (event) => {
+  //       console.log("notification-broadcast:NotificationEvent", event);
+  //       dispatch(notificationAddPusherItem(event.notification));
+  //       dispatch(notificationAddCount(1));
+  //     });
+  //   // .listenForWhisper('ping', (event) => {
+  //   // 	console.log('notification-broadcast:ping', event)
+  //   // })
+  // });
 
   const handleReadNotification = async (data) => {
     const [error, response] = await NotificationReadApi(data?.id);
