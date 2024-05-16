@@ -25,6 +25,7 @@
 		"date-fns": "^2.29.3",
 		"dayjs": "^1.11.7",
 		"flat": "^5.0.2",
+		"html-to-text": "^9.0.5",
 		"js-cookie": "^3.0.5",
 		"laravel-echo": "^1.15.0",
 		"moment": "^2.29.4",

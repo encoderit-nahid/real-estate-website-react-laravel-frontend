@@ -217,11 +217,13 @@ export default function PropertyView({
   const handleClose = () => {
     setAnchorEl(null);
   };
+
+  console.log({ propertyDescription });
   return (
     <div>
       <Head>
         <title>{`${singlePropertyData?.property?.property_title} - Lokkan`}</title>
-        <meta name="description" content={propertyDescription} />
+        <meta name="description" content={`${propertyDescription}`} />
         <meta charset="UTF-8" />
         <meta http-equiv="X-UA-Compatible" content="IE=edge" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -233,7 +235,7 @@ export default function PropertyView({
           property="og:title"
           content={`${singlePropertyData?.property?.property_title}`}
         />
-        <meta property="og:description" content={propertyDescription} />
+        <meta property="og:description" content={`${propertyDescription}`} />
         <meta
           property="og:image"
           content={`${_imageURL}/${seoImage?.file_path}`}
