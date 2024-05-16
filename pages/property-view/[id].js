@@ -63,6 +63,7 @@ const SlideImageMobile = dynamic(() =>
 );
 import { useRouter } from "next/router";
 import useCurrentUser from "@/hooks/useCurrentUser";
+import { _imageURL } from "consts";
 
 const BaseFavoriteButton = dynamic(
   () => import("@/component/reuseable/baseFavoriteButton/BaseFavoriteButton"),
@@ -147,6 +148,12 @@ export default function PropertyView({
     });
   }, [singlePropertyData, sideTabValue]);
 
+  const seoImage = useMemo(() => {
+    return singlePropertyData?.property?.attachments?.find(
+      (data) => data?.title === "logo"
+    );
+  }, [singlePropertyData]);
+
   const Videos = useMemo(() => {
     if (sideTabValue === "videos") {
       return singlePropertyData?.property?.attachments?.filter((data) => {
@@ -211,14 +218,17 @@ export default function PropertyView({
           property="og:url"
           content={`https://www.lokkan.site/property-view/${singlePropertyData?.property?.id}`}
         />
-        <meta property="og:title" content="Title of Your Property" />
+        <meta
+          property="og:title"
+          content={`${singlePropertyData?.property?.property_title}`}
+        />
         <meta
           property="og:description"
           content="Description of Your Property"
         />
         <meta
           property="og:image"
-          content="https://www.rbhf.ca/wp-content/uploads/2022/07/rbhf-propertyblog-02.jpg"
+          content={`${_imageURL}/${seoImage?.file_path}`}
         />
         <meta property="og:image:width" content="1200" />
         <meta property="og:image:height" content="630" />
@@ -351,10 +361,14 @@ export default function PropertyView({
                       >
                         <WhatsappIcon round size={40} />
                       </WhatsappShareButton>
-                      <FacebookShareButton url="https://lokkan.site/property-view/52">
+                      <FacebookShareButton
+                        url={`https://www.lokkan.site/property-view/${singlePropertyData?.property?.id}`}
+                      >
                         <FacebookIcon round size={40} />
                       </FacebookShareButton>
-                      <EmailShareButton url="https://www.lokkan.site/">
+                      <EmailShareButton
+                        url={`https://www.lokkan.site/property-view/${singlePropertyData?.property?.id}`}
+                      >
                         <EmailIcon round size={40} />
                       </EmailShareButton>
                     </Stack>

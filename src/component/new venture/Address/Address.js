@@ -19,6 +19,12 @@ import en from "locales/en";
 import pt from "locales/pt";
 import dynamic from "next/dynamic";
 import BaseTextArea from "@/component/reuseable/baseTextArea/BaseTextArea";
+const BaseTextEditor = dynamic(
+  () => import("@/component/reuseable/baseTextEditor/BaseTextEditor"),
+  {
+    ssr: false, // This ensures that the component is not rendered on the server
+  }
+);
 
 function Address({
   control,
@@ -89,41 +95,29 @@ function Address({
           {errors.name?.message}
         </Typography>
       </Grid>
-      <Grid container sx={{ mt: 2 }}>
-        <Controller
-          name="description"
-          control={control}
-          defaultValue={""}
-          render={({ field }) => (
-            <BaseTextArea
-              minRows={3}
-              onChange={(e) => {
-                field.onChange(e.target.value);
-              }}
-              name={"description"}
-              value={field.value}
-              style={{
-                marginTop: "1vh",
-                width: "100%",
 
-                color: "rgba(0, 0, 0, 0.87)",
-                fontSize: "17px",
-                outlineColor: "#1976d2",
-                border: `1px solid silver`,
-                borderRadius: "5px",
-                padding: "0.4vh 1.4vh",
-              }}
-              placeholder={t["Description"]}
-            />
-          )}
-        />
-        <Typography
-          variant="inherit"
-          color="textSecondary"
-          sx={{ color: "#b91c1c", mt: 0.5 }}
-        >
-          {errors.description?.message}
-        </Typography>
+      <Grid container spacing={1} sx={{ mt: 3 }}>
+        <Grid item xs={12}>
+          <Controller
+            name="description"
+            control={control}
+            defaultValue={""}
+            render={({ field }) => (
+              <BaseTextEditor
+                name="description"
+                control={control}
+                defaultEditorValue={""}
+              />
+            )}
+          />
+          <Typography
+            variant="inherit"
+            color="textSecondary"
+            sx={{ color: "#b91c1c" }}
+          >
+            {errors.property_description?.message}
+          </Typography>
+        </Grid>
       </Grid>
 
       <Grid container spacing={1} sx={{ mt: 3 }}>

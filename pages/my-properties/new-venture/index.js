@@ -184,7 +184,7 @@ export default function NewVenture({ language, session }) {
       features: featuretypes,
       document_files: newDocuments,
       content_url: newVideoArr,
-      description: data?.description,
+      description: data?.description?.toString("html"),
       name: data?.name,
       financial: {
         prohibited: data?.prohibited?.name,
