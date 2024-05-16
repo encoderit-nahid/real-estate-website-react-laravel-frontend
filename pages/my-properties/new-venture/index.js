@@ -33,7 +33,6 @@ const requiredFields = [
   [
     "address",
     "city",
-    "complement",
     "description",
     "name",
     "neighbourhood",

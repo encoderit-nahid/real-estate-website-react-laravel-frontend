@@ -382,6 +382,7 @@ export default function PropertyView({
                       >
                         <EmailIcon round size={40} />
                       </EmailShareButton>
+                      <d>asdas</d>
                     </Stack>
                   </Stack>
                 </MenuItem>
