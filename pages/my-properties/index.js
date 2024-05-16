@@ -179,10 +179,10 @@ export default function MyProperties({ language }) {
                       sx={{ fontWeight: "600", textTransform: "none" }}
                       label={
                         countLoading
-                          ? `${"My Property"}(${
+                          ? `${"Meus imóveis"}(${
                               propertyCountData?.wish_property || 0
                             })`
-                          : `${"My Property"}(${
+                          : `${"Meus imóveis"}(${
                               propertyCountData?.wish_property || 0
                             })`
                       }

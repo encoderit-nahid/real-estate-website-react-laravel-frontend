@@ -81,6 +81,8 @@ function SliderView({
   //     return selectImage.split(/[#?]/)[0].split('.').pop().trim();
   // }
 
+  console.log({ videos });
+
   const videoIds = videos?.map((data) => {
     console.log({ data });
     const videoId = getVideoIdFromLink(data?.file_path);

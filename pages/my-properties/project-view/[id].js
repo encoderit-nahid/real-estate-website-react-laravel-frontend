@@ -32,6 +32,8 @@ const SlideImageMobile = dynamic(() =>
 );
 import { _imageURL } from "consts";
 import { useRouter } from "next/router";
+import { stripHtmlTags } from "@/utils/stripHtmlTags";
+import AboutProperty from "@/component/PropertyView/AboutProperty/AboutProperty";
 
 const aboutProperty = [
   "Heater",
@@ -75,6 +77,7 @@ export default function ProjectView({
   handleLoginOpen,
   handleLoginClose,
   singleProjectData,
+  projectDescription,
   language,
 }) {
   const [myValue, setMyValue] = useState(language || "en");
@@ -99,7 +102,7 @@ export default function ProjectView({
       return sideTabValue === "vision_360"
         ? regexPatternThreeSixtyImages.test(data?.title)
         : sideTabValue === "photos"
-        ? data?.photo_type?.type === "project"
+        ? data?.title && regexPatternImages.test(data?.title)
         : sideTabValue === "condominium"
         ? data?.photo_type?.type === "condominium"
         : sideTabValue === "videos"
@@ -107,6 +110,16 @@ export default function ProjectView({
         : null;
     });
   }, [singleProjectData, sideTabValue]);
+
+  const Videos = useMemo(() => {
+    if (sideTabValue === "videos") {
+      return singleProjectData?.project?.attachments?.filter((data) => {
+        return data?.file_type === "url";
+      });
+    } else {
+      return;
+    }
+  }, [sideTabValue, singleProjectData]);
 
   const [selectImage, setSelectImage] = useState(() => Images?.[0]?.file_path);
 
@@ -238,6 +251,7 @@ export default function ProjectView({
                 sideTabValue={sideTabValue}
                 setSideTabValue={setSideTabValue}
                 selectImage={selectImage}
+                videos={Videos}
                 languageName={myValue.toString()}
               />
             </Grid>
@@ -300,7 +314,7 @@ export default function ProjectView({
                 selectImage={selectImage}
                 addressData={singleProjectData?.project?.address}
                 languageName={myValue.toString()}
-                // videos={Videos}
+                videos={Videos}
                 images={Images}
                 others={true}
               />
@@ -331,22 +345,16 @@ export default function ProjectView({
             background: "linear-gradient(90deg, #20BAF6 0%, #7450F0 100%);",
           }}
         >
-          <Container maxWidth="lg">
+          <Container maxWidth="xxl">
             <Grid
               container
               spacing={2}
               sx={{
-                height: {
-                  xs: "auto",
-                  sm: "auto",
-                  md: "auto",
-                  lg: "40vh",
-                },
                 pt: 1,
                 pb: 1,
               }}
             >
-              <Grid item xs={12} sm={12} md={12} lg={2}>
+              {/* <Grid item xs={12} sm={12} md={12} lg={2}>
                 <Box>
                   <Image
                     loader={myLoader}
@@ -357,8 +365,8 @@ export default function ProjectView({
                     alt="yellowImage"
                   />
                 </Box>
-              </Grid>
-              <Grid item xs={12} sm={12} md={12} lg={10}>
+              </Grid> */}
+              <Grid item xs={12} sm={12} md={12} lg={12}>
                 <Typography
                   variant="h6"
                   sx={{
@@ -370,18 +378,6 @@ export default function ProjectView({
                 >
                   {singleProjectData?.project?.name}
                 </Typography>
-                {/* <Typography
-                  variant="h6"
-                  sx={{
-                    color: "#FFFFFF",
-                    fontWeight: "500",
-                    fontSize: "20px",
-                    lineHeight: "28px",
-                    mt: 2,
-                  }}
-                >
-                  📍AV. AFONSO MARIANO FAGUNDES, 417 SAÚDE, SÃO PAULO - SP
-                </Typography> */}
                 <Typography
                   variant="h6"
                   sx={{
@@ -392,11 +388,38 @@ export default function ProjectView({
                     mt: 2,
                   }}
                 >
-                  {singleProjectData?.project?.description}
+                  📍
+                  {`${singleProjectData?.project?.address?.address}, ${singleProjectData?.project?.address?.city}, ${singleProjectData?.project?.address?.state?.name}`}
+                </Typography>
+
+                <Typography
+                  align="left"
+                  sx={{
+                    color: "#FFFFFF",
+                    fontWeight: "500",
+                    fontSize: "20px",
+                    lineHeight: "28px",
+                    mt: 2,
+                  }}
+                >
+                  {projectDescription}
                 </Typography>
               </Grid>
             </Grid>
           </Container>
+        </Box>
+        <Box sx={{ mx: 3 }}>
+          <Grid item xs={12} sm={12} md={12} lg={9} xl={9}>
+            {Object.keys(singleProjectData?.projectFeatures).map(
+              (key, index) => (
+                <AboutProperty
+                  key={index}
+                  name={key}
+                  array={singleProjectData?.projectFeatures[key]}
+                />
+              )
+            )}
+          </Grid>
         </Box>
         <Box>
           <ImageList
@@ -459,6 +482,9 @@ export async function getServerSideProps(context) {
     props: {
       singleProjectData: singleProjectData,
       language: cookies,
+      projectDescription: stripHtmlTags(
+        singleProjectData?.project?.description
+      ),
       // tabArrayData:
       //   singlePropertyData?.property?.property_detail?.photo_types?.filter(
       //     (data) => data.slug.substr(data.slug.length - 3) !== "360"
