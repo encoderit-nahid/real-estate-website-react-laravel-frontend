@@ -4,6 +4,7 @@ import {
   Button,
   Divider,
   Grid,
+  Link,
   ListItem,
   ListItemAvatar,
   ListItemText,
@@ -387,25 +388,31 @@ function TabRegisteredCard({ brokerInfo, languageName }) {
         </Button>
       </Grid>
       <Box sx={{ px: 1.5, mt: 2 }}>
-        <Button
-          fullWidth
-          onClick={toggleDrawer("right", true)}
-          sx={{
-            background: "#DBE1E5",
-            color: "#002152",
-            fontWeight: "600",
-            fontSize: "14px",
-            lineHeight: "18px",
-            textTransform: "none",
-            mb: 2,
-            "&:hover": {
-              background: "#DBE1E5",
-              color: "#002152",
-            },
-          }}
-        >
-          {t["See all data"]}
-        </Button>
+        <Link href={`/brokers/1`}>
+          <a>
+            <Button
+              fullWidth
+              onClick={toggleDrawer("right", true)}
+              sx={{
+                background: "#DBE1E5",
+                color: "#002152",
+                fontWeight: "600",
+                fontSize: "14px",
+                lineHeight: "18px",
+                textTransform: "none",
+                mb: 2,
+                "&:hover": {
+                  background: "#DBE1E5",
+                  color: "#002152",
+                },
+              }}
+            >
+              {t["See all data"]}
+            </Button>
+          </a>
+        </Link>
+
+        {/* 
         <SwipeableDrawer
           anchor={"right"}
           open={state["right"]}
@@ -413,7 +420,7 @@ function TabRegisteredCard({ brokerInfo, languageName }) {
           onOpen={toggleDrawer("right", true)}
         >
           {list("right")}
-        </SwipeableDrawer>
+        </SwipeableDrawer> */}
       </Box>
     </Box>
   );

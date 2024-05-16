@@ -18,7 +18,7 @@ import {
   TextField,
 } from "@mui/material";
 import { useState } from "react";
-import notifyImage from "../public/Images/notify.png";
+import notifyImage from "../../public/Images/notify.png";
 const TabRegistered = dynamic(() =>
   import("@/component/brokers/TabRegistered/TabRegistered")
 );
