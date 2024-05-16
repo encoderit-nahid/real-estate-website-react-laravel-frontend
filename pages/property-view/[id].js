@@ -64,6 +64,7 @@ const SlideImageMobile = dynamic(() =>
 import { useRouter } from "next/router";
 import useCurrentUser from "@/hooks/useCurrentUser";
 import { _imageURL } from "consts";
+import { stripHtmlTags } from "@/utils/stripHtmlTags";
 
 const BaseFavoriteButton = dynamic(
   () => import("@/component/reuseable/baseFavoriteButton/BaseFavoriteButton"),
