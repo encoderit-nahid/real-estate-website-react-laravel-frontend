@@ -221,7 +221,7 @@ export default function PropertyView({
     <div>
       <Head>
         <title>{`${singlePropertyData?.property?.property_title} - Lokkan`}</title>
-        <meta name="description" content="property description" />
+        <meta name="description" content={propertyDescription} />
         <meta charset="UTF-8" />
         <meta http-equiv="X-UA-Compatible" content="IE=edge" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
