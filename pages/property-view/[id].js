@@ -61,6 +61,9 @@ import pt from "locales/pt";
 const SlideImageMobile = dynamic(() =>
   import("@/component/PropertyView/SlideImageMobile/SlideImageMobile")
 );
+const BaseCopyText = dynamic(() =>
+  import("@/component/reuseable/baseCopyText/BaseCopyText")
+);
 import { useRouter } from "next/router";
 import useCurrentUser from "@/hooks/useCurrentUser";
 import { _imageURL } from "consts";
@@ -193,32 +196,7 @@ export default function PropertyView({
   };
 
   console.log("🟥 ~ singlePropertyData:", singlePropertyData);
-  const copyToClipboard = (text) => {
-    navigator.clipboard.writeText(text).then(
-      () => {
-        console.log("Text copied to clipboard!");
-      },
-      (err) => {
-        console.error("Failed to copy: ", err);
-      }
-    );
-  };
-  // useEffect(() => {
-  //   let showData = [];
 
-  //   if (sideTabValue === "photos") {
-  //     showData = singlePropertyData?.property?.attachments?.filter(
-  //       (data) => data.title === upperTabValue
-  //     );
-  //   }
-  //   if (sideTabValue === "vision_360") {
-  //     showData = singlePropertyData?.property?.attachments?.filter((data) =>
-  //       data.title.includes(`${upperTabValue}_${sideTabValue}`)
-  //     );
-  //   }
-  //   setImages(showData);
-  //   console.log({ showData });
-  // }, [singlePropertyData, upperTabValue, sideTabValue]);
   const [anchorEl, setAnchorEl] = useState(null);
   const open = Boolean(anchorEl);
   const handleClick = (event) => {
@@ -376,38 +354,45 @@ export default function PropertyView({
                       Compartilhar
                     </Typography>
                     <Stack direction="row" spacing={3}>
-                      <WhatsappShareButton
-                        url={`https://www.lokkan.site/property-view/${singlePropertyData?.property?.id}`}
-                      >
-                        <WhatsappIcon round size={40} />
-                      </WhatsappShareButton>
-                      <FacebookShareButton
-                        url={`https://www.lokkan.site/property-view/${singlePropertyData?.property?.id}`}
-                      >
-                        <FacebookIcon round size={40} />
-                      </FacebookShareButton>
-                      <EmailShareButton
-                        url={`https://www.lokkan.site/property-view/${singlePropertyData?.property?.id}`}
-                      >
-                        <EmailIcon round size={40} />
-                      </EmailShareButton>
-                      <IconButton
-                        sx={{
-                          borderRadius: 11111,
-                          width: 40,
-                          height: 40,
-                          backgroundColor: "#9c9c9c",
-                          color: "white",
-                          "&:hover": {
-                            backgroundColor: "#ababab",
-                          },
-                        }}
-                        onClick={copyToClipboard(
-                          `https://www.lokkan.site/property-view/${singlePropertyData?.property?.id}`
-                        )}
-                      >
-                        <ContentCopyIcon sx={{ height: 20 }} />
-                      </IconButton>
+                      <Stack direction="column">
+                        <WhatsappShareButton
+                          url={`https://www.lokkan.site/property-view/${singlePropertyData?.property?.id}`}
+                        >
+                          <WhatsappIcon round size={40} />
+                          <Typography sx={{ fontSize: "12px" }}>
+                            Whatsapp
+                          </Typography>
+                        </WhatsappShareButton>
+                      </Stack>
+                      <Stack direction="column">
+                        <FacebookShareButton
+                          url={`https://www.lokkan.site/property-view/${singlePropertyData?.property?.id}`}
+                        >
+                          <FacebookIcon round size={40} />
+                          <Typography sx={{ fontSize: "12px" }}>
+                            Facebook
+                          </Typography>
+                        </FacebookShareButton>
+                      </Stack>
+                      <Stack direction="column">
+                        <EmailShareButton
+                          url={`https://www.lokkan.site/property-view/${singlePropertyData?.property?.id}`}
+                        >
+                          <EmailIcon round size={40} />
+                          <Typography sx={{ fontSize: "12px" }}>
+                            Email
+                          </Typography>
+                        </EmailShareButton>
+                      </Stack>
+                      <Stack direction="column">
+                        <BaseCopyText
+                          text={`https://www.lokkan.site/property-view/${singlePropertyData?.property?.id}`}
+                        />
+
+                        <Typography sx={{ fontSize: "12px", mt: "6px" }}>
+                          Copy URL
+                        </Typography>
+                      </Stack>
                     </Stack>
                   </Stack>
                 </MenuItem>
