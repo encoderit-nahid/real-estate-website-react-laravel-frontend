@@ -115,6 +115,7 @@ export default function PropertyView({
   handleLoginClose,
   singlePropertyData,
   tabArrayData,
+  propertyDescription,
   language,
 }) {
   const [myValue, setMyValue] = useState(language || "en");
@@ -133,15 +134,15 @@ export default function PropertyView({
 
   const [sideTabValue, setSideTabValue] = useState("photos");
 
-  const [propertyDescription, setPorpertyDescription] = useState("");
+  // const [propertyDescription, setPorpertyDescription] = useState("");
 
-  useEffect(() => {
-    if (singlePropertyData?.property?.property_description) {
-      const htmlString = singlePropertyData.property.property_description;
-      const textContent = stripHtmlTags(htmlString);
-      setPorpertyDescription(textContent);
-    }
-  }, [singlePropertyData]);
+  // useEffect(() => {
+  //   if (singlePropertyData?.property?.property_description) {
+  //     const htmlString = singlePropertyData.property.property_description;
+  //     const textContent = stripHtmlTags(htmlString);
+  //     setPorpertyDescription(textContent);
+  //   }
+  // }, [singlePropertyData]);
 
   const Images = useMemo(() => {
     const regexPatternThreeSixtyImages = /^[a-zA-Z_]+_vision_360$/;
@@ -634,6 +635,9 @@ export async function getServerSideProps(context) {
   return {
     props: {
       singlePropertyData: singlePropertyData,
+      propertyDescription: stripHtmlTags(
+        singlePropertyData?.property?.property_description
+      ),
       tabArrayData:
         singlePropertyData?.property?.property_detail?.photo_types?.filter(
           (data) => data.slug.substr(data.slug.length - 3) !== "360"
