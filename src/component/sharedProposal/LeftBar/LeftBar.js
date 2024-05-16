@@ -15,7 +15,7 @@ import ListItemText from "@mui/material/ListItemText";
 
 import Image from "next/image";
 import Link from "next/link";
-import { Avatar, Grid, ListItemButton, Typography } from "@mui/material";
+import { Avatar, Grid, ListItemButton, Stack, Typography } from "@mui/material";
 import SettingsOutlinedIcon from "@mui/icons-material/SettingsOutlined";
 import LogoutOutlinedIcon from "@mui/icons-material/LogoutOutlined";
 import InsertDriveFileOutlinedIcon from "@mui/icons-material/InsertDriveFileOutlined";
@@ -39,7 +39,7 @@ import { useSession, signIn, signOut } from "next-auth/react";
 import pt from "locales/pt";
 import en from "locales/en";
 import { _imageURL } from "consts";
-
+import ChevronRightIcon from "@mui/icons-material/ChevronRight";
 function LeftBar(props) {
   const router = useRouter();
   const { data: session } = useSession();
@@ -167,18 +167,39 @@ function LeftBar(props) {
                 <Avatar />
               )}
             </Box>
-            <Typography
-              variant="p"
-              sx={{
-                color: "#002152",
-                fontWeight: "600",
-                fontSize: "16px",
-                lineHeight: "22px",
-                mt: 2,
-              }}
-            >
-              {session?.user?.name}
-            </Typography>
+            <Link href="/profile">
+              <a
+                style={{
+                  textDecoration: "none",
+                  listStyle: "none",
+                  backgroundColor: "#F2F5F6",
+                  borderRadius: "4px",
+                  padding: "4px 10px 4px 16px",
+                  marginTop: "8px",
+                }}
+              >
+                <Stack direction="row">
+                  <Typography
+                    variant="p"
+                    sx={{
+                      color: "#7450F0",
+                      fontWeight: "600",
+                      fontSize: "16px",
+                      lineHeight: "22px",
+
+                      textTransform: "capitalize",
+                    }}
+                  >
+                    {session?.user?.name}
+                  </Typography>
+                  <ChevronRightIcon
+                    sx={{
+                      color: "#003357",
+                    }}
+                  />
+                </Stack>
+              </a>
+            </Link>
             <Typography
               variant="p"
               sx={{

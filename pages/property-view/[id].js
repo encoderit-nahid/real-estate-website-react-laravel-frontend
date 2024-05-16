@@ -65,7 +65,7 @@ import { useRouter } from "next/router";
 import useCurrentUser from "@/hooks/useCurrentUser";
 import { _imageURL } from "consts";
 import { stripHtmlTags } from "@/utils/stripHtmlTags";
-
+import ContentCopyIcon from "@mui/icons-material/ContentCopy";
 const BaseFavoriteButton = dynamic(
   () => import("@/component/reuseable/baseFavoriteButton/BaseFavoriteButton"),
   {
@@ -193,7 +193,16 @@ export default function PropertyView({
   };
 
   console.log("🟥 ~ singlePropertyData:", singlePropertyData);
-
+  const copyToClipboard = (text) => {
+    navigator.clipboard.writeText(text).then(
+      () => {
+        console.log("Text copied to clipboard!");
+      },
+      (err) => {
+        console.error("Failed to copy: ", err);
+      }
+    );
+  };
   // useEffect(() => {
   //   let showData = [];
 
@@ -382,7 +391,23 @@ export default function PropertyView({
                       >
                         <EmailIcon round size={40} />
                       </EmailShareButton>
-                      <d>asdas</d>
+                      <IconButton
+                        sx={{
+                          borderRadius: 11111,
+                          width: 40,
+                          height: 40,
+                          backgroundColor: "#9c9c9c",
+                          color: "white",
+                          "&:hover": {
+                            backgroundColor: "#ababab",
+                          },
+                        }}
+                        onClick={copyToClipboard(
+                          `https://www.lokkan.site/property-view/${singlePropertyData?.property?.id}`
+                        )}
+                      >
+                        <ContentCopyIcon sx={{ height: 20 }} />
+                      </IconButton>
                     </Stack>
                   </Stack>
                 </MenuItem>
