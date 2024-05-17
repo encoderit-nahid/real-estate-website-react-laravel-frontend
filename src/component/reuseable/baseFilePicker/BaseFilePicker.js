@@ -42,7 +42,7 @@ const baseStyle = {
   color: "#c4c4c4",
   outline: "none",
   transition: "border .24s ease-in-out",
-  width: "70%",
+  width: "100%",
   marginTop: "2vh",
 };
 
