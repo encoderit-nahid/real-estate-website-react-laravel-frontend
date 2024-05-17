@@ -73,6 +73,8 @@ import BaseAutocomplete from "@/component/reuseable/baseAutocomplete/BaseAutocom
 import BaseOutlinedZipInput from "@/component/reuseable/baseOutlinedZipInput/BaseOutlinedZipInput";
 import PropertyList from "@/component/IAmOwner/propertyList/PropertyList";
 import StarIcon from "@mui/icons-material/Star";
+import BaseLinearRating from "@/component/reuseable/baseLinearRating/BaseLinearRating";
+import Footer from "@/component/shared/Footer/Footer";
 
 const drawerWidth = 240;
 
@@ -249,353 +251,233 @@ export default function BrokerDetails({
               background: "#F2F5F6",
               minHeight: "100vh",
               width: { sm: `calc(100% - ${drawerWidth}px)` },
-              paddingX: { xs: 0, sm: 0, md: 6, lg: 6, xl: 6 },
               paddingTop: { xs: 6, sm: 6, md: 6, lg: 8, xl: 3 },
-              paddingBottom: { xs: 3, sm: 3, md: 3, lg: 4, xl: 3 },
             }}
           >
-            <Grid
-              container
-              direction="row"
-              justifyContent="space-between"
-              alignItems="flex-start"
-            >
-              <Typography
-                variant="p"
-                sx={{
-                  color: "#002152",
-                  fontSize: "24px",
-                  fontWeight: "700",
-                  lineHeight: "32px",
-                  ml: { xs: 4, sm: 4, md: 0, lg: 0, xl: 0 },
-                  mt: { xs: 1, sm: 1, md: 0, lg: 0, xl: 0 },
-                }}
-              >
-                Broker
-              </Typography>
-            </Grid>
-
-            <Grid
-              container
-              spacing={2}
+            <Box
               sx={{
-                backgroundColor: "white",
-                borderRadius: "8px 8px 0 0",
-                padding: "32px 24px 0 24px",
-                mt: 1,
+                paddingX: { xs: 0, sm: 0, md: 6, lg: 6, xl: 6 },
+                paddingTop: { xs: 6, sm: 6, md: 6, lg: 8, xl: 3 },
+                paddingBottom: { xs: 3, sm: 3, md: 3, lg: 4, xl: 3 },
               }}
             >
-              <Grid item xs={2}>
-                <Stack
-                  direction="column"
-                  alignItems="center"
-                  justifyItems="center"
+              <Grid
+                container
+                direction="row"
+                justifyContent="space-between"
+                alignItems="flex-start"
+              >
+                <Typography
+                  variant="p"
+                  sx={{
+                    color: "#002152",
+                    fontSize: "24px",
+                    fontWeight: "700",
+                    lineHeight: "32px",
+                    ml: { xs: 4, sm: 4, md: 0, lg: 0, xl: 0 },
+                    mt: { xs: 1, sm: 1, md: 0, lg: 0, xl: 0 },
+                  }}
                 >
-                  <Avatar sx={{ width: 70, height: 70 }} />
+                  Broker
+                </Typography>
+              </Grid>
 
-                  <ListItemText
-                    primary={
-                      <Typography
-                        variant="body1"
-                        sx={{
-                          fontSize: "16px",
-                          fontWeight: 700,
-                          lineHeight: "22px",
-                          color: "#6C7A84",
-                        }}
-                      >
-                        4.5{" "}
-                        <span
-                          style={{
-                            fontSize: "14px",
-                            fontWeight: 400,
-                            lineHeight: "18px",
+              <Grid
+                container
+                spacing={2}
+                sx={{
+                  backgroundColor: "white",
+                  borderRadius: "8px 8px 0 0",
+                  padding: "32px 24px 0 24px",
+                  mt: 1,
+                }}
+              >
+                <Grid item xs={2}>
+                  <Stack
+                    direction="column"
+                    alignItems="center"
+                    justifyItems="center"
+                  >
+                    <Avatar sx={{ width: 70, height: 70 }} />
+
+                    <ListItemText
+                      primary={
+                        <Typography
+                          variant="body1"
+                          sx={{
+                            fontSize: "16px",
+                            fontWeight: 700,
+                            lineHeight: "22px",
                             color: "#6C7A84",
                           }}
                         >
-                          (32 reviews)
-                        </span>
+                          4.5{" "}
+                          <span
+                            style={{
+                              fontSize: "14px",
+                              fontWeight: 400,
+                              lineHeight: "18px",
+                              color: "#6C7A84",
+                            }}
+                          >
+                            (32 reviews)
+                          </span>
+                        </Typography>
+                      }
+                    />
+                    <Rating name="size-large" defaultValue={4} readOnly />
+                  </Stack>
+                </Grid>
+                <Grid item xs={10}>
+                  <Grid container spacing={3}>
+                    <Grid item xs={12}>
+                      <Typography
+                        variant="h6"
+                        sx={{
+                          color: "#002152",
+                          fontWeight: "700",
+                          fontSize: "16px",
+                          lineHeight: "22px",
+                        }}
+                      >
+                        John Doe da silva
                       </Typography>
-                    }
-                  />
-                  <Rating name="size-large" defaultValue={4} readOnly />
-                </Stack>
-              </Grid>
-              <Grid item xs={10}>
-                <Grid container spacing={3}>
-                  <Grid item xs={12}>
-                    <Typography
-                      variant="h6"
-                      sx={{
-                        color: "#002152",
-                        fontWeight: "700",
-                        fontSize: "16px",
-                        lineHeight: "22px",
-                      }}
-                    >
-                      John Doe da silva
-                    </Typography>
-                  </Grid>
-                  <Grid item xs={12}>
-                    <Typography
-                      variant="p"
-                      sx={{
-                        color: "#002152",
-                        fontWeight: "400",
-                        fontSize: "16px",
-                        lineHeight: "22px",
-                        letterSpacing: "0.5px",
-                      }}
-                    >
-                      Lorem ipsum dolor sit amet consectetur. Cursus amet mi
-                      vestibulum nunc urna. Posuere congue sit urna in mattis
-                      sem. Pregnant nibh turpis in tincidunt enim. Condimentum
-                      amet proin commodo interdum. Magnis quam congue sed.
-                    </Typography>
-                  </Grid>
-                  <Grid item xs={12}>
-                    <Grid container>
-                      <Grid item xs={4}>
-                        <Stack direction="row" spacing={1}>
-                          <EmailIcon color="primary" />
-                          <Typography
-                            variant="p"
-                            sx={{
-                              color: "#002152",
-                              fontWeight: "400",
-                              fontSize: "16px",
-                              lineHeight: "22px",
-                              letterSpacing: "0.5px",
-                            }}
-                          >
-                            demo@gmail.com
-                          </Typography>
-                        </Stack>
-                      </Grid>
-                      <Grid item xs={4}>
-                        <Stack direction="row" spacing={1}>
-                          <PhoneEnabledIcon color="primary" />
-                          <Typography
-                            variant="p"
-                            sx={{
-                              color: "#002152",
-                              fontWeight: "400",
-                              fontSize: "16px",
-                              lineHeight: "22px",
-                              letterSpacing: "0.5px",
-                            }}
-                          >
-                            (11) 9000-0000
-                          </Typography>
-                        </Stack>
-                      </Grid>
-                      <Grid item xs={4}>
-                        <Stack direction="row" spacing={1}>
-                          <TextSnippetIcon color="primary" />
-                          <Typography
-                            variant="p"
-                            sx={{
-                              color: "#002152",
-                              fontWeight: "400",
-                              fontSize: "16px",
-                              lineHeight: "22px",
-                              letterSpacing: "0.5px",
-                            }}
-                          >
-                            CRECI 95496840
-                          </Typography>
-                        </Stack>
+                    </Grid>
+                    <Grid item xs={12}>
+                      <Typography
+                        variant="p"
+                        sx={{
+                          color: "#002152",
+                          fontWeight: "400",
+                          fontSize: "16px",
+                          lineHeight: "22px",
+                          letterSpacing: "0.5px",
+                        }}
+                      >
+                        Lorem ipsum dolor sit amet consectetur. Cursus amet mi
+                        vestibulum nunc urna. Posuere congue sit urna in mattis
+                        sem. Pregnant nibh turpis in tincidunt enim. Condimentum
+                        amet proin commodo interdum. Magnis quam congue sed.
+                      </Typography>
+                    </Grid>
+                    <Grid item xs={12}>
+                      <Grid container>
+                        <Grid item xs={4}>
+                          <Stack direction="row" spacing={1}>
+                            <EmailIcon color="primary" />
+                            <Typography
+                              variant="p"
+                              sx={{
+                                color: "#002152",
+                                fontWeight: "400",
+                                fontSize: "16px",
+                                lineHeight: "22px",
+                                letterSpacing: "0.5px",
+                              }}
+                            >
+                              demo@gmail.com
+                            </Typography>
+                          </Stack>
+                        </Grid>
+                        <Grid item xs={4}>
+                          <Stack direction="row" spacing={1}>
+                            <PhoneEnabledIcon color="primary" />
+                            <Typography
+                              variant="p"
+                              sx={{
+                                color: "#002152",
+                                fontWeight: "400",
+                                fontSize: "16px",
+                                lineHeight: "22px",
+                                letterSpacing: "0.5px",
+                              }}
+                            >
+                              (11) 9000-0000
+                            </Typography>
+                          </Stack>
+                        </Grid>
+                        <Grid item xs={4}>
+                          <Stack direction="row" spacing={1}>
+                            <TextSnippetIcon color="primary" />
+                            <Typography
+                              variant="p"
+                              sx={{
+                                color: "#002152",
+                                fontWeight: "400",
+                                fontSize: "16px",
+                                lineHeight: "22px",
+                                letterSpacing: "0.5px",
+                              }}
+                            >
+                              CRECI 95496840
+                            </Typography>
+                          </Stack>
+                        </Grid>
                       </Grid>
                     </Grid>
                   </Grid>
                 </Grid>
-              </Grid>
-              <Grid item xs={12}>
-                <Tabs
-                  value={value}
-                  onChange={handleChange}
-                  indicatorColor="primary"
-                  textColor="inherit"
-                  variant="fullWidth"
-                  aria-label="full width tabs example"
-                >
-                  <Tab
-                    label="properties"
-                    sx={{
-                      fontWeight: "600",
-                      textTransform: "uppercase",
-                      // color: "#0362F0",
-                    }}
-                    {...a11yProps(0)}
-                    color="primary"
-                  />
-                  <Tab
-                    label="assessments"
-                    sx={{
-                      fontWeight: "600",
-                      textTransform: "uppercase",
-                      // color: "#0362F0",
-                    }}
-                    color="primary"
-                    {...a11yProps(1)}
-                  />
-                </Tabs>
-              </Grid>
-            </Grid>
-            <TabPanel value={value} index={0}>
-              <PropertyList
-                propertyData={propertyData}
-                isLoading={isLoading}
-                handleLoginOpen={handleLoginOpen}
-              />
-            </TabPanel>
-            <TabPanel value={value} index={1}>
-              <Stack direction="row" alignItems="flex-start" spacing={3}>
-                <Stack direction="row" alignItems="center" spacing={3}>
-                  <Typography
-                    variant="h1"
-                    style={{ fontStyle: "italic", fontWeight: "bolder" }}
+                <Grid item xs={12}>
+                  <Tabs
+                    value={value}
+                    onChange={handleChange}
+                    indicatorColor="primary"
+                    textColor="inherit"
+                    variant="fullWidth"
+                    aria-label="full width tabs example"
                   >
-                    4.5
-                  </Typography>
-                  <StarIcon sx={{ fontSize: 50, color: "#FFAB00" }} />
-                </Stack>
-                <Stack direction="column" spacing={1}>
+                    <Tab
+                      label="properties"
+                      sx={{
+                        fontWeight: "600",
+                        textTransform: "uppercase",
+                        // color: "#0362F0",
+                      }}
+                      {...a11yProps(0)}
+                      color="primary"
+                    />
+                    <Tab
+                      label="assessments"
+                      sx={{
+                        fontWeight: "600",
+                        textTransform: "uppercase",
+                        // color: "#0362F0",
+                      }}
+                      color="primary"
+                      {...a11yProps(1)}
+                    />
+                  </Tabs>
+                </Grid>
+              </Grid>
+              <TabPanel value={value} index={0}>
+                <PropertyList
+                  propertyData={propertyData}
+                  isLoading={isLoading}
+                  handleLoginOpen={handleLoginOpen}
+                />
+              </TabPanel>
+              <TabPanel value={value} index={1}>
+                <Stack direction="row" alignItems="flex-start" spacing={3}>
                   <Stack direction="row" alignItems="center" spacing={3}>
                     <Typography
-                      sx={{
-                        color: "#6C7A84",
-                        size: "12px",
-                        fontWeight: 400,
-                      }}
+                      variant="h1"
+                      style={{ fontStyle: "italic", fontWeight: "bolder" }}
                     >
-                      5
+                      4.5
                     </Typography>
-                    <LinearProgress
-                      value={66}
-                      sx={{
-                        height: "15px",
-                        backgroundColor: "#EEEEEE",
-                        borderRadius: "3px",
-                        width: "500px",
-                        "& .MuiLinearProgress-bar": {
-                          backgroundColor: "#FFAB00", // Change to your desired color
-                        },
-                      }}
-                      variant="determinate"
-                    />
-                    <Typography
-                      sx={{
-                        color: "#6C7A84",
-                        size: "12px",
-                        fontWeight: 400,
-                      }}
-                    >
-                      66.7%
-                    </Typography>
+                    <StarIcon sx={{ fontSize: 50, color: "#FFAB00" }} />
                   </Stack>
-                  <Stack direction="row" alignItems="center" spacing={3}>
-                    <Typography
-                      sx={{
-                        color: "#6C7A84",
-                        size: "12px",
-                        fontWeight: 400,
-                      }}
-                    >
-                      5
-                    </Typography>
-                    <LinearProgress
-                      value={66}
-                      sx={{
-                        height: "15px",
-                        backgroundColor: "#EEEEEE",
-                        borderRadius: "3px",
-                        width: "500px",
-                        "& .MuiLinearProgress-bar": {
-                          backgroundColor: "#FFAB00", // Change to your desired color
-                        },
-                      }}
-                      variant="determinate"
-                    />
-                    <Typography
-                      sx={{
-                        color: "#6C7A84",
-                        size: "12px",
-                        fontWeight: 400,
-                      }}
-                    >
-                      66.7%
-                    </Typography>
-                  </Stack>
-                  <Stack direction="row" alignItems="center" spacing={3}>
-                    <Typography
-                      sx={{
-                        color: "#6C7A84",
-                        size: "12px",
-                        fontWeight: 400,
-                      }}
-                    >
-                      5
-                    </Typography>
-                    <LinearProgress
-                      value={66}
-                      sx={{
-                        height: "15px",
-                        backgroundColor: "#EEEEEE",
-                        borderRadius: "3px",
-                        width: "500px",
-                        "& .MuiLinearProgress-bar": {
-                          backgroundColor: "#FFAB00", // Change to your desired color
-                        },
-                      }}
-                      variant="determinate"
-                    />
-                    <Typography
-                      sx={{
-                        color: "#6C7A84",
-                        size: "12px",
-                        fontWeight: 400,
-                      }}
-                    >
-                      66.7%
-                    </Typography>
-                  </Stack>
-                  <Stack direction="row" alignItems="center" spacing={3}>
-                    <Typography
-                      sx={{
-                        color: "#6C7A84",
-                        size: "12px",
-                        fontWeight: 400,
-                      }}
-                    >
-                      5
-                    </Typography>
-                    <LinearProgress
-                      value={66}
-                      sx={{
-                        height: "15px",
-                        backgroundColor: "#EEEEEE",
-                        borderRadius: "3px",
-                        width: "500px",
-                        "& .MuiLinearProgress-bar": {
-                          backgroundColor: "#FFAB00", // Change to your desired color
-                        },
-                      }}
-                      variant="determinate"
-                    />
-                    <Typography
-                      sx={{
-                        color: "#6C7A84",
-                        size: "12px",
-                        fontWeight: 400,
-                      }}
-                    >
-                      66.7%
-                    </Typography>
+                  <Stack direction="column" spacing={1}>
+                    <BaseLinearRating count={5} percentage={66.7} />
+                    <BaseLinearRating count={4} percentage={18.7} />
+                    <BaseLinearRating count={3} percentage={16.7} />
+                    <BaseLinearRating count={2} percentage={1.0} />
+                    <BaseLinearRating count={1} percentage={1.0} />
                   </Stack>
                 </Stack>
-              </Stack>
-            </TabPanel>
+              </TabPanel>
+            </Box>
+            <Footer />
           </Box>
         </Box>
       </main>

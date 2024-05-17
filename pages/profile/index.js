@@ -17,6 +17,7 @@ import {
   Avatar,
   Badge,
   Button,
+  Chip,
   Container,
   FormControl,
   Grid,
@@ -25,6 +26,7 @@ import {
   ListItemButton,
   ListItemIcon,
   ListItemText,
+  Stack,
 } from "@mui/material";
 
 import { useEffect, useState } from "react";
@@ -131,6 +133,7 @@ export default function Index({ language }) {
     setError,
   } = useForm();
   const [showPass, setShowPass] = useState(false);
+  const [actingPreference, setActingPreference] = useState("location");
   const handleClickShowPassword = () => {
     setShowPass(!showPass);
   };
@@ -298,7 +301,7 @@ export default function Index({ language }) {
                 mt: 1,
               }}
             >
-              <Grid item xs={2}>
+              <Grid item xs={12} lg={2}>
                 <Box
                   component="div"
                   sx={{
@@ -328,7 +331,7 @@ export default function Index({ language }) {
                 </Box>
               </Grid>
 
-              <Grid item xs={10}>
+              <Grid item xs={12} lg={10}>
                 <form onSubmit={handleSubmit(onSubmit)}>
                   <Grid item xs={12}>
                     <Controller
@@ -683,6 +686,76 @@ export default function Index({ language }) {
                         {errors.state?.message}
                       </Typography>
                     </Grid>
+                  </Grid>
+                  <Grid item spacing={3} sx={{ mt: 3 }}>
+                    <Typography
+                      sx={{
+                        color: "#002152",
+                        fontWeight: 400,
+                        fontSize: "16px",
+                        lineHeight: "22px",
+                      }}
+                    >
+                      What is your acting preference?
+                    </Typography>
+
+                    <Stack direction={"row"} spacing={3} sx={{ mt: 3 }}>
+                      <Chip
+                        label="Location"
+                        sx={{
+                          p: "4px 12px",
+                          backgroundColor:
+                            actingPreference == "location"
+                              ? "#0362F0"
+                              : "ecf0f3",
+                          color:
+                            actingPreference == "location"
+                              ? "#ffffff"
+                              : "#002152",
+                          fontSize: "16px",
+                        }}
+                        onClick={() => setActingPreference("location")}
+                      />
+                      <Chip
+                        label="Sales"
+                        sx={{
+                          p: "4px 12px",
+                          backgroundColor:
+                            actingPreference == "sales" ? "#0362F0" : "ecf0f3",
+                          color:
+                            actingPreference == "sales" ? "#ffffff" : "#002152",
+                          fontSize: "16px",
+                        }}
+                        onClick={() => setActingPreference("sales")}
+                      />
+                      <Chip
+                        label="Both"
+                        sx={{
+                          p: "4px 12px",
+                          backgroundColor:
+                            actingPreference == "both" ? "#0362F0" : "ecf0f3",
+                          color:
+                            actingPreference == "both" ? "#ffffff" : "#002152",
+                          fontSize: "16px",
+                        }}
+                        onClick={() => setActingPreference("both")}
+                      />
+                    </Stack>
+                    <Typography
+                      sx={{
+                        color: "#7C7C99",
+                        fontWeight: 400,
+                        fontSize: "16px",
+                        lineHeight: "22px",
+                        mt: 3,
+                      }}
+                    >
+                      Choosing "both", we will understand that your work can be
+                      in both rental and sales and your accreditation will be
+                      carried out in the
+                      <br /> segment that we have demand at the moment. We do
+                      not accredit brokers to work in both models.
+                    </Typography>
                   </Grid>
                   <Grid
                     container
