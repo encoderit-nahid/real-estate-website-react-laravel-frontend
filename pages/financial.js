@@ -38,6 +38,7 @@ import en from "locales/en";
 import PhotosAndVideos from "@/component/new venture/PhotosAndVideos/PhotosAndVideos";
 import { useFieldArray, useForm } from "react-hook-form";
 import BaseFilePicker from "@/component/reuseable/baseFilePicker/BaseFilePicker";
+import BaseDataTable from "@/component/reuseable/baseDataTable/BaseDataTable";
 
 const drawerWidth = 240;
 
@@ -192,8 +193,6 @@ export default function Financial({ language }) {
                 </Box>
 
                 <TabPanel value={value} index={0}>
-                  {/* <Pendants />
-                  <TabRegistered languageName={myValue.toString()} /> */}
                   <Box
                     sx={{
                       p: "16px",
@@ -385,7 +384,17 @@ export default function Financial({ language }) {
                     )}
                   </Box>
                 </TabPanel>
-                <TabPanel value={value} index={1}></TabPanel>
+                <TabPanel value={value} index={1}>
+                  <BaseDataTable
+                    headers={[
+                      "Nominated people",
+                      "Amount",
+                      "Amount received",
+                      "Balance receivable",
+                      "Nominees",
+                    ]}
+                  />
+                </TabPanel>
               </Box>
             </Container>
           </Box>
