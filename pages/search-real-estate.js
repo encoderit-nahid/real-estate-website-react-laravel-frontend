@@ -11,6 +11,9 @@ import {
   Divider,
   Button,
   SwipeableDrawer,
+  TextField,
+  InputAdornment,
+  IconButton,
 } from "@mui/material";
 const PropertyList = dynamic(() =>
   import("@/component/IAmOwner/propertyList/PropertyList")
@@ -49,6 +52,7 @@ import en from "locales/en";
 import pt from "locales/pt";
 import BaseOutlinedAreaInput from "@/component/reuseable/baseOutlinedAreaInput/BaseOutlinedAreaInput";
 import { userDetailsApi } from "@/api";
+import SearchIcon from "@mui/icons-material/Search";
 import useCurrentUser from "@/hooks/useCurrentUser";
 
 const unflatten = require("flat").unflatten;
@@ -328,10 +332,42 @@ export default function SearchRealEstate({
           >
             {t["filters"]}
           </Typography>
-          <CloseIcon onClick={toggleDrawer(anchor, false)} />
+          <CloseIcon
+            onClick={toggleDrawer(anchor, false)}
+            sx={{ cursor: "pointer" }}
+          />
         </Grid>
 
         <Box sx={{ mx: 2, mt: 3 }}>
+          <Box sx={{ mt: 1, mb: 1 }}>
+            <TextField
+              variant="outlined"
+              placeholder="Search"
+              size="small"
+              // onChange={debouncedHandleChangeBroker}
+              fullWidth
+              InputProps={{
+                endAdornment: (
+                  <InputAdornment position="end">
+                    <IconButton edge="end" aria-label="Search by broker name">
+                      <SearchIcon />
+                    </IconButton>
+                  </InputAdornment>
+                ),
+              }}
+            />
+            <Typography
+              variant="p"
+              sx={{
+                color: "#6C7A84",
+                fontSize: "14px",
+                fontWeight: 400,
+                lineHeight: "18px",
+              }}
+            >
+              You can search by broker,development or condominium
+            </Typography>
+          </Box>
           <Box>
             <Typography
               variant="p"
