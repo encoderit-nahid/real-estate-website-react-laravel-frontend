@@ -18,12 +18,14 @@ import pt from "locales/pt";
 
 //matched_with_property_details
 const matchedForCondominio = [1, 2, 4, 8, 10, 11, 13, 15, 16];
-const matchedForAreaM2 = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15];
-const matchedForQuartos = [1, 2, 3, 4, 7, 8, 9, 10, 11, 12, 13];
-const matchedForSuites = [1, 2, 3, 4, 7, 8, 9];
-const matchedForBanheiro = [1, 2, 3, 4, 7, 8, 9, 10, 11, 12, 13];
-const matchedForVagas = [1, 2, 3, 4, 7, 8, 9, 10, 11, 12, 13];
-const matchedForTerrenoAreaM2 = [2, 3, 7, 8, 9, 12, 13];
+const matchedForAreaM2 = [
+  1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16,
+];
+const matchedForQuartos = [1, 2, 3, 4, 7, 8, 9, 10, 11, 12, 13, 16];
+const matchedForSuites = [1, 2, 3, 4, 7, 8, 9, 16];
+const matchedForBanheiro = [1, 2, 3, 4, 7, 8, 9, 10, 11, 12, 13, 16];
+const matchedForVagas = [1, 2, 3, 4, 7, 8, 9, 10, 11, 12, 13, 16];
+const matchedForTerrenoAreaM2 = [2, 3, 7, 8, 9, 12, 13, 16];
 const matchedForDimension = [15];
 
 // const matchedForDimensoes = [5, 6];

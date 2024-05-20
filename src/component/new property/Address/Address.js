@@ -346,8 +346,8 @@ function Address({
             <Box sx={{ mt: 1 }}>
               <Grid container spacing={1}>
                 {[
-                  { name: "New", slug: "New" },
-                  { name: "Used", slug: "Used" },
+                  { name: "New", slug: t["New"] },
+                  { name: "Used", slug: t["Used"] },
                 ].map((data, index) => (
                   <Grid item xs={6} key={index}>
                     <Button
