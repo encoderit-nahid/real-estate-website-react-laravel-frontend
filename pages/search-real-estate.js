@@ -962,12 +962,15 @@ export default function SearchRealEstate({
                   lineHeight: "19px",
                 }}
               >
-                {(key === "Condomínio" ||
-                  key === "Comodidades" ||
-                  key === "Bem-estar" ||
-                  key === "Eletrodomésticos" ||
-                  key === "Cômodos" ||
-                  key === "Acessibilidade") &&
+                {(key === "condominium" ||
+                  key === "accessibility" ||
+                  key === "amenities" ||
+                  key === "appliances" ||
+                  key === "rooms" ||
+                  key === "room" ||
+                  key === "sorrounding" ||
+                  key === "wellbeing" ||
+                  key === "feature") &&
                   key}
               </Typography>
               <Grid
@@ -978,12 +981,15 @@ export default function SearchRealEstate({
                 gap={1}
                 sx={{ mt: 2 }}
               >
-                {(key === "Condomínio" ||
-                  key === "Comodidades" ||
-                  key === "Bem-estar" ||
-                  key === "Eletrodomésticos" ||
-                  key === "Cômodos" ||
-                  key === "Acessibilidade") &&
+                {(key === "condominium" ||
+                  key === "accessibility" ||
+                  key === "amenities" ||
+                  key === "appliances" ||
+                  key === "rooms" ||
+                  key === "room" ||
+                  key === "sorrounding" ||
+                  key === "wellbeing" ||
+                  key === "feature") &&
                   featureData[key].map((data, index) => (
                     <Button
                       key={index}

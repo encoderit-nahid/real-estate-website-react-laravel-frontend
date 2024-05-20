@@ -193,7 +193,7 @@ function ContractPdfModal({
 
   const handleSwitchChange = async (data) => {
     setSwitchLoading(true);
-    const status = data?.is_signed === 0 ? 1 : 0;
+    const status = data?.is_signed ? 0 : 1;
     const bodyData = { contract_sign_id: data?.id, status: status };
     dispatch(signatureUpdateData(bodyData));
     // const status = data?.is_signed === 0 ? 1 : 0;
