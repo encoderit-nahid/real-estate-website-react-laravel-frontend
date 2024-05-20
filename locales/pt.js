@@ -359,8 +359,7 @@ export default {
   filters: "Filtros",
   "proposal sent": "Proposta enviada!",
   Close: "Fechar",
-  "Name of the broker you referred":
-    "Nome do corretor (a) que indicou a Lokkan",
+  "Name of broker you referred": "Nome do corretor (a) que indicou a Lokkan",
   "Select broker": "Escolha o corretor (a)",
 
   "proposal values": "Valores da proposta",

@@ -681,7 +681,7 @@ function PersonalData({
                     lineHeight: "16px",
                   }}
                 >
-                  {t["Name of the broker you referred"]}
+                  {t["Name of broker you referred"]}
                 </Typography>
               </Grid>
               {selectedBroker ? (
