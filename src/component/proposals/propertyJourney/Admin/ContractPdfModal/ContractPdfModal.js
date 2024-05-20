@@ -5,6 +5,7 @@ import {
   CircularProgress,
   Divider,
   Grid,
+  LinearProgress,
   List,
   ListItem,
   ListItemAvatar,
@@ -46,6 +47,7 @@ import { useDispatch, useSelector } from "react-redux";
 import {
   findContractDetailsData,
   signatureAddData,
+  signatureUpdateData,
 } from "../../../../../redux/contractDetails/actions";
 import { contractDownloadApi, contractSignApi } from "../../../../../api";
 import { useForm, Controller } from "react-hook-form";
@@ -150,6 +152,8 @@ function ContractPdfModal({
     (state) => state?.contractDetails?.ContactDetailsData
   );
 
+  console.log({ contractDetailsInfo });
+
   const {
     register,
     watch,
@@ -191,11 +195,14 @@ function ContractPdfModal({
     setSwitchLoading(true);
     const status = data?.is_signed === 0 ? 1 : 0;
     const bodyData = { contract_sign_id: data?.id, status: status };
-    const [error, resp] = await contractSignApi(bodyData);
+    dispatch(signatureUpdateData(bodyData));
+    // const status = data?.is_signed === 0 ? 1 : 0;
+    // const bodyData = { contract_sign_id: data?.id, status: status };
+    // const [error, resp] = await contractSignApi(bodyData);
     setSwitchLoading(false);
-    if (!error) {
-      dispatch(findContractDetailsData(+singlePropertyData?.contract?.id));
-    }
+    // if (!error) {
+    //   dispatch(findContractDetailsData(+singlePropertyData?.contract?.id));
+    // }
   };
 
   return (
@@ -609,9 +616,7 @@ function ContractPdfModal({
                 </Button>
               </form>
             )}
-            <Box>
-              {switchLoading && <CircularProgress size={22} color="inherit" />}
-            </Box>
+            {/* <Box>{switchLoading && <LinearProgress />}</Box> */}
             <Grid
               container
               direction="column"

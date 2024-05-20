@@ -77,7 +77,6 @@ export default function ProjectView({
   handleLoginOpen,
   handleLoginClose,
   singleProjectData,
-  projectDescription,
   language,
 }) {
   const [myValue, setMyValue] = useState(language || "en");
@@ -401,9 +400,10 @@ export default function ProjectView({
                     lineHeight: "28px",
                     mt: 2,
                   }}
-                >
-                  {projectDescription}
-                </Typography>
+                  dangerouslySetInnerHTML={{
+                    __html: singleProjectData?.project?.description,
+                  }}
+                ></Typography>
               </Grid>
             </Grid>
           </Container>
@@ -482,9 +482,7 @@ export async function getServerSideProps(context) {
     props: {
       singleProjectData: singleProjectData,
       language: cookies,
-      projectDescription: stripHtmlTags(
-        singleProjectData?.project?.description
-      ),
+
       // tabArrayData:
       //   singlePropertyData?.property?.property_detail?.photo_types?.filter(
       //     (data) => data.slug.substr(data.slug.length - 3) !== "360"

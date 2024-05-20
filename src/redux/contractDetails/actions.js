@@ -1,4 +1,8 @@
-import { contractDetailsApi, createSignatureApi } from "../../api";
+import {
+  contractDetailsApi,
+  contractSignApi,
+  createSignatureApi,
+} from "../../api";
 import * as Types from "./types";
 
 const contactDetailsRequest = (data) => {
@@ -24,6 +28,13 @@ const contactDetailsFailed = (err) => {
 const signatureCreate = (data) => {
   return {
     type: Types.CONTACT_DETAILS_SIGNATURE_CREATE,
+    payload: data,
+  };
+};
+
+const signatureUpdate = (data) => {
+  return {
+    type: Types.CONTACT_DETAILS_SIGNATURE_UPDATE,
     payload: data,
   };
 };
@@ -57,4 +68,20 @@ export const signatureAddData = (body) => async (dispatch) => {
       error?.response?.data?.data || error?.response?.data?.status;
     // toast.error(errorMassage);
   }
+};
+
+export const signatureUpdateData = (body) => async (dispatch) => {
+  const [error, resp] = await contractSignApi(body);
+  if (!error) {
+    dispatch(signatureUpdate(body));
+  }
+
+  // if (!error) {
+  //   // dispatch(contactDetailsSuccess(response?.data));
+  //   dispatch(signatureCreate(response?.data?.users));
+  // } else {
+  //   const errorMassage =
+  //     error?.response?.data?.data || error?.response?.data?.status;
+  //   // toast.error(errorMassage);
+  // }
 };
