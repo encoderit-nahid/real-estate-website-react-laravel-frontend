@@ -115,7 +115,19 @@ function AmountView({
           </Typography>
         </Grid>
       </Grid>
-      <Grid item xs={6} sm={6} md={6} xl={3} lg={3}>
+      <Grid
+        item
+        sx={{
+          display: {
+            xs: "none",
+            sm: "block",
+          },
+        }}
+        sm={6}
+        md={6}
+        xl={3}
+        lg={3}
+      >
         <Grid
           container
           direction="column"

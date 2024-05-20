@@ -628,6 +628,103 @@ export default function PropertyView({
           </Tooltip>
         </BaseModal>
       </main>
+      <Grid
+        item
+        sx={{
+          display: {
+            xs: "block",
+            sm: "none",
+          },
+          position: "fixed",
+          bottom: 0,
+          left: 0,
+          backgroundColor: "#fff",
+          width: "100%",
+          p: 3,
+        }}
+        sm={6}
+        md={6}
+        xl={3}
+        lg={3}
+      >
+        <Grid
+          container
+          direction="column"
+          justifyContent="flex-start"
+          alignItems="flex-start"
+          sx={{
+            width: "fit-content",
+            mx: "auto",
+          }}
+        >
+          <Button
+            // disabled={
+            //   session?.user?.role === "broker" ||
+            //   session?.user?.role === "owner"
+            // }
+            variant="contained"
+            color="primary"
+            sx={{
+              px: 4,
+              fontSize: "16px",
+              fontWeight: "600",
+              textTransform: "none",
+              minWidth: "250px",
+              background: "#0E97F7",
+              borderRadius: "4px",
+              "&: hover": {
+                px: 4,
+                fontSize: "16px",
+                fontWeight: "600",
+                textTransform: "none",
+                minWidth: "250px",
+                background: "#0E97F7",
+                borderRadius: "4px",
+              },
+            }}
+            onClick={() => {
+              setNegotiate(true);
+              setSchedule(false);
+            }}
+          >
+            {t["Negotiate"]}
+          </Button>
+
+          <Button
+            // disabled={
+            //   session?.user?.role === "broker" ||
+            //   session?.user?.role === "owner"
+            // }
+            variant="contained"
+            color="secondary"
+            sx={{
+              mt: 2,
+              px: 4,
+              fontSize: "16px",
+              fontWeight: "600",
+              textTransform: "none",
+              minWidth: "250px",
+              background: "#7450F0",
+              borderRadius: "4px",
+              "&: hover": {
+                px: 4,
+                fontSize: "16px",
+                fontWeight: "600",
+                textTransform: "none",
+                minWidth: "250px",
+                background: "#7450F0",
+                borderRadius: "4px",
+              },
+            }}
+            onClick={() => {
+              setSchedule(true);
+              setNegotiate(false);
+            }}
+          >
+            {t["Schedule visit"]}
+          </Button>
+        </Grid>
+      </Grid>
     </div>
   );
 }
