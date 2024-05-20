@@ -67,12 +67,12 @@ function MyApp({ Component, pageProps: { session, language, ...pageProps } }) {
   const getLayout = () => {
     if (
       isLoggedIn &&
-      (router.pathname.startsWith("/my-properties") ||
-        router.pathname.startsWith("/proposals") ||
-        router.pathname.startsWith("/schedules") ||
-        router.pathname.startsWith("/brokers") ||
-        router.pathname.startsWith("/faq") ||
-        router.pathname.startsWith("/profile"))
+      (router.pathname.includes("/my-properties") ||
+        router.pathname.includes("/proposals") ||
+        router.pathname.includes("/schedules") ||
+        router.pathname.includes("/brokers") ||
+        router.pathname.includes("/faq") ||
+        router.pathname.includes("/profile"))
     ) {
       return AppLayout;
     }

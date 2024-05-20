@@ -55,35 +55,37 @@ function AmountView({
           </Typography>
         </Grid>
       </Grid>
-      <Grid item xs={6} sm={6} md={6} xl={3} lg={3}>
-        <Grid
-          container
-          direction="column"
-          justifyContent="flex-start"
-          alignItems="flex-start"
-        >
-          <Typography
-            variant="p"
-            sx={{
-              fontSize: "16px",
-              fontWeight: "400",
-              color: "#1A1859",
-            }}
+      {singlePropertyData?.property?.condominium && (
+        <Grid item xs={6} sm={6} md={6} xl={3} lg={3}>
+          <Grid
+            container
+            direction="column"
+            justifyContent="flex-start"
+            alignItems="flex-start"
           >
-            {t["Condominium"]}
-          </Typography>
-          <Typography
-            variant="p"
-            sx={{
-              fontSize: "24px",
-              fontWeight: "800",
-              color: "#1A1859",
-            }}
-          >
-            {`R$ ${singlePropertyData?.property?.condominium}`}
-          </Typography>
+            <Typography
+              variant="p"
+              sx={{
+                fontSize: "16px",
+                fontWeight: "400",
+                color: "#1A1859",
+              }}
+            >
+              {t["Condominium"]}
+            </Typography>
+            <Typography
+              variant="p"
+              sx={{
+                fontSize: "24px",
+                fontWeight: "800",
+                color: "#1A1859",
+              }}
+            >
+              {`R$ ${singlePropertyData?.property?.condominium}`}
+            </Typography>
+          </Grid>
         </Grid>
-      </Grid>
+      )}
       <Grid item xs={6} sm={6} md={6} xl={3} lg={3}>
         <Grid
           container
@@ -113,7 +115,19 @@ function AmountView({
           </Typography>
         </Grid>
       </Grid>
-      <Grid item xs={6} sm={6} md={6} xl={3} lg={3}>
+      <Grid
+        item
+        sx={{
+          display: {
+            xs: "none",
+            sm: "block",
+          },
+        }}
+        sm={6}
+        md={6}
+        xl={3}
+        lg={3}
+      >
         <Grid
           container
           direction="column"

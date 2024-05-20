@@ -17,13 +17,16 @@ import en from "locales/en";
 import pt from "locales/pt";
 
 //matched_with_property_details
-const matchedForCondominio = [10, 11, 15, 16, 1, 3, 4, 7, 8];
-const matchedForAreaM2 = [1, 2, 3, 4, 5, 6, 7, 8, 9, 11, 12];
-const matchedForQuartos = [1, 2, 3, 4, 5, 7, 8, 9];
-const matchedForSuites = [1, 2, 3, 4, 5, 6, 7, 8, 9];
-const matchedForBanheiro = [1, 2, 3, 4, 5, 7, 8, 9, 11, 12];
-const matchedForVagas = [1, 2, 3, 4, 5, 7, 8, 9, 11, 12];
-const matchedForTerrenoAreaM2 = [2, 3, 5, 7, 8, 9, 11, 12];
+const matchedForCondominio = [1, 2, 4, 8, 10, 11, 13, 15, 16];
+const matchedForAreaM2 = [
+  1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16,
+];
+const matchedForQuartos = [1, 2, 3, 4, 7, 8, 9, 10, 11, 12, 13, 16];
+const matchedForSuites = [1, 2, 3, 4, 7, 8, 9, 16];
+const matchedForBanheiro = [1, 2, 3, 4, 7, 8, 9, 10, 11, 12, 13, 16];
+const matchedForVagas = [1, 2, 3, 4, 7, 8, 9, 10, 11, 12, 13, 16];
+const matchedForTerrenoAreaM2 = [2, 3, 7, 8, 9, 12, 13, 16];
+const matchedForDimension = [15];
 
 // const matchedForDimensoes = [5, 6];
 function shouldDisableButton(allValues) {
@@ -68,15 +71,6 @@ function ValuesAndDescription({
   property_detail_id,
 }) {
   const t = languageName === "en" ? en : pt;
-
-  const top100Films = [
-    { label: "escritura definitiva registrada", year: 1994 },
-    { label: "escritura definitiva sem registro", year: 1972 },
-    { label: "escritura de posse", year: 1974 },
-    { label: "escritura de cessão de direitos hereditários", year: 2008 },
-    { label: "contrato de compra e venda", year: 2003 },
-    { label: "outros", year: 2005 },
-  ];
 
   console.log({ allValues });
 
@@ -374,6 +368,34 @@ function ValuesAndDescription({
                     field.onChange(e.target.value);
                   }}
                   name={"no_of_parking_spaces"}
+                  value={field.value}
+                />
+              )}
+            />
+            <Typography
+              variant="inherit"
+              color="textSecondary"
+              sx={{ color: "#b91c1c" }}
+            >
+              {errors.no_of_parking_spaces?.message}
+            </Typography>
+          </Grid>
+        )}
+        {matchedForDimension.includes(property_detail_id) && (
+          <Grid item xs={12} md={6}>
+            <Controller
+              name="dimension"
+              control={control}
+              defaultValue={""}
+              render={({ field }) => (
+                <BaseTextField
+                  size={"medium"}
+                  name={t["dimension"]}
+                  placeholder={`${t["dimension"]}`}
+                  type={"number"}
+                  onChange={(e) => {
+                    field.onChange(e.target.value);
+                  }}
                   value={field.value}
                 />
               )}

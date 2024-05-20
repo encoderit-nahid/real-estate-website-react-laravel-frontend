@@ -236,7 +236,7 @@ function Owner({
               control={control}
               render={({ field }) => (
                 <BaseTextField
-                  placeholder={"Owner's Email"}
+                  placeholder={"E-mail"}
                   size={"medium"}
                   onChange={(e) => {
                     field.onChange(e.target.value);
@@ -427,7 +427,7 @@ function Owner({
               lineHeight: "22px",
             }}
           >
-            endereço:
+            Endereço:
           </Typography>
         </Grid>
       </Grid>
@@ -627,7 +627,7 @@ function Owner({
               lineHeight: "22px",
             }}
           >
-            Property ownership document
+            {t["Property ownership document"]}
             {/* {`${t["Document data"]}:`} */}
           </Typography>
         </Grid>
@@ -834,7 +834,7 @@ function Owner({
                 }
                 label={
                   <Typography variant="p" sx={{ color: "#002152" }}>
-                    Send sales authorization by email
+                    {t["Send sales authorization by email"]}
                   </Typography>
                 }
                 labelPlacement="end"

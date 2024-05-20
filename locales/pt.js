@@ -4,6 +4,8 @@ export default {
   "I am broker": "Sou corretor",
   "I am owner": "Sou proprietário",
   login: "Entrar",
+  New: "Novo",
+  Used: "Terceiro",
   "Make your": "Encontre seu",
   "Dream!": "Sonho!",
   Location: "Localização",
@@ -32,6 +34,8 @@ export default {
   Property: "Imóvel",
   properties: "Imóveis",
   filter: "Filtro",
+  "Property ownership document": "Documentos de propriedade",
+  "Send sales authorization by email": "Enviar autorização de venda por e-mail",
   "Help revolutionize the real estate market":
     "Negócios imbatíveis feitos sob medida para você: descubra com a lokkan!",
   "Be a partner": "Seja um corretor parceiro",
@@ -359,6 +363,10 @@ export default {
   filters: "Filtros",
   "proposal sent": "Proposta enviada!",
   Close: "Fechar",
+  dimension: "dimensões",
+  "Name of broker you referred": "Nome do corretor (a) que indicou a Lokkan",
+  "Select broker": "Escolha o corretor (a)",
+
   "proposal values": "Valores da proposta",
   "Documents sent": "Documentos enviados",
   "Document sent": "Documentos enviado",
