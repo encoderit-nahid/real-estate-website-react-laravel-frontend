@@ -29,6 +29,7 @@ import HelpOutlineOutlinedIcon from "@mui/icons-material/HelpOutlineOutlined";
 import StarBorderOutlinedIcon from "@mui/icons-material/StarBorderOutlined";
 import PersonOutlineOutlinedIcon from "@mui/icons-material/PersonOutlineOutlined";
 import ArticleOutlinedIcon from "@mui/icons-material/ArticleOutlined";
+import PaidIcon from "@mui/icons-material/Paid";
 import { useRouter } from "next/router";
 import logo from "../../../../public/Images/logo.png";
 import person from "../../../../public/Images/person.png";
@@ -91,6 +92,11 @@ function LeftBar(props) {
       icon: <PersonOutlineOutlinedIcon />,
       label: t["Brokers"],
       route: "brokers",
+    },
+    {
+      icon: <PaidIcon />,
+      label: "Financial",
+      route: "financial",
     },
     { icon: <HelpOutlineOutlinedIcon />, label: "FAQ", route: "faq" },
     { icon: <InputOutlinedIcon />, label: t["Leave"], route: "" },
