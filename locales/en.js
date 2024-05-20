@@ -348,6 +348,8 @@ export default {
   filters: "filters",
   "proposal sent": "proposal sent!",
   Close: "Close",
+  "Name of the broker you referred": "Name of the broker you referred",
+  "Select broker": "Select broker",
   "proposal values": "proposal values",
   "Documents sent": "Documents sent",
   "Document sent": "Document sent",
