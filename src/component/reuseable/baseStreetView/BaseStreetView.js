@@ -18,8 +18,9 @@ function BaseStreetView({ addressData, widthDevice }) {
   return (
     <Box
       sx={{
-        width: `${widthDevice === "mobile" ? "100%" : "80vw"}`,
-        height: "70vh",
+        // width: `${widthDevice === "mobile" ? "100%" : "80vw"}`,
+        width: "100%",
+        height: "100%",
         backgroundColor: "#eeeeee",
       }}
     >

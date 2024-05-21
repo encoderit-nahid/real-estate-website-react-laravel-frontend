@@ -1,12 +1,13 @@
-import useWindowDimensions from "@/hooks/useCurrentDisplaySize";
+// import useWindowDimensions from "@/hooks/useCurrentDisplaySize";
 import React, { useState } from "react";
 import ArrowBackIosOutlinedIcon from "@mui/icons-material/ArrowBackIosOutlined";
 import ArrowForwardIosOutlinedIcon from "@mui/icons-material/ArrowForwardIosOutlined";
+import { Box } from "@mui/material";
 
-const VideoCarousel = ({ videoLinks, widthDevice }) => {
+const VideoCarousel = ({ videoLinks }) => {
   const [currentVideoIndex, setCurrentVideoIndex] = useState(0);
 
-  const { width } = useWindowDimensions();
+  // const { width } = useWindowDimensions();
 
   const onVideoEnd = () => {
     // Go to the next video when the current one ends
@@ -14,13 +15,30 @@ const VideoCarousel = ({ videoLinks, widthDevice }) => {
   };
 
   return (
-    <div className="video-carousel-container">
-      <div className="nav-icons">
+    <div
+      className="video-carousel-container"
+      style={{
+        position: "relative",
+      }}
+    >
+      <Box
+        // className="nav-icons"
+        style={{
+          position: "absolute",
+          bottom: "50px",
+          right: "50px",
+          display: "flex",
+        }}
+      >
         {/* Navigation buttons */}
         <button
           style={{
             background: "#F2F5F6",
-            borderRadius: "50%",
+            borderRadius: "1111px",
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            padding: "10px",
             cursor: "pointer",
             border: "none",
           }}
@@ -33,17 +51,22 @@ const VideoCarousel = ({ videoLinks, widthDevice }) => {
         >
           <ArrowBackIosOutlinedIcon
             sx={{
-              height: { md: "4vh", lg: "4vh", xl: "4.5vh", xxl: "3.4vh" },
               color: "grey",
+              fontSize: "16px",
             }}
           />
         </button>
         <button
           style={{
             background: "#0362F0",
-            borderRadius: "50%",
+            borderRadius: "1111px",
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            padding: "10px",
             cursor: "pointer",
             border: "none",
+            marginLeft: "10px",
           }}
           onClick={() =>
             setCurrentVideoIndex(
@@ -53,18 +76,20 @@ const VideoCarousel = ({ videoLinks, widthDevice }) => {
         >
           <ArrowForwardIosOutlinedIcon
             sx={{
-              height: { md: "4vh", lg: "4vh", xl: "4.5vh", xxl: "3.4vh" },
               color: "#ffffff",
+              fontSize: "16px",
             }}
           />
         </button>
-      </div>
+      </Box>
 
       {/* Embedded YouTube iframe */}
       <iframe
         title="YouTube Video"
-        width={widthDevice === "mobile" ? `100%` : `${width - 300}px`}
-        height="500"
+        style={{
+          aspectRatio: "4 / 2",
+          width: "100%",
+        }}
         src={`https://www.youtube.com/embed/${videoLinks[currentVideoIndex]}?autoplay=1`}
         frameborder="0"
         allowfullscreen

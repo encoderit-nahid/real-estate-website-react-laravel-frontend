@@ -72,10 +72,8 @@ function SliderView({
 
   const [value, setValue] = React.useState(0);
   const { width, height } = useWindowDimensions();
-
-  //   function get_url_extension( selectImage ) {
-  //     return selectImage.split(/[#?]/)[0].split('.').pop().trim();
-  // }
+  console.log("🟥 ~ width:", width);
+  console.log("🟥 ~ height:", height);
 
   console.log({ videos });
 
@@ -371,7 +369,14 @@ function SliderView({
       </Tabs>
       <TabPanel value={value} index={0}>
         {selectImage != null ? (
-          <ImageCarousel imageUrls={imageUrls} imagesPerSlide={1} />
+          <Box
+            sx={{
+              aspectRatio: "4 / 2",
+              width: `${width - 300}px`,
+            }}
+          >
+            <ImageCarousel imageUrls={imageUrls} imagesPerSlide={1} />
+          </Box>
         ) : (
           <Grid
             container
@@ -393,41 +398,17 @@ function SliderView({
           </Grid>
         )}
       </TabPanel>
-      {/* <TabPanel value={value} index={1}>
-        {selectImage != null &&
-        selectImage?.split(/[#?]/)[0].split(".").pop().trim() !== "webp" ? (
-          <div key={selectImage} style={{ width: "100%" }}>
-            <ReactPannellum
-              id="1"
-              sceneId="firstScene"
-              imageSource={`${_imageURL}/${selectImage}`}
-              config={config}
-            />
-          </div>
-        ) : (
-          <Grid
-            container
-            direction="row"
-            justifyContent="center"
-            alignItems="center"
-            sx={{ height: "30vh", paddingLeft: "25vh" }}
-          >
-            <Typography
-              variant="p"
-              sx={{
-                color: " #7450F0",
-                fontWeight: "600",
-                fontSize: "20px",
-              }}
-            >
-              nenhuma imagem encontrada
-            </Typography>
-          </Grid>
-        )}
-      </TabPanel> */}
+
       <TabPanel value={value} index={1}>
         {selectImage != null ? (
-          <ImageCarousel imageUrls={imageUrls} imagesPerSlide={1} />
+          <Box
+            sx={{
+              aspectRatio: "4 / 2",
+              width: `${width - 300}px`,
+            }}
+          >
+            <ImageCarousel imageUrls={imageUrls} imagesPerSlide={1} />
+          </Box>
         ) : (
           <Grid
             container
@@ -450,20 +431,35 @@ function SliderView({
         )}
       </TabPanel>
       <TabPanel value={value} index={2}>
-        <BaseGoogleMap
-          height={"70vh"}
-          width={"80vw"}
-          markersData={markersData}
-        />
+        <Box
+          sx={{
+            aspectRatio: "4 / 2",
+            width: `${width - 300}px`,
+          }}
+        >
+          <BaseGoogleMap markersData={markersData} />
+        </Box>
       </TabPanel>
       <TabPanel value={value} index={3}>
-        {/* <Typography variant="p" sx={{ visibility: "hidden", width: "100%" }}>
-          dfsfffffffffffffffffffffffdsfffffffffffffffffffffffffffffffffffdsdsdsdsdsdsdsdsdsdsdsdsdsdsdsdsfsdfsdfsd
-        </Typography> */}
-        <BaseStreetView addressData={addressData} />
+        <Box
+          sx={{
+            aspectRatio: "4 / 2",
+            width: `${width - 300}px`,
+          }}
+        >
+          <BaseStreetView addressData={addressData} />
+        </Box>
       </TabPanel>
       <TabPanel value={value} index={4}>
-        <VideoCarousel videoLinks={videoIds} />
+        <Box
+          sx={{
+            aspectRatio: "4 / 2",
+            backgroundColor: "#F1F1F1",
+            width: `${width - 300}px`,
+          }}
+        >
+          <VideoCarousel videoLinks={videoIds} />
+        </Box>
       </TabPanel>
     </Box>
   );

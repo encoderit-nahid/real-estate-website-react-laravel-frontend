@@ -28,9 +28,23 @@ const ImageCarousel = ({ imageUrls, imagesPerSlide }) => {
   const { width, height } = useWindowDimensions();
 
   return (
-    <div>
+    <div
+      style={{
+        width: "100%",
+        height: "100%",
+        position: "relative",
+      }}
+    >
       {/* Image grid */}
-      <Box sx={{ display: "flex", gap: 1, position: "relative" }}>
+      <Box
+        sx={{
+          display: "flex",
+          gap: 1,
+          position: "relative",
+          width: "100%",
+          height: "100%",
+        }}
+      >
         {imageUrls
           .slice(
             currentSlideIndex * imagesPerSlide,
@@ -43,18 +57,28 @@ const ImageCarousel = ({ imageUrls, imagesPerSlide }) => {
               loader={myLoader}
               src={imageUrl}
               alt={`image_${index}`}
-              width={`${width - 300}px`}
-              height={`${600}`}
-              layout="intrinsic" // Make the image responsive
+              layout={"fill"}
+              objectFit="cover"
             />
           ))}
       </Box>
 
-      <Box style={{ position: "absolute", bottom: "15%", right: "10%" }}>
+      <Box
+        style={{
+          display: "flex",
+          position: "absolute",
+          bottom: "50px",
+          right: "50px",
+        }}
+      >
         <button
           style={{
             background: "#F2F5F6",
-            borderRadius: "50%",
+            borderRadius: "1111px",
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            padding: "10px",
             cursor: "pointer",
             border: "none",
           }}
@@ -62,15 +86,19 @@ const ImageCarousel = ({ imageUrls, imagesPerSlide }) => {
         >
           <ArrowBackIosOutlinedIcon
             sx={{
-              height: { md: "4vh", lg: "4vh", xl: "4.5vh", xxl: "3.4vh" },
               color: "grey",
+              fontSize: "16px",
             }}
           />
         </button>
         <button
           style={{
             background: "#0362F0",
-            borderRadius: "50%",
+            borderRadius: "1111px",
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            padding: "10px",
             cursor: "pointer",
             border: "none",
             marginLeft: "10px",
@@ -79,8 +107,8 @@ const ImageCarousel = ({ imageUrls, imagesPerSlide }) => {
         >
           <ArrowForwardIosOutlinedIcon
             sx={{
-              height: { md: "4vh", lg: "4vh", xl: "4.5vh", xxl: "3.4vh" },
               color: "#ffffff",
+              fontSize: "16px",
             }}
           />
         </button>
