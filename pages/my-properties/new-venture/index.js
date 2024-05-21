@@ -19,6 +19,8 @@ const BasicBreadcrumbs = dynamic(() =>
 import { useDropzone } from "react-dropzone";
 import { getSession } from "next-auth/react";
 import { useForm, useFieldArray } from "react-hook-form";
+import { useRouter } from "next/router";
+
 // import { yupResolver } from "@hookform/resolvers/yup";
 import * as Yup from "yup";
 import { useEffect } from "react";
@@ -98,6 +100,7 @@ export default function NewVenture({ language, session }) {
   const Loading = useSelector((state) => state?.photoType?.loading);
   const {
     register,
+    reset,
     watch,
     control,
     handleSubmit,
@@ -105,6 +108,7 @@ export default function NewVenture({ language, session }) {
     formState: { errors },
     setError,
   } = useForm();
+  const { replace } = useRouter();
 
   //  {
   //   resolver: yupResolver(validationSchema),
@@ -350,6 +354,27 @@ export default function NewVenture({ language, session }) {
                       pt: 2,
                     }}
                   >
+                    {activeStep >= 1 && (
+                      <Button
+                        type="button"
+                        variant="outlined"
+                        color="error"
+                        sx={{
+                          fontSize: "16px",
+                          lineHeight: "22px",
+                          fontWeight: "600",
+                          textTransform: "none",
+                          py: 1,
+                          mr: 1,
+                        }}
+                        onClick={() => {
+                          reset();
+                          replace("/my-properties");
+                        }}
+                      >
+                        {t["Cancel"]}
+                      </Button>
+                    )}
                     {activeStep > 0 && activeStep <= steps.length - 1 && (
                       <Button
                         color="inherit"

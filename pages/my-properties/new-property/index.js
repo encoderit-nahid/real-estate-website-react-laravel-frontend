@@ -62,7 +62,7 @@ const drawerWidth = 240;
 export default function NewProperty({ language }) {
   const { data: session } = useSession();
 
-  const { query } = useRouter();
+  const { query, replace } = useRouter();
 
   const [myValue, setMyValue] = useState(language || "pt");
   const t = myValue === "en" ? en : pt;
@@ -721,17 +721,8 @@ export default function NewProperty({ language }) {
                     setMarried={setMarried}
                   />
                 )}
-                {/* {errors && (
-                <Stack sx={{ width: "100%", mt: 2 }} spacing={2}>
-                  {Object.keys(errors).map((key, index) => (
-                    <Alert key={index} severity="error">
-                      {errors[key].message}
-                    </Alert>
-                  ))}
-                </Stack>
-              )} */}
-                <Grid
-                  container
+
+                <Stack
                   direction="row"
                   justifyContent={{
                     xs: "flex-start",
@@ -745,71 +736,51 @@ export default function NewProperty({ language }) {
                     pt: 2,
                   }}
                 >
-                  {activeStep === steps.length - 1 && (
+                  {activeStep >= 1 && (
                     <Button
-                      color="inherit"
-                      // disabled={activeStep === 0}
-                      onClick={handleBack}
+                      type="button"
+                      variant="outlined"
+                      color="error"
                       sx={{
-                        mr: 1,
-                        border: "1px solid #002152",
-                        borderRadius: "4px",
-                        px: 2,
-                        py: 1,
-                        color: "#002152",
                         fontSize: "16px",
-                        fontWeight: "600",
                         lineHeight: "22px",
+                        fontWeight: "600",
                         textTransform: "none",
+                        py: 1,
+                        mr: 1,
                       }}
-                    >
-                      {t["come back"]}
-                    </Button>
-                  )}
-                  {/* {activeStep === 0 && (
-                  <Link href="/my-properties">
-                    <Button
-                      color="inherit"
-                      // disabled={activeStep === 0}
-                      onClick={handleBack}
-                      sx={{
-                        mr: 1,
-                        border: "1px solid #002152",
-                        borderRadius: "4px",
-                        px: 2,
-                        py: 1,
-                        color: "#002152",
-                        fontSize: "16px",
-                        fontWeight: "600",
-                        lineHeight: "22px",
-                        textTransform: "none",
+                      onClick={() => {
+                        reset();
+                        replace("/my-properties");
                       }}
                     >
                       {t["Cancel"]}
                     </Button>
-                  </Link>
-                )} */}
+                  )}
+                  {activeStep === steps.length - 1 && (
+                    <>
+                      <Button
+                        color="inherit"
+                        // disabled={activeStep === 0}
+                        onClick={handleBack}
+                        sx={{
+                          mr: 1,
+                          border: "1px solid #002152",
+                          borderRadius: "4px",
+                          px: 2,
+                          py: 1,
+                          color: "#002152",
+                          fontSize: "16px",
+                          fontWeight: "600",
+                          lineHeight: "22px",
+                          textTransform: "none",
+                        }}
+                      >
+                        {t["come back"]}
+                      </Button>
+                    </>
+                  )}
 
-                  {/* {isStepOptional(activeStep) && (
-        <Button
-          sx={{
-            mr: 1,
-            border: "1px solid #002152",
-            borderRadius: "4px",
-            px: 2,
-            py: 1,
-            color: "#002152",
-            fontSize: "16px",
-            fontWeight: "600",
-            lineHeight: "22px",
-            textTransform: "none",
-          }}
-          color="inherit"
-          onClick={handleSkip}
-        >
-          Skip
-        </Button>
-      )} */}
                   {activeStep === steps.length - 1 && (
                     <Box>
                       <Button
@@ -883,39 +854,7 @@ export default function NewProperty({ language }) {
                       </Button>
                     </Box>
                   )}
-                  {/* {activeStep !== steps.length - 1 && (
-                  <Button
-                    onClick={handleNext}
-                    sx={{
-                      background: "#7450F0",
-                      borderRadius: "4px",
-                      px: 2,
-                      py: 1,
-                      color: "#ffffff",
-                      fontSize: "16px",
-                      fontWeight: "600",
-                      lineHeight: "22px",
-                      textTransform: "none",
-                      boxShadow: "0px 4px 8px rgba(81, 51, 182, 0.32)",
-                      "&:hover": {
-                        background: "#7450F0",
-                        borderRadius: "4px",
-                        px: 2,
-                        py: 1,
-                        color: "#ffffff",
-                        fontSize: "16px",
-                        fontWeight: "600",
-                        lineHeight: "22px",
-                        textTransform: "none",
-                        boxShadow:
-                          "0px 4px 8px rgba(81, 51, 182, 0.32)",
-                      },
-                    }}
-                  >
-                    {t["Next"]}
-                  </Button>
-                )} */}
-                </Grid>
+                </Stack>
               </form>
             </Fragment>
           )}
