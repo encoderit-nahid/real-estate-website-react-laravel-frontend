@@ -523,7 +523,7 @@ function Address({
                     },
                     fontWeight: "400",
                     lineHeight: "22px",
-                    textTransform: "none",
+                    textTransform: "capitalize",
                     px: { xs: 0, sm: 2, md: 2, lg: 2, xl: 2 },
                     py: 1,
                     "&:hover": {
@@ -540,7 +540,7 @@ function Address({
                       },
                       fontWeight: "400",
                       lineHeight: "22px",
-                      textTransform: "none",
+
                       px: {
                         xs: 0,
                         sm: 2,

@@ -444,35 +444,17 @@ export default function PropertyView({
                 selectImage={selectImage}
                 addressData={singlePropertyData?.property?.address}
                 languageName={myValue.toString()}
+                images={Images}
               />
             </Grid>
             {/* <Grid item xs={12} sx={{ mb: 1 }}>
               <Image src={sliderView} layout="responsive" alt="sliderView" />
             </Grid> */}
           </Grid>
-          {/* <Grid container spacing={1}>
-            {[0, 1, 2, 3].map((data, index) => (
-              <Grid
-                item
-                key={index}
-                xs={3}
-                sx={{
-                  display: {
-                    xs: "inline",
-                    sm: "inline",
-                    md: "none",
-                    lg: "none",
-                    xl: "none",
-                  },
-                }}
-              >
-                <Image src={sliderViewSmall} alt="sliderView" />
-              </Grid>
-            ))}
-          </Grid> */}
-          <Box>
+
+          {/* <Box>
             <SlideImageMobile Images={Images} setSelectImage={setSelectImage} />
-          </Box>
+          </Box> */}
           <Grid container>
             <Grid
               item

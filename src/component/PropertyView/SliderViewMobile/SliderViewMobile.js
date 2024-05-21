@@ -24,6 +24,7 @@ import pt from "locales/pt";
 import Image from "next/image";
 import VideoCarousel from "../VideoCarousel/VideoCarousel";
 import { getVideoIdFromLink } from "@/utils/getVideoIdFromLink";
+import Slider from "react-slick";
 
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
@@ -67,7 +68,11 @@ function SliderViewMobile({
   addressData,
   videos,
   languageName,
+  images,
 }) {
+  const imageUrls = images?.map((data) => {
+    return data?.file_path;
+  });
   const t = languageName === "en" ? en : pt;
 
   const [value, setValue] = React.useState(0);
@@ -116,6 +121,15 @@ function SliderViewMobile({
   const myLoader = ({ src }) => {
     return `${_imageURL}/${src}`;
   };
+  const sliderSettings = {
+    dots: true,
+    lazyLoad: true,
+    infinite: true,
+    autoplay: true,
+    speed: 500,
+    slidesToShow: 1,
+    slidesToScroll: 1,
+  };
   return (
     <Container maxWidth="sm">
       <Tabs
@@ -129,11 +143,11 @@ function SliderViewMobile({
           onClick={() => handleTabClick("photos")}
           icon={<AutoAwesomeMotionOutlinedIcon />}
         />
-        <Tab
+        {/* <Tab
           sx={{ minWidth: "60px" }}
           icon={<RedoOutlinedIcon />}
           onClick={() => handleTabClick("vision_360")}
-        />
+        /> */}
         <Tab
           sx={{ minWidth: "60px" }}
           icon={<CabinOutlinedIcon />}
@@ -157,13 +171,20 @@ function SliderViewMobile({
       </Tabs>
       <TabPanel value={value} index={0}>
         {selectImage != null ? (
-          <Image
-            loader={myLoader}
-            src={`${selectImage}`}
-            alt="home"
-            width={800}
-            height={400}
-          />
+          <Box sx={{ aspectRatio: "2 / 1" }}>
+            <Slider {...sliderSettings}>
+              {imageUrls.map((image, index) => (
+                <Image
+                  key={index}
+                  loader={myLoader}
+                  src={image}
+                  alt="home"
+                  width={800}
+                  height={400}
+                />
+              ))}
+            </Slider>
+          </Box>
         ) : (
           <Grid
             container
@@ -185,26 +206,19 @@ function SliderViewMobile({
           </Grid>
         )}
       </TabPanel>
+
       <TabPanel value={value} index={1}>
-        {selectImage != null &&
-        selectImage?.split(/[#?]/)[0].split(".").pop().trim() !== "webp" ? (
-          <div key={selectImage}>
-            {/* {`${_baseURL}/storage/${selectImage}`}
-						<Image
-							loader={myLoader}
-							src={`${_baseURL}/storage/${selectImage}`}
-							alt="home"
-							width={800}
-							height={400}
-						/> */}
-            <ReactPannellum
-              id="1"
-              sceneId="firstScene"
-              imageSource={`${_imageURL}/${selectImage}`}
-              config={config}
-              // style={style}
+        {selectImage != null ? (
+          <Box sx={{ aspectRatio: "2 / 1" }}>
+            <Image
+              loader={myLoader}
+              src={`${selectImage}`}
+              alt="home"
+              width={800}
+              height={400}
+              objectFit="cover"
             />
-          </div>
+          </Box>
         ) : (
           <Grid
             container
@@ -227,49 +241,16 @@ function SliderViewMobile({
         )}
       </TabPanel>
       <TabPanel value={value} index={2}>
-        {selectImage != null ? (
-          <Image
-            loader={myLoader}
-            src={`${selectImage}`}
-            alt="home"
-            width={800}
-            height={400}
-          />
-        ) : (
-          <Grid
-            container
-            direction="row"
-            justifyContent="center"
-            alignItems="center"
-            sx={{ height: "30vh", paddingLeft: "25vh" }}
-          >
-            <Typography
-              variant="p"
-              sx={{
-                color: " #7450F0",
-                fontWeight: "600",
-                fontSize: "20px",
-              }}
-            >
-              nenhuma imagem encontrada
-            </Typography>
-          </Grid>
-        )}
+        <Box sx={{ aspectRatio: "2 / 1" }}>
+          <BaseGoogleMap markersData={markersData} />
+        </Box>
       </TabPanel>
       <TabPanel value={value} index={3}>
-        <BaseGoogleMap
-          height={"59vh"}
-          width={"100%"}
-          markersData={markersData}
-        />
+        <Box sx={{ aspectRatio: "2 / 1" }}>
+          <BaseStreetView addressData={addressData} widthDevice={"mobile"} />
+        </Box>
       </TabPanel>
       <TabPanel value={value} index={4}>
-        {/* <Typography variant="p" sx={{ visibility: "hidden", width: "100%" }}>
-          dfsfffffffffffffffffffffffdsfffffffffffffffffffffffffffffffffffdsdsdsdsdsdsdsdsdsdsdsdsdsdsdsdsfsdfsdfsd
-        </Typography> */}
-        <BaseStreetView addressData={addressData} widthDevice={"mobile"} />
-      </TabPanel>
-      <TabPanel value={value} index={5}>
         <VideoCarousel videoLinks={videoIds} widthDevice={"mobile"} />
       </TabPanel>
     </Container>
