@@ -73,9 +73,6 @@ function SliderView({
   const [value, setValue] = React.useState(0);
   const { width, height } = useWindowDimensions();
   console.log("🟥 ~ width:", width);
-  console.log("🟥 ~ height:", height);
-
-  console.log({ videos });
 
   const videoIds = videos?.map((data) => {
     console.log({ data });
@@ -372,6 +369,7 @@ function SliderView({
           <Box
             sx={{
               aspectRatio: "4 / 2",
+
               width: `${width - 300}px`,
             }}
           >

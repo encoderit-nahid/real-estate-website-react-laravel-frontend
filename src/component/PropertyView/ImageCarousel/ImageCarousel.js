@@ -25,7 +25,7 @@ const ImageCarousel = ({ imageUrls, imagesPerSlide }) => {
     return `${_imageURL}/${src}`;
   };
 
-  const { width, height } = useWindowDimensions();
+  // const { width, height } = useWindowDimensions();
 
   return (
     <div
