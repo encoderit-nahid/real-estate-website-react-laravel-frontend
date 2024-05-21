@@ -1,4 +1,4 @@
-import * as React from "react";
+import React, { useEffect, useState } from "react";
 import PropTypes from "prop-types";
 import Box from "@mui/material/Box";
 import Divider from "@mui/material/Divider";
@@ -34,8 +34,7 @@ import { useRouter } from "next/router";
 import logo from "../../../../public/Images/logo.png";
 import person from "../../../../public/Images/person.png";
 import { createTheme, CssBaseline, ThemeProvider } from "@mui/material";
-import { useEffect } from "react";
-import { useState } from "react";
+
 import { useSession, signIn, signOut } from "next-auth/react";
 import pt from "locales/pt";
 import en from "locales/en";
@@ -120,12 +119,15 @@ function LeftBar(props) {
   // };
 
   const [selectedLabel, setSelectedLabel] = React.useState("");
+  console.log("🟥 ~ LeftBar ~ selectedLabel:", selectedLabel);
 
-  React.useEffect(() => {
+  console.log("🟥 ~ useEffect ~ router:", router.isReady);
+  useEffect(() => {
     // console.log(router.pathname)
     const name = router.pathname.split("/")[1];
+    console.log("🟥 ~ useEffect ~ name:", name);
     setSelectedLabel(name);
-  }, [router.isReady]);
+  }, [router.pathname]);
 
   const handleListItemClick = (index, leftData) => {
     setSelectedIndex(index);
@@ -228,10 +230,10 @@ function LeftBar(props) {
           {data?.map((leftData, index) => (
             <Link key={index} href={`/${leftData?.route}`}>
               <ListItemButton
-                className="btn-leftbar"
+                // className="btn-leftbar"
                 selected={selectedLabel === leftData.route}
                 onClick={
-                  index === 5
+                  index === 6
                     ? handleLogout
                     : () => handleListItemClick(index, leftData)
                 }
@@ -243,7 +245,7 @@ function LeftBar(props) {
                   "&:hover": {
                     borderRight: "3px solid #7450F0",
                   },
-                  "&.Mui-selected": {
+                  "&.MuiListItemButton-root.Mui-selected": {
                     borderRight: "3px solid #7450F0",
                   },
                 }}
