@@ -32,10 +32,12 @@ import GetCookie from "@/hooks/getCookie";
 import en from "locales/en";
 import pt from "locales/pt";
 import { _baseURL } from "consts";
+
 import SetCookie from "@/hooks/setCookie";
 
 export default function Registration({ language, handleLoginOpen }) {
   const router = useRouter();
+  console.log("🟥 ~ Registration ~ router:", router);
   const { query } = router;
   const [myValue, setMyValue] = useState(language || "pt");
   const t = myValue === "en" ? en : pt;
@@ -53,6 +55,7 @@ export default function Registration({ language, handleLoginOpen }) {
 
   const {
     register,
+    reset,
     watch,
     control,
     setError,
@@ -441,92 +444,59 @@ export default function Registration({ language, handleLoginOpen }) {
                         {t["Profile"]}
                       </Typography>
                     </Grid> */}
-                    <Grid container spacing={1}>
-                      {/* {UserRoleData?.map((data, index) => (
-                        <Grid item xs={4} key={index}>
-                          <Button
-                            onClick={() => setActiveBtn(data.value)}
-                            sx={{
-                              width: "100%",
-                              background: `${
-                                activeBtn === data.value ? "#0362F0" : "#F2F5F6"
-                              }`,
-                              borderRadius: "152px",
-                              color: `${
-                                activeBtn === data.value ? "#ffffff" : "#002152"
-                              }`,
-                              fontSize: {
-                                xs: "12px",
-                                sm: "13px",
-                                md: "16px",
-                                lg: "13px",
-                                xl: "16px",
-                              },
-                              fontWeight: "400",
-                              lineHeight: "22px",
-                              textTransform: "none",
-                              px: {
-                                xs: 0,
-                                sm: 2,
-                                md: 2,
-                                lg: 2,
-                                xl: 2,
-                              },
-                              py: 1,
-                              "&:hover": {
-                                width: "100%",
-                                background: "#0362F0",
-                                borderRadius: "152px",
-                                color: "#ffffff",
-                                fontSize: {
-                                  xs: "12px",
-                                  sm: "13px",
-                                  md: "16px",
-                                  lg: "13px",
-                                  xl: "16px",
-                                },
-                                fontWeight: "400",
-                                lineHeight: "22px",
-                                textTransform: "none",
-                                px: {
-                                  xs: 0,
-                                  sm: 2,
-                                  md: 2,
-                                  lg: 2,
-                                  xl: 2,
-                                },
-                                py: 1,
-                              },
-                            }}
-                          >
-                            {data.name}
-                          </Button>
-                        </Grid>
-                      ))} */}
-                    </Grid>
-
-                    <Button
-                      type="submit"
-                      fullWidth
-                      sx={{
-                        background:
-                          "linear-gradient(270deg, #1DEECB 1.2%, #00C1B4 98.7%)",
-                        boxShadow: "0px 4px 34px rgba(0, 0, 0, 0.08)",
-                        borderRadius: "4px",
-                        color: "#ffffff",
-                        fontSize: "16px",
-                        lineHeight: "22px",
-                        fontWeight: "600",
-                        mt: 5,
-                        textTransform: "none",
-                        py: 1,
-                      }}
+                    <Grid
+                      container
+                      justifyContent="center"
+                      alignItems="center"
+                      spacing={1}
+                      mt={5}
                     >
-                      {loading && (
-                        <CircularProgress size={22} color="inherit" />
-                      )}
-                      {!loading && t["Register"]}
-                    </Button>
+                      <Grid item xs={12} sm={12} md={12} lg={6} xl={6}>
+                        <Button
+                          type="button"
+                          fullWidth
+                          variant="outlined"
+                          color="error"
+                          sx={{
+                            fontSize: "16px",
+                            lineHeight: "22px",
+                            fontWeight: "600",
+                            textTransform: "none",
+                            py: 1,
+                          }}
+                          onClick={() => {
+                            reset();
+                            router.replace("/");
+                          }}
+                        >
+                          {t["Cancel"]}
+                        </Button>
+                      </Grid>
+                      <Grid item xs={12} sm={12} md={12} lg={6} xl={6}>
+                        <Button
+                          type="submit"
+                          fullWidth
+                          sx={{
+                            background:
+                              "linear-gradient(270deg, #1DEECB 1.2%, #00C1B4 98.7%)",
+                            boxShadow: "0px 4px 34px rgba(0, 0, 0, 0.08)",
+                            borderRadius: "4px",
+                            color: "#ffffff",
+                            fontSize: "16px",
+                            lineHeight: "22px",
+                            fontWeight: "600",
+
+                            textTransform: "none",
+                            py: 1,
+                          }}
+                        >
+                          {loading && (
+                            <CircularProgress size={22} color="inherit" />
+                          )}
+                          {!loading && t["Register"]}
+                        </Button>
+                      </Grid>
+                    </Grid>
                   </form>
                   <Grid
                     container
