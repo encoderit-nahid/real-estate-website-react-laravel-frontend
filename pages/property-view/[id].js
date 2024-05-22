@@ -41,11 +41,17 @@ const Negotiate = dynamic(() =>
 const HouseCard = dynamic(() =>
   import("@/component/reuseable/HouseCard/HouseCard")
 );
-const SliderView = dynamic(() =>
-  import("@/component/PropertyView/slider/SliderView")
+const SliderView = dynamic(
+  () => import("@/component/PropertyView/slider/SliderView"),
+  {
+    ssr: false,
+  }
 );
-const SliderViewMobile = dynamic(() =>
-  import("@/component/PropertyView/SliderViewMobile/SliderViewMobile")
+const SliderViewMobile = dynamic(
+  () => import("@/component/PropertyView/SliderViewMobile/SliderViewMobile"),
+  {
+    ssr: false,
+  }
 );
 const BaseModal = dynamic(() =>
   import("@/component/reuseable/baseModal/BaseModal")
@@ -190,6 +196,8 @@ export default function PropertyView({
       setSelectImage(Images[0]?.lofi);
     }
   }, [Images]);
+
+  console.log({ selectImage });
 
   const goBack = () => {
     router.back();
@@ -522,8 +530,6 @@ export default function PropertyView({
                   __html: singlePropertyData?.property?.property_description,
                 }}
               ></Box>
-            </Grid>
-            <Grid item xs={12} sm={12} md={12} lg={9} xl={9}>
               <Features
                 singlePropertyData={singlePropertyData}
                 languageName={myValue.toString()}

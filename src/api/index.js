@@ -146,7 +146,7 @@ export const stateApi = async () => {
 };
 
 //find_property_type
-export const propertyTypeApi = async (category = "commercial") => {
+export const propertyTypeApi = async (category) => {
   const params = { category };
   try {
     const response = await apiInstance.get(`property/property-type`, {

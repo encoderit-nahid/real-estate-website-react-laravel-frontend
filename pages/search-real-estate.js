@@ -11,6 +11,9 @@ import {
   Divider,
   Button,
   SwipeableDrawer,
+  TextField,
+  InputAdornment,
+  IconButton,
 } from "@mui/material";
 const PropertyList = dynamic(() =>
   import("@/component/IAmOwner/propertyList/PropertyList")
@@ -49,6 +52,7 @@ import en from "locales/en";
 import pt from "locales/pt";
 import BaseOutlinedAreaInput from "@/component/reuseable/baseOutlinedAreaInput/BaseOutlinedAreaInput";
 import { userDetailsApi } from "@/api";
+import SearchIcon from "@mui/icons-material/Search";
 import useCurrentUser from "@/hooks/useCurrentUser";
 
 const unflatten = require("flat").unflatten;
@@ -116,6 +120,8 @@ export default function SearchRealEstate({
   const [pageSize, setPageSize] = React.useState(3);
   const [page, setPage] = React.useState(1);
   const [selectval, setSelectVal] = useState(null);
+  const [proposalStatus, setProposalStatus] = useState("pending");
+  const [journeyStage, setJourneyStage] = useState("contract");
 
   const omitEmpties = (obj) => {
     return Object.entries(obj).reduce((carry, [key, value]) => {
@@ -197,6 +203,8 @@ export default function SearchRealEstate({
     setValue("max_value", searchParams.max_value || 37);
     setValue("min_area", searchParams.min_area || 22);
     setValue("max_area", searchParams.max_area || 37);
+    setProposalStatus(searchParams?.proposal_status);
+    setJourneyStage(searchParams.journey_stage);
   }, [setValue]);
 
   const [state, setState] = useState({
@@ -251,17 +259,17 @@ export default function SearchRealEstate({
       pets: pets,
       metro: closeToTheMetro,
       tag: featuretypes,
+      proposal_status: proposalStatus,
+      journey_stage: journeyStage,
     };
+    // const fd = serialize(allFilterData, {
+    //   indices: true,
+    //   allowEmptyArrays: false,
+    //   booleansAsIntegers: true,
+    // });
 
-    const fd = serialize(allFilterData, {
-      indices: true,
-      allowEmptyArrays: false,
-      booleansAsIntegers: true,
-    });
-
-    const sp = new URLSearchParams(fd.entries());
-    const spEntries = Object.fromEntries(sp.entries());
-
+    // const sp = new URLSearchParams(fd.entries());
+    // const spEntries = Object.fromEntries(sp.entries());
     router.replace({
       pathname: "/search-real-estate",
       query: $params.encode(omitEmpties(allFilterData)).toString(),
@@ -328,10 +336,188 @@ export default function SearchRealEstate({
           >
             {t["filters"]}
           </Typography>
-          <CloseIcon onClick={toggleDrawer(anchor, false)} />
+          <CloseIcon
+            onClick={toggleDrawer(anchor, false)}
+            sx={{ cursor: "pointer" }}
+          />
         </Grid>
 
         <Box sx={{ mx: 2, mt: 3 }}>
+          <Box sx={{ mt: 1, mb: 1 }}>
+            <Controller
+              name="all"
+              control={control}
+              defaultValue=""
+              render={({ field }) => (
+                <TextField
+                  {...field}
+                  variant="outlined"
+                  placeholder="Search"
+                  size="small"
+                  fullWidth
+                  InputProps={{
+                    endAdornment: (
+                      <InputAdornment position="end">
+                        <IconButton
+                          edge="end"
+                          aria-label="Search by broker name"
+                        >
+                          <SearchIcon />
+                        </IconButton>
+                      </InputAdornment>
+                    ),
+                  }}
+                />
+              )}
+            />
+            <Typography
+              variant="p"
+              sx={{
+                color: "#6C7A84",
+                fontSize: "14px",
+                fontWeight: 400,
+                lineHeight: "18px",
+              }}
+            >
+              You can search by broker,development or condominium
+            </Typography>
+          </Box>
+          <Box>
+            <Typography
+              variant="p"
+              sx={{
+                color: "#4B4B66",
+                fontSize: "16px",
+                fontWeight: "400",
+                lineHeight: "19px",
+              }}
+            >
+              Proposal Status
+            </Typography>
+
+            <Grid
+              container
+              direction="row"
+              justifyContent="flex-start"
+              alignItems="flex-start"
+              gap={1}
+              sx={{ mt: 2 }}
+            >
+              {[
+                { name: "pending", slug: "Pending" },
+                { name: "accepted", slug: "Accepted" },
+              ].map((data, index) => (
+                // <Grid xs={6} sm={6} md={6} lg={3} xl={3} key={index}>
+                <Button
+                  key={index}
+                  onClick={() => setProposalStatus(data?.name)}
+                  sx={{
+                    background: `${
+                      data?.name === proposalStatus ? "#7450F0" : "transparent"
+                    }`,
+                    borderRadius: "56px",
+                    // width: "100%",
+                    color: `${
+                      data?.name === proposalStatus ? "#ffffff" : "#32414C"
+                    }`,
+                    border: `${
+                      data?.name === proposalStatus ? "" : "1px solid #9FAAB1"
+                    }`,
+                    ml: 0.5,
+                    fontSize: {
+                      xs: "12px",
+                      sm: "13px",
+                      md: "14px",
+                      lg: "13px",
+                      xl: "14px",
+                    },
+                    fontWeight: "400",
+                    lineHeight: "17px",
+                    textTransform: "none",
+                    px: { xs: 0, sm: 1, md: 1, lg: 1, xl: 1 },
+                    py: 1,
+                    "&:hover": {
+                      background: "#7450F0",
+                      borderRadius: "56px",
+                      color: "#ffffff",
+                    },
+                  }}
+                >
+                  {data?.slug}
+                </Button>
+              ))}
+            </Grid>
+          </Box>
+          <Divider sx={{ mt: 1, mb: 1 }} />
+          <Box>
+            <Typography
+              variant="p"
+              sx={{
+                color: "#4B4B66",
+                fontSize: "16px",
+                fontWeight: "400",
+                lineHeight: "19px",
+              }}
+            >
+              Journey Stage
+            </Typography>
+
+            <Grid
+              container
+              direction="row"
+              justifyContent="flex-start"
+              alignItems="flex-start"
+              gap={1}
+              sx={{ mt: 2 }}
+            >
+              {[
+                { name: "contract", slug: "Contract" },
+                { name: "certificates", slug: "Certificates and documents" },
+                { name: "pre-analysis", slug: "Pre-analysis" },
+                { name: "digital-notary", slug: "Digital notary" },
+              ].map((data, index) => (
+                // <Grid xs={6} sm={6} md={6} lg={3} xl={3} key={index}>
+                <Button
+                  key={index}
+                  onClick={() => setJourneyStage(data?.name)}
+                  sx={{
+                    background: `${
+                      data?.name === journeyStage ? "#7450F0" : "transparent"
+                    }`,
+                    borderRadius: "56px",
+                    // width: "100%",
+                    color: `${
+                      data?.name === journeyStage ? "#ffffff" : "#32414C"
+                    }`,
+                    border: `${
+                      data?.name === journeyStage ? "" : "1px solid #9FAAB1"
+                    }`,
+                    ml: 0.5,
+                    fontSize: {
+                      xs: "12px",
+                      sm: "13px",
+                      md: "14px",
+                      lg: "13px",
+                      xl: "14px",
+                    },
+                    fontWeight: "400",
+                    lineHeight: "17px",
+                    textTransform: "none",
+                    px: { xs: 0, sm: 1, md: 1, lg: 1, xl: 1 },
+                    py: 1,
+                    "&:hover": {
+                      background: "#7450F0",
+                      borderRadius: "56px",
+                      color: "#ffffff",
+                    },
+                  }}
+                >
+                  {data?.slug}
+                </Button>
+              ))}
+            </Grid>
+          </Box>
+          <Divider sx={{ mt: 1, mb: 1 }} />
           <Box>
             <Typography
               variant="p"
@@ -962,12 +1148,15 @@ export default function SearchRealEstate({
                   lineHeight: "19px",
                 }}
               >
-                {(key === "Condomínio" ||
-                  key === "Comodidades" ||
-                  key === "Bem-estar" ||
-                  key === "Eletrodomésticos" ||
-                  key === "Cômodos" ||
-                  key === "Acessibilidade") &&
+                {(key === "condominium" ||
+                  key === "accessibility" ||
+                  key === "amenities" ||
+                  key === "appliances" ||
+                  key === "rooms" ||
+                  key === "room" ||
+                  key === "sorrounding" ||
+                  key === "wellbeing" ||
+                  key === "feature") &&
                   key}
               </Typography>
               <Grid
@@ -978,12 +1167,15 @@ export default function SearchRealEstate({
                 gap={1}
                 sx={{ mt: 2 }}
               >
-                {(key === "Condomínio" ||
-                  key === "Comodidades" ||
-                  key === "Bem-estar" ||
-                  key === "Eletrodomésticos" ||
-                  key === "Cômodos" ||
-                  key === "Acessibilidade") &&
+                {(key === "condominium" ||
+                  key === "accessibility" ||
+                  key === "amenities" ||
+                  key === "appliances" ||
+                  key === "rooms" ||
+                  key === "room" ||
+                  key === "sorrounding" ||
+                  key === "wellbeing" ||
+                  key === "feature") &&
                   featureData[key].map((data, index) => (
                     <Button
                       key={index}

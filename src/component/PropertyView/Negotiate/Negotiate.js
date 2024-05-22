@@ -89,7 +89,7 @@ function Negotiate({
             user_type: "buyer",
           },
         })
-      : handleProposalOpen;
+      : handleProposalOpen();
   }, [handleProposalOpen, session, router]);
 
   const handleSchedule = useCallback(() => {
@@ -100,7 +100,7 @@ function Negotiate({
             user_type: "buyer",
           },
         })
-      : handleToSchedule;
+      : handleToSchedule();
   }, [session, router]);
 
   return (
