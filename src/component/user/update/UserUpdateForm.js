@@ -9,7 +9,7 @@ import {
   InputAdornment,
   Typography,
 } from "@mui/material";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Controller, useForm } from "react-hook-form";
 import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import NoEncryptionOutlinedIcon from "@mui/icons-material/NoEncryptionOutlined";
@@ -18,11 +18,26 @@ import accountIcon from "../../../../public/Images/account.png";
 import en from "locales/en";
 import pt from "locales/pt";
 import { useDispatch, useSelector } from "react-redux";
-
+import { yupResolver } from "@hookform/resolvers/yup";
+import * as Yup from "yup";
 const UserUpdateForm = ({ language, onSubmit }) => {
   const [myValue, setMyValue] = useState(language || "pt");
+  useEffect(() => {
+    const user = JSON.parse(localStorage.getItem("user"));
+    console.log("🟥 ~ useEffect ~ user:", user);
+    setValue("name", user.name);
+    setValue("email", user.email);
+    setValue("telephone", user.phone);
+  }, [setValue]);
 
   const t = myValue === "en" ? en : pt;
+  const validationSchema = Yup.object().shape({
+    name: Yup.string().required(t["Name is required"]),
+    phone: Yup.string().required(t["Phone is required"]),
+    email: Yup.string()
+      .required(t["Email is required"])
+      .matches(/.+@.+\.[A-Za-z]+$/, t["Email is invalid"]),
+  });
   const {
     register,
     watch,
@@ -31,8 +46,11 @@ const UserUpdateForm = ({ language, onSubmit }) => {
     setValue,
     formState: { errors },
     setError,
-  } = useForm();
+  } = useForm({
+    resolver: yupResolver(validationSchema),
+  });
   const allValues = watch();
+  console.log("🟥 ~ UserUpdateForm ~ allValues:", allValues);
   const [showPass, setShowPass] = useState(false);
   const [preview, setPreview] = useState();
   const [showRepeatPass, setShowRepeatPass] = useState(false);
@@ -155,6 +173,7 @@ const UserUpdateForm = ({ language, onSubmit }) => {
               <Controller
                 name="email"
                 control={control}
+                defaultValue={""}
                 render={({ field }) => (
                   <BaseTextField
                     size={"medium"}
@@ -164,6 +183,7 @@ const UserUpdateForm = ({ language, onSubmit }) => {
                       field.onChange(e.target.value);
                     }}
                     name={"email"}
+                    value={field.value}
                     // error={errors.email ? true : false}
                   />
                 )}
@@ -180,6 +200,7 @@ const UserUpdateForm = ({ language, onSubmit }) => {
               <Controller
                 name="telephone"
                 control={control}
+                defaultValue={""}
                 render={({ field }) => (
                   <BaseTextField
                     size={"medium"}
@@ -189,6 +210,7 @@ const UserUpdateForm = ({ language, onSubmit }) => {
                       field.onChange(e.target.value);
                     }}
                     name={"telephone"}
+                    value={field.value}
                     // error={errors.telephone ? true : false}
                   />
                 )}
