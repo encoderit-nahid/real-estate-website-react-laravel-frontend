@@ -38,6 +38,12 @@ const ThirdTab = dynamic(() => import("@/component/properties/Third/ThirdTab"));
 const NewRegistration = dynamic(() =>
   import("@/component/properties/NewRegistration/NewRegistration")
 );
+const UserUpdateForm = dynamic(
+  () => import("@/component/user/update/UserUpdateForm"),
+  {
+    ssr: false,
+  }
+);
 import notifyImage from "../../public/Images/notify.png";
 import Link from "next/link";
 import { getSession, useSession } from "next-auth/react";
@@ -209,7 +215,8 @@ export default function Index({ language }) {
           {t["profile"]}
         </Typography>
       </Grid>
-      <form onSubmit={handleSubmit(onSubmit)}>
+      <UserUpdateForm onSubmit={onSubmit} />
+      {/* <form onSubmit={handleSubmit(onSubmit)}>
         <Grid
           container
           spacing={2}
@@ -707,7 +714,7 @@ export default function Index({ language }) {
             </Grid>
           </Grid>
         </Grid>
-      </form>
+      </form> */}
     </Box>
   );
 }
