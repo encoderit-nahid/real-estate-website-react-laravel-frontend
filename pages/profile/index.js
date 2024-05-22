@@ -157,7 +157,7 @@ export default function Index({ language }) {
     return () => URL.revokeObjectURL(objectUrl);
   }, [allValues.image]);
 
-  const [myValue, setMyValue] = useState(language || "en");
+  const [myValue, setMyValue] = useState(language || "pt");
 
   const t = myValue === "en" ? en : pt;
 
@@ -206,7 +206,7 @@ export default function Index({ language }) {
             mt: { xs: 1, sm: 1, md: 0, lg: 0, xl: 0 },
           }}
         >
-          Profile
+          {t["profile"]}
         </Typography>
       </Grid>
       <form onSubmit={handleSubmit(onSubmit)}>
@@ -262,7 +262,7 @@ export default function Index({ language }) {
                   },
                 }}
               >
-                To Edit
+                {t["Edit"]}
                 <Controller
                   name="image"
                   control={control}
@@ -294,8 +294,8 @@ export default function Index({ language }) {
                 render={({ field }) => (
                   <BaseTextField
                     size={"medium"}
-                    placeholder="Name"
-                    label="Name"
+                    placeholder={t["Name"]}
+                    label={t["Name"]}
                     // sx={{ mb: 2 }}
                     onChange={(e) => {
                       field.onChange(e.target.value);
@@ -346,8 +346,8 @@ export default function Index({ language }) {
                   render={({ field }) => (
                     <BaseTextField
                       size={"medium"}
-                      placeholder="Telephone"
-                      label="Telephone"
+                      placeholder={t["Telephone"]}
+                      label={t["Telephone"]}
                       onChange={(e) => {
                         field.onChange(e.target.value);
                       }}
@@ -373,8 +373,8 @@ export default function Index({ language }) {
                   render={({ field }) => (
                     <BaseTextField
                       size={"medium"}
-                      placeholder={"Password"}
-                      label={"Password"}
+                      placeholder={t["Password"]}
+                      label={t["Password"]}
                       type={showPass ? "text" : "password"}
                       name={"password"}
                       // {...field}
@@ -412,8 +412,8 @@ export default function Index({ language }) {
                   render={({ field }) => (
                     <BaseTextField
                       size={"medium"}
-                      placeholder={"Repeat Password"}
-                      label={"Repeat Password"}
+                      placeholder={t["repeat password"]}
+                      label={t["repeat password"]}
                       type={showRepeatPass ? "text" : "password"}
                       name={"password"}
                       // {...field}
@@ -671,7 +671,7 @@ export default function Index({ language }) {
                   textTransform: "none",
                 }}
               >
-                Cancel
+                {t["Cancel"]}
               </Button>
               <Button
                 color="inherit"
@@ -702,7 +702,7 @@ export default function Index({ language }) {
                   },
                 }}
               >
-                Save
+                {t["Save"]}
               </Button>
             </Grid>
           </Grid>

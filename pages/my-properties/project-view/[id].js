@@ -79,7 +79,7 @@ export default function ProjectView({
   singleProjectData,
   language,
 }) {
-  const [myValue, setMyValue] = useState(language || "en");
+  const [myValue, setMyValue] = useState(language || "pt");
   const router = useRouter();
   const t = myValue === "en" ? en : pt;
   const [sideTabValue, setSideTabValue] = useState("photos");

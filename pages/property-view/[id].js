@@ -127,7 +127,7 @@ export default function PropertyView({
   propertyDescription,
   language,
 }) {
-  const [myValue, setMyValue] = useState(language || "en");
+  const [myValue, setMyValue] = useState(language || "pt");
   const router = useRouter();
 
   console.log({ singlePropertyData });

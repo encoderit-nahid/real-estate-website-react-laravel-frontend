@@ -158,7 +158,7 @@ export default function BrokerDetails({
   }, []);
   const allStateData = useSelector((state) => state.state.stateData);
 
-  const [myValue, setMyValue] = useState(language || "en");
+  const [myValue, setMyValue] = useState(language || "pt");
 
   const t = myValue === "en" ? en : pt;
 

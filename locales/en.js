@@ -77,6 +77,8 @@ export default {
   Owner: "Owner",
   Broker: "Broker",
   profile: "profile",
+  "repeat password": "repeat password",
+  Telephone: "Telephone",
   "Personal data": "Personal data",
   Address: "Address",
   Performance: "Performance",

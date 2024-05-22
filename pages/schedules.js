@@ -20,7 +20,7 @@ import { useState } from "react";
 const drawerWidth = 240;
 
 export default function Schedules({ language }) {
-  const [myValue, setMyValue] = useState(language || "en");
+  const [myValue, setMyValue] = useState(language || "pt");
 
   const t = myValue === "en" ? en : pt;
   const dispatch = useDispatch();
