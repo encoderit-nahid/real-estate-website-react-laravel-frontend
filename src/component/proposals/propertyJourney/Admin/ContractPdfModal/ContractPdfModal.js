@@ -341,7 +341,7 @@ function ContractPdfModal({
                     },
                   }}
                 >
-                  Download
+                  {t["Download"]}
                 </Button>
                 <Button
                   onClick={handleDrawerOpen}
@@ -371,7 +371,7 @@ function ContractPdfModal({
                     },
                   }}
                 >
-                  Details
+                  {t["Details"]}
                 </Button>
               </Grid>
             )}
@@ -417,7 +417,7 @@ function ContractPdfModal({
                   fontWeight: "700",
                 }}
               >
-                Details
+                {t["Details"]}
               </Typography>
               <IconButton onClick={handleDrawerClose}>
                 <CloseIcon />
@@ -462,7 +462,7 @@ function ContractPdfModal({
                   },
                 }}
               >
-                Download
+                {t["Download"]}
               </Button>
               <CloseIcon
                 onClick={handleClose}
@@ -495,7 +495,7 @@ function ContractPdfModal({
               p: 0,
             }}
           >
-            Waiting for signature
+            {t["waiting for signature"]}
           </Button>
 
           <Button
@@ -537,7 +537,7 @@ function ContractPdfModal({
                 fontWeight: "400",
               }}
             >
-              Include signers:
+              {t["Include signers"]}:
             </Typography>
             {session?.user?.role === "admin" && (
               <form onSubmit={handleSubmit(onSubmit)}>

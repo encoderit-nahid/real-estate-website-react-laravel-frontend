@@ -200,7 +200,7 @@ function ContractModal({
                 mt: 1,
               }}
             >
-              Drag and drop here
+              {t["Drag and drop here"]}
             </Typography>
             <Typography
               variant="p"

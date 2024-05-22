@@ -43,6 +43,7 @@ function shouldDisableButton(allValues) {
     "documentation",
     "registry",
     "registration_number",
+    "dimension",
   ];
 
   // Filter out hidden fields from the list of required fields

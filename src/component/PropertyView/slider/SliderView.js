@@ -328,7 +328,7 @@ function SliderView({
         )}
 
         <Tab
-          label={"Video"}
+          label={t["Video"]}
           sx={{
             fontSize: "14px",
             color: "#4B4B66",

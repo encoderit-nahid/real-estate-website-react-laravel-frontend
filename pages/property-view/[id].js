@@ -738,7 +738,7 @@ export async function getServerSideProps(context) {
         singlePropertyData?.property?.property_detail?.photo_types?.filter(
           (data) => data.slug.substr(data.slug.length - 3) !== "360"
         ),
-      language: cookies,
+      language: "pt",
     },
   };
 }

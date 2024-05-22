@@ -88,7 +88,7 @@ function BrokerHelp({
           </InputLabel>
           <BaseOutlinedZipInput
             placeholder={"Eg: 00000-000"}
-            label={"Zip Code"}
+            label={t["Zip Code"]}
             value={value}
             onChange={(e) => setValue(e.target.value)}
           />

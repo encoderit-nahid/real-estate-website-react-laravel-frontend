@@ -291,12 +291,6 @@ export default function NewProperty({ language }) {
         })
       );
 
-      // const urlEditData = allSelectVideos?.map((info) => {
-      //   return {
-      //     url: info?.file_path,
-      //   };
-      // });
-      // setValue("videos", urlEditData);
       setValue("owner_name", singleData?.property_owner?.name);
       setValue("owner_rg", singleData?.property_owner?.rg);
       setValue("owner_cpf", singleData?.property_owner?.cpf);

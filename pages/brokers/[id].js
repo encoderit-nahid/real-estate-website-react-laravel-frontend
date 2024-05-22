@@ -261,7 +261,7 @@ export default function BrokerDetails({ handleLoginOpen, language }) {
               mt: { xs: 1, sm: 1, md: 0, lg: 0, xl: 0 },
             }}
           >
-            Broker
+            {t["Broker"]}
           </Typography>
         </Grid>
 
@@ -299,7 +299,7 @@ export default function BrokerDetails({ handleLoginOpen, language }) {
                         color: "#6C7A84",
                       }}
                     >
-                      (32 reviews)
+                      (32 {t["reviews"]})
                     </span>
                   </Typography>
                 }
@@ -406,7 +406,7 @@ export default function BrokerDetails({ handleLoginOpen, language }) {
               aria-label="full width tabs example"
             >
               <Tab
-                label="properties"
+                label={t["Properties"]}
                 sx={{
                   fontWeight: "600",
                   textTransform: "uppercase",
@@ -416,7 +416,7 @@ export default function BrokerDetails({ handleLoginOpen, language }) {
                 color="primary"
               />
               <Tab
-                label="assessments"
+                label={t["assessments"]}
                 sx={{
                   fontWeight: "600",
                   textTransform: "uppercase",

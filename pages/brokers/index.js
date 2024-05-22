@@ -193,7 +193,7 @@ export default function Brokers({ language }) {
                     },
                   }}
                 >
-                  Filter
+                  {t["filter"]}
                 </Button>
               </Grid>
             </Grid>

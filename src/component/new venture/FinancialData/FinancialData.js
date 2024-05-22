@@ -153,7 +153,7 @@ function FinancialData({
             ml: 1,
           }}
         >
-          Financial Data
+          {t["Financial Data"]}
         </Typography>
       </Grid>
 
@@ -170,7 +170,7 @@ function FinancialData({
                 getOptionLabel={(option) => option.name || ""}
                 isOptionEqualToValue={(option, value) => option.id === value.id}
                 size={"medium"}
-                placeholder={`% Prohibited`}
+                placeholder={`% ${t["Prohibited"]}`}
                 onChange={(e, v, r, d) => field.onChange(v)}
                 value={field.value || null}
               />
@@ -196,7 +196,7 @@ function FinancialData({
                 getOptionLabel={(option) => option.name || ""}
                 isOptionEqualToValue={(option, value) => option.id === value.id}
                 size={"medium"}
-                placeholder={`Adjustment index`}
+                placeholder={t[`Adjustment index`]}
                 onChange={(e, v, r, d) => field.onChange(v)}
                 value={field.value || null}
               />
@@ -222,7 +222,7 @@ function FinancialData({
                 getOptionLabel={(option) => option.name || ""}
                 isOptionEqualToValue={(option, value) => option.id === value.id}
                 size={"medium"}
-                placeholder={`Number of installments`}
+                placeholder={t[`Number of installments`]}
                 onChange={(e, v, r, d) => field.onChange(v)}
                 value={field.value || null}
               />
@@ -244,7 +244,7 @@ function FinancialData({
             render={({ field }) => (
               <BaseTextField
                 size={"medium"}
-                placeholder={`R$ Value per square meter`}
+                placeholder={`R$ ${t["Value per square meter"]}`}
                 onChange={(e) => {
                   field.onChange(e.target.value);
                 }}

@@ -193,116 +193,6 @@ function Address({
 
   return (
     <Box sx={{ mt: 4 }}>
-      {/* <Grid
-        container
-        direction="row"
-        justifyContent="flex-start"
-        alignItems="flex-start"
-      >
-        <Image height={40} width={40} src={pinImage} alt="pin" />
-        <Typography
-          variant="p"
-          sx={{
-            color: "#002152",
-            fontSize: "24px",
-            fontWeight: "700",
-            lineHeight: "32px",
-            ml: 1,
-          }}
-        >
-          {t["sales authorization document"]}
-        </Typography>
-      </Grid>
-      <Box {...getRootProps({ style })}>
-        <input {...getInputProps()} />
-        <Typography
-          variant="p"
-          sx={{
-            color: "#6C7A84",
-            fontSize: "14px",
-            fontWeight: "400",
-            lineHeight: "18px",
-            mt: 1,
-          }}
-        >
-          {t["Drag and drop documents here"]}
-        </Typography>
-        <Typography
-          variant="p"
-          sx={{
-            color: "#6C7A84",
-            fontSize: "14px",
-            fontWeight: "400",
-            lineHeight: "18px",
-            mt: 1,
-          }}
-        >
-          {t["or"]}
-        </Typography>
-        <Button
-          variant="contained"
-          sx={{
-            textTransform: "none",
-            mt: 1,
-            background: "#0362F0",
-            color: "#ffffff",
-            fontSize: "14px",
-            fontWeight: "600",
-            lineHeight: "18px",
-          }}
-        >
-          {t["select documents"]}
-        </Button>
-        <Typography
-          variant="inherit"
-          color="textSecondary"
-          sx={{ color: "#b91c1c" }}
-        >
-          {errors?.document_files?.message}
-        </Typography>
-      </Box>
-      {documents?.length > 0 && (
-        <Grid container spacing={1} sx={{ mt: 3 }}>
-          {documents?.map((file, index) => (
-            <Grid item xs={12} sm={12} md={4} lg={3} xl={3} key={index}>
-              <Box
-                sx={{
-                  p: 2,
-                  boxSizing: "border-box",
-                  border: "1px solid #DBE1E5",
-                  borderRadius: "6px",
-                }}
-              >
-                <Grid
-                  container
-                  direction="row"
-                  justifyContent="flex-end"
-                  alignItems="flex-start"
-                >
-                  <DeleteOutlineOutlinedIcon
-                    sx={{
-                      background: "#F44336",
-                      color: "#ffffff",
-                      borderRadius: "50%",
-                      height: "3vh",
-                      width: "3vh",
-                      paddingY: "3px",
-                    }}
-                    onClick={() => handleDelete(index)}
-                  />
-                </Grid>
-
-                <Typography
-                  variant="p"
-                  sx={{ color: "#38bdf8", fontWeight: "600" }}
-                >
-                  {file?.name?.slice(0, 15) || file?.title?.slice(0, 15)}
-                </Typography>
-              </Box>
-            </Grid>
-          ))}
-        </Grid>
-      )} */}
       <Grid
         container
         direction="row"
@@ -636,7 +526,7 @@ function Address({
             render={({ field }) => (
               <BaseTextField
                 size={"medium"}
-                placeholder={`Property Title`}
+                placeholder={t[`Property Title`]}
                 onChange={(e) => {
                   field.onChange(e.target.value);
                 }}

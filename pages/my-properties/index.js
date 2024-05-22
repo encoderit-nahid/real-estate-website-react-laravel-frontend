@@ -195,7 +195,11 @@ export default function MyProperties({ language }) {
               />
               {session?.user?.role === "admin" && (
                 <Tab
-                  sx={{ fontWeight: "600", textTransform: "none" }}
+                  sx={{
+                    fontWeight: "600",
+                    textTransform: "none",
+                    textWrap: "nowrap",
+                  }}
                   label={
                     countLoading
                       ? t["New Registration"]
