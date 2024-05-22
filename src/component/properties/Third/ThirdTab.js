@@ -16,15 +16,14 @@ import Link from "next/link";
 import { useGetPropertyQuery } from "@/queries/useGetPropertyQuery";
 
 function ThirdTab({ languageName }) {
-  const dispatch = useDispatch();
   const router = useRouter();
   const { query } = router;
 
   const [page, setPage] = React.useState(1);
 
   useEffect(() => {
-    setPage(+query?.page)
-  },[query])
+    setPage(+query?.page);
+  }, [query]);
 
   const {
     data: thirdProperty,
@@ -37,7 +36,7 @@ function ThirdTab({ languageName }) {
   const handlePageChange = (event, value) => {
     setPage(value);
     router.replace({
-      query: { ...router.query,page:value },
+      query: { ...router.query, page: value },
     });
   };
 

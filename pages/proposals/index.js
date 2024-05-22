@@ -28,6 +28,9 @@ import en from "locales/en";
 import pt from "locales/pt";
 import { useRouter } from "next/router";
 import NotificationContent from "@/component/notificationContent/NotificationContent";
+import { useGetProposalCountQuery } from "@/queries/useGetProposalCountQuery";
+import useParams from "@/hooks/useParams";
+import { omitEmpties } from "@/api";
 
 const drawerWidth = 240;
 
@@ -74,19 +77,25 @@ export default function Proposals({ language }) {
   const t = myValue === "en" ? en : pt;
 
   const dispatch = useDispatch();
-  useEffect(() => {
-    dispatch(findProposalCountData());
-  }, [dispatch]);
+  // useEffect(() => {
+  //   dispatch(findProposalCountData());
+  // }, [dispatch]);
 
-  const proposalCountData = useSelector((state) => state?.count?.countData);
-
-  const countLoading = useSelector((state) => state?.count?.loading);
+  // const proposalCountData = useSelector((state) => state?.count?.countData);
+  const {
+    data,
+    isLoading: countLoading,
+    refetch: loadingRefetch,
+  } = useGetProposalCountQuery();
+  const proposalCountData = data?.data;
 
   const [proposalCount, setProposalCount] = useState("");
 
   const [value, setValue] = useState(+query?.value || 0);
   const [adType, setAdType] = useState("allkinds");
   const [relevantFilter, setReleventFilter] = useState("");
+
+  const { setParams } = useParams();
 
   const handleAdTypeFilter = (data) => {
     setAdType(data);
@@ -112,39 +121,21 @@ export default function Proposals({ language }) {
 
   const handleChange = (event, newValue) => {
     setValue(newValue);
-    newValue === 1
-      ? router.push({
-          pathname: "/proposals",
-          query: {
-            proposal_status: "accepted",
-            page: 1,
-            per_page: 9,
-            status: "approved",
-            value: newValue,
-          },
-        })
-      : newValue === 2
-      ? router.push({
-          pathname: "/proposals",
-          query: {
-            proposal_status: "completed",
-            status: "approved",
-            page: 1,
-            per_page: 9,
-            value: newValue,
-          },
-        })
-      : router.push({
-          pathname: "/proposals",
-          query: {
-            page: 1,
-            per_page: 9,
-            value: newValue,
-            status: "approved",
-            proposal_status: "pending",
-          },
-        });
+    setParams(
+      omitEmpties({
+        proposal_status:
+          newValue === 1
+            ? "accepted"
+            : newValue === 2
+            ? "completed"
+            : "pending",
+        status: "approved",
+        page: 1,
+        per_page: 9,
+      })
+    );
   };
+
   return (
     <Box
       sx={{
