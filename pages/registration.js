@@ -668,12 +668,3 @@ export default function Registration({ language, handleLoginOpen }) {
     </div>
   );
 }
-
-export async function getServerSideProps(context) {
-  const cookies = context.req.cookies["language"] || "pt";
-  return {
-    props: {
-      language: cookies,
-    },
-  };
-}

@@ -22,7 +22,7 @@ import { useState } from "react";
 const drawerWidth = 240;
 
 export default function Faq({ language }) {
-  const [myValue, setMyValue] = useState(language || "en");
+  const [myValue, setMyValue] = useState(language || "pt");
 
   const t = myValue === "en" ? en : pt;
   const [expanded, setExpanded] = React.useState(false);
@@ -182,29 +182,4 @@ export default function Faq({ language }) {
       </Box>
     </Box>
   );
-}
-
-export async function getServerSideProps(context) {
-  //* Session for SSG
-  const session = await getSession(context);
-  //? If Not Logged In
-  if (!session) {
-    return {
-      redirect: {
-        destination: "/",
-      },
-      props: {
-        session: null,
-      },
-    };
-  }
-
-  const cookies = context.req.cookies["language"] || "pt";
-
-  return {
-    props: {
-      session: session,
-      language: cookies,
-    },
-  };
 }

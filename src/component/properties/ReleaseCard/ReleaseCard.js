@@ -13,7 +13,7 @@ function ReleaseCard({ projectData, languageName }) {
     return `${_imageURL}/${src}`;
   };
   return (
-    <Link href={`/my-properties/project-view/${projectData?.id}`}>
+    <Link href={`/project-view/${projectData?.id}`}>
       <Box
         sx={{
           background: "#ffffff",

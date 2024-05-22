@@ -494,27 +494,3 @@ const top100Films = [
   { label: "Schindler's List", year: 1993 },
   { label: "Pulp Fiction", year: 1994 },
 ];
-
-export async function getServerSideProps(context) {
-  //* Session for SSG
-  const session = await getSession(context);
-  const cookies = context.req.cookies["language"] || "pt";
-  //? If Not Logged In
-  if (!session) {
-    return {
-      redirect: {
-        destination: "/",
-      },
-      props: {
-        session: null,
-      },
-    };
-  }
-
-  return {
-    props: {
-      session: session,
-      language: cookies,
-    },
-  };
-}

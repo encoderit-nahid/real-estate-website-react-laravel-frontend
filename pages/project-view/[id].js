@@ -9,8 +9,10 @@ import {
   ImageList,
   ImageListItem,
   Button,
+  LinearProgress,
+  CircularProgress,
 } from "@mui/material";
-import orionImage from "../../../public/Images/orion_view.svg";
+import orionImage from "../../public/Images/orion_view.svg";
 import Image from "next/image";
 const HouseCard = dynamic(() =>
   import("@/component/reuseable/HouseCard/HouseCard")
@@ -19,7 +21,7 @@ const Footer = dynamic(() => import("@/component/shared/Footer/Footer"));
 const SliderView = dynamic(() =>
   import("@/component/PropertyView/slider/SliderView")
 );
-import SlideImage from "../../../src/component/PropertyView/slideImage/SlideImage";
+import SlideImage from "@/component/PropertyView/slideImage/SlideImage";
 const SliderViewMobile = dynamic(() =>
   import("@/component/PropertyView/SliderViewMobile/SliderViewMobile")
 );
@@ -34,6 +36,7 @@ import { _imageURL } from "consts";
 import { useRouter } from "next/router";
 import { stripHtmlTags } from "@/utils/stripHtmlTags";
 import AboutProperty from "@/component/PropertyView/AboutProperty/AboutProperty";
+import { useGetSingleProjectQuery } from "@/queries/useGetSingleProjectQuery";
 
 const aboutProperty = [
   "Heater",
@@ -76,11 +79,23 @@ export default function ProjectView({
   setLoginOpen,
   handleLoginOpen,
   handleLoginClose,
-  singleProjectData,
-  language,
 }) {
-  const [myValue, setMyValue] = useState(language || "en");
   const router = useRouter();
+  const { query } = router;
+  console.log({ query });
+  const {
+    data: singleProjectData,
+    isLoading,
+    isFetched,
+    isFetching,
+  } = useGetSingleProjectQuery(query?.id);
+
+  console.log({ singleProjectData });
+
+  const language = "pt";
+
+  const [myValue, setMyValue] = useState(language || "pt");
+
   const t = myValue === "en" ? en : pt;
   const [sideTabValue, setSideTabValue] = useState("photos");
 
@@ -133,6 +148,22 @@ export default function ProjectView({
   const goBack = () => {
     router.back();
   };
+
+  if (isLoading) {
+    return (
+      <Container maxWidth="md" sx={{ px: 2, py: 0 }}>
+        <Grid
+          container
+          direction="row"
+          justifyContent="center"
+          alignItems="center"
+          sx={{ height: "100vh" }}
+        >
+          <CircularProgress size="8rem" />
+        </Grid>
+      </Container>
+    );
+  }
 
   return (
     <div>
@@ -252,6 +283,7 @@ export default function ProjectView({
                 selectImage={selectImage}
                 videos={Videos}
                 languageName={myValue.toString()}
+                images={Images}
               />
             </Grid>
             {/* <Grid item xs={12} sx={{ mb: 1 }}>
@@ -410,7 +442,7 @@ export default function ProjectView({
         </Box>
         <Box sx={{ mx: 3 }}>
           <Grid item xs={12} sm={12} md={12} lg={9} xl={9}>
-            {Object.keys(singleProjectData?.projectFeatures).map(
+            {Object.keys(singleProjectData?.projectFeatures || {})?.map(
               (key, index) => (
                 <AboutProperty
                   key={index}
@@ -467,26 +499,4 @@ export default function ProjectView({
       </main>
     </div>
   );
-}
-
-export async function getServerSideProps(context) {
-  const { id } = context.query;
-  const base_url = process.env.NEXT_PUBLIC_API_URL;
-
-  const res = await fetch(`${base_url}/api/project/show/${id}`);
-  const singleProjectData = await res.json();
-
-  const cookies = context.req.cookies["language"];
-
-  return {
-    props: {
-      singleProjectData: singleProjectData,
-      language: cookies,
-
-      // tabArrayData:
-      //   singlePropertyData?.property?.property_detail?.photo_types?.filter(
-      //     (data) => data.slug.substr(data.slug.length - 3) !== "360"
-      //   ),
-    },
-  };
 }

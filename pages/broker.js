@@ -113,11 +113,3 @@ export default function Broker({
     </div>
   );
 }
-
-export async function getServerSideProps(context) {
-  const cookies = context.req.cookies["language"] || "pt";
-
-  return {
-    props: { language: cookies }, // will be passed to the page component as props
-  };
-}

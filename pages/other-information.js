@@ -530,12 +530,3 @@ export default function OtherInformation({
     </div>
   );
 }
-
-export async function getServerSideProps(context) {
-  const cookies = context.req.cookies["language"] || "pt";
-  return {
-    props: {
-      language: cookies,
-    },
-  };
-}

@@ -146,28 +146,3 @@ export default function Schedules({ language }) {
     </>
   );
 }
-
-export async function getServerSideProps(context) {
-  //* Session for SSG
-  const session = await getSession(context);
-  //? If Not Logged In
-  if (!session) {
-    return {
-      redirect: {
-        destination: "/",
-      },
-      props: {
-        session: null,
-      },
-    };
-  }
-
-  const cookies = context.req.cookies["language"] || "pt";
-
-  return {
-    props: {
-      session: session,
-      language: cookies,
-    },
-  };
-}

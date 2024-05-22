@@ -157,7 +157,7 @@ export default function Index({ language }) {
     return () => URL.revokeObjectURL(objectUrl);
   }, [allValues.image]);
 
-  const [myValue, setMyValue] = useState(language || "en");
+  const [myValue, setMyValue] = useState(language || "pt");
 
   const t = myValue === "en" ? en : pt;
 
@@ -710,28 +710,4 @@ export default function Index({ language }) {
       </form>
     </Box>
   );
-}
-
-export async function getServerSideProps(context) {
-  //* Session for SSG
-  const session = await getSession(context);
-  //? If Not Logged In
-  if (!session) {
-    return {
-      redirect: {
-        destination: "/",
-      },
-      props: {
-        session: null,
-      },
-    };
-  }
-  const cookies = context.req.cookies["language"] || "pt";
-
-  return {
-    props: {
-      session: session,
-      language: cookies,
-    },
-  };
 }

@@ -545,27 +545,3 @@ export default function IncludeProposal({ language }) {
     </Box>
   );
 }
-
-export async function getServerSideProps(context) {
-  //* Session for SSG
-  const session = await getSession(context);
-  const cookies = context.req.cookies["language"] || "pt";
-  //? If Not Logged In
-  if (!session) {
-    return {
-      redirect: {
-        destination: "/",
-      },
-      props: {
-        session: null,
-      },
-    };
-  }
-
-  return {
-    props: {
-      session: session,
-      language: cookies,
-    },
-  };
-}
