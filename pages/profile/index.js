@@ -10,6 +10,7 @@ import logo from "../../public/Images/logo.png";
 import BorderColorIcon from "@mui/icons-material/BorderColor";
 import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import NoEncryptionOutlinedIcon from "@mui/icons-material/NoEncryptionOutlined";
+import accountIcon from "../../public/Images/account.png";
 const ResponsiveDrawer = dynamic(() =>
   import("@/component/sharedProposal/ResponsiveDrawer/ResponsiveDrawer")
 );
@@ -67,6 +68,8 @@ import { Controller, useForm } from "react-hook-form";
 import BaseTextField from "@/component/reuseable/baseTextField/BaseTextField";
 import BaseAutocomplete from "@/component/reuseable/baseAutocomplete/BaseAutocomplete";
 import BaseOutlinedZipInput from "@/component/reuseable/baseOutlinedZipInput/BaseOutlinedZipInput";
+import { findStateData } from "@/redux/state/actions";
+import useCurrentUser from "@/hooks/useCurrentUser";
 
 const drawerWidth = 240;
 
@@ -119,28 +122,40 @@ function a11yProps(index) {
 }
 
 export default function Index({ language }) {
-  const router = useRouter();
-  const { query } = router;
-  const { data: session } = useSession();
-  const { setParams } = useParams();
   const {
     register,
     watch,
     control,
     handleSubmit,
-
+    setValue,
     formState: { errors },
     setError,
   } = useForm();
+  const allValues = watch();
   const [showPass, setShowPass] = useState(false);
-  const [actingPreference, setActingPreference] = useState("location");
+  const [preview, setPreview] = useState();
   const handleClickShowPassword = () => {
     setShowPass(!showPass);
   };
+
+  const [showRepeatPass, setShowRepeatPass] = useState(false);
+
+  const handleClickShowRepeatPassword = () => {
+    setShowRepeatPass(!showRepeatPass);
+  };
+
   useEffect(() => {
-    userDetailsApi();
-  }, []);
-  const allStateData = useSelector((state) => state.state.stateData);
+    if (!allValues.image) {
+      setPreview(undefined);
+      return;
+    }
+
+    const objectUrl = URL.createObjectURL(allValues.image);
+    setPreview(objectUrl);
+
+    // free memory when ever this component is unmounted
+    return () => URL.revokeObjectURL(objectUrl);
+  }, [allValues.image]);
 
   const [myValue, setMyValue] = useState(language || "en");
 
@@ -148,86 +163,17 @@ export default function Index({ language }) {
 
   const dispatch = useDispatch();
   useEffect(() => {
-    dispatch(findNotificationCountData());
-    dispatch(GetAllNotification());
-    dispatch(findPropertyCountData());
+    dispatch(findStateData());
   }, [dispatch]);
-  const notificationCountData = useSelector(
-    (state) => state?.notificationCount?.notificationCountData
-  );
 
-  const notificationData = useSelector(
-    (state) => state?.notification?.notificationData
-  );
+  const allStateData = useSelector((state) => state.state.stateData);
 
-  // useChannel("notification-broadcast." + session.user.userId, (channel) => {
-  //   // console.log('useChannel', channel)
-  //   channel
-  //     // .here((...args) => {
-  //     // 	console.log('notification-broadcast:here', ...args)
-  //     // })
-  //     // .joining((...args) => {
-  //     // 	console.log('notification-broadcast:joining', ...args)
-  //     // })
-  //     // .leaving((...args) => {
-  //     // 	console.log('notification-broadcast:leaving', ...args)
-  //     // })
-  //     .listen(".OnCreateNewSchedule", (event) => {
-  //       console.log("notification-broadcast:NotificationEvent", event);
-  //       dispatch(notificationAddPusherItem(event.notification));
-  //       dispatch(notificationAddCount(1));
-  //     });
-  //   // .listenForWhisper('ping', (event) => {
-  //   // 	console.log('notification-broadcast:ping', event)
-  //   // })
-  // });
+  useEffect(() => {
+    setValue("state", allStateData[0]);
+  }, [allStateData, setValue]);
 
-  const handleReadNotification = async (data) => {
-    const [error, response] = await NotificationReadApi(data?.id);
-    if (!error) {
-      dispatch(notificationRemove(data?.id));
-      dispatch(notificationAddCount(-1));
-    }
-  };
-
-  const [anchorEl, setAnchorEl] = useState(null);
-
-  const handleClick = (event) => {
-    setAnchorEl(event.currentTarget);
-  };
-
-  const handleClose = () => {
-    setAnchorEl(null);
-  };
-
-  const open = Boolean(anchorEl);
-  const id = open ? "simple-popover" : undefined;
-
-  const {
-    data,
-    isLoading: countLoading,
-    refetch: loadingRefetch,
-  } = useGetPropertyCountQuery();
-  const propertyCountData = data?.data;
-
-  const [value, setValue] = useState(+query?.value || 0);
-
-  const handleChange = (event, newValue) => {
-    setValue(newValue);
-    setParams(
-      omitEmpties({
-        status:
-          newValue === 1
-            ? "wishlist"
-            : newValue === 3
-            ? "third"
-            : newValue === 4
-            ? "new"
-            : null,
-        page: 1,
-        per_page: 9,
-      })
-    );
+  const onSubmit = (data) => {
+    console.log(data);
   };
 
   return (
@@ -262,67 +208,84 @@ export default function Index({ language }) {
         >
           Profile
         </Typography>
-        <Button
-          aria-describedby={id}
-          variant="contained"
+      </Grid>
+      <form onSubmit={handleSubmit(onSubmit)}>
+        <Grid
+          container
+          spacing={2}
           sx={{
-            p: 0,
-            background: "transparent",
-            boxShadow: "none",
-            "&:hover": {
-              boxShadow: "none",
-              background: "transparent",
-            },
+            backgroundColor: "white",
+            borderRadius: "8px",
+            padding: "32px 24px",
+            mt: 1,
           }}
         >
-          <Badge color="primary">
-            <Image src={notifyImage} alt="notify" />
-          </Badge>
-        </Button>
-      </Grid>
-
-      <Grid
-        container
-        spacing={2}
-        sx={{
-          backgroundColor: "white",
-          borderRadius: "8px",
-          padding: "32px 24px",
-          mt: 1,
-        }}
-      >
-        <Grid item xs={12} lg={2}>
-          <Box
-            component="div"
-            sx={{
-              borderRadius: "6px",
-              padding: "40px 0",
-              backgroundColor: "#ECF0F3",
-              display: "flex",
-              flexDirection: "column",
-              alignItems: "center",
-              justifyContent: "center",
-            }}
-          >
-            <Avatar sx={{ width: 90, height: 90 }} />
-            <Button
-              variant="contained"
-              startIcon={<BorderColorIcon />}
+          <Grid item xs={12} lg={2}>
+            <Box
+              component="div"
               sx={{
-                mt: 3,
-                textTransform: "none",
-                borderRadius: "4px",
-                padding: "4px 20px",
-                fontSize: "16px",
+                borderRadius: "6px",
+                padding: "40px 0",
+                backgroundColor: "#ECF0F3",
+                display: "flex",
+                flexDirection: "column",
+                alignItems: "center",
+                justifyContent: "center",
               }}
             >
-              To edit
-            </Button>
-          </Box>
-        </Grid>
+              <Box>
+                <Image
+                  src={preview != null ? preview : accountIcon}
+                  alt="account"
+                  width={50}
+                  height={50}
+                />
+              </Box>
+              <Button
+                variant="contained"
+                component="label"
+                sx={{
+                  mt: 3,
+                  background: "#0362F0",
+                  borderRadius: "4px",
+                  fontSize: "14px",
+                  fontWeight: "600",
+                  color: "#ffffff",
+                  lineHeight: "18px",
+                  textTransform: "none",
+                  "&: hover": {
+                    background: "#0362F0",
+                    borderRadius: "4px",
+                    fontSize: "14px",
+                    fontWeight: "600",
+                    color: "#ffffff",
+                  },
+                }}
+              >
+                To Edit
+                <Controller
+                  name="image"
+                  control={control}
+                  render={({ field }) => {
+                    return (
+                      <input
+                        name="image"
+                        hidden
+                        accept="image/*"
+                        type="file"
+                        // value={field.value}
+                        onChange={(e) => {
+                          field.onChange(e.target.files[0]);
+                        }}
+                      />
+                    );
+                  }}
+                />
+              </Button>
+            </Box>
+          </Grid>
 
-        <Grid item xs={12} lg={10}>
-          <form onSubmit={handleSubmit(onSubmit)}>
+          <Grid item xs={12} lg={10}>
             <Grid item xs={12}>
               <Controller
                 name="name"
@@ -451,20 +414,20 @@ export default function Index({ language }) {
                       size={"medium"}
                       placeholder={"Repeat Password"}
                       label={"Repeat Password"}
-                      type={showPass ? "text" : "password"}
+                      type={showRepeatPass ? "text" : "password"}
                       name={"password"}
                       // {...field}
                       onChange={(e) => {
                         field.onChange(e.target.value);
                       }}
                       // value={field.value}
-                      error={errors.password ? true : false}
+                      error={errors.repeat_password ? true : false}
                       InputProps={{
                         endAdornment: (
                           <InputAdornment
                             sx={{ cursor: "pointer" }}
                             position="end"
-                            onClick={handleClickShowPassword}
+                            onClick={handleClickShowRepeatPassword}
                           >
                             {showPass ? (
                               <NoEncryptionOutlinedIcon />
@@ -478,7 +441,7 @@ export default function Index({ language }) {
                   )}
                 />
                 <Typography variant="inherit" color="textSecondary">
-                  {errors.password?.message}
+                  {errors.repeat_password?.message}
                 </Typography>
               </Grid>
             </Grid>
@@ -742,9 +705,9 @@ export default function Index({ language }) {
                 Save
               </Button>
             </Grid>
-          </form>
+          </Grid>
         </Grid>
-      </Grid>
+      </form>
     </Box>
   );
 }
