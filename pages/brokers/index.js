@@ -69,7 +69,7 @@ function a11yProps(index) {
 }
 
 export default function Brokers({ language }) {
-  const [myValue, setMyValue] = useState(language || "en");
+  const [myValue, setMyValue] = useState(language || "pt");
 
   const t = myValue === "en" ? en : pt;
   const { data: session } = useSession();
@@ -193,7 +193,7 @@ export default function Brokers({ language }) {
                     },
                   }}
                 >
-                  Filter
+                  {t["filter"]}
                 </Button>
               </Grid>
             </Grid>

@@ -179,7 +179,7 @@ function PersonalData({
             fontWeight: "700",
           }}
         >
-          Select Broker
+          {t["Select broker"]}
         </Typography>
         <CloseIcon
           onClick={toggleDrawer("right", false)}
@@ -189,7 +189,7 @@ function PersonalData({
       <Box sx={{ px: 2, mt: 1 }}>
         <TextField
           variant="outlined"
-          placeholder="Search by broker name"
+          placeholder={t["Search by broker name"]}
           size="small"
           onChange={debouncedHandleChangeBroker}
           fullWidth
@@ -489,7 +489,8 @@ function PersonalData({
                   lineHeight: "16px",
                 }}
               >
-                CRECI number<span style={{ color: "#E63333" }}>*</span>
+                {t["CRECI Number"]}
+                <span style={{ color: "#E63333" }}>*</span>
               </Typography>
             </Grid>
             <Controller
@@ -500,7 +501,7 @@ function PersonalData({
                 <BaseTextField
                   size={"small"}
                   type={"number"}
-                  placeholder={"CRECI Number"}
+                  placeholder={t["CRECI Number"]}
                   onChange={(e) => {
                     field.onChange(e.target.value);
                   }}

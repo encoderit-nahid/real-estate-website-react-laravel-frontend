@@ -38,6 +38,12 @@ const ThirdTab = dynamic(() => import("@/component/properties/Third/ThirdTab"));
 const NewRegistration = dynamic(() =>
   import("@/component/properties/NewRegistration/NewRegistration")
 );
+const UserUpdateForm = dynamic(
+  () => import("@/component/user/update/UserUpdateForm"),
+  {
+    ssr: false,
+  }
+);
 import notifyImage from "../../public/Images/notify.png";
 import Link from "next/link";
 import { getSession, useSession } from "next-auth/react";
@@ -206,10 +212,11 @@ export default function Index({ language }) {
             mt: { xs: 1, sm: 1, md: 0, lg: 0, xl: 0 },
           }}
         >
-          Profile
+          {t["profile"]}
         </Typography>
       </Grid>
-      <form onSubmit={handleSubmit(onSubmit)}>
+      <UserUpdateForm onSubmit={onSubmit} />
+      {/* <form onSubmit={handleSubmit(onSubmit)}>
         <Grid
           container
           spacing={2}
@@ -262,7 +269,7 @@ export default function Index({ language }) {
                   },
                 }}
               >
-                To Edit
+                {t["Edit"]}
                 <Controller
                   name="image"
                   control={control}
@@ -294,8 +301,8 @@ export default function Index({ language }) {
                 render={({ field }) => (
                   <BaseTextField
                     size={"medium"}
-                    placeholder="Name"
-                    label="Name"
+                    placeholder={t["Name"]}
+                    label={t["Name"]}
                     // sx={{ mb: 2 }}
                     onChange={(e) => {
                       field.onChange(e.target.value);
@@ -346,8 +353,8 @@ export default function Index({ language }) {
                   render={({ field }) => (
                     <BaseTextField
                       size={"medium"}
-                      placeholder="Telephone"
-                      label="Telephone"
+                      placeholder={t["Telephone"]}
+                      label={t["Telephone"]}
                       onChange={(e) => {
                         field.onChange(e.target.value);
                       }}
@@ -373,8 +380,8 @@ export default function Index({ language }) {
                   render={({ field }) => (
                     <BaseTextField
                       size={"medium"}
-                      placeholder={"Password"}
-                      label={"Password"}
+                      placeholder={t["Password"]}
+                      label={t["Password"]}
                       type={showPass ? "text" : "password"}
                       name={"password"}
                       // {...field}
@@ -412,8 +419,8 @@ export default function Index({ language }) {
                   render={({ field }) => (
                     <BaseTextField
                       size={"medium"}
-                      placeholder={"Repeat Password"}
-                      label={"Repeat Password"}
+                      placeholder={t["repeat password"]}
+                      label={t["repeat password"]}
                       type={showRepeatPass ? "text" : "password"}
                       name={"password"}
                       // {...field}
@@ -671,7 +678,7 @@ export default function Index({ language }) {
                   textTransform: "none",
                 }}
               >
-                Cancel
+                {t["Cancel"]}
               </Button>
               <Button
                 color="inherit"
@@ -702,12 +709,12 @@ export default function Index({ language }) {
                   },
                 }}
               >
-                Save
+                {t["Save"]}
               </Button>
             </Grid>
           </Grid>
         </Grid>
-      </form>
+      </form> */}
     </Box>
   );
 }

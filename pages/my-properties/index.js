@@ -99,7 +99,7 @@ export default function MyProperties({ language }) {
     userDetailsApi();
   }, []);
 
-  const [myValue, setMyValue] = useState(language || "en");
+  const [myValue, setMyValue] = useState(language || "pt");
 
   const t = myValue === "en" ? en : pt;
 
@@ -195,7 +195,11 @@ export default function MyProperties({ language }) {
               />
               {session?.user?.role === "admin" && (
                 <Tab
-                  sx={{ fontWeight: "600", textTransform: "none" }}
+                  sx={{
+                    fontWeight: "600",
+                    textTransform: "none",
+                    textWrap: "nowrap",
+                  }}
                   label={
                     countLoading
                       ? t["New Registration"]

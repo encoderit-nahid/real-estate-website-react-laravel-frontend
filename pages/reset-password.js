@@ -25,6 +25,8 @@ import { useForm, Controller } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as Yup from "yup";
 import BaseOutlinedPhoneInput from "../src/component/reuseable/baseOutlinedPhoneInput/BaseOutlinedPhoneInput";
+import en from "locales/en";
+import pt from "locales/pt";
 import {
   registrationApi,
   resetPasswordApi,
@@ -46,7 +48,9 @@ const validationSchema = Yup.object().shape({
     .max(40, "Password must not exceed 40 characters"),
 });
 
-export default function ResetPassword() {
+export default function ResetPassword({ languageName }) {
+  const t = languageName === "en" ? en : pt;
+
   const router = useRouter();
   const {
     register,
@@ -156,7 +160,7 @@ export default function ResetPassword() {
                           lineHeight: "16px",
                         }}
                       >
-                        Password
+                        {t["Password"]}
                         <span style={{ color: "#E63333" }}>*</span>
                       </Typography>
                     </Grid>
@@ -166,7 +170,7 @@ export default function ResetPassword() {
                       render={({ field }) => (
                         <BaseTextField
                           size={"small"}
-                          placeholder={"Password"}
+                          placeholder={t["Password"]}
                           type={showPass ? "text" : "password"}
                           name={"password"}
                           // {...field}
@@ -217,7 +221,7 @@ export default function ResetPassword() {
                           lineHeight: "16px",
                         }}
                       >
-                        Confirm Password
+                        {t["Confirm Password"]}
                         <span style={{ color: "#E63333" }}>*</span>
                       </Typography>
                     </Grid>
@@ -227,7 +231,7 @@ export default function ResetPassword() {
                       render={({ field }) => (
                         <BaseTextField
                           size={"small"}
-                          placeholder={"Password"}
+                          placeholder={t["Confirm Password"]}
                           type={showConfirmPass ? "text" : "password"}
                           name={"password_confirmation"}
                           // {...field}
@@ -281,7 +285,7 @@ export default function ResetPassword() {
                       {loading && (
                         <CircularProgress size={22} color="inherit" />
                       )}
-                      {!loading && "reset"}
+                      {!loading && t["reset"]}
                     </Button>
                   </form>
                 </Container>

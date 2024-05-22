@@ -306,7 +306,7 @@ function Contract({
                         textTransform: "none",
                       }}
                     >
-                      Download
+                      {t["Download"]}
                     </Button>
                   </Grid>
                   <Grid item xs={12} sm={12} md={12} lg={6}>

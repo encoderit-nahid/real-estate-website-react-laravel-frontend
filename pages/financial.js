@@ -175,7 +175,7 @@ export default function Financial({ language }) {
                         textTransform: "none",
                         width: "100%",
                       }}
-                      label="Sales"
+                      label={t["sales"]}
                       {...a11yProps(0)}
                     />
                     {session?.user?.role === "admin" && (
@@ -185,7 +185,7 @@ export default function Financial({ language }) {
                           textTransform: "none",
                           width: "100%",
                         }}
-                        label="Referral Credits"
+                        label={t["Referral Credits"]}
                         {...a11yProps(1)}
                       />
                     )}
@@ -236,7 +236,7 @@ export default function Financial({ language }) {
                               width: "fit-content",
                             }}
                           >
-                            Sale
+                            {t["sale"]}
                           </Box>
                           <Box
                             sx={{
@@ -246,7 +246,7 @@ export default function Financial({ language }) {
                               width: "fit-content",
                             }}
                           >
-                            published
+                            {t["published"]}
                           </Box>
                         </Stack>
                         <Typography
@@ -270,7 +270,7 @@ export default function Financial({ language }) {
                             color: "#6C7A84",
                           }}
                         >
-                          Sale value
+                          {t["sale value"]}
                         </Typography>
                         <Typography
                           sx={{
@@ -289,7 +289,7 @@ export default function Financial({ language }) {
                             color: "#6C7A84",
                           }}
                         >
-                          Commission
+                          {t["Commission"]}
                         </Typography>
                         <Typography
                           sx={{

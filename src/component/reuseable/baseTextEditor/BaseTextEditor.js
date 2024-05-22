@@ -1,8 +1,9 @@
 import React, { useEffect, useState } from "react";
 import { Controller } from "react-hook-form";
 import RichTextEditor from "react-rte";
-
-function BaseTextEditor({ control, name, defaultEditorValue }) {
+import en from "locales/en";
+import pt from "locales/pt";
+function BaseTextEditor({ control, name, language, defaultEditorValue }) {
   const [editorValue, setEditorValue] = useState(
     RichTextEditor.createEmptyValue()
   );
@@ -14,7 +15,8 @@ function BaseTextEditor({ control, name, defaultEditorValue }) {
       );
     }
   }, [defaultEditorValue]);
-
+  const [myValue, setMyValue] = useState(language || "pt");
+  const t = myValue === "en" ? en : pt;
   return (
     <Controller
       name={name}
@@ -27,7 +29,7 @@ function BaseTextEditor({ control, name, defaultEditorValue }) {
             setEditorValue(newValue);
             onChange(newValue.toString("html"));
           }}
-          placeholder="Property Description"
+          placeholder={t["Property Description"]}
           editorClassName="demo-editor"
         />
       )}

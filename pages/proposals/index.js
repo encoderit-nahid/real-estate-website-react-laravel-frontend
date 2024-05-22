@@ -72,7 +72,7 @@ export default function Proposals({ language }) {
   const { query } = router;
   const { data: session } = useSession();
 
-  const [myValue, setMyValue] = useState(language || "en");
+  const [myValue, setMyValue] = useState(language || "pt");
 
   const t = myValue === "en" ? en : pt;
 
