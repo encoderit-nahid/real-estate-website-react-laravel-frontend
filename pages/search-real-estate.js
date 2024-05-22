@@ -164,17 +164,17 @@ export default function SearchRealEstate({
 
   const allValues = watch();
   const [searchValue, setSearchValue] = useState(null);
-  const [type, setType] = useState(1);
-  const [bedrooms, setBedrooms] = useState(1);
-  const [bathrooms, setBathrooms] = useState(1);
-  const [furnished, setFurnished] = useState("Yes");
-  const [pets, setPets] = useState("Yes");
-  const [closeToTheMetro, setCloseToTheMetro] = useState("Yes");
-  const [availability, setAvailability] = useState("Immediate");
+  const [type, setType] = useState("");
+  const [bedrooms, setBedrooms] = useState("");
+  const [bathrooms, setBathrooms] = useState("");
+  const [furnished, setFurnished] = useState("");
+  const [pets, setPets] = useState("");
+  const [closeToTheMetro, setCloseToTheMetro] = useState("");
+  const [availability, setAvailability] = useState("");
   const [featuretypes, setFeatureTypes] = useState([]);
-  const [valueSlider, setValueSlider] = React.useState([20, 37]);
-  const [areaSlider, setAreaSlider] = React.useState([20, 37]);
-  const [relevantValue, setRelevantValue] = useState(relevant[0]);
+  const [valueSlider, setValueSlider] = React.useState([22, 5000000]);
+  const [areaSlider, setAreaSlider] = React.useState([20, 370000]);
+  const [relevantValue, setRelevantValue] = useState("");
 
   useEffect(() => {
     if (valueSlider) {
@@ -192,17 +192,17 @@ export default function SearchRealEstate({
 
   useEffect(() => {
     const searchParams = $params.decode();
-    setType(searchParams?.type || 1);
-    setBedrooms(searchParams?.bedroom || 1);
-    setBathrooms(searchParams?.bathroom || 1);
-    setPets(searchParams?.pets || "Yes");
-    setFurnished(searchParams?.furnish || "Yes");
-    setCloseToTheMetro(searchParams?.metro || "Yes");
+    setType(searchParams?.type || "");
+    setBedrooms(searchParams?.bedroom || "");
+    setBathrooms(searchParams?.bathroom || "");
+    setPets(searchParams?.pets || "");
+    setFurnished(searchParams?.furnish || "");
+    setCloseToTheMetro(searchParams?.metro || "");
     setFeatureTypes(searchParams?.tag || []);
     setValue("min_value", searchParams.min_value || 22);
-    setValue("max_value", searchParams.max_value || 37);
+    setValue("max_value", searchParams.max_value || 5000000);
     setValue("min_area", searchParams.min_area || 22);
-    setValue("max_area", searchParams.max_area || 37);
+    setValue("max_area", searchParams.max_area || 370000);
     setProposalStatus(searchParams?.proposal_status);
     setJourneyStage(searchParams.journey_stage);
   }, [setValue]);
@@ -286,17 +286,17 @@ export default function SearchRealEstate({
         per_page: 9,
       }),
     });
-    setFeatureTypes([]);
-    setType(1);
-    setBedrooms(1);
-    setBathrooms(1);
-    setPets("Yes");
-    setFurnished("Yes");
-    setCloseToTheMetro("Yes");
-    setValue("min_value", 22);
-    setValue("max_value", 37);
-    setValue("min_area", 22);
-    setValue("max_area", 37);
+    // setFeatureTypes([]);
+    // setType(1);
+    // setBedrooms(1);
+    // setBathrooms(1);
+    // setPets("Yes");
+    // setFurnished("Yes");
+    // setCloseToTheMetro("Yes");
+    // setValue("min_value", 22);
+    // setValue("max_value", 37);
+    // setValue("min_area", 22);
+    // setValue("max_area", 37);
   };
 
   const handleRelevantValueChange = (v) => {
