@@ -37,11 +37,8 @@ import { findPropertyCountData } from "@/redux/propertyCount/actions";
 import WishProperty from "@/component/properties/WishProperty/WishProperty";
 import { useGetPropertyCountQuery } from "@/queries/useGetPropertyCountQuery";
 import useParams from "@/hooks/useParams";
-const NotificationContent = dynamic(
-  () => import("@/component/notificationContent/NotificationContent"),
-  {
-    ssr: false,
-  }
+const NotificationContent = dynamic(() =>
+  import("@/component/notificationContent/NotificationContent")
 );
 
 const drawerWidth = 240;
@@ -154,7 +151,7 @@ export default function MyProperties({ language }) {
       <NotificationContent
         pageName={"My Properties"}
         session={session}
-        language={language}
+        language={"pt"}
       />
       <Container maxWidth="xl">
         <Box sx={{ width: "100%" }}>
@@ -196,7 +193,7 @@ export default function MyProperties({ language }) {
                 }
                 {...a11yProps(2)}
               />
-              {session.user?.role === "admin" && (
+              {session?.user?.role === "admin" && (
                 <Tab
                   sx={{ fontWeight: "600", textTransform: "none" }}
                   label={
@@ -305,28 +302,4 @@ export default function MyProperties({ language }) {
       </Container>
     </Box>
   );
-}
-
-export async function getServerSideProps(context) {
-  //* Session for SSG
-  const session = await getSession(context);
-  //? If Not Logged In
-  if (!session) {
-    return {
-      redirect: {
-        destination: "/",
-      },
-      props: {
-        session: null,
-      },
-    };
-  }
-  const cookies = context.req.cookies["language"] || "pt";
-
-  return {
-    props: {
-      session: session,
-      language: cookies,
-    },
-  };
 }

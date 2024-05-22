@@ -124,15 +124,3 @@ function MyApp({ Component, pageProps: { session, language, ...pageProps } }) {
 }
 
 export default MyApp;
-
-MyApp.getInitialProps = async ({ ctx }) => {
-  const session = await getSession(ctx);
-  const cookies = ctx.req.cookies["language"] || "pt";
-
-  return {
-    pageProps: {
-      session: session,
-      language: cookies,
-    },
-  };
-};
