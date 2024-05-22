@@ -243,7 +243,7 @@ function LoginModal({ handleLoginClose, myValue }) {
             render={({ field }) => (
               <BaseTextField
                 size={"small"}
-                placeholder={"Password"}
+                placeholder={t["Password"]}
                 type={showPass ? "text" : "password"}
                 name={"password"}
                 // {...field}

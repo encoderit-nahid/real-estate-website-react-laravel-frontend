@@ -353,6 +353,7 @@ export default {
   "proposal sent": "proposal sent!",
   Close: "Close",
   dimension: "dimension",
+  "Search by broker name": "Search by broker name",
   "Send sales authorization by email": "Property ownership document",
   "Send sales authorization by email": "Send sales authorization by email",
   "Name of  broker you referred": "Name of  broker you referred",

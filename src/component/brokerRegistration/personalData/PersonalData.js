@@ -179,7 +179,7 @@ function PersonalData({
             fontWeight: "700",
           }}
         >
-          Select Broker
+          {t["Select broker"]}
         </Typography>
         <CloseIcon
           onClick={toggleDrawer("right", false)}
@@ -189,7 +189,7 @@ function PersonalData({
       <Box sx={{ px: 2, mt: 1 }}>
         <TextField
           variant="outlined"
-          placeholder="Search by broker name"
+          placeholder={t["Search by broker name"]}
           size="small"
           onChange={debouncedHandleChangeBroker}
           fullWidth

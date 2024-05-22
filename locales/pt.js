@@ -366,8 +366,10 @@ export default {
   "proposal sent": "Proposta enviada!",
   Close: "Fechar",
   dimension: "dimensões",
+  "Search by broker name": "Pesquise por nome",
+
   "Name of broker you referred": "Nome do corretor (a) que indicou a Lokkan",
-  "Select broker": "Escolha o corretor (a)",
+  "Select broker": "Selecione o (a) corretor (a)",
 
   "proposal values": "Valores da proposta",
   "Documents sent": "Documentos enviados",

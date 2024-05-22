@@ -46,7 +46,9 @@ const validationSchema = Yup.object().shape({
     .max(40, "Password must not exceed 40 characters"),
 });
 
-export default function ResetPassword() {
+export default function ResetPassword({ languageName }) {
+  const t = languageName === "en" ? en : pt;
+
   const router = useRouter();
   const {
     register,
@@ -156,7 +158,7 @@ export default function ResetPassword() {
                           lineHeight: "16px",
                         }}
                       >
-                        Password
+                        {t["Password"]}
                         <span style={{ color: "#E63333" }}>*</span>
                       </Typography>
                     </Grid>
@@ -166,7 +168,7 @@ export default function ResetPassword() {
                       render={({ field }) => (
                         <BaseTextField
                           size={"small"}
-                          placeholder={"Password"}
+                          placeholder={t["Password"]}
                           type={showPass ? "text" : "password"}
                           name={"password"}
                           // {...field}
@@ -227,7 +229,7 @@ export default function ResetPassword() {
                       render={({ field }) => (
                         <BaseTextField
                           size={"small"}
-                          placeholder={"Password"}
+                          placeholder={t["Password"]}
                           type={showConfirmPass ? "text" : "password"}
                           name={"password_confirmation"}
                           // {...field}

@@ -67,7 +67,7 @@ export default function OtherInformation({
   language,
 }) {
   const router = useRouter();
-  const { query } = router;
+  const { query, replace } = router;
 
   const [selectedBroker, setSelectedBroker] = useState(null);
 
@@ -186,6 +186,7 @@ export default function OtherInformation({
     setValue,
     formState: { errors },
     setError,
+    reset,
   } = useForm({
     resolver: yupResolver(validationSchema),
   });
@@ -358,46 +359,58 @@ export default function OtherInformation({
                       ))}
                     </Stack>
                   )}
-                  {activeStep === 1 && (
-                    <Grid container spacing={1} sx={{ mt: 2, mb: 5 }}>
-                      <Grid item xs={6} sm={6} md={6}>
-                        <Button
-                          color="inherit"
-                          disabled={activeStep === 0}
-                          onClick={handleBack}
-                          sx={{
-                            //   mr: 1,
-                            //   border: "1px solid #002152",
-                            //   borderRadius: "4px",
-                            background: "#ffffff",
-                            px: 2,
-                            py: 1,
-                            color: "#4B4B66",
-                            fontSize: "16px",
-                            fontWeight: "600",
-                            lineHeight: "22px",
-                            textTransform: "none",
-                          }}
-                        >
-                          {t["Come back"]}
-                        </Button>
-                      </Grid>
-                      <Grid item xs={6} sm={6} md={6}>
-                        <Button
-                          type="submit"
-                          fullWidth
-                          sx={{
-                            background: "#00C1B4",
-                            boxShadow: "0px 4px 34px rgba(0, 0, 0, 0.08)",
-                            borderRadius: "4px",
-                            color: "#ffffff",
-                            fontSize: "16px",
-                            lineHeight: "22px",
-                            fontWeight: "600",
-                            //   mt: 3,
-                            textTransform: "none",
-                            py: 1,
-                            "&:hover": {
+                  <Grid container spacing={1} sx={{ mt: 2, mb: 5 }}>
+                    <Grid item xs={4} sm={4} md={4}>
+                      <Button
+                        type="button"
+                        fullWidth
+                        variant="outlined"
+                        color="error"
+                        sx={{
+                          fontSize: "16px",
+                          lineHeight: "22px",
+                          fontWeight: "600",
+                          textTransform: "none",
+                          py: 1,
+                        }}
+                        onClick={() => {
+                          reset();
+                          replace("/");
+                        }}
+                      >
+                        {t["Cancel"]}
+                      </Button>
+                    </Grid>
+                    {activeStep === 1 && (
+                      <>
+                        <Grid item xs={4} sm={4} md={4}>
+                          <Button
+                            color="inherit"
+                            fullWidth
+                            disabled={activeStep === 0}
+                            onClick={handleBack}
+                            sx={{
+                              //   mr: 1,
+                              //   border: "1px solid #002152",
+                              //   borderRadius: "4px",
+                              background: "#ffffff",
+                              px: 2,
+                              py: 1,
+                              color: "#4B4B66",
+                              fontSize: "16px",
+                              fontWeight: "600",
+                              lineHeight: "22px",
+                              textTransform: "none",
+                            }}
+                          >
+                            {t["Come back"]}
+                          </Button>
+                        </Grid>
+                        <Grid item xs={4} sm={4} md={4}>
+                          <Button
+                            type="submit"
+                            fullWidth
+                            sx={{
                               background: "#00C1B4",
                               boxShadow: "0px 4px 34px rgba(0, 0, 0, 0.08)",
                               borderRadius: "4px",
@@ -405,20 +418,32 @@ export default function OtherInformation({
                               fontSize: "16px",
                               lineHeight: "22px",
                               fontWeight: "600",
-                              // mt: 3,
+                              //   mt: 3,
                               textTransform: "none",
                               py: 1,
-                            },
-                          }}
-                        >
-                          {loading && (
-                            <CircularProgress size={22} color="inherit" />
-                          )}
-                          {!loading && t["Register"]}
-                        </Button>
-                      </Grid>
-                    </Grid>
-                  )}
+                              "&:hover": {
+                                background: "#00C1B4",
+                                boxShadow: "0px 4px 34px rgba(0, 0, 0, 0.08)",
+                                borderRadius: "4px",
+                                color: "#ffffff",
+                                fontSize: "16px",
+                                lineHeight: "22px",
+                                fontWeight: "600",
+                                // mt: 3,
+                                textTransform: "none",
+                                py: 1,
+                              },
+                            }}
+                          >
+                            {loading && (
+                              <CircularProgress size={22} color="inherit" />
+                            )}
+                            {!loading && t["Register"]}
+                          </Button>
+                        </Grid>
+                      </>
+                    )}
+                  </Grid>
                 </form>
                 {/* {activeStep !== 2 && (
                   <Grid container spacing={1} sx={{ mt: 2, mb: 5 }}>
