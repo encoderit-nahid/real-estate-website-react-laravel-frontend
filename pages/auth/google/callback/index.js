@@ -15,16 +15,6 @@ export default function Google({ roleId }) {
   const router = useRouter();
   const { query } = router;
 
-  console.log({ roleId });
-
-  //   if (typeof window !== "undefined") {
-  //     // Access localStorage here
-  //     const roleId = localStorage.getItem("role_id");
-  //     console.log({ roleId });
-  //   }
-
-  console.log({ query });
-
   useEffect(() => {
     const getData = async () => {
       query["role_id"] = roleId;
@@ -57,25 +47,32 @@ export default function Google({ roleId }) {
         // }
       } else {
         console.log(errorAuth?.response);
-        localStorage.setItem(
-          "registration_id",
-          errorAuth?.response?.data?.user?.id
-        );
-        localStorage.setItem(
-          "user_role",
-          errorAuth?.response?.data?.role === "3"
-            ? "owner"
-            : errorAuth?.response?.data?.role === "2"
-            ? "broker"
-            : "buyer"
-        );
-        localStorage.setItem(
-          "Reg_user_name",
-          errorAuth?.response?.data?.user?.name
-        );
-        router.replace({
-          pathname: "/other-information",
-        });
+        if (errorAuth.response.status === 402) {
+          alert(errorAuth?.response?.data?.message);
+          router.replace({
+            pathname: "/",
+          });
+        } else {
+          localStorage.setItem(
+            "registration_id",
+            errorAuth?.response?.data?.user?.id
+          );
+          localStorage.setItem(
+            "user_role",
+            errorAuth?.response?.data?.role === "3"
+              ? "owner"
+              : errorAuth?.response?.data?.role === "2"
+              ? "broker"
+              : "buyer"
+          );
+          localStorage.setItem(
+            "Reg_user_name",
+            errorAuth?.response?.data?.user?.name
+          );
+          router.replace({
+            pathname: "/other-information",
+          });
+        }
       }
     };
 

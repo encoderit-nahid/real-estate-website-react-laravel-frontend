@@ -446,7 +446,7 @@ export default function NewProperty({ language }) {
 
     const firstPartData = omitEmpties({
       user_id: +session?.user?.userId,
-      project_id: (data?.project_id?.id && +data?.project_id?.id) || 1,
+      project_id: data?.project_id?.id && +data?.project_id?.id,
       property_id: query?.property_id,
       property_title: data?.property_title,
       property_description: data?.description?.toString("html"),
