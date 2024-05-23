@@ -3,7 +3,7 @@ import { useQuery } from "@tanstack/react-query";
 
 export const useGetPropertyQuery = (params) => {
   return useQuery({
-    queryKey: ["/get-all-property"],
+    queryKey: [`/get-all-property`],
     // enabled: !!q,'
     retry: 2,
     refetchOnWindowFocus: true,

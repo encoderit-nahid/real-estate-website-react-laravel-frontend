@@ -15,6 +15,7 @@ export async function middleware(req) {
     "/reset-password",
     "/auth/facebook/callback",
     "/auth/google/callback",
+    "/user-loading",
   ];
 
   const requestPath = req.nextUrl.pathname;

@@ -230,7 +230,6 @@ export default function OtherInformation({
 
     const firstPartData = omitEmpties({
       image: data.image,
-
       user_id: registrationId,
       broker_url: window.location.origin,
       redirect_url: `${window.location.origin}/user-loading`,

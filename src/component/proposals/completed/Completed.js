@@ -31,7 +31,8 @@ function Completed() {
     isFetched,
     isFetching,
   } = useGetPropertyQuery({
-    proposal_status: "completed",
+    ...query,
+    proposal_status: query?.proposal_status || "completed",
     status: "approved",
     page: page,
     per_page: 9,
@@ -46,7 +47,7 @@ function Completed() {
 
   useEffect(() => {
     refetch();
-  }, [page, refetch]);
+  }, [page, query, refetch]);
 
   if (Loading) {
     return (

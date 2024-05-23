@@ -57,9 +57,10 @@ function Pendants({ languageName }) {
     isFetched,
     isFetching,
   } = useGetPropertyQuery({
-    proposal_status: "pending",
+    ...query,
+    proposal_status: query?.proposal_status || "pending",
     status: "approved",
-    page: page,
+    page: page || 1,
     per_page: 9,
   });
 
@@ -72,7 +73,7 @@ function Pendants({ languageName }) {
 
   useEffect(() => {
     refetch();
-  }, [page, refetch]);
+  }, [page, query, refetch]);
 
   if (Loading) {
     return (

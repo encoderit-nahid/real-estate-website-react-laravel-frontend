@@ -103,11 +103,6 @@ export default function MyProperties({ language }) {
 
   const t = myValue === "en" ? en : pt;
 
-  const dispatch = useDispatch();
-  // useEffect(() => {
-  //   dispatch(findPropertyCountData());
-  // }, [dispatch]);
-
   const {
     data,
     isLoading: countLoading,

@@ -29,9 +29,10 @@ function Accepted({ languageName }) {
     isFetched,
     isFetching,
   } = useGetPropertyQuery({
-    proposal_status: "accepted",
+    ...query,
+    proposal_status: query?.proposal_status || "accepted",
     status: "approved",
-    page: page,
+    page: page || 1,
     per_page: 9,
   });
 
@@ -44,7 +45,7 @@ function Accepted({ languageName }) {
 
   useEffect(() => {
     refetch();
-  }, [page, refetch]);
+  }, [page, query, refetch]);
 
   if (Loading) {
     return (

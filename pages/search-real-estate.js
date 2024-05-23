@@ -53,7 +53,6 @@ import pt from "locales/pt";
 import BaseOutlinedAreaInput from "@/component/reuseable/baseOutlinedAreaInput/BaseOutlinedAreaInput";
 import { userDetailsApi } from "@/api";
 import SearchIcon from "@mui/icons-material/Search";
-import useCurrentUser from "@/hooks/useCurrentUser";
 
 const unflatten = require("flat").unflatten;
 
@@ -262,14 +261,6 @@ export default function SearchRealEstate({
       proposal_status: proposalStatus,
       journey_stage: journeyStage,
     };
-    // const fd = serialize(allFilterData, {
-    //   indices: true,
-    //   allowEmptyArrays: false,
-    //   booleansAsIntegers: true,
-    // });
-
-    // const sp = new URLSearchParams(fd.entries());
-    // const spEntries = Object.fromEntries(sp.entries());
     router.replace({
       pathname: "/search-real-estate",
       query: $params.encode(omitEmpties(allFilterData)).toString(),
@@ -286,17 +277,6 @@ export default function SearchRealEstate({
         per_page: 9,
       }),
     });
-    // setFeatureTypes([]);
-    // setType(1);
-    // setBedrooms(1);
-    // setBathrooms(1);
-    // setPets("Yes");
-    // setFurnished("Yes");
-    // setCloseToTheMetro("Yes");
-    // setValue("min_value", 22);
-    // setValue("max_value", 37);
-    // setValue("min_area", 22);
-    // setValue("max_area", 37);
   };
 
   const handleRelevantValueChange = (v) => {
