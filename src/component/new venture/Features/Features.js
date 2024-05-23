@@ -23,6 +23,8 @@ import { featureDataCreate } from "@/redux/featureWithoutGroup/actions";
 function Features({ featuretypes, setFeatureTypes, errors, languageName }) {
   const t = languageName === "en" ? en : pt;
 
+  console.log({ t });
+
   const [featureSelectData, setFeatureSelectData] = useState(null);
   const { data: session } = useSession();
   const [item, setItem] = useState("");
@@ -124,16 +126,20 @@ function Features({ featuretypes, setFeatureTypes, errors, languageName }) {
                   lineHeight: "19px",
                 }}
               >
-                {(key === "condominium" ||
-                  key === "accessibility" ||
-                  key === "amenities" ||
-                  key === "appliances" ||
-                  key === "room" ||
-                  key === "rooms" ||
-                  key === "sorrounding" ||
-                  key === "wellbeing" ||
-                  key === "feature") &&
-                  key}
+                {
+                  t[
+                    (key === "condominium" ||
+                      key === "accessibility" ||
+                      key === "amenities" ||
+                      key === "appliances" ||
+                      key === "room" ||
+                      key === "rooms" ||
+                      key === "sorrounding" ||
+                      key === "wellbeing" ||
+                      key === "feature") &&
+                      key
+                  ]
+                }
               </Typography>
               <Grid
                 container

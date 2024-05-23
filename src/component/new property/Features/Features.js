@@ -132,16 +132,20 @@ function Features({
                   lineHeight: "19px",
                 }}
               >
-                {(key === "condominium" ||
-                  key === "accessibility" ||
-                  key === "amenities" ||
-                  key === "appliances" ||
-                  key === "rooms" ||
-                  key === "room" ||
-                  key === "sorrounding" ||
-                  key === "wellbeing" ||
-                  key === "feature") &&
-                  key}
+                {
+                  t[
+                    (key === "condominium" ||
+                      key === "accessibility" ||
+                      key === "amenities" ||
+                      key === "appliances" ||
+                      key === "room" ||
+                      key === "rooms" ||
+                      key === "sorrounding" ||
+                      key === "wellbeing" ||
+                      key === "feature") &&
+                      key
+                  ]
+                }
               </Typography>
               <Grid
                 container

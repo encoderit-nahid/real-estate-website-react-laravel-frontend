@@ -1065,7 +1065,7 @@ export default function Proposals({ language }) {
               </Grid>
             </Grid>
           </Box>
-          <Divider sx={{ mt: 1, mb: 1 }} />
+
           {Object.keys(featureData).map((key, index) => (
             <Box key={index}>
               <Typography
@@ -1077,16 +1077,20 @@ export default function Proposals({ language }) {
                   lineHeight: "19px",
                 }}
               >
-                {(key === "condominium" ||
-                  key === "accessibility" ||
-                  key === "amenities" ||
-                  key === "appliances" ||
-                  key === "rooms" ||
-                  key === "room" ||
-                  key === "sorrounding" ||
-                  key === "wellbeing" ||
-                  key === "feature") &&
-                  key}
+                {
+                  t[
+                    (key === "condominium" ||
+                      key === "accessibility" ||
+                      key === "amenities" ||
+                      key === "appliances" ||
+                      key === "room" ||
+                      key === "rooms" ||
+                      key === "sorrounding" ||
+                      key === "wellbeing" ||
+                      key === "feature") &&
+                      key
+                  ]
+                }
               </Typography>
               <Grid
                 container
@@ -1163,7 +1167,7 @@ export default function Proposals({ language }) {
             </Box>
           ))}
         </Box>
-        <Divider sx={{ mt: 2, mb: 1 }} />
+
         <Box
           sx={{
             // mx: 2,

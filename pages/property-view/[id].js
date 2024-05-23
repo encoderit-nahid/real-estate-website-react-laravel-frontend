@@ -160,9 +160,9 @@ export default function PropertyView({
       return sideTabValue === "vision_360"
         ? regexPatternThreeSixtyImages.test(data?.title)
         : sideTabValue === "photos"
-        ? data?.title && regexPatternImages.test(data?.title)
+        ? data?.title === "Photo"
         : sideTabValue === "condominium"
-        ? data?.photo_type?.type === "condominium"
+        ? data?.title === "condominium"
         : sideTabValue === "videos"
         ? !data?.title
         : null;

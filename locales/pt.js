@@ -444,4 +444,13 @@ export default {
     "Tenha acesso a carteira de imóveis mais diversificada, contendo imóveis de terceiros, lançamentos de loteamentos de lotes, prédios de apartamentos, escritórios, etc.",
   "Receive customers who have already negotiated price and payment method and are ready to close the deal":
     "Gratificação por indicação de corretor, conheça o programa.",
+    "surronding": "Próximo",
+    "condominium": "Condomínio",
+     "amenities": "Facilidades",
+     "wellbeing": "Bem-estar",
+     "appliances": "Eletrodomésticos",
+     "rooms": "Áreas",
+     "room": "Área",
+     "acessibility": "Ácessibilidade",
+     "feature": "Recurso"
 };

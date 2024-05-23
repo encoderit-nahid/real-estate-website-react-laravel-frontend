@@ -484,11 +484,11 @@ export default function NewProperty({ language }) {
       complement: data?.complement,
     });
 
-    const registryData = omitEmpties({
-      registry_office: data?.registry,
-      registry_number: data?.registration_number,
-      document_title: data?.documentation?.label,
-    });
+    // const registryData = omitEmpties({
+    //   registry_office: data?.registry,
+    //   registry_number: data?.registration_number,
+    //   document_title: data?.documentation?.label,
+    // });
 
     const ownerRegistryData = omitEmpties({
       registry_office: data?.owner_registry,
@@ -520,7 +520,7 @@ export default function NewProperty({ language }) {
 
     const requireData = omitEmpties({
       ...firstPartData,
-      registry_data: registryData,
+      // registry_data: registryData,
       address: addressData,
       owner_datas:
         session?.user?.role !== "owner"

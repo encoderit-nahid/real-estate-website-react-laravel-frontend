@@ -422,4 +422,14 @@ export default {
     "Get access to the property database, with third-party properties, launches by land developers, builders and developers in several cities",
   "Receive customers who have already negotiated price and payment method and are ready to close the deal":
     "Receive customers who have already negotiated price and payment method and are ready to close the deal",
+
+  "surronding": "surronding",
+ "condominium":  "condominium",
+  "amenities":  "amenities",
+  "wellbeing": "wellbeing",
+  "appliances": "appliances",
+  "rooms": "rooms",
+  "room": "room",
+  "acessibility": "acessibility",
+  "feature":"feature"
 };
