@@ -119,13 +119,9 @@ function LeftBar(props) {
   // };
 
   const [selectedLabel, setSelectedLabel] = React.useState("");
-  console.log("🟥 ~ LeftBar ~ selectedLabel:", selectedLabel);
 
-  console.log("🟥 ~ useEffect ~ router:", router.isReady);
   useEffect(() => {
-    // console.log(router.pathname)
     const name = router.pathname.split("/")[1];
-    console.log("🟥 ~ useEffect ~ name:", name);
     setSelectedLabel(name);
   }, [router.pathname]);
 
@@ -170,6 +166,7 @@ function LeftBar(props) {
                   width={70}
                   src={session?.user?.userImage}
                   alt="logo"
+                  objectFit="cover"
                 />
               ) : (
                 <Avatar />
