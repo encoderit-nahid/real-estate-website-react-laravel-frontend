@@ -667,6 +667,8 @@ export default function NewProperty({ language }) {
                     errors={errors}
                     allValues={allValues}
                     languageName={myValue.toString()}
+                    reset={reset}
+                    replace={replace}
                   />
                 ) : activeStep === 2 ? (
                   <Features
@@ -677,6 +679,8 @@ export default function NewProperty({ language }) {
                     featuretypes={featuretypes}
                     setFeatureTypes={setFeatureTypes}
                     languageName={myValue.toString()}
+                    reset={reset}
+                    replace={replace}
                   />
                 ) : activeStep === 3 ? (
                   <PhotosAndVideos
@@ -730,29 +734,27 @@ export default function NewProperty({ language }) {
                     pt: 2,
                   }}
                 >
-                  {activeStep >= 1 && (
-                    <Button
-                      type="button"
-                      variant="outlined"
-                      color="error"
-                      sx={{
-                        fontSize: "16px",
-                        lineHeight: "22px",
-                        fontWeight: "600",
-                        textTransform: "none",
-                        py: 1,
-                        mr: 1,
-                      }}
-                      onClick={() => {
-                        reset();
-                        replace("/my-properties");
-                      }}
-                    >
-                      {t["Cancel"]}
-                    </Button>
-                  )}
                   {activeStep === steps.length - 1 && (
                     <>
+                      <Button
+                        type="button"
+                        variant="outlined"
+                        color="error"
+                        sx={{
+                          fontSize: "16px",
+                          lineHeight: "22px",
+                          fontWeight: "600",
+                          textTransform: "none",
+                          py: 1,
+                          mr: 1,
+                        }}
+                        onClick={() => {
+                          reset();
+                          replace("/my-properties");
+                        }}
+                      >
+                        {t["Cancel"]}
+                      </Button>
                       <Button
                         color="inherit"
                         // disabled={activeStep === 0}

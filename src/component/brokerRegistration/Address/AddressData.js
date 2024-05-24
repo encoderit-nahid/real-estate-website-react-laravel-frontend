@@ -25,6 +25,7 @@ function AddressData({
   setValue,
   activeStep,
   languageName,
+  reset,
 }) {
   const t = languageName === "en" ? en : pt;
   const dispatch = useDispatch();
