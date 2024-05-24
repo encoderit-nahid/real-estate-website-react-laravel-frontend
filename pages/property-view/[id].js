@@ -125,9 +125,8 @@ export default function PropertyView({
   singlePropertyData,
   tabArrayData,
   propertyDescription,
-  language,
 }) {
-  const [myValue, setMyValue] = useState(language || "pt");
+  const [myValue, setMyValue] = useState("pt");
   const router = useRouter();
 
   console.log({ singlePropertyData });
@@ -725,7 +724,7 @@ export async function getServerSideProps(context) {
         singlePropertyData?.property?.property_detail?.photo_types?.filter(
           (data) => data.slug.substr(data.slug.length - 3) !== "360"
         ),
-      language: "pt",
+    
     },
   };
 }

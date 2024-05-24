@@ -75,8 +75,8 @@ function a11yProps(index) {
   };
 }
 
-export default function Financial({ language }) {
-  const [myValue, setMyValue] = useState(language || "pt");
+export default function Financial() {
+  const [myValue, setMyValue] = useState("pt");
   const {
     register,
     watch,
