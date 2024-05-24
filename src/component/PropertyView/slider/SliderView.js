@@ -72,7 +72,6 @@ function SliderView({
 
   const [value, setValue] = React.useState(0);
   const { width, height } = useWindowDimensions();
-  console.log("🟥 ~ width:", width);
 
   const videoIds = videos?.map((data) => {
     console.log({ data });
@@ -83,11 +82,9 @@ function SliderView({
   const imageUrls = images?.map((data) => {
     return data?.file_path;
   });
-  console.log({ imageUrls });
+
   // console.log({ videoIds });
   // const videoLinks = ["P5VnLiGUmtY", "6MrCy95f93M", "5zWTInJqD5k"];
-
-  console.log({ addressData });
 
   const handleChange = (event, newValue) => {
     setValue(+newValue);

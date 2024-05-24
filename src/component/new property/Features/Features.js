@@ -33,6 +33,8 @@ function Features({
   languageName,
   handleNext,
   handleBack,
+  reset,
+  replace,
 }) {
   const t = languageName === "en" ? en : pt;
 
@@ -295,6 +297,25 @@ function Features({
         alignItems="center"
         sx={{ mt: 2, mb: 2 }}
       >
+        <Button
+          type="button"
+          variant="outlined"
+          color="error"
+          sx={{
+            fontSize: "16px",
+            lineHeight: "22px",
+            fontWeight: "600",
+            textTransform: "none",
+            py: 1,
+            mr: 1,
+          }}
+          onClick={() => {
+            reset();
+            replace("/my-properties");
+          }}
+        >
+          {t["Cancel"]}
+        </Button>
         <Button
           color="inherit"
           onClick={handleBack}

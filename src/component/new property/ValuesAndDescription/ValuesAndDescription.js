@@ -70,6 +70,8 @@ function ValuesAndDescription({
   handleBack,
   allValues,
   property_detail_id,
+  reset,
+  replace,
 }) {
   const t = languageName === "en" ? en : pt;
 
@@ -410,85 +412,6 @@ function ValuesAndDescription({
             </Typography>
           </Grid>
         )}
-        {/* <Grid item xs={12} md={6}>
-          <Controller
-            name="documentation"
-            control={control}
-            render={({ field }) => (
-              <BaseAutocomplete
-                //   sx={{ margin: "0.6vh 0" }}
-                options={top100Films || []}
-                getOptionLabel={(option) => option.label || ""}
-                isOptionEqualToValue={(option, value) =>
-                  option.label === value.label
-                }
-                name="documentation"
-                size={"medium"}
-                placeholder={t["documents"]}
-                onChange={(e, v, r, d) => field.onChange(v)}
-                value={field.value || null}
-              />
-            )}
-          />
-          <Typography
-            variant="inherit"
-            color="textSecondary"
-            sx={{ color: "#b91c1c" }}
-          >
-            {errors.documentation?.message}
-          </Typography>
-        </Grid>
-        <Grid item xs={12} md={6}>
-          <Controller
-            name="registry"
-            control={control}
-            defaultValue={""}
-            render={({ field }) => (
-              <BaseTextField
-                size={"medium"}
-                placeholder={t["registry office"]}
-                onChange={(e) => {
-                  field.onChange(e.target.value);
-                }}
-                name={"registry"}
-                value={field.value}
-              />
-            )}
-          />
-          <Typography
-            variant="inherit"
-            color="textSecondary"
-            sx={{ color: "#b91c1c" }}
-          >
-            {errors.registry?.message}
-          </Typography>
-        </Grid>
-        <Grid item xs={12} md={6}>
-          <Controller
-            name="registration_number"
-            control={control}
-            defaultValue={""}
-            render={({ field }) => (
-              <BaseTextField
-                size={"medium"}
-                placeholder={t["registration number"]}
-                type={"number"}
-                onChange={(e) => {
-                  field.onChange(e.target.value);
-                }}
-                name={"registartion_number"}
-                value={field.value}
-              />
-            )}
-          />
-          <Typography
-            variant="inherit"
-            color="textSecondary"
-            sx={{ color: "#b91c1c" }}
-          >
-            {errors.registration_number?.message}
-          </Typography>
-        </Grid> */}
       </Grid>
 
       <Grid container spacing={1} sx={{ mt: 2 }}>
@@ -499,6 +422,25 @@ function ValuesAndDescription({
           alignItems="center"
           sx={{ mt: 2, mb: 2 }}
         >
+          <Button
+            type="button"
+            variant="outlined"
+            color="error"
+            sx={{
+              fontSize: "16px",
+              lineHeight: "22px",
+              fontWeight: "600",
+              textTransform: "none",
+              py: 1,
+              mr: 1,
+            }}
+            onClick={() => {
+              reset();
+              replace("/my-properties");
+            }}
+          >
+            {t["Cancel"]}
+          </Button>
           <Button
             color="inherit"
             onClick={handleBack}

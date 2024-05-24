@@ -411,19 +411,6 @@ export default function PropertyView({
               />
             </Stack>
           </Grid>
-          {/* <Grid
-            container
-            direction="row"
-            justifyContent="flex-start"
-            alignItems="flex-start"
-            sx={{ marginTop: 1 }}
-          >
-            <TabView
-              tabArray={tabArrayData}
-              upperTabValue={upperTabValue}
-              setUpperTabValue={setUpperTabValue}
-            />
-          </Grid> */}
         </Box>
         <Box
           sx={{

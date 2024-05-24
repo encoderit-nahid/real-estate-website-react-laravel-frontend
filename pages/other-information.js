@@ -35,7 +35,7 @@ import {
   userDetailsApi,
   userInfoRegistrationApi,
 } from "../src/api";
-import { useRouter } from "next/router";
+
 import dayjs from "dayjs";
 import { signIn } from "next-auth/react";
 import en from "locales/en";
@@ -66,9 +66,6 @@ export default function OtherInformation({
   handleLoginClose,
   language,
 }) {
-  const router = useRouter();
-  const { query, replace } = router;
-
   const [selectedBroker, setSelectedBroker] = useState(null);
 
   const [myValue, setMyValue] = useState(language || "pt");
@@ -306,49 +303,31 @@ export default function OtherInformation({
             ) : (
               <Fragment>
                 <form onSubmit={handleSubmit(onSubmit)}>
-                  {
-                    activeStep === 0 ? (
-                      <PersonalData
-                        handleNext={handleNext}
-                        control={control}
-                        errors={errors}
-                        allValues={allValues}
-                        activeStep={activeStep}
-                        languageName={myValue.toString()}
-                        selectedBroker={selectedBroker}
-                        setSelectedBroker={setSelectedBroker}
-                      />
-                    ) : (
-                      <AddressData
-                        handleNext={handleNext}
-                        handleBack={handleBack}
-                        control={control}
-                        errors={errors}
-                        allValues={allValues}
-                        setValue={setValue}
-                        activeStep={activeStep}
-                        languageName={myValue.toString()}
-                        // allStateData={allStateData}
-                      />
-                    )
-                    // :
-                    // (
-                    //   <PerformanceData
-                    //     handleNext={handleNext}
-                    //     handleBack={handleBack}
-                    //     handleOpen={handleOpen}
-                    //     activeStep={activeStep}
-                    //     steps={steps}
-                    //     preferenceData={preferenceData}
-                    //     aboutLokkanData={aboutLokkanData}
-                    //     actingPreferenceBtn={actingPreferenceBtn}
-                    //     setActingPreferenceBtn={setActingPreferenceBtn}
-                    //     aboutLokkanBtn={aboutLokkanBtn}
-                    //     setAboutLokkanBtn={setAboutLokkanBtn}
-                    //     languageName={myValue.toString()}
-                    //   />
-                    // )
-                  }
+                  {activeStep === 0 ? (
+                    <PersonalData
+                      handleNext={handleNext}
+                      control={control}
+                      errors={errors}
+                      allValues={allValues}
+                      activeStep={activeStep}
+                      languageName={myValue.toString()}
+                      selectedBroker={selectedBroker}
+                      setSelectedBroker={setSelectedBroker}
+                      reset={reset}
+                    />
+                  ) : (
+                    <AddressData
+                      handleNext={handleNext}
+                      handleBack={handleBack}
+                      control={control}
+                      errors={errors}
+                      allValues={allValues}
+                      setValue={setValue}
+                      activeStep={activeStep}
+                      languageName={myValue.toString()}
+                      reset={reset}
+                    />
+                  )}
                   {errors && (
                     <Stack sx={{ width: "100%", mt: 2 }} spacing={2}>
                       {Object.keys(errors).map((key, index) => (
@@ -359,29 +338,29 @@ export default function OtherInformation({
                     </Stack>
                   )}
                   <Grid container spacing={1} sx={{ mt: 2, mb: 5 }}>
-                    <Grid item xs={4} sm={4} md={4}>
-                      <Button
-                        type="button"
-                        fullWidth
-                        variant="outlined"
-                        color="error"
-                        sx={{
-                          fontSize: "16px",
-                          lineHeight: "22px",
-                          fontWeight: "600",
-                          textTransform: "none",
-                          py: 1,
-                        }}
-                        onClick={() => {
-                          reset();
-                          replace("/");
-                        }}
-                      >
-                        {t["Cancel"]}
-                      </Button>
-                    </Grid>
                     {activeStep === 1 && (
                       <>
+                        <Grid item xs={4} sm={4} md={4}>
+                          <Button
+                            type="button"
+                            fullWidth
+                            variant="outlined"
+                            color="error"
+                            sx={{
+                              fontSize: "16px",
+                              lineHeight: "22px",
+                              fontWeight: "600",
+                              textTransform: "none",
+                              py: 1,
+                            }}
+                            onClick={() => {
+                              reset();
+                              replace("/");
+                            }}
+                          >
+                            {t["Cancel"]}
+                          </Button>
+                        </Grid>
                         <Grid item xs={4} sm={4} md={4}>
                           <Button
                             color="inherit"
@@ -444,64 +423,7 @@ export default function OtherInformation({
                     )}
                   </Grid>
                 </form>
-                {/* {activeStep !== 2 && (
-                  <Grid container spacing={1} sx={{ mt: 2, mb: 5 }}>
-                    <Grid item xs={6} sm={6} md={6}>
-                      <Button
-                        color="inherit"
-                        disabled={activeStep === 0}
-                        onClick={handleBack}
-                        sx={{
-                          //   mr: 1,
-                          //   border: "1px solid #002152",
-                          //   borderRadius: "4px",
-                          background: "#ffffff",
-                          px: 2,
-                          py: 1,
-                          color: "#4B4B66",
-                          fontSize: "16px",
-                          fontWeight: "600",
-                          lineHeight: "22px",
-                          textTransform: "none",
-                        }}
-                      >
-                        {t["Come back"]}
-                      </Button>
-                    </Grid>
-                    <Grid item xs={6} sm={6} md={6}>
-                      <Button
-                        onClick={handleNext}
-                        fullWidth
-                        sx={{
-                          background: "#00C1B4",
-                          boxShadow: "0px 4px 34px rgba(0, 0, 0, 0.08)",
-                          borderRadius: "4px",
-                          color: "#ffffff",
-                          fontSize: "16px",
-                          lineHeight: "22px",
-                          fontWeight: "600",
-                          //   mt: 3,
-                          textTransform: "none",
-                          py: 1,
-                          "&:hover": {
-                            background: "#00C1B4",
-                            boxShadow: "0px 4px 34px rgba(0, 0, 0, 0.08)",
-                            borderRadius: "4px",
-                            color: "#ffffff",
-                            fontSize: "16px",
-                            lineHeight: "22px",
-                            fontWeight: "600",
-                            // mt: 3,
-                            textTransform: "none",
-                            py: 1,
-                          },
-                        }}
-                      >
-                        {t["Continue"]}
-                      </Button>
-                    </Grid>
-                  </Grid>
-                )} */}
+
                 <Snackbar
                   open={snackbarOpen}
                   autoHideDuration={6000}
