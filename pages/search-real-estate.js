@@ -119,6 +119,7 @@ export default function SearchRealEstate({
   const [pageSize, setPageSize] = React.useState(3);
   const [page, setPage] = React.useState(1);
   const [selectval, setSelectVal] = useState(null);
+   const [propertyType, setPropertyType] = useState("Residential");
   const [proposalStatus, setProposalStatus] = useState("pending");
   const [journeyStage, setJourneyStage] = useState("contract");
 
@@ -132,11 +133,11 @@ export default function SearchRealEstate({
   };
 
   useEffect(() => {
-    dispatch(findPropertyTypeData());
+    dispatch(findPropertyTypeData(propertyType === "Residential" ? "residential" : "commercial"));
     dispatch(findFeatureData());
-  }, [dispatch]);
+  }, [dispatch,propertyType]);
 
-  const propertyType = useSelector(
+  const propertyCategory = useSelector(
     (state) => state.propertyType.propertyTypeData
   );
 
@@ -363,8 +364,8 @@ export default function SearchRealEstate({
             </Typography>
           </Box>
 
-          <Box>
-            <Typography
+          <Box sx={{ mt: 1 }}>
+          <Typography
               variant="p"
               sx={{
                 color: "#4B4B66",
@@ -375,6 +376,78 @@ export default function SearchRealEstate({
             >
               {t["Property type"]}
             </Typography>
+              <Grid container spacing={1} sx={{mt:1}}>
+                {[
+                  { name: "Residential", slug: t["Residential"] },
+                  { name: "Commercial", slug: t["Commercial"] },
+                ].map((data, index) => (
+                  <Grid item xs={6} key={index}>
+                    <Button
+                      onClick={() => setPropertyType(data?.name)}
+                      sx={{
+                        width: "100%",
+                        background:
+                          propertyType === data?.name ? "#0362F0" : "#F2F5F6",
+                        borderRadius: "152px",
+                        color:
+                          propertyType === data?.name ? "#ffffff" : "#002152",
+                        fontSize: {
+                          xs: "12px",
+                          sm: "13px",
+                          md: "16px",
+                          lg: "13px",
+                          xl: "16px",
+                        },
+                        fontWeight: "400",
+                        lineHeight: "22px",
+                        textTransform: "none",
+                        px: { xs: 0, sm: 2, md: 2, lg: 2, xl: 2 },
+                        py: 1,
+                        "&:hover": {
+                          width: "100%",
+                          background: "#0362F0",
+                          borderRadius: "152px",
+                          color: "#ffffff",
+                          fontSize: {
+                            xs: "12px",
+                            sm: "13px",
+                            md: "16px",
+                            lg: "13px",
+                            xl: "16px",
+                          },
+                          fontWeight: "400",
+                          lineHeight: "22px",
+                          textTransform: "none",
+                          px: {
+                            xs: 0,
+                            sm: 2,
+                            md: 2,
+                            lg: 2,
+                            xl: 2,
+                          },
+                          py: 1,
+                        },
+                      }}
+                    >
+                      {data?.slug}
+                    </Button>
+                  </Grid>
+                ))}
+              </Grid>
+            </Box>
+            <Divider sx={{ mt: 1, mb: 1 }} />
+          <Box>
+            <Typography
+              variant="p"
+              sx={{
+                color: "#4B4B66",
+                fontSize: "16px",
+                fontWeight: "400",
+                lineHeight: "19px",
+              }}
+            >
+                  {`${t["Property detail"]}:`}
+            </Typography>
             <Grid
               container
               direction="row"
@@ -383,7 +456,7 @@ export default function SearchRealEstate({
               gap={1}
               sx={{ mt: 2 }}
             >
-              {propertyType?.map((data, index) => (
+              {propertyCategory?.map((data, index) => (
                 <Button
                   key={index}
                   onClick={() => setType(data.id)}
