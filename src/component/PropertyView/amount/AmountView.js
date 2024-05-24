@@ -1,4 +1,4 @@
-import { Box, Button, Grid, Typography } from "@mui/material";
+import { Box, Button, Grid, Stack, Typography } from "@mui/material";
 import en from "locales/en";
 import pt from "locales/pt";
 import { useSession } from "next-auth/react";
@@ -13,22 +13,26 @@ function AmountView({
   const t = languageName === "en" ? en : pt;
   const { data: session } = useSession();
   return (
-    <Grid
-      container
-      spacing={2}
+    <Stack
+      spacing={3}
       sx={{
         background: "#ffffff",
         boxShadow: "0px 4px 34px rgba(0, 0, 0, 0.08)",
         borderRadius: "8px",
         ml: 0,
         px: 4,
-
-        pb: 6,
+        width: "100%",
+        py: 6,
       }}
+      direction={{
+        xs: "column",
+        md: "row",
+      }}
+      alignItems={"center"}
+      justifyContent={"space-between"}
     >
-      <Grid item xs={12} sm={12} md={12} xl={3} lg={3}>
-        <Grid
-          container
+      {singlePropertyData?.property?.brl_rent && (
+        <Stack
           direction="column"
           justifyContent="flex-start"
           alignItems="flex-start"
@@ -53,42 +57,40 @@ function AmountView({
           >
             {`R$ ${singlePropertyData?.property?.brl_rent}`}
           </Typography>
-        </Grid>
-      </Grid>
-      {singlePropertyData?.property?.condominium && (
-        <Grid item xs={6} sm={6} md={6} xl={3} lg={3}>
-          <Grid
-            container
-            direction="column"
-            justifyContent="flex-start"
-            alignItems="flex-start"
-          >
-            <Typography
-              variant="p"
-              sx={{
-                fontSize: "16px",
-                fontWeight: "400",
-                color: "#1A1859",
-              }}
-            >
-              {t["Condominium"]}
-            </Typography>
-            <Typography
-              variant="p"
-              sx={{
-                fontSize: "24px",
-                fontWeight: "800",
-                color: "#1A1859",
-              }}
-            >
-              {`R$ ${singlePropertyData?.property?.condominium}`}
-            </Typography>
-          </Grid>
-        </Grid>
+        </Stack>
       )}
-      <Grid item xs={6} sm={6} md={6} xl={3} lg={3}>
-        <Grid
-          container
+
+      {singlePropertyData?.property?.condominium && (
+        <Stack
+          direction="column"
+          justifyContent="flex-start"
+          alignItems="flex-start"
+        >
+          <Typography
+            variant="p"
+            sx={{
+              fontSize: "16px",
+              fontWeight: "400",
+              color: "#1A1859",
+            }}
+          >
+            {t["Condominium"]}
+          </Typography>
+          <Typography
+            variant="p"
+            sx={{
+              fontSize: "24px",
+              fontWeight: "800",
+              color: "#1A1859",
+            }}
+          >
+            {`R$ ${singlePropertyData?.property?.condominium}`}
+          </Typography>
+        </Stack>
+      )}
+
+      {singlePropertyData?.property?.brl_iptu && (
+        <Stack
           direction="column"
           justifyContent="flex-start"
           alignItems="flex-start"
@@ -113,35 +115,30 @@ function AmountView({
           >
             {`R$ ${singlePropertyData?.property?.brl_iptu}`}
           </Typography>
-        </Grid>
-      </Grid>
-      <Grid
-        item
-        sx={{
-          display: {
-            xs: "none",
-            sm: "block",
-          },
-        }}
-        sm={6}
-        md={6}
-        xl={3}
-        lg={3}
+        </Stack>
+      )}
+
+      <Stack
+        direction="column"
+        justifyContent="flex-start"
+        alignItems="flex-start"
+        sx={{}}
       >
-        <Grid
-          container
-          direction="column"
-          justifyContent="flex-start"
-          alignItems="flex-start"
-        >
-          <Button
-            disabled={
-              session?.user?.role === "broker" ||
-              session?.user?.role === "owner"
-            }
-            variant="contained"
-            color="primary"
-            sx={{
+        <Button
+          disabled={
+            session?.user?.role === "broker" || session?.user?.role === "owner"
+          }
+          variant="contained"
+          color="primary"
+          sx={{
+            px: 4,
+            fontSize: "16px",
+            fontWeight: "600",
+            textTransform: "none",
+            minWidth: "195px",
+            background: "#0E97F7",
+            borderRadius: "4px",
+            "&: hover": {
               px: 4,
               fontSize: "16px",
               fontWeight: "600",
@@ -149,33 +146,32 @@ function AmountView({
               minWidth: "195px",
               background: "#0E97F7",
               borderRadius: "4px",
-              "&: hover": {
-                px: 4,
-                fontSize: "16px",
-                fontWeight: "600",
-                textTransform: "none",
-                minWidth: "195px",
-                background: "#0E97F7",
-                borderRadius: "4px",
-              },
-            }}
-            onClick={() => {
-              setNegotiate(true);
-              setSchedule(false);
-            }}
-          >
-            {t["Negotiate"]}
-          </Button>
+            },
+          }}
+          onClick={() => {
+            setNegotiate(true);
+            setSchedule(false);
+          }}
+        >
+          {t["Negotiate"]}
+        </Button>
 
-          <Button
-            disabled={
-              session?.user?.role === "broker" ||
-              session?.user?.role === "owner"
-            }
-            variant="contained"
-            color="secondary"
-            sx={{
-              mt: 1,
+        <Button
+          disabled={
+            session?.user?.role === "broker" || session?.user?.role === "owner"
+          }
+          variant="contained"
+          color="secondary"
+          sx={{
+            mt: 1,
+            px: 4,
+            fontSize: "16px",
+            fontWeight: "600",
+            textTransform: "none",
+            minWidth: "195px",
+            background: "#7450F0",
+            borderRadius: "4px",
+            "&: hover": {
               px: 4,
               fontSize: "16px",
               fontWeight: "600",
@@ -183,26 +179,17 @@ function AmountView({
               minWidth: "195px",
               background: "#7450F0",
               borderRadius: "4px",
-              "&: hover": {
-                px: 4,
-                fontSize: "16px",
-                fontWeight: "600",
-                textTransform: "none",
-                minWidth: "195px",
-                background: "#7450F0",
-                borderRadius: "4px",
-              },
-            }}
-            onClick={() => {
-              setSchedule(true);
-              setNegotiate(false);
-            }}
-          >
-            {t["Schedule visit"]}
-          </Button>
-        </Grid>
-      </Grid>
-    </Grid>
+            },
+          }}
+          onClick={() => {
+            setSchedule(true);
+            setNegotiate(false);
+          }}
+        >
+          {t["Schedule visit"]}
+        </Button>
+      </Stack>
+    </Stack>
   );
 }
 

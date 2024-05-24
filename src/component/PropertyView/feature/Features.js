@@ -1,5 +1,5 @@
 import React from "react";
-import { Button, Grid, Typography, Box } from "@mui/material";
+import { Button, Grid, Typography, Box, Stack } from "@mui/material";
 import Image from "next/image";
 import bed from "../../../../public/Images/bed.png";
 import rule from "../../../../public/Images/rule.png";
@@ -27,84 +27,97 @@ function Features({ singlePropertyData, languageName }) {
       >
         características
       </Typography>
-      <Grid
-        container
+      <Stack
         direction="row"
-        justifyContent="flex-start"
-        alignItems="flex-start"
+        justifyContent="center"
+        alignItems="center"
+        spacing={2}
+        sx={{ mt: 1 }}
       >
-        <Box sx={{ mt: 0.5 }}>
-          <Image src={bed} alt="bed" />
-          <Typography
-            variant="p"
-            sx={{
-              fontSize: "14px",
-              fontWeight: "400",
-              color: "#7C7C99",
-              ml: 0.4,
-            }}
+        {singlePropertyData?.property?.no_of_rooms && (
+          <Stack
+            direction="row"
+            justifyContent="center"
+            alignItems="center"
+            spacing={1}
           >
-            {`${singlePropertyData?.property?.no_of_rooms} ${t["bedrooms"]}`}
-          </Typography>
-        </Box>
-        <Box sx={{ pl: 2, mt: 0.5 }}>
-          <Image src={rule} alt="rule" />
-          <Typography
-            variant="p"
-            sx={{
-              fontSize: "14px",
-              fontWeight: "400",
-              color: "#7C7C99",
-              ml: 0.4,
-            }}
-          >
-            {`${singlePropertyData?.property?.property_area} m²`}
-          </Typography>
-        </Box>
+            <Image src={bed} alt="bed" width={24} height={24} />
+            <Typography
+              variant="p"
+              sx={{
+                fontSize: "14px",
+                fontWeight: "400",
+                color: "#7C7C99",
+              }}
+            >
+              {`${singlePropertyData?.property?.no_of_rooms} ${t["bedrooms"]}`}
+            </Typography>
+          </Stack>
+        )}
 
-        {/* <Box sx={{ pl: 2, pr: 2 }}>
-          <Image src={building} alt="bed" />
-          <Typography
-            variant="p"
-            sx={{
-              fontSize: "14px",
-              fontWeight: "400",
-              color: "#7C7C99",
-              ml: 0.4,
-            }}
+        {singlePropertyData?.property?.property_area && (
+          <Stack
+            direction="row"
+            justifyContent="center"
+            alignItems="center"
+            spacing={1}
           >
-            {`6th ${t["floor"]}`}
-          </Typography>
-        </Box> */}
-        <Box>
-          <Image src={bath} alt="bath" />
-          <Typography
-            variant="p"
-            sx={{
-              fontSize: "14px",
-              fontWeight: "400",
-              color: "#7C7C99",
-              ml: 0.4,
-            }}
+            <Image src={rule} alt="rule" width={24} height={24} />
+            <Typography
+              variant="p"
+              sx={{
+                fontSize: "14px",
+                fontWeight: "400",
+                color: "#7C7C99",
+              }}
+            >
+              {`${singlePropertyData?.property?.property_area} m²`}
+            </Typography>
+          </Stack>
+        )}
+
+        {singlePropertyData?.property?.no_of_bathrooms && (
+          <Stack
+            direction="row"
+            justifyContent="center"
+            alignItems="center"
+            spacing={1}
           >
-            {`${singlePropertyData?.property?.no_of_bathrooms} ${t["bathrooms"]}`}
-          </Typography>
-        </Box>
-        <Box sx={{ pl: 2, mt: 0.5 }}>
-          <Image src={car} alt="bath" />
-          <Typography
-            variant="p"
-            sx={{
-              fontSize: "14px",
-              fontWeight: "400",
-              color: "#7C7C99",
-              ml: 0.4,
-            }}
+            <Image src={bath} alt="bath" width={24} height={24} />
+            <Typography
+              variant="p"
+              sx={{
+                fontSize: "14px",
+                fontWeight: "400",
+                color: "#7C7C99",
+              }}
+            >
+              {`${singlePropertyData?.property?.no_of_bathrooms} ${t["bathrooms"]}`}
+            </Typography>
+          </Stack>
+        )}
+
+        {singlePropertyData?.property?.no_of_bathrooms && (
+          <Stack
+            direction="row"
+            justifyContent="center"
+            alignItems="center"
+            spacing={1}
           >
-            {`${singlePropertyData?.property?.no_of_bathrooms} ${t["parking space"]}`}
-          </Typography>
-        </Box>
-      </Grid>
+            <Image src={car} alt="bath" width={24} height={24} />
+            <Typography
+              variant="p"
+              sx={{
+                fontSize: "14px",
+                fontWeight: "400",
+                color: "#7C7C99",
+              }}
+            >
+              {`${singlePropertyData?.property?.no_of_bathrooms} ${t["parking space"]}`}
+            </Typography>
+          </Stack>
+        )}
+      </Stack>
     </Grid>
   );
 }
