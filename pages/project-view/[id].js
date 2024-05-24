@@ -11,19 +11,7 @@ import {
   Button,
   LinearProgress,
   CircularProgress,
-  Stack,
-  MenuItem,
-  Menu,
-  IconButton,
 } from "@mui/material";
-import ShareIcon from "@mui/icons-material/Share";
-
-import {
-  EmailShareButton,
-  FacebookShareButton,
-  WhatsappShareButton,
-} from "react-share";
-import { EmailIcon, FacebookIcon, WhatsappIcon } from "react-share";
 import orionImage from "../../public/Images/orion_view.svg";
 import Image from "next/image";
 const HouseCard = dynamic(() =>
@@ -49,8 +37,6 @@ import { useRouter } from "next/router";
 import { stripHtmlTags } from "@/utils/stripHtmlTags";
 import AboutProperty from "@/component/PropertyView/AboutProperty/AboutProperty";
 import { useGetSingleProjectQuery } from "@/queries/useGetSingleProjectQuery";
-import BaseCopyText from "@/component/reuseable/baseCopyText/BaseCopyText";
-import BaseFavoriteButton from "@/component/reuseable/baseFavoriteButton/BaseFavoriteButton";
 
 const aboutProperty = [
   "Heater",
@@ -96,14 +82,7 @@ export default function ProjectView({
 }) {
   const router = useRouter();
   const { query } = router;
-  const [anchorEl, setAnchorEl] = useState(null);
-  const open = Boolean(anchorEl);
-  const handleClick = (event) => {
-    setAnchorEl(event.currentTarget);
-  };
-  const handleClose = () => {
-    setAnchorEl(null);
-  };
+  console.log({ query });
   const {
     data: singleProjectData,
     isLoading,
@@ -236,11 +215,10 @@ export default function ProjectView({
               {t["come back"]}
             </Button>
           </Grid>
-
           <Grid
             container
             direction="row"
-            justifyContent="space-between"
+            justifyContent="flex-start"
             alignItems="flex-start"
           >
             <Button
@@ -268,96 +246,6 @@ export default function ProjectView({
                 {singleProjectData?.project?.name}
               </Typography>
             </Button>
-            <Stack direction="row" spacing={1}>
-              <IconButton
-                id="basic-button"
-                aria-controls={open ? "basic-menu" : undefined}
-                aria-haspopup="true"
-                aria-expanded={open ? "true" : undefined}
-                onClick={handleClick}
-              >
-                <ShareIcon />
-              </IconButton>
-
-              <Menu
-                id="basic-menu"
-                anchorEl={anchorEl}
-                open={open}
-                onClose={handleClose}
-                MenuListProps={{
-                  "aria-labelledby": "basic-button",
-                }}
-                anchorOrigin={{
-                  vertical: "bottom",
-                  horizontal: "",
-                }}
-                transformOrigin={{
-                  vertical: "top",
-                  horizontal: "left",
-                }}
-              >
-                <MenuItem onClick={handleClose}>
-                  <Stack direction="column" spacing={3}>
-                    <Typography
-                      variant="p"
-                      sx={{
-                        fontSize: "16px",
-                        fontWeight: 600,
-                        color: "#1A1859",
-                      }}
-                      align="center"
-                    >
-                      Compartilhar
-                    </Typography>
-                    <Stack direction="row" spacing={3}>
-                      <Stack direction="column">
-                        <WhatsappShareButton
-                          url={`https://www.lokkan.site/property-view/${singleProjectData?.project?.id}`}
-                        >
-                          <WhatsappIcon round size={40} />
-                          <Typography sx={{ fontSize: "12px" }}>
-                            Whatsapp
-                          </Typography>
-                        </WhatsappShareButton>
-                      </Stack>
-                      <Stack direction="column">
-                        <FacebookShareButton
-                          url={`https://www.lokkan.site/property-view/${singleProjectData?.project?.id}`}
-                        >
-                          <FacebookIcon round size={40} />
-                          <Typography sx={{ fontSize: "12px" }}>
-                            Facebook
-                          </Typography>
-                        </FacebookShareButton>
-                      </Stack>
-                      <Stack direction="column">
-                        <EmailShareButton
-                          url={`https://www.lokkan.site/property-view/${singleProjectData?.project?.id}`}
-                        >
-                          <EmailIcon round size={40} />
-                          <Typography sx={{ fontSize: "12px" }}>
-                            Email
-                          </Typography>
-                        </EmailShareButton>
-                      </Stack>
-                      <Stack direction="column">
-                        <BaseCopyText
-                          text={`https://www.lokkan.site/property-view/${singleProjectData?.project?.id}`}
-                        />
-
-                        <Typography sx={{ fontSize: "12px", mt: "6px" }}>
-                          Copy URL
-                        </Typography>
-                      </Stack>
-                    </Stack>
-                  </Stack>
-                </MenuItem>
-              </Menu>
-              <BaseFavoriteButton
-                handleLoginOpen={handleLoginOpen}
-                itemID={singleProjectData?.project?.id}
-              />
-            </Stack>
           </Grid>
           <Grid
             container

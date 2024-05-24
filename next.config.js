@@ -12,7 +12,7 @@ module.exports = {
   staticPageGenerationTimeout: 1000,
   output: "standalone",
   i18n: {
-    locales: ["en", "fr"],
+    locales: ["en", "pt"],
     defaultLocale: "en",
   },
   images: {
