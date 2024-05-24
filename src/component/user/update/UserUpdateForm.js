@@ -24,11 +24,13 @@ import * as Yup from "yup";
 import useCurrentUser from "@/hooks/useCurrentUser";
 import { _baseURL, _imageURL } from "consts";
 import { useUserUpdateMutation } from "@/queries/useUserQuery";
-import { userDetailsApi } from "@/api";
+import { omitEmpties, userDetailsApi } from "@/api";
 import { serialize } from "object-to-formdata";
+import { getSession, useSession } from "next-auth/react";
 const UserUpdateForm = ({ language }) => {
   const [myValue, setMyValue] = useState(language || "pt");
   const currentUser = useCurrentUser();
+  const { data: session } = useSession();
 
   const myLoader = ({ src }) => {
     return `${src}`;
@@ -60,17 +62,24 @@ const UserUpdateForm = ({ language }) => {
 
   const onSubmit = (data) => {
     setLoading(true)
+    const { email, phone, user_id, image,name ,...rest } = data;
     const body = 
       serialize(
         {
-          email: data.email,
-          phone: data.phone,
-          user_id: data.user_id,
-          number: data.number,
-          image: data?.image,
-          name: data.name,
-          address: { ...data, state_id: data.state_id.id },
+          email: email,
+          phone: phone,
+          user_id: user_id,
+          image: image instanceof File ? data?.image : null,
+          name: name,
+          address: omitEmpties({ ...rest, state_id: data.state_id.id }),
+        },
+        {
+          indices: true,
+          allowEmptyArrays: false,
+          booleansAsIntegers: true,
+          nullsAsUndefineds: true,
         }
+        
       )
     mutation.mutate(body, {
       
@@ -78,8 +87,8 @@ const UserUpdateForm = ({ language }) => {
         setLoading(false)
         alert(`error: ${"There is something error"}`)
       },
-      onSuccess: async () => {
-       userDetailsApi()
+      onSuccess: async (data) => {
+       await userDetailsApi()
        setLoading(false)
        alert('User successfully updated')
       },

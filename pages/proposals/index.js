@@ -123,8 +123,8 @@ export default function Proposals({ language }) {
   const [valueSlider, setValueSlider] = useState([22, 5000000]);
   const [areaSlider, setAreaSlider] = useState([20, 370000]);
   const [relevantValue, setRelevantValue] = useState("");
-  const [proposalStatus, setProposalStatus] = useState("pending");
-  const [journeyStage, setJourneyStage] = useState("contract");
+  const [proposalStatus, setProposalStatus] = useState("");
+  const [journeyStage, setJourneyStage] = useState("");
 
   useEffect(() => {
     dispatch(findPropertyTypeData());

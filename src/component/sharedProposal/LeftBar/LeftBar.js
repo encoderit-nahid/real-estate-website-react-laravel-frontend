@@ -40,10 +40,12 @@ import pt from "locales/pt";
 import en from "locales/en";
 import { _imageURL } from "consts";
 import ChevronRightIcon from "@mui/icons-material/ChevronRight";
+import useCurrentUser from "@/hooks/useCurrentUser";
 function LeftBar(props) {
   const router = useRouter();
   const { data: session } = useSession();
-  console.log({ session });
+  const currentUser = useCurrentUser()
+
 
   const myLoader = ({ src }) => {
     return `${_imageURL}/${src}`;
@@ -159,12 +161,12 @@ function LeftBar(props) {
               </a>
             </Link>
             <Box sx={{ mt: 2 }}>
-              {session?.user?.userImage != "undefined" ? (
+              {currentUser?.attachments?.length > 0 ? (
                 <Image
                   loader={myLoader}
                   height={70}
                   width={70}
-                  src={session?.user?.userImage}
+                  src={`${currentUser?.attachments[0]?.file_path}`}
                   alt="logo"
                   objectFit="cover"
                 />
