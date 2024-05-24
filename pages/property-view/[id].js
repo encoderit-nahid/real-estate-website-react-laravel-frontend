@@ -247,7 +247,7 @@ export default function PropertyView({
           setLoginOpen={setLoginOpen}
           handleLoginClose={handleLoginClose}
           handleLoginOpen={handleLoginOpen}
-          languageName={language}
+          languageName={'pt'}
           setMyValue={setMyValue}
           myValue={myValue}
           colorLogo={true}
