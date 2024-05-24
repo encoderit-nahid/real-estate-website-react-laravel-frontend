@@ -210,11 +210,10 @@ export default function Proposals({ language }) {
 
   const handleCancelFilter = () => {
     router.replace({
-      pathname: "/search-real-estate",
       query: omitEmpties({
-        location: query?.location,
-        value_up_to: query?.value_up_to,
-        page: 1,
+        proposal_status: "pending",
+        status: "approved",
+        page:  1,
         per_page: 9,
       }),
     });
@@ -288,7 +287,7 @@ export default function Proposals({ language }) {
                     endAdornment: (
                       <InputAdornment position="end">
                         <IconButton
-                          edge="end"
+                        edge="end"
                           aria-label="Search by broker name"
                         >
                           <SearchIcon />
@@ -518,12 +517,7 @@ export default function Proposals({ language }) {
             </Typography>
             <Grid container spacing={2} sx={{ mt: 0.5 }}>
               <Grid item xs={12} sm={12} md={12} lg={6} xl={6}>
-                {/* <BaseOutlinedCurrencyInput
-                  size={"medium"}
-                  placeholder={"Minimum"}
-                  label={"Minimum"}
-                  borderColor={"#7450F0"}
-                /> */}
+    
                 <Controller
                   name="min_value"
                   control={control}
@@ -600,7 +594,7 @@ export default function Proposals({ language }) {
               />
             </Box>
           </Box>
-          <Divider sx={{ mt: 1, mb: 1 }} />
+          {/* <Divider sx={{ mt: 1, mb: 1 }} />
           <Box>
             <Grid container spacing={2}>
               <Grid item xs={12} sm={12} md={12} lg={4} xl={4}>
@@ -1064,9 +1058,9 @@ export default function Proposals({ language }) {
                 ))}
               </Grid>
             </Grid>
-          </Box>
+          </Box> */}
 
-          {Object.keys(featureData).map((key, index) => (
+          {/* {Object.keys(featureData).map((key, index) => (
             <Box key={index}>
               <Typography
                 variant="p"
@@ -1165,7 +1159,7 @@ export default function Proposals({ language }) {
               </Grid>
               <Divider sx={{ mt: 1, mb: 1 }} />
             </Box>
-          ))}
+          ))} */}
         </Box>
 
         <Box

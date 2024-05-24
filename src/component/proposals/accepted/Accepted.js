@@ -30,7 +30,7 @@ function Accepted({ languageName }) {
     isFetching,
   } = useGetPropertyQuery({
     ...query,
-    proposal_status: query?.proposal_status || "accepted",
+    proposal_status: "accepted",
     status: "approved",
     page: page || 1,
     per_page: 9,

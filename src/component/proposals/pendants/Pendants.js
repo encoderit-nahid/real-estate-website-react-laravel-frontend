@@ -58,7 +58,7 @@ function Pendants({ languageName }) {
     isFetching,
   } = useGetPropertyQuery({
     ...query,
-    proposal_status: query?.proposal_status || "pending",
+    proposal_status: "pending",
     status: "approved",
     page: page || 1,
     per_page: 9,

@@ -32,7 +32,7 @@ function Completed() {
     isFetching,
   } = useGetPropertyQuery({
     ...query,
-    proposal_status: query?.proposal_status || "completed",
+    proposal_status: "completed",
     status: "approved",
     page: page,
     per_page: 9,
