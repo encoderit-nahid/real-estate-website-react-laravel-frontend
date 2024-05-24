@@ -20,15 +20,69 @@ import pt from "locales/pt";
 import { useDispatch, useSelector } from "react-redux";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as Yup from "yup";
-const UserUpdateForm = ({ language, onSubmit }) => {
+import useCurrentUser from "@/hooks/useCurrentUser";
+import { _baseURL, _imageURL } from "consts";
+import { useUserUpdateMutation } from "@/queries/useUserQuery";
+import { userDetailsApi } from "@/api";
+const UserUpdateForm = ({ language }) => {
   const [myValue, setMyValue] = useState(language || "pt");
+  const currentUser = useCurrentUser();
+  // const [image, setImage] = useState(null);
+  // const handleImageChange = (e) => {
+  //   const file = e?.target?.files[0];
+  //   if (file) {
+  //     const imageURL = URL.createObjectURL(file);
+  //     setImage(imageURL);
+  //   }
+  // };
+  const myLoader = ({ src }) => {
+    return `${src}`;
+  };
+  const allStateData = useSelector((state) => state.state.stateData);
+  const selectedState = allStateData.find(
+    (state) => state.id == currentUser?.address.state_id
+  );
+  console.log("🟥 ~ UserUpdateForm ~ selectedState:", selectedState);
   useEffect(() => {
-    const user = JSON.parse(localStorage.getItem("user"));
-    console.log("🟥 ~ useEffect ~ user:", user);
-    setValue("name", user.name);
-    setValue("email", user.email);
-    setValue("telephone", user.phone);
-  }, [setValue]);
+    setValue("user_id", currentUser?.id);
+    setValue("image", `${_imageURL}/${currentUser?.attachments[0].file_path}`);
+    setValue("name", currentUser?.name);
+    setValue("email", currentUser?.email);
+    setValue("phone", currentUser?.phone);
+    setValue("zip_code", currentUser?.address.zip_code);
+    setValue("address", currentUser?.address.address);
+    setValue("number", currentUser?.address.number);
+    setValue("neighbourhood", currentUser?.address.neighbourhood);
+    setValue("complement", currentUser?.address.complement);
+    setValue("city", currentUser?.address.city);
+    setValue(
+      "state_id",
+      allStateData.find((state) => state.id == currentUser?.address.state_id)
+    );
+  }, [setValue, currentUser]);
+  console.log("✅ ~ UserUpdateForm ~ currentUser:", currentUser);
+  const { mutate: userUpdate } = useUserUpdateMutation();
+  const onSubmit = (data) => {
+    userUpdate(
+      {
+        email: data.email,
+        phone: data.phone,
+        user_id: data.user_id,
+        number: data.number,
+        name: data.name,
+        address: { ...data, state_id: data.state_id.id },
+      },
+      {
+        onSuccess() {
+          console.log("✅ User update successfully");
+          userDetailsApi();
+        },
+        onError(e) {
+          console.log("⛔ User not updated::", e);
+        },
+      }
+    );
+  };
 
   const t = myValue === "en" ? en : pt;
   const validationSchema = Yup.object().shape({
@@ -51,10 +105,10 @@ const UserUpdateForm = ({ language, onSubmit }) => {
   });
   const allValues = watch();
   console.log("🟥 ~ UserUpdateForm ~ allValues:", allValues);
+
   const [showPass, setShowPass] = useState(false);
   const [preview, setPreview] = useState();
   const [showRepeatPass, setShowRepeatPass] = useState(false);
-  const allStateData = useSelector((state) => state.state.stateData);
 
   const handleClickShowPassword = () => {
     setShowPass(!showPass);
@@ -90,10 +144,16 @@ const UserUpdateForm = ({ language, onSubmit }) => {
           >
             <Box>
               <Image
-                src={preview != null ? preview : accountIcon}
+                loader={myLoader}
+                src={
+                  allValues.image instanceof File
+                    ? URL.createObjectURL(allValues?.image)
+                    : allValues.image
+                }
                 alt="account"
-                width={50}
-                height={50}
+                width={70}
+                height={70}
+                objectFit="cover"
               />
             </Box>
             <Button
@@ -198,7 +258,7 @@ const UserUpdateForm = ({ language, onSubmit }) => {
             </Grid>
             <Grid item xs={12} md={6}>
               <Controller
-                name="telephone"
+                name="phone"
                 control={control}
                 defaultValue={""}
                 render={({ field }) => (
@@ -209,7 +269,7 @@ const UserUpdateForm = ({ language, onSubmit }) => {
                     onChange={(e) => {
                       field.onChange(e.target.value);
                     }}
-                    name={"telephone"}
+                    name={"phone"}
                     value={field.value}
                     // error={errors.telephone ? true : false}
                   />
@@ -220,7 +280,7 @@ const UserUpdateForm = ({ language, onSubmit }) => {
                 color="textSecondary"
                 sx={{ color: "#b91c1c" }}
               >
-                {errors.telephone?.message}
+                {errors.phone?.message}
               </Typography>
             </Grid>
           </Grid>
@@ -314,7 +374,7 @@ const UserUpdateForm = ({ language, onSubmit }) => {
                   render={({ field }) => (
                     <BaseOutlinedZipInput
                       placeholder={`${t["Zip code"]}*`}
-                      // label={`${t["Zip code"]}*`}
+                      // label={`${t["Zip code"]}*`} //! white color
                       size={"medium"}
                       onChange={(e) => {
                         field.onChange(e.target.value);
@@ -471,21 +531,25 @@ const UserUpdateForm = ({ language, onSubmit }) => {
             </Grid>
             <Grid item xs={12} md={6}>
               <Controller
-                name="state"
+                name="state_id"
                 control={control}
-                // defaultValue={{}}
+                defaultValue={selectedState}
                 render={({ field }) => (
                   <BaseAutocomplete
                     //   sx={{ margin: "0.6vh 0" }}
                     options={allStateData || []}
                     getOptionLabel={(option) => option.name || ""}
-                    isOptionEqualToValue={(option, value) =>
-                      option.id === value.id
-                    }
+                    isOptionEqualToValue={(option, value) => {
+                      return option.id === value.id;
+                    }}
                     size={"medium"}
                     placeholder={`${t["State"]}*`}
                     label={`${t["State"]}*`}
-                    onChange={(e, v, r, d) => field.onChange(v)}
+                    onChange={(e, v, r, d) => {
+                      console.log("🟥 ~ UserUpdateForm ~ v:", v);
+
+                      field.onChange(v);
+                    }}
                     value={field.value || null}
                   />
                 )}
