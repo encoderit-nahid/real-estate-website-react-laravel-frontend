@@ -4,6 +4,7 @@ import BaseTextField from "@/component/reuseable/baseTextField/BaseTextField";
 import {
   Box,
   Button,
+  CircularProgress,
   FormControl,
   Grid,
   InputAdornment,
@@ -24,64 +25,58 @@ import useCurrentUser from "@/hooks/useCurrentUser";
 import { _baseURL, _imageURL } from "consts";
 import { useUserUpdateMutation } from "@/queries/useUserQuery";
 import { userDetailsApi } from "@/api";
+import { serialize } from "object-to-formdata";
 const UserUpdateForm = ({ language }) => {
   const [myValue, setMyValue] = useState(language || "pt");
   const currentUser = useCurrentUser();
-  // const [image, setImage] = useState(null);
-  // const handleImageChange = (e) => {
-  //   const file = e?.target?.files[0];
-  //   if (file) {
-  //     const imageURL = URL.createObjectURL(file);
-  //     setImage(imageURL);
-  //   }
-  // };
+
   const myLoader = ({ src }) => {
     return `${src}`;
   };
   const allStateData = useSelector((state) => state.state.stateData);
-  const selectedState = allStateData.find(
-    (state) => state.id == currentUser?.address.state_id
-  );
-  console.log("🟥 ~ UserUpdateForm ~ selectedState:", selectedState);
+
   useEffect(() => {
     setValue("user_id", currentUser?.id);
-    setValue("image", `${_imageURL}/${currentUser?.attachments[0].file_path}`);
+    setValue("image", `${_imageURL}/${currentUser?.attachments[0]?.file_path}`);
     setValue("name", currentUser?.name);
     setValue("email", currentUser?.email);
     setValue("phone", currentUser?.phone);
-    setValue("zip_code", currentUser?.address.zip_code);
-    setValue("address", currentUser?.address.address);
-    setValue("number", currentUser?.address.number);
-    setValue("neighbourhood", currentUser?.address.neighbourhood);
-    setValue("complement", currentUser?.address.complement);
-    setValue("city", currentUser?.address.city);
+    setValue("zip_code", currentUser?.address?.zip_code);
+    setValue("address", currentUser?.address?.address);
+    setValue("number", currentUser?.address?.number);
+    setValue("neighbourhood", currentUser?.address?.neighbourhood);
+    setValue("complement", currentUser?.address?.complement);
+    setValue("city", currentUser?.address?.city);
     setValue(
       "state_id",
-      allStateData.find((state) => state.id == currentUser?.address.state_id)
+      currentUser?.address?.state
     );
   }, [setValue, currentUser]);
   console.log("✅ ~ UserUpdateForm ~ currentUser:", currentUser);
-  const { mutate: userUpdate } = useUserUpdateMutation();
+  const mutation = useUserUpdateMutation();
   const onSubmit = (data) => {
-    userUpdate(
-      {
-        email: data.email,
-        phone: data.phone,
-        user_id: data.user_id,
-        number: data.number,
-        name: data.name,
-        address: { ...data, state_id: data.state_id.id },
+    if (mutation.isLoading) return;
+    const body = 
+      serialize(
+        {
+          email: data.email,
+          phone: data.phone,
+          user_id: data.user_id,
+          number: data.number,
+          image: data?.image,
+          name: data.name,
+          address: { ...data, state_id: data.state_id.id },
+        }
+      )
+    mutation.mutate(body, {
+      onError(error) {
+        console.log({error})
       },
-      {
-        onSuccess() {
-          console.log("✅ User update successfully");
-          userDetailsApi();
-        },
-        onError(e) {
-          console.log("⛔ User not updated::", e);
-        },
-      }
-    );
+      onSuccess: async () => {
+       userDetailsApi()
+      },
+    });
+
   };
 
   const t = myValue === "en" ? en : pt;
@@ -533,7 +528,7 @@ const UserUpdateForm = ({ language }) => {
               <Controller
                 name="state_id"
                 control={control}
-                defaultValue={selectedState}
+                defaultValue={""}
                 render={({ field }) => (
                   <BaseAutocomplete
                     //   sx={{ margin: "0.6vh 0" }}
@@ -625,7 +620,9 @@ const UserUpdateForm = ({ language }) => {
                 },
               }}
             >
-              {t["Save"]}
+               {mutation.isLoading && <CircularProgress size={22} sx={{ color: "grey" }} />}
+            {!mutation.isLoading && t["Save"]}
+           
             </Button>
           </Grid>
         </Grid>
