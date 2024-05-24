@@ -54,8 +54,12 @@ const UserUpdateForm = ({ language }) => {
   }, [setValue, currentUser]);
   console.log("✅ ~ UserUpdateForm ~ currentUser:", currentUser);
   const mutation = useUserUpdateMutation();
+
+  const [loading,setLoading] = useState(false)
+
+
   const onSubmit = (data) => {
-    if (mutation.isLoading) return;
+    setLoading(true)
     const body = 
       serialize(
         {
@@ -69,11 +73,15 @@ const UserUpdateForm = ({ language }) => {
         }
       )
     mutation.mutate(body, {
+      
       onError(error) {
-        console.log({error})
+        setLoading(false)
+        alert(`error: ${"There is something error"}`)
       },
       onSuccess: async () => {
        userDetailsApi()
+       setLoading(false)
+       alert('User successfully updated')
       },
     });
 
@@ -620,9 +628,8 @@ const UserUpdateForm = ({ language }) => {
                 },
               }}
             >
-               {mutation.isLoading && <CircularProgress size={22} sx={{ color: "grey" }} />}
-            {!mutation.isLoading && t["Save"]}
-           
+               {loading && <CircularProgress size={22} color='inherit' />}
+            {!loading && t["Save"]}
             </Button>
           </Grid>
         </Grid>
