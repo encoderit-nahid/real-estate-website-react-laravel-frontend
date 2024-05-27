@@ -31,10 +31,7 @@ export default function UserLoading() {
               // permissions: JSON.stringify(
               //   response?.data?.user?.roles[0]?.permissions
               // ),
-              callbackUrl:
-                response.data?.user?.roles[0]?.slug === "buyer"
-                  ? "/"
-                  : "/my-properties",
+              callbackUrl: "/my-properties",
             });
           } else {
             router.push("/");

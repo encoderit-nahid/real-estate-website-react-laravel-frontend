@@ -45,13 +45,12 @@ function Features({ featuretypes, setFeatureTypes, errors, languageName }) {
   }, [featuretypes, errors]);
 
   const handleAddFeature = async () => {
-    console.log({ item });
-    // if (item.length > 0) {
-    //   dispatch(
-    //     featureDataCreate({ name: item, type: featureSelectData?.name })
-    //   );
-    //   dispatch(findFeatureData());
-    // }
+    if (item.length > 0) {
+      await dispatch(
+        featureDataCreate({ name: item, type: featureSelectData?.name })
+      );
+      await dispatch(findFeatureData());
+    }
   };
 
   const FeatureAddLoading = useSelector(

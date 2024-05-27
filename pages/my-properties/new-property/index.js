@@ -573,8 +573,7 @@ export default function NewProperty({ language }) {
       allValues?.owner_number != null &&
       allValues?.owner_neighbourhood != null &&
       allValues?.owner_city != null &&
-      allValues?.owner_state != null &&
-      documents?.length > 0
+      allValues?.owner_state != null
     ) {
       setDisableBtn(false);
     }
@@ -587,8 +586,7 @@ export default function NewProperty({ language }) {
       allValues?.owner_number === "" ||
       allValues?.owner_neighbourhood === "" ||
       allValues?.owner_city === "" ||
-      allValues?.owner_state === "" ||
-      documents?.length < 1
+      allValues?.owner_state === "" 
     ) {
       setDisableBtn(true);
     }
