@@ -81,18 +81,7 @@ const BaseFavoriteButton = dynamic(
     ssr: false,
   }
 );
-const aboutProperty = [
-  "Heater",
-  "Dependency",
-  "Balcony",
-  "Service area",
-  "Air conditioner",
-  "Source",
-  "Coif",
-  "Cabinets",
-  "Wardrobe",
-  "Stove",
-];
+
 
 const aboutCondo = [
   "sports court",
