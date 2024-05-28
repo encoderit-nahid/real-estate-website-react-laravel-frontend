@@ -1,6 +1,6 @@
 import dynamic from "next/dynamic";
-const Navbar = dynamic(() => import("@/component/shared/Navbar/Navbar"),{
-  ssr:false
+const Navbar = dynamic(() => import("@/component/shared/Navbar/Navbar"), {
+  ssr: false,
 });
 import Head from "next/head";
 import {
@@ -11,52 +11,91 @@ import {
   ImageList,
   ImageListItem,
   Button,
+  LinearProgress,
+  CircularProgress,
+  Stack,
+  IconButton,
+  Menu,
+  MenuItem,
 } from "@mui/material";
 import orionImage from "../../public/Images/orion_view.svg";
 import Image from "next/image";
-const HouseCard = dynamic(() =>
-  import("@/component/reuseable/HouseCard/HouseCard"),
-{
-  ssr:false
-}
-
+import ShareIcon from "@mui/icons-material/Share";
+import {
+  EmailShareButton,
+  FacebookShareButton,
+  WhatsappShareButton,
+} from "react-share";
+import { EmailIcon, FacebookIcon, WhatsappIcon } from "react-share";
+const HouseCard = dynamic(
+  () => import("@/component/reuseable/HouseCard/HouseCard"),
+  {
+    ssr: false,
+  }
 );
-const Footer = dynamic(() => import("@/component/shared/Footer/Footer"),{
-  ssr:false
+const Footer = dynamic(() => import("@/component/shared/Footer/Footer"), {
+  ssr: false,
 });
-const SliderView = dynamic(() =>
-  import("@/component/PropertyView/slider/SliderView"),
-{
-  ssr:false
-}
+const SliderView = dynamic(
+  () => import("@/component/PropertyView/slider/SliderView"),
+  {
+    ssr: false,
+  }
 );
-const SliderViewMobile = dynamic(() =>
-  import("@/component/PropertyView/SliderViewMobile/SliderViewMobile"),
-{
-  ssr:false
-}
+import SlideImage from "@/component/PropertyView/slideImage/SlideImage";
+const SliderViewMobile = dynamic(
+  () => import("@/component/PropertyView/SliderViewMobile/SliderViewMobile"),
+  {
+    ssr: false,
+  }
 );
 import { useEffect, useMemo, useState } from "react";
 import en from "locales/en";
 import pt from "locales/pt";
 import Link from "next/link";
-const SlideImageMobile = dynamic(() =>
-  import("@/component/PropertyView/SlideImageMobile/SlideImageMobile"),
-{
-  ssr:false
-}
+const SlideImageMobile = dynamic(
+  () => import("@/component/PropertyView/SlideImageMobile/SlideImageMobile"),
+  {
+    ssr: false,
+  }
 );
 import { _imageURL } from "consts";
 import { useRouter } from "next/router";
 import { stripHtmlTags } from "@/utils/stripHtmlTags";
-const AboutProperty = dynamic(() =>
-  import("@/component/PropertyView/AboutProperty/AboutProperty"),
-{
-  ssr:false
-}
+const AboutProperty = dynamic(
+  () => import("@/component/PropertyView/AboutProperty/AboutProperty"),
+  {
+    ssr: false,
+  }
 );
+const BaseCopyText = dynamic(
+  () => import("@/component/reuseable/baseCopyText/BaseCopyText"),
+  {
+    ssr: false,
+  }
+);
+const BaseFavoriteButton = dynamic(
+  () => import("@/component/reuseable/baseFavoriteButton/BaseFavoriteButton"),
+  {
+    ssr: false,
+  }
+);
+import { useGetSingleProjectQuery } from "@/queries/useGetSingleProjectQuery";
 
+// import BaseFavoriteButton from "@/component/reuseable/baseFavoriteButton/BaseFavoriteButton";
 
+const aboutProperty = [
+  "Heater",
+  "Dependency",
+  "Balcony",
+  "Service area",
+  "Air conditioner",
+  "Source",
+  "Coif",
+  "Cabinets",
+  "Wardrobe",
+  "Stove",
+];
 
 export default function ProjectView({
   loginOpen,
@@ -68,6 +107,26 @@ export default function ProjectView({
   language,
 }) {
   const router = useRouter();
+  const { query } = router;
+  console.log({ query });
+  const {
+    data: singleProjectData,
+    isLoading,
+    isFetched,
+    isFetching,
+  } = useGetSingleProjectQuery(+query?.id);
+  const [anchorEl, setAnchorEl] = useState(null);
+  const open = Boolean(anchorEl);
+  const handleClick = (event) => {
+    setAnchorEl(event.currentTarget);
+  };
+  const handleClose = () => {
+    setAnchorEl(null);
+  };
+
+  console.log({ singleProjectData });
+
+  const language = "pt";
 
   const [myValue, setMyValue] = useState(language || "pt");
 
@@ -119,35 +178,36 @@ export default function ProjectView({
     router.back();
   };
 
-  console.log({selectImage})
-
-
+  console.log({ selectImage });
 
   return (
     <div>
       <Head>
-      <Head>
-        <title>{`${singleProjectData?.project?.name} - Lokkan`}</title>
-        <meta name="description" content={`${projectDescription}`} />
-        <meta charset="UTF-8" />
-        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-        <meta
-          property="og:url"
-          content={`https://www.lokkan.site/property-view/${singleProjectData?.project?.id}`}
-        />
-        <meta
-          property="og:title"
-          content={`${singleProjectData?.project?.name}`}
-        />
-        <meta property="og:description" content={`${projectDescription}`} />
-        <meta
-          property="og:image"
-          content={`${_imageURL}/${seoImage?.file_path}`}
-        />
-        <meta property="og:image:width" content="1200" />
-        <meta property="og:image:height" content="630" />
-      </Head>
+        <Head>
+          <title>{`${singleProjectData?.project?.name} - Lokkan`}</title>
+          <meta name="description" content={`${projectDescription}`} />
+          <meta charset="UTF-8" />
+          <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+          <meta
+            name="viewport"
+            content="width=device-width, initial-scale=1.0"
+          />
+          <meta
+            property="og:url"
+            content={`https://www.lokkan.site/property-view/${singleProjectData?.project?.id}`}
+          />
+          <meta
+            property="og:title"
+            content={`${singleProjectData?.project?.name}`}
+          />
+          <meta property="og:description" content={`${projectDescription}`} />
+          <meta
+            property="og:image"
+            content={`${_imageURL}/${seoImage?.file_path}`}
+          />
+          <meta property="og:image:width" content="1200" />
+          <meta property="og:image:height" content="630" />
+        </Head>
       </Head>
 
       <main className="section">
@@ -193,7 +253,7 @@ export default function ProjectView({
           <Grid
             container
             direction="row"
-            justifyContent="flex-start"
+            justifyContent="space-between"
             alignItems="flex-start"
           >
             <Button
@@ -221,6 +281,96 @@ export default function ProjectView({
                 {singleProjectData?.project?.name}
               </Typography>
             </Button>
+            <Stack direction="row" spacing={1}>
+              <IconButton
+                id="basic-button"
+                aria-controls={open ? "basic-menu" : undefined}
+                aria-haspopup="true"
+                aria-expanded={open ? "true" : undefined}
+                onClick={handleClick}
+              >
+                <ShareIcon />
+              </IconButton>
+
+              <Menu
+                id="basic-menu"
+                anchorEl={anchorEl}
+                open={open}
+                onClose={handleClose}
+                MenuListProps={{
+                  "aria-labelledby": "basic-button",
+                }}
+                anchorOrigin={{
+                  vertical: "bottom",
+                  horizontal: "",
+                }}
+                transformOrigin={{
+                  vertical: "top",
+                  horizontal: "left",
+                }}
+              >
+                <MenuItem onClick={handleClose}>
+                  <Stack direction="column" spacing={3}>
+                    <Typography
+                      variant="p"
+                      sx={{
+                        fontSize: "16px",
+                        fontWeight: 600,
+                        color: "#1A1859",
+                      }}
+                      align="center"
+                    >
+                      Compartilhar
+                    </Typography>
+                    <Stack direction="row" spacing={3}>
+                      <Stack direction="column">
+                        <WhatsappShareButton
+                          url={`https://www.lokkan.site/project-view/${singleProjectData?.property?.id}`}
+                        >
+                          <WhatsappIcon round size={40} />
+                          <Typography sx={{ fontSize: "12px" }}>
+                            Whatsapp
+                          </Typography>
+                        </WhatsappShareButton>
+                      </Stack>
+                      <Stack direction="column">
+                        <FacebookShareButton
+                          url={`https://www.lokkan.site/project-view/${singleProjectData?.property?.id}`}
+                        >
+                          <FacebookIcon round size={40} />
+                          <Typography sx={{ fontSize: "12px" }}>
+                            Facebook
+                          </Typography>
+                        </FacebookShareButton>
+                      </Stack>
+                      <Stack direction="column">
+                        <EmailShareButton
+                          url={`https://www.lokkan.site/project-view/${singleProjectData?.property?.id}`}
+                        >
+                          <EmailIcon round size={40} />
+                          <Typography sx={{ fontSize: "12px" }}>
+                            Email
+                          </Typography>
+                        </EmailShareButton>
+                      </Stack>
+                      <Stack direction="column">
+                        <BaseCopyText
+                          text={`https://www.lokkan.site/project-view/${singleProjectData?.property?.id}`}
+                        />
+
+                        <Typography sx={{ fontSize: "12px", mt: "6px" }}>
+                          Copy URL
+                        </Typography>
+                      </Stack>
+                    </Stack>
+                  </Stack>
+                </MenuItem>
+              </Menu>
+              <BaseFavoriteButton
+                handleLoginOpen={handleLoginOpen}
+                itemID={singleProjectData?.property?.id}
+              />
+            </Stack>
           </Grid>
           <Grid
             container
@@ -261,17 +411,12 @@ export default function ProjectView({
                 images={Images}
               />
             </Grid>
-          
           </Grid>
-    
+
           <Box>
             <SlideImageMobile Images={Images} setSelectImage={setSelectImage} />
           </Box>
-          <Grid
-            container
-            spacing={2}
-     
-          >
+          <Grid container spacing={2}>
             <Grid
               item
               xs={12}
@@ -316,7 +461,6 @@ export default function ProjectView({
                 pb: 1,
               }}
             >
-           
               <Grid item xs={12} sm={12} md={12} lg={12}>
                 <Typography
                   variant="h6"
@@ -344,7 +488,7 @@ export default function ProjectView({
                 </Typography>
 
                 <Typography
-                  component='div'
+                  component="div"
                   align="left"
                   sx={{
                     color: "#FFFFFF",

@@ -101,7 +101,10 @@ const VideoCarousel = ({ videoLinks }) => {
           onEnd={onVideoEnd}
         ></iframe>
       ) : (
-        <Typography color={"red"} sx={{ p: 2 }}>
+        <Typography
+          color={"red"}
+          sx={{ p: 2, fontWeight: 600, textAlign: "center" }}
+        >
           No video available
         </Typography>
       )}

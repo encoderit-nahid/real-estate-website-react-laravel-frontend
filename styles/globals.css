@@ -206,7 +206,29 @@ iframe {
   height: auto;
   margin: 5px; /* Adjust the margin as needed */
 }
+.slick-slider.slick-initialized {
+  position: relative !important;
+}
+
+.slick-prev,
+.slick-next {
+  top: unset !important;
+  left: unset !important;
+  right: unset !important;
+  bottom: unset !important;
+
+  z-index: 1;
+}
+.slick-prev {
+  bottom: 20px !important;
+  right: 70px !important;
+}
+.slick-next {
+  bottom: 20px !important;
+  right: 30px !important;
+}
 .slick-prev:before,
 .slick-next:before {
-  color: black !important;
+  color: rgb(0, 81, 255) !important;
+  font-size: 32px !important;
 }
