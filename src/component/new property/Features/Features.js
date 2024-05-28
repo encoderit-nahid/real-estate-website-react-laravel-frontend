@@ -296,61 +296,36 @@ function Features({
         justifyContent="flex-end"
         alignItems="center"
         sx={{ mt: 2, mb: 2 }}
+        spacing={1}
       >
-        <Button
-          type="button"
-          variant="outlined"
-          color="error"
-          sx={{
-            fontSize: "16px",
-            lineHeight: "22px",
-            fontWeight: "600",
-            textTransform: "none",
-            py: 1,
-            mr: 1,
-          }}
-          onClick={() => {
-            reset();
-            replace("/my-properties");
-          }}
-        >
-          {t["Cancel"]}
-        </Button>
-        <Button
-          color="inherit"
-          onClick={handleBack}
-          // disabled={activeStep === 0}
-          sx={{
-            mr: 1,
-            border: "1px solid #002152",
-            borderRadius: "4px",
-            px: 2,
-            py: 1,
-            color: "#002152",
-            fontSize: "16px",
-            fontWeight: "600",
-            lineHeight: "22px",
-            textTransform: "none",
-          }}
-        >
-          {t["come back"]}
-        </Button>
-
-        <Button
-          onClick={handleNext}
-          disabled={disableBtn}
-          sx={{
-            background: "#7450F0",
-            borderRadius: "4px",
-            px: 2,
-            py: 1,
-            color: "#ffffff",
-            fontSize: "16px",
-            fontWeight: "600",
-            lineHeight: "22px",
-            textTransform: "none",
-            boxShadow: "0px 4px 8px rgba(81, 51, 182, 0.32)",
-            "&:hover": {
+        <Grid item xs={6} lg={4}>
+          <Button
+            color="inherit"
+            onClick={handleBack}
+            // disabled={activeStep === 0}
+            fullWidth
+            sx={{
+              mr: 1,
+              border: "1px solid #002152",
+              borderRadius: "4px",
+              px: 2,
+              py: 1,
+              color: "#002152",
+              fontSize: "16px",
+              fontWeight: "600",
+              lineHeight: "22px",
+              textTransform: "none",
+            }}
+          >
+            {t["come back"]}
+          </Button>
+        </Grid>
+        <Grid item xs={6} lg={4}>
+          <Button
+            onClick={handleNext}
+            disabled={disableBtn}
+            fullWidth
+            sx={{
               background: "#7450F0",
               borderRadius: "4px",
               px: 2,
@@ -361,11 +336,45 @@ function Features({
               lineHeight: "22px",
               textTransform: "none",
               boxShadow: "0px 4px 8px rgba(81, 51, 182, 0.32)",
-            },
-          }}
-        >
-          {t["Next"]}
-        </Button>
+              "&:hover": {
+                background: "#7450F0",
+                borderRadius: "4px",
+                px: 2,
+                py: 1,
+                color: "#ffffff",
+                fontSize: "16px",
+                fontWeight: "600",
+                lineHeight: "22px",
+                textTransform: "none",
+                boxShadow: "0px 4px 8px rgba(81, 51, 182, 0.32)",
+              },
+            }}
+          >
+            {t["Next"]}
+          </Button>
+        </Grid>
+        <Grid item xs={12} lg={4}>
+          <Button
+            type="button"
+            variant="outlined"
+            color="error"
+            fullWidth
+            sx={{
+              fontSize: "16px",
+              lineHeight: "22px",
+              fontWeight: "600",
+              textTransform: "none",
+              py: 1,
+              mr: 1,
+            }}
+            onClick={() => {
+              reset();
+              replace("/my-properties");
+            }}
+          >
+            {t["Cancel"]}
+          </Button>
+        </Grid>
       </Grid>
     </Box>
   );

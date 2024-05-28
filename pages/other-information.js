@@ -340,28 +340,7 @@ export default function OtherInformation({
                   <Grid container spacing={1} sx={{ mt: 2, mb: 5 }}>
                     {activeStep === 1 && (
                       <>
-                        <Grid item xs={4} sm={4} md={4}>
-                          <Button
-                            type="button"
-                            fullWidth
-                            variant="outlined"
-                            color="error"
-                            sx={{
-                              fontSize: "16px",
-                              lineHeight: "22px",
-                              fontWeight: "600",
-                              textTransform: "none",
-                              py: 1,
-                            }}
-                            onClick={() => {
-                              reset();
-                              replace("/");
-                            }}
-                          >
-                            {t["Cancel"]}
-                          </Button>
-                        </Grid>
-                        <Grid item xs={4} sm={4} md={4}>
+                        <Grid item xs={6} md={4}>
                           <Button
                             color="inherit"
                             fullWidth
@@ -384,7 +363,7 @@ export default function OtherInformation({
                             {t["Come back"]}
                           </Button>
                         </Grid>
-                        <Grid item xs={4} sm={4} md={4}>
+                        <Grid item xs={6} md={4}>
                           <Button
                             type="submit"
                             fullWidth
@@ -417,6 +396,27 @@ export default function OtherInformation({
                               <CircularProgress size={22} color="inherit" />
                             )}
                             {!loading && t["Register"]}
+                          </Button>
+                        </Grid>
+                        <Grid item xs={12} md={4}>
+                          <Button
+                            type="button"
+                            fullWidth
+                            variant="outlined"
+                            color="error"
+                            sx={{
+                              fontSize: "16px",
+                              lineHeight: "22px",
+                              fontWeight: "600",
+                              textTransform: "none",
+                              py: 1,
+                            }}
+                            onClick={() => {
+                              reset();
+                              replace("/");
+                            }}
+                          >
+                            {t["Cancel"]}
                           </Button>
                         </Grid>
                       </>

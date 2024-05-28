@@ -49,51 +49,43 @@ const UserUpdateForm = ({ language }) => {
     setValue("neighbourhood", currentUser?.address?.neighbourhood);
     setValue("complement", currentUser?.address?.complement);
     setValue("city", currentUser?.address?.city);
-    setValue(
-      "state_id",
-      currentUser?.address?.state
-    );
+    setValue("state_id", currentUser?.address?.state);
   }, [setValue, currentUser]);
   console.log("✅ ~ UserUpdateForm ~ currentUser:", currentUser);
   const mutation = useUserUpdateMutation();
 
-  const [loading,setLoading] = useState(false)
-
+  const [loading, setLoading] = useState(false);
 
   const onSubmit = (data) => {
-    setLoading(true)
-    const { email, phone, user_id, image,name ,...rest } = data;
-    const body = 
-      serialize(
-        {
-          email: email,
-          phone: phone,
-          user_id: user_id,
-          image: image instanceof File ? data?.image : null,
-          name: name,
-          address: omitEmpties({ ...rest, state_id: data.state_id.id }),
-        },
-        {
-          indices: true,
-          allowEmptyArrays: false,
-          booleansAsIntegers: true,
-          nullsAsUndefineds: true,
-        }
-        
-      )
+    setLoading(true);
+    const { email, phone, user_id, image, name, ...rest } = data;
+    const body = serialize(
+      {
+        email: email,
+        phone: phone,
+        user_id: user_id,
+        image: image instanceof File ? data?.image : null,
+        name: name,
+        address: omitEmpties({ ...rest, state_id: data.state_id.id }),
+      },
+      {
+        indices: true,
+        allowEmptyArrays: false,
+        booleansAsIntegers: true,
+        nullsAsUndefineds: true,
+      }
+    );
     mutation.mutate(body, {
-      
       onError(error) {
-        setLoading(false)
-        alert(`error: ${"There is something error"}`)
+        setLoading(false);
+        alert(`error: ${"There is something error"}`);
       },
       onSuccess: async (data) => {
-       await userDetailsApi()
-       setLoading(false)
-       alert('User successfully updated')
+        await userDetailsApi();
+        setLoading(false);
+        alert("User successfully updated");
       },
     });
-
   };
 
   const t = myValue === "en" ? en : pt;
@@ -578,52 +570,50 @@ const UserUpdateForm = ({ language }) => {
 
           <Grid
             container
-            direction="row"
-            justifyContent={{
-              xs: "flex-start",
-              sm: "flex-start",
-              md: "flex-start",
-              lg: "flex-end",
-              xl: "flex-end",
-            }}
-            alignItems="center"
+            // justifyContent={{
+            //   xs: "flex-start",
+            //   sm: "flex-start",
+            //   md: "flex-start",
+            //   lg: "flex-end",
+            //   xl: "flex-end",
+            // }}
+            // alignItems="center"
             sx={{
               pt: 2,
+              // bgcolor: "#000",
+              ml: { lg: "auto" },
+              width: {
+                xs: "100%",
+                lg: "fit-content",
+              },
             }}
+            spacing={1}
           >
-            <Button
-              color="inherit"
-              sx={{
-                mr: 1,
-                border: "1px solid #002152",
-                borderRadius: "4px",
-                px: 2,
-                py: 1,
-                color: "#002152",
-                fontSize: "16px",
-                fontWeight: "600",
-                lineHeight: "22px",
-                textTransform: "none",
-              }}
-            >
-              {t["Cancel"]}
-            </Button>
-            <Button
-              color="inherit"
-              type="submit"
-              sx={{
-                ml: 2,
-                background: "#34BE84",
-                borderRadius: "4px",
-                px: 2,
-                py: 1,
-                color: "#ffffff",
-                fontSize: "16px",
-                fontWeight: "600",
-                lineHeight: "22px",
-                textTransform: "none",
-                boxShadow: "0px 4px 8px rgba(81, 51, 182, 0.32)",
-                "&:hover": {
+            <Grid item xs={12} md={6}>
+              <Button
+                color="inherit"
+                fullWidth
+                sx={{
+                  border: "1px solid #002152",
+                  borderRadius: "4px",
+                  px: 2,
+                  py: 1,
+                  color: "#002152",
+                  fontSize: "16px",
+                  fontWeight: "600",
+                  lineHeight: "22px",
+                  textTransform: "none",
+                }}
+              >
+                {t["Cancel"]}
+              </Button>
+            </Grid>
+            <Grid item xs={12} md={6}>
+              <Button
+                color="inherit"
+                type="submit"
+                fullWidth
+                sx={{
                   background: "#34BE84",
                   borderRadius: "4px",
                   px: 2,
@@ -634,12 +624,24 @@ const UserUpdateForm = ({ language }) => {
                   lineHeight: "22px",
                   textTransform: "none",
                   boxShadow: "0px 4px 8px rgba(81, 51, 182, 0.32)",
-                },
-              }}
-            >
-               {loading && <CircularProgress size={22} color='inherit' />}
-            {!loading && t["Save"]}
-            </Button>
+                  "&:hover": {
+                    background: "#34BE84",
+                    borderRadius: "4px",
+                    px: 2,
+                    py: 1,
+                    color: "#ffffff",
+                    fontSize: "16px",
+                    fontWeight: "600",
+                    lineHeight: "22px",
+                    textTransform: "none",
+                    boxShadow: "0px 4px 8px rgba(81, 51, 182, 0.32)",
+                  },
+                }}
+              >
+                {loading && <CircularProgress size={22} color="inherit" />}
+                {!loading && t["Save"]}
+              </Button>
+            </Grid>
           </Grid>
         </Grid>
       </Grid>

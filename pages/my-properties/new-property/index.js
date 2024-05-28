@@ -586,7 +586,7 @@ export default function NewProperty({ language }) {
       allValues?.owner_number === "" ||
       allValues?.owner_neighbourhood === "" ||
       allValues?.owner_city === "" ||
-      allValues?.owner_state === "" 
+      allValues?.owner_state === ""
     ) {
       setDisableBtn(true);
     }
@@ -733,6 +733,133 @@ export default function NewProperty({ language }) {
                   }}
                 >
                   {activeStep === steps.length - 1 && (
+                    <Grid container spacing={1}>
+                      <Grid item xs={12} md={6} lg={3}>
+                        <Button
+                          color="inherit"
+                          // disabled={activeStep === 0}
+                          onClick={handleBack}
+                          fullWidth
+                          sx={{
+                            mr: 1,
+                            border: "1px solid #002152",
+                            borderRadius: "4px",
+                            px: 2,
+                            py: 1,
+                            color: "#002152",
+                            fontSize: "16px",
+                            fontWeight: "600",
+                            lineHeight: "22px",
+                            textTransform: "none",
+                          }}
+                        >
+                          {t["come back"]}
+                        </Button>
+                      </Grid>
+                      <Grid item xs={12} md={6} lg={3}>
+                        <Button
+                          type="submit"
+                          fullWidth
+                          disabled={
+                            session?.user?.role !== "owner" && disableBtn
+                          }
+                          onClick={() => setAction("draft")}
+                          sx={{
+                            background: "#DBE1E5",
+                            borderRadius: "4px",
+                            px: 2,
+                            py: 1,
+                            mr: 1,
+                            color: "#002152",
+                            fontSize: "16px",
+                            fontWeight: "600",
+                            lineHeight: "22px",
+                            textTransform: "none",
+
+                            "&:hover": {
+                              background: "#DBE1E5",
+                              borderRadius: "4px",
+                              px: 2,
+                              py: 1,
+                              color: "#002152",
+                              fontSize: "16px",
+                              fontWeight: "600",
+                              lineHeight: "22px",
+                              textTransform: "none",
+                              mr: 1,
+                            },
+                          }}
+                        >
+                          {draftloading && (
+                            <CircularProgress size={22} color="inherit" />
+                          )}
+                          {!draftloading && t["Save as draft"]}
+                        </Button>
+                      </Grid>
+                      <Grid item xs={12} lg={3}>
+                        <Button
+                          type="submit"
+                          disabled={
+                            session?.user?.role !== "owner" && disableBtn
+                          }
+                          fullWidth
+                          onClick={() => setAction("new")}
+                          sx={{
+                            background: "#7450F0",
+                            borderRadius: "4px",
+                            px: 2,
+                            py: 1,
+                            color: "#ffffff",
+                            fontSize: "16px",
+                            fontWeight: "600",
+                            lineHeight: "22px",
+                            textTransform: "none",
+                            boxShadow: "0px 4px 8px rgba(81, 51, 182, 0.32)",
+                            "&:hover": {
+                              background: "#7450F0",
+                              borderRadius: "4px",
+                              px: 2,
+                              py: 1,
+                              color: "#ffffff",
+                              fontSize: "16px",
+                              fontWeight: "600",
+                              lineHeight: "22px",
+                              textTransform: "none",
+                              boxShadow: "0px 4px 8px rgba(81, 51, 182, 0.32)",
+                            },
+                          }}
+                        >
+                          {loading && (
+                            <CircularProgress size={22} color="inherit" />
+                          )}
+                          {!loading && t["Submit approval"]}
+                        </Button>
+                      </Grid>
+                      <Grid item xs={12} lg={3}>
+                        <Button
+                          type="button"
+                          variant="outlined"
+                          fullWidth
+                          color="error"
+                          sx={{
+                            fontSize: "16px",
+                            lineHeight: "22px",
+                            fontWeight: "600",
+                            textTransform: "none",
+                            py: 1,
+                            mr: 1,
+                          }}
+                          onClick={() => {
+                            reset();
+                            replace("/my-properties");
+                          }}
+                        >
+                          {t["Cancel"]}
+                        </Button>
+                      </Grid>
+                    </Grid>
+                  )}
+                  {/* {activeStep === steps.length - 1 && (
                     <>
                       <Button
                         type="button"
@@ -847,7 +974,7 @@ export default function NewProperty({ language }) {
                         {!loading && t["Submit approval"]}
                       </Button>
                     </Box>
-                  )}
+                  )} */}
                 </Stack>
               </form>
             </Fragment>
