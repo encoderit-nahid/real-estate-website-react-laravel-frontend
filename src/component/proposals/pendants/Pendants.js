@@ -17,7 +17,7 @@ import { useSession } from "next-auth/react";
 import dayjs from "dayjs";
 import { useGetPropertyQuery } from "@/queries/useGetPropertyQuery";
 
-function Pendants({ languageName }) {
+function Pendants({ languageName,loadingRefetch }) {
   const dispatch = useDispatch();
   const router = useRouter();
   const { query } = router;
@@ -103,7 +103,7 @@ function Pendants({ languageName }) {
       <Grid container spacing={2}>
         {pendingProperty?.data?.map((data, index) => (
           <Grid key={index} item xs={12} sm={12} md={12} lg={4} xl={4}>
-            <PendantsCard propertyData={data} languageName={languageName} />
+            <PendantsCard propertyData={data} languageName={languageName} refetch={refetch} loadingRefetch={loadingRefetch} />
           </Grid>
         ))}
       </Grid>

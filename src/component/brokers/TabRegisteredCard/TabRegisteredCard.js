@@ -4,7 +4,6 @@ import {
   Button,
   Divider,
   Grid,
-  Link,
   ListItem,
   ListItemAvatar,
   ListItemText,
@@ -25,6 +24,7 @@ import dayjs from "dayjs";
 import pt from "locales/pt";
 import en from "locales/en";
 import { _imageURL } from "consts";
+import Link from "next/link";
 
 function TabRegisteredCard({ brokerInfo, languageName }) {
   const t = languageName === "en" ? en : pt;
@@ -388,7 +388,7 @@ function TabRegisteredCard({ brokerInfo, languageName }) {
         </Button>
       </Grid>
       <Box sx={{ px: 1.5, mt: 2 }}>
-        <Link href={`/brokers/1`}>
+        <Link href={`/brokers/${brokerInfo?.id}`}>
           <a>
             <Button
               fullWidth
@@ -411,16 +411,6 @@ function TabRegisteredCard({ brokerInfo, languageName }) {
             </Button>
           </a>
         </Link>
-
-        {/* 
-        <SwipeableDrawer
-          anchor={"right"}
-          open={state["right"]}
-          onClose={toggleDrawer("right", false)}
-          onOpen={toggleDrawer("right", true)}
-        >
-          {list("right")}
-        </SwipeableDrawer> */}
       </Box>
     </Box>
   );

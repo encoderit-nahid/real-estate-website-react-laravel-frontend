@@ -22,7 +22,7 @@ export async function middleware(req) {
   console.log({ requestPath });
   const isPublicPath =
     publicPaths.includes(requestPath) ||
-    requestPath.startsWith("/property-view");
+    requestPath.startsWith("/property-view") || requestPath.startsWith("/project-view");
 
   console.log({ isPublicPath });
 

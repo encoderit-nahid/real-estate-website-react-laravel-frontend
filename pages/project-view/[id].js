@@ -84,18 +84,7 @@ import { useGetSingleProjectQuery } from "@/queries/useGetSingleProjectQuery";
 
 // import BaseFavoriteButton from "@/component/reuseable/baseFavoriteButton/BaseFavoriteButton";
 
-const aboutProperty = [
-  "Heater",
-  "Dependency",
-  "Balcony",
-  "Service area",
-  "Air conditioner",
-  "Source",
-  "Coif",
-  "Cabinets",
-  "Wardrobe",
-  "Stove",
-];
+
 
 export default function ProjectView({
   loginOpen,
@@ -107,14 +96,8 @@ export default function ProjectView({
   language,
 }) {
   const router = useRouter();
-  const { query } = router;
-  console.log({ query });
-  const {
-    data: singleProjectData,
-    isLoading,
-    isFetched,
-    isFetching,
-  } = useGetSingleProjectQuery(+query?.id);
+
+
   const [anchorEl, setAnchorEl] = useState(null);
   const open = Boolean(anchorEl);
   const handleClick = (event) => {
@@ -124,9 +107,7 @@ export default function ProjectView({
     setAnchorEl(null);
   };
 
-  console.log({ singleProjectData });
 
-  const language = "pt";
 
   const [myValue, setMyValue] = useState(language || "pt");
 
@@ -412,10 +393,6 @@ export default function ProjectView({
               />
             </Grid>
           </Grid>
-
-          <Box>
-            <SlideImageMobile Images={Images} setSelectImage={setSelectImage} />
-          </Box>
           <Grid container spacing={2}>
             <Grid
               item

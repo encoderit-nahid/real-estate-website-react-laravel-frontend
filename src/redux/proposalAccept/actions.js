@@ -1,4 +1,5 @@
 // import { stateApi } from "../../api";
+
 import { propertyTypeApi, proposalAcceptApi } from '../../api'
 import { propertyRemove } from '../property/actions'
 import * as Types from './types'
@@ -23,6 +24,7 @@ const propertyAcceptFailed = (err) => {
 	}
 }
 
+
 // order action
 export const propertyAcceptData = (body) => async (dispatch) => {
 	dispatch(propertyAcceptRequest())
@@ -30,9 +32,10 @@ export const propertyAcceptData = (body) => async (dispatch) => {
 	const [error, response] = await proposalAcceptApi(body)
 
 	if (!error) {
-		dispatch(propertyRemove(body.property_id))
+		console.log({response})
+		// dispatch(propertyRemove(body.property_id))
 
-		dispatch(propertyAcceptSuccess(response?.data?.proposal))
+		// dispatch(propertyAcceptSuccess(response?.data?.proposal))
 	} else {
 		const errorMassage =
 			error?.response?.data?.data || error?.response?.data?.status
