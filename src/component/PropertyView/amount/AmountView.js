@@ -122,7 +122,12 @@ function AmountView({
         direction="column"
         justifyContent="flex-start"
         alignItems="flex-start"
-        sx={{}}
+        sx={{
+          display: {
+            xs: "none",
+            sm: "flex",
+          },
+        }}
       >
         <Button
           disabled={

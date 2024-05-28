@@ -129,9 +129,10 @@ function SliderViewMobile({
     speed: 500,
     slidesToShow: 1,
     slidesToScroll: 1,
+    swipeToSlide: true,
   };
   return (
-    <Container maxWidth="sm">
+    <Container maxWidth="sm" sx={{ p: 0 }}>
       <Tabs
         value={value}
         onChange={handleChange}
@@ -143,11 +144,7 @@ function SliderViewMobile({
           onClick={() => handleTabClick("photos")}
           icon={<AutoAwesomeMotionOutlinedIcon />}
         />
-        {/* <Tab
-          sx={{ minWidth: "60px" }}
-          icon={<RedoOutlinedIcon />}
-          onClick={() => handleTabClick("vision_360")}
-        /> */}
+
         <Tab
           sx={{ minWidth: "60px" }}
           icon={<CabinOutlinedIcon />}

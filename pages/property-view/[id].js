@@ -247,7 +247,7 @@ export default function PropertyView({
           setLoginOpen={setLoginOpen}
           handleLoginClose={handleLoginClose}
           handleLoginOpen={handleLoginOpen}
-          languageName={'pt'}
+          languageName={"pt"}
           setMyValue={setMyValue}
           myValue={myValue}
           colorLogo={true}
@@ -613,6 +613,7 @@ export default function PropertyView({
           bottom: 0,
           left: 0,
           backgroundColor: "#fff",
+          zIndex: 1000,
           width: "100%",
           p: 3,
         }}
@@ -629,6 +630,7 @@ export default function PropertyView({
           sx={{
             width: "fit-content",
             mx: "auto",
+            zIndex: 111,
           }}
         >
           <Button
@@ -646,6 +648,7 @@ export default function PropertyView({
               minWidth: "250px",
               background: "#0E97F7",
               borderRadius: "4px",
+
               "&: hover": {
                 px: 4,
                 fontSize: "16px",
@@ -724,7 +727,6 @@ export async function getServerSideProps(context) {
         singlePropertyData?.property?.property_detail?.photo_types?.filter(
           (data) => data.slug.substr(data.slug.length - 3) !== "360"
         ),
-    
     },
   };
 }
