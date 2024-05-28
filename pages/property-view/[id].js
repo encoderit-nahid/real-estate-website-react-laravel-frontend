@@ -39,7 +39,10 @@ const Negotiate = dynamic(() =>
   import("@/component/PropertyView/Negotiate/Negotiate")
 );
 const HouseCard = dynamic(() =>
-  import("@/component/reuseable/HouseCard/HouseCard")
+  import("@/component/reuseable/HouseCard/HouseCard"),
+{
+  ssr: false,
+}
 );
 const SliderView = dynamic(
   () => import("@/component/PropertyView/slider/SliderView"),
@@ -83,36 +86,12 @@ const BaseFavoriteButton = dynamic(
 );
 
 
-const aboutCondo = [
-  "sports court",
-  "playground",
-  "Electric fence",
-  "Internal TV circuit",
-  "Ordinance",
-  "individual gas",
-  "service entrance",
-  "Service elevator",
-  "Employee locker room",
-  "Academy",
-  "heated pool",
-  "Party room",
-];
-
-const surroundings = [
-  "hospitals",
-  "pharmacies",
-  "Markets",
-  "Laundries",
-  "Museum",
-];
-
 export default function PropertyView({
   loginOpen,
   setLoginOpen,
   handleLoginOpen,
   handleLoginClose,
   singlePropertyData,
-  tabArrayData,
   propertyDescription,
 }) {
   const [myValue, setMyValue] = useState("pt");
@@ -709,10 +688,10 @@ export async function getServerSideProps(context) {
       propertyDescription: stripHtmlTags(
         singlePropertyData?.property?.property_description
       ),
-      tabArrayData:
-        singlePropertyData?.property?.property_detail?.photo_types?.filter(
-          (data) => data.slug.substr(data.slug.length - 3) !== "360"
-        ),
+      // tabArrayData:
+      //   singlePropertyData?.property?.property_detail?.photo_types?.filter(
+      //     (data) => data.slug.substr(data.slug.length - 3) !== "360"
+      //   ),
     
     },
   };
