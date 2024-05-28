@@ -116,10 +116,7 @@ function LoginModal({ handleLoginClose, myValue }) {
           roleId: response?.data?.user?.roles[0]?.id,
           userImage: response?.data?.user?.attachments[0]?.file_path,
           wishList: response?.data?.wishlists,
-          callbackUrl:
-            response.data?.user?.roles[0]?.slug === "buyer"
-              ? "/"
-              : "/my-properties",
+          callbackUrl: "/my-properties",
         });
       }
     } else {

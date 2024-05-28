@@ -300,7 +300,7 @@ function PhotosAndVideos({
                 <Controller
                   name={`title_${index}`}
                   control={control}
-                  defaultValue={photoType[0] || file.photo_type}
+                  defaultValue={photoType[1] || file.photo_type}
                   render={({ field }) => (
                     <BaseAutocomplete
                       //   sx={{ margin: "0.6vh 0" }}
@@ -533,7 +533,7 @@ function PhotosAndVideos({
                 <Controller
                   name={`video_title_${index}`}
                   control={control}
-                  defaultValue={photoType[0] || file.photo_type}
+                  defaultValue={photoType[1] || file.photo_type}
                   render={({ field }) => (
                     <BaseAutocomplete
                       //   sx={{ margin: "0.6vh 0" }}

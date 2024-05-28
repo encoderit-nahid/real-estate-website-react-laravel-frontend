@@ -36,10 +36,7 @@ export default function Google({ roleId }) {
             role: response?.data?.user?.roles[0]?.slug,
             roleId: response?.data?.user?.roles[0]?.id,
             userImage: response?.data?.user?.attachments[0]?.file_path,
-            callbackUrl:
-              response.data.user.roles[0].slug === "buyer"
-                ? "/"
-                : "/my-properties",
+            callbackUrl: "/my-properties",
           });
         }
         // else {
