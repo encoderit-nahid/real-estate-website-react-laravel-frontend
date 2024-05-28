@@ -1324,7 +1324,7 @@ export default function Proposals({ language }) {
             </Grid>
           </Container>
           <TabPanel value={value} index={0}>
-            <Pendants languageName={myValue.toString()} />
+            <Pendants languageName={myValue.toString()} loadingRefetch={loadingRefetch} />
           </TabPanel>
           <TabPanel value={value} index={1}>
             <Accepted languageName={myValue.toString()} />

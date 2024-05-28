@@ -48,7 +48,7 @@ const omitEmpties = (obj) => {
   }, {});
 };
 
-function PendantsCard({ propertyData, languageName }) {
+function PendantsCard({ propertyData, languageName,refetch,loadingRefetch }) {
   const t = languageName === "en" ? en : pt;
   const dispatch = useDispatch();
   const { data: session } = useSession();
@@ -65,21 +65,24 @@ function PendantsCard({ propertyData, languageName }) {
   const [refuseId, setRefuseId] = useState("");
   const { query } = useRouter();
 
-  const handleProposalRefuse = (id) => {
+  const handleProposalRefuse = async(id) => {
     setRefuseId(id);
     dispatch(proposalRefuseData(propertyData?.id, id));
-    dispatch(findPropertyData(query));
+    await refetch()
+    await loadingRefetch()
   };
 
-  const handleProposalAccept = (id) => {
+  const handleProposalAccept = async(id) => {
     setAcceptId(id);
     dispatch(
       propertyAcceptData({ property_id: propertyData?.id, proposal_id: id })
     );
+    await refetch()
+    await loadingRefetch()
   };
 
-  const acceptLoading = useSelector((state) => state?.propertyAccept?.loading);
-  const refuseLoading = useSelector((state) => state?.proposalRefuse?.loading);
+  // const acceptLoading = useSelector((state) => state?.propertyAccept?.loading);
+  // const refuseLoading = useSelector((state) => state?.proposalRefuse?.loading);
 
   const [state, setState] = React.useState({
     top: false,
@@ -341,11 +344,9 @@ function PendantsCard({ propertyData, languageName }) {
                       },
                     }}
                   >
-                    {refuseLoading && refuseId === data.id ? (
-                      <CircularProgress size={22} color="inherit" />
-                    ) : (
-                      t["refuse"]
-                    )}
+               
+                     { t["refuse"]}
+               
                   </Button>
                 </Grid>
                 <Grid item xs={12} sm={12} md={12} lg={6}>
@@ -407,11 +408,9 @@ function PendantsCard({ propertyData, languageName }) {
                     }}
                     onClick={() => handleProposalAccept(data.id)}
                   >
-                    {acceptLoading && acceptid === data.id ? (
-                      <CircularProgress size={22} color="inherit" />
-                    ) : (
-                      t["To accept"]
-                    )}
+                
+                      {t["To accept"]}
+                  
                   </Button>
                 </Grid>
               </Grid>
