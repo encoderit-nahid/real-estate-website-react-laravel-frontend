@@ -15,10 +15,9 @@ import { Controller, useForm } from "react-hook-form";
 import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import NoEncryptionOutlinedIcon from "@mui/icons-material/NoEncryptionOutlined";
 import Image from "next/image";
-import accountIcon from "../../../../public/Images/account.png";
 import en from "locales/en";
 import pt from "locales/pt";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as Yup from "yup";
 import useCurrentUser from "@/hooks/useCurrentUser";
@@ -26,12 +25,11 @@ import { _baseURL, _imageURL } from "consts";
 import { useUserUpdateMutation } from "@/queries/useUserQuery";
 import { omitEmpties, userDetailsApi } from "@/api";
 import { serialize } from "object-to-formdata";
-import { getSession, useSession } from "next-auth/react";
+import { useRouter } from "next/router";
 const UserUpdateForm = ({ language }) => {
   const [myValue, setMyValue] = useState(language || "pt");
   const currentUser = useCurrentUser();
-  const { data: session } = useSession();
-
+  const router = useRouter();
   const myLoader = ({ src }) => {
     return `${src}`;
   };
@@ -51,41 +49,39 @@ const UserUpdateForm = ({ language }) => {
     setValue("city", currentUser?.address?.city);
     setValue("state_id", currentUser?.address?.state);
   }, [setValue, currentUser]);
-  console.log("✅ ~ UserUpdateForm ~ currentUser:", currentUser);
   const mutation = useUserUpdateMutation();
-
   const [loading, setLoading] = useState(false);
-
   const onSubmit = (data) => {
-    setLoading(true);
-    const { email, phone, user_id, image, name, ...rest } = data;
-    const body = serialize(
-      {
-        email: email,
-        phone: phone,
-        user_id: user_id,
-        image: image instanceof File ? data?.image : null,
-        name: name,
-        address: omitEmpties({ ...rest, state_id: data.state_id.id }),
-      },
-      {
-        indices: true,
-        allowEmptyArrays: false,
-        booleansAsIntegers: true,
-        nullsAsUndefineds: true,
-      }
-    );
-    mutation.mutate(body, {
-      onError(error) {
-        setLoading(false);
-        alert(`error: ${"There is something error"}`);
-      },
-      onSuccess: async (data) => {
-        await userDetailsApi();
-        setLoading(false);
-        alert("User successfully updated");
-      },
-    });
+    console.log({ data });
+    // setLoading(true);
+    // const { email, phone, user_id, image, name, ...rest } = data;
+    // const body = serialize(
+    //   {
+    //     email: email,
+    //     phone: phone,
+    //     user_id: user_id,
+    //     image: image instanceof File ? data?.image : null,
+    //     name: name,
+    //     address: omitEmpties({ ...rest, state_id: data.state_id.id }),
+    //   },
+    //   {
+    //     indices: true,
+    //     allowEmptyArrays: false,
+    //     booleansAsIntegers: true,
+    //     nullsAsUndefineds: true,
+    //   }
+    // );
+    // mutation.mutate(body, {
+    //   onError(error) {
+    //     setLoading(false);
+    //     alert(`error: ${"There is something error"}`);
+    //   },
+    //   onSuccess: async (data) => {
+    //     await userDetailsApi();
+    //     setLoading(false);
+    //     alert("User successfully updated");
+    //   },
+    // });
   };
 
   const t = myValue === "en" ? en : pt;
@@ -570,17 +566,8 @@ const UserUpdateForm = ({ language }) => {
 
           <Grid
             container
-            // justifyContent={{
-            //   xs: "flex-start",
-            //   sm: "flex-start",
-            //   md: "flex-start",
-            //   lg: "flex-end",
-            //   xl: "flex-end",
-            // }}
-            // alignItems="center"
             sx={{
               pt: 2,
-              // bgcolor: "#000",
               ml: { lg: "auto" },
               width: {
                 xs: "100%",
@@ -604,6 +591,7 @@ const UserUpdateForm = ({ language }) => {
                   lineHeight: "22px",
                   textTransform: "none",
                 }}
+                onClick={() => router.replace({ pathname: "/my-properties" })}
               >
                 {t["Cancel"]}
               </Button>

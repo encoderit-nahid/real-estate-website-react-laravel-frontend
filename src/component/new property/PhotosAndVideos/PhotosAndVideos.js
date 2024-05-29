@@ -530,7 +530,7 @@ function PhotosAndVideos({
                                 <TextField {...params} label="Convenient" />
                               )}
                             /> */}
-                <Controller
+                {/* <Controller
                   name={`video_title_${index}`}
                   control={control}
                   defaultValue={photoType[1] || file.photo_type}
@@ -549,7 +549,7 @@ function PhotosAndVideos({
                       value={field.value}
                     />
                   )}
-                />
+                /> */}
               </Box>
             </Grid>
           ))}
