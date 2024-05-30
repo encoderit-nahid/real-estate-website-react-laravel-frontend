@@ -34,6 +34,7 @@ import pt from "locales/pt";
 import { _baseURL } from "consts";
 
 import SetCookie from "@/hooks/setCookie";
+import BaseButton from "@/component/reuseable/baseButton/BaseButton";
 
 export default function Registration({ language, handleLoginOpen }) {
   const router = useRouter();
@@ -425,25 +426,6 @@ export default function Registration({ language, handleLoginOpen }) {
                       {errors.password?.message}
                     </Typography>
 
-                    {/* <Grid
-                      container
-                      direction="row"
-                      justifyContent="flex-start"
-                      alignItems="flex-start"
-                      sx={{ mt: 3, mb: 1 }}
-                    >
-                      <Typography
-                        variant="p"
-                        sx={{
-                          color: "#253858",
-                          fontSize: "14px",
-                          fontWeight: "400",
-                          lineHeight: "16px",
-                        }}
-                      >
-                        {t["Profile"]}
-                      </Typography>
-                    </Grid> */}
                     <Grid
                       container
                       justifyContent="center"
@@ -452,31 +434,24 @@ export default function Registration({ language, handleLoginOpen }) {
                       mt={5}
                     >
                       <Grid item xs={12} sm={12} md={12} lg={6} xl={6}>
-                        <Button
-                          type="button"
-                          fullWidth
-                          variant="outlined"
+                        <BaseButton
+                          sx="error"
                           color="error"
-                          sx={{
-                            fontSize: "16px",
-                            lineHeight: "22px",
-                            fontWeight: "600",
-                            textTransform: "none",
-                            py: 1,
-                          }}
-                          onClick={() => {
+                          variant="outlined"
+                          fullWidth
+                          handleFunction={() => {
                             reset();
                             router.replace("/");
                           }}
                         >
                           {t["Cancel"]}
-                        </Button>
+                        </BaseButton>
                       </Grid>
                       <Grid item xs={12} sm={12} md={12} lg={6} xl={6}>
-                        <Button
+                        <BaseButton
                           type="submit"
                           fullWidth
-                          sx={{
+                          custom_sx={{
                             background:
                               "linear-gradient(270deg, #1DEECB 1.2%, #00C1B4 98.7%)",
                             boxShadow: "0px 4px 34px rgba(0, 0, 0, 0.08)",
@@ -485,7 +460,6 @@ export default function Registration({ language, handleLoginOpen }) {
                             fontSize: "16px",
                             lineHeight: "22px",
                             fontWeight: "600",
-
                             textTransform: "none",
                             py: 1,
                           }}
@@ -494,7 +468,7 @@ export default function Registration({ language, handleLoginOpen }) {
                             <CircularProgress size={22} color="inherit" />
                           )}
                           {!loading && t["Register"]}
-                        </Button>
+                        </BaseButton>
                       </Grid>
                     </Grid>
                   </form>

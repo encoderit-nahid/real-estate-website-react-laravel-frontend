@@ -40,6 +40,8 @@ import dayjs from "dayjs";
 import { signIn } from "next-auth/react";
 import en from "locales/en";
 import pt from "locales/pt";
+import BaseButton from "@/component/reuseable/baseButton/BaseButton";
+import { useRouter } from "next/router";
 
 const aboutLokkanData = [
   "Indicação de amigo",
@@ -189,6 +191,7 @@ export default function OtherInformation({
   });
 
   const allValues = watch();
+  const { replace } = useRouter();
 
   useEffect(() => {
     if (Object.keys(errors).length > 0) {
@@ -314,6 +317,7 @@ export default function OtherInformation({
                       selectedBroker={selectedBroker}
                       setSelectedBroker={setSelectedBroker}
                       reset={reset}
+                      replace={replace}
                     />
                   ) : (
                     <AddressData
@@ -326,6 +330,7 @@ export default function OtherInformation({
                       activeStep={activeStep}
                       languageName={myValue.toString()}
                       reset={reset}
+                      replace={replace}
                     />
                   )}
                   {errors && (
@@ -340,84 +345,23 @@ export default function OtherInformation({
                   <Grid container spacing={1} sx={{ mt: 2, mb: 5 }}>
                     {activeStep === 1 && (
                       <>
-                        <Grid item xs={6} md={4}>
-                          <Button
-                            color="inherit"
+                        <Grid item xs={3}>
+                          <BaseButton
                             fullWidth
                             disabled={activeStep === 0}
                             onClick={handleBack}
-                            sx={{
-                              //   mr: 1,
-                              //   border: "1px solid #002152",
-                              //   borderRadius: "4px",
-                              background: "#ffffff",
-                              px: 2,
-                              py: 1,
-                              color: "#4B4B66",
-                              fontSize: "16px",
-                              fontWeight: "600",
-                              lineHeight: "22px",
-                              textTransform: "none",
-                            }}
+                            sx="mute"
                           >
                             {t["Come back"]}
-                          </Button>
+                          </BaseButton>
                         </Grid>
-                        <Grid item xs={6} md={4}>
-                          <Button
-                            type="submit"
-                            fullWidth
-                            sx={{
-                              background: "#00C1B4",
-                              boxShadow: "0px 4px 34px rgba(0, 0, 0, 0.08)",
-                              borderRadius: "4px",
-                              color: "#ffffff",
-                              fontSize: "16px",
-                              lineHeight: "22px",
-                              fontWeight: "600",
-                              //   mt: 3,
-                              textTransform: "none",
-                              py: 1,
-                              "&:hover": {
-                                background: "#00C1B4",
-                                boxShadow: "0px 4px 34px rgba(0, 0, 0, 0.08)",
-                                borderRadius: "4px",
-                                color: "#ffffff",
-                                fontSize: "16px",
-                                lineHeight: "22px",
-                                fontWeight: "600",
-                                // mt: 3,
-                                textTransform: "none",
-                                py: 1,
-                              },
-                            }}
-                          >
+                        <Grid item xs={3}>
+                          <BaseButton type="submit" fullWidth sx="success">
                             {loading && (
                               <CircularProgress size={22} color="inherit" />
                             )}
                             {!loading && t["Register"]}
-                          </Button>
-                        </Grid>
-                        <Grid item xs={12} md={4}>
-                          <Button
-                            type="button"
-                            fullWidth
-                            variant="outlined"
-                            color="error"
-                            sx={{
-                              fontSize: "16px",
-                              lineHeight: "22px",
-                              fontWeight: "600",
-                              textTransform: "none",
-                              py: 1,
-                            }}
-                            onClick={() => {
-                              reset();
-                              replace("/");
-                            }}
-                          >
-                            {t["Cancel"]}
-                          </Button>
+                          </BaseButton>
                         </Grid>
                       </>
                     )}

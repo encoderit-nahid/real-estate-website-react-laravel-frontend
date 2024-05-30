@@ -15,6 +15,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { findStateData } from "../../../redux/state/actions";
 import en from "locales/en";
 import pt from "locales/pt";
+import BaseButton from "@/component/reuseable/baseButton/BaseButton";
 
 function AddressData({
   handleBack,
@@ -26,6 +27,7 @@ function AddressData({
   activeStep,
   languageName,
   reset,
+  replace,
 }) {
   const t = languageName === "en" ? en : pt;
   const dispatch = useDispatch();
@@ -68,7 +70,7 @@ function AddressData({
       <Grid
         container
         direction="row"
-        justifyContent="flex-start"
+        justifyContent="space-between"
         alignItems="center"
       >
         <Typography
@@ -82,6 +84,18 @@ function AddressData({
         >
           {t["Address"]}
         </Typography>
+        <BaseButton
+          type="button"
+          variant="outlined"
+          color="error"
+          sx="error"
+          handleFunction={() => {
+            reset();
+            replace("/registration");
+          }}
+        >
+          {t["Cancel"]}
+        </BaseButton>
       </Grid>
 
       <Grid container spacing={1} sx={{ mt: 2 }}>
