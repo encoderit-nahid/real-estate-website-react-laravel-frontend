@@ -4,6 +4,7 @@ import {
   CircularProgress,
   Divider,
   Grid,
+  Stack,
   Typography,
 } from "@mui/material";
 import Image from "next/image";
@@ -19,8 +20,18 @@ import pt from "locales/pt";
 import { useSession } from "next-auth/react";
 import BaseAutocomplete from "@/component/reuseable/baseAutocomplete/BaseAutocomplete";
 import { featureDataCreate } from "@/redux/featureWithoutGroup/actions";
+import BaseButton from "@/component/reuseable/baseButton/BaseButton";
+import { useRouter } from "next/router";
 
-function Features({ featuretypes, setFeatureTypes, errors, languageName }) {
+function Features({
+  featuretypes,
+  setFeatureTypes,
+  errors,
+  languageName,
+
+  reset,
+  replace,
+}) {
   const t = languageName === "en" ? en : pt;
 
   console.log({ t });
@@ -66,28 +77,46 @@ function Features({ featuretypes, setFeatureTypes, errors, languageName }) {
       setDisableBtn(true);
     }
   }, [featuretypes]);
+  const router = useRouter();
 
   return (
     <Box sx={{ mt: 4 }}>
       <Grid
         container
         direction="row"
-        justifyContent="flex-start"
-        alignItems="flex-start"
+        justifyContent="space-between"
+        alignItems="center"
       >
-        <Image height={40} width={40} src={buildingImage} alt="building" />
-        <Typography
-          variant="p"
-          sx={{
-            color: "#002152",
-            fontSize: "24px",
-            fontWeight: "700",
-            lineHeight: "32px",
-            ml: 1,
-          }}
+        <Stack
+          direction="row"
+          justifyContent="space-between"
+          alignItems="center"
         >
-          {t["Features"]}
-        </Typography>
+          <Image height={40} width={40} src={buildingImage} alt="building" />
+          <Typography
+            variant="p"
+            sx={{
+              color: "#002152",
+              fontSize: "24px",
+              fontWeight: "700",
+              lineHeight: "32px",
+              ml: 1,
+            }}
+          >
+            {t["Features"]}
+          </Typography>
+        </Stack>
+        <BaseButton
+          handleFunction={() => {
+            reset();
+            replace("/my-properties");
+          }}
+          sx="error"
+          color="error"
+          variant="outlined"
+        >
+          {t["Cancel"]}
+        </BaseButton>
       </Grid>
       <Box sx={{ mt: 2 }}>
         <Typography

@@ -3,6 +3,7 @@ import {
   Box,
   Button,
   Grid,
+  Stack,
   TextField,
   Typography,
 } from "@mui/material";
@@ -15,6 +16,8 @@ import { Controller } from "react-hook-form";
 import BaseAutocomplete from "../../reuseable/baseAutocomplete/BaseAutocomplete";
 import en from "locales/en";
 import pt from "locales/pt";
+import BaseCancelButton from "@/component/reuseable/button/BaseCancelButton";
+import BaseButton from "@/component/reuseable/baseButton/BaseButton";
 
 //matched_with_property_details
 const matchedForCondominio = [1, 2, 4, 8, 10, 11, 13, 15, 16];
@@ -92,22 +95,39 @@ function ValuesAndDescription({
       <Grid
         container
         direction="row"
-        justifyContent="flex-start"
+        justifyContent="space-between"
         alignItems="flex-start"
       >
-        <Image height={40} width={40} src={valueImage} alt="value" />
-        <Typography
-          variant="p"
-          sx={{
-            color: "#002152",
-            fontSize: "24px",
-            fontWeight: "700",
-            lineHeight: "32px",
-            ml: 1,
+        <Stack
+          direction="row"
+          justifyContent="space-between"
+          alignItems="flex-start"
+        >
+          <Image height={40} width={40} src={valueImage} alt="value" />
+          <Typography
+            variant="p"
+            sx={{
+              color: "#002152",
+              fontSize: "24px",
+              fontWeight: "700",
+              lineHeight: "32px",
+              ml: 1,
+            }}
+          >
+            {t["Values"]}
+          </Typography>
+        </Stack>
+        <BaseButton
+          color="error"
+          sx="error"
+          variant="outlined"
+          handleFunction={() => {
+            reset();
+            replace("/my-properties");
           }}
         >
-          {t["Values"]}
-        </Typography>
+          {t["Cancel"]}
+        </BaseButton>
       </Grid>
       <Grid container spacing={2} sx={{ mt: 2 }}>
         <Grid item xs={12} md={6}>
@@ -423,82 +443,26 @@ function ValuesAndDescription({
           sx={{ mt: 2, mb: 2 }}
           spacing={1}
         >
-          <Grid item xs={6} lg={4}>
-            <Button
+          <Grid item xs={2}>
+            <BaseButton
               color="inherit"
-              onClick={handleBack}
+              handleFunction={handleBack}
               fullWidth
               // disabled={activeStep === 0}
-              sx={{
-                mr: 1,
-                border: "1px solid #002152",
-                borderRadius: "4px",
-                px: 2,
-                py: 1,
-                color: "#002152",
-                fontSize: "16px",
-                fontWeight: "600",
-                lineHeight: "22px",
-                textTransform: "none",
-              }}
+              sx="outlined"
             >
               {t["come back"]}
-            </Button>
+            </BaseButton>
           </Grid>
-          <Grid item xs={6} lg={4}>
-            <Button
-              onClick={handleNext}
+          <Grid item xs={2}>
+            <BaseButton
+              handleFunction={handleNext}
               disabled={disableBtn}
               fullWidth
-              sx={{
-                background: "#7450F0",
-                borderRadius: "4px",
-                px: 2,
-                py: 1,
-                color: "#ffffff",
-                fontSize: "16px",
-                fontWeight: "600",
-                lineHeight: "22px",
-                textTransform: "none",
-                boxShadow: "0px 4px 8px rgba(81, 51, 182, 0.32)",
-                "&:hover": {
-                  background: "#7450F0",
-                  borderRadius: "4px",
-                  px: 2,
-                  py: 1,
-                  color: "#ffffff",
-                  fontSize: "16px",
-                  fontWeight: "600",
-                  lineHeight: "22px",
-                  textTransform: "none",
-                  boxShadow: "0px 4px 8px rgba(81, 51, 182, 0.32)",
-                },
-              }}
+              sx="secondary"
             >
               {t["Next"]}
-            </Button>
-          </Grid>
-          <Grid item xs={12} lg={4}>
-            <Button
-              type="button"
-              variant="outlined"
-              color="error"
-              fullWidth
-              sx={{
-                fontSize: "16px",
-                lineHeight: "22px",
-                fontWeight: "600",
-                textTransform: "none",
-                py: 1,
-                mr: 1,
-              }}
-              onClick={() => {
-                reset();
-                replace("/my-properties");
-              }}
-            >
-              {t["Cancel"]}
-            </Button>
+            </BaseButton>
           </Grid>
         </Grid>
       </Grid>

@@ -3,6 +3,7 @@ import {
   Box,
   Button,
   Grid,
+  Stack,
   TextField,
   Typography,
 } from "@mui/material";
@@ -26,6 +27,8 @@ import en from "locales/en";
 import pt from "locales/pt";
 import { useSession } from "next-auth/react";
 import { getVideoIdFromLink } from "@/utils/getVideoIdFromLink";
+import BaseCancelButton from "@/component/reuseable/button/BaseCancelButton";
+import BaseButton from "@/component/reuseable/baseButton/BaseButton";
 
 const baseStyle = {
   flex: 1,
@@ -167,22 +170,39 @@ function PhotosAndVideos({
       <Grid
         container
         direction="row"
-        justifyContent="flex-start"
+        justifyContent="space-between"
         alignItems="flex-start"
       >
-        <Image height={40} width={40} src={orionImage} alt="orion" />
-        <Typography
-          variant="p"
-          sx={{
-            color: "#002152",
-            fontSize: "24px",
-            fontWeight: "700",
-            lineHeight: "32px",
-            ml: 1,
+        <Stack
+          direction="row"
+          justifyContent="space-between"
+          alignItems="flex-start"
+        >
+          <Image height={40} width={40} src={orionImage} alt="orion" />
+          <Typography
+            variant="p"
+            sx={{
+              color: "#002152",
+              fontSize: "24px",
+              fontWeight: "700",
+              lineHeight: "32px",
+              ml: 1,
+            }}
+          >
+            {t["Photos and videos"]}
+          </Typography>
+        </Stack>
+        <BaseButton
+          color="error"
+          sx="error"
+          variant="outlined"
+          handleFunction={() => {
+            reset();
+            replace("/my-properties");
           }}
         >
-          {t["Photos and videos"]}
-        </Typography>
+          {t["Cancel"]}
+        </BaseButton>
       </Grid>
       <Box sx={{ mt: 3 }}>
         <Typography
@@ -563,57 +583,23 @@ function PhotosAndVideos({
           justifyContent="flex-end"
           alignItems="center"
           sx={{ mt: 2, mb: 2 }}
+          spacing={1}
         >
-          <Button
-            color="inherit"
-            onClick={handleBack}
-            // disabled={activeStep === 0}
-            sx={{
-              mr: 1,
-              border: "1px solid #002152",
-              borderRadius: "4px",
-              px: 2,
-              py: 1,
-              color: "#002152",
-              fontSize: "16px",
-              fontWeight: "600",
-              lineHeight: "22px",
-              textTransform: "none",
-            }}
-          >
-            {t["come back"]}
-          </Button>
-
-          <Button
-            onClick={handleNext}
-            disabled={disableBtn}
-            sx={{
-              background: "#7450F0",
-              borderRadius: "4px",
-              px: 2,
-              py: 1,
-              color: "#ffffff",
-              fontSize: "16px",
-              fontWeight: "600",
-              lineHeight: "22px",
-              textTransform: "none",
-              boxShadow: "0px 4px 8px rgba(81, 51, 182, 0.32)",
-              "&:hover": {
-                background: "#7450F0",
-                borderRadius: "4px",
-                px: 2,
-                py: 1,
-                color: "#ffffff",
-                fontSize: "16px",
-                fontWeight: "600",
-                lineHeight: "22px",
-                textTransform: "none",
-                boxShadow: "0px 4px 8px rgba(81, 51, 182, 0.32)",
-              },
-            }}
-          >
-            {t["Next"]}
-          </Button>
+          <Grid item xs={2}>
+            <BaseButton handleFunction={handleBack} fullWidth sx="outlined">
+              {t["come back"]}
+            </BaseButton>
+          </Grid>
+          <Grid item xs={2}>
+            <BaseButton
+              handleFunction={handleNext}
+              disabled={disableBtn}
+              fullWidth
+              sx="secondary"
+            >
+              {t["Next"]}
+            </BaseButton>
+          </Grid>
         </Grid>
       ) : (
         ""

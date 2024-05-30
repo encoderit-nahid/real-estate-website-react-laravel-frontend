@@ -6,6 +6,7 @@ import {
   Divider,
   FormControl,
   Grid,
+  Stack,
   TextField,
   Typography,
 } from "@mui/material";
@@ -32,6 +33,7 @@ import en from "locales/en";
 import pt from "locales/pt";
 import dynamic from "next/dynamic";
 import BaseTextArea from "@/component/reuseable/baseTextArea/BaseTextArea";
+import BaseButton from "@/component/reuseable/baseButton/BaseButton";
 // import PhotosAndVideos from "@/component/new venture/PhotosAndVideos/PhotosAndVideos";
 
 const BaseTextEditor = dynamic(
@@ -83,6 +85,8 @@ function FinancialData({
   languageName,
   allValues,
   setValue,
+  reset,
+  replace,
 }) {
   const t = languageName === "en" ? en : pt;
 
@@ -137,24 +141,41 @@ function FinancialData({
       <Grid
         container
         direction="row"
-        justifyContent="flex-start"
-        alignItems="flex-start"
+        justifyContent="space-between"
+        alignItems="center"
         sx={{ mt: 2 }}
       >
-        <Image src={ventureImage} alt="venture" />
+        <Stack
+          direction="row"
+          justifyContent="space-between"
+          alignItems="center"
+        >
+          <Image src={ventureImage} alt="venture" />
 
-        <Typography
-          variant="p"
-          sx={{
-            color: "#002152",
-            fontSize: "24px",
-            fontWeight: "700",
-            lineHeight: "32px",
-            ml: 1,
+          <Typography
+            variant="p"
+            sx={{
+              color: "#002152",
+              fontSize: "24px",
+              fontWeight: "700",
+              lineHeight: "32px",
+              ml: 1,
+            }}
+          >
+            {t["Financial Data"]}
+          </Typography>
+        </Stack>
+        <BaseButton
+          color="error"
+          sx="error"
+          variant="outlined"
+          handleFunction={() => {
+            reset();
+            replace("/my-properties");
           }}
         >
-          {t["Financial Data"]}
-        </Typography>
+          {t["Cancel"]}
+        </BaseButton>
       </Grid>
 
       <Grid container spacing={4} sx={{ mt: 3 }}>

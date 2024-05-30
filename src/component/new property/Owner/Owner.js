@@ -5,6 +5,7 @@ import {
   FormControl,
   FormControlLabel,
   Grid,
+  Stack,
   Typography,
 } from "@mui/material";
 import Image from "next/image";
@@ -24,6 +25,8 @@ import { useDropzone } from "react-dropzone";
 import { useSession } from "next-auth/react";
 import DeleteOutlineOutlinedIcon from "@mui/icons-material/DeleteOutlineOutlined";
 import pinImage from "../../../../public/Images/pin.png";
+import BaseCancelButton from "@/component/reuseable/button/BaseCancelButton";
+import BaseButton from "@/component/reuseable/baseButton/BaseButton";
 
 const baseStyle = {
   flex: 1,
@@ -68,6 +71,8 @@ function Owner({
   single,
   married,
   setMarried,
+  reset,
+  replace,
 }) {
   const t = languageName === "en" ? en : pt;
   const dispatch = useDispatch();
@@ -126,23 +131,40 @@ function Owner({
       <Grid
         container
         direction="row"
-        justifyContent="flex-start"
+        justifyContent="space-between"
         alignItems="center"
       >
-        <Box>
-          <Image src={buyerProfile} alt="buyerProfile" />
-        </Box>
-        <Typography
-          variant="p"
-          sx={{
-            marginLeft: 1,
-            fontWeight: "700",
-            fontSize: "24px",
-            lineHeight: "32px",
+        <Stack
+          direction="row"
+          justifyContent="space-between"
+          alignItems="center"
+        >
+          <Box>
+            <Image src={buyerProfile} alt="buyerProfile" />
+          </Box>
+          <Typography
+            variant="p"
+            sx={{
+              marginLeft: 1,
+              fontWeight: "700",
+              fontSize: "24px",
+              lineHeight: "32px",
+            }}
+          >
+            {t["Owner&apos;s Data"]}
+          </Typography>
+        </Stack>
+        <BaseButton
+          color="error"
+          sx="error"
+          variant="outlined"
+          handleFunction={() => {
+            reset();
+            replace("/my-properties");
           }}
         >
-          {t["Owner&apos;s Data"]}
-        </Typography>
+          {t["Cancel"]}
+        </BaseButton>
       </Grid>
       <Grid
         container

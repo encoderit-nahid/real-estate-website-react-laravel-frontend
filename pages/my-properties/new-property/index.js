@@ -54,6 +54,7 @@ import { useRouter } from "next/router";
 import { findSinglePropertyData } from "../../../src/redux/singleProperty/actions";
 import en from "locales/en";
 import pt from "locales/pt";
+import BaseButton from "@/component/reuseable/baseButton/BaseButton";
 
 const RichTextEditor = dynamic(() => import("react-rte"), { ssr: false });
 
@@ -94,73 +95,8 @@ export default function NewProperty({ language }) {
     address: Yup.string().required(t["Address is required"]),
     number: Yup.string().required(t["Number is required"]),
     neighbourhood: Yup.string().required(t["Neighbourhood is required"]),
-    // complement: Yup.string().required("Complement is required"),
     city: Yup.string().required(t["City is required"]),
     state: Yup.object().required(t["State is required"]),
-    // brl_rent: Yup.number()
-    //   .transform((value) => (Number.isNaN(value) ? null : value))
-    //   .nullable()
-    //   .required(t["BRL rent is required"]),
-    // // condominium: Yup.number()
-    // //   .transform((value) => (Number.isNaN(value) ? null : value))
-    // //   .nullable()
-    // //   .required(t["Condominium is required"]),
-    // brl_iptu: Yup.number()
-    //   .transform((value) => (Number.isNaN(value) ? null : value))
-    //   .nullable()
-    //   .required(t["IPTU is required"]),
-    // land_area: Yup.number()
-    //   .transform((value) => (Number.isNaN(value) ? null : value))
-    //   .nullable()
-    //   .required(t["Land area is required"]),
-    // property_area: Yup.number()
-    //   .transform((value) => (Number.isNaN(value) ? null : value))
-    //   .nullable()
-    //   .required(t["Property area is required"]),
-    // no_of_rooms: Yup.number()
-    //   .transform((value) => (Number.isNaN(value) ? null : value))
-    //   .nullable()
-    //   .required(t["No of rooms is required"]),
-    // no_of_suites: Yup.number()
-    //   .transform((value) => (Number.isNaN(value) ? null : value))
-    //   .nullable()
-    //   .required(t["NO of suites is required"]),
-    // no_of_bathrooms: Yup.number()
-    //   .transform((value) => (Number.isNaN(value) ? null : value))
-    //   .nullable()
-    //   .required(t["NO of bathrooms is required"]),
-    // no_of_parking_spaces: Yup.number()
-    //   .transform((value) => (Number.isNaN(value) ? null : value))
-    //   .nullable()
-    //   .required(t["NO of parking spaces is required"]),
-
-    // documentation: Yup.object().required("Documentation is required"),
-    // registry: Yup.string().required("Registry office is required"),
-    // registration_number: Yup.number()
-    //   .transform((value) => (Number.isNaN(value) ? null : value))
-    //   .nullable()
-    //   .required("Registration number office is required"),
-
-    // owner_name: Yup.string().required(t["Owner Full Name is required"]),
-    // owner_rg: Yup.string().required(t["Owner Rg is required"]),
-    // owner_cpf: Yup.string().required(t["Owner cpf is required"]),
-    // owner_spouse_name: Yup.string().required(
-    //   t["Owner spouse full name is required"]
-    // ),
-    // owner_spouse_rg: Yup.string().required(t["Owner spouse RG is required"]),
-    // owner_spouse_cpf: Yup.string().required(t["Owner spouse CPF is required"]),
-    // owner_zip_code: Yup.string().required(t["Owner Zip code is required"]),
-    // owner_address: Yup.string().required(t["Owner Address is required"]),
-    // owner_number: Yup.number()
-    //   .transform((value) => (Number.isNaN(value) ? null : value))
-    //   .nullable()
-    //   .required(t["Owner Number is required"]),
-    // owner_neighbourhood: Yup.string().required(
-    //   t["Owner Neighbourhood is required"]
-    // ),
-
-    // owner_city: Yup.string().required(t["Owner City is required"]),
-    // owner_state: Yup.object().required(t["Owner State is required"]),
   });
 
   const dispatch = useDispatch();
@@ -484,12 +420,6 @@ export default function NewProperty({ language }) {
       complement: data?.complement,
     });
 
-    // const registryData = omitEmpties({
-    //   registry_office: data?.registry,
-    //   registry_number: data?.registration_number,
-    //   document_title: data?.documentation?.label,
-    // });
-
     const ownerRegistryData = omitEmpties({
       registry_office: data?.owner_registry,
       registry_number: data?.owner_registration_number,
@@ -624,361 +554,154 @@ export default function NewProperty({ language }) {
             setActiveStep={setActiveStep}
             marginTop={"2vh"}
           />
-          {activeStep === steps.length ? (
-            <Container maxWidth="xs">
-              <Fragment>
-                {/* <Typography sx={{ mt: 2, mb: 1 }}>
-          All steps completed - you&apos;re finished
-        </Typography> */}
+          <Fragment>
+            <form onSubmit={handleSubmit(onSubmit)}>
+              {activeStep === 0 ? (
+                <Address
+                  handleNext={handleNext}
+                  control={control}
+                  errors={errors}
+                  adType={adType}
+                  setValue={setValue}
+                  setAdType={setAdType}
+                  propertyType={propertyType}
+                  setPropertyType={setPropertyType}
+                  property_detail_id={property_detail_id}
+                  setPropertyDetailId={setPropertyDetailId}
+                  languageName={myValue.toString()}
+                  defaultEditorValue={singleData?.property_description || ""}
+                  allValues={allValues}
+                />
+              ) : activeStep === 1 ? (
+                <ValuesAndDescription
+                  handleNext={handleNext}
+                  handleBack={handleBack}
+                  control={control}
+                  property_detail_id={property_detail_id}
+                  errors={errors}
+                  allValues={allValues}
+                  languageName={myValue.toString()}
+                  reset={reset}
+                  replace={replace}
+                />
+              ) : activeStep === 2 ? (
+                <Features
+                  handleNext={handleNext}
+                  handleBack={handleBack}
+                  control={control}
+                  errors={errors}
+                  featuretypes={featuretypes}
+                  setFeatureTypes={setFeatureTypes}
+                  languageName={myValue.toString()}
+                  reset={reset}
+                  replace={replace}
+                />
+              ) : activeStep === 3 ? (
+                <PhotosAndVideos
+                  handleNext={handleNext}
+                  handleBack={handleBack}
+                  control={control}
+                  errors={errors}
+                  files={files}
+                  setFiles={setFiles}
+                  videoFiles={videoFiles}
+                  setVideoFiles={setVideoFiles}
+                  setDeletedContent={setDeletedContent}
+                  deletedContent={deletedContent}
+                  imageError={imageError}
+                  imageErrorMessage={imageErrorMessage}
+                  fields={fields}
+                  append={append}
+                  remove={remove}
+                  allValues={allValues}
+                  languageName={myValue.toString()}
+                  reset={reset}
+                  replace={replace}
+                />
+              ) : (
+                <Owner
+                  handleNext={handleNext}
+                  handleBack={handleBack}
+                  control={control}
+                  errors={errors}
+                  documents={documents}
+                  setDocuments={setDocuments}
+                  maritalStatus={maritalStatus}
+                  setMaritalStatus={setMaritalStatus}
+                  languageName={myValue.toString()}
+                  setSingle={setSingle}
+                  single={single}
+                  married={married}
+                  setMarried={setMarried}
+                  reset={reset}
+                  replace={replace}
+                />
+              )}
 
-                {/* <Box sx={{ display: "flex", flexDirection: "row", pt: 2 }}>
-      <Box sx={{ flex: "1 1 auto" }} />
-      <Button onClick={handleReset}>Reset</Button>
-    </Box> */}
-              </Fragment>
-            </Container>
-          ) : (
-            <Fragment>
-              <form onSubmit={handleSubmit(onSubmit)}>
-                {activeStep === 0 ? (
-                  <Address
-                    handleNext={handleNext}
-                    control={control}
-                    errors={errors}
-                    adType={adType}
-                    setValue={setValue}
-                    setAdType={setAdType}
-                    propertyType={propertyType}
-                    setPropertyType={setPropertyType}
-                    property_detail_id={property_detail_id}
-                    setPropertyDetailId={setPropertyDetailId}
-                    languageName={myValue.toString()}
-                    defaultEditorValue={singleData?.property_description || ""}
-                    allValues={allValues}
-                  />
-                ) : activeStep === 1 ? (
-                  <ValuesAndDescription
-                    handleNext={handleNext}
-                    handleBack={handleBack}
-                    control={control}
-                    property_detail_id={property_detail_id}
-                    errors={errors}
-                    allValues={allValues}
-                    languageName={myValue.toString()}
-                    reset={reset}
-                    replace={replace}
-                  />
-                ) : activeStep === 2 ? (
-                  <Features
-                    handleNext={handleNext}
-                    handleBack={handleBack}
-                    control={control}
-                    errors={errors}
-                    featuretypes={featuretypes}
-                    setFeatureTypes={setFeatureTypes}
-                    languageName={myValue.toString()}
-                    reset={reset}
-                    replace={replace}
-                  />
-                ) : activeStep === 3 ? (
-                  <PhotosAndVideos
-                    handleNext={handleNext}
-                    handleBack={handleBack}
-                    control={control}
-                    errors={errors}
-                    files={files}
-                    setFiles={setFiles}
-                    videoFiles={videoFiles}
-                    setVideoFiles={setVideoFiles}
-                    setDeletedContent={setDeletedContent}
-                    deletedContent={deletedContent}
-                    imageError={imageError}
-                    imageErrorMessage={imageErrorMessage}
-                    fields={fields}
-                    append={append}
-                    remove={remove}
-                    allValues={allValues}
-                    languageName={myValue.toString()}
-                  />
-                ) : (
-                  <Owner
-                    handleNext={handleNext}
-                    handleBack={handleBack}
-                    control={control}
-                    errors={errors}
-                    documents={documents}
-                    setDocuments={setDocuments}
-                    maritalStatus={maritalStatus}
-                    setMaritalStatus={setMaritalStatus}
-                    languageName={myValue.toString()}
-                    setSingle={setSingle}
-                    single={single}
-                    married={married}
-                    setMarried={setMarried}
-                  />
-                )}
-
-                <Stack
-                  direction="row"
-                  justifyContent={{
-                    xs: "flex-start",
-                    sm: "flex-start",
-                    md: "flex-start",
-                    lg: "flex-end",
-                    xl: "flex-end",
-                  }}
-                  alignItems="center"
-                  sx={{
-                    pt: 2,
-                  }}
-                >
-                  {activeStep === steps.length - 1 && (
-                    <Grid container spacing={1}>
-                      <Grid item xs={12} md={6} lg={3}>
-                        <Button
-                          color="inherit"
-                          // disabled={activeStep === 0}
-                          onClick={handleBack}
-                          fullWidth
-                          sx={{
-                            mr: 1,
-                            border: "1px solid #002152",
-                            borderRadius: "4px",
-                            px: 2,
-                            py: 1,
-                            color: "#002152",
-                            fontSize: "16px",
-                            fontWeight: "600",
-                            lineHeight: "22px",
-                            textTransform: "none",
-                          }}
-                        >
-                          {t["come back"]}
-                        </Button>
-                      </Grid>
-                      <Grid item xs={12} md={6} lg={3}>
-                        <Button
-                          type="submit"
-                          fullWidth
-                          disabled={
-                            session?.user?.role !== "owner" && disableBtn
-                          }
-                          onClick={() => setAction("draft")}
-                          sx={{
-                            background: "#DBE1E5",
-                            borderRadius: "4px",
-                            px: 2,
-                            py: 1,
-                            mr: 1,
-                            color: "#002152",
-                            fontSize: "16px",
-                            fontWeight: "600",
-                            lineHeight: "22px",
-                            textTransform: "none",
-
-                            "&:hover": {
-                              background: "#DBE1E5",
-                              borderRadius: "4px",
-                              px: 2,
-                              py: 1,
-                              color: "#002152",
-                              fontSize: "16px",
-                              fontWeight: "600",
-                              lineHeight: "22px",
-                              textTransform: "none",
-                              mr: 1,
-                            },
-                          }}
-                        >
-                          {draftloading && (
-                            <CircularProgress size={22} color="inherit" />
-                          )}
-                          {!draftloading && t["Save as draft"]}
-                        </Button>
-                      </Grid>
-                      <Grid item xs={12} lg={3}>
-                        <Button
-                          type="submit"
-                          disabled={
-                            session?.user?.role !== "owner" && disableBtn
-                          }
-                          fullWidth
-                          onClick={() => setAction("new")}
-                          sx={{
-                            background: "#7450F0",
-                            borderRadius: "4px",
-                            px: 2,
-                            py: 1,
-                            color: "#ffffff",
-                            fontSize: "16px",
-                            fontWeight: "600",
-                            lineHeight: "22px",
-                            textTransform: "none",
-                            boxShadow: "0px 4px 8px rgba(81, 51, 182, 0.32)",
-                            "&:hover": {
-                              background: "#7450F0",
-                              borderRadius: "4px",
-                              px: 2,
-                              py: 1,
-                              color: "#ffffff",
-                              fontSize: "16px",
-                              fontWeight: "600",
-                              lineHeight: "22px",
-                              textTransform: "none",
-                              boxShadow: "0px 4px 8px rgba(81, 51, 182, 0.32)",
-                            },
-                          }}
-                        >
-                          {loading && (
-                            <CircularProgress size={22} color="inherit" />
-                          )}
-                          {!loading && t["Submit approval"]}
-                        </Button>
-                      </Grid>
-                      <Grid item xs={12} lg={3}>
-                        <Button
-                          type="button"
-                          variant="outlined"
-                          fullWidth
-                          color="error"
-                          sx={{
-                            fontSize: "16px",
-                            lineHeight: "22px",
-                            fontWeight: "600",
-                            textTransform: "none",
-                            py: 1,
-                            mr: 1,
-                          }}
-                          onClick={() => {
-                            reset();
-                            replace("/my-properties");
-                          }}
-                        >
-                          {t["Cancel"]}
-                        </Button>
-                      </Grid>
-                    </Grid>
-                  )}
-                  {/* {activeStep === steps.length - 1 && (
-                    <>
-                      <Button
-                        type="button"
-                        variant="outlined"
-                        color="error"
-                        sx={{
-                          fontSize: "16px",
-                          lineHeight: "22px",
-                          fontWeight: "600",
-                          textTransform: "none",
-                          py: 1,
-                          mr: 1,
-                        }}
-                        onClick={() => {
-                          reset();
-                          replace("/my-properties");
-                        }}
-                      >
-                        {t["Cancel"]}
-                      </Button>
-                      <Button
-                        color="inherit"
-                        // disabled={activeStep === 0}
-                        onClick={handleBack}
-                        sx={{
-                          mr: 1,
-                          border: "1px solid #002152",
-                          borderRadius: "4px",
-                          px: 2,
-                          py: 1,
-                          color: "#002152",
-                          fontSize: "16px",
-                          fontWeight: "600",
-                          lineHeight: "22px",
-                          textTransform: "none",
-                        }}
+              <Stack
+                direction="row"
+                justifyContent={{
+                  xs: "flex-start",
+                  sm: "flex-start",
+                  md: "flex-start",
+                  lg: "flex-end",
+                  xl: "flex-end",
+                }}
+                alignItems="center"
+                sx={{
+                  pt: 2,
+                }}
+              >
+                {activeStep === steps.length - 1 && (
+                  <Grid
+                    container
+                    spacing={1}
+                    direction={"row"}
+                    justifyContent={"flex-end"}
+                    alignItems={"center"}
+                  >
+                    <Grid item xs={3}>
+                      <BaseButton
+                        handleFunction={handleBack}
+                        fullWidth
+                        sx="outlined"
                       >
                         {t["come back"]}
-                      </Button>
-                    </>
-                  )}
-
-                  {activeStep === steps.length - 1 && (
-                    <Box>
-                      <Button
+                      </BaseButton>
+                    </Grid>
+                    <Grid item xs={3}>
+                      <BaseButton
                         type="submit"
+                        fullWidth
                         disabled={session?.user?.role !== "owner" && disableBtn}
-                        onClick={() => setAction("draft")}
-                        sx={{
-                          background: "#DBE1E5",
-                          borderRadius: "4px",
-                          px: 2,
-                          py: 1,
-                          mr: 1,
-                          color: "#002152",
-                          fontSize: "16px",
-                          fontWeight: "600",
-                          lineHeight: "22px",
-                          textTransform: "none",
-
-                          "&:hover": {
-                            background: "#DBE1E5",
-                            borderRadius: "4px",
-                            px: 2,
-                            py: 1,
-                            color: "#002152",
-                            fontSize: "16px",
-                            fontWeight: "600",
-                            lineHeight: "22px",
-                            textTransform: "none",
-                            mr: 1,
-                          },
-                        }}
+                        handleFunction={() => setAction("draft")}
+                        sx="secondary"
                       >
                         {draftloading && (
                           <CircularProgress size={22} color="inherit" />
                         )}
                         {!draftloading && t["Save as draft"]}
-                      </Button>
-                      <Button
+                      </BaseButton>
+                    </Grid>
+                    <Grid item xs={3}>
+                      <BaseButton
                         type="submit"
                         disabled={session?.user?.role !== "owner" && disableBtn}
-                        onClick={() => setAction("new")}
-                        sx={{
-                          background: "#7450F0",
-                          borderRadius: "4px",
-                          px: 2,
-                          py: 1,
-                          color: "#ffffff",
-                          fontSize: "16px",
-                          fontWeight: "600",
-                          lineHeight: "22px",
-                          textTransform: "none",
-                          boxShadow: "0px 4px 8px rgba(81, 51, 182, 0.32)",
-                          "&:hover": {
-                            background: "#7450F0",
-                            borderRadius: "4px",
-                            px: 2,
-                            py: 1,
-                            color: "#ffffff",
-                            fontSize: "16px",
-                            fontWeight: "600",
-                            lineHeight: "22px",
-                            textTransform: "none",
-                            boxShadow: "0px 4px 8px rgba(81, 51, 182, 0.32)",
-                          },
-                        }}
+                        fullWidth
+                        handleFunction={() => setAction("new")}
+                        sx="secondary"
                       >
                         {loading && (
                           <CircularProgress size={22} color="inherit" />
                         )}
                         {!loading && t["Submit approval"]}
-                      </Button>
-                    </Box>
-                  )} */}
-                </Stack>
-              </form>
-            </Fragment>
-          )}
+                      </BaseButton>
+                    </Grid>
+                  </Grid>
+                )}
+              </Stack>
+            </form>
+          </Fragment>
         </Box>
         <BaseModal isShowing={sentModalOpen} isClose={handleClose}>
           <Tooltip title="Something">
