@@ -1,6 +1,4 @@
 import dynamic from "next/dynamic";
-import Head from "next/head";
-import Image from "next/image";
 import {
   Button,
   CircularProgress,
@@ -10,9 +8,6 @@ import {
   Typography,
 } from "@mui/material";
 import { Box } from "@mui/material";
-const ResponsiveDrawer = dynamic(() =>
-  import("@/component/sharedProposal/ResponsiveDrawer/ResponsiveDrawer")
-);
 const BasicBreadcrumbs = dynamic(() =>
   import("@/component/reuseable/baseBreadCrumb/BaseBreadCrumb")
 );
@@ -31,8 +26,8 @@ const ProposalSentModal = dynamic(() =>
   import("@/component/properties/ProposalSentModal/ProposalSentModal")
 );
 import Link from "next/link";
-import { getSession, useSession } from "next-auth/react";
-import { useForm, Controller } from "react-hook-form";
+import { useSession } from "next-auth/react";
+import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as Yup from "yup";
 import { useRouter } from "next/router";
@@ -240,7 +235,6 @@ export default function IncludeProposal({ language }) {
   return (
     <Box
       sx={{
-        //   backgroundColor: "#f6f8fc",
         flexGrow: 1,
 
         width: { sm: `calc(100% - ${drawerWidth}px)` },
@@ -271,16 +265,7 @@ export default function IncludeProposal({ language }) {
           />
           {activeStep === steps.length ? (
             <Container maxWidth="xs">
-              <Fragment>
-                {/* <Typography sx={{ mt: 2, mb: 1 }}>
-                  All steps completed - you&apos;re finished
-                </Typography> */}
-
-                {/* <Box sx={{ display: "flex", flexDirection: "row", pt: 2 }}>
-              <Box sx={{ flex: "1 1 auto" }} />
-              <Button onClick={handleReset}>Reset</Button>
-            </Box> */}
-              </Fragment>
+              <Fragment></Fragment>
             </Container>
           ) : (
             <Fragment>
@@ -505,27 +490,6 @@ export default function IncludeProposal({ language }) {
                         </Grid>
                       </Grid>
                     )}
-
-                  {/* {isStepOptional(activeStep) && (
-                <Button
-                  sx={{
-                    mr: 1,
-                    border: "1px solid #002152",
-                    borderRadius: "4px",
-                    px: 2,
-                    py: 1,
-                    color: "#002152",
-                    fontSize: "16px",
-                    fontWeight: "600",
-                    lineHeight: "22px",
-                    textTransform: "none",
-                  }}
-                  color="inherit"
-                  onClick={handleSkip}
-                >
-                  Skip
-                </Button>
-              )} */}
                 </Grid>
               </form>
             </Fragment>

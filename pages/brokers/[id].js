@@ -1,97 +1,26 @@
 import dynamic from "next/dynamic";
-import Head from "next/head";
-import Image from "next/image";
 import PropTypes from "prop-types";
 import Tabs from "@mui/material/Tabs";
 import Tab from "@mui/material/Tab";
 import Typography from "@mui/material/Typography";
 import Box from "@mui/material/Box";
-import logo from "../../public/Images/logo.png";
-import BorderColorIcon from "@mui/icons-material/BorderColor";
-import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
-import NoEncryptionOutlinedIcon from "@mui/icons-material/NoEncryptionOutlined";
 import EmailIcon from "@mui/icons-material/Email";
 import PhoneEnabledIcon from "@mui/icons-material/PhoneEnabled";
 import TextSnippetIcon from "@mui/icons-material/TextSnippet";
-const ResponsiveDrawer = dynamic(() =>
-  import("@/component/sharedProposal/ResponsiveDrawer/ResponsiveDrawer")
-);
-import {
-  Avatar,
-  Badge,
-  Button,
-  Container,
-  FormControl,
-  Grid,
-  InputAdornment,
-  LinearProgress,
-  ListItem,
-  ListItemButton,
-  ListItemIcon,
-  ListItemText,
-  Rating,
-  Stack,
-} from "@mui/material";
-
+import { Avatar, Grid, ListItemText, Rating, Stack } from "@mui/material";
 import { useEffect, useState } from "react";
-const Releases = dynamic(() =>
-  import("@/component/properties/Releases/Releases")
-);
-const ThirdTab = dynamic(() => import("@/component/properties/Third/ThirdTab"));
-const NewRegistration = dynamic(() =>
-  import("@/component/properties/NewRegistration/NewRegistration")
-);
-import notifyImage from "../../public/Images/notify.png";
-import Link from "next/link";
-import { getSession, useSession } from "next-auth/react";
 import { useRouter } from "next/router";
 import { _baseURL } from "../../consts";
-import useChannel from "@/hooks/useChannel";
-import Popover from "@mui/material/Popover";
 import { useDispatch, useSelector } from "react-redux";
-import NotificationsNoneOutlinedIcon from "@mui/icons-material/NotificationsNoneOutlined";
-import {
-  GetAllNotification,
-  notificationAddPusherItem,
-  notificationRemove,
-} from "@/redux/all-notification/actions";
-import {
-  findNotificationCountData,
-  notificationAddCount,
-} from "@/redux/notificationCount/actions";
-import { NOTIFICATION_ADD_COUNT } from "@/redux/notificationCount/types";
-import { NotificationReadApi, omitEmpties, userDetailsApi } from "@/api";
-import en from "locales/en";
+import { GetAllNotification } from "@/redux/all-notification/actions";
+import { findNotificationCountData } from "@/redux/notificationCount/actions";
+import { userDetailsApi } from "@/api";
 import pt from "locales/pt";
 import { findPropertyCountData } from "@/redux/propertyCount/actions";
-import WishProperty from "@/component/properties/WishProperty/WishProperty";
-import { useGetPropertyCountQuery } from "@/queries/useGetPropertyCountQuery";
-import useParams from "@/hooks/useParams";
-import { Controller, useForm } from "react-hook-form";
-import BaseTextField from "@/component/reuseable/baseTextField/BaseTextField";
-import BaseAutocomplete from "@/component/reuseable/baseAutocomplete/BaseAutocomplete";
-import BaseOutlinedZipInput from "@/component/reuseable/baseOutlinedZipInput/BaseOutlinedZipInput";
-import PropertyList from "@/component/IAmOwner/propertyList/PropertyList";
 import StarIcon from "@mui/icons-material/Star";
 import BaseLinearRating from "@/component/reuseable/baseLinearRating/BaseLinearRating";
-import Footer from "@/component/shared/Footer/Footer";
 
 const drawerWidth = 240;
-
-function onSubmit(data) {
-  console.log("🟥 ~ onSubmit ~ onSubmit:", data);
-}
-function renderRow(props) {
-  const { index, style } = props;
-
-  return (
-    <ListItem style={style} key={index} component="div" disablePadding>
-      <ListItemButton>
-        <ListItemText primary={`Item ${index + 1}`} />
-      </ListItemButton>
-    </ListItem>
-  );
-}
 
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
@@ -129,19 +58,8 @@ function a11yProps(index) {
 export default function BrokerDetails({ handleLoginOpen, language }) {
   const router = useRouter();
   const { query } = router;
-  const { data: session } = useSession();
-  const { setParams } = useParams();
   const [value, setValue] = useState(0);
 
-  const {
-    register,
-    watch,
-    control,
-    handleSubmit,
-
-    formState: { errors },
-    setError,
-  } = useForm();
   const [showPass, setShowPass] = useState(false);
   const handleClickShowPassword = () => {
     setShowPass(!showPass);
@@ -149,10 +67,8 @@ export default function BrokerDetails({ handleLoginOpen, language }) {
   useEffect(() => {
     userDetailsApi();
   }, []);
-  const allStateData = useSelector((state) => state.state.stateData);
 
   const [myValue, setMyValue] = useState(language || "pt");
-
   const t = myValue === "en" ? en : pt;
 
   const dispatch = useDispatch();
@@ -161,53 +77,8 @@ export default function BrokerDetails({ handleLoginOpen, language }) {
     dispatch(GetAllNotification());
     dispatch(findPropertyCountData());
   }, [dispatch]);
-  const notificationCountData = useSelector(
-    (state) => state?.notificationCount?.notificationCountData
-  );
-
-  const notificationData = useSelector(
-    (state) => state?.notification?.notificationData
-  );
-
-  // useChannel("notification-broadcast." + session.user.userId, (channel) => {
-  //   // console.log('useChannel', channel)
-  //   channel
-  //     // .here((...args) => {
-  //     // 	console.log('notification-broadcast:here', ...args)
-  //     // })
-  //     // .joining((...args) => {
-  //     // 	console.log('notification-broadcast:joining', ...args)
-  //     // })
-  //     // .leaving((...args) => {
-  //     // 	console.log('notification-broadcast:leaving', ...args)
-  //     // })
-  //     .listen(".OnCreateNewSchedule", (event) => {
-  //       console.log("notification-broadcast:NotificationEvent", event);
-  //       dispatch(notificationAddPusherItem(event.notification));
-  //       dispatch(notificationAddCount(1));
-  //     });
-  //   // .listenForWhisper('ping', (event) => {
-  //   // 	console.log('notification-broadcast:ping', event)
-  //   // })
-  // });
-
-  const handleReadNotification = async (data) => {
-    const [error, response] = await NotificationReadApi(data?.id);
-    if (!error) {
-      dispatch(notificationRemove(data?.id));
-      dispatch(notificationAddCount(-1));
-    }
-  };
 
   const [anchorEl, setAnchorEl] = useState(null);
-
-  const handleClick = (event) => {
-    setAnchorEl(event.currentTarget);
-  };
-
-  const handleClose = () => {
-    setAnchorEl(null);
-  };
 
   const open = Boolean(anchorEl);
   const id = open ? "simple-popover" : undefined;
@@ -229,7 +100,6 @@ export default function BrokerDetails({ handleLoginOpen, language }) {
   return (
     <Box
       sx={{
-        //   backgroundColor: "#f6f8fc",
         flexGrow: 1,
         background: "#F2F5F6",
         minHeight: "100vh",
@@ -410,7 +280,6 @@ export default function BrokerDetails({ handleLoginOpen, language }) {
                 sx={{
                   fontWeight: "600",
                   textTransform: "uppercase",
-                  // color: "#0362F0",
                 }}
                 {...a11yProps(0)}
                 color="primary"
@@ -420,7 +289,6 @@ export default function BrokerDetails({ handleLoginOpen, language }) {
                 sx={{
                   fontWeight: "600",
                   textTransform: "uppercase",
-                  // color: "#0362F0",
                 }}
                 color="primary"
                 {...a11yProps(1)}

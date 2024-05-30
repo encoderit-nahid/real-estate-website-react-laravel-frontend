@@ -7,7 +7,6 @@ import {
   Grid,
   InputAdornment,
   Snackbar,
-  TextField,
   Typography,
 } from "@mui/material";
 import Head from "next/head";
@@ -16,7 +15,6 @@ import GoogleIcon from "@mui/icons-material/Google";
 import FacebookOutlinedIcon from "@mui/icons-material/FacebookOutlined";
 import ArrowBackIosNewOutlinedIcon from "@mui/icons-material/ArrowBackIosNewOutlined";
 import Image from "next/image";
-import Link from "next/link";
 import BaseTextField from "../src/component/reuseable/baseTextField/BaseTextField";
 import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import NoEncryptionOutlinedIcon from "@mui/icons-material/NoEncryptionOutlined";
@@ -25,10 +23,8 @@ import { useForm, Controller } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as Yup from "yup";
 import BaseOutlinedPhoneInput from "../src/component/reuseable/baseOutlinedPhoneInput/BaseOutlinedPhoneInput";
-import { emailVerifyApi, registrationApi, userDetailsApi } from "../src/api";
-import { signIn } from "next-auth/react";
+import { registrationApi } from "../src/api";
 import { useRouter } from "next/router";
-import GetCookie from "@/hooks/getCookie";
 import en from "locales/en";
 import pt from "locales/pt";
 import { _baseURL } from "consts";
@@ -79,21 +75,6 @@ export default function Registration({ language, handleLoginOpen }) {
     setSuccessSnackbarOpen(false);
   };
 
-  const UserRoleData = [
-    {
-      name: t["Buyer"],
-      value: 4,
-    },
-    {
-      name: t["Owner"],
-      value: 3,
-    },
-    {
-      name: t["Broker"],
-      value: 2,
-    },
-  ];
-
   const handleSocialLogin = (provider) => {
     SetCookie(
       "role_id",
@@ -103,7 +84,6 @@ export default function Registration({ language, handleLoginOpen }) {
   };
 
   const [activeBtn, setActiveBtn] = useState(4);
-  const [disableBtn, setDisableBtn] = useState(true);
 
   const [showPass, setShowPass] = React.useState(false);
   const handleClickShowPassword = () => {
@@ -124,26 +104,6 @@ export default function Registration({ language, handleLoginOpen }) {
   };
   const [loading, setLoading] = useState(false);
   const allValues = watch();
-
-  useEffect(() => {
-    if (
-      allValues.email &&
-      allValues.phone &&
-      allValues.password &&
-      allValues.name
-    ) {
-      setDisableBtn(false);
-    }
-
-    if (
-      allValues.email === "" ||
-      allValues.phone === "" ||
-      allValues.password === "" ||
-      allValues.name === ""
-    ) {
-      setDisableBtn(true);
-    }
-  }, [allValues]);
 
   useEffect(() => {
     if (activeBtn === 2) {
@@ -171,9 +131,6 @@ export default function Registration({ language, handleLoginOpen }) {
     const [errorToken, responseToken] = await registrationApi(allData);
     setLoading(false);
     if (!errorToken) {
-      // console.log("pp", responseToken);
-      // // setSuccessMessage(responseToken?.data?.message);
-      // handleClickSuccessSnackbar();
       localStorage.setItem("registration_id", responseToken?.data?.user?.id);
       localStorage.setItem("user_role", responseToken?.data?.userRole);
       localStorage.setItem("Reg_user_name", data?.name);
@@ -185,8 +142,6 @@ export default function Registration({ language, handleLoginOpen }) {
       Object.entries(errors).forEach(([name, messages]) => {
         setError(name, { type: "manual", message: messages[0] });
       });
-
-      // handleClickSnackbar();
       setLoading(false);
       setMessage(errorToken?.response?.data?.message);
     }
@@ -261,7 +216,6 @@ export default function Registration({ language, handleLoginOpen }) {
                             field.onChange(e.target.value);
                           }}
                           name={"name"}
-                          // error={errors.email ? true : false}
                         />
                       )}
                     />
@@ -303,7 +257,6 @@ export default function Registration({ language, handleLoginOpen }) {
                             field.onChange(e.target.value);
                           }}
                           name={"email"}
-                          // error={errors.email ? true : false}
                         />
                       )}
                     />
@@ -358,12 +311,6 @@ export default function Registration({ language, handleLoginOpen }) {
                       {errors.phone?.message}
                     </Typography>
 
-                    {/* <BaseTextField
-                    fullWidth
-                    size={"small"}
-                    placeholder={"Phone"}
-                    type={"number"}
-                  /> */}
                     <Grid
                       container
                       direction="row"
@@ -397,8 +344,6 @@ export default function Registration({ language, handleLoginOpen }) {
                           onChange={(e) => {
                             field.onChange(e.target.value);
                           }}
-                          // value={field.value}
-                          // error={errors.password ? true : false}
                           InputProps={{
                             endAdornment: (
                               <InputAdornment
@@ -425,25 +370,6 @@ export default function Registration({ language, handleLoginOpen }) {
                       {errors.password?.message}
                     </Typography>
 
-                    {/* <Grid
-                      container
-                      direction="row"
-                      justifyContent="flex-start"
-                      alignItems="flex-start"
-                      sx={{ mt: 3, mb: 1 }}
-                    >
-                      <Typography
-                        variant="p"
-                        sx={{
-                          color: "#253858",
-                          fontSize: "14px",
-                          fontWeight: "400",
-                          lineHeight: "16px",
-                        }}
-                      >
-                        {t["Profile"]}
-                      </Typography>
-                    </Grid> */}
                     <Grid
                       container
                       justifyContent="center"

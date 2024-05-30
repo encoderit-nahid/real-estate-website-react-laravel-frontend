@@ -6,7 +6,6 @@ import {
   Box,
   Grid,
   Typography,
-  Container,
   ImageList,
   ImageListItem,
   Button,
@@ -17,7 +16,6 @@ import {
   MenuItem,
 } from "@mui/material";
 import ShareIcon from "@mui/icons-material/Share";
-import FavoriteIcon from "@mui/icons-material/Favorite";
 import orionImage from "../../public/Images/orion_view.svg";
 import Image from "next/image";
 import {
@@ -67,17 +65,12 @@ import { useEffect } from "react";
 import Link from "next/link";
 import en from "locales/en";
 import pt from "locales/pt";
-const SlideImageMobile = dynamic(() =>
-  import("@/component/PropertyView/SlideImageMobile/SlideImageMobile")
-);
 const BaseCopyText = dynamic(() =>
   import("@/component/reuseable/baseCopyText/BaseCopyText")
 );
 import { useRouter } from "next/router";
-import useCurrentUser from "@/hooks/useCurrentUser";
 import { _imageURL } from "consts";
 import { stripHtmlTags } from "@/utils/stripHtmlTags";
-import ContentCopyIcon from "@mui/icons-material/ContentCopy";
 const BaseFavoriteButton = dynamic(
   () => import("@/component/reuseable/baseFavoriteButton/BaseFavoriteButton"),
   {
@@ -108,16 +101,6 @@ export default function PropertyView({
   const [schedule, setSchedule] = useState(false);
 
   const [sideTabValue, setSideTabValue] = useState("photos");
-
-  // const [propertyDescription, setPorpertyDescription] = useState("");
-
-  // useEffect(() => {
-  //   if (singlePropertyData?.property?.property_description) {
-  //     const htmlString = singlePropertyData.property.property_description;
-  //     const textContent = stripHtmlTags(htmlString);
-  //     setPorpertyDescription(textContent);
-  //   }
-  // }, [singlePropertyData]);
 
   const Images = useMemo(() => {
     const regexPatternThreeSixtyImages = /^[a-zA-Z_]+_vision_360$/;
@@ -226,7 +209,6 @@ export default function PropertyView({
             justifyContent="flex-end"
             alignItems="flex-start"
           >
-            {/* <Link href="/search-real-estate"> */}
             <Button
               color="inherit"
               // disabled={activeStep === 0}
@@ -247,7 +229,6 @@ export default function PropertyView({
             >
               {t["come back"]}
             </Button>
-            {/* </Link> */}
           </Grid>
           <Grid
             container
@@ -408,14 +389,7 @@ export default function PropertyView({
                 images={Images}
               />
             </Grid>
-            {/* <Grid item xs={12} sx={{ mb: 1 }}>
-              <Image src={sliderView} layout="responsive" alt="sliderView" />
-            </Grid> */}
           </Grid>
-
-          {/* <Box>
-            <SlideImageMobile Images={Images} setSelectImage={setSelectImage} />
-          </Box> */}
           <Grid container>
             <Grid
               item
@@ -515,8 +489,6 @@ export default function PropertyView({
         </Box>
         <Box>
           <ImageList
-            // container
-            // spacing={3}
             cols={5}
             sx={{
               gridAutoFlow: "column",
@@ -601,10 +573,6 @@ export default function PropertyView({
           }}
         >
           <Button
-            // disabled={
-            //   session?.user?.role === "broker" ||
-            //   session?.user?.role === "owner"
-            // }
             variant="contained"
             color="primary"
             sx={{
@@ -635,10 +603,6 @@ export default function PropertyView({
           </Button>
 
           <Button
-            // disabled={
-            //   session?.user?.role === "broker" ||
-            //   session?.user?.role === "owner"
-            // }
             variant="contained"
             color="secondary"
             sx={{
@@ -677,7 +641,6 @@ export default function PropertyView({
 export async function getServerSideProps(context) {
   const { id } = context.query;
   const base_url = process.env.NEXT_PUBLIC_API_URL;
-  // console.log("paramId", id);
   const res = await fetch(`${base_url}/api/property/show/${id}`);
   const singlePropertyData = await res.json();
 
@@ -690,10 +653,6 @@ export async function getServerSideProps(context) {
       propertyDescription: stripHtmlTags(
         singlePropertyData?.property?.property_description
       ),
-      // tabArrayData:
-      //   singlePropertyData?.property?.property_detail?.photo_types?.filter(
-      //     (data) => data.slug.substr(data.slug.length - 3) !== "360"
-      //   ),
     },
   };
 }

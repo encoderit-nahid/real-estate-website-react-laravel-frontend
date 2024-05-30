@@ -5,7 +5,6 @@ const Navbar = dynamic(() => import("@/component/shared/Navbar/Navbar"), {
 import Head from "next/head";
 import { Box } from "@mui/material";
 import React, { useState } from "react";
-import { serialize } from "object-to-formdata";
 import en from "locales/en";
 import pt from "locales/pt";
 const SearchList = dynamic(() => import("@/component/searchList/SearchList"), {
@@ -66,11 +65,8 @@ export async function getServerSideProps(context) {
   Object.keys(params).forEach((key) =>
     url.searchParams.append(key, params[key])
   );
-  // let now = Date.now()
   const res = await fetch(url);
-
   const data = await res.json();
-  // console.log('getServerSideProps', data, Date.now() - now)
   const cookies = context.req.cookies["language"] || "pt";
   return {
     props: {

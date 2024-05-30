@@ -1,6 +1,5 @@
 import dynamic from "next/dynamic";
-import Head from "next/head";
-import React, { Fragment, useMemo, useState } from "react";
+import React, { Fragment } from "react";
 import {
   Button,
   CircularProgress,
@@ -9,19 +8,11 @@ import {
   Tooltip,
 } from "@mui/material";
 import { Box } from "@mui/material";
-const ResponsiveDrawer = dynamic(() =>
-  import("@/component/sharedProposal/ResponsiveDrawer/ResponsiveDrawer")
-);
 const BasicBreadcrumbs = dynamic(() =>
   import("@/component/reuseable/baseBreadCrumb/BaseBreadCrumb")
 );
-
-import { useDropzone } from "react-dropzone";
-import { getSession } from "next-auth/react";
 import { useForm, useFieldArray } from "react-hook-form";
 import { useRouter } from "next/router";
-
-// import { yupResolver } from "@hookform/resolvers/yup";
 import * as Yup from "yup";
 import { useEffect } from "react";
 const BaseModal = dynamic(() =>
@@ -62,11 +53,6 @@ import Features from "@/component/new venture/Features/Features";
 import FinancialData from "@/component/new venture/FinancialData/FinancialData";
 import Address from "@/component/new venture/Address/Address";
 
-const validationSchema = Yup.object().shape({
-  name: Yup.string().required("O nome da empresa é obrigatório"),
-  description: Yup.string().required("A descrição é necessária"),
-});
-
 const drawerWidth = 240;
 
 export default function NewVenture({ language, session }) {
@@ -80,7 +66,6 @@ export default function NewVenture({ language, session }) {
   ];
   const [activeStep, setActiveStep] = useState(0);
   const [skipped, setSkipped] = useState(new Set());
-  const [adType, setAdType] = useState("New");
   const [disableBtn, setDisableBtn] = useState(false);
   const [draftloading, setDraftLoading] = useState(false);
 
@@ -95,9 +80,6 @@ export default function NewVenture({ language, session }) {
     dispatch(GetPhotoTypeData("project"));
   }, [dispatch]);
 
-  const photoType = useSelector((state) => state?.photoType?.photoTypeData);
-
-  const Loading = useSelector((state) => state?.photoType?.loading);
   const {
     register,
     reset,
@@ -110,10 +92,6 @@ export default function NewVenture({ language, session }) {
   } = useForm();
   const { replace } = useRouter();
 
-  //  {
-  //   resolver: yupResolver(validationSchema),
-  // }
-
   const [loading, setLoading] = useState(false);
   const [files, setFiles] = useState([]);
   const [videoFiles, setVideoFiles] = useState([]);
@@ -122,9 +100,6 @@ export default function NewVenture({ language, session }) {
   const [documents, setDocuments] = useState([]);
   const [imageError, setImageError] = useState(false);
   const [imageErrorMessage, setImageErrorMessage] = useState("");
-
-  const [propertyType, setPropertyType] = useState("Residential");
-  const [property_detail_id, setPropertyDetailId] = useState(1);
 
   const [sentModalOpen, setSentModalOpen] = useState(false);
   // const handleOpen = () => setSentModalOpen(true);
@@ -163,7 +138,6 @@ export default function NewVenture({ language, session }) {
       ...filterNewVideoTitleData,
     ];
 
-    // if (files.length > 0 && featuretypes.length > 0) {
     let newArr = [];
     files?.forEach((data, index) => {
       if (data instanceof File) {
@@ -256,7 +230,6 @@ export default function NewVenture({ language, session }) {
   return (
     <Box
       sx={{
-        //   backgroundColor: "#f6f8fc",
         flexGrow: 1,
 
         width: { sm: `calc(100% - ${drawerWidth}px)` },
@@ -497,13 +470,3 @@ export default function NewVenture({ language, session }) {
     </Box>
   );
 }
-
-const top100Films = [
-  { label: "The Shawshank Redemption", year: 1994 },
-  { label: "The Godfather", year: 1972 },
-  { label: "The Godfather: Part II", year: 1974 },
-  { label: "The Dark Knight", year: 2008 },
-  { label: "12 Angry Men", year: 1957 },
-  { label: "Schindler's List", year: 1993 },
-  { label: "Pulp Fiction", year: 1994 },
-];

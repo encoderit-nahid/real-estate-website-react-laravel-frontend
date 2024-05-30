@@ -1,8 +1,7 @@
 import dynamic from "next/dynamic";
-import PropTypes from "prop-types";
 import Typography from "@mui/material/Typography";
 import Box from "@mui/material/Box";
-import { Grid, ListItem, ListItemButton, ListItemText } from "@mui/material";
+import { Grid } from "@mui/material";
 import { useEffect, useState } from "react";
 const UserUpdateForm = dynamic(
   () => import("@/component/user/update/UserUpdateForm"),
@@ -35,7 +34,6 @@ export default function Index({ language }) {
   return (
     <Box
       sx={{
-        //   backgroundColor: "#f6f8fc",
         flexGrow: 1,
         background: "#F2F5F6",
         minHeight: "100vh",

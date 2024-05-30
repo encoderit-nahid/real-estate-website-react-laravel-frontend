@@ -1,5 +1,4 @@
 import Navbar from "../src/component/shared/Navbar/Navbar";
-import Footer from "../src/component/shared/Footer/Footer";
 import Head from "next/head";
 import {
   Box,
@@ -8,7 +7,6 @@ import {
   Grid,
   Tooltip,
   Snackbar,
-  Typography,
   Alert,
   CircularProgress,
   Stack,
@@ -17,27 +15,17 @@ import BaseStepper from "../src/component/reuseable/baseStepper/BaseStepper";
 import { Fragment, useEffect, useState } from "react";
 import PersonalData from "../src/component/brokerRegistration/personalData/PersonalData";
 import AddressData from "../src/component/brokerRegistration/Address/AddressData";
-import PerformanceData from "../src/component/brokerRegistration/performance/PerformanceData";
-import Image from "next/image";
-import stepFinish from "../public/Images/step_finish.png";
 import BrokerRegistrationFooter from "../src/component/shared/Footer/BrokerRegistrationFooter";
 import BaseModal from "../src/component/reuseable/baseModal/BaseModal";
 import BrokerRegistrationSentModal from "../src/component/brokerRegistration/BrokerRegistrationSendModal/BrokerRegistrationSendModal";
-import { useForm, Controller } from "react-hook-form";
+import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as Yup from "yup";
-import { findStateData } from "../src/redux/state/actions";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { serialize } from "object-to-formdata";
-import {
-  emailVerifyApi,
-  registrationApi,
-  userDetailsApi,
-  userInfoRegistrationApi,
-} from "../src/api";
+import { userInfoRegistrationApi } from "../src/api";
 
 import dayjs from "dayjs";
-import { signIn } from "next-auth/react";
 import en from "locales/en";
 import pt from "locales/pt";
 
@@ -132,25 +120,6 @@ export default function OtherInformation({
 
   const handleBack = () => {
     setActiveStep((prevActiveStep) => prevActiveStep - 1);
-  };
-
-  const handleSkip = () => {
-    if (!isStepOptional(activeStep)) {
-      // You probably want to guard against something like this,
-      // it should never occur unless someone's actively trying to break something.
-      throw new Error("You can't skip a step that isn't optional.");
-    }
-
-    setActiveStep((prevActiveStep) => prevActiveStep + 1);
-    setSkipped((prevSkipped) => {
-      const newSkipped = new Set(prevSkipped.values());
-      newSkipped.add(activeStep);
-      return newSkipped;
-    });
-  };
-
-  const handleReset = () => {
-    setActiveStep(0);
   };
 
   const [snackbarOpen, setSnackbarOpen] = useState(false);
@@ -347,9 +316,6 @@ export default function OtherInformation({
                             disabled={activeStep === 0}
                             onClick={handleBack}
                             sx={{
-                              //   mr: 1,
-                              //   border: "1px solid #002152",
-                              //   borderRadius: "4px",
                               background: "#ffffff",
                               px: 2,
                               py: 1,

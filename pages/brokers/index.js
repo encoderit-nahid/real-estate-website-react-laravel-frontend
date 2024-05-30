@@ -1,8 +1,4 @@
 import dynamic from "next/dynamic";
-const ResponsiveDrawer = dynamic(() =>
-  import("@/component/sharedProposal/ResponsiveDrawer/ResponsiveDrawer")
-);
-import Head from "next/head";
 import Image from "next/image";
 import PropTypes from "prop-types";
 import Tabs from "@mui/material/Tabs";
@@ -28,7 +24,7 @@ const TabPendant = dynamic(() =>
 import { useDispatch, useSelector } from "react-redux";
 import { useEffect } from "react";
 import { findBrokerCountData } from "@/redux/brokerCount/actions";
-import { getSession, useSession } from "next-auth/react";
+import { useSession } from "next-auth/react";
 import SearchIcon from "@mui/icons-material/Search";
 import pt from "locales/pt";
 import en from "locales/en";
@@ -90,7 +86,6 @@ export default function Brokers({ language }) {
   return (
     <Box
       sx={{
-        //   backgroundColor: "#f6f8fc",
         flexGrow: 1,
         background: "#F2F5F6",
         minHeight: "100vh",

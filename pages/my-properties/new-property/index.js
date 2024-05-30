@@ -1,19 +1,13 @@
 import dynamic from "next/dynamic";
-import Head from "next/head";
 import {
-  Alert,
   Button,
   CircularProgress,
   Container,
   Grid,
   Stack,
   Tooltip,
-  Typography,
 } from "@mui/material";
 import { Box } from "@mui/material";
-const ResponsiveDrawer = dynamic(() =>
-  import("@/component/sharedProposal/ResponsiveDrawer/ResponsiveDrawer")
-);
 const BasicBreadcrumbs = dynamic(() =>
   import("@/component/reuseable/baseBreadCrumb/BaseBreadCrumb")
 );
@@ -43,7 +37,7 @@ const PropertySubmittedModal = dynamic(() =>
     "@/component/new property/PropertySubmittedModal/PropertySubmittedModal"
   )
 );
-import { getSession, useSession } from "next-auth/react";
+import { useSession } from "next-auth/react";
 import { useForm, Controller, useFieldArray } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as Yup from "yup";
@@ -54,8 +48,6 @@ import { useRouter } from "next/router";
 import { findSinglePropertyData } from "../../../src/redux/singleProperty/actions";
 import en from "locales/en";
 import pt from "locales/pt";
-
-const RichTextEditor = dynamic(() => import("react-rte"), { ssr: false });
 
 const drawerWidth = 240;
 
@@ -595,7 +587,6 @@ export default function NewProperty({ language }) {
   return (
     <Box
       sx={{
-        //   backgroundColor: "#f6f8fc",
         flexGrow: 1,
 
         width: { sm: `calc(100% - ${drawerWidth}px)` },
@@ -625,18 +616,7 @@ export default function NewProperty({ language }) {
             marginTop={"2vh"}
           />
           {activeStep === steps.length ? (
-            <Container maxWidth="xs">
-              <Fragment>
-                {/* <Typography sx={{ mt: 2, mb: 1 }}>
-          All steps completed - you&apos;re finished
-        </Typography> */}
-
-                {/* <Box sx={{ display: "flex", flexDirection: "row", pt: 2 }}>
-      <Box sx={{ flex: "1 1 auto" }} />
-      <Button onClick={handleReset}>Reset</Button>
-    </Box> */}
-              </Fragment>
-            </Container>
+            <Container maxWidth="xs"></Container>
           ) : (
             <Fragment>
               <form onSubmit={handleSubmit(onSubmit)}>
@@ -859,122 +839,6 @@ export default function NewProperty({ language }) {
                       </Grid>
                     </Grid>
                   )}
-                  {/* {activeStep === steps.length - 1 && (
-                    <>
-                      <Button
-                        type="button"
-                        variant="outlined"
-                        color="error"
-                        sx={{
-                          fontSize: "16px",
-                          lineHeight: "22px",
-                          fontWeight: "600",
-                          textTransform: "none",
-                          py: 1,
-                          mr: 1,
-                        }}
-                        onClick={() => {
-                          reset();
-                          replace("/my-properties");
-                        }}
-                      >
-                        {t["Cancel"]}
-                      </Button>
-                      <Button
-                        color="inherit"
-                        // disabled={activeStep === 0}
-                        onClick={handleBack}
-                        sx={{
-                          mr: 1,
-                          border: "1px solid #002152",
-                          borderRadius: "4px",
-                          px: 2,
-                          py: 1,
-                          color: "#002152",
-                          fontSize: "16px",
-                          fontWeight: "600",
-                          lineHeight: "22px",
-                          textTransform: "none",
-                        }}
-                      >
-                        {t["come back"]}
-                      </Button>
-                    </>
-                  )}
-
-                  {activeStep === steps.length - 1 && (
-                    <Box>
-                      <Button
-                        type="submit"
-                        disabled={session?.user?.role !== "owner" && disableBtn}
-                        onClick={() => setAction("draft")}
-                        sx={{
-                          background: "#DBE1E5",
-                          borderRadius: "4px",
-                          px: 2,
-                          py: 1,
-                          mr: 1,
-                          color: "#002152",
-                          fontSize: "16px",
-                          fontWeight: "600",
-                          lineHeight: "22px",
-                          textTransform: "none",
-
-                          "&:hover": {
-                            background: "#DBE1E5",
-                            borderRadius: "4px",
-                            px: 2,
-                            py: 1,
-                            color: "#002152",
-                            fontSize: "16px",
-                            fontWeight: "600",
-                            lineHeight: "22px",
-                            textTransform: "none",
-                            mr: 1,
-                          },
-                        }}
-                      >
-                        {draftloading && (
-                          <CircularProgress size={22} color="inherit" />
-                        )}
-                        {!draftloading && t["Save as draft"]}
-                      </Button>
-                      <Button
-                        type="submit"
-                        disabled={session?.user?.role !== "owner" && disableBtn}
-                        onClick={() => setAction("new")}
-                        sx={{
-                          background: "#7450F0",
-                          borderRadius: "4px",
-                          px: 2,
-                          py: 1,
-                          color: "#ffffff",
-                          fontSize: "16px",
-                          fontWeight: "600",
-                          lineHeight: "22px",
-                          textTransform: "none",
-                          boxShadow: "0px 4px 8px rgba(81, 51, 182, 0.32)",
-                          "&:hover": {
-                            background: "#7450F0",
-                            borderRadius: "4px",
-                            px: 2,
-                            py: 1,
-                            color: "#ffffff",
-                            fontSize: "16px",
-                            fontWeight: "600",
-                            lineHeight: "22px",
-                            textTransform: "none",
-                            boxShadow: "0px 4px 8px rgba(81, 51, 182, 0.32)",
-                          },
-                        }}
-                      >
-                        {loading && (
-                          <CircularProgress size={22} color="inherit" />
-                        )}
-                        {!loading && t["Submit approval"]}
-                      </Button>
-                    </Box>
-                  )} */}
                 </Stack>
               </form>
             </Fragment>

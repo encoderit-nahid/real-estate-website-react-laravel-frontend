@@ -1,14 +1,9 @@
 import dynamic from "next/dynamic";
-const ResponsiveDrawer = dynamic(() =>
-  import("@/component/sharedProposal/ResponsiveDrawer/ResponsiveDrawer")
-);
-import Head from "next/head";
 import Image from "next/image";
 import Typography from "@mui/material/Typography";
 import Box from "@mui/material/Box";
-import { Button, Container, Grid, Skeleton } from "@mui/material";
+import { Container, Grid, Skeleton } from "@mui/material";
 import notifyImage from "../public/Images/notify.png";
-import { getSession } from "next-auth/react";
 import ScheduleCard from "../src/component/schedule/ScheduleCard";
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
@@ -31,28 +26,6 @@ export default function Schedules({ language }) {
   const scheduleData = useSelector((state) => state?.schedule?.scheduleData);
 
   const Loading = useSelector((state) => state?.schedule?.loading);
-
-  // if (Loading) {
-  //   return (
-  //     <Box>
-  //       {[0, 1, 2, 3].map((data, index) => (
-  //        <Container  maxWidth="xl" sx={{ marginTop: 5 }} key={index}>
-  //           <Skeleton
-  //             variant="rect"
-  //             height={200}
-  //             sx={{ mx: 2, my: 2, borderRadius: "8px" }}
-  //           />
-  //           <Box sx={{ mx: 2, my: 1 }}>
-  //             <Skeleton width="100%" />
-  //             <Skeleton width="100%" />
-  //             <Skeleton width="100%" />
-  //             <Skeleton />
-  //           </Box>
-  //         </Container>
-  //       ))}
-  //     </Box>
-  //   );
-  // }
 
   return (
     <>

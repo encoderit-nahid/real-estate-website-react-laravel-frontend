@@ -3,7 +3,6 @@ const Navbar = dynamic(() => import("@/component/shared/Navbar/Navbar"));
 const Footer = dynamic(() => import("@/component/shared/Footer/Footer"));
 import Head from "next/head";
 import { Box, Tooltip } from "@mui/material";
-import mobileGray from "../public/Images/mobileGray.png";
 import ownerBackgroundImage from "../public/Images/ownerBackground.png";
 import { useSession, signIn, signOut } from "next-auth/react";
 import { _baseURL } from "../consts";
@@ -67,10 +66,6 @@ export default function Advertise({
             backgroundRepeat: "no-repeat",
             backgroundSize: "100% 100%", // Set backgroundSize to cover the entire area
             minHeight: "100vh", // Ensure the box covers at least the viewport height
-            // display: "flex",
-            // flexDirection: "column",
-            // justifyContent: "center", // Center content vertically
-            // alignItems: "center", // Center content horizontally
           }}
         >
           <Navbar

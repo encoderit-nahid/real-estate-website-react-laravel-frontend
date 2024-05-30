@@ -1,5 +1,5 @@
 import Head from "next/head";
-import { Box, CircularProgress, Container, Grid, Tooltip } from "@mui/material";
+import { CircularProgress, Container, Grid, Tooltip } from "@mui/material";
 import { useRouter } from "next/router";
 import { emailVerifyApi, userDetailsApi } from "@/api";
 import { signIn } from "next-auth/react";
@@ -27,10 +27,6 @@ export default function UserLoading() {
               role: response?.data?.user?.roles[0]?.slug,
               roleId: response?.data?.user?.roles[0]?.id,
               userImage: response?.data?.user?.attachments[0]?.file_path,
-              // image: response?.data?.user?.attachments[0],
-              // permissions: JSON.stringify(
-              //   response?.data?.user?.roles[0]?.permissions
-              // ),
               callbackUrl: "/my-properties",
             });
           } else {
