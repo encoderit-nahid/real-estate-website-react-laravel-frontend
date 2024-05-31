@@ -71,6 +71,8 @@ const BaseCopyText = dynamic(() =>
 import { useRouter } from "next/router";
 import { _imageURL } from "consts";
 import { stripHtmlTags } from "@/utils/stripHtmlTags";
+import BaseShareButton from "@/component/reuseable/baseShareButton/BaseShareButton";
+import BaseWhatsappButton from "@/component/reuseable/baseWhatsappButton/BaseWhatsappButton";
 const BaseFavoriteButton = dynamic(
   () => import("@/component/reuseable/baseFavoriteButton/BaseFavoriteButton"),
   {
@@ -268,7 +270,7 @@ export default function PropertyView({
               </Typography>
             </Button>
             <Stack direction="row" spacing={1}>
-              <IconButton
+              {/* <IconButton
                 id="basic-button"
                 aria-controls={open ? "basic-menu" : undefined}
                 aria-haspopup="true"
@@ -277,7 +279,6 @@ export default function PropertyView({
               >
                 <ShareIcon />
               </IconButton>
-
               <Menu
                 id="basic-menu"
                 anchorEl={anchorEl}
@@ -351,7 +352,10 @@ export default function PropertyView({
                     </Stack>
                   </Stack>
                 </MenuItem>
-              </Menu>
+              </Menu> */}
+              <BaseShareButton
+                base_url={`https://www.lokkan.site/property-view/${singlePropertyData?.property?.id}`}
+              />
               <BaseFavoriteButton
                 handleLoginOpen={handleLoginOpen}
                 itemID={singlePropertyData?.property?.id}
@@ -423,17 +427,18 @@ export default function PropertyView({
             direction="row"
             alignItems="center"
             sx={{
-              height: {
-                xs: "60vh",
-                sm: "60vh",
-                md: "60vh",
-                lg: "40vh",
-                xl: "40vh",
-              },
+              // height: {
+              //   xs: "60vh",
+              //   sm: "60vh",
+              //   md: "60vh",
+              //   lg: "40vh",
+              //   xl: "40vh",
+              // },
               background: "#0E97F7",
 
               px: { xs: 2, sm: 2, md: 2, lg: 2, xl: 20 },
-              pt: { xs: 2, sm: 2, md: 0, lg: 0, xl: 0 },
+              py: 3,
+              // pt: { xs: 2, sm: 2, md: 0, lg: 0, xl: 0 },
               // pb: { xs: 0.5, sm: 0.5, md: 0, lg: 0, xl: 0 },
             }}
           >
@@ -571,7 +576,9 @@ export default function PropertyView({
             mx: "auto",
             zIndex: 111,
           }}
+          gap={2}
         >
+          <BaseWhatsappButton />
           <Button
             variant="contained"
             color="primary"
@@ -606,7 +613,6 @@ export default function PropertyView({
             variant="contained"
             color="secondary"
             sx={{
-              mt: 2,
               px: 4,
               fontSize: "16px",
               fontWeight: "600",

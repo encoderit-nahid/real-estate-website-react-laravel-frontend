@@ -18,13 +18,6 @@ import {
 } from "@mui/material";
 import orionImage from "../../public/Images/orion_view.svg";
 import Image from "next/image";
-import ShareIcon from "@mui/icons-material/Share";
-import {
-  EmailShareButton,
-  FacebookShareButton,
-  WhatsappShareButton,
-} from "react-share";
-import { EmailIcon, FacebookIcon, WhatsappIcon } from "react-share";
 const HouseCard = dynamic(
   () => import("@/component/reuseable/HouseCard/HouseCard"),
   {
@@ -53,6 +46,7 @@ import Link from "next/link";
 import { _imageURL } from "consts";
 import { useRouter } from "next/router";
 import { stripHtmlTags } from "@/utils/stripHtmlTags";
+import BaseShareButton from "@/component/reuseable/baseShareButton/BaseShareButton";
 const AboutProperty = dynamic(
   () => import("@/component/PropertyView/AboutProperty/AboutProperty"),
   {
@@ -245,94 +239,15 @@ export default function ProjectView({
                 {singleProjectData?.project?.name}
               </Typography>
             </Button>
-            <Stack direction="row" spacing={1}>
-              <IconButton
-                id="basic-button"
-                aria-controls={open ? "basic-menu" : undefined}
-                aria-haspopup="true"
-                aria-expanded={open ? "true" : undefined}
-                onClick={handleClick}
-              >
-                <ShareIcon />
-              </IconButton>
+            <Stack direction="row" alignItems={"center"} spacing={1}>
+              <BaseShareButton
+                base_url={`https://www.lokkan.site/project-view/${singleProjectData?.property?.id}`}
+              />
 
-              <Menu
-                id="basic-menu"
-                anchorEl={anchorEl}
-                open={open}
-                onClose={handleClose}
-                MenuListProps={{
-                  "aria-labelledby": "basic-button",
-                }}
-                anchorOrigin={{
-                  vertical: "bottom",
-                  horizontal: "",
-                }}
-                transformOrigin={{
-                  vertical: "top",
-                  horizontal: "left",
-                }}
-              >
-                <MenuItem onClick={handleClose}>
-                  <Stack direction="column" spacing={3}>
-                    <Typography
-                      variant="p"
-                      sx={{
-                        fontSize: "16px",
-                        fontWeight: 600,
-                        color: "#1A1859",
-                      }}
-                      align="center"
-                    >
-                      Compartilhar
-                    </Typography>
-                    <Stack direction="row" spacing={3}>
-                      <Stack direction="column">
-                        <WhatsappShareButton
-                          url={`https://www.lokkan.site/project-view/${singleProjectData?.property?.id}`}
-                        >
-                          <WhatsappIcon round size={40} />
-                          <Typography sx={{ fontSize: "12px" }}>
-                            Whatsapp
-                          </Typography>
-                        </WhatsappShareButton>
-                      </Stack>
-                      <Stack direction="column">
-                        <FacebookShareButton
-                          url={`https://www.lokkan.site/project-view/${singleProjectData?.property?.id}`}
-                        >
-                          <FacebookIcon round size={40} />
-                          <Typography sx={{ fontSize: "12px" }}>
-                            Facebook
-                          </Typography>
-                        </FacebookShareButton>
-                      </Stack>
-                      <Stack direction="column">
-                        <EmailShareButton
-                          url={`https://www.lokkan.site/project-view/${singleProjectData?.property?.id}`}
-                        >
-                          <EmailIcon round size={40} />
-                          <Typography sx={{ fontSize: "12px" }}>
-                            Email
-                          </Typography>
-                        </EmailShareButton>
-                      </Stack>
-                      <Stack direction="column">
-                        <BaseCopyText
-                          text={`https://www.lokkan.site/project-view/${singleProjectData?.property?.id}`}
-                        />
-
-                        <Typography sx={{ fontSize: "12px", mt: "6px" }}>
-                          Copy URL
-                        </Typography>
-                      </Stack>
-                    </Stack>
-                  </Stack>
-                </MenuItem>
-              </Menu>
               <BaseFavoriteButton
                 handleLoginOpen={handleLoginOpen}
-                itemID={singleProjectData?.property?.id}
+                itemID={singleProjectData?.project?.id}
+                type="project"
               />
             </Stack>
           </Grid>

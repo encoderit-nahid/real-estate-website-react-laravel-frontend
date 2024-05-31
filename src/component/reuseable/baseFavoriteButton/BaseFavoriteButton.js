@@ -2,17 +2,33 @@ import React, { useCallback, useEffect, useState } from "react";
 import { Button, IconButton } from "@mui/material";
 import FavoriteIcon from "@mui/icons-material/Favorite";
 import useCurrentUser from "@/hooks/useCurrentUser";
-import { MakeFavouriteApi, userDetailsApi } from "@/api";
+import {
+  MakeFavouriteApi,
+  MakeFavouriteProjectApi,
+  userDetailsApi,
+} from "@/api";
 
-const BaseFavoriteButton = ({ handleLoginOpen, itemID }) => {
+const BaseFavoriteButton = ({ handleLoginOpen, itemID, type = "property" }) => {
   const [propertyId, setPropertyId] = useState(null);
 
   const currentUser = useCurrentUser();
 
   const [favoriteList, setFavoriteList] = useState([]);
+  console.log("🟥 ~ BaseFavoriteButton ~ favoriteList:", favoriteList);
   useEffect(() => {
-    if (currentUser?.wishList) {
-      setFavoriteList(currentUser?.wishList.split(",").map(Number));
+    console.log("🟥 ~ useEffect ~ currentUser:", currentUser);
+    if (type === "property") {
+      if (currentUser?.wishList) {
+        setFavoriteList(currentUser?.wishList.split(",").map(Number));
+      }
+    } else if (type === "project") {
+      if (currentUser?.projectWishList) {
+        console.log(
+          "🟥 ~ useEffect ~ currentUser?.projectWishList:",
+          currentUser?.projectWishList
+        );
+        setFavoriteList(currentUser?.projectWishList.split(",").map(Number));
+      }
     }
   }, [currentUser]);
 
@@ -25,9 +41,16 @@ const BaseFavoriteButton = ({ handleLoginOpen, itemID }) => {
       } else {
         setFavoriteList([...favoriteList, itemID]);
       }
-      const [error] = await MakeFavouriteApi(itemID);
-      if (!error) {
-        userDetailsApi();
+      if (type == "property") {
+        const [error] = await MakeFavouriteApi(itemID);
+        if (!error) {
+          userDetailsApi();
+        }
+      } else if (type == "project") {
+        const [error] = await MakeFavouriteProjectApi(itemID);
+        if (!error) {
+          userDetailsApi();
+        }
       }
     }
   }, [itemID, favoriteList, currentUser, handleLoginOpen]);

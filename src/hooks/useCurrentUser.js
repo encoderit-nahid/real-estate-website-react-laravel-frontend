@@ -7,6 +7,7 @@ const useCurrentUser = () => {
   const token = localStorage.getItem("token");
   const user = localStorage.getItem("user");
   const wishList = localStorage.getItem("wishList");
+  const projectWishList = localStorage.getItem("projectWishList");
 
   useEffect(() => {
     // Simulate fetching current user from an API
@@ -15,6 +16,10 @@ const useCurrentUser = () => {
       if (!error) {
         localStorage.setItem("wishList", response?.data?.wishlists);
         localStorage.setItem("user", JSON.stringify(response?.data?.user));
+        localStorage.setItem(
+          "projectWishList",
+          JSON.stringify(response?.data?.project_wishlists)
+        );
       }
     };
 
@@ -22,12 +27,12 @@ const useCurrentUser = () => {
       fetchCurrentUser();
     }
     const LoggedInUser = JSON.parse(user);
-    setCurrentUser({ ...LoggedInUser, wishList });
+    setCurrentUser({ ...LoggedInUser, wishList, projectWishList });
     // Cleanup function (optional)
     return () => {
       // Cleanup logic if needed
     };
-  }, [user, wishList, token]); // Empty dependency array ensures this effect runs only once
+  }, [user, wishList, token, projectWishList]); // Empty dependency array ensures this effect runs only once
 
   return currentUser;
 };

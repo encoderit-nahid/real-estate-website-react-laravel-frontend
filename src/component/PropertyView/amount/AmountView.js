@@ -1,9 +1,9 @@
+import BaseWhatsappButton from "@/component/reuseable/baseWhatsappButton/BaseWhatsappButton";
 import { Box, Button, Grid, Stack, Typography } from "@mui/material";
 import en from "locales/en";
 import pt from "locales/pt";
 import { useSession } from "next-auth/react";
 import React from "react";
-
 function AmountView({
   setNegotiate,
   setSchedule,
@@ -128,7 +128,9 @@ function AmountView({
             sm: "flex",
           },
         }}
+        spacing={1}
       >
+        <BaseWhatsappButton />
         <Button
           disabled={
             session?.user?.role === "broker" || session?.user?.role === "owner"
@@ -160,7 +162,6 @@ function AmountView({
         >
           {t["Negotiate"]}
         </Button>
-
         <Button
           disabled={
             session?.user?.role === "broker" || session?.user?.role === "owner"
@@ -168,7 +169,6 @@ function AmountView({
           variant="contained"
           color="secondary"
           sx={{
-            mt: 1,
             px: 4,
             fontSize: "16px",
             fontWeight: "600",

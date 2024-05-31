@@ -128,6 +128,10 @@ export const userDetailsApi = async () => {
   try {
     const response = await apiInstance.get(`auth-user`);
     localStorage.setItem("wishList", response?.data?.wishlists);
+    localStorage.setItem(
+      "projectWishList",
+      JSON.stringify(response?.data?.project_wishlists)
+    );
     localStorage.setItem("user", JSON.stringify(response?.data?.user));
     return [false, response];
   } catch (error) {
@@ -742,6 +746,15 @@ export const NotificationReadApi = async (id) => {
 export const MakeFavouriteApi = async (propertyId) => {
   try {
     const response = await apiInstance.get(`property/wishlist/${propertyId}`);
+    // console.log(response)
+    return [false, response];
+  } catch (error) {
+    return [error, null];
+  }
+};
+export const MakeFavouriteProjectApi = async (projectId) => {
+  try {
+    const response = await apiInstance.get(`project/wishlist/${projectId}`);
     // console.log(response)
     return [false, response];
   } catch (error) {
