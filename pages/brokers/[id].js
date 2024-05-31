@@ -94,14 +94,8 @@ export default function BrokerDetails({ handleLoginOpen, language }) {
   const [anchorEl, setAnchorEl] = useState(null);
 
   const open = Boolean(anchorEl);
-  const id = open ? "simple-popover" : undefined;
 
-  const {
-    data,
-    isLoading: countLoading,
-    refetch: loadingRefetch,
-  } = useGetPropertyCountQuery();
-  const propertyCountData = data?.data;
+
 
   const handleChange = (event, newValue) => {
     setValue(newValue);
