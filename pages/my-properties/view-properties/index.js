@@ -1,21 +1,13 @@
 import dynamic from "next/dynamic";
-import Head from "next/head";
 import Image from "next/image";
 import PropTypes from "prop-types";
 import Typography from "@mui/material/Typography";
 import Box from "@mui/material/Box";
-const ResponsiveDrawer = dynamic(() =>
-  import("@/component/sharedProposal/ResponsiveDrawer/ResponsiveDrawer")
-);
 import {
   Button,
-  Container,
   Divider,
   Grid,
-  InputBase,
   Pagination,
-  Paper,
-  Skeleton,
   Slider,
   Stack,
   SwipeableDrawer,
@@ -172,7 +164,6 @@ export default function ViewProperties({
       pathname: "/search-real-estate",
       query: { ...router.query, page: value },
     });
-    // setData(datas.slice(firstIndex + pageSize * (value - 1), pageSize * value));
   };
 
   const {
@@ -523,7 +514,6 @@ export default function ViewProperties({
               </Grid>
               <Grid item xs={12} sm={12} md={12} lg={8} xl={8}>
                 {[1, 2, 3, 4].map((data, index) => (
-                  // <Grid xs={6} sm={6} md={6} lg={3} xl={3} key={index}>
                   <Button
                     onClick={() => setBedrooms(data)}
                     key={index}
@@ -532,7 +522,7 @@ export default function ViewProperties({
                         data === bedrooms ? "#7450F0" : "transparent"
                       }`,
                       borderRadius: "56px",
-                      // width: "100%",
+
                       color: `${data === bedrooms ? "#ffffff" : "#32414C"}`,
                       border: `${data === bedrooms ? "" : "1px solid #9FAAB1"}`,
                       ml: 0.5,
@@ -557,7 +547,6 @@ export default function ViewProperties({
                   >
                     {`${data}+`}
                   </Button>
-                  // </Grid>
                 ))}
               </Grid>
             </Grid>
@@ -580,7 +569,6 @@ export default function ViewProperties({
               </Grid>
               <Grid item xs={12} sm={12} md={12} lg={8} xl={8}>
                 {[1, 2, 3, 4].map((data, index) => (
-                  // <Grid xs={6} sm={6} md={6} lg={3} xl={3} key={index}>
                   <Button
                     onClick={() => setBathrooms(data)}
                     key={index}
@@ -616,7 +604,6 @@ export default function ViewProperties({
                   >
                     {`${index + 1}+`}
                   </Button>
-                  // </Grid>
                 ))}
               </Grid>
             </Grid>
@@ -652,7 +639,7 @@ export default function ViewProperties({
                         data?.name === furnished ? "#7450F0" : "transparent"
                       }`,
                       borderRadius: "56px",
-                      // width: "100%",
+
                       color: `${
                         data?.name === furnished ? "#ffffff" : "#32414C"
                       }`,
@@ -708,7 +695,6 @@ export default function ViewProperties({
                   { name: "No", slug: t["no"] },
                   { name: "Whatever", slug: t["whatever"] },
                 ].map((data, index) => (
-                  // <Grid xs={6} sm={6} md={6} lg={3} xl={3} key={index}>
                   <Button
                     key={index}
                     onClick={() => setPets(data?.name)}
@@ -744,7 +730,6 @@ export default function ViewProperties({
                   >
                     {data?.slug}
                   </Button>
-                  // </Grid>
                 ))}
               </Grid>
             </Grid>
@@ -900,7 +885,6 @@ export default function ViewProperties({
                   >
                     {data?.slug}
                   </Button>
-                  // </Grid>
                 ))}
               </Grid>
             </Grid>
@@ -927,7 +911,6 @@ export default function ViewProperties({
                   { name: "Shortly", slug: t["shortly"] },
                   { name: "Whatever", slug: t["whatever"] },
                 ].map((data, index) => (
-                  // <Grid xs={6} sm={6} md={6} lg={3} xl={3} key={index}>
                   <Button
                     key={index}
                     onClick={() => setAvailability(data?.name)}
@@ -965,7 +948,6 @@ export default function ViewProperties({
                   >
                     {data?.slug}
                   </Button>
-                  // </Grid>
                 ))}
               </Grid>
             </Grid>
@@ -1022,14 +1004,9 @@ export default function ViewProperties({
                           featuretypes?.includes(data.id)
                             ? "#7450F0"
                             : "transparent"
-                          // console.log("feature", featuretypes)
-                          // console.log(
-                          //   "bool",
-                          //   featuretypes?.includes(data.id.toString())
-                          // )
                         }`,
                         borderRadius: "56px",
-                        // width: "100%",
+
                         color: `${
                           featuretypes?.includes(data.id)
                             ? "#ffffff"
@@ -1070,9 +1047,6 @@ export default function ViewProperties({
         <Divider sx={{ mt: 2, mb: 1 }} />
         <Box
           sx={{
-            // mx: 2,
-            // my: 2,
-
             position: "sticky",
             bottom: 0,
             width: "100%",
@@ -1136,7 +1110,6 @@ export default function ViewProperties({
   return (
     <Box
       sx={{
-        //   backgroundColor: "#f6f8fc",
         flexGrow: 1,
         background: "#F2F5F6",
         minHeight: "100vh",
@@ -1160,14 +1133,7 @@ export default function ViewProperties({
         <Image src={notifyImage} alt="notify" />
       </Grid>
 
-      <Grid
-        container
-        spacing={1}
-        //   direction="row"
-        //   justifyContent="space-between"
-        //   alignItems="flex-start"
-        sx={{ mt: 1 }}
-      >
+      <Grid container spacing={1} sx={{ mt: 1 }}>
         <Grid item xs={12} sm={12} md={12} lg={2} xl={2}>
           <Link href="/my-properties">
             <a
@@ -1205,49 +1171,6 @@ export default function ViewProperties({
           xl={4}
           sx={{ mx: { xs: 2, sm: 2, md: 0 } }}
         >
-          {/* <Paper
-                  component="form"
-                  sx={{
-                   
-                    display: "flex",
-                    alignItems: "center",
-                    // border: "1px solid red",
-                    boxShadow: "none",
-                    border: "1px solid #D3D3DF",
-                    borderRadius: "4px",
-
-                    width: {
-                      xs: "100%",
-                      sm: "100%",
-                      md: "100%",
-                      xl: "100%",
-                      lg: "100%",
-                    },
-                  }}
-                >
-                  <Grid sx={{ paddingRight: 2, width: "100%" }}>
-                  
-                    <InputBase
-                      fullWidth
-                      sx={{ ml: 1, flex: 1 }}
-                      placeholder="search.."
-                      inputProps={{
-                        "aria-label": "search google maps",
-                        style: {
-                          color: "#9F9FA9",
-                          fontSize: "20px",
-                        },
-                      }}
-                    />
-                  </Grid>
-                  <Box
-                    sx={{
-                      padding: "1vh",
-                    }}
-                  >
-                    <Image src={searchIcon} alt="search" />
-                  </Box>
-                </Paper> */}
           <SearchComponent
             handleSearch={handleSearch}
             handleSearchBtn={handleSearchBtn}

@@ -1,5 +1,3 @@
-// pages/404.js
-
 import { Container, Typography, Button } from "@mui/material";
 import Link from "next/link";
 

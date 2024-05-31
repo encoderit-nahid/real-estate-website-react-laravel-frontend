@@ -4,16 +4,12 @@ import PropTypes from "prop-types";
 import Tabs from "@mui/material/Tabs";
 import Tab from "@mui/material/Tab";
 import Box from "@mui/material/Box";
-const ResponsiveDrawer = dynamic(() =>
-  import("@/component/sharedProposal/ResponsiveDrawer/ResponsiveDrawer")
-);
 import {
   Button,
   Container,
   Grid,
   ListItem,
   ListItemButton,
-  ListItemIcon,
   ListItemText,
 } from "@mui/material";
 import { useEffect, useState } from "react";
@@ -25,15 +21,12 @@ const NewRegistration = dynamic(() =>
   import("@/component/properties/NewRegistration/NewRegistration")
 );
 import Link from "next/link";
-import { getSession, useSession } from "next-auth/react";
+import { useSession } from "next-auth/react";
 import { useRouter } from "next/router";
 import { _baseURL } from "../../consts";
-import { useDispatch } from "react-redux";
-
 import { omitEmpties, userDetailsApi } from "@/api";
 import en from "locales/en";
 import pt from "locales/pt";
-import { findPropertyCountData } from "@/redux/propertyCount/actions";
 import WishProperty from "@/component/properties/WishProperty/WishProperty";
 import { useGetPropertyCountQuery } from "@/queries/useGetPropertyCountQuery";
 import useParams from "@/hooks/useParams";
@@ -43,18 +36,6 @@ const NotificationContent = dynamic(() =>
 );
 
 const drawerWidth = 240;
-
-function renderRow(props) {
-  const { index, style } = props;
-
-  return (
-    <ListItem style={style} key={index} component="div" disablePadding>
-      <ListItemButton>
-        <ListItemText primary={`Item ${index + 1}`} />
-      </ListItemButton>
-    </ListItem>
-  );
-}
 
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
@@ -134,7 +115,6 @@ export default function MyProperties({ language }) {
   return (
     <Box
       sx={{
-        //   backgroundColor: "#f6f8fc",
         flexGrow: 1,
         background: "#F2F5F6",
         minHeight: "100vh",

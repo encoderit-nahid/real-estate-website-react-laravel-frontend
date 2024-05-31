@@ -6,33 +6,21 @@ import {
   Container,
   Grid,
   InputAdornment,
-  Snackbar,
-  TextField,
   Typography,
 } from "@mui/material";
 import Head from "next/head";
 import registerImage from "../public/Images/register.png";
-import GoogleIcon from "@mui/icons-material/Google";
-import FacebookOutlinedIcon from "@mui/icons-material/FacebookOutlined";
-import ArrowBackIosNewOutlinedIcon from "@mui/icons-material/ArrowBackIosNewOutlined";
 import Image from "next/image";
-import Link from "next/link";
 import BaseTextField from "../src/component/reuseable/baseTextField/BaseTextField";
 import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import NoEncryptionOutlinedIcon from "@mui/icons-material/NoEncryptionOutlined";
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { useForm, Controller } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as Yup from "yup";
-import BaseOutlinedPhoneInput from "../src/component/reuseable/baseOutlinedPhoneInput/BaseOutlinedPhoneInput";
 import en from "locales/en";
 import pt from "locales/pt";
-import {
-  registrationApi,
-  resetPasswordApi,
-  userDetailsApi,
-  verifyToken,
-} from "../src/api";
+import { resetPasswordApi, userDetailsApi, verifyToken } from "../src/api";
 import { signIn } from "next-auth/react";
 import { useRouter } from "next/router";
 
@@ -174,8 +162,6 @@ export default function ResetPassword({ languageName }) {
                           onChange={(e) => {
                             field.onChange(e.target.value);
                           }}
-                          // value={field.value}
-                          // error={errors.password ? true : false}
                           InputProps={{
                             endAdornment: (
                               <InputAdornment
@@ -235,8 +221,6 @@ export default function ResetPassword({ languageName }) {
                           onChange={(e) => {
                             field.onChange(e.target.value);
                           }}
-                          // value={field.value}
-                          // error={errors.password ? true : false}
                           InputProps={{
                             endAdornment: (
                               <InputAdornment

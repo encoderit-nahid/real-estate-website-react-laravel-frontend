@@ -1,27 +1,15 @@
 import Head from "next/head";
-import { Box, CircularProgress, Container, Grid, Tooltip } from "@mui/material";
-
-import { useSession, signIn, signOut } from "next-auth/react";
-// import { _baseURL } from "../consts";
-
+import { CircularProgress, Container, Grid } from "@mui/material";
+import { signIn } from "next-auth/react";
 import { useRouter } from "next/router";
 import { useEffect } from "react";
 import { apiInstance, socialLoginApi, userDetailsApi } from "@/api";
-import useWindowDimensions from "@/hooks/useCurrentDisplaySize";
 
 export default function Facebook({ roleId }) {
-  const { data: session } = useSession();
-
   const router = useRouter();
   const { query } = router;
 
   console.log({ roleId });
-
-  //   if (typeof window !== "undefined") {
-  //     // Access localStorage here
-  //     const roleId = localStorage.getItem("role_id");
-  //     console.log({ roleId });
-  //   }
 
   console.log({ query });
 
@@ -49,9 +37,6 @@ export default function Facebook({ roleId }) {
             callbackUrl: "/my-properties",
           });
         }
-        // else {
-        //   router.replace({ pathname: "/" });
-        // }
       } else {
         console.log(errorAuth?.response);
         localStorage.setItem(
@@ -78,8 +63,6 @@ export default function Facebook({ roleId }) {
 
     getData();
   }, []);
-
-  const { height } = useWindowDimensions();
 
   return (
     <div>

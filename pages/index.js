@@ -6,9 +6,8 @@ import { Box, Tooltip } from "@mui/material";
 const FulfillDream = dynamic(() =>
   import("@/component/home/fullfill/FulfillDream")
 );
-import mobileGray from "../public/Images/mobileGray.png";
 import backgroundImage from "../public/Images/background.png";
-import { useSession, signIn, signOut } from "next-auth/react";
+import { useSession } from "next-auth/react";
 import { _baseURL } from "../consts";
 import { useEffect, useState } from "react";
 import SetCookie from "@/hooks/setCookie";
@@ -67,10 +66,6 @@ export default function App({
             backgroundRepeat: "no-repeat",
             backgroundSize: "100% 100%", // Set backgroundSize to cover the entire area
             minHeight: "100vh", // Ensure the box covers at least the viewport height
-            // display: "flex",
-            // flexDirection: "column",
-            // justifyContent: "center", // Center content vertically
-            // alignItems: "center", // Center content horizontally
           }}
         >
           <Navbar

@@ -1,20 +1,13 @@
-import dynamic from "next/dynamic";
-const ResponsiveDrawer = dynamic(() =>
-  import("@/component/sharedProposal/ResponsiveDrawer/ResponsiveDrawer")
-);
-import Head from "next/head";
 import Image from "next/image";
 import Typography from "@mui/material/Typography";
 import Box from "@mui/material/Box";
-import { Button, Container, Grid } from "@mui/material";
+import { Grid } from "@mui/material";
 import * as React from "react";
 import notifyImage from "../public/Images/notify.png";
-import Link from "next/link";
 import Accordion from "@mui/material/Accordion";
 import AccordionDetails from "@mui/material/AccordionDetails";
 import AccordionSummary from "@mui/material/AccordionSummary";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
-import { getSession } from "next-auth/react";
 import pt from "locales/pt";
 import en from "locales/en";
 import { useState } from "react";
@@ -33,7 +26,6 @@ export default function Faq({ language }) {
   return (
     <Box
       sx={{
-        //   backgroundColor: "#f6f8fc",
         flexGrow: 1,
         background: "#F2F5F6",
         minHeight: "100vh",

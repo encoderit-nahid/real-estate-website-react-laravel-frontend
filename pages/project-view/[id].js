@@ -11,8 +11,6 @@ import {
   ImageList,
   ImageListItem,
   Button,
-  LinearProgress,
-  CircularProgress,
   Stack,
   IconButton,
   Menu,
@@ -42,7 +40,6 @@ const SliderView = dynamic(
     ssr: false,
   }
 );
-import SlideImage from "@/component/PropertyView/slideImage/SlideImage";
 const SliderViewMobile = dynamic(
   () => import("@/component/PropertyView/SliderViewMobile/SliderViewMobile"),
   {
@@ -53,12 +50,6 @@ import { useEffect, useMemo, useState } from "react";
 import en from "locales/en";
 import pt from "locales/pt";
 import Link from "next/link";
-const SlideImageMobile = dynamic(
-  () => import("@/component/PropertyView/SlideImageMobile/SlideImageMobile"),
-  {
-    ssr: false,
-  }
-);
 import { _imageURL } from "consts";
 import { useRouter } from "next/router";
 import { stripHtmlTags } from "@/utils/stripHtmlTags";
@@ -80,11 +71,6 @@ const BaseFavoriteButton = dynamic(
     ssr: false,
   }
 );
-import { useGetSingleProjectQuery } from "@/queries/useGetSingleProjectQuery";
-
-// import BaseFavoriteButton from "@/component/reuseable/baseFavoriteButton/BaseFavoriteButton";
-
-
 
 export default function ProjectView({
   loginOpen,
@@ -97,7 +83,6 @@ export default function ProjectView({
 }) {
   const router = useRouter();
 
-
   const [anchorEl, setAnchorEl] = useState(null);
   const open = Boolean(anchorEl);
   const handleClick = (event) => {
@@ -106,8 +91,6 @@ export default function ProjectView({
   const handleClose = () => {
     setAnchorEl(null);
   };
-
-
 
   const [myValue, setMyValue] = useState(language || "pt");
 
@@ -497,8 +480,6 @@ export default function ProjectView({
         </Box>
         <Box>
           <ImageList
-            // container
-            // spacing={3}
             cols={5}
             sx={{
               gridAutoFlow: "column",
@@ -559,10 +540,6 @@ export async function getServerSideProps(context) {
       projectDescription: stripHtmlTags(
         singleProjectData?.project?.description
       ),
-      // tabArrayData:
-      //   singlePropertyData?.property?.property_detail?.photo_types?.filter(
-      //     (data) => data.slug.substr(data.slug.length - 3) !== "360"
-      //   ),
     },
   };
 }

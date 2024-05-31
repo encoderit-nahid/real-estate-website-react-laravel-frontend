@@ -1,6 +1,5 @@
 import "../styles/globals.css";
 import "@fontsource/lato";
-
 import { createTheme, CssBaseline, ThemeProvider } from "@mui/material";
 import React, { useEffect, useState } from "react";
 import { getSession, SessionProvider } from "next-auth/react";
