@@ -260,105 +260,113 @@ export default function NewVenture({ language, session }) {
               setActiveStep={setActiveStep}
               marginTop={"2vh"}
             />
-            {activeStep === steps.length ? (
-              <Container maxWidth="xs">
-                <Fragment></Fragment>
-              </Container>
-            ) : (
-              <Fragment>
-                <form onSubmit={handleSubmit(onSubmit)}>
-                  {activeStep === 0 ? (
-                    <Address
-                      control={control}
-                      errors={errors}
-                      setValue={setValue}
-                      languageName={myValue.toString()}
-                      allValues={allValues}
-                    />
-                  ) : activeStep === 1 ? (
-                    <Features
-                      control={control}
-                      errors={errors}
-                      featuretypes={featuretypes}
-                      setFeatureTypes={setFeatureTypes}
-                      languageName={myValue.toString()}
-                    />
-                  ) : activeStep === 2 ? (
-                    <PhotosAndVideos
-                      control={control}
-                      errors={errors}
-                      files={files}
-                      setFiles={setFiles}
-                      videoFiles={videoFiles}
-                      setVideoFiles={setVideoFiles}
-                      setDeletedContent={setDeletedContent}
-                      deletedContent={deletedContent}
-                      imageError={imageError}
-                      imageErrorMessage={imageErrorMessage}
-                      fields={fields}
-                      append={append}
-                      remove={remove}
-                      allValues={allValues}
-                      languageName={myValue.toString()}
-                    />
-                  ) : (
-                    <FinancialData
-                      control={control}
-                      errors={errors}
-                      setValue={setValue}
-                      documents={documents}
-                      setDocuments={setDocuments}
-                      languageName={myValue.toString()}
-                      allValues={allValues}
-                    />
+            <Fragment>
+              <form onSubmit={handleSubmit(onSubmit)}>
+                {activeStep === 0 ? (
+                  <Address
+                    control={control}
+                    errors={errors}
+                    setValue={setValue}
+                    languageName={myValue.toString()}
+                    allValues={allValues}
+                    reset={reset}
+                    replace={replace}
+                  />
+                ) : activeStep === 1 ? (
+                  <Features
+                    control={control}
+                    errors={errors}
+                    featuretypes={featuretypes}
+                    setFeatureTypes={setFeatureTypes}
+                    languageName={myValue.toString()}
+                    reset={reset}
+                    replace={replace}
+                  />
+                ) : activeStep === 2 ? (
+                  <PhotosAndVideos
+                    control={control}
+                    errors={errors}
+                    files={files}
+                    setFiles={setFiles}
+                    videoFiles={videoFiles}
+                    setVideoFiles={setVideoFiles}
+                    setDeletedContent={setDeletedContent}
+                    deletedContent={deletedContent}
+                    imageError={imageError}
+                    imageErrorMessage={imageErrorMessage}
+                    fields={fields}
+                    append={append}
+                    remove={remove}
+                    allValues={allValues}
+                    languageName={myValue.toString()}
+                    reset={reset}
+                    replace={replace}
+                  />
+                ) : (
+                  <FinancialData
+                    control={control}
+                    errors={errors}
+                    setValue={setValue}
+                    documents={documents}
+                    setDocuments={setDocuments}
+                    languageName={myValue.toString()}
+                    allValues={allValues}
+                    reset={reset}
+                    replace={replace}
+                  />
+                )}
+                <Grid
+                  container
+                  direction="row"
+                  justifyContent="flex-end"
+                  alignItems="center"
+                  sx={{
+                    pt: 2,
+                  }}
+                  spacing={1}
+                >
+                  {activeStep > 0 && activeStep <= steps.length - 1 && (
+                    <Grid item xs={2}>
+                      <Button
+                        color="inherit"
+                        onClick={handleBack}
+                        fullWidth
+                        sx={{
+                          mr: 1,
+                          border: "1px solid #002152",
+                          borderRadius: "4px",
+                          px: 2,
+                          py: 1,
+                          color: "#002152",
+                          fontSize: "16px",
+                          fontWeight: "600",
+                          lineHeight: "22px",
+                          textTransform: "none",
+                        }}
+                      >
+                        {t["come back"]}
+                      </Button>
+                    </Grid>
                   )}
-                  <Grid
-                    container
-                    direction="row"
-                    justifyContent={{
-                      xs: "flex-start",
-                      sm: "flex-start",
-                      md: "flex-start",
-                      lg: "flex-end",
-                      xl: "flex-end",
-                    }}
-                    alignItems="center"
-                    sx={{
-                      pt: 2,
-                    }}
-                    spacing={1}
-                  >
-                    <Grid item xs={12} lg={3}>
-                      {activeStep > 0 && activeStep <= steps.length - 1 && (
-                        <Button
-                          color="inherit"
-                          onClick={handleBack}
-                          fullWidth
-                          sx={{
-                            mr: 1,
-                            border: "1px solid #002152",
-                            borderRadius: "4px",
-                            px: 2,
-                            py: 1,
-                            color: "#002152",
-                            fontSize: "16px",
-                            fontWeight: "600",
-                            lineHeight: "22px",
-                            textTransform: "none",
-                          }}
-                        >
-                          {t["come back"]}
-                        </Button>
-                      )}
-                    </Grid>
-                    {activeStep < steps.length - 1 && (
-                      <Grid item xs={12} lg={3}>
-                        <Button
-                          color="inherit"
-                          disabled={!disableBtn}
-                          onClick={handleNext}
-                          fullWidth
-                          sx={{
+                  {activeStep < steps.length - 1 && (
+                    <Grid item xs={2}>
+                      <Button
+                        color="inherit"
+                        disabled={!disableBtn}
+                        onClick={handleNext}
+                        fullWidth
+                        sx={{
+                          background: "#7450F0",
+                          borderRadius: "4px",
+                          px: 2,
+                          py: 1,
+                          color: "#ffffff",
+                          fontSize: "16px",
+                          fontWeight: "600",
+                          lineHeight: "22px",
+                          textTransform: "none",
+                          boxShadow: "0px 4px 8px rgba(81, 51, 182, 0.32)",
+                          "&:hover": {
                             background: "#7450F0",
                             borderRadius: "4px",
                             px: 2,
@@ -369,31 +377,31 @@ export default function NewVenture({ language, session }) {
                             lineHeight: "22px",
                             textTransform: "none",
                             boxShadow: "0px 4px 8px rgba(81, 51, 182, 0.32)",
-                            "&:hover": {
-                              background: "#7450F0",
-                              borderRadius: "4px",
-                              px: 2,
-                              py: 1,
-                              color: "#ffffff",
-                              fontSize: "16px",
-                              fontWeight: "600",
-                              lineHeight: "22px",
-                              textTransform: "none",
-                              boxShadow: "0px 4px 8px rgba(81, 51, 182, 0.32)",
-                            },
-                          }}
-                        >
-                          {t["Next"]}
-                        </Button>
-                      </Grid>
-                    )}
-                    {activeStep === steps.length - 1 && (
-                      <Grid item xs={12} lg={3}>
-                        <Button
-                          type="submit"
-                          disabled={!disableBtn}
-                          fullWidth
-                          sx={{
+                          },
+                        }}
+                      >
+                        {t["Next"]}
+                      </Button>
+                    </Grid>
+                  )}
+                  {activeStep === steps.length - 1 && (
+                    <Grid item xs={2}>
+                      <Button
+                        type="submit"
+                        disabled={!disableBtn}
+                        fullWidth
+                        sx={{
+                          background: "#7450F0",
+                          borderRadius: "4px",
+                          px: 2,
+                          py: 1,
+                          color: "#ffffff",
+                          fontSize: "16px",
+                          fontWeight: "600",
+                          lineHeight: "22px",
+                          textTransform: "none",
+                          boxShadow: "0px 4px 8px rgba(81, 51, 182, 0.32)",
+                          "&:hover": {
                             background: "#7450F0",
                             borderRadius: "4px",
                             px: 2,
@@ -404,55 +412,19 @@ export default function NewVenture({ language, session }) {
                             lineHeight: "22px",
                             textTransform: "none",
                             boxShadow: "0px 4px 8px rgba(81, 51, 182, 0.32)",
-                            "&:hover": {
-                              background: "#7450F0",
-                              borderRadius: "4px",
-                              px: 2,
-                              py: 1,
-                              color: "#ffffff",
-                              fontSize: "16px",
-                              fontWeight: "600",
-                              lineHeight: "22px",
-                              textTransform: "none",
-                              boxShadow: "0px 4px 8px rgba(81, 51, 182, 0.32)",
-                            },
-                          }}
-                        >
-                          {loading && (
-                            <CircularProgress size={22} color="inherit" />
-                          )}
-                          {!loading && t["Save"]}
-                        </Button>
-                      </Grid>
-                    )}
-                    <Grid item xs={12} lg={3}>
-                      {activeStep >= 1 && (
-                        <Button
-                          type="button"
-                          variant="outlined"
-                          fullWidth
-                          color="error"
-                          sx={{
-                            fontSize: "16px",
-                            lineHeight: "22px",
-                            fontWeight: "600",
-                            textTransform: "none",
-                            py: 1,
-                            mr: 1,
-                          }}
-                          onClick={() => {
-                            reset();
-                            replace("/my-properties");
-                          }}
-                        >
-                          {t["Cancel"]}
-                        </Button>
-                      )}
+                          },
+                        }}
+                      >
+                        {loading && (
+                          <CircularProgress size={22} color="inherit" />
+                        )}
+                        {!loading && t["Save"]}
+                      </Button>
                     </Grid>
-                  </Grid>
-                </form>
-              </Fragment>
-            )}
+                  )}
+                </Grid>
+              </form>
+            </Fragment>
           </Box>
           {/*👆 */}
         </Box>

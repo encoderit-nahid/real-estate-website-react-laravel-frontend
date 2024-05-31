@@ -30,6 +30,7 @@ import pt from "locales/pt";
 import WishProperty from "@/component/properties/WishProperty/WishProperty";
 import { useGetPropertyCountQuery } from "@/queries/useGetPropertyCountQuery";
 import useParams from "@/hooks/useParams";
+import BaseButton from "@/component/reuseable/baseButton/BaseButton";
 const NotificationContent = dynamic(() =>
   import("@/component/notificationContent/NotificationContent")
 );
@@ -202,60 +203,34 @@ export default function MyProperties({ language }) {
               sx={{ mt: 3 }}
             >
               {session?.user?.role !== "buyer" && (
-                <Link href="/my-properties/new-property">
-                  <Button
-                    sx={{
-                      textTransform: "none",
-                      background: "#0362F0",
-                      borderRadius: "4px",
-                      color: "#ffffff",
-                      fontSize: "16px",
-                      fontWeight: "600",
-                      px: 4,
-                      py: 1,
-                      width: {
-                        xs: "100%",
-                        sm: "100%",
-                        md: "30%",
-                        lg: "30%",
-                        xl: "20%",
-                      },
-                      "&:hover": {
-                        background: "#0362F0",
-                        borderRadius: "4px",
-                        color: "#ffffff",
-                      },
-                    }}
+                <Grid item xs={3}>
+                  <BaseButton
+                    fullWidth
+                    handleFunction={() =>
+                      router.push({
+                        pathname: "/my-properties/new-property",
+                      })
+                    }
                   >
                     {t["New property"]}
-                  </Button>
-                </Link>
+                  </BaseButton>
+                </Grid>
               )}
 
               {session?.user?.role === "admin" && (
-                <Link href="/my-properties/new-venture">
-                  <Button
-                    sx={{
-                      textTransform: "none",
-                      border: "1px solid #002152",
-                      borderRadius: "4px",
-                      color: "#002152",
-                      fontSize: "16px",
-                      fontWeight: "600",
-                      px: 4,
-                      py: 1,
-                      width: {
-                        xs: "100%",
-                        sm: "100%",
-                        md: "30%",
-                        lg: "30%",
-                        xl: "20%",
-                      },
-                    }}
+                <Grid item xs={3}>
+                  <BaseButton
+                    fullWidth
+                    sx="outlined"
+                    handleFunction={() =>
+                      router.push({
+                        pathname: "/my-properties/new-venture",
+                      })
+                    }
                   >
                     {t["New venture"]}
-                  </Button>
-                </Link>
+                  </BaseButton>
+                </Grid>
               )}
             </Grid>
           </Container>

@@ -1,4 +1,11 @@
-import { Box, FormControl, Grid, TextField, Typography } from "@mui/material";
+import {
+  Box,
+  FormControl,
+  Grid,
+  Stack,
+  TextField,
+  Typography,
+} from "@mui/material";
 import Image from "next/image";
 import React, { useEffect } from "react";
 import pinImage from "../../../../public/Images/pin.png";
@@ -19,6 +26,9 @@ import en from "locales/en";
 import pt from "locales/pt";
 import dynamic from "next/dynamic";
 import BaseTextArea from "@/component/reuseable/baseTextArea/BaseTextArea";
+import BaseButton from "@/component/reuseable/baseButton/BaseButton";
+import { useRouter } from "next/router";
+
 const BaseTextEditor = dynamic(
   () => import("@/component/reuseable/baseTextEditor/BaseTextEditor"),
   {
@@ -29,7 +39,8 @@ const BaseTextEditor = dynamic(
 function Address({
   control,
   errors,
-
+  reset,
+  replace,
   languageName,
   allValues,
   setValue,
@@ -45,30 +56,48 @@ function Address({
   const allStateData = useSelector((state) => state.state.stateData);
 
   console.log({ allStateData });
+  const router = useRouter();
 
   return (
     <Box sx={{ mt: 4 }}>
       <Grid
         container
         direction="row"
-        justifyContent="flex-start"
+        justifyContent="space-between"
         alignItems="flex-start"
         sx={{ mt: 2 }}
       >
-        <Image src={ventureImage} alt="venture" />
-
-        <Typography
-          variant="p"
-          sx={{
-            color: "#002152",
-            fontSize: "24px",
-            fontWeight: "700",
-            lineHeight: "32px",
-            ml: 1,
-          }}
+        <Stack
+          direction="row"
+          justifyContent="space-between"
+          alignItems="flex-start"
         >
-          {t["Address"]}
-        </Typography>
+          <Image src={ventureImage} alt="venture" />
+
+          <Typography
+            variant="p"
+            sx={{
+              color: "#002152",
+              fontSize: "24px",
+              fontWeight: "700",
+              lineHeight: "32px",
+              ml: 1,
+            }}
+          >
+            {t["Address"]}
+          </Typography>
+        </Stack>
+        <BaseButton
+          handleFunction={() => {
+            reset();
+            replace("/my-properties");
+          }}
+          sx="error"
+          color="error"
+          variant="outlined"
+        >
+          {t["Cancel"]}
+        </BaseButton>
       </Grid>
       <Grid container sx={{ mt: 2 }}>
         <Controller

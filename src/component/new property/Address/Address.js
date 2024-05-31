@@ -30,6 +30,9 @@ import en from "locales/en";
 import pt from "locales/pt";
 import dynamic from "next/dynamic";
 import { useSession } from "next-auth/react";
+import { useRouter } from "next/router";
+
+import BaseButton from "@/component/reuseable/baseButton/BaseButton";
 const BaseTextEditor = dynamic(
   () => import("@/component/reuseable/baseTextEditor/BaseTextEditor"),
   {
@@ -93,7 +96,7 @@ function Address({
 
   const { data: session } = useSession();
 
-  console.log({ allValues });
+  const router = useRouter();
 
   useEffect(() => {
     dispatch(
@@ -758,58 +761,28 @@ function Address({
           direction="row"
           justifyContent="flex-end"
           alignItems="center"
+          gap={1}
           sx={{ mt: 2, mb: 2 }}
         >
-          <Link href="/my-properties">
-            <Button
-              color="inherit"
-              // disabled={activeStep === 0}
-              sx={{
-                mr: 1,
-                border: "1px solid #002152",
-                borderRadius: "4px",
-                px: 2,
-                py: 1,
-                color: "#002152",
-                fontSize: "16px",
-                fontWeight: "600",
-                lineHeight: "22px",
-                textTransform: "none",
-              }}
+          <Grid item xs={2}>
+            <BaseButton
+              handleFunction={() => router.push("/my-properties")}
+              fullWidth
+              sx="outlined"
             >
               {t["Cancel"]}
-            </Button>
-          </Link>
-          <Button
-            onClick={handleNext}
-            disabled={disableBtn}
-            sx={{
-              background: "#7450F0",
-              borderRadius: "4px",
-              px: 2,
-              py: 1,
-              color: "#ffffff",
-              fontSize: "16px",
-              fontWeight: "600",
-              lineHeight: "22px",
-              textTransform: "none",
-              boxShadow: "0px 4px 8px rgba(81, 51, 182, 0.32)",
-              "&:hover": {
-                background: "#7450F0",
-                borderRadius: "4px",
-                px: 2,
-                py: 1,
-                color: "#ffffff",
-                fontSize: "16px",
-                fontWeight: "600",
-                lineHeight: "22px",
-                textTransform: "none",
-                boxShadow: "0px 4px 8px rgba(81, 51, 182, 0.32)",
-              },
-            }}
-          >
-            {t["Next"]}
-          </Button>
+            </BaseButton>
+          </Grid>
+          <Grid item xs={2}>
+            <BaseButton
+              handleFunction={handleNext}
+              disabled={disableBtn}
+              fullWidth
+              sx="secondary"
+            >
+              {t["Next"]}
+            </BaseButton>
+          </Grid>
         </Grid>
       </Grid>
     </Box>

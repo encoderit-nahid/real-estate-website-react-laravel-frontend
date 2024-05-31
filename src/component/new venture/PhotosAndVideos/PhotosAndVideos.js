@@ -3,6 +3,7 @@ import {
   Box,
   Button,
   Grid,
+  Stack,
   TextField,
   Typography,
 } from "@mui/material";
@@ -26,6 +27,7 @@ import en from "locales/en";
 import pt from "locales/pt";
 import { useSession } from "next-auth/react";
 import { getVideoIdFromLink } from "@/utils/getVideoIdFromLink";
+import BaseButton from "@/component/reuseable/baseButton/BaseButton";
 
 const baseStyle = {
   flex: 1,
@@ -76,6 +78,8 @@ function PhotosAndVideos({
   languageName,
   handleNext,
   handleBack,
+  reset,
+  replace,
 }) {
   const dispatch = useDispatch();
   const { query } = useRouter();
@@ -167,22 +171,39 @@ function PhotosAndVideos({
       <Grid
         container
         direction="row"
-        justifyContent="flex-start"
-        alignItems="flex-start"
+        justifyContent="space-between"
+        alignItems="center"
       >
-        <Image height={40} width={40} src={orionImage} alt="orion" />
-        <Typography
-          variant="p"
-          sx={{
-            color: "#002152",
-            fontSize: "24px",
-            fontWeight: "700",
-            lineHeight: "32px",
-            ml: 1,
+        <Stack
+          direction="row"
+          justifyContent="space-between"
+          alignItems="center"
+        >
+          <Image height={40} width={40} src={orionImage} alt="orion" />
+          <Typography
+            variant="p"
+            sx={{
+              color: "#002152",
+              fontSize: "24px",
+              fontWeight: "700",
+              lineHeight: "32px",
+              ml: 1,
+            }}
+          >
+            {t["Photos and videos"]}
+          </Typography>
+        </Stack>
+        <BaseButton
+          color="error"
+          sx="error"
+          variant="outlined"
+          handleFunction={() => {
+            reset();
+            replace("/my-properties");
           }}
         >
-          {t["Photos and videos"]}
-        </Typography>
+          {t["Cancel"]}
+        </BaseButton>
       </Grid>
       <Box sx={{ mt: 3 }}>
         <Typography

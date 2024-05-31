@@ -1,4 +1,5 @@
 import Navbar from "../src/component/shared/Navbar/Navbar";
+import Footer from "../src/component/shared/Footer/Footer";
 import Head from "next/head";
 import {
   Box,
@@ -7,6 +8,7 @@ import {
   Grid,
   Tooltip,
   Snackbar,
+  Typography,
   Alert,
   CircularProgress,
   Stack,
@@ -15,19 +17,31 @@ import BaseStepper from "../src/component/reuseable/baseStepper/BaseStepper";
 import { Fragment, useEffect, useState } from "react";
 import PersonalData from "../src/component/brokerRegistration/personalData/PersonalData";
 import AddressData from "../src/component/brokerRegistration/Address/AddressData";
+import PerformanceData from "../src/component/brokerRegistration/performance/PerformanceData";
+import Image from "next/image";
+import stepFinish from "../public/Images/step_finish.png";
 import BrokerRegistrationFooter from "../src/component/shared/Footer/BrokerRegistrationFooter";
 import BaseModal from "../src/component/reuseable/baseModal/BaseModal";
 import BrokerRegistrationSentModal from "../src/component/brokerRegistration/BrokerRegistrationSendModal/BrokerRegistrationSendModal";
-import { useForm } from "react-hook-form";
+import { useForm, Controller } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as Yup from "yup";
-import { useDispatch } from "react-redux";
+import { findStateData } from "../src/redux/state/actions";
+import { useDispatch, useSelector } from "react-redux";
 import { serialize } from "object-to-formdata";
-import { userInfoRegistrationApi } from "../src/api";
+import {
+  emailVerifyApi,
+  registrationApi,
+  userDetailsApi,
+  userInfoRegistrationApi,
+} from "../src/api";
 
 import dayjs from "dayjs";
+import { signIn } from "next-auth/react";
 import en from "locales/en";
 import pt from "locales/pt";
+import BaseButton from "@/component/reuseable/baseButton/BaseButton";
+import { useRouter } from "next/router";
 
 const aboutLokkanData = [
   "Indicação de amigo",
@@ -122,6 +136,25 @@ export default function OtherInformation({
     setActiveStep((prevActiveStep) => prevActiveStep - 1);
   };
 
+  const handleSkip = () => {
+    if (!isStepOptional(activeStep)) {
+      // You probably want to guard against something like this,
+      // it should never occur unless someone's actively trying to break something.
+      throw new Error("You can't skip a step that isn't optional.");
+    }
+
+    setActiveStep((prevActiveStep) => prevActiveStep + 1);
+    setSkipped((prevSkipped) => {
+      const newSkipped = new Set(prevSkipped.values());
+      newSkipped.add(activeStep);
+      return newSkipped;
+    });
+  };
+
+  const handleReset = () => {
+    setActiveStep(0);
+  };
+
   const [snackbarOpen, setSnackbarOpen] = useState(false);
 
   const handleClickSnackbar = () => {
@@ -158,6 +191,7 @@ export default function OtherInformation({
   });
 
   const allValues = watch();
+  const { replace } = useRouter();
 
   useEffect(() => {
     if (Object.keys(errors).length > 0) {
@@ -283,6 +317,7 @@ export default function OtherInformation({
                       selectedBroker={selectedBroker}
                       setSelectedBroker={setSelectedBroker}
                       reset={reset}
+                      replace={replace}
                     />
                   ) : (
                     <AddressData
@@ -295,6 +330,7 @@ export default function OtherInformation({
                       activeStep={activeStep}
                       languageName={myValue.toString()}
                       reset={reset}
+                      replace={replace}
                     />
                   )}
                   {errors && (
@@ -309,81 +345,23 @@ export default function OtherInformation({
                   <Grid container spacing={1} sx={{ mt: 2, mb: 5 }}>
                     {activeStep === 1 && (
                       <>
-                        <Grid item xs={6} md={4}>
-                          <Button
-                            color="inherit"
+                        <Grid item xs={3}>
+                          <BaseButton
                             fullWidth
                             disabled={activeStep === 0}
                             onClick={handleBack}
-                            sx={{
-                              background: "#ffffff",
-                              px: 2,
-                              py: 1,
-                              color: "#4B4B66",
-                              fontSize: "16px",
-                              fontWeight: "600",
-                              lineHeight: "22px",
-                              textTransform: "none",
-                            }}
+                            sx="mute"
                           >
                             {t["Come back"]}
-                          </Button>
+                          </BaseButton>
                         </Grid>
-                        <Grid item xs={6} md={4}>
-                          <Button
-                            type="submit"
-                            fullWidth
-                            sx={{
-                              background: "#00C1B4",
-                              boxShadow: "0px 4px 34px rgba(0, 0, 0, 0.08)",
-                              borderRadius: "4px",
-                              color: "#ffffff",
-                              fontSize: "16px",
-                              lineHeight: "22px",
-                              fontWeight: "600",
-                              //   mt: 3,
-                              textTransform: "none",
-                              py: 1,
-                              "&:hover": {
-                                background: "#00C1B4",
-                                boxShadow: "0px 4px 34px rgba(0, 0, 0, 0.08)",
-                                borderRadius: "4px",
-                                color: "#ffffff",
-                                fontSize: "16px",
-                                lineHeight: "22px",
-                                fontWeight: "600",
-                                // mt: 3,
-                                textTransform: "none",
-                                py: 1,
-                              },
-                            }}
-                          >
+                        <Grid item xs={3}>
+                          <BaseButton type="submit" fullWidth sx="success">
                             {loading && (
                               <CircularProgress size={22} color="inherit" />
                             )}
                             {!loading && t["Register"]}
-                          </Button>
-                        </Grid>
-                        <Grid item xs={12} md={4}>
-                          <Button
-                            type="button"
-                            fullWidth
-                            variant="outlined"
-                            color="error"
-                            sx={{
-                              fontSize: "16px",
-                              lineHeight: "22px",
-                              fontWeight: "600",
-                              textTransform: "none",
-                              py: 1,
-                            }}
-                            onClick={() => {
-                              reset();
-                              replace("/");
-                            }}
-                          >
-                            {t["Cancel"]}
-                          </Button>
+                          </BaseButton>
                         </Grid>
                       </>
                     )}

@@ -40,6 +40,7 @@ import { useGetAllReferralBrokerQuery } from "@/queries/useGetAllReferralBrokerQ
 import { debounce } from "@/utils/debounce";
 import { omitEmpties } from "@/api";
 import { useRouter } from "next/router";
+import BaseButton from "@/component/reuseable/baseButton/BaseButton";
 
 function PersonalData({
   handleNext,
@@ -51,9 +52,10 @@ function PersonalData({
   setSelectedBroker,
   activeStep,
   reset,
+  replace,
 }) {
   const router = useRouter();
-  const { replace } = router;
+
   const [rgValue, setRGValue] = useState("");
   const [rgValid, setRGValid] = useState(false);
   const handleRGValidation = (e) => {
@@ -274,7 +276,7 @@ function PersonalData({
       <Grid
         container
         direction="row"
-        justifyContent="flex-start"
+        justifyContent="space-between"
         alignItems="center"
       >
         <Typography
@@ -288,6 +290,18 @@ function PersonalData({
         >
           {t["Personal data"]}
         </Typography>
+        <BaseButton
+          type="button"
+          variant="outlined"
+          color="error"
+          sx="error"
+          handleFunction={() => {
+            reset();
+            replace("/registration");
+          }}
+        >
+          {t["Cancel"]}
+        </BaseButton>
       </Grid>
 
       <Grid container spacing={3} sx={{ mt: 2 }}>
@@ -793,15 +807,10 @@ function PersonalData({
         )}
 
         <Grid container spacing={1} sx={{ mt: 2, mb: 5 }}>
-          <Grid item xs={6} md={4}>
-            <Button
-              color="inherit"
+          <Grid item xs={3}>
+            <BaseButton
               disabled={activeStep === 0}
-              // onClick={handleBack}
-              sx={{
-                //   mr: 1,
-                //   border: "1px solid #002152",
-                //   borderRadius: "4px",
+              custom_sx={{
                 background: "#ffffff",
                 px: 2,
                 py: 1,
@@ -813,61 +822,17 @@ function PersonalData({
               }}
             >
               {t["Come back"]}
-            </Button>
+            </BaseButton>
           </Grid>
-          <Grid item xs={6} md={4}>
-            <Button
-              onClick={handleNext}
+          <Grid item xs={3}>
+            <BaseButton
+              handleFunction={handleNext}
               disabled={disableBtn}
               fullWidth
-              sx={{
-                background: "#00C1B4",
-                boxShadow: "0px 4px 34px rgba(0, 0, 0, 0.08)",
-                borderRadius: "4px",
-                color: "#ffffff",
-                fontSize: "16px",
-                lineHeight: "22px",
-                fontWeight: "600",
-                //   mt: 3,
-                textTransform: "none",
-                py: 1,
-                "&:hover": {
-                  background: "#00C1B4",
-                  boxShadow: "0px 4px 34px rgba(0, 0, 0, 0.08)",
-                  borderRadius: "4px",
-                  color: "#ffffff",
-                  fontSize: "16px",
-                  lineHeight: "22px",
-                  fontWeight: "600",
-                  // mt: 3,
-                  textTransform: "none",
-                  py: 1,
-                },
-              }}
+              sx="success"
             >
               {t["Continue"]}
-            </Button>
-          </Grid>
-          <Grid item xs={12} md={4}>
-            <Button
-              type="button"
-              fullWidth
-              variant="outlined"
-              color="error"
-              sx={{
-                fontSize: "16px",
-                lineHeight: "22px",
-                fontWeight: "600",
-                textTransform: "none",
-                py: 1,
-              }}
-              onClick={() => {
-                reset();
-                replace("/");
-              }}
-            >
-              {t["Cancel"]}
-            </Button>
+            </BaseButton>
           </Grid>
         </Grid>
       </Grid>
