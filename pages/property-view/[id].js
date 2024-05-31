@@ -269,90 +269,16 @@ export default function PropertyView({
                 }`}
               </Typography>
             </Button>
-            <Stack direction="row" spacing={1}>
-              {/* <IconButton
-                id="basic-button"
-                aria-controls={open ? "basic-menu" : undefined}
-                aria-haspopup="true"
-                aria-expanded={open ? "true" : undefined}
-                onClick={handleClick}
-              >
-                <ShareIcon />
-              </IconButton>
-              <Menu
-                id="basic-menu"
-                anchorEl={anchorEl}
-                open={open}
-                onClose={handleClose}
-                MenuListProps={{
-                  "aria-labelledby": "basic-button",
-                }}
-                anchorOrigin={{
-                  vertical: "bottom",
-                  horizontal: "",
-                }}
-                transformOrigin={{
-                  vertical: "top",
-                  horizontal: "left",
-                }}
-              >
-                <MenuItem onClick={handleClose}>
-                  <Stack direction="column" spacing={3}>
-                    <Typography
-                      variant="p"
-                      sx={{
-                        fontSize: "16px",
-                        fontWeight: 600,
-                        color: "#1A1859",
-                      }}
-                      align="center"
-                    >
-                      Compartilhar
-                    </Typography>
-                    <Stack direction="row" spacing={3}>
-                      <Stack direction="column">
-                        <WhatsappShareButton
-                          url={`https://www.lokkan.site/property-view/${singlePropertyData?.property?.id}`}
-                        >
-                          <WhatsappIcon round size={40} />
-                          <Typography sx={{ fontSize: "12px" }}>
-                            Whatsapp
-                          </Typography>
-                        </WhatsappShareButton>
-                      </Stack>
-                      <Stack direction="column">
-                        <FacebookShareButton
-                          url={`https://www.lokkan.site/property-view/${singlePropertyData?.property?.id}`}
-                        >
-                          <FacebookIcon round size={40} />
-                          <Typography sx={{ fontSize: "12px" }}>
-                            Facebook
-                          </Typography>
-                        </FacebookShareButton>
-                      </Stack>
-                      <Stack direction="column">
-                        <EmailShareButton
-                          url={`https://www.lokkan.site/property-view/${singlePropertyData?.property?.id}`}
-                        >
-                          <EmailIcon round size={40} />
-                          <Typography sx={{ fontSize: "12px" }}>
-                            Email
-                          </Typography>
-                        </EmailShareButton>
-                      </Stack>
-                      <Stack direction="column">
-                        <BaseCopyText
-                          text={`https://www.lokkan.site/property-view/${singlePropertyData?.property?.id}`}
-                        />
-
-                        <Typography sx={{ fontSize: "12px", mt: "6px" }}>
-                          Copy URL
-                        </Typography>
-                      </Stack>
-                    </Stack>
-                  </Stack>
-                </MenuItem>
-              </Menu> */}
+            <Stack
+              direction="row"
+              spacing={1}
+              sx={{
+                display: {
+                  xs: "none",
+                  md: "flex",
+                },
+              }}
+            >
               <BaseShareButton
                 base_url={`https://www.lokkan.site/property-view/${singlePropertyData?.property?.id}`}
               />
@@ -388,6 +314,7 @@ export default function PropertyView({
                 setSideTabValue={setSideTabValue}
                 videos={Videos}
                 selectImage={selectImage}
+                singlePropertyData={singlePropertyData}
                 addressData={singlePropertyData?.property?.address}
                 languageName={myValue.toString()}
                 images={Images}
@@ -532,7 +459,16 @@ export default function PropertyView({
             ))}
           </ImageList>
         </Box>
-        <Footer />
+        <Box
+          sx={{
+            pb: {
+              xs: "50px",
+              md: 0,
+            },
+          }}
+        >
+          <Footer />
+        </Box>
 
         <BaseModal isShowing={proposalOpen} isClose={handleProposalClose}>
           <Tooltip title="Something">
@@ -609,7 +545,7 @@ export default function PropertyView({
             {t["Negotiate"]}
           </Button>
 
-          <Button
+          {/* <Button
             variant="contained"
             color="secondary"
             sx={{
@@ -636,7 +572,7 @@ export default function PropertyView({
             }}
           >
             {t["Schedule visit"]}
-          </Button>
+          </Button> */}
         </Grid>
       </Grid>
     </div>

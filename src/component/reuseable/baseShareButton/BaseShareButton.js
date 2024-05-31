@@ -1,4 +1,11 @@
-import { IconButton, Menu, MenuItem, Stack, Typography } from "@mui/material";
+import {
+  Box,
+  IconButton,
+  Menu,
+  MenuItem,
+  Stack,
+  Typography,
+} from "@mui/material";
 import React, { useState } from "react";
 import ShareIcon from "@mui/icons-material/Share";
 import {
@@ -8,7 +15,7 @@ import {
 } from "react-share";
 import { EmailIcon, FacebookIcon, WhatsappIcon } from "react-share";
 import BaseCopyText from "../baseCopyText/BaseCopyText";
-const BaseShareButton = ({ base_url }) => {
+const BaseShareButton = ({ base_url, bg = false }) => {
   const [anchorEl, setAnchorEl] = useState(null);
   const open = Boolean(anchorEl);
   const handleClick = (event) => {
@@ -20,15 +27,17 @@ const BaseShareButton = ({ base_url }) => {
 
   return (
     <>
-      <IconButton
-        id="basic-button"
-        aria-controls={open ? "basic-menu" : undefined}
-        aria-haspopup="true"
-        aria-expanded={open ? "true" : undefined}
-        onClick={handleClick}
-      >
-        <ShareIcon sx={{ color: "#cacbcc" }} />
-      </IconButton>
+      <Box sx={bg && { bgcolor: "#fff", borderRadius: "100%" }}>
+        <IconButton
+          id="basic-button"
+          aria-controls={open ? "basic-menu" : undefined}
+          aria-haspopup="true"
+          aria-expanded={open ? "true" : undefined}
+          onClick={handleClick}
+        >
+          <ShareIcon sx={{ color: "#878787" }} />
+        </IconButton>
+      </Box>
 
       <Menu
         id="basic-menu"

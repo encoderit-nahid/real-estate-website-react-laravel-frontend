@@ -1,5 +1,5 @@
 import React, { useCallback, useEffect, useState } from "react";
-import { Button, IconButton } from "@mui/material";
+import { Box, Button, IconButton } from "@mui/material";
 import FavoriteIcon from "@mui/icons-material/Favorite";
 import useCurrentUser from "@/hooks/useCurrentUser";
 import {
@@ -8,7 +8,12 @@ import {
   userDetailsApi,
 } from "@/api";
 
-const BaseFavoriteButton = ({ handleLoginOpen, itemID, type = "property" }) => {
+const BaseFavoriteButton = ({
+  handleLoginOpen,
+  itemID,
+  type = "property",
+  bg = false,
+}) => {
   const [propertyId, setPropertyId] = useState(null);
 
   const currentUser = useCurrentUser();
@@ -56,17 +61,19 @@ const BaseFavoriteButton = ({ handleLoginOpen, itemID, type = "property" }) => {
   }, [itemID, favoriteList, currentUser, handleLoginOpen]);
 
   return (
-    <IconButton
-      aria-label="favorite"
-      color="primary"
-      onClick={toggleFavorite} // Handle click event
-    >
-      <FavoriteIcon
-        sx={{
-          color: `${favoriteList?.includes(itemID) ? "red" : "#cacbcc"}`,
-        }}
-      />
-    </IconButton>
+    <Box sx={bg && { bgcolor: "#fff", borderRadius: "100%" }}>
+      <IconButton
+        aria-label="favorite"
+        color="primary"
+        onClick={toggleFavorite} // Handle click event
+      >
+        <FavoriteIcon
+          sx={{
+            color: `${favoriteList?.includes(itemID) ? "red" : "#878787"}`,
+          }}
+        />
+      </IconButton>
+    </Box>
   );
 };
 
