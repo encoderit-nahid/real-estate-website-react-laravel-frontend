@@ -24,7 +24,7 @@ import { _baseURL, _imageURL } from "consts";
 import pt from "locales/pt";
 import en from "locales/en";
 
-function TabpendantCard({ brokerInfo, languageName }) {
+function TabpendantCard({ brokerInfo, languageName,brokerCountRefetch,brokerRefetch }) {
   const t = languageName === "en" ? en : pt;
   const dispatch = useDispatch();
   const [state, setState] = React.useState({
@@ -52,10 +52,15 @@ function TabpendantCard({ brokerInfo, languageName }) {
       status: "active",
     };
     dispatch(changeStatusBroker(data));
+    brokerRefetch();
+    brokerCountRefetch()
+    
   };
 
   const handleFailBroker = (id) => {
     dispatch(deleteBroker(id));
+    brokerRefetch();
+    brokerCountRefetch()
   };
 
   const myLoader = ({ src }) => {
