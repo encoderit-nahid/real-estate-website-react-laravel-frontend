@@ -43,7 +43,12 @@ import Link from "next/link";
 import { _imageURL } from "consts";
 import { useRouter } from "next/router";
 import { stripHtmlTags } from "@/utils/stripHtmlTags";
-import BaseShareButton from "@/component/reuseable/baseShareButton/BaseShareButton";
+const BaseShareButton = dynamic(
+  () => import("@/component/reuseable/baseShareButton/BaseShareButton"),
+  {
+    ssr: false,
+  }
+);
 const AboutProperty = dynamic(
   () => import("@/component/PropertyView/AboutProperty/AboutProperty"),
   {

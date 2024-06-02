@@ -60,7 +60,12 @@ import pt from "locales/pt";
 import { useRouter } from "next/router";
 import { _imageURL } from "consts";
 import { stripHtmlTags } from "@/utils/stripHtmlTags";
-import BaseShareButton from "@/component/reuseable/baseShareButton/BaseShareButton";
+const BaseShareButton = dynamic(
+  () => import("@/component/reuseable/baseShareButton/BaseShareButton"),
+  {
+    ssr: false,
+  }
+);
 import BaseWhatsappButton from "@/component/reuseable/baseWhatsappButton/BaseWhatsappButton";
 const BaseFavoriteButton = dynamic(
   () => import("@/component/reuseable/baseFavoriteButton/BaseFavoriteButton"),

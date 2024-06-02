@@ -30,48 +30,48 @@ import en from "locales/en";
 import pt from "locales/pt";
 
 function NotificationContent({ pageName, session, language }) {
-  const dispatch = useDispatch();
-  useEffect(() => {
-    dispatch(findNotificationCountData());
-    dispatch(GetAllNotification());
-  }, [dispatch]);
-  const notificationCountData = useSelector(
-    (state) => state?.notificationCount?.notificationCountData
-  );
+  // const dispatch = useDispatch();
+  // useEffect(() => {
+  //   dispatch(findNotificationCountData());
+  //   dispatch(GetAllNotification());
+  // }, [dispatch]);
+  // const notificationCountData = useSelector(
+  //   (state) => state?.notificationCount?.notificationCountData
+  // );
 
-  const notificationData = useSelector(
-    (state) => state?.notification?.notificationData
-  );
+  // const notificationData = useSelector(
+  //   (state) => state?.notification?.notificationData
+  // );
 
-  useChannel("notification-broadcast." + session?.user?.userId, (channel) => {
-    // console.log('useChannel', channel)
-    channel
-      // .here((...args) => {
-      // 	console.log('notification-broadcast:here', ...args)
-      // })
-      // .joining((...args) => {
-      // 	console.log('notification-broadcast:joining', ...args)
-      // })
-      // .leaving((...args) => {
-      // 	console.log('notification-broadcast:leaving', ...args)
-      // })
-      .listen(".OnCreateNewSchedule", (event) => {
-        console.log("notification-broadcast:NotificationEvent", event);
-        dispatch(notificationAddPusherItem(event.notification));
-        dispatch(notificationAddCount(1));
-      });
-    // .listenForWhisper('ping', (event) => {
-    // 	console.log('notification-broadcast:ping', event)
-    // })
-  });
+  // useChannel("notification-broadcast." + session?.user?.userId, (channel) => {
+  //   // console.log('useChannel', channel)
+  //   channel
+  //     // .here((...args) => {
+  //     // 	console.log('notification-broadcast:here', ...args)
+  //     // })
+  //     // .joining((...args) => {
+  //     // 	console.log('notification-broadcast:joining', ...args)
+  //     // })
+  //     // .leaving((...args) => {
+  //     // 	console.log('notification-broadcast:leaving', ...args)
+  //     // })
+  //     .listen(".OnCreateNewSchedule", (event) => {
+  //       console.log("notification-broadcast:NotificationEvent", event);
+  //       dispatch(notificationAddPusherItem(event.notification));
+  //       dispatch(notificationAddCount(1));
+  //     });
+  //   // .listenForWhisper('ping', (event) => {
+  //   // 	console.log('notification-broadcast:ping', event)
+  //   // })
+  // });
 
-  const handleReadNotification = async (data) => {
-    const [error, response] = await NotificationReadApi(data?.id);
-    if (!error) {
-      dispatch(notificationRemove(data?.id));
-      dispatch(notificationAddCount(-1));
-    }
-  };
+  // const handleReadNotification = async (data) => {
+  //   const [error, response] = await NotificationReadApi(data?.id);
+  //   if (!error) {
+  //     dispatch(notificationRemove(data?.id));
+  //     dispatch(notificationAddCount(-1));
+  //   }
+  // };
 
   const [anchorEl, setAnchorEl] = useState(null);
 
@@ -109,7 +109,7 @@ function NotificationContent({ pageName, session, language }) {
       >
         {t[pageName]}
       </Typography>
-      <Button
+      {/* <Button
         aria-describedby={id}
         variant="contained"
         onClick={handleClick}
@@ -163,7 +163,7 @@ function NotificationContent({ pageName, session, language }) {
             </ListItem>
           ))}
         </Box>
-      </Popover>
+      </Popover> */}
     </Grid>
   );
 }

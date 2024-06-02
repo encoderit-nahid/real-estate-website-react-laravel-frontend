@@ -25,7 +25,12 @@ import Image from "next/image";
 import VideoCarousel from "../VideoCarousel/VideoCarousel";
 import { getVideoIdFromLink } from "@/utils/getVideoIdFromLink";
 import Slider from "react-slick";
-import BaseShareButton from "@/component/reuseable/baseShareButton/BaseShareButton";
+const BaseShareButton = dynamic(
+  () => import("@/component/reuseable/baseShareButton/BaseShareButton"),
+  {
+    ssr: false,
+  }
+);
 import BaseFavoriteButton from "@/component/reuseable/baseFavoriteButton/BaseFavoriteButton";
 
 function TabPanel(props) {
