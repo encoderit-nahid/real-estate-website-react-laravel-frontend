@@ -33,7 +33,7 @@ const BaseLinearRating = ({ count, percentage }) => {
           fontWeight: 400,
         }}
       >
-        {percentage}%
+        {percentage.toFixed(2)}%
       </Typography>
     </Stack>
   );

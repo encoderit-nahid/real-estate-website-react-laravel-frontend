@@ -22,6 +22,7 @@ function HouseCard({
   propertyInfo,
   languageName,
   handleLoginOpen,
+  imageSize,
 }) {
   const t = languageName === "en" ? en : pt;
   const myLoader = ({ src }) => {
@@ -91,8 +92,8 @@ function HouseCard({
         <Image
           loader={myLoader}
           src={`${propertyInfo?.attachments[0]?.file_path}`}
-          width={500}
-          height={400}
+          width={imageSize?.width || 500}
+          height={imageSize?.height || 400}
           alt="house"
         />
       </Box>

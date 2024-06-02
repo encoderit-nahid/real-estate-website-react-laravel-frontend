@@ -4,6 +4,7 @@ import FavoriteIcon from "@mui/icons-material/Favorite";
 import useCurrentUser from "@/hooks/useCurrentUser";
 import {
   MakeFavouriteApi,
+  MakeFavouriteBrokerApi,
   MakeFavouriteProjectApi,
   userDetailsApi,
 } from "@/api";
@@ -14,28 +15,28 @@ const BaseFavoriteButton = ({
   type = "property",
   bg = false,
 }) => {
-  const [propertyId, setPropertyId] = useState(null);
+  // const [propertyId, setPropertyId] = useState(null);
 
   const currentUser = useCurrentUser();
+  console.log("🟥 ~ currentUser:", currentUser);
 
   const [favoriteList, setFavoriteList] = useState([]);
-  console.log("🟥 ~ BaseFavoriteButton ~ favoriteList:", favoriteList);
   useEffect(() => {
-    console.log("🟥 ~ useEffect ~ currentUser:", currentUser);
     if (type === "property") {
       if (currentUser?.wishList) {
         setFavoriteList(currentUser?.wishList.split(",").map(Number));
       }
     } else if (type === "project") {
       if (currentUser?.projectWishList) {
-        console.log(
-          "🟥 ~ useEffect ~ currentUser?.projectWishList:",
-          currentUser?.projectWishList
-        );
         setFavoriteList(currentUser?.projectWishList.split(",").map(Number));
+      }
+    } else if (type === "broker") {
+      if (currentUser?.brokerWishList) {
+        setFavoriteList(currentUser?.brokerWishList?.split(",").map(Number));
       }
     }
   }, [currentUser]);
+  console.log("🟥 ~ favoriteList:", favoriteList);
 
   const toggleFavorite = useCallback(async () => {
     if (!currentUser) {
@@ -56,6 +57,11 @@ const BaseFavoriteButton = ({
         if (!error) {
           userDetailsApi();
         }
+      } else if (type == "broker") {
+        const [error] = await MakeFavouriteBrokerApi(itemID);
+        if (!error) {
+          userDetailsApi();
+        }
       }
     }
   }, [itemID, favoriteList, currentUser, handleLoginOpen]);
@@ -69,7 +75,7 @@ const BaseFavoriteButton = ({
       >
         <FavoriteIcon
           sx={{
-            color: `${favoriteList?.includes(itemID) ? "red" : "#878787"}`,
+            color: `${favoriteList?.includes(+itemID) ? "red" : "#878787"}`,
           }}
         />
       </IconButton>
