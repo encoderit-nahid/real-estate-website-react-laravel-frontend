@@ -6,10 +6,6 @@ export const useMakeFavouriteQuery = (propertyId) => {
     queryKey: ["/make-favourite"],
     enabled: !!propertyId,
     keepPreviousData: false,
-
-    // cacheTime: 0,
-    // staleTime: 0,
-
     staleTime: 0,
     queryFn: async () => {
       return await apiInstance.get(`property/wishlist/${propertyId}`);

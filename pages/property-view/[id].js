@@ -60,7 +60,8 @@ import pt from "locales/pt";
 import { useRouter } from "next/router";
 import { _imageURL } from "consts";
 import { stripHtmlTags } from "@/utils/stripHtmlTags";
-import BaseShareButton from "@/component/reuseable/baseShare/BaseShareButton";
+import BaseShareButton from "@/component/reuseable/baseShareButton/BaseShareButton";
+import BaseWhatsappButton from "@/component/reuseable/baseWhatsappButton/BaseWhatsappButton";
 const BaseFavoriteButton = dynamic(
   () => import("@/component/reuseable/baseFavoriteButton/BaseFavoriteButton"),
   {
@@ -248,8 +249,19 @@ export default function PropertyView({
                 }`}
               </Typography>
             </Button>
-            <Stack direction="row" spacing={1}>
-              <BaseShareButton url={`https://www.lokkan.site/property-view/${singlePropertyData?.property?.id}`}/>
+            <Stack
+              direction="row"
+              spacing={1}
+              sx={{
+                display: {
+                  xs: "none",
+                  md: "flex",
+                },
+              }}
+            >
+              <BaseShareButton
+                base_url={`https://www.lokkan.site/property-view/${singlePropertyData?.property?.id}`}
+              />
               <BaseFavoriteButton
                 handleLoginOpen={handleLoginOpen}
                 itemID={singlePropertyData?.property?.id}
@@ -282,6 +294,7 @@ export default function PropertyView({
                 setSideTabValue={setSideTabValue}
                 videos={Videos}
                 selectImage={selectImage}
+                singlePropertyData={singlePropertyData}
                 addressData={singlePropertyData?.property?.address}
                 languageName={myValue.toString()}
                 images={Images}
@@ -321,17 +334,18 @@ export default function PropertyView({
             direction="row"
             alignItems="center"
             sx={{
-              height: {
-                xs: "60vh",
-                sm: "60vh",
-                md: "60vh",
-                lg: "40vh",
-                xl: "40vh",
-              },
+              // height: {
+              //   xs: "60vh",
+              //   sm: "60vh",
+              //   md: "60vh",
+              //   lg: "40vh",
+              //   xl: "40vh",
+              // },
               background: "#0E97F7",
 
               px: { xs: 2, sm: 2, md: 2, lg: 2, xl: 20 },
-              pt: { xs: 2, sm: 2, md: 0, lg: 0, xl: 0 },
+              py: 3,
+              // pt: { xs: 2, sm: 2, md: 0, lg: 0, xl: 0 },
               // pb: { xs: 0.5, sm: 0.5, md: 0, lg: 0, xl: 0 },
             }}
           >
@@ -425,7 +439,16 @@ export default function PropertyView({
             ))}
           </ImageList>
         </Box>
-        <Footer />
+        <Box
+          sx={{
+            pb: {
+              xs: "50px",
+              md: 0,
+            },
+          }}
+        >
+          <Footer />
+        </Box>
 
         <BaseModal isShowing={proposalOpen} isClose={handleProposalClose}>
           <Tooltip title="Something">
@@ -469,7 +492,9 @@ export default function PropertyView({
             mx: "auto",
             zIndex: 111,
           }}
+          gap={2}
         >
+          <BaseWhatsappButton />
           <Button
             variant="contained"
             color="primary"
@@ -500,11 +525,10 @@ export default function PropertyView({
             {t["Negotiate"]}
           </Button>
 
-          <Button
+          {/* <Button
             variant="contained"
             color="secondary"
             sx={{
-              mt: 2,
               px: 4,
               fontSize: "16px",
               fontWeight: "600",
@@ -528,7 +552,7 @@ export default function PropertyView({
             }}
           >
             {t["Schedule visit"]}
-          </Button>
+          </Button> */}
         </Grid>
       </Grid>
     </div>

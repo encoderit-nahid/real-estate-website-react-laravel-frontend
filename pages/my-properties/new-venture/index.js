@@ -1,5 +1,5 @@
 import dynamic from "next/dynamic";
-import React, { Fragment,useState } from "react";
+import React, { Fragment, useState } from "react";
 import {
   Button,
   CircularProgress,
@@ -8,16 +8,12 @@ import {
   Tooltip,
 } from "@mui/material";
 import { Box } from "@mui/material";
-const BasicBreadcrumbs = dynamic(() =>
-  import("@/component/reuseable/baseBreadCrumb/BaseBreadCrumb")
-);
+
 import { useForm, useFieldArray } from "react-hook-form";
 import { useRouter } from "next/router";
 import * as Yup from "yup";
 import { useEffect } from "react";
-const BaseModal = dynamic(() =>
-  import("@/component/reuseable/baseModal/BaseModal")
-);
+
 import { serialize } from "object-to-formdata";
 import { createProjectApi } from "../../../src/api";
 import { useDispatch, useSelector } from "react-redux";
@@ -42,16 +38,32 @@ const requiredFields = [
     "value_per_square_meter",
   ],
 ];
+import en from "locales/en";
+import pt from "locales/pt";
 const NewVentureSentModal = dynamic(() =>
   import("@/component/new venture/NewVentureSentModal/NewVentureSentModal")
 );
-import en from "locales/en";
-import pt from "locales/pt";
-import BaseStepper from "@/component/reuseable/baseStepper/BaseStepper";
-import PhotosAndVideos from "@/component/new venture/PhotosAndVideos/PhotosAndVideos";
-import Features from "@/component/new venture/Features/Features";
-import FinancialData from "@/component/new venture/FinancialData/FinancialData";
-import Address from "@/component/new venture/Address/Address";
+const BaseModal = dynamic(() =>
+  import("@/component/reuseable/baseModal/BaseModal")
+);
+const BasicBreadcrumbs = dynamic(() =>
+  import("@/component/reuseable/baseBreadCrumb/BaseBreadCrumb")
+);
+const BaseStepper = dynamic(() =>
+  import("@/component/reuseable/baseStepper/BaseStepper")
+);
+const PhotosAndVideos = dynamic(() =>
+  import("@/component/new venture/PhotosAndVideos/PhotosAndVideos")
+);
+const Features = dynamic(() =>
+  import("@/component/new venture/Features/Features")
+);
+const FinancialData = dynamic(() =>
+  import("@/component/new venture/FinancialData/FinancialData")
+);
+const Address = dynamic(() =>
+  import("@/component/new venture/Address/Address")
+);
 
 const drawerWidth = 240;
 

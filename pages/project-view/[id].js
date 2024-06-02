@@ -43,7 +43,7 @@ import Link from "next/link";
 import { _imageURL } from "consts";
 import { useRouter } from "next/router";
 import { stripHtmlTags } from "@/utils/stripHtmlTags";
-import BaseShareButton from "@/component/reuseable/baseShare/BaseShareButton";
+import BaseShareButton from "@/component/reuseable/baseShareButton/BaseShareButton";
 const AboutProperty = dynamic(
   () => import("@/component/PropertyView/AboutProperty/AboutProperty"),
   {
@@ -219,11 +219,15 @@ export default function ProjectView({
                 {singleProjectData?.project?.name}
               </Typography>
             </Button>
-            <Stack direction="row" spacing={1}>
-            <BaseShareButton  url={`https://www.lokkan.site/project-view/${singleProjectData?.property?.id}`}/>
+            <Stack direction="row" alignItems={"center"} spacing={1}>
+              <BaseShareButton
+                base_url={`https://www.lokkan.site/project-view/${singleProjectData?.property?.id}`}
+              />
+
               <BaseFavoriteButton
                 handleLoginOpen={handleLoginOpen}
-                itemID={singleProjectData?.property?.id}
+                itemID={singleProjectData?.project?.id}
+                type="project"
               />
             </Stack>
           </Grid>

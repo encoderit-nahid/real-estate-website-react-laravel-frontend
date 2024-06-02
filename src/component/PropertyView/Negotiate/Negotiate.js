@@ -31,6 +31,7 @@ import { ptBR } from "date-fns/locale";
 import en from "locales/en";
 import pt from "locales/pt";
 import { Router, useRouter } from "next/router";
+import BaseWhatsappButton from "@/component/reuseable/baseWhatsappButton/BaseWhatsappButton";
 
 function Negotiate({
   handleProposalOpen,
@@ -181,7 +182,9 @@ function Negotiate({
         justifyContent="center"
         alignItems="center"
         sx={{ mt: 1, px: 4 }}
+        gap={1}
       >
+        <BaseWhatsappButton />
         <Button
           variant="contained"
           color="primary"
@@ -193,7 +196,6 @@ function Negotiate({
             textTransform: "none",
             background: "#0E97F7",
             borderRadius: "4px",
-            mb: 1,
             // mb: 2,
             "&:hover": {
               fontSize: "16px",

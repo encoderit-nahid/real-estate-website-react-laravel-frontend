@@ -1,4 +1,4 @@
-import { Container } from "@mui/material";
+import { Container, Stack } from "@mui/material";
 import React from "react";
 import Tabs from "@mui/material/Tabs";
 import Tab from "@mui/material/Tab";
@@ -25,6 +25,8 @@ import Image from "next/image";
 import VideoCarousel from "../VideoCarousel/VideoCarousel";
 import { getVideoIdFromLink } from "@/utils/getVideoIdFromLink";
 import Slider from "react-slick";
+import BaseShareButton from "@/component/reuseable/baseShareButton/BaseShareButton";
+import BaseFavoriteButton from "@/component/reuseable/baseFavoriteButton/BaseFavoriteButton";
 
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
@@ -69,6 +71,7 @@ function SliderViewMobile({
   videos,
   languageName,
   images,
+  singlePropertyData,
 }) {
   const imageUrls = images?.map((data) => {
     return data?.file_path;
@@ -122,7 +125,7 @@ function SliderViewMobile({
     return `${_imageURL}/${src}`;
   };
   const sliderSettings = {
-    dots: true,
+    dots: false,
     lazyLoad: true,
     infinite: true,
     autoplay: true,
@@ -132,7 +135,31 @@ function SliderViewMobile({
     swipeToSlide: true,
   };
   return (
-    <Container maxWidth="sm" sx={{ p: 0 }}>
+    <Container maxWidth="sm" sx={{ p: 0, position: "relative" }}>
+      <Stack
+        direction="row"
+        spacing={1}
+        sx={{
+          display: {
+            xs: "flex",
+            md: "none",
+          },
+          position: "absolute",
+          top: 60,
+          right: "20px",
+          zIndex: 2,
+        }}
+      >
+        <BaseShareButton
+          bg
+          base_url={`https://www.lokkan.site/property-view/${singlePropertyData?.property?.id}`}
+        />
+        <BaseFavoriteButton
+          // handleLoginOpen={handleLoginOpen}
+          bg
+          itemID={singlePropertyData?.property?.id}
+        />
+      </Stack>
       <Tabs
         value={value}
         onChange={handleChange}
@@ -177,7 +204,9 @@ function SliderViewMobile({
                   src={image}
                   alt="home"
                   width={800}
-                  height={400}
+                  height={700}
+                  objectFit="cover"
+                  objectPosition={"center"}
                 />
               ))}
             </Slider>

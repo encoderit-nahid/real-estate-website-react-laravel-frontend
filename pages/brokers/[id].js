@@ -19,6 +19,18 @@ import pt from "locales/pt";
 import { findPropertyCountData } from "@/redux/propertyCount/actions";
 import StarIcon from "@mui/icons-material/Star";
 import BaseLinearRating from "@/component/reuseable/baseLinearRating/BaseLinearRating";
+import { useGetPropertyCountQuery } from "@/queries/useGetPropertyCountQuery";
+import BaseWhatsappButton from "@/component/reuseable/baseWhatsappButton/BaseWhatsappButton";
+const BaseShareButton = dynamic(
+  () => import("@/component/reuseable/baseShareButton/BaseShareButton"),
+  { ssr: false }
+);
+const BaseFavoriteButton = dynamic(
+  () => import("@/component/reuseable/baseFavoriteButton/BaseFavoriteButton"),
+  { ssr: false }
+);
+
+// import { useRouter } from "next/router";
 
 const drawerWidth = 240;
 
@@ -58,6 +70,7 @@ function a11yProps(index) {
 export default function BrokerDetails({ handleLoginOpen, language }) {
   const router = useRouter();
   const { query } = router;
+  console.log("🟥 ~ BrokerDetails ~ query:", query);
   const [value, setValue] = useState(0);
 
   const [showPass, setShowPass] = useState(false);
@@ -174,17 +187,37 @@ export default function BrokerDetails({ handleLoginOpen, language }) {
           <Grid item xs={10}>
             <Grid container spacing={3}>
               <Grid item xs={12}>
-                <Typography
-                  variant="h6"
-                  sx={{
-                    color: "#002152",
-                    fontWeight: "700",
-                    fontSize: "16px",
-                    lineHeight: "22px",
-                  }}
+                <Stack
+                  direction={"row"}
+                  alignItems={"center"}
+                  justifyContent={"space-between"}
                 >
-                  John Doe da silva
-                </Typography>
+                  <Stack direction={"column"} spacing={2}>
+                    <Typography
+                      variant="h6"
+                      sx={{
+                        color: "#002152",
+                        fontWeight: "700",
+                        fontSize: "16px",
+                        lineHeight: "22px",
+                      }}
+                    >
+                      John Doe da silva
+                    </Typography>
+                    <BaseWhatsappButton />
+                  </Stack>
+                  <Stack direction="row" alignItems={"center"} spacing={1}>
+                    <BaseShareButton
+                      base_url={`https://www.lokkan.site/brokers/${query.id}`}
+                    />
+
+                    <BaseFavoriteButton
+                      handleLoginOpen={handleLoginOpen}
+                      itemID={query.id}
+                      type="broker"
+                    />
+                  </Stack>
+                </Stack>
               </Grid>
               <Grid item xs={12}>
                 <Typography
