@@ -127,11 +127,10 @@ export const userDetailsApi = async () => {
   }
   try {
     const response = await apiInstance.get(`auth-user`);
+    console.log("🟥 ~ userDetailsApi ~ response:", response);
     localStorage.setItem("wishList", response?.data?.wishlists);
-    localStorage.setItem(
-      "projectWishList",
-      JSON.stringify(response?.data?.project_wishlists)
-    );
+    localStorage.setItem("projectWishList", response?.data?.project_wishlists);
+    localStorage.setItem("brokerWishList", response?.data?.broker_wishlists);
     localStorage.setItem("user", JSON.stringify(response?.data?.user));
     return [false, response];
   } catch (error) {
@@ -755,6 +754,17 @@ export const MakeFavouriteApi = async (propertyId) => {
 export const MakeFavouriteProjectApi = async (projectId) => {
   try {
     const response = await apiInstance.get(`project/wishlist/${projectId}`);
+    // console.log(response)
+    return [false, response];
+  } catch (error) {
+    return [error, null];
+  }
+};
+export const MakeFavouriteBrokerApi = async (projectId) => {
+  try {
+    const response = await apiInstance.get(
+      `users/broker-wishlist/${projectId}`
+    );
     // console.log(response)
     return [false, response];
   } catch (error) {

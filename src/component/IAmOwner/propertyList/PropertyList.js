@@ -1,9 +1,17 @@
-import { Box, Grid, ImageList, ImageListItem, Skeleton } from "@mui/material";
+import { Box, Grid, Skeleton } from "@mui/material";
+import dynamic from "next/dynamic";
+
 import React from "react";
-import HouseCard from "../../reuseable/HouseCard/HouseCard";
+const HouseCard = dynamic(
+  () => import("@/component/reuseable/HouseCard/HouseCard"),
+  {
+    ssr: false,
+  }
+);
 import Link from "next/link";
 
 function PropertyList({ propertyData, isLoading, handleLoginOpen }) {
+  console.log("🟥 ~ PropertyList ~ propertyData:", propertyData);
   return (
     <Box>
       <Grid container spacing={1}>
@@ -51,6 +59,7 @@ function PropertyList({ propertyData, isLoading, handleLoginOpen }) {
                       marginTop={"4vh"}
                       propertyInfo={data}
                       handleLoginOpen={handleLoginOpen}
+                      imageSize={propertyData.imageSize}
                     />
                   </a>
                 </Link>

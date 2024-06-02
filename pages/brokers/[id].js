@@ -10,7 +10,7 @@ import TextSnippetIcon from "@mui/icons-material/TextSnippet";
 import { Avatar, Grid, ListItemText, Rating, Stack } from "@mui/material";
 import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
-import { _baseURL } from "../../consts";
+import { _baseURL, _imageURL } from "../../consts";
 import { useDispatch, useSelector } from "react-redux";
 import { GetAllNotification } from "@/redux/all-notification/actions";
 import { findNotificationCountData } from "@/redux/notificationCount/actions";
@@ -21,6 +21,13 @@ import StarIcon from "@mui/icons-material/Star";
 import BaseLinearRating from "@/component/reuseable/baseLinearRating/BaseLinearRating";
 import { useGetPropertyCountQuery } from "@/queries/useGetPropertyCountQuery";
 import BaseWhatsappButton from "@/component/reuseable/baseWhatsappButton/BaseWhatsappButton";
+import PropertyList from "@/component/IAmOwner/propertyList/PropertyList";
+import Image from "next/image";
+
+const BrokerInformation = dynamic(
+  () => import("@/component/brokers/Information/BrokerInformation"),
+  { ssr: false }
+);
 const BaseShareButton = dynamic(
   () => import("@/component/reuseable/baseShareButton/BaseShareButton"),
   { ssr: false }
@@ -33,7 +40,9 @@ const BaseFavoriteButton = dynamic(
 // import { useRouter } from "next/router";
 
 const drawerWidth = 240;
-
+const myLoader = ({ src }) => {
+  return `${_imageURL}/${src}`;
+};
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
 
@@ -67,7 +76,31 @@ function a11yProps(index) {
   };
 }
 
-export default function BrokerDetails({ handleLoginOpen, language }) {
+export default function BrokerDetails({
+  handleLoginOpen,
+  language,
+  singleBrokerData,
+}) {
+  const ratingCount = () => {
+    let total = 0;
+    singleBrokerData.broker.broker_ratings.forEach((item) => {
+      total = total + item.count;
+    });
+    return total;
+  };
+  const rating = () => {
+    let total = 0;
+    singleBrokerData.broker.broker_ratings.forEach((item) => {
+      total = total + item.rating;
+    });
+    return total;
+  };
+  const totalRating = rating();
+  const totalRatingCount = ratingCount();
+  const avgRating = (count = 0) => {
+    return (count / totalRatingCount) * 100;
+  };
+  console.log("🟥 ~ BrokerDetails ~ singleBrokerData:", singleBrokerData);
   const router = useRouter();
   const { query } = router;
   console.log("🟥 ~ BrokerDetails ~ query:", query);
@@ -84,18 +117,16 @@ export default function BrokerDetails({ handleLoginOpen, language }) {
   const [myValue, setMyValue] = useState(language || "pt");
   const t = myValue === "en" ? en : pt;
 
-  const dispatch = useDispatch();
-  useEffect(() => {
-    dispatch(findNotificationCountData());
-    dispatch(GetAllNotification());
-    dispatch(findPropertyCountData());
-  }, [dispatch]);
+  // const dispatch = useDispatch();
+  // useEffect(() => {
+  //   dispatch(findNotificationCountData());
+  //   dispatch(GetAllNotification());
+  //   dispatch(findPropertyCountData());
+  // }, [dispatch]);
 
   const [anchorEl, setAnchorEl] = useState(null);
 
   const open = Boolean(anchorEl);
-
-
 
   const handleChange = (event, newValue) => {
     setValue(newValue);
@@ -152,147 +183,14 @@ export default function BrokerDetails({ handleLoginOpen, language }) {
             mt: 1,
           }}
         >
-          <Grid item xs={2}>
-            <Stack direction="column" alignItems="center" justifyItems="center">
-              <Avatar sx={{ width: 70, height: 70 }} />
-
-              <ListItemText
-                primary={
-                  <Typography
-                    variant="body1"
-                    sx={{
-                      fontSize: "16px",
-                      fontWeight: 700,
-                      lineHeight: "22px",
-                      color: "#6C7A84",
-                    }}
-                  >
-                    4.5{" "}
-                    <span
-                      style={{
-                        fontSize: "14px",
-                        fontWeight: 400,
-                        lineHeight: "18px",
-                        color: "#6C7A84",
-                      }}
-                    >
-                      (32 {t["reviews"]})
-                    </span>
-                  </Typography>
-                }
-              />
-              <Rating name="size-large" defaultValue={4} readOnly />
-            </Stack>
-          </Grid>
-          <Grid item xs={10}>
-            <Grid container spacing={3}>
-              <Grid item xs={12}>
-                <Stack
-                  direction={"row"}
-                  alignItems={"center"}
-                  justifyContent={"space-between"}
-                >
-                  <Stack direction={"column"} spacing={2}>
-                    <Typography
-                      variant="h6"
-                      sx={{
-                        color: "#002152",
-                        fontWeight: "700",
-                        fontSize: "16px",
-                        lineHeight: "22px",
-                      }}
-                    >
-                      John Doe da silva
-                    </Typography>
-                    <BaseWhatsappButton />
-                  </Stack>
-                  <Stack direction="row" alignItems={"center"} spacing={1}>
-                    <BaseShareButton
-                      base_url={`https://www.lokkan.site/brokers/${query.id}`}
-                    />
-
-                    <BaseFavoriteButton
-                      handleLoginOpen={handleLoginOpen}
-                      itemID={query.id}
-                      type="broker"
-                    />
-                  </Stack>
-                </Stack>
-              </Grid>
-              <Grid item xs={12}>
-                <Typography
-                  variant="p"
-                  sx={{
-                    color: "#002152",
-                    fontWeight: "400",
-                    fontSize: "16px",
-                    lineHeight: "22px",
-                    letterSpacing: "0.5px",
-                  }}
-                >
-                  Lorem ipsum dolor sit amet consectetur. Cursus amet mi
-                  vestibulum nunc urna. Posuere congue sit urna in mattis sem.
-                  Pregnant nibh turpis in tincidunt enim. Condimentum amet proin
-                  commodo interdum. Magnis quam congue sed.
-                </Typography>
-              </Grid>
-              <Grid item xs={12}>
-                <Grid container>
-                  <Grid item xs={4}>
-                    <Stack direction="row" spacing={1}>
-                      <EmailIcon color="primary" />
-                      <Typography
-                        variant="p"
-                        sx={{
-                          color: "#002152",
-                          fontWeight: "400",
-                          fontSize: "16px",
-                          lineHeight: "22px",
-                          letterSpacing: "0.5px",
-                        }}
-                      >
-                        demo@gmail.com
-                      </Typography>
-                    </Stack>
-                  </Grid>
-                  <Grid item xs={4}>
-                    <Stack direction="row" spacing={1}>
-                      <PhoneEnabledIcon color="primary" />
-                      <Typography
-                        variant="p"
-                        sx={{
-                          color: "#002152",
-                          fontWeight: "400",
-                          fontSize: "16px",
-                          lineHeight: "22px",
-                          letterSpacing: "0.5px",
-                        }}
-                      >
-                        (11) 9000-0000
-                      </Typography>
-                    </Stack>
-                  </Grid>
-                  <Grid item xs={4}>
-                    <Stack direction="row" spacing={1}>
-                      <TextSnippetIcon color="primary" />
-                      <Typography
-                        variant="p"
-                        sx={{
-                          color: "#002152",
-                          fontWeight: "400",
-                          fontSize: "16px",
-                          lineHeight: "22px",
-                          letterSpacing: "0.5px",
-                        }}
-                      >
-                        CRECI 95496840
-                      </Typography>
-                    </Stack>
-                  </Grid>
-                </Grid>
-              </Grid>
-            </Grid>
-          </Grid>
+          <BrokerInformation
+            t={t}
+            query={query}
+            handleLoginOpen={handleLoginOpen}
+            singleBrokerData={singleBrokerData}
+            totalRatingCount={totalRatingCount}
+            avgRating={(totalRating / totalRatingCount).toFixed(2)}
+          />
           <Grid item xs={12}>
             <Tabs
               value={value}
@@ -324,11 +222,16 @@ export default function BrokerDetails({ handleLoginOpen, language }) {
           </Grid>
         </Grid>
         <TabPanel value={value} index={0}>
-          {/* <PropertyList
-                  propertyData={propertyData}
-                  isLoading={isLoading}
-                  handleLoginOpen={handleLoginOpen}
-                /> */}
+          <PropertyList
+            propertyData={{
+              ...singleBrokerData.broker,
+              properties: {
+                data: singleBrokerData.broker.properties,
+              },
+              imageSize: { width: 600, height: 400 },
+            }}
+            handleLoginOpen={handleLoginOpen}
+          />
         </TabPanel>
         <TabPanel value={value} index={1}>
           <Stack direction="row" alignItems="flex-start" spacing={3}>
@@ -337,20 +240,47 @@ export default function BrokerDetails({ handleLoginOpen, language }) {
                 variant="h1"
                 style={{ fontStyle: "italic", fontWeight: "bolder" }}
               >
-                4.5
+                {(totalRating / totalRatingCount).toFixed(2)}
               </Typography>
               <StarIcon sx={{ fontSize: 50, color: "#FFAB00" }} />
             </Stack>
             <Stack direction="column" spacing={1}>
-              <BaseLinearRating count={5} percentage={66.7} />
-              <BaseLinearRating count={4} percentage={18.7} />
+              {/* singleBrokerData.broker.broker_ratings */}
+              {singleBrokerData.broker.broker_ratings.map(
+                (broker_rating, i) => (
+                  <BaseLinearRating
+                    key={i}
+                    count={broker_rating.rating}
+                    percentage={avgRating(broker_rating.count)}
+                  />
+                )
+              )}
+              {/* <BaseLinearRating count={4} percentage={18.7} />
               <BaseLinearRating count={3} percentage={16.7} />
               <BaseLinearRating count={2} percentage={1.0} />
-              <BaseLinearRating count={1} percentage={1.0} />
+              <BaseLinearRating count={1} percentage={1.0} /> */}
             </Stack>
           </Stack>
         </TabPanel>
       </Box>
     </Box>
   );
+}
+export async function getServerSideProps(context) {
+  const { id } = context.query;
+  const base_url = process.env.NEXT_PUBLIC_API_URL;
+  const res = await fetch(`${base_url}/api/broker/details/${id}`);
+  const singleBrokerData = await res.json();
+
+  const cookies = context.req.cookies["language"];
+
+  console.log("single", singleBrokerData);
+  return {
+    props: {
+      singleBrokerData: singleBrokerData,
+      // propertyDescription: stripHtmlTags(
+      //   singleBrokerData?.property?.property_description
+      // ),
+    },
+  };
 }
