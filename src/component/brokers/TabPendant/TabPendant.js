@@ -14,10 +14,7 @@ function TabPendant({ languageName, brokerCountRefetch }) {
   const { query } = router
   const [page, setPage] = React.useState(1)
 
-  useEffect(() => {
-    setPage(+query?.page)
-    brokerRefetch({ ...query })
-  }, [query, brokerRefetch])
+
   
   const {
     data: brokerUserData,
@@ -38,6 +35,12 @@ function TabPendant({ languageName, brokerCountRefetch }) {
       query: { ...router.query, page: value },
     })
   }
+
+  useEffect(() => {
+    setPage(+query?.page)
+    brokerRefetch({ ...query })
+  }, [query, brokerRefetch])
+
 
   if (brokerLoading) {
     return (

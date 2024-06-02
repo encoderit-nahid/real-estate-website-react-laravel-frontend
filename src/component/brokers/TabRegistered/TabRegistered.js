@@ -15,10 +15,7 @@ function TabRegistered({ languageName }) {
   const { query } = router
   const [page, setPage] = React.useState(1)
 
-  useEffect(() => {
-    setPage(+query?.page)
-    refetch({ ...query })
-  }, [query, refetch])
+
   const {
     data: brokerUserData,
     isLoading: brokerLoading,
@@ -38,6 +35,11 @@ function TabRegistered({ languageName }) {
       query: { ...router.query, page: value },
     })
   }
+
+  useEffect(() => {
+    setPage(+query?.page)
+    refetch({ ...query })
+  }, [query, refetch])
 
   if (brokerLoading) {
     return (
