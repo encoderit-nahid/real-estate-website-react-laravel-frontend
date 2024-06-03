@@ -1,5 +1,6 @@
 import { Container, Stack } from "@mui/material";
 import React from "react";
+import dynamic from "next/dynamic";
 import Tabs from "@mui/material/Tabs";
 import Tab from "@mui/material/Tab";
 import PhoneIcon from "@mui/icons-material/Phone";
@@ -31,6 +32,7 @@ const BaseShareButton = dynamic(
   }
 );
 import BaseFavoriteButton from "@/component/reuseable/baseFavoriteButton/BaseFavoriteButton";
+
 
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
