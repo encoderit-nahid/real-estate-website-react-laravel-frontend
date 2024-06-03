@@ -1,8 +1,8 @@
-import dynamic from "next/dynamic";
-const Navbar = dynamic(() => import("@/component/shared/Navbar/Navbar"), {
+import dynamic from 'next/dynamic'
+const Navbar = dynamic(() => import('@/component/shared/Navbar/Navbar'), {
   ssr: false,
-});
-import Head from "next/head";
+})
+import Head from 'next/head'
 import {
   Box,
   Grid,
@@ -12,55 +12,55 @@ import {
   ImageListItem,
   Button,
   Stack,
-} from "@mui/material";
-import orionImage from "../../public/Images/orion_view.svg";
-import Image from "next/image";
+} from '@mui/material'
+import orionImage from '../../public/Images/orion_view.svg'
+import Image from 'next/image'
 const HouseCard = dynamic(
-  () => import("@/component/reuseable/HouseCard/HouseCard"),
+  () => import('@/component/reuseable/HouseCard/HouseCard'),
   {
     ssr: false,
-  }
-);
-const Footer = dynamic(() => import("@/component/shared/Footer/Footer"), {
+  },
+)
+const Footer = dynamic(() => import('@/component/shared/Footer/Footer'), {
   ssr: false,
-});
+})
 const SliderView = dynamic(
-  () => import("@/component/PropertyView/slider/SliderView"),
+  () => import('@/component/PropertyView/slider/SliderView'),
   {
     ssr: false,
-  }
-);
+  },
+)
 const SliderViewMobile = dynamic(
-  () => import("@/component/PropertyView/SliderViewMobile/SliderViewMobile"),
+  () => import('@/component/PropertyView/SliderViewMobile/SliderViewMobile'),
   {
     ssr: false,
-  }
-);
-import { useEffect, useMemo, useState } from "react";
-import en from "locales/en";
-import pt from "locales/pt";
-import Link from "next/link";
-import { _imageURL } from "consts";
-import { useRouter } from "next/router";
-import { stripHtmlTags } from "@/utils/stripHtmlTags";
+  },
+)
+import { useEffect, useMemo, useState } from 'react'
+import en from 'locales/en'
+import pt from 'locales/pt'
+import Link from 'next/link'
+import { _imageURL } from 'consts'
+import { useRouter } from 'next/router'
+import { stripHtmlTags } from '@/utils/stripHtmlTags'
 const BaseShareButton = dynamic(
-  () => import("@/component/reuseable/baseShareButton/BaseShareButton"),
+  () => import('@/component/reuseable/baseShareButton/BaseShareButton'),
   {
     ssr: false,
-  }
-);
+  },
+)
 const AboutProperty = dynamic(
-  () => import("@/component/PropertyView/AboutProperty/AboutProperty"),
+  () => import('@/component/PropertyView/AboutProperty/AboutProperty'),
   {
     ssr: false,
-  }
-);
+  },
+)
 const BaseFavoriteButton = dynamic(
-  () => import("@/component/reuseable/baseFavoriteButton/BaseFavoriteButton"),
+  () => import('@/component/reuseable/baseFavoriteButton/BaseFavoriteButton'),
   {
     ssr: false,
-  }
-);
+  },
+)
 
 export default function ProjectView({
   loginOpen,
@@ -71,57 +71,56 @@ export default function ProjectView({
   projectDescription,
   language,
 }) {
-  const router = useRouter();
-  const [myValue, setMyValue] = useState(language || "pt");
+  const router = useRouter()
+  const [myValue, setMyValue] = useState(language || 'pt')
 
-  const t = myValue === "en" ? en : pt;
-  const [sideTabValue, setSideTabValue] = useState("photos");
+  const t = myValue === 'en' ? en : pt
+  const [sideTabValue, setSideTabValue] = useState('photos')
 
   const seoImage = useMemo(() => {
     return singleProjectData?.project?.attachments?.find(
-      (data) => data?.title === "logo"
-    );
-  }, [singleProjectData]);
+        (data) => data?.title === 'cover_photo',
+    )
+  }, [singleProjectData])
 
   const Images = useMemo(() => {
-    const regexPatternThreeSixtyImages = /^[a-zA-Z_]+_vision_360$/;
+    const regexPatternThreeSixtyImages = /^[a-zA-Z_]+_vision_360$/
     return singleProjectData?.project?.attachments?.filter((data) => {
-      return sideTabValue === "vision_360"
+      return sideTabValue === 'vision_360'
         ? regexPatternThreeSixtyImages.test(data?.title)
-        : sideTabValue === "photos"
-        ? data?.title === "Photo"
-        : sideTabValue === "condominium"
-        ? data?.title === "condominium"
-        : sideTabValue === "videos"
+        : sideTabValue === 'photos'
+        ? data?.title === 'Photo'
+        : sideTabValue === 'condominium'
+        ? data?.title === 'condominium'
+        : sideTabValue === 'videos'
         ? !data?.title
-        : null;
-    });
-  }, [singleProjectData, sideTabValue]);
+        : null
+    })
+  }, [singleProjectData, sideTabValue])
 
   const Videos = useMemo(() => {
-    if (sideTabValue === "videos") {
+    if (sideTabValue === 'videos') {
       return singleProjectData?.project?.attachments?.filter((data) => {
-        return data?.file_type === "url";
-      });
+        return data?.file_type === 'url'
+      })
     } else {
-      return;
+      return
     }
-  }, [sideTabValue, singleProjectData]);
+  }, [sideTabValue, singleProjectData])
 
-  const [selectImage, setSelectImage] = useState(() => Images?.[0]?.file_path);
+  const [selectImage, setSelectImage] = useState(() => Images?.[0]?.file_path)
 
   useEffect(() => {
     if (Images?.length > 0) {
-      setSelectImage(Images?.[0]?.file_path);
+      setSelectImage(Images?.[0]?.file_path)
     } else {
-      setSelectImage(Images?.[0]?.lofi);
+      setSelectImage(Images?.[0]?.lofi)
     }
-  }, [Images]);
+  }, [Images])
 
   const goBack = () => {
-    router.back();
-  };
-
+    router.back()
+  }
 
   return (
     <div>
@@ -156,7 +155,7 @@ export default function ProjectView({
       <main className="section">
         <Navbar
           shape={false}
-          paddingY={"1vh"}
+          paddingY={'1vh'}
           loginOpen={loginOpen}
           setLoginOpen={setLoginOpen}
           handleLoginClose={handleLoginClose}
@@ -178,19 +177,19 @@ export default function ProjectView({
               onClick={goBack}
               sx={{
                 mr: 1,
-                border: "1px solid #38bdf8",
-                borderRadius: "4px",
+                border: '1px solid #38bdf8',
+                borderRadius: '4px',
                 px: 2,
                 py: 1,
                 my: 1,
-                color: "#38bdf8",
-                fontSize: "16px",
-                fontWeight: "600",
-                lineHeight: "22px",
-                textTransform: "none",
+                color: '#38bdf8',
+                fontSize: '16px',
+                fontWeight: '600',
+                lineHeight: '22px',
+                textTransform: 'none',
               }}
             >
-              {t["come back"]}
+              {t['come back']}
             </Button>
           </Grid>
           <Grid
@@ -202,13 +201,13 @@ export default function ProjectView({
             <Button
               sx={{
                 display: {
-                  xs: "grid",
-                  sm: "grid",
-                  md: "flex",
-                  lg: "flex",
-                  xl: "flex",
+                  xs: 'grid',
+                  sm: 'grid',
+                  md: 'flex',
+                  lg: 'flex',
+                  xl: 'flex',
                 },
-                color: "#1A1859",
+                color: '#1A1859',
               }}
             >
               <Image src={orionImage} alt="orionImage" />
@@ -216,15 +215,15 @@ export default function ProjectView({
               <Typography
                 variant="p"
                 sx={{
-                  fontSize: "24px",
+                  fontSize: '24px',
                   fontWeight: 700,
-                  color: "#1A1859",
+                  color: '#1A1859',
                 }}
               >
                 {singleProjectData?.project?.name}
               </Typography>
             </Button>
-            <Stack direction="row" alignItems={"center"} spacing={1}>
+            <Stack direction="row" alignItems={'center'} spacing={1}>
               <BaseShareButton
                 base_url={`https://www.lokkan.site/project-view/${singleProjectData?.property?.id}`}
               />
@@ -257,11 +256,11 @@ export default function ProjectView({
             container
             sx={{
               display: {
-                xs: "inline",
-                sm: "inline",
-                md: "none",
-                lg: "none",
-                xl: "none",
+                xs: 'inline',
+                sm: 'inline',
+                md: 'none',
+                lg: 'none',
+                xl: 'none',
               },
             }}
           >
@@ -282,11 +281,11 @@ export default function ProjectView({
               xs={12}
               sx={{
                 display: {
-                  xs: "none",
-                  sm: "none",
-                  md: "inline",
-                  lg: "inline",
-                  xl: "inline",
+                  xs: 'none',
+                  sm: 'none',
+                  md: 'inline',
+                  lg: 'inline',
+                  xl: 'inline',
                 },
               }}
             >
@@ -309,7 +308,7 @@ export default function ProjectView({
             mx: 3,
             mt: 4,
 
-            background: "linear-gradient(90deg, #20BAF6 0%, #7450F0 100%);",
+            background: 'linear-gradient(90deg, #20BAF6 0%, #7450F0 100%);',
           }}
         >
           <Container maxWidth="xxl">
@@ -325,10 +324,10 @@ export default function ProjectView({
                 <Typography
                   variant="h6"
                   sx={{
-                    color: "#FFFFFF",
-                    fontWeight: "800",
-                    fontSize: "32px",
-                    lineHeight: "38px",
+                    color: '#FFFFFF',
+                    fontWeight: '800',
+                    fontSize: '32px',
+                    lineHeight: '38px',
                   }}
                 >
                   {singleProjectData?.project?.name}
@@ -336,10 +335,10 @@ export default function ProjectView({
                 <Typography
                   variant="h6"
                   sx={{
-                    color: "#FFFFFF",
-                    fontWeight: "500",
-                    fontSize: "20px",
-                    lineHeight: "28px",
+                    color: '#FFFFFF',
+                    fontWeight: '500',
+                    fontSize: '20px',
+                    lineHeight: '28px',
                     mt: 2,
                   }}
                 >
@@ -351,10 +350,10 @@ export default function ProjectView({
                   component="div"
                   align="left"
                   sx={{
-                    color: "#FFFFFF",
-                    fontWeight: "500",
-                    fontSize: "20px",
-                    lineHeight: "28px",
+                    color: '#FFFFFF',
+                    fontWeight: '500',
+                    fontSize: '20px',
+                    lineHeight: '28px',
                     mt: 2,
                   }}
                   dangerouslySetInnerHTML={{
@@ -374,7 +373,7 @@ export default function ProjectView({
                   name={key}
                   array={singleProjectData?.projectFeatures[key]}
                 />
-              )
+              ),
             )}
           </Grid>
         </Box>
@@ -382,10 +381,10 @@ export default function ProjectView({
           <ImageList
             cols={5}
             sx={{
-              gridAutoFlow: "column",
+              gridAutoFlow: 'column',
               gridTemplateColumns:
-                "repeat(auto-fill,minmax(140px,1fr)) !important",
-              gridAutoColumns: "minmax(140px, 1fr)",
+                'repeat(auto-fill,minmax(140px,1fr)) !important',
+              gridAutoColumns: 'minmax(140px, 1fr)',
               pl: 3,
               pb: 4,
             }}
@@ -401,17 +400,17 @@ export default function ProjectView({
                   cols={2}
                   sx={{
                     width: {
-                      xl: "90%",
-                      lg: "90%",
-                      md: "70%",
-                      sm: "90%",
-                      xs: "90%",
+                      xl: '90%',
+                      lg: '90%',
+                      md: '70%',
+                      sm: '90%',
+                      xs: '90%',
                     },
                   }}
                 >
                   <HouseCard
                     propertyInfo={data}
-                    shadow={"0px 4px 18px rgba(0, 0, 0, 0.1)"}
+                    shadow={'0px 4px 18px rgba(0, 0, 0, 0.1)'}
                   />
                 </ImageListItem>
               </Link>
@@ -421,25 +420,26 @@ export default function ProjectView({
         <Footer />
       </main>
     </div>
-  );
+  )
 }
 
 export async function getServerSideProps(context) {
-  const { id } = context.query;
-  const base_url = process.env.NEXT_PUBLIC_API_URL;
+  const { params } = context.query
+  const [id] = params || []
+  const base_url = process.env.NEXT_PUBLIC_API_URL
 
-  const res = await fetch(`${base_url}/api/project/show/${id}`);
-  const singleProjectData = await res.json();
+  const res = await fetch(`${base_url}/api/project/show/${id}`)
+  const singleProjectData = await res.json()
 
-  const cookies = context.req.cookies["language"];
+  const cookies = context.req.cookies['language']
 
   return {
     props: {
       singleProjectData: singleProjectData,
       language: cookies,
       projectDescription: stripHtmlTags(
-        singleProjectData?.project?.description
+        singleProjectData?.project?.description,
       ),
     },
-  };
+  }
 }

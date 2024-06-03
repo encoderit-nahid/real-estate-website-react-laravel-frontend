@@ -6,7 +6,7 @@ import {
   Stack,
   Typography,
 } from "@mui/material";
-import React, { useState } from "react";
+import React, { useMemo, useState } from "react";
 import ShareIcon from "@mui/icons-material/Share";
 import {
   EmailShareButton,
@@ -27,9 +27,14 @@ const BaseShareButton = ({ base_url, bg = false }) => {
   };
 
   const currentUser = useCurrentUser()
-  const modifiedUrl = `${base_url}?shared_by=${currentUser?.roles[0]?.slug}?id=${currentUser?.id}`
-  console.log({modifiedUrl})
+  // const modifiedUrl = `${base_url}/${currentUser?.roles[0]?.slug}/${currentUser?.id}`
 
+  const modifiedUrl = useMemo(() => {
+    if(currentUser?.id){
+      return `${base_url}/${currentUser?.roles[0]?.slug}/${currentUser?.id}`
+    }
+    return base_url
+  },[currentUser,base_url])
 
   return (
     <>
