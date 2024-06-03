@@ -115,7 +115,7 @@ export default function PropertyView({
 
   const seoImage = useMemo(() => {
     return singlePropertyData?.property?.attachments?.find(
-      (data) => data?.title === "logo"
+      (data) => data?.title === "cover_photo"
     );
   }, [singlePropertyData]);
 
@@ -148,6 +148,8 @@ export default function PropertyView({
   };
 
   console.log("🟥 ~ singlePropertyData:", singlePropertyData);
+
+  console.log({seoImage})
 
 
 
