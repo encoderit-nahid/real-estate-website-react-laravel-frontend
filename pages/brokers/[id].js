@@ -15,6 +15,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { GetAllNotification } from "@/redux/all-notification/actions";
 import { findNotificationCountData } from "@/redux/notificationCount/actions";
 import { userDetailsApi } from "@/api";
+import en from "locales/en";
 import pt from "locales/pt";
 import { findPropertyCountData } from "@/redux/propertyCount/actions";
 import StarIcon from "@mui/icons-material/Star";
@@ -234,8 +235,18 @@ export default function BrokerDetails({
           />
         </TabPanel>
         <TabPanel value={value} index={1}>
-          <Stack direction="row" alignItems="flex-start" spacing={3}>
-            <Stack direction="row" alignItems="center" spacing={3}>
+          <Stack
+            direction={{ xs: "column", lg: "row" }}
+            alignItems="center"
+            justifyContent={"center"}
+          >
+            <Stack
+              direction={"row"}
+              alignItems="center"
+              justifyContent={"center"}
+              spacing={3}
+              sx={{ width: "100%" }}
+            >
               <Typography
                 variant="h1"
                 style={{ fontStyle: "italic", fontWeight: "bolder" }}
@@ -244,8 +255,7 @@ export default function BrokerDetails({
               </Typography>
               <StarIcon sx={{ fontSize: 50, color: "#FFAB00" }} />
             </Stack>
-            <Stack direction="column" spacing={1}>
-              {/* singleBrokerData.broker.broker_ratings */}
+            <Stack direction="column" spacing={1} sx={{ width: "100%" }}>
               {singleBrokerData.broker.broker_ratings.map(
                 (broker_rating, i) => (
                   <BaseLinearRating
@@ -255,10 +265,6 @@ export default function BrokerDetails({
                   />
                 )
               )}
-              {/* <BaseLinearRating count={4} percentage={18.7} />
-              <BaseLinearRating count={3} percentage={16.7} />
-              <BaseLinearRating count={2} percentage={1.0} />
-              <BaseLinearRating count={1} percentage={1.0} /> */}
             </Stack>
           </Stack>
         </TabPanel>

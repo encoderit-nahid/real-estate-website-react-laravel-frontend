@@ -29,7 +29,7 @@ const BrokerInformation = ({
 }) => {
   return (
     <>
-      <Grid item xs={2}>
+      <Grid item xs={12} lg={2}>
         <Stack direction="column" alignItems="center" justifyItems="center">
           <Image
             loader={myLoader}
@@ -43,35 +43,36 @@ const BrokerInformation = ({
             objectFit="cover"
             objectPosition={"center"}
           />
-          <ListItemText
-            primary={
-              <Typography
-                variant="body1"
-                sx={{
-                  fontSize: "16px",
-                  fontWeight: 700,
-                  lineHeight: "22px",
-                  color: "#6C7A84",
-                }}
-              >
-                {avgRating}{" "}
-                <span
-                  style={{
-                    fontSize: "14px",
-                    fontWeight: 400,
-                    lineHeight: "18px",
-                    color: "#6C7A84",
-                  }}
-                >
-                  ({totalRatingCount} {t["reviews"]})
-                </span>
-              </Typography>
-            }
+          <Typography
+            variant="body1"
+            sx={{
+              fontSize: "16px",
+              fontWeight: 700,
+              lineHeight: "22px",
+              color: "#6C7A84",
+            }}
+          >
+            {avgRating}{" "}
+            <span
+              style={{
+                fontSize: "14px",
+                fontWeight: 400,
+                lineHeight: "18px",
+                color: "#6C7A84",
+              }}
+            >
+              ({totalRatingCount} {t["reviews"]})
+            </span>
+          </Typography>
+          <Rating
+            name="size-large"
+            defaultValue={avgRating}
+            readOnly
+            precision={0.5}
           />
-          <Rating name="size-large" defaultValue={4} readOnly />
         </Stack>
       </Grid>
-      <Grid item xs={10}>
+      <Grid item xs={12} lg={10}>
         <Grid container spacing={3}>
           <Grid item xs={12}>
             <Stack
@@ -124,8 +125,8 @@ const BrokerInformation = ({
             </Typography>
           </Grid>
           <Grid item xs={12}>
-            <Grid container>
-              <Grid item xs={4}>
+            <Grid container sx={{ gap: { xs: 2, lg: 0 } }}>
+              <Grid item xs={12} lg={4}>
                 <Stack direction="row" spacing={1}>
                   <EmailIcon color="primary" />
                   <Typography
@@ -142,8 +143,12 @@ const BrokerInformation = ({
                   </Typography>
                 </Stack>
               </Grid>
-              <Grid item xs={4}>
-                <Stack direction="row" spacing={1}>
+              <Grid item xs={12} lg={4}>
+                <Stack
+                  direction="row"
+                  spacing={1}
+                  justifyContent={{ lg: "center" }}
+                >
                   <PhoneEnabledIcon color="primary" />
                   <Typography
                     variant="p"
@@ -159,8 +164,12 @@ const BrokerInformation = ({
                   </Typography>
                 </Stack>
               </Grid>
-              <Grid item xs={4}>
-                <Stack direction="row" spacing={1}>
+              <Grid item xs={12} lg={4}>
+                <Stack
+                  direction="row"
+                  spacing={1}
+                  justifyContent={{ lg: "flex-end" }}
+                >
                   <TextSnippetIcon color="primary" />
                   <Typography
                     variant="p"
