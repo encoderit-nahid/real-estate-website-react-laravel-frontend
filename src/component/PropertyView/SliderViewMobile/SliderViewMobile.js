@@ -10,7 +10,6 @@ import RedoOutlinedIcon from "@mui/icons-material/RedoOutlined";
 import CabinOutlinedIcon from "@mui/icons-material/CabinOutlined";
 import MapOutlinedIcon from "@mui/icons-material/MapOutlined";
 import SignpostOutlinedIcon from "@mui/icons-material/SignpostOutlined";
-import ReactPannellum, { getConfig } from "react-pannellum";
 import BaseGoogleMap from "../../IAmOwner/map/BaseGoogleMap";
 import { Grid } from "@mui/material";
 import { _baseURL, _imageURL } from "../../../../consts";

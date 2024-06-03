@@ -15,13 +15,15 @@ import { useDispatch, useSelector } from "react-redux";
 import en from "locales/en";
 import pt from "locales/pt";
 import { findStateData } from "@/redux/state/actions";
+import BaseButton from "@/component/reuseable/button/BaseButton";
+import { useRouter } from "next/router";
 
 const drawerWidth = 240;
 
-export default function Index({ language }) {
-  const [myValue, setMyValue] = useState(language || "pt");
+export default function Index() {
+  const [myValue, setMyValue] = useState("pt");
 
-  const t = myValue === "en" ? en : pt;
+  const t = myValue === "pt" ? pt : en;
 
   const dispatch = useDispatch();
   useEffect(() => {
@@ -31,14 +33,16 @@ export default function Index({ language }) {
   const allStateData = useSelector((state) => state.state.stateData);
   console.log("🟥 ~ Index ~ allStateData:", allStateData);
 
+  const router = useRouter()
+
   return (
     <Box
       sx={{
         flexGrow: 1,
         background: "#F2F5F6",
         minHeight: "100vh",
-        width: { sm: `calc(100% - ${drawerWidth}px)` },
-        paddingX: { xs: 0, sm: 0, md: 6, lg: 6, xl: 6 },
+        paddingLeft: { xs: 4, sm: 4, md: 6, lg: 6, xl: 6 },
+        paddingRight: { xs: 2, sm: 2, md: 4, lg: 4, xl: 4 },
         paddingTop: { xs: 6, sm: 6, md: 6, lg: 8, xl: 3 },
         paddingBottom: { xs: 3, sm: 3, md: 3, lg: 4, xl: 3 },
       }}
@@ -56,14 +60,29 @@ export default function Index({ language }) {
             fontSize: "24px",
             fontWeight: "700",
             lineHeight: "32px",
-            ml: { xs: 4, sm: 4, md: 0, lg: 0, xl: 0 },
-            mt: { xs: 1, sm: 1, md: 0, lg: 0, xl: 0 },
+          
           }}
         >
           {t["profile"]}
         </Typography>
+        <BaseButton
+              custom_sx={{
+                background: "#ffffff",
+                px: 2,
+                py: 1,
+                color: "#4B4B66",
+                fontSize: "16px",
+                fontWeight: "600",
+                lineHeight: "22px",
+                textTransform: "none",
+              }}
+              name={t["Come back"]}
+              handleFunction={()=> router.replace('/my-properties') }
+            />
       </Grid>
-      <UserUpdateForm />
+      <Box sx={{mt:2}}>
+        <UserUpdateForm />
+      </Box>
     </Box>
   );
 }
