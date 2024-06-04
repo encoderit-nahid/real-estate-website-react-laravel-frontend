@@ -3,7 +3,7 @@ import { _baseMAP } from "../../../../consts";
 import ReactStreetview from "react-streetview";
 import { Box } from "@mui/material";
 
-function BaseStreetView({ addressData, widthDevice }) {
+function BaseStreetView({ addressData, widthDevice, height }) {
   const googleMapsApiKey = _baseMAP;
 
   const streetViewPanoramaOptions = {
@@ -20,7 +20,7 @@ function BaseStreetView({ addressData, widthDevice }) {
       sx={{
         // width: `${widthDevice === "mobile" ? "100%" : "80vw"}`,
         width: "100%",
-        height: "100%",
+        height: height || "100%",
         backgroundColor: "#eeeeee",
       }}
     >

@@ -144,7 +144,7 @@ const BaseGoogleMap = ({ height, width, markersData }) => {
   });
 
   return isLoaded ? (
-    <Map width={"100%"} height={"100%"} markersData={markersData} />
+    <Map width={"100%"} height={height || "100%"} markersData={markersData} />
   ) : null;
 };
 

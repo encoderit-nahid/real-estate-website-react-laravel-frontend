@@ -346,7 +346,6 @@ export default function NewProperty({ language }) {
         if (data?.id) {
           filterNewVideoTitleData.push({
             attachment_id: data?.id,
-            title: allValues[`video_title_${index}`].slug,
           });
         }
       }
@@ -370,7 +369,6 @@ export default function NewProperty({ language }) {
       if (!data?.id) {
         newVideoArr.push({
           url: data?.url,
-          title: allValues[`video_title_${index}`].slug,
         });
       }
     });

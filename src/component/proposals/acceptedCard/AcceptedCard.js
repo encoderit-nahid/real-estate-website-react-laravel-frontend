@@ -246,7 +246,14 @@ function AcceptedCard({ propertyData, languageName }) {
               query: {
                 propertyId: propertyData?.id,
                 contractId: propertyData?.contract?.id,
-                step_count: Statusindex,
+                step_count:
+                  propertyData?.contract?.status === "certificate"
+                    ? 2
+                    : propertyData?.contract?.status === "certificate_validated"
+                    ? 3
+                    : propertyData?.contract?.status === "notary"
+                    ? 4
+                    : 1,
               },
             }}
           >
@@ -291,6 +298,7 @@ function AcceptedCard({ propertyData, languageName }) {
           >
             <Button
               fullWidth
+              disabled={Statusindex - 1 > 2}
               sx={{
                 color: "#FFFFFF",
                 fontSize: "14px",

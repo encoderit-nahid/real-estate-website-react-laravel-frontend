@@ -33,7 +33,6 @@ const BaseShareButton = dynamic(
 );
 import BaseFavoriteButton from "@/component/reuseable/baseFavoriteButton/BaseFavoriteButton";
 
-
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
 
@@ -247,7 +246,7 @@ function SliderViewMobile({
               src={`${selectImage}`}
               alt="home"
               width={800}
-              height={400}
+              height={700}
               objectFit="cover"
             />
           </Box>
@@ -274,16 +273,24 @@ function SliderViewMobile({
       </TabPanel>
       <TabPanel value={value} index={2}>
         <Box sx={{ aspectRatio: "2 / 1" }}>
-          <BaseGoogleMap markersData={markersData} />
+          <BaseGoogleMap markersData={markersData} height={352} />
         </Box>
       </TabPanel>
       <TabPanel value={value} index={3}>
         <Box sx={{ aspectRatio: "2 / 1" }}>
-          <BaseStreetView addressData={addressData} widthDevice={"mobile"} />
+          <BaseStreetView
+            addressData={addressData}
+            widthDevice={"mobile"}
+            height={352}
+          />
         </Box>
       </TabPanel>
       <TabPanel value={value} index={4}>
-        <VideoCarousel videoLinks={videoIds} widthDevice={"mobile"} />
+        <VideoCarousel
+          videoLinks={videoIds}
+          widthDevice={"mobile"}
+          height={352}
+        />
       </TabPanel>
     </Container>
   );

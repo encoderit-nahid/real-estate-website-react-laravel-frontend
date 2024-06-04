@@ -132,6 +132,7 @@ export default function ProjectView({
     <div>
       <Head>
         <title>{`${singleProjectData?.project?.name} - Lokkan`}</title>
+        <link rel="icon" href="/negotiate.png" />
         <meta name="description" content={`${projectDescription}`} />
         <meta charset="UTF-8" />
         <meta http-equiv="X-UA-Compatible" content="IE=edge" />

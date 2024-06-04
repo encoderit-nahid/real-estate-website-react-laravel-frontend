@@ -108,6 +108,7 @@ export default function BrokerDetails({
     <div>
       <Head>
         <title>{`${singleBrokerData.broker.name} - Lokkan`}</title>
+        <link rel="icon" href="/negotiate.png" />
         <meta name="description" content={`I am a broker`} />
         <meta charset="UTF-8" />
         <meta http-equiv="X-UA-Compatible" content="IE=edge" />

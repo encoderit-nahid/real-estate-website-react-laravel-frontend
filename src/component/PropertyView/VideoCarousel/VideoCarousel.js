@@ -4,7 +4,7 @@ import ArrowBackIosOutlinedIcon from "@mui/icons-material/ArrowBackIosOutlined";
 import ArrowForwardIosOutlinedIcon from "@mui/icons-material/ArrowForwardIosOutlined";
 import { Box, Stack, Typography } from "@mui/material";
 
-const VideoCarousel = ({ videoLinks }) => {
+const VideoCarousel = ({ videoLinks, height }) => {
   console.log("🟥 ~ VideoCarousel ~ VideoCarousel:", videoLinks);
 
   const [currentVideoIndex, setCurrentVideoIndex] = useState(0);
@@ -94,6 +94,7 @@ const VideoCarousel = ({ videoLinks }) => {
           style={{
             aspectRatio: "4 / 2",
             width: "100%",
+            height: height,
           }}
           src={`https://www.youtube.com/embed/${videoLinks[currentVideoIndex]}?autoplay=1`}
           frameborder="0"

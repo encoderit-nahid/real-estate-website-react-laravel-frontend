@@ -13,11 +13,11 @@ import { _baseURL, _imageURL } from "../../../../consts";
 import Link from "next/link";
 
 function SaleCard({ singlePropertyData }) {
+  const filterData = singlePropertyData?.attachments?.filter(
+    (data) => data?.title === "cover_photo"
+  );
   const myLoader = ({ src }) => {
-    const filterData = singlePropertyData?.attachments?.filter(
-      (data) => data?.title === "logo"
-    );
-    return `${_imageURL}/${filterData?.[0]?.file_path}`;
+    return `${_imageURL}/${src}`;
   };
   return (
     <Link href={`/property-view/${singlePropertyData?.id}`}>
@@ -37,7 +37,7 @@ function SaleCard({ singlePropertyData }) {
         >
           <Image
             loader={myLoader}
-            src={`${singlePropertyData?.attachments?.[0]?.file_path}`}
+            src={`${filterData?.[0]?.file_path}`}
             height={250}
             width={300}
             alt="media"
