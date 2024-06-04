@@ -13,6 +13,8 @@ import pt from "locales/pt";
 import StarIcon from "@mui/icons-material/Star";
 import BaseLinearRating from "@/component/reuseable/baseLinearRating/BaseLinearRating";
 import PropertyList from "@/component/IAmOwner/propertyList/PropertyList";
+import BaseButton from "@/component/reuseable/button/BaseButton";
+import { useSession } from "next-auth/react";
 
 const BrokerInformation = dynamic(
   () => import("@/component/brokers/Information/BrokerInformation"),
@@ -85,6 +87,8 @@ export default function BrokerDetails({
   console.log("🟥 ~ BrokerDetails ~ query:", query);
   const [value, setValue] = useState(0);
 
+  const { data: session } = useSession();
+
   useEffect(() => {
     userDetailsApi();
   }, []);
@@ -102,13 +106,13 @@ export default function BrokerDetails({
         flexGrow: 1,
         background: "#F2F5F6",
         minHeight: "100vh",
-        width: { sm: `calc(100% - ${drawerWidth}px)` },
-        paddingTop: { xs: 6, sm: 6, md: 6, lg: 8, xl: 3 },
+        // paddingTop: { xs: 6, sm: 6, md: 6, lg: 3, xl: 3 },
       }}
     >
       <Box
         sx={{
-          paddingX: { xs: 0, sm: 0, md: 6, lg: 6, xl: 6 },
+          paddingLeft: { xs: 4, sm: 4, md: 6, lg: 6, xl: 6 },
+          paddingRight: { xs: 2, sm: 2, md: 4, lg: 4, xl: 4 },
           paddingTop: { xs: 6, sm: 6, md: 6, lg: 8, xl: 3 },
           paddingBottom: { xs: 3, sm: 3, md: 3, lg: 4, xl: 3 },
         }}
@@ -132,6 +136,22 @@ export default function BrokerDetails({
           >
             {t["Broker"]}
           </Typography>
+          <BaseButton
+            custom_sx={{
+              background: "#ffffff",
+              px: 2,
+              py: 1,
+              color: "#4B4B66",
+              fontSize: "16px",
+              fontWeight: "600",
+              lineHeight: "22px",
+              textTransform: "none",
+            }}
+            name={t["Come back"]}
+            handleFunction={() =>
+              session ? router.replace("/brokers") : router.replace("/")
+            }
+          />
         </Grid>
 
         <Grid
@@ -228,8 +248,8 @@ export default function BrokerDetails({
   );
 }
 export async function getServerSideProps(context) {
-  const { params } = context.query
-  const [id] = params || []
+  const { params } = context.query;
+  const [id] = params || [];
   const base_url = process.env.NEXT_PUBLIC_API_URL;
   const res = await fetch(`${base_url}/api/broker/details/${id}`);
   const singleBrokerData = await res.json();
