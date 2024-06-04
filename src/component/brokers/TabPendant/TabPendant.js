@@ -1,31 +1,46 @@
-import { Grid, Skeleton } from "@mui/material";
-import React, { useEffect } from "react";
-import TabRegisteredCard from "../TabRegisteredCard/TabRegisteredCard";
-import TabPendantCard from "../TabPendantCard/TabPendantCard";
-import { useDispatch, useSelector } from "react-redux";
-import { findBrokerData } from "../../../redux/broker/actions";
-import { useGetBrokerDataQuery } from "@/queries/useGetBrokerDataQuery";
-import { LinearProgress } from "@mui/material";
-import { Box } from "@mui/material";
+import { Grid, Pagination, Skeleton, Stack } from '@mui/material'
+import React, { useEffect } from 'react'
+import TabRegisteredCard from '../TabRegisteredCard/TabRegisteredCard'
+import TabPendantCard from '../TabPendantCard/TabPendantCard'
+import { useDispatch, useSelector } from 'react-redux'
+import { findBrokerData } from '../../../redux/broker/actions'
+import { useGetBrokerDataQuery } from '@/queries/useGetBrokerDataQuery'
+import { LinearProgress } from '@mui/material'
+import { Box } from '@mui/material'
+import { useRouter } from 'next/router'
 
-function TabPendant({ languageName }) {
-  // const dispatch = useDispatch();
-  // useEffect(() => {
-  //   dispatch(findBrokerData({ user_type: "broker", status: "pending" }));
-  // }, [dispatch]);
-  // const brokerData = useSelector((state) => state?.broker?.brokerData);
+function TabPendant({ languageName, brokerCountRefetch }) {
+  const router = useRouter()
+  const { query } = router
+  const [page, setPage] = React.useState(1)
 
-  // const Loading = useSelector((state) => state?.broker?.loading);
 
+  
   const {
     data: brokerUserData,
     isLoading: brokerLoading,
     isFetched,
     isFetching,
+    refetch: brokerRefetch,
   } = useGetBrokerDataQuery({
-    user_type: "broker",
-    status: "pending",
-  });
+    user_type: 'broker',
+    status: 'pending',
+    page: page,
+    per_page: 9,
+  })
+
+  const handlePageChange = (event, value) => {
+    setPage(value)
+    router.replace({
+      query: { ...router.query, page: value },
+    })
+  }
+
+  useEffect(() => {
+    setPage(+query?.page)
+    brokerRefetch({ ...query })
+  }, [query, brokerRefetch])
+
 
   if (brokerLoading) {
     return (
@@ -35,29 +50,45 @@ function TabPendant({ languageName }) {
             <Skeleton
               variant="rect"
               height={260}
-              sx={{ mx: 2, my: 2, borderRadius: "8px" }}
+              sx={{ mx: 2, my: 2, borderRadius: '8px' }}
             />
           </Grid>
         ))}
       </Grid>
-    );
+    )
   }
   if (isFetched && isFetching) {
     return (
-      <Box sx={{ width: "100%" }}>
+      <Box sx={{ width: '100%' }}>
         <LinearProgress />
       </Box>
-    );
+    )
   }
   return (
-    <Grid container spacing={2}>
-      {brokerUserData?.data?.users?.data?.map((data, index) => (
-        <Grid key={index} item xs={12} sm={12} md={12} lg={4} xl={3}>
-          <TabPendantCard brokerInfo={data} languageName={languageName} />
-        </Grid>
-      ))}
-    </Grid>
-  );
+    <Box>
+      <Grid container spacing={2}>
+        {brokerUserData?.data?.users?.data?.map((data, index) => (
+          <Grid key={index} item xs={12} sm={12} md={12} lg={4} xl={3}>
+            <TabPendantCard
+              brokerInfo={data}
+              languageName={languageName}
+              brokerCountRefetch={brokerCountRefetch}
+              brokerRefetch={brokerRefetch}
+            />
+          </Grid>
+        ))}
+      </Grid>
+      <Stack spacing={2} sx={{ marginY: 8 }}>
+        <Pagination
+          count={Math.ceil(+brokerUserData?.data?.users?.total / 9) || 1}
+          page={page}
+          onChange={handlePageChange}
+          variant="outlined"
+          shape="rounded"
+        />
+      </Stack>
+    </Box>
+  )
 }
 
-export default TabPendant;
+export default TabPendant

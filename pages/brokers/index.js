@@ -21,13 +21,11 @@ const TabRegistered = dynamic(() =>
 const TabPendant = dynamic(() =>
   import("@/component/brokers/TabPendant/TabPendant")
 );
-import { useDispatch, useSelector } from "react-redux";
-import { useEffect } from "react";
-import { findBrokerCountData } from "@/redux/brokerCount/actions";
 import { useSession } from "next-auth/react";
 import SearchIcon from "@mui/icons-material/Search";
 import pt from "locales/pt";
 import en from "locales/en";
+import { useGetBrokerCountQuery } from "@/queries/useGetBrokerCountQuery";
 
 const drawerWidth = 240;
 
@@ -69,15 +67,14 @@ export default function Brokers({ language }) {
 
   const t = myValue === "en" ? en : pt;
   const { data: session } = useSession();
-  const dispatch = useDispatch();
-  useEffect(() => {
-    dispatch(findBrokerCountData());
-  }, [dispatch]);
-  const brokerCountData = useSelector(
-    (state) => state?.brokerCount?.brokerCountData
-  );
 
-  const brokerLoading = useSelector((state) => state?.brokerCount?.loading);
+  const {
+    data,
+    isLoading: countLoading,
+    refetch: loadingRefetch,
+  } = useGetBrokerCountQuery();
+  const brokerCountData = data?.data;
+
   const [value, setValue] = useState(0);
 
   const handleChange = (event, newValue) => {
@@ -128,7 +125,7 @@ export default function Brokers({ language }) {
               <Tab
                 sx={{ fontWeight: "600", textTransform: "none" }}
                 label={
-                  brokerLoading
+                  countLoading
                     ? t["Registered"]
                     : `${t["Registered"]}(${brokerCountData?.register || 0})`
                 }
@@ -138,7 +135,7 @@ export default function Brokers({ language }) {
                 <Tab
                   sx={{ fontWeight: "600", textTransform: "none" }}
                   label={
-                    brokerLoading
+                    countLoading
                       ? t["Pending"]
                       : `${t["Pending"]}(${brokerCountData?.pending || 0})`
                   }
@@ -196,11 +193,11 @@ export default function Brokers({ language }) {
 
           <TabPanel value={value} index={0}>
             {/* <Pendants /> */}
-            <TabRegistered languageName={myValue.toString()} />
+            <TabRegistered languageName={myValue.toString()}  />
           </TabPanel>
           <TabPanel value={value} index={1}>
             {/* <Accepted /> */}
-            <TabPendant languageName={myValue.toString()} />
+            <TabPendant languageName={myValue.toString()} brokerCountRefetch={loadingRefetch} />
           </TabPanel>
         </Box>
       </Container>

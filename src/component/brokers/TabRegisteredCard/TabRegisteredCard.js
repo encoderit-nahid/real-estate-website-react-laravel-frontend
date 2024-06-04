@@ -388,7 +388,7 @@ function TabRegisteredCard({ brokerInfo, languageName }) {
         </Button>
       </Grid>
       <Box sx={{ px: 1.5, mt: 2 }}>
-        <Link href={`/brokers/${brokerInfo?.id}`}>
+        <Link href={`/broker-details-view/${brokerInfo?.id}`}>
           <a>
             <Button
               fullWidth

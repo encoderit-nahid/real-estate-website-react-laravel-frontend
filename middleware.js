@@ -8,23 +8,27 @@ export async function middleware(req) {
   const publicPaths = [
     "/",
     "/advertise",
-    "/broker",
+    "/sou-corretor",
     "/search-real-estate",
     "/other-information",
     "/registration",
     "/reset-password",
+    "/property-view",
+    "/project-view",
+    "/broker-details-view",
     "/auth/facebook/callback",
     "/auth/google/callback",
     "/user-loading",
   ];
 
   const requestPath = req.nextUrl.pathname;
-  console.log({ requestPath });
-  const isPublicPath =
-    publicPaths.includes(requestPath) ||
-    requestPath.startsWith("/property-view") || requestPath.startsWith("/project-view");
+  // console.log({ requestPath });
+  // const isPublicPath = publicPaths.includes(requestPath);
+  const isPublicPath = publicPaths.some(
+    (path) => requestPath === path || requestPath.startsWith(`${path}/`)
+  );
 
-  console.log({ isPublicPath });
+  // console.log({ isPublicPath });
 
   if (isPublicPath || token) {
     return NextResponse.next();
@@ -35,6 +39,6 @@ export async function middleware(req) {
 
 export const config = {
   matcher: [
-    "/((?!api/auth|_next/static|_next/image|favicon.ico|advertise|broker|search-real-estate|other-information|registration|reset-password|auth/facebook/callback|auth/google/callback).*)",
+    "/((?!api/auth|_next/static|_next/image|favicon.ico|advertise|sou-corretor|search-real-estate|other-information|registration|reset-password|auth/facebook/callback|auth/google/callback).*)",
   ],
 };

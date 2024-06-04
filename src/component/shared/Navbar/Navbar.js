@@ -109,7 +109,7 @@ function Navbar({
 
   const pagesData = [
     { name: "Quero comprar", page: "search-real-estate" },
-    { name: t["I am broker"], page: "broker" },
+    { name: t["I am broker"], page: "sou-corretor" },
     { name: t["I am owner"], page: "advertise" },
     // { name: "blog", page: "blog" },
   ];

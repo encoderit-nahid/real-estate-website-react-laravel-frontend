@@ -1,7 +1,7 @@
-import dynamic from "next/dynamic";
-const Navbar = dynamic(() => import("@/component/shared/Navbar/Navbar"));
-const Footer = dynamic(() => import("@/component/shared/Footer/Footer"));
-import Head from "next/head";
+import dynamic from 'next/dynamic'
+const Navbar = dynamic(() => import('@/component/shared/Navbar/Navbar'))
+const Footer = dynamic(() => import('@/component/shared/Footer/Footer'))
+import Head from 'next/head'
 import {
   Box,
   Grid,
@@ -11,74 +11,68 @@ import {
   Button,
   Tooltip,
   Stack,
-  IconButton,
-  Menu,
-  MenuItem,
-} from "@mui/material";
-import ShareIcon from "@mui/icons-material/Share";
-import orionImage from "../../public/Images/orion_view.svg";
-import Image from "next/image";
-import {
-  EmailShareButton,
-  FacebookShareButton,
-  WhatsappShareButton,
-} from "react-share";
-import { EmailIcon, FacebookIcon, WhatsappIcon } from "react-share";
+} from '@mui/material'
+
+import orionImage from '../../public/Images/orion_view.svg'
+import Image from 'next/image'
+
 const AmountView = dynamic(() =>
-  import("@/component/PropertyView/amount/AmountView")
-);
+  import('@/component/PropertyView/amount/AmountView'),
+)
 const Features = dynamic(() =>
-  import("@/component/PropertyView/feature/Features")
-);
+  import('@/component/PropertyView/feature/Features'),
+)
 const AboutProperty = dynamic(() =>
-  import("@/component/PropertyView/AboutProperty/AboutProperty")
-);
+  import('@/component/PropertyView/AboutProperty/AboutProperty'),
+)
 const Negotiate = dynamic(() =>
-  import("@/component/PropertyView/Negotiate/Negotiate")
-);
+  import('@/component/PropertyView/Negotiate/Negotiate'),
+)
 const HouseCard = dynamic(
-  () => import("@/component/reuseable/HouseCard/HouseCard"),
+  () => import('@/component/reuseable/HouseCard/HouseCard'),
   {
     ssr: false,
-  }
-);
+  },
+)
 const SliderView = dynamic(
-  () => import("@/component/PropertyView/slider/SliderView"),
+  () => import('@/component/PropertyView/slider/SliderView'),
   {
     ssr: false,
-  }
-);
+  },
+)
 const SliderViewMobile = dynamic(
-  () => import("@/component/PropertyView/SliderViewMobile/SliderViewMobile"),
+  () => import('@/component/PropertyView/SliderViewMobile/SliderViewMobile'),
   {
     ssr: false,
-  }
-);
+  },
+)
 const BaseModal = dynamic(() =>
-  import("@/component/reuseable/baseModal/BaseModal")
-);
+  import('@/component/reuseable/baseModal/BaseModal'),
+)
 const ProposalModal = dynamic(() =>
-  import("@/component/PropertyView/ProposalStepperComponent/ProposalModal")
-);
-import { useMemo, useState } from "react";
-import { useEffect } from "react";
-import Link from "next/link";
-import en from "locales/en";
-import pt from "locales/pt";
-const BaseCopyText = dynamic(() =>
-  import("@/component/reuseable/baseCopyText/BaseCopyText")
-);
-import { useRouter } from "next/router";
-import { _imageURL } from "consts";
-import { stripHtmlTags } from "@/utils/stripHtmlTags";
-import BaseShareButton from "@/component/reuseable/baseShareButton/BaseShareButton";
-import BaseWhatsappButton from "@/component/reuseable/baseWhatsappButton/BaseWhatsappButton";
-const BaseFavoriteButton = dynamic(
-  () => import("@/component/reuseable/baseFavoriteButton/BaseFavoriteButton"),
+  import('@/component/PropertyView/ProposalStepperComponent/ProposalModal'),
+)
+import { useMemo, useState } from 'react'
+import { useEffect } from 'react'
+import Link from 'next/link'
+import en from 'locales/en'
+import pt from 'locales/pt'
+import { useRouter } from 'next/router'
+import { _imageURL } from 'consts'
+import { stripHtmlTags } from '@/utils/stripHtmlTags'
+const BaseShareButton = dynamic(
+  () => import('@/component/reuseable/baseShareButton/BaseShareButton'),
   {
     ssr: false,
-  }
-);
+  },
+)
+import BaseWhatsappButton from '@/component/reuseable/baseWhatsappButton/BaseWhatsappButton'
+const BaseFavoriteButton = dynamic(
+  () => import('@/component/reuseable/baseFavoriteButton/BaseFavoriteButton'),
+  {
+    ssr: false,
+  },
+)
 
 export default function PropertyView({
   loginOpen,
@@ -88,84 +82,74 @@ export default function PropertyView({
   singlePropertyData,
   propertyDescription,
 }) {
-  const [myValue, setMyValue] = useState("pt");
-  const router = useRouter();
+  const [myValue, setMyValue] = useState('pt')
+  const router = useRouter()
 
-  console.log({ singlePropertyData });
+  console.log({ singlePropertyData })
 
-  const t = myValue === "en" ? en : pt;
+  const t = myValue === 'en' ? en : pt
   //add_proposal_modal
-  const [proposalOpen, setProposalOpen] = useState(false);
-  const handleProposalOpen = () => setProposalOpen(true);
-  const handleProposalClose = () => setProposalOpen(false);
+  const [proposalOpen, setProposalOpen] = useState(false)
+  const handleProposalOpen = () => setProposalOpen(true)
+  const handleProposalClose = () => setProposalOpen(false)
 
-  const [negotiate, setNegotiate] = useState(true);
-  const [schedule, setSchedule] = useState(false);
+  const [negotiate, setNegotiate] = useState(true)
+  const [schedule, setSchedule] = useState(false)
 
-  const [sideTabValue, setSideTabValue] = useState("photos");
+  const [sideTabValue, setSideTabValue] = useState('photos')
 
   const Images = useMemo(() => {
-    const regexPatternThreeSixtyImages = /^[a-zA-Z_]+_vision_360$/;
-    const regexPatternImages = /^[a-zA-Z_]+$/;
+    const regexPatternThreeSixtyImages = /^[a-zA-Z_]+_vision_360$/
     return singlePropertyData?.property?.attachments?.filter((data) => {
-      return sideTabValue === "vision_360"
+      return sideTabValue === 'vision_360'
         ? regexPatternThreeSixtyImages.test(data?.title)
-        : sideTabValue === "photos"
-        ? data?.title === "Photo"
-        : sideTabValue === "condominium"
-        ? data?.title === "condominium"
-        : sideTabValue === "videos"
+        : sideTabValue === 'photos'
+        ? data?.title === 'Photo'
+        : sideTabValue === 'condominium'
+        ? data?.title === 'condominium'
+        : sideTabValue === 'videos'
         ? !data?.title
-        : null;
-    });
-  }, [singlePropertyData, sideTabValue]);
+        : null
+    })
+  }, [singlePropertyData, sideTabValue])
 
   const seoImage = useMemo(() => {
     return singlePropertyData?.property?.attachments?.find(
-      (data) => data?.title === "logo"
-    );
-  }, [singlePropertyData]);
+      (data) => data?.title === 'cover_photo',
+    )
+  }, [singlePropertyData])
 
   const Videos = useMemo(() => {
-    if (sideTabValue === "videos") {
+    if (sideTabValue === 'videos') {
       return singlePropertyData?.property?.attachments?.filter((data) => {
-        return data?.file_type === "url";
-      });
+        return data?.file_type === 'url'
+      })
     } else {
-      return;
+      return
     }
-  }, [sideTabValue, singlePropertyData]);
+  }, [sideTabValue, singlePropertyData])
 
-  console.log({ sideTabValue });
+  console.log({ sideTabValue })
 
-  const [selectImage, setSelectImage] = useState(() => Images[0]?.file_path);
+  const [selectImage, setSelectImage] = useState(() => Images[0]?.file_path)
 
   useEffect(() => {
     if (Images.length > 0) {
-      setSelectImage(Images[0]?.file_path);
+      setSelectImage(Images[0]?.file_path)
     } else {
-      setSelectImage(Images[0]?.lofi);
+      setSelectImage(Images[0]?.lofi)
     }
-  }, [Images]);
+  }, [Images])
 
-  console.log({ selectImage });
+  console.log({ selectImage })
 
   const goBack = () => {
-    router.back();
-  };
+    router.back()
+  }
 
-  console.log("🟥 ~ singlePropertyData:", singlePropertyData);
+  console.log('🟥 ~ singlePropertyData:', singlePropertyData)
 
-  const [anchorEl, setAnchorEl] = useState(null);
-  const open = Boolean(anchorEl);
-  const handleClick = (event) => {
-    setAnchorEl(event.currentTarget);
-  };
-  const handleClose = () => {
-    setAnchorEl(null);
-  };
 
-  console.log({ propertyDescription });
   return (
     <div>
       <Head>
@@ -194,12 +178,12 @@ export default function PropertyView({
       <main className="section">
         <Navbar
           shape={false}
-          paddingY={"1vh"}
+          paddingY={'1vh'}
           loginOpen={loginOpen}
           setLoginOpen={setLoginOpen}
           handleLoginClose={handleLoginClose}
           handleLoginOpen={handleLoginOpen}
-          languageName={"pt"}
+          languageName={'pt'}
           setMyValue={setMyValue}
           myValue={myValue}
           colorLogo={true}
@@ -217,19 +201,19 @@ export default function PropertyView({
               onClick={goBack}
               sx={{
                 mr: 1,
-                border: "1px solid #38bdf8",
-                borderRadius: "4px",
+                border: '1px solid #38bdf8',
+                borderRadius: '4px',
                 px: 2,
                 py: 1,
                 my: 1,
-                color: "#38bdf8",
-                fontSize: "16px",
-                fontWeight: "600",
-                lineHeight: "22px",
-                textTransform: "none",
+                color: '#38bdf8',
+                fontSize: '16px',
+                fontWeight: '600',
+                lineHeight: '22px',
+                textTransform: 'none',
               }}
             >
-              {t["come back"]}
+              {t['come back']}
             </Button>
           </Grid>
           <Grid
@@ -244,13 +228,13 @@ export default function PropertyView({
             <Button
               sx={{
                 display: {
-                  xs: "grid",
-                  sm: "grid",
-                  md: "flex",
-                  lg: "flex",
-                  xl: "flex",
+                  xs: 'grid',
+                  sm: 'grid',
+                  md: 'flex',
+                  lg: 'flex',
+                  xl: 'flex',
                 },
-                color: "#1A1859",
+                color: '#1A1859',
               }}
             >
               <Image src={orionImage} alt="orionImage" />
@@ -258,14 +242,14 @@ export default function PropertyView({
               <Typography
                 variant="p"
                 sx={{
-                  fontSize: "24px",
+                  fontSize: '24px',
                   fontWeight: 700,
-                  color: "#1A1859",
+                  color: '#1A1859',
                 }}
               >
                 {`${
                   singlePropertyData?.property?.property_title ||
-                  "No title found"
+                  'No title found'
                 }`}
               </Typography>
             </Button>
@@ -274,8 +258,8 @@ export default function PropertyView({
               spacing={1}
               sx={{
                 display: {
-                  xs: "none",
-                  md: "flex",
+                  xs: 'none',
+                  md: 'flex',
                 },
               }}
             >
@@ -300,11 +284,11 @@ export default function PropertyView({
             container
             sx={{
               display: {
-                xs: "inline",
-                sm: "inline",
-                md: "none",
-                lg: "none",
-                xl: "none",
+                xs: 'inline',
+                sm: 'inline',
+                md: 'none',
+                lg: 'none',
+                xl: 'none',
               },
             }}
           >
@@ -327,11 +311,11 @@ export default function PropertyView({
               xs={12}
               sx={{
                 display: {
-                  xs: "none",
-                  sm: "none",
-                  md: "inline",
-                  lg: "inline",
-                  xl: "inline",
+                  xs: 'none',
+                  sm: 'none',
+                  md: 'inline',
+                  lg: 'inline',
+                  xl: 'inline',
                 },
               }}
             >
@@ -361,7 +345,7 @@ export default function PropertyView({
               //   lg: "40vh",
               //   xl: "40vh",
               // },
-              background: "#0E97F7",
+              background: '#0E97F7',
 
               px: { xs: 2, sm: 2, md: 2, lg: 2, xl: 20 },
               py: 3,
@@ -384,7 +368,7 @@ export default function PropertyView({
             <Grid item xs={12} sm={12} md={12} lg={9} xl={9}>
               <Box
                 component="div"
-                sx={{ p: 3, backgroundColor: "#f9f9fb" }}
+                sx={{ p: 3, backgroundColor: '#f9f9fb' }}
                 dangerouslySetInnerHTML={{
                   __html: singlePropertyData?.property?.property_description,
                 }}
@@ -401,7 +385,7 @@ export default function PropertyView({
                     name={key}
                     array={singlePropertyData?.propertyFeatures[key]}
                   />
-                )
+                ),
               )}
             </Grid>
             <Grid item xs={12} sm={12} md={12} lg={3} xl={3}>
@@ -423,10 +407,10 @@ export default function PropertyView({
           <ImageList
             cols={5}
             sx={{
-              gridAutoFlow: "column",
+              gridAutoFlow: 'column',
               gridTemplateColumns:
-                "repeat(auto-fill,minmax(140px,1fr)) !important",
-              gridAutoColumns: "minmax(140px, 1fr)",
+                'repeat(auto-fill,minmax(140px,1fr)) !important',
+              gridAutoColumns: 'minmax(140px, 1fr)',
               pl: 3,
               pb: 4,
             }}
@@ -442,16 +426,16 @@ export default function PropertyView({
                   cols={2}
                   sx={{
                     width: {
-                      xl: "100%",
-                      lg: "90%",
-                      md: "70%",
-                      sm: "90%",
-                      xs: "90%",
+                      xl: '100%',
+                      lg: '90%',
+                      md: '70%',
+                      sm: '90%',
+                      xs: '90%',
                     },
                   }}
                 >
                   <HouseCard
-                    shadow={"0px 4px 18px rgba(0, 0, 0, 0.1)"}
+                    shadow={'0px 4px 18px rgba(0, 0, 0, 0.1)'}
                     propertyInfo={stateInfo}
                   />
                 </ImageListItem>
@@ -462,7 +446,7 @@ export default function PropertyView({
         <Box
           sx={{
             pb: {
-              xs: "50px",
+              xs: '50px',
               md: 0,
             },
           }}
@@ -486,15 +470,15 @@ export default function PropertyView({
         item
         sx={{
           display: {
-            xs: "block",
-            sm: "none",
+            xs: 'block',
+            sm: 'none',
           },
-          position: "fixed",
+          position: 'fixed',
           bottom: 0,
           left: 0,
-          backgroundColor: "#fff",
+          backgroundColor: '#fff',
           zIndex: 1000,
-          width: "100%",
+          width: '100%',
           p: 3,
         }}
         sm={6}
@@ -508,8 +492,8 @@ export default function PropertyView({
           justifyContent="flex-start"
           alignItems="flex-start"
           sx={{
-            width: "fit-content",
-            mx: "auto",
+            width: 'fit-content',
+            mx: 'auto',
             zIndex: 111,
           }}
           gap={2}
@@ -520,29 +504,29 @@ export default function PropertyView({
             color="primary"
             sx={{
               px: 4,
-              fontSize: "16px",
-              fontWeight: "600",
-              textTransform: "none",
-              minWidth: "250px",
-              background: "#0E97F7",
-              borderRadius: "4px",
+              fontSize: '16px',
+              fontWeight: '600',
+              textTransform: 'none',
+              minWidth: '250px',
+              background: '#0E97F7',
+              borderRadius: '4px',
 
-              "&: hover": {
+              '&: hover': {
                 px: 4,
-                fontSize: "16px",
-                fontWeight: "600",
-                textTransform: "none",
-                minWidth: "250px",
-                background: "#0E97F7",
-                borderRadius: "4px",
+                fontSize: '16px',
+                fontWeight: '600',
+                textTransform: 'none',
+                minWidth: '250px',
+                background: '#0E97F7',
+                borderRadius: '4px',
               },
             }}
             onClick={() => {
-              setNegotiate(true);
-              setSchedule(false);
+              setNegotiate(true)
+              setSchedule(false)
             }}
           >
-            {t["Negotiate"]}
+            {t['Negotiate']}
           </Button>
 
           {/* <Button
@@ -576,25 +560,26 @@ export default function PropertyView({
         </Grid>
       </Grid>
     </div>
-  );
+  )
 }
-49;
+49
 
 export async function getServerSideProps(context) {
-  const { id } = context.query;
-  const base_url = process.env.NEXT_PUBLIC_API_URL;
-  const res = await fetch(`${base_url}/api/property/show/${id}`);
-  const singlePropertyData = await res.json();
+  const { params } = context.query
+  const [id] = params || []
+  const base_url = process.env.NEXT_PUBLIC_API_URL
+  const res = await fetch(`${base_url}/api/property/show/${id}`)
+  const singlePropertyData = await res.json()
 
-  const cookies = context.req.cookies["language"];
+  const cookies = context.req.cookies['language']
 
-  console.log("single", singlePropertyData);
+  console.log('single', singlePropertyData)
   return {
     props: {
       singlePropertyData: singlePropertyData,
       propertyDescription: stripHtmlTags(
-        singlePropertyData?.property?.property_description
+        singlePropertyData?.property?.property_description,
       ),
     },
-  };
+  }
 }

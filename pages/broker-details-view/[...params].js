@@ -4,42 +4,23 @@ import Tabs from "@mui/material/Tabs";
 import Tab from "@mui/material/Tab";
 import Typography from "@mui/material/Typography";
 import Box from "@mui/material/Box";
-import EmailIcon from "@mui/icons-material/Email";
-import PhoneEnabledIcon from "@mui/icons-material/PhoneEnabled";
-import TextSnippetIcon from "@mui/icons-material/TextSnippet";
-import { Avatar, Grid, ListItemText, Rating, Stack } from "@mui/material";
+import { Grid, Stack } from "@mui/material";
 import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import { _baseURL, _imageURL } from "../../consts";
-import { useDispatch, useSelector } from "react-redux";
-import { GetAllNotification } from "@/redux/all-notification/actions";
-import { findNotificationCountData } from "@/redux/notificationCount/actions";
 import { userDetailsApi } from "@/api";
 import en from "locales/en";
 import pt from "locales/pt";
-import { findPropertyCountData } from "@/redux/propertyCount/actions";
 import StarIcon from "@mui/icons-material/Star";
 import BaseLinearRating from "@/component/reuseable/baseLinearRating/BaseLinearRating";
-import { useGetPropertyCountQuery } from "@/queries/useGetPropertyCountQuery";
-import BaseWhatsappButton from "@/component/reuseable/baseWhatsappButton/BaseWhatsappButton";
 import PropertyList from "@/component/IAmOwner/propertyList/PropertyList";
-import Image from "next/image";
+import BaseButton from "@/component/reuseable/button/BaseButton";
+import { useSession } from "next-auth/react";
 
 const BrokerInformation = dynamic(
   () => import("@/component/brokers/Information/BrokerInformation"),
   { ssr: false }
 );
-const BaseShareButton = dynamic(
-  () => import("@/component/reuseable/baseShareButton/BaseShareButton"),
-  { ssr: false }
-);
-const BaseFavoriteButton = dynamic(
-  () => import("@/component/reuseable/baseFavoriteButton/BaseFavoriteButton"),
-  { ssr: false }
-);
-
-// import { useRouter } from "next/router";
-
 const drawerWidth = 240;
 const myLoader = ({ src }) => {
   return `${_imageURL}/${src}`;
@@ -107,10 +88,8 @@ export default function BrokerDetails({
   console.log("🟥 ~ BrokerDetails ~ query:", query);
   const [value, setValue] = useState(0);
 
-  const [showPass, setShowPass] = useState(false);
-  const handleClickShowPassword = () => {
-    setShowPass(!showPass);
-  };
+  const { data: session } = useSession();
+
   useEffect(() => {
     userDetailsApi();
   }, []);
@@ -118,37 +97,23 @@ export default function BrokerDetails({
   const [myValue, setMyValue] = useState(language || "pt");
   const t = myValue === "en" ? en : pt;
 
-  // const dispatch = useDispatch();
-  // useEffect(() => {
-  //   dispatch(findNotificationCountData());
-  //   dispatch(GetAllNotification());
-  //   dispatch(findPropertyCountData());
-  // }, [dispatch]);
-
-  const [anchorEl, setAnchorEl] = useState(null);
-
-  const open = Boolean(anchorEl);
-
   const handleChange = (event, newValue) => {
     setValue(newValue);
   };
 
-  const handleChangeIndex = (index) => {
-    setValue(index);
-  };
   return (
     <Box
       sx={{
         flexGrow: 1,
         background: "#F2F5F6",
         minHeight: "100vh",
-        width: { sm: `calc(100% - ${drawerWidth}px)` },
-        paddingTop: { xs: 6, sm: 6, md: 6, lg: 8, xl: 3 },
+        // paddingTop: { xs: 6, sm: 6, md: 6, lg: 3, xl: 3 },
       }}
     >
       <Box
         sx={{
-          paddingX: { xs: 0, sm: 0, md: 6, lg: 6, xl: 6 },
+          paddingLeft: { xs: 4, sm: 4, md: 6, lg: 6, xl: 6 },
+          paddingRight: { xs: 2, sm: 2, md: 4, lg: 4, xl: 4 },
           paddingTop: { xs: 6, sm: 6, md: 6, lg: 8, xl: 3 },
           paddingBottom: { xs: 3, sm: 3, md: 3, lg: 4, xl: 3 },
         }}
@@ -172,6 +137,22 @@ export default function BrokerDetails({
           >
             {t["Broker"]}
           </Typography>
+          <BaseButton
+            custom_sx={{
+              background: "#ffffff",
+              px: 2,
+              py: 1,
+              color: "#4B4B66",
+              fontSize: "16px",
+              fontWeight: "600",
+              lineHeight: "22px",
+              textTransform: "none",
+            }}
+            name={t["Come back"]}
+            handleFunction={() =>
+              session ? router.replace("/brokers") : router.replace("/")
+            }
+          />
         </Grid>
 
         <Grid
@@ -273,7 +254,8 @@ export default function BrokerDetails({
   );
 }
 export async function getServerSideProps(context) {
-  const { id } = context.query;
+  const { params } = context.query;
+  const [id] = params || [];
   const base_url = process.env.NEXT_PUBLIC_API_URL;
   const res = await fetch(`${base_url}/api/broker/details/${id}`);
   const singleBrokerData = await res.json();
@@ -284,9 +266,6 @@ export async function getServerSideProps(context) {
   return {
     props: {
       singleBrokerData: singleBrokerData,
-      // propertyDescription: stripHtmlTags(
-      //   singleBrokerData?.property?.property_description
-      // ),
     },
   };
 }

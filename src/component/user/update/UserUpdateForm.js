@@ -1,6 +1,7 @@
 import BaseAutocomplete from "@/component/reuseable/baseAutocomplete/BaseAutocomplete";
 import BaseOutlinedZipInput from "@/component/reuseable/baseOutlinedZipInput/BaseOutlinedZipInput";
 import BaseTextField from "@/component/reuseable/baseTextField/BaseTextField";
+import { toast } from 'react-hot-toast';
 import {
   Box,
   Button,
@@ -45,7 +46,7 @@ const UserUpdateForm = ({ language }) => {
     setValue("address", currentUser?.address?.address);
     setValue("number", currentUser?.address?.number);
     setValue("neighbourhood", currentUser?.address?.neighbourhood);
-    setValue("complement", currentUser?.address?.complement);
+    // setValue("complement", currentUser?.address?.complement);
     setValue("city", currentUser?.address?.city);
     setValue("state_id", currentUser?.address?.state);
   }, [setValue, currentUser]);
@@ -53,61 +54,73 @@ const UserUpdateForm = ({ language }) => {
   const [loading, setLoading] = useState(false);
   const onSubmit = (data) => {
     console.log({ data });
-    // setLoading(true);
-    // const { email, phone, user_id, image, name, ...rest } = data;
-    // const body = serialize(
-    //   {
-    //     email: email,
-    //     phone: phone,
-    //     user_id: user_id,
-    //     image: image instanceof File ? data?.image : null,
-    //     name: name,
-    //     address: omitEmpties({ ...rest, state_id: data.state_id.id }),
-    //   },
-    //   {
-    //     indices: true,
-    //     allowEmptyArrays: false,
-    //     booleansAsIntegers: true,
-    //     nullsAsUndefineds: true,
-    //   }
-    // );
-    // mutation.mutate(body, {
-    //   onError(error) {
-    //     setLoading(false);
-    //     alert(`error: ${"There is something error"}`);
-    //   },
-    //   onSuccess: async (data) => {
-    //     await userDetailsApi();
-    //     setLoading(false);
-    //     alert("User successfully updated");
-    //   },
-    // });
+    setLoading(true);
+    const { email, phone, user_id, image, name,password,repeat_password, ...rest } = data;
+    const body = serialize(
+      {
+        email: email,
+        phone: phone,
+        user_id: user_id,
+        image: image instanceof File ? data?.image : null,
+        name: name,
+        password: password,
+        password_confirmation: repeat_password,
+        address: omitEmpties({ ...rest, state_id: data.state_id.id }),
+      },
+      {
+        indices: true,
+        allowEmptyArrays: false,
+        booleansAsIntegers: true,
+        nullsAsUndefineds: true,
+      }
+    );
+    mutation.mutate(body, {
+      onError(error) {
+        setLoading(false);
+        toast.error("opa! algo deu errado")
+      },
+      onSuccess: async (data) => {
+        await userDetailsApi();
+        setLoading(false);
+        toast.success("User profile updated successfully")
+      },
+    });
   };
 
   const t = myValue === "en" ? en : pt;
   const validationSchema = Yup.object().shape({
     name: Yup.string().required(t["Name is required"]),
     phone: Yup.string().required(t["Phone is required"]),
+    password: Yup.string()
+    .min(6, 'Password is too short - should be 6 chars minimum.')
+    .required('Password is required'),
+    repeat_password: Yup.string()
+    .oneOf([Yup.ref('password'), null], 'Passwords must match')
+    .required('Confirm Password is required'),
+    zip_code: Yup.string().required(t["Zip code number is required"]),
+    address: Yup.string().required(t["Address is required"]),
+    number: Yup.string().required(t["Number is required"]),
+    neighbourhood: Yup.string().required(t["Neighbourhood is required"]),
+    state_id: Yup.mixed()
+    .test('is-object', 'State is required', value => value !== null && typeof value === 'object')
+    .required(t['State is required']),
+    city: Yup.string().required(t["City is required"]),
     email: Yup.string()
       .required(t["Email is required"])
       .matches(/.+@.+\.[A-Za-z]+$/, t["Email is invalid"]),
   });
   const {
-    register,
     watch,
     control,
     handleSubmit,
     setValue,
     formState: { errors },
-    setError,
   } = useForm({
     resolver: yupResolver(validationSchema),
   });
   const allValues = watch();
-  console.log("🟥 ~ UserUpdateForm ~ allValues:", allValues);
 
   const [showPass, setShowPass] = useState(false);
-  const [preview, setPreview] = useState();
   const [showRepeatPass, setShowRepeatPass] = useState(false);
 
   const handleClickShowPassword = () => {
@@ -296,6 +309,7 @@ const UserUpdateForm = ({ language }) => {
                     label={t["Password"]}
                     type={showPass ? "text" : "password"}
                     name={"password"}
+                    autoComplete={'new-password'}
                     // {...field}
                     onChange={(e) => {
                       field.onChange(e.target.value);
@@ -348,7 +362,7 @@ const UserUpdateForm = ({ language }) => {
                           position="end"
                           onClick={handleClickShowRepeatPassword}
                         >
-                          {showPass ? (
+                          {showRepeatPass  ? (
                             <NoEncryptionOutlinedIcon />
                           ) : (
                             <LockOutlinedIcon />
@@ -365,7 +379,7 @@ const UserUpdateForm = ({ language }) => {
             </Grid>
           </Grid>
           <Grid container spacing={3} sx={{ mt: 1 }}>
-            <Grid item xs={12} md={4}>
+            <Grid item xs={12} md={6}>
               <FormControl variant="outlined" sx={{ width: "100%" }}>
                 <Controller
                   name="zip_code"
@@ -394,7 +408,7 @@ const UserUpdateForm = ({ language }) => {
                 </Typography>
               </FormControl>
             </Grid>
-            <Grid item xs={12} md={4}>
+            <Grid item xs={12} md={6}>
               <Controller
                 name="address"
                 control={control}
@@ -420,33 +434,7 @@ const UserUpdateForm = ({ language }) => {
                 {errors.address?.message}
               </Typography>
             </Grid>
-            <Grid item xs={12} md={4}>
-              <Controller
-                name="number"
-                control={control}
-                defaultValue={""}
-                render={({ field }) => (
-                  <BaseTextField
-                    size={"medium"}
-                    placeholder={`${t["Number"]}*`}
-                    label={`${t["Number"]}*`}
-                    onChange={(e) => {
-                      field.onChange(e.target.value);
-                    }}
-                    name={"number"}
-                    type={"number"}
-                    value={field.value}
-                  />
-                )}
-              />
-              <Typography
-                variant="inherit"
-                color="textSecondary"
-                sx={{ color: "#b91c1c" }}
-              >
-                {errors.number?.message}
-              </Typography>
-            </Grid>
+           
           </Grid>
           <Grid container spacing={3} sx={{ mt: 1 }}>
             <Grid item xs={12} md={6}>
@@ -477,6 +465,33 @@ const UserUpdateForm = ({ language }) => {
             </Grid>
             <Grid item xs={12} md={6}>
               <Controller
+                name="number"
+                control={control}
+                defaultValue={""}
+                render={({ field }) => (
+                  <BaseTextField
+                    size={"medium"}
+                    placeholder={`${t["Number"]}*`}
+                    label={`${t["Number"]}*`}
+                    onChange={(e) => {
+                      field.onChange(e.target.value);
+                    }}
+                    name={"number"}
+                    type={"number"}
+                    value={field.value}
+                  />
+                )}
+              />
+              <Typography
+                variant="inherit"
+                color="textSecondary"
+                sx={{ color: "#b91c1c" }}
+              >
+                {errors.number?.message}
+              </Typography>
+            </Grid>
+            {/* <Grid item xs={12} md={6}>
+              <Controller
                 name="complement"
                 control={control}
                 defaultValue={""}
@@ -500,7 +515,7 @@ const UserUpdateForm = ({ language }) => {
               >
                 {errors.complement?.message}
               </Typography>
-            </Grid>
+            </Grid> */}
           </Grid>
           <Grid container spacing={3} sx={{ mt: 1 }}>
             <Grid item xs={12} md={6}>
@@ -559,7 +574,7 @@ const UserUpdateForm = ({ language }) => {
                 color="textSecondary"
                 sx={{ color: "#b91c1c" }}
               >
-                {errors.state?.message}
+                {errors.state_id?.message}
               </Typography>
             </Grid>
           </Grid>

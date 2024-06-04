@@ -6,7 +6,7 @@ import {
   Stack,
   Typography,
 } from "@mui/material";
-import React, { useState } from "react";
+import React, { useMemo, useState } from "react";
 import ShareIcon from "@mui/icons-material/Share";
 import {
   EmailShareButton,
@@ -15,6 +15,7 @@ import {
 } from "react-share";
 import { EmailIcon, FacebookIcon, WhatsappIcon } from "react-share";
 import BaseCopyText from "../baseCopyText/BaseCopyText";
+import useCurrentUser from "@/hooks/useCurrentUser";
 const BaseShareButton = ({ base_url, bg = false }) => {
   const [anchorEl, setAnchorEl] = useState(null);
   const open = Boolean(anchorEl);
@@ -24,6 +25,16 @@ const BaseShareButton = ({ base_url, bg = false }) => {
   const handleClose = () => {
     setAnchorEl(null);
   };
+
+  const currentUser = useCurrentUser()
+  // const modifiedUrl = `${base_url}/${currentUser?.roles[0]?.slug}/${currentUser?.id}`
+
+  const modifiedUrl = useMemo(() => {
+    if(currentUser?.id){
+      return `${base_url}/${currentUser?.roles[0]?.slug}/${currentUser?.id}`
+    }
+    return base_url
+  },[currentUser,base_url])
 
   return (
     <>
@@ -71,25 +82,25 @@ const BaseShareButton = ({ base_url, bg = false }) => {
             </Typography>
             <Stack direction="row" spacing={3}>
               <Stack direction="column">
-                <WhatsappShareButton url={base_url}>
+                <WhatsappShareButton url={modifiedUrl}>
                   <WhatsappIcon round size={40} />
                   <Typography sx={{ fontSize: "12px" }}>Whatsapp</Typography>
                 </WhatsappShareButton>
               </Stack>
               <Stack direction="column">
-                <FacebookShareButton url={base_url}>
+                <FacebookShareButton url={modifiedUrl}>
                   <FacebookIcon round size={40} />
                   <Typography sx={{ fontSize: "12px" }}>Facebook</Typography>
                 </FacebookShareButton>
               </Stack>
               <Stack direction="column">
-                <EmailShareButton url={base_url}>
+                <EmailShareButton url={modifiedUrl}>
                   <EmailIcon round size={40} />
                   <Typography sx={{ fontSize: "12px" }}>Email</Typography>
                 </EmailShareButton>
               </Stack>
               <Stack direction="column">
-                <BaseCopyText text={base_url} />
+                <BaseCopyText text={modifiedUrl} />
 
                 <Typography sx={{ fontSize: "12px", mt: "6px" }}>
                   Copy URL

@@ -7,6 +7,7 @@ import { Provider } from "react-redux";
 import { configureStore } from "../src/redux/store";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
+import { Toaster } from 'react-hot-toast';
 import {
   QueryCache,
   QueryClient,
@@ -70,8 +71,9 @@ function MyApp({ Component, pageProps: { session, language, ...pageProps } }) {
         router.pathname.includes("/proposals") ||
         router.pathname.includes("/schedules") ||
         router.pathname.includes("/brokers") ||
-        router.pathname.includes("/faq") ||
-        router.pathname.includes("/profile"))
+        router.pathname.includes("/faq") 
+        // router.pathname.includes("/profile")
+      )
     ) {
       return AppLayout;
     }
@@ -114,6 +116,7 @@ function MyApp({ Component, pageProps: { session, language, ...pageProps } }) {
                 handleLoginClose={handleLoginClose}
                 handleLoginOpen={handleLoginOpen}
               />
+               <Toaster />
             </Layout>
           </Provider>
         </QueryClientProvider>

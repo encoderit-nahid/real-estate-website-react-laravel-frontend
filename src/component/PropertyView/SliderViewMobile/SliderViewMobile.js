@@ -1,5 +1,6 @@
 import { Container, Stack } from "@mui/material";
 import React from "react";
+import dynamic from "next/dynamic";
 import Tabs from "@mui/material/Tabs";
 import Tab from "@mui/material/Tab";
 import PhoneIcon from "@mui/icons-material/Phone";
@@ -10,7 +11,6 @@ import RedoOutlinedIcon from "@mui/icons-material/RedoOutlined";
 import CabinOutlinedIcon from "@mui/icons-material/CabinOutlined";
 import MapOutlinedIcon from "@mui/icons-material/MapOutlined";
 import SignpostOutlinedIcon from "@mui/icons-material/SignpostOutlined";
-import ReactPannellum, { getConfig } from "react-pannellum";
 import BaseGoogleMap from "../../IAmOwner/map/BaseGoogleMap";
 import { Grid } from "@mui/material";
 import { _baseURL, _imageURL } from "../../../../consts";
@@ -25,8 +25,14 @@ import Image from "next/image";
 import VideoCarousel from "../VideoCarousel/VideoCarousel";
 import { getVideoIdFromLink } from "@/utils/getVideoIdFromLink";
 import Slider from "react-slick";
-import BaseShareButton from "@/component/reuseable/baseShareButton/BaseShareButton";
+const BaseShareButton = dynamic(
+  () => import("@/component/reuseable/baseShareButton/BaseShareButton"),
+  {
+    ssr: false,
+  }
+);
 import BaseFavoriteButton from "@/component/reuseable/baseFavoriteButton/BaseFavoriteButton";
+
 
 function TabPanel(props) {
   const { children, value, index, ...other } = props;

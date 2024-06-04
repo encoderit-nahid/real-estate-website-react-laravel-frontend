@@ -13,6 +13,7 @@ function BaseTextField({
   InputProps,
   InputLabelProps,
   inputProps,
+  autoComplete,
   error,
   required,
 }) {
@@ -25,6 +26,7 @@ function BaseTextField({
       InputLabelProps={InputLabelProps}
       inputProps={inputProps}
       placeholder={placeholder}
+      autoComplete={autoComplete}
       value={value}
       onChange={onChange}
       name={name}

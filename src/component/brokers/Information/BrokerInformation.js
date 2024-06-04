@@ -27,6 +27,8 @@ const BrokerInformation = ({
   avgRating,
   totalRatingCount,
 }) => {
+  const { params } = query;
+  const [id] = params || [];
   return (
     <>
       <Grid item xs={12} lg={2}>
@@ -96,12 +98,12 @@ const BrokerInformation = ({
               </Stack>
               <Stack direction="row" alignItems={"center"} spacing={1}>
                 <BaseShareButton
-                  base_url={`https://www.lokkan.site/brokers/${query.id}`}
+                  base_url={`https://www.lokkan.site/broker-details-view/${id}`}
                 />
 
                 <BaseFavoriteButton
                   handleLoginOpen={handleLoginOpen}
-                  itemID={query.id}
+                  itemID={id}
                   type="broker"
                 />
               </Stack>
