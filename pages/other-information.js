@@ -15,7 +15,12 @@ import {
 } from "@mui/material";
 import BaseStepper from "../src/component/reuseable/baseStepper/BaseStepper";
 import { Fragment, useEffect, useState } from "react";
-import PersonalData from "../src/component/brokerRegistration/personalData/PersonalData";
+const PersonalData = dynamic(
+  () => import("@/component/brokerRegistration/personalData/PersonalData"),
+  {
+    ssr: false,
+  }
+);
 import AddressData from "../src/component/brokerRegistration/Address/AddressData";
 import PerformanceData from "../src/component/brokerRegistration/performance/PerformanceData";
 import Image from "next/image";
@@ -42,6 +47,7 @@ import en from "locales/en";
 import pt from "locales/pt";
 import BaseButton from "@/component/reuseable/baseButton/BaseButton";
 import { useRouter } from "next/router";
+import dynamic from "next/dynamic";
 
 const aboutLokkanData = [
   "Indicação de amigo",
