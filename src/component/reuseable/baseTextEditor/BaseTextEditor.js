@@ -3,19 +3,11 @@ import { Controller } from "react-hook-form";
 import RichTextEditor from "react-rte";
 import en from "locales/en";
 import pt from "locales/pt";
-function BaseTextEditor({ control, name, language, defaultEditorValue }) {
+function BaseTextEditor({ control, name, allValues }) {
   const [editorValue, setEditorValue] = useState(
-    RichTextEditor.createEmptyValue()
+    RichTextEditor.createValueFromString(allValues?.description, "html")
   );
-
-  useEffect(() => {
-    if (defaultEditorValue) {
-      setEditorValue(
-        RichTextEditor.createValueFromString(defaultEditorValue, "html")
-      );
-    }
-  }, [defaultEditorValue]);
-  const [myValue, setMyValue] = useState(language || "pt");
+  const [myValue, setMyValue] = useState("pt");
   const t = myValue === "en" ? en : pt;
   return (
     <Controller
