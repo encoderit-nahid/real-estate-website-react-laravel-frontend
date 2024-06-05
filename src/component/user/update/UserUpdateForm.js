@@ -1,8 +1,9 @@
 import BaseAutocomplete from "@/component/reuseable/baseAutocomplete/BaseAutocomplete";
 import BaseOutlinedZipInput from "@/component/reuseable/baseOutlinedZipInput/BaseOutlinedZipInput";
 import BaseTextField from "@/component/reuseable/baseTextField/BaseTextField";
-import { toast } from 'react-hot-toast';
+import { toast } from "react-hot-toast";
 import {
+  Avatar,
   Box,
   Button,
   CircularProgress,
@@ -40,13 +41,14 @@ const UserUpdateForm = ({ language }) => {
     setValue("user_id", currentUser?.id);
     setValue("image", `${_imageURL}/${currentUser?.attachments[0]?.file_path}`);
     setValue("name", currentUser?.name);
+
     setValue("email", currentUser?.email);
+    setValue("description", currentUser?.description);
     setValue("phone", currentUser?.phone);
     setValue("zip_code", currentUser?.address?.zip_code);
     setValue("address", currentUser?.address?.address);
     setValue("number", currentUser?.address?.number);
     setValue("neighbourhood", currentUser?.address?.neighbourhood);
-    // setValue("complement", currentUser?.address?.complement);
     setValue("city", currentUser?.address?.city);
     setValue("state_id", currentUser?.address?.state);
   }, [setValue, currentUser]);
@@ -55,10 +57,21 @@ const UserUpdateForm = ({ language }) => {
   const onSubmit = (data) => {
     console.log({ data });
     setLoading(true);
-    const { email, phone, user_id, image, name,password,repeat_password, ...rest } = data;
+    const {
+      email,
+      phone,
+      user_id,
+      image,
+      name,
+      password,
+      description,
+      repeat_password,
+      ...rest
+    } = data;
     const body = serialize(
-      {
+      omitEmpties({
         email: email,
+        description: description,
         phone: phone,
         user_id: user_id,
         image: image instanceof File ? data?.image : null,
@@ -66,7 +79,7 @@ const UserUpdateForm = ({ language }) => {
         password: password,
         password_confirmation: repeat_password,
         address: omitEmpties({ ...rest, state_id: data.state_id.id }),
-      },
+      }),
       {
         indices: true,
         allowEmptyArrays: false,
@@ -77,33 +90,49 @@ const UserUpdateForm = ({ language }) => {
     mutation.mutate(body, {
       onError(error) {
         setLoading(false);
-        toast.error("opa! algo deu errado")
+        toast.error("opa! algo deu errado");
       },
       onSuccess: async (data) => {
         await userDetailsApi();
         setLoading(false);
-        toast.success("User profile updated successfully")
+        toast.success("User profile updated successfully");
       },
     });
   };
-
+  const userRole = currentUser?.roles[0]?.slug;
   const t = myValue === "en" ? en : pt;
+
   const validationSchema = Yup.object().shape({
     name: Yup.string().required(t["Name is required"]),
     phone: Yup.string().required(t["Phone is required"]),
-    password: Yup.string()
-    .min(6, 'Password is too short - should be 6 chars minimum.')
-    .required('Password is required'),
-    repeat_password: Yup.string()
-    .oneOf([Yup.ref('password'), null], 'Passwords must match')
-    .required('Confirm Password is required'),
+    password: Yup.mixed().test(
+      "is-long-enough",
+      "Password must be at least 6 characters long",
+      function (value) {
+        if (!value) return true; // Return true if the password is empty (optional)
+        return value.length >= 6; // Otherwise, check if the password is at least 6 characters long
+      }
+    ),
+    repeat_password: Yup.string().oneOf(
+      [Yup.ref("password"), null],
+      "Passwords must match"
+    ),
     zip_code: Yup.string().required(t["Zip code number is required"]),
     address: Yup.string().required(t["Address is required"]),
+    description:
+      userRole == "broker"
+        ? Yup.string().required(t["Description is required"])
+        : Yup.string().optional(),
+
     number: Yup.string().required(t["Number is required"]),
     neighbourhood: Yup.string().required(t["Neighbourhood is required"]),
     state_id: Yup.mixed()
-    .test('is-object', 'State is required', value => value !== null && typeof value === 'object')
-    .required(t['State is required']),
+      .test(
+        "is-object",
+        "State is required",
+        (value) => value !== null && typeof value === "object"
+      )
+      .required(t["State is required"]),
     city: Yup.string().required(t["City is required"]),
     email: Yup.string()
       .required(t["Email is required"])
@@ -119,7 +148,6 @@ const UserUpdateForm = ({ language }) => {
     resolver: yupResolver(validationSchema),
   });
   const allValues = watch();
-
   const [showPass, setShowPass] = useState(false);
   const [showRepeatPass, setShowRepeatPass] = useState(false);
 
@@ -156,18 +184,25 @@ const UserUpdateForm = ({ language }) => {
             }}
           >
             <Box>
-              <Image
-                loader={myLoader}
-                src={
-                  allValues.image instanceof File
-                    ? URL.createObjectURL(allValues?.image)
-                    : allValues.image
-                }
-                alt="account"
-                width={70}
-                height={70}
-                objectFit="cover"
-              />
+              {allValues?.image?.includes("undefined") ? (
+                <Avatar sx={{ width: 100, height: 100 }} />
+              ) : (
+                <Image
+                  loader={myLoader}
+                  src={
+                    allValues.image instanceof File
+                      ? URL.createObjectURL(allValues?.image)
+                      : allValues.image
+                  }
+                  alt="account"
+                  width={100}
+                  height={100}
+                  style={{
+                    borderRadius: 1111,
+                  }}
+                  objectFit="cover"
+                />
+              )}
             </Box>
             <Button
               variant="contained"
@@ -241,6 +276,43 @@ const UserUpdateForm = ({ language }) => {
               {errors.name?.message}
             </Typography>
           </Grid>
+          {/* Description */}
+          {userRole == "broker" && (
+            <Grid container spacing={3} sx={{ mt: 1 }}>
+              <Grid item xs={12}>
+                <Grid item xs={12}>
+                  <Controller
+                    name="description"
+                    control={control}
+                    defaultValue={""}
+                    render={({ field }) => (
+                      <BaseTextField
+                        size={"medium"}
+                        placeholder={t["Description"]}
+                        label={t["Description"]}
+                        // sx={{ mb: 2 }}
+                        onChange={(e) => {
+                          field.onChange(e.target.value);
+                        }}
+                        name={"Description"}
+                        value={field.value}
+                        multiline
+                      />
+                    )}
+                  />
+                  <Typography
+                    variant="inherit"
+                    color="textSecondary"
+                    sx={{ color: "#b91c1c" }}
+                  >
+                    {errors.description?.message}
+                  </Typography>
+                </Grid>
+              </Grid>
+            </Grid>
+          )}
+
+          {/* Description */}
           <Grid container spacing={3} sx={{ mt: 1 }}>
             <Grid item xs={12} md={6}>
               <Controller
@@ -309,7 +381,8 @@ const UserUpdateForm = ({ language }) => {
                     label={t["Password"]}
                     type={showPass ? "text" : "password"}
                     name={"password"}
-                    autoComplete={'new-password'}
+                    autoComplete={"new-password"}
+                    // helperText="Password Must be 6 characters long"
                     // {...field}
                     onChange={(e) => {
                       field.onChange(e.target.value);
@@ -362,7 +435,7 @@ const UserUpdateForm = ({ language }) => {
                           position="end"
                           onClick={handleClickShowRepeatPassword}
                         >
-                          {showRepeatPass  ? (
+                          {showRepeatPass ? (
                             <NoEncryptionOutlinedIcon />
                           ) : (
                             <LockOutlinedIcon />
@@ -434,7 +507,6 @@ const UserUpdateForm = ({ language }) => {
                 {errors.address?.message}
               </Typography>
             </Grid>
-           
           </Grid>
           <Grid container spacing={3} sx={{ mt: 1 }}>
             <Grid item xs={12} md={6}>

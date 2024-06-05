@@ -445,62 +445,6 @@ function AddressData({
           </Typography>
         </Grid>
       </Grid>
-      {/* <Grid container spacing={1} sx={{ mt: 2, mb: 5 }}>
-        <Grid item xs={6} sm={6} md={6}>
-          <Button
-            color="inherit"
-            onClick={handleBack}
-            sx={{
-              //   mr: 1,
-              //   border: "1px solid #002152",
-              //   borderRadius: "4px",
-              background: "#ffffff",
-              px: 2,
-              py: 1,
-              color: "#4B4B66",
-              fontSize: "16px",
-              fontWeight: "600",
-              lineHeight: "22px",
-              textTransform: "none",
-            }}
-          >
-            {t["Come back"]}
-          </Button>
-        </Grid>
-        <Grid item xs={6} sm={6} md={6}>
-          <Button
-            onClick={handleNext}
-            disabled={disableBtn}
-            fullWidth
-            sx={{
-              background: "#00C1B4",
-              boxShadow: "0px 4px 34px rgba(0, 0, 0, 0.08)",
-              borderRadius: "4px",
-              color: "#ffffff",
-              fontSize: "16px",
-              lineHeight: "22px",
-              fontWeight: "600",
-              //   mt: 3,
-              textTransform: "none",
-              py: 1,
-              "&:hover": {
-                background: "#00C1B4",
-                boxShadow: "0px 4px 34px rgba(0, 0, 0, 0.08)",
-                borderRadius: "4px",
-                color: "#ffffff",
-                fontSize: "16px",
-                lineHeight: "22px",
-                fontWeight: "600",
-                // mt: 3,
-                textTransform: "none",
-                py: 1,
-              },
-            }}
-          >
-            {t["Continue"]}
-          </Button>
-        </Grid>
-      </Grid> */}
     </Box>
   );
 }

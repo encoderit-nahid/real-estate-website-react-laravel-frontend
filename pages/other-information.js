@@ -201,14 +201,15 @@ export default function OtherInformation({
 
   const onSubmit = async (data) => {
     setLoading(true);
-    const previousFieldData = JSON.parse(
-      localStorage.getItem("broker_registration")
-    );
+    // const previousFieldData = JSON.parse(
+    //   localStorage.getItem("broker_registration")
+    // );
 
     const registrationId = localStorage.getItem("registration_id");
 
     const additionalInfoData = omitEmpties({
       full_name: data.full_name,
+      description: data.description,
       creci_number: data.creci_number,
       cpf: data.cpf_number,
       rg: data.rg_number,
@@ -345,7 +346,7 @@ export default function OtherInformation({
                   <Grid container spacing={1} sx={{ mt: 2, mb: 5 }}>
                     {activeStep === 1 && (
                       <>
-                        <Grid item xs={3}>
+                        <Grid item xs={3} sx={{ ml: "auto" }}>
                           <BaseButton
                             fullWidth
                             disabled={activeStep === 0}

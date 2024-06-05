@@ -36,24 +36,23 @@ const BaseFavoriteButton = ({
       }
     }
   }, [currentUser]);
-  console.log("🟥 ~ favoriteList:", favoriteList);
 
   const toggleFavorite = useCallback(async () => {
     if (!currentUser) {
       handleLoginOpen();
     } else {
-      if (favoriteList?.includes(itemID)) {
-        setFavoriteList(favoriteList.filter((id) => id !== itemID));
+      if (favoriteList?.includes(+itemID)) {
+        setFavoriteList(favoriteList.filter((id) => id !== +itemID));
       } else {
-        setFavoriteList([...favoriteList, itemID]);
+        setFavoriteList([...favoriteList, +itemID]);
       }
       if (type == "property") {
-        const [error] = await MakeFavouriteApi(itemID);
+        const [error] = await MakeFavouriteApi(+itemID);
         if (!error) {
           userDetailsApi();
         }
       } else if (type == "project") {
-        const [error] = await MakeFavouriteProjectApi(itemID);
+        const [error] = await MakeFavouriteProjectApi(+itemID);
         if (!error) {
           userDetailsApi();
         }

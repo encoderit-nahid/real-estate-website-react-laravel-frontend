@@ -41,6 +41,9 @@ import { debounce } from "@/utils/debounce";
 import { omitEmpties } from "@/api";
 import { useRouter } from "next/router";
 import BaseButton from "@/component/reuseable/baseButton/BaseButton";
+import useCurrentUser from "@/hooks/useCurrentUser";
+
+import useRequiredFieldsToDisableButton from "@/hooks/useRequiredFieldsToDisableButton";
 
 function PersonalData({
   handleNext,
@@ -66,8 +69,9 @@ function PersonalData({
   const [preview, setPreview] = useState();
 
   const t = languageName === "en" ? en : pt;
+  const currentUser = useCurrentUser();
 
-  const [userRole, setUserRole] = useState("");
+  const userRole = currentUser?.roles[0]?.slug;
 
   const [searchValue, setSearchValue] = useState(null);
 
@@ -91,12 +95,6 @@ function PersonalData({
     }
   }, [searchValue, refetch]);
 
-  useEffect(() => {
-    // Perform localStorage action
-    const role = localStorage.getItem("user_role");
-    setUserRole(role);
-  }, []);
-
   // create a preview as a side effect, whenever selected file is changed
   useEffect(() => {
     if (!allValues.image) {
@@ -111,25 +109,15 @@ function PersonalData({
     return () => URL.revokeObjectURL(objectUrl);
   }, [allValues.image]);
 
-  const [disableBtn, setDisableBtn] = useState(true);
-  useEffect(() => {
-    if (
-      allValues?.full_name != null &&
-      allValues?.cpf_number != null &&
-      allValues?.rg_number != null &&
-      allValues?.dob != null
-    ) {
-      setDisableBtn(false);
-    }
-    if (
-      allValues?.full_name === "" ||
-      allValues?.cpf_number === "" ||
-      allValues?.rg_number === "" ||
-      allValues?.dob === ""
-    ) {
-      setDisableBtn(true);
-    }
-  }, [allValues]);
+  // const [disableBtn, setDisableBtn] = useState(true);
+  const requiredFields = {
+    broker: ["full_name", "cpf_number", "rg_number", "dob", "description"],
+    owner: ["full_name", "cpf_number", "rg_number", "dob"],
+  };
+  const [disableBtn, setDisableBtn] = useRequiredFieldsToDisableButton(
+    userRole === "broker" ? requiredFields.broker : requiredFields.owner,
+    allValues
+  );
 
   const [state, setState] = React.useState({
     top: false,
@@ -139,6 +127,7 @@ function PersonalData({
   });
 
   const toggleDrawer = (anchor, open) => (event) => {
+    console.log("🟥 ~ toggleDrawer ");
     if (
       event &&
       event.type === "keydown" &&
@@ -217,7 +206,13 @@ function PersonalData({
           }}
         >
           {brokerUserData?.data?.users?.data?.map((brokerInfo, index) => (
-            <Box key={index} onClick={() => setSelectedBroker(brokerInfo)}>
+            <Box
+              key={index}
+              onClick={(event) => {
+                setSelectedBroker(brokerInfo);
+                toggleDrawer("right", false)(event);
+              }}
+            >
               <ListItem
                 sx={{
                   background: `${
@@ -482,6 +477,56 @@ function PersonalData({
               />
             )}
           />
+          {/* Description */}
+          {userRole === "broker" && (
+            <>
+              <Grid
+                container
+                direction="row"
+                justifyContent="flex-start"
+                alignItems="flex-start"
+              >
+                <Typography
+                  variant="p"
+                  sx={{
+                    color: "#253858",
+                    fontSize: "14px",
+                    fontWeight: "400",
+                    lineHeight: "16px",
+                  }}
+                >
+                  {t["Description"]}
+                  <span style={{ color: "#E63333" }}>*</span>
+                </Typography>
+              </Grid>
+              <Controller
+                name="description"
+                control={control}
+                defaultValue={""}
+                render={({ field }) => (
+                  <BaseTextField
+                    size={"small"}
+                    placeholder={t["Description"]}
+                    // sx={{ mb: 2 }}
+                    onChange={(e) => {
+                      field.onChange(e.target.value);
+                    }}
+                    name={"description"}
+                    value={field.value}
+                    multiline={true}
+                  />
+                )}
+              />
+              <Typography
+                variant="inherit"
+                color="textSecondary"
+                sx={{ color: "#b91c1c" }}
+              >
+                {errors.description?.message}
+              </Typography>
+            </>
+          )}
+          {/* Description */}
         </Grid>
       </Grid>
       <Box sx={{ mt: 3 }}>
@@ -719,14 +764,18 @@ function PersonalData({
                     <List>
                       <ListItem>
                         <ListItemAvatar>
-                          <Image
-                            loader={myLoader}
-                            src={`${selectedBroker?.attachments[0]?.file_path}`}
-                            alt="brokerImahe"
-                            height={70}
-                            width={70}
-                            style={{ borderRadius: "50px" }}
-                          />
+                          {selectedBroker?.attachments[0]?.file_path ? (
+                            <Image
+                              loader={myLoader}
+                              src={`${selectedBroker?.attachments[0]?.file_path}`}
+                              alt="brokerImahe"
+                              height={70}
+                              width={70}
+                              style={{ borderRadius: "50px" }}
+                            />
+                          ) : (
+                            <Avatar />
+                          )}
                         </ListItemAvatar>
                         <ListItemText
                           primary={
@@ -807,7 +856,7 @@ function PersonalData({
         )}
 
         <Grid container spacing={1} sx={{ mt: 2, mb: 5 }}>
-          <Grid item xs={3}>
+          <Grid item xs={3} sx={{ ml: "auto" }}>
             <BaseButton
               disabled={activeStep === 0}
               custom_sx={{

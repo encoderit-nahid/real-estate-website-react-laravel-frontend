@@ -16,6 +16,8 @@ function BaseTextField({
   autoComplete,
   error,
   required,
+  multiline,
+  helperText,
 }) {
   return (
     <TextField
@@ -34,7 +36,9 @@ function BaseTextField({
       sx={sx}
       InputProps={InputProps}
       error={error}
+      multiline={multiline}
       required={required}
+      helperText={helperText}
     />
   );
 }
