@@ -87,7 +87,7 @@ function Address({
   languageName,
   allValues,
   setValue,
-  defaultEditorValue = { defaultEditorValue },
+  defaultEditorValue,
   handleNext,
 }) {
   const dispatch = useDispatch();
@@ -557,7 +557,7 @@ function Address({
               <BaseTextEditor
                 name="description"
                 control={control}
-                defaultEditorValue={defaultEditorValue}
+                allValues={allValues}
               />
             )}
           />

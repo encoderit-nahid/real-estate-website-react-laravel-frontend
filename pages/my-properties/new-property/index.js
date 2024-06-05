@@ -48,15 +48,17 @@ import { useForm, Controller, useFieldArray } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as Yup from "yup";
 import { useDispatch, useSelector } from "react-redux";
-import { propertyCreateApi, propertyUpdateApi } from "../../../src/api";
+import {
+  apiInstance,
+  propertyCreateApi,
+  propertyUpdateApi,
+} from "../../../src/api";
 import { serialize } from "object-to-formdata";
 import { useRouter } from "next/router";
 import { findSinglePropertyData } from "../../../src/redux/singleProperty/actions";
 import en from "locales/en";
 import pt from "locales/pt";
 import BaseButton from "@/component/reuseable/baseButton/BaseButton";
-
-const RichTextEditor = dynamic(() => import("react-rte"), { ssr: false });
 
 const drawerWidth = 240;
 
@@ -119,6 +121,7 @@ export default function NewProperty({ language }) {
   } = useForm({
     resolver: yupResolver(validationSchema),
     defaultValues: {
+      description: "",
       videos: [
         {
           url: "",
@@ -201,6 +204,7 @@ export default function NewProperty({ language }) {
       setValue("property_title", singleData?.property_title);
       setValue("owner_email", singleData?.property_owner?.email);
       setValue("email_authorization", singleData?.is_sales_authorized === 1);
+      setValue("description", singleData?.property_description);
 
       let selectFeatures = [];
       singleData?.features?.forEach((data) => {
@@ -324,6 +328,39 @@ export default function NewProperty({ language }) {
 
   const allValues = watch();
 
+  const [progress, setProgress] = useState({});
+  const [isUploading, setIsUploading] = useState(false);
+  const [uploadComplete, setUploadComplete] = useState(false);
+
+  const uploadImage = async (image, index, propertyId) => {
+    const requiredData = {
+      file: image.file,
+      title: image?.title,
+      type: "property",
+      id: propertyId,
+    };
+    const formData = serialize(requiredData, { indices: true });
+
+    try {
+      await apiInstance.post("attachment/save", formData, {
+        headers: {
+          "Content-Type": "application/x-www-form-urlencoded",
+        },
+        onUploadProgress: (progressEvent) => {
+          const percentCompleted = Math.round(
+            (progressEvent.loaded * 100) / progressEvent.total
+          );
+          setProgress((prevProgress) => ({
+            ...prevProgress,
+            [index]: percentCompleted,
+          }));
+        },
+      });
+    } catch (error) {
+      console.error("Error uploading image:", error);
+    }
+  };
+
   const onSubmit = async (data) => {
     console.log("🟥 ~ onSubmit ~ data:", data);
     action === "new" ? setLoading(true) : setDraftLoading(true);
@@ -401,7 +438,7 @@ export default function NewProperty({ language }) {
       is_sales_authorized: data?.email_authorization ? 1 : 0,
       document_files: newDocuments,
       content_url: newVideoArr,
-      images: newArr,
+      // images: newArr,
       new_title: filterNewTitleData,
       // documents: "",
       // registry: "",
@@ -462,9 +499,19 @@ export default function NewProperty({ language }) {
     const formData = serialize(requireData, { indices: true });
     if (query?.property_id) {
       const [error, response] = await propertyUpdateApi(formData);
-      setLoading(false);
+      // setLoading(false);
       setDraftLoading(false);
       if (!error) {
+        const propertyId = response?.data?.property?.id;
+        setIsUploading(true);
+        setUploadComplete(false);
+        const uploadPromises = newArr.map((image, index) =>
+          uploadImage(image, index, propertyId)
+        );
+        await Promise.all(uploadPromises);
+        setIsUploading(false);
+        setLoading(false);
+        setUploadComplete(true);
         setSentModalOpen(true);
       } else {
         const errors = error?.response?.data?.errors ?? {};
@@ -474,9 +521,19 @@ export default function NewProperty({ language }) {
       }
     } else {
       const [error, response] = await propertyCreateApi(formData);
-      setLoading(false);
+      // setLoading(false);
       setDraftLoading(false);
       if (!error) {
+        const propertyId = response?.data?.property?.id;
+        setIsUploading(true);
+        setUploadComplete(false);
+        const uploadPromises = newArr.map((image, index) =>
+          uploadImage(image, index, propertyId)
+        );
+        await Promise.all(uploadPromises);
+        setIsUploading(false);
+        setLoading(false);
+        setUploadComplete(true);
         setSentModalOpen(true);
       } else {
         const errors = error?.response?.data?.errors ?? {};
@@ -567,7 +624,6 @@ export default function NewProperty({ language }) {
                   property_detail_id={property_detail_id}
                   setPropertyDetailId={setPropertyDetailId}
                   languageName={myValue.toString()}
-                  defaultEditorValue={singleData?.property_description || ""}
                   allValues={allValues}
                 />
               ) : activeStep === 1 ? (

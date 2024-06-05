@@ -1,47 +1,16 @@
-import {
-  Autocomplete,
-  Box,
-  Button,
-  Container,
-  Divider,
-  FormControl,
-  Grid,
-  Stack,
-  TextField,
-  Typography,
-} from "@mui/material";
+import { Box, Button, Grid, Stack, Typography } from "@mui/material";
 import Image from "next/image";
 import React, { useEffect } from "react";
-import pinImage from "../../../../public/Images/pin.png";
 import ventureImage from "../../../../public/Images/certidoes.png";
-
 import { useDropzone } from "react-dropzone";
-import { useState } from "react";
 import { useMemo } from "react";
-import BaseOutlinedZipInput from "../../reuseable/baseOutlinedZipInput/BaseOutlinedZipInput";
-import Link from "next/link";
 import BaseTextField from "../../reuseable/baseTextField/BaseTextField";
-import InsertDriveFileOutlinedIcon from "@mui/icons-material/InsertDriveFileOutlined";
-import { findPropertyTypeData } from "../../../redux/propertyType/actions";
-import { useDispatch, useSelector } from "react-redux";
-import { findProjectsData } from "../../../redux/projects/actions";
 import { Controller } from "react-hook-form";
 import DeleteOutlineOutlinedIcon from "@mui/icons-material/DeleteOutlineOutlined";
 import BaseAutocomplete from "../../reuseable/baseAutocomplete/BaseAutocomplete";
-import { findStateData } from "../../../redux/state/actions";
 import en from "locales/en";
 import pt from "locales/pt";
-import dynamic from "next/dynamic";
-import BaseTextArea from "@/component/reuseable/baseTextArea/BaseTextArea";
 import BaseButton from "@/component/reuseable/baseButton/BaseButton";
-// import PhotosAndVideos from "@/component/new venture/PhotosAndVideos/PhotosAndVideos";
-
-const BaseTextEditor = dynamic(
-  () => import("@/component/reuseable/baseTextEditor/BaseTextEditor"),
-  {
-    ssr: false, // This ensures that the component is not rendered on the server
-  }
-);
 
 const baseStyle = {
   flex: 1,
@@ -74,12 +43,9 @@ const rejectStyle = {
   borderColor: "#f2f",
 };
 
-const matchedPropertyType = [11, 10, 13, 6, 1, 2, 4, 8, 15];
-
 function FinancialData({
   control,
   errors,
-
   documents,
   setDocuments,
   languageName,
@@ -394,6 +360,7 @@ function FinancialData({
 }
 
 export default FinancialData;
+
 const featureTypeData = [
   { id: 1, name: "condominium" },
   { id: 2, name: "accessibility" },

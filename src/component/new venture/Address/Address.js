@@ -135,7 +135,7 @@ function Address({
               <BaseTextEditor
                 name="description"
                 control={control}
-                defaultEditorValue={""}
+                allValues={allValues}
               />
             )}
           />
@@ -144,7 +144,7 @@ function Address({
             color="textSecondary"
             sx={{ color: "#b91c1c" }}
           >
-            {errors.property_description?.message}
+            {errors.description?.message}
           </Typography>
         </Grid>
       </Grid>

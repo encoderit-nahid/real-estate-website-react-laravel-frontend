@@ -357,93 +357,6 @@ function PhotosAndVideos({
           {`${t["videos of the property"]}:`}
         </Typography>
       </Box>
-      {/* {fields?.map((item, index) => (
-        <Grid
-          key={item.id}
-          container
-          direction="row"
-          justifyContent="flex-start"
-          alignItems="flex-start"
-          sx={{ mt: 1 }}
-        >
-          <Controller
-            name={`videos[${index}].url`}
-            control={control}
-            defaultValue={""}
-            render={({ field }) => (
-              <BaseTextField
-                sx={{
-                  width: "50%",
-
-                  "& .MuiOutlinedInput-root": {
-                    // - The Input-root, inside the TextField-root
-                    "& fieldset": {
-                      borderRadius: "4px 0px 0px 4px", // - The <fieldset> inside the Input-root
-                      // - Set the Input border
-                    },
-                  },
-                }}
-                size={"medium"}
-                placeholder={t["paste the url of the video"]}
-                onChange={field.onChange}
-                value={field.value}
-              />
-            )}
-          />
-
-          {index === fields?.length - 1 && (
-            <Button
-              sx={{
-                backgroundColor: "#DBE1E5",
-                py: 2,
-                borderRadius: "0px 4px 4px 0px",
-                "&:hover": {
-                  backgroundColor: "#DBE1E5",
-                  py: 2,
-                  borderRadius: "0px 4px 4px 0px",
-                },
-              }}
-              onClick={() => append({ url: "" })}
-            >
-              <AddOutlinedIcon sx={{ color: "#002152" }} />
-            </Button>
-          )}
-          {fields.length !== 1 && (
-            <Button
-              sx={{
-                ml: 1,
-                backgroundColor: "#DBE1E5",
-                py: 2,
-                borderRadius: "0px 4px 4px 0px",
-                "&:hover": {
-                  backgroundColor: "#DBE1E5",
-                  py: 2,
-                  borderRadius: "0px 4px 4px 0px",
-                },
-              }}
-              onClick={() => {
-                remove(index);
-              }}
-            >
-              <CancelOutlinedIcon />
-            </Button>
-          )}
-          <Grid container sx={{ mt: 1 }}>
-            <Grid item xs={12}>
-              {allValues?.videos[index]?.url && (
-                <Image
-                  loader={ThumbnailLoader}
-                  src={`${allValues?.videos[index]?.url}`}
-                  height={200}
-                  width={200}
-                  // layout="responsive"
-                  alt="file"
-                />
-              )}
-            </Grid>
-          </Grid>
-        </Grid>
-      ))} */}
 
       <Grid
         container
@@ -531,7 +444,7 @@ function PhotosAndVideos({
                   title="YouTube Video"
                   // width={widthDevice === "mobile" ? `100%` : `${width - 300}px`}
                   // height="500"
-                  height={100}
+                  height={150}
                   width={200}
                   src={`https://www.youtube.com/embed/${getVideoIdFromLink(
                     file?.url
@@ -540,37 +453,6 @@ function PhotosAndVideos({
                   allowfullscreen
                   // onEnd={onVideoEnd}
                 ></iframe>
-                {/* <Autocomplete
-                              sx={{ mt: 2 }}
-                              disablePortal
-                              fullWidth
-                              size="small"
-                              id="combo-box-demo"
-                              options={top100Films}
-                              renderInput={(params) => (
-                                <TextField {...params} label="Convenient" />
-                              )}
-                            /> */}
-                <Controller
-                  name={`video_title_${index}`}
-                  control={control}
-                  defaultValue={photoType[1] || file.photo_type}
-                  render={({ field }) => (
-                    <BaseAutocomplete
-                      //   sx={{ margin: "0.6vh 0" }}
-                      options={photoType || []}
-                      getOptionLabel={(option) => option.name || ""}
-                      sx={{ mt: 2 }}
-                      isOptionEqualToValue={(option, value) =>
-                        option.id === value.id
-                      }
-                      size={"small"}
-                      placeholder={t["Convenient"]}
-                      onChange={(e, v, r, d) => field.onChange(v)}
-                      value={field.value}
-                    />
-                  )}
-                />
               </Box>
             </Grid>
           ))}

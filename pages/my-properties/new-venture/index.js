@@ -5,7 +5,9 @@ import {
   CircularProgress,
   Container,
   Grid,
+  LinearProgress,
   Tooltip,
+  Typography,
 } from "@mui/material";
 import { Box } from "@mui/material";
 
@@ -15,7 +17,7 @@ import * as Yup from "yup";
 import { useEffect } from "react";
 
 import { serialize } from "object-to-formdata";
-import { createProjectApi } from "../../../src/api";
+import { apiInstance, createProjectApi } from "../../../src/api";
 import { useDispatch, useSelector } from "react-redux";
 import { GetPhotoTypeData } from "../../../src/redux/photo/actions";
 const requiredFields = [
@@ -101,7 +103,11 @@ export default function NewVenture({ language, session }) {
     setValue,
     formState: { errors },
     setError,
-  } = useForm();
+  } = useForm({
+    defaultValues: {
+      description: "",
+    },
+  });
   const { replace } = useRouter();
 
   const [loading, setLoading] = useState(false);
@@ -118,6 +124,39 @@ export default function NewVenture({ language, session }) {
   const handleClose = () => setSentModalOpen(false);
 
   const allValues = watch();
+
+  const [progress, setProgress] = useState({});
+  const [isUploading, setIsUploading] = useState(false);
+  const [uploadComplete, setUploadComplete] = useState(false);
+
+  const uploadImage = async (image, index, projectId) => {
+    const requiredData = {
+      file: image.file,
+      title: image?.title,
+      type: "project",
+      id: projectId,
+    };
+    const formData = serialize(requiredData, { indices: true });
+
+    try {
+      await apiInstance.post("attachment/save", formData, {
+        headers: {
+          "Content-Type": "application/x-www-form-urlencoded",
+        },
+        onUploadProgress: (progressEvent) => {
+          const percentCompleted = Math.round(
+            (progressEvent.loaded * 100) / progressEvent.total
+          );
+          setProgress((prevProgress) => ({
+            ...prevProgress,
+            [index]: percentCompleted,
+          }));
+        },
+      });
+    } catch (error) {
+      console.error("Error uploading image:", error);
+    }
+  };
 
   const onSubmit = async (data) => {
     setLoading(true);
@@ -139,16 +178,11 @@ export default function NewVenture({ language, session }) {
         if (data?.id) {
           filterNewVideoTitleData.push({
             attachment_id: data?.id,
-            title: allValues[`video_title_${index}`].slug,
+            // title: allValues[`video_title_${index}`].slug,
           });
         }
       }
     });
-
-    const filterNewTitleData = [
-      ...filterNewImageTitleData,
-      ...filterNewVideoTitleData,
-    ];
 
     let newArr = [];
     files?.forEach((data, index) => {
@@ -162,16 +196,15 @@ export default function NewVenture({ language, session }) {
       if (!data?.id) {
         newVideoArr.push({
           url: data?.url,
-          title: allValues[`video_title_${index}`].slug,
+          // title: allValues[`video_title_${index}`].slug,
         });
       }
     });
     const newDocuments = documents?.filter((data) => data instanceof File);
 
     const requireData = {
-      images: newArr,
+      // images: newArr,
       features: featuretypes,
-      document_files: newDocuments,
       content_url: newVideoArr,
       description: data?.description?.toString("html"),
       name: data?.name,
@@ -192,12 +225,20 @@ export default function NewVenture({ language, session }) {
         complement: data?.complement,
       },
     };
-    console.log("🟥 ~ onSubmit ~ requireData:", allValues);
-    console.log("🟥 ~ onSubmit ~ requireData:", requireData);
     const formData = serialize(requireData, { indices: true });
     const [error, response] = await createProjectApi(formData);
-    setLoading(false);
+
     if (!error) {
+      const projectId = response?.data?.project?.id;
+      setIsUploading(true);
+      setUploadComplete(false);
+      const uploadPromises = newArr.map((image, index) =>
+        uploadImage(image, index, projectId)
+      );
+      await Promise.all(uploadPromises);
+      setIsUploading(false);
+      setLoading(false);
+      setUploadComplete(true);
       setSentModalOpen(true);
     } else {
       const errors = error?.response?.data?.errors ?? {};
@@ -206,6 +247,14 @@ export default function NewVenture({ language, session }) {
       });
     }
   };
+
+  // const getTotalProgress = () => {
+  //   const totalProgress = Object.values(progress).reduce(
+  //     (sum, value) => sum + value,
+  //     0
+  //   );
+  //   return totalProgress / 6;
+  // };
   const isStepSkipped = (step) => {
     return skipped.has(step);
   };
@@ -235,10 +284,12 @@ export default function NewVenture({ language, session }) {
       );
     } else if (activeStep == 1) {
       setDisableBtn(() => featuretypes.length > 0);
-    } else if (activeStep == 2) {
-      setDisableBtn(() => files.length > 0);
     }
+    // else if (activeStep == 2) {
+    //   setDisableBtn(() => files.length > 0);
+    // }
   }, [allValues, activeStep, files, featuretypes]);
+
   return (
     <Box
       sx={{
@@ -438,6 +489,29 @@ export default function NewVenture({ language, session }) {
               </form>
             </Fragment>
           </Box>
+          {/* {!uploadComplete && (
+            <>
+              <LinearProgress
+                variant="determinate"
+                value={getTotalProgress()}
+              />
+              <Box sx={{ mt: 2 }}>
+                {images.map((image, index) => (
+                  <Box key={index} sx={{ mb: 1 }}>
+                    <LinearProgress
+                      variant="determinate"
+                      value={progress[index] || 0}
+                    />
+                  </Box>
+                ))}
+              </Box>
+            </>
+          )}
+          {uploadComplete && (
+            <Typography variant="h6" color="green">
+              All images have been successfully uploaded!
+            </Typography>
+          )} */}
           {/*👆 */}
         </Box>
       </Container>

@@ -528,48 +528,14 @@ function PhotosAndVideos({
                 </Grid>
                 <iframe
                   title="YouTube Video"
-                  // width={widthDevice === "mobile" ? `100%` : `${width - 300}px`}
-                  // height="500"
-                  height={100}
+                  height={150}
                   width={200}
                   src={`https://www.youtube.com/embed/${getVideoIdFromLink(
                     file?.url
                   )}?autoplay=1`}
                   frameborder="0"
                   allowfullscreen
-                  // onEnd={onVideoEnd}
                 ></iframe>
-                {/* <Autocomplete
-                              sx={{ mt: 2 }}
-                              disablePortal
-                              fullWidth
-                              size="small"
-                              id="combo-box-demo"
-                              options={top100Films}
-                              renderInput={(params) => (
-                                <TextField {...params} label="Convenient" />
-                              )}
-                            /> */}
-                {/* <Controller
-                  name={`video_title_${index}`}
-                  control={control}
-                  defaultValue={photoType[1] || file.photo_type}
-                  render={({ field }) => (
-                    <BaseAutocomplete
-                      //   sx={{ margin: "0.6vh 0" }}
-                      options={photoType || []}
-                      getOptionLabel={(option) => option.name || ""}
-                      sx={{ mt: 2 }}
-                      isOptionEqualToValue={(option, value) =>
-                        option.id === value.id
-                      }
-                      size={"small"}
-                      placeholder={t["Convenient"]}
-                      onChange={(e, v, r, d) => field.onChange(v)}
-                      value={field.value}
-                    />
-                  )}
-                /> */}
               </Box>
             </Grid>
           ))}
