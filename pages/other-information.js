@@ -1,53 +1,52 @@
-import Navbar from "../src/component/shared/Navbar/Navbar";
-import Footer from "../src/component/shared/Footer/Footer";
+import dynamic from "next/dynamic";
 import Head from "next/head";
 import {
   Box,
-  Button,
   Container,
   Grid,
   Tooltip,
   Snackbar,
-  Typography,
   Alert,
   CircularProgress,
   Stack,
 } from "@mui/material";
-import BaseStepper from "../src/component/reuseable/baseStepper/BaseStepper";
 import { Fragment, useEffect, useState } from "react";
 const PersonalData = dynamic(
   () => import("@/component/brokerRegistration/personalData/PersonalData"),
-  {
-    ssr: false,
-  }
+  { ssr: false }
 );
-import AddressData from "../src/component/brokerRegistration/Address/AddressData";
-import PerformanceData from "../src/component/brokerRegistration/performance/PerformanceData";
-import Image from "next/image";
-import stepFinish from "../public/Images/step_finish.png";
-import BrokerRegistrationFooter from "../src/component/shared/Footer/BrokerRegistrationFooter";
-import BaseModal from "../src/component/reuseable/baseModal/BaseModal";
-import BrokerRegistrationSentModal from "../src/component/brokerRegistration/BrokerRegistrationSendModal/BrokerRegistrationSendModal";
-import { useForm, Controller } from "react-hook-form";
+
+const BaseStepper = dynamic(() =>
+  import("@/component/reuseable/baseStepper/BaseStepper")
+);
+const AddressData = dynamic(() =>
+  import("@/component/brokerRegistration/Address/AddressData")
+);
+const BrokerRegistrationFooter = dynamic(() =>
+  import("@/component/shared/Footer/BrokerRegistrationFooter")
+);
+const BaseModal = dynamic(() =>
+  import("@/component/reuseable/baseModal/BaseModal")
+);
+const BrokerRegistrationSentModal = dynamic(() =>
+  import(
+    "@/component/brokerRegistration/BrokerRegistrationSendModal/BrokerRegistrationSendModal"
+  )
+);
+const Navbar = dynamic(() => import("@/component/shared/Navbar/Navbar"));
+
+import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as Yup from "yup";
-import { findStateData } from "../src/redux/state/actions";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { serialize } from "object-to-formdata";
-import {
-  emailVerifyApi,
-  registrationApi,
-  userDetailsApi,
-  userInfoRegistrationApi,
-} from "../src/api";
+import { userInfoRegistrationApi } from "../src/api";
 
 import dayjs from "dayjs";
-import { signIn } from "next-auth/react";
 import en from "locales/en";
 import pt from "locales/pt";
 import BaseButton from "@/component/reuseable/baseButton/BaseButton";
 import { useRouter } from "next/router";
-import dynamic from "next/dynamic";
 
 const aboutLokkanData = [
   "Indicação de amigo",

@@ -26,12 +26,9 @@ import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
 import SwipeableDrawer from "@mui/material/SwipeableDrawer";
 import List from "@mui/material/List";
 import ListItem from "@mui/material/ListItem";
-import ListItemButton from "@mui/material/ListItemButton";
-import ListItemIcon from "@mui/material/ListItemIcon";
+
 import ListItemText from "@mui/material/ListItemText";
-import InboxIcon from "@mui/icons-material/MoveToInbox";
-import MailIcon from "@mui/icons-material/Mail";
-import demoImage from "../../../../public/Images/broker-image.png";
+
 import { InputAdornment, IconButton } from "@mui/material";
 import SearchIcon from "@mui/icons-material/Search";
 import BorderColorOutlinedIcon from "@mui/icons-material/BorderColorOutlined";
@@ -39,9 +36,8 @@ import { _imageURL } from "consts";
 import { useGetAllReferralBrokerQuery } from "@/queries/useGetAllReferralBrokerQuery";
 import { debounce } from "@/utils/debounce";
 import { omitEmpties } from "@/api";
-import { useRouter } from "next/router";
 import BaseButton from "@/component/reuseable/baseButton/BaseButton";
-import useCurrentUser from "@/hooks/useCurrentUser";
+// import useCurrentUser from "@/hooks/useCurrentUser";
 
 import useRequiredFieldsToDisableButton from "@/hooks/useRequiredFieldsToDisableButton";
 
@@ -57,21 +53,12 @@ function PersonalData({
   reset,
   replace,
 }) {
-  const router = useRouter();
-
-  const [rgValue, setRGValue] = useState("");
-  const [rgValid, setRGValid] = useState(false);
-  const handleRGValidation = (e) => {
-    setRGValid(/^W(\d(\d(\d[A-Z]?)?)?$)/.test(e.target.value));
-    setRGValue(e.target.value);
-  };
-
   const [preview, setPreview] = useState();
 
   const t = languageName === "en" ? en : pt;
-  const currentUser = useCurrentUser();
+  // const currentUser = useCurrentUser();
 
-  const userRole = currentUser?.roles[0]?.slug;
+  const userRole = localStorage.getItem("user_role");
 
   const [searchValue, setSearchValue] = useState(null);
 
