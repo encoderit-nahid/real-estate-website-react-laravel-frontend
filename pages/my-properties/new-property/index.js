@@ -6,6 +6,7 @@ import {
   CircularProgress,
   Container,
   Grid,
+  LinearProgress,
   Stack,
   Tooltip,
   Typography,
@@ -59,6 +60,7 @@ import { findSinglePropertyData } from "../../../src/redux/singleProperty/action
 import en from "locales/en";
 import pt from "locales/pt";
 import BaseButton from "@/component/reuseable/baseButton/BaseButton";
+import uploadImage from "@/utils/uploadImage";
 
 const drawerWidth = 240;
 
@@ -129,6 +131,7 @@ export default function NewProperty({ language }) {
       ],
     },
   });
+  const allValues = watch();
 
   const { fields, append, remove } = useFieldArray({
     control,
@@ -204,7 +207,7 @@ export default function NewProperty({ language }) {
       setValue("property_title", singleData?.property_title);
       setValue("owner_email", singleData?.property_owner?.email);
       setValue("email_authorization", singleData?.is_sales_authorized === 1);
-      setValue("description", singleData?.property_description);
+      setValue("description", singleData?.property_description || "");
 
       let selectFeatures = [];
       singleData?.features?.forEach((data) => {
@@ -326,40 +329,10 @@ export default function NewProperty({ language }) {
     }, {});
   };
 
-  const allValues = watch();
-
   const [progress, setProgress] = useState({});
   const [isUploading, setIsUploading] = useState(false);
   const [uploadComplete, setUploadComplete] = useState(false);
-
-  const uploadImage = async (image, index, propertyId) => {
-    const requiredData = {
-      file: image.file,
-      title: image?.title,
-      type: "property",
-      id: propertyId,
-    };
-    const formData = serialize(requiredData, { indices: true });
-
-    try {
-      await apiInstance.post("attachment/save", formData, {
-        headers: {
-          "Content-Type": "application/x-www-form-urlencoded",
-        },
-        onUploadProgress: (progressEvent) => {
-          const percentCompleted = Math.round(
-            (progressEvent.loaded * 100) / progressEvent.total
-          );
-          setProgress((prevProgress) => ({
-            ...prevProgress,
-            [index]: percentCompleted,
-          }));
-        },
-      });
-    } catch (error) {
-      console.error("Error uploading image:", error);
-    }
-  };
+  const [uploadedCount, setUploadedCount] = useState(0);
 
   const onSubmit = async (data) => {
     console.log("🟥 ~ onSubmit ~ data:", data);
@@ -499,18 +472,19 @@ export default function NewProperty({ language }) {
     const formData = serialize(requireData, { indices: true });
     if (query?.property_id) {
       const [error, response] = await propertyUpdateApi(formData);
-      // setLoading(false);
-      setDraftLoading(false);
       if (!error) {
-        const propertyId = response?.data?.property?.id;
+        const id = response?.data?.property?.id;
+        const type = "property";
         setIsUploading(true);
         setUploadComplete(false);
+        setUploadedCount(0); // Reset count before starting upload
         const uploadPromises = newArr.map((image, index) =>
-          uploadImage(image, index, propertyId)
+          uploadImage(image, index, id, type, setProgress, setUploadedCount)
         );
         await Promise.all(uploadPromises);
         setIsUploading(false);
         setLoading(false);
+        setDraftLoading(false);
         setUploadComplete(true);
         setSentModalOpen(true);
       } else {
@@ -524,15 +498,18 @@ export default function NewProperty({ language }) {
       // setLoading(false);
       setDraftLoading(false);
       if (!error) {
-        const propertyId = response?.data?.property?.id;
+        const id = response?.data?.property?.id;
+        const type = "property";
         setIsUploading(true);
         setUploadComplete(false);
+        setUploadedCount(0); // Reset count before starting upload
         const uploadPromises = newArr.map((image, index) =>
-          uploadImage(image, index, propertyId)
+          uploadImage(image, index, id, type, setProgress, setUploadedCount)
         );
         await Promise.all(uploadPromises);
         setIsUploading(false);
         setLoading(false);
+        setDraftLoading(false);
         setUploadComplete(true);
         setSentModalOpen(true);
       } else {
@@ -542,6 +519,11 @@ export default function NewProperty({ language }) {
         });
       }
     }
+  };
+
+  const getTotalProgress = () => {
+    const totalImages = files.length;
+    return totalImages > 0 ? (uploadedCount / totalImages) * 100 : 0;
   };
 
   const [single, setSingle] = useState(false);
@@ -582,7 +564,7 @@ export default function NewProperty({ language }) {
       sx={{
         //   backgroundColor: "#f6f8fc",
         flexGrow: 1,
-
+        mb: 10,
         width: { sm: `calc(100% - ${drawerWidth}px)` },
         paddingX: { xs: 0, sm: 0, md: 6, lg: 6, xl: 6 },
         paddingY: { xs: 0, sm: 0, md: 3, lg: 3, xl: 3 },
@@ -719,6 +701,7 @@ export default function NewProperty({ language }) {
                         handleFunction={handleBack}
                         fullWidth
                         sx="outlined"
+                        disabled={loading}
                       >
                         {t["come back"]}
                       </BaseButton>
@@ -727,7 +710,10 @@ export default function NewProperty({ language }) {
                       <BaseButton
                         type="submit"
                         fullWidth
-                        disabled={session?.user?.role !== "owner" && disableBtn}
+                        disabled={
+                          (session?.user?.role !== "owner" && disableBtn) ||
+                          loading
+                        }
                         handleFunction={() => setAction("draft")}
                         sx="secondary"
                       >
@@ -756,8 +742,42 @@ export default function NewProperty({ language }) {
               </Stack>
             </form>
           </Fragment>
+          {loading && (
+            <Box>
+              <Typography variant="p" color="text.primary">
+                Enviando fotos :
+              </Typography>
+              {!uploadComplete && (
+                <Box sx={{ mt: 2 }}>
+                  <LinearProgress
+                    variant="determinate"
+                    value={getTotalProgress()}
+                    sx={{
+                      height: 10,
+                      borderRadius: 5,
+                      "& .MuiLinearProgress-bar": {
+                        transition: "width 0.3s ease-in-out",
+                      },
+                    }}
+                  />
+                  <Typography
+                    variant="body2"
+                    color="textSecondary"
+                    align="center"
+                  >
+                    {`${uploadedCount}/${files.length}`}
+                  </Typography>
+                </Box>
+              )}
+            </Box>
+          )}
         </Box>
-        <BaseModal isShowing={sentModalOpen} isClose={handleClose}>
+        <BaseModal
+          isShowing={sentModalOpen}
+          isClose={handleClose}
+          disableBackdropClick={true}
+          disableEscapeKeyDown={true}
+        >
           <Tooltip title="Something">
             <>
               <PropertySubmittedModal

@@ -42,6 +42,7 @@ const requiredFields = [
 ];
 import en from "locales/en";
 import pt from "locales/pt";
+import uploadImage from "@/utils/uploadImage";
 const NewVentureSentModal = dynamic(() =>
   import("@/component/new venture/NewVentureSentModal/NewVentureSentModal")
 );
@@ -128,35 +129,7 @@ export default function NewVenture({ language, session }) {
   const [progress, setProgress] = useState({});
   const [isUploading, setIsUploading] = useState(false);
   const [uploadComplete, setUploadComplete] = useState(false);
-
-  const uploadImage = async (image, index, projectId) => {
-    const requiredData = {
-      file: image.file,
-      title: image?.title,
-      type: "project",
-      id: projectId,
-    };
-    const formData = serialize(requiredData, { indices: true });
-
-    try {
-      await apiInstance.post("attachment/save", formData, {
-        headers: {
-          "Content-Type": "application/x-www-form-urlencoded",
-        },
-        onUploadProgress: (progressEvent) => {
-          const percentCompleted = Math.round(
-            (progressEvent.loaded * 100) / progressEvent.total
-          );
-          setProgress((prevProgress) => ({
-            ...prevProgress,
-            [index]: percentCompleted,
-          }));
-        },
-      });
-    } catch (error) {
-      console.error("Error uploading image:", error);
-    }
-  };
+  const [uploadedCount, setUploadedCount] = useState(0);
 
   const onSubmit = async (data) => {
     setLoading(true);
@@ -171,7 +144,6 @@ export default function NewVenture({ language, session }) {
         }
       }
     });
-
     const filterNewVideoTitleData = [];
     videoFiles?.forEach((data, index) => {
       if (data?.title !== allValues[`video_title_${index}`]?.slug) {
@@ -183,14 +155,12 @@ export default function NewVenture({ language, session }) {
         }
       }
     });
-
     let newArr = [];
     files?.forEach((data, index) => {
       if (data instanceof File) {
         newArr.push({ file: data, title: allValues[`title_${index}`].slug });
       }
     });
-
     let newVideoArr = [];
     videoFiles?.forEach((data, index) => {
       if (!data?.id) {
@@ -201,7 +171,6 @@ export default function NewVenture({ language, session }) {
       }
     });
     const newDocuments = documents?.filter((data) => data instanceof File);
-
     const requireData = {
       // images: newArr,
       features: featuretypes,
@@ -227,13 +196,14 @@ export default function NewVenture({ language, session }) {
     };
     const formData = serialize(requireData, { indices: true });
     const [error, response] = await createProjectApi(formData);
-
     if (!error) {
-      const projectId = response?.data?.project?.id;
+      const id = response?.data?.project?.id;
+      const type = "project";
       setIsUploading(true);
       setUploadComplete(false);
+      setUploadedCount(0); // Reset count before starting upload
       const uploadPromises = newArr.map((image, index) =>
-        uploadImage(image, index, projectId)
+        uploadImage(image, index, id, type, setProgress, setUploadedCount)
       );
       await Promise.all(uploadPromises);
       setIsUploading(false);
@@ -248,13 +218,13 @@ export default function NewVenture({ language, session }) {
     }
   };
 
-  // const getTotalProgress = () => {
-  //   const totalProgress = Object.values(progress).reduce(
-  //     (sum, value) => sum + value,
-  //     0
-  //   );
-  //   return totalProgress / 6;
-  // };
+  console.log({ allValues });
+
+  const getTotalProgress = () => {
+    const totalImages = files.length;
+    return totalImages > 0 ? (uploadedCount / totalImages) * 100 : 0;
+  };
+
   const isStepSkipped = (step) => {
     return skipped.has(step);
   };
@@ -285,16 +255,12 @@ export default function NewVenture({ language, session }) {
     } else if (activeStep == 1) {
       setDisableBtn(() => featuretypes.length > 0);
     }
-    // else if (activeStep == 2) {
-    //   setDisableBtn(() => files.length > 0);
-    // }
-  }, [allValues, activeStep, files, featuretypes]);
+  }, [allValues, activeStep, files, featuretypes, loading]);
 
   return (
     <Box
       sx={{
         flexGrow: 1,
-
         width: { sm: `calc(100% - ${drawerWidth}px)` },
         paddingX: { xs: 0, sm: 0, md: 6, lg: 6, xl: 6 },
         paddingY: { xs: 0, sm: 0, md: 3, lg: 3, xl: 3 },
@@ -393,6 +359,7 @@ export default function NewVenture({ language, session }) {
                       <Button
                         color="inherit"
                         onClick={handleBack}
+                        disabled={loading}
                         fullWidth
                         sx={{
                           mr: 1,
@@ -451,7 +418,7 @@ export default function NewVenture({ language, session }) {
                     <Grid item xs={2}>
                       <Button
                         type="submit"
-                        disabled={!disableBtn}
+                        disabled={!disableBtn || loading}
                         fullWidth
                         sx={{
                           background: "#7450F0",
@@ -489,33 +456,44 @@ export default function NewVenture({ language, session }) {
               </form>
             </Fragment>
           </Box>
-          {/* {!uploadComplete && (
-            <>
-              <LinearProgress
-                variant="determinate"
-                value={getTotalProgress()}
-              />
-              <Box sx={{ mt: 2 }}>
-                {images.map((image, index) => (
-                  <Box key={index} sx={{ mb: 1 }}>
-                    <LinearProgress
-                      variant="determinate"
-                      value={progress[index] || 0}
-                    />
-                  </Box>
-                ))}
-              </Box>
-            </>
+
+          {loading && (
+            <Box>
+              <Typography variant="p" color="text.primary">
+                Enviando fotos :
+              </Typography>
+              {!uploadComplete && (
+                <Box sx={{ mt: 2 }}>
+                  <LinearProgress
+                    variant="determinate"
+                    value={getTotalProgress()}
+                    sx={{
+                      height: 10,
+                      borderRadius: 5,
+                      "& .MuiLinearProgress-bar": {
+                        transition: "width 0.3s ease-in-out",
+                      },
+                    }}
+                  />
+                  <Typography
+                    variant="body2"
+                    color="textSecondary"
+                    align="center"
+                  >
+                    {`${uploadedCount}/${files.length}`}
+                  </Typography>
+                </Box>
+              )}
+            </Box>
           )}
-          {uploadComplete && (
-            <Typography variant="h6" color="green">
-              All images have been successfully uploaded!
-            </Typography>
-          )} */}
-          {/*👆 */}
         </Box>
       </Container>
-      <BaseModal isShowing={sentModalOpen} isClose={handleClose}>
+      <BaseModal
+        isShowing={sentModalOpen}
+        isClose={handleClose}
+        disableBackdropClick={true}
+        disableEscapeKeyDown={true}
+      >
         <Tooltip title="Something">
           <>
             <NewVentureSentModal

@@ -5,10 +5,17 @@ import en from "locales/en";
 import pt from "locales/pt";
 function BaseTextEditor({ control, name, allValues }) {
   const [editorValue, setEditorValue] = useState(
-    RichTextEditor.createValueFromString(allValues?.description, "html")
+    RichTextEditor.createValueFromString(allValues?.description || "", "html")
   );
   const [myValue, setMyValue] = useState("pt");
   const t = myValue === "en" ? en : pt;
+
+  // Update editorValue when allValues.description changes
+  useEffect(() => {
+    setEditorValue(
+      RichTextEditor.createValueFromString(allValues?.description || "", "html")
+    );
+  }, [allValues?.description]);
   return (
     <Controller
       name={name}
