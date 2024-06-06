@@ -31,6 +31,7 @@ import pt from "../../../../locales/pt";
 import SetCookie from "@/hooks/setCookie";
 import GetCookie from "@/hooks/getCookie";
 import { languageChangeApi } from "@/api";
+import { clearAllCookies } from "@/utils/clearCookies";
 // import { getCookies, setCookie, deleteCookie, getCookie } from 'cookies-next'
 
 function Navbar({
@@ -75,6 +76,8 @@ function Navbar({
   };
   const handleLogout = () => {
     localStorage.clear();
+    sessionStorage.clear();
+    clearAllCookies();
     signOut();
   };
 

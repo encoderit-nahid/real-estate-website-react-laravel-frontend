@@ -154,7 +154,7 @@ function BrokerCertificateAndDocument({
             </Grid>
           )}
           <Grid item xs={12} sm={12} md={12} lg={8}>
-            <Grid
+            {/* <Grid
               container
               direction="row"
               justifyContent="space-between"
@@ -205,7 +205,7 @@ function BrokerCertificateAndDocument({
                   />
                 </FormControl>
               )}
-            </Grid>
+            </Grid> */}
             <Grid container spacing={3}>
               {Loading
                 ? [0, 1, 2].map((data, index) => (
@@ -228,33 +228,25 @@ function BrokerCertificateAndDocument({
                     </Grid>
                   ))
                 : allCertificateData?.map((data, index) => (
-                    <Grid
-                      key={data?.id}
-                      item
-                      xs={12}
-                      sm={12}
-                      md={12}
-                      lg={6}
-                      sx={{ mt: 1 }}
-                    >
+                    <Grid key={data?.id} item xs={12} sm={12} md={12} lg={6}>
                       <Box
-                        onClick={() => {
-                          if (!certificateTypes?.includes(data.id)) {
-                            if (session?.user?.role === "buyer") {
-                              setCertificateTypes((current) => [
-                                ...current,
-                                data.id,
-                              ]);
-                            }
-                          } else {
-                            const newArray = certificateTypes?.filter(
-                              (value) => value !== data.id
-                            );
-                            if (session?.user?.role === "buyer") {
-                              setCertificateTypes(newArray);
-                            }
-                          }
-                        }}
+                        // onClick={() => {
+                        //   if (!certificateTypes?.includes(data.id)) {
+                        //     if (session?.user?.role === "buyer") {
+                        //       setCertificateTypes((current) => [
+                        //         ...current,
+                        //         data.id,
+                        //       ]);
+                        //     }
+                        //   } else {
+                        //     const newArray = certificateTypes?.filter(
+                        //       (value) => value !== data.id
+                        //     );
+                        //     if (session?.user?.role === "buyer") {
+                        //       setCertificateTypes(newArray);
+                        //     }
+                        //   }
+                        // }}
                         sx={{
                           background: `${
                             certificateTypes?.includes(data.id)
@@ -300,7 +292,7 @@ function BrokerCertificateAndDocument({
                     </Grid>
                   ))}
             </Grid>
-            {session?.user?.role === "buyer" && (
+            {/* {session?.user?.role === "buyer" && (
               <Grid
                 container
                 direction="row"
@@ -330,7 +322,7 @@ function BrokerCertificateAndDocument({
                   {!loading && t["requested documents"]}
                 </Button>
               </Grid>
-            )}
+            )} */}
           </Grid>
         </Grid>
         <Grid

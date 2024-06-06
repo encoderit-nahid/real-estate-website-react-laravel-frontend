@@ -41,11 +41,11 @@ import en from "locales/en";
 import { _imageURL } from "consts";
 import ChevronRightIcon from "@mui/icons-material/ChevronRight";
 import useCurrentUser from "@/hooks/useCurrentUser";
+import { clearAllCookies } from "@/utils/clearCookies";
 function LeftBar(props) {
   const router = useRouter();
   const { data: session } = useSession();
-  const currentUser = useCurrentUser()
-
+  const currentUser = useCurrentUser();
 
   const myLoader = ({ src }) => {
     return `${_imageURL}/${src}`;
@@ -68,6 +68,8 @@ function LeftBar(props) {
 
   const handleLogout = () => {
     localStorage.clear();
+    sessionStorage.clear();
+    clearAllCookies();
     signOut({
       callbackUrl: "/",
     });
