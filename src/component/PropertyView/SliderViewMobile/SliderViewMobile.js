@@ -200,29 +200,41 @@ function SliderViewMobile({
       </Tabs>
       <TabPanel value={value} index={0}>
         {selectImage != null ? (
-          <Box sx={{ aspectRatio: "2 / 1" }}>
+          <Box>
             <Slider {...sliderSettings}>
               {imageUrls.map((image, index) => (
-                <Image
+                <Box
+                  sx={{
+                    background: "#f1f1f1",
+                    aspectRatio: "1 / 1",
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "center",
+                  }}
                   key={index}
-                  loader={myLoader}
-                  src={image}
-                  alt="home"
-                  width={800}
-                  height={700}
-                  objectFit="cover"
-                  objectPosition={"center"}
-                />
+                >
+                  <Image
+                    loader={myLoader}
+                    src={image}
+                    alt="home"
+                    width={"100%"}
+                    height={"100%"}
+                    layout="responsive"
+                    objectFit="cover"
+                  />
+                </Box>
               ))}
             </Slider>
           </Box>
         ) : (
-          <Grid
-            container
-            direction="row"
-            justifyContent="center"
-            alignItems="center"
-            sx={{ height: "30vh", paddingLeft: "25vh" }}
+          <Box
+            sx={{
+              background: "#f1f1f1",
+              aspectRatio: "1 / 1",
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+            }}
           >
             <Typography
               variant="p"
@@ -234,29 +246,29 @@ function SliderViewMobile({
             >
               nenhuma imagem encontrada
             </Typography>
-          </Grid>
+          </Box>
         )}
       </TabPanel>
 
       <TabPanel value={value} index={1}>
         {selectImage != null ? (
-          <Box sx={{ aspectRatio: "2 / 1" }}>
-            <Image
-              loader={myLoader}
-              src={`${selectImage}`}
-              alt="home"
-              width={800}
-              height={700}
-              objectFit="cover"
-            />
-          </Box>
+          <Image
+            loader={myLoader}
+            src={`${selectImage}`}
+            alt="home"
+            width={800}
+            height={700}
+            objectFit="cover"
+          />
         ) : (
-          <Grid
-            container
-            direction="row"
-            justifyContent="center"
-            alignItems="center"
-            sx={{ height: "30vh", paddingLeft: "25vh" }}
+          <Box
+            sx={{
+              background: "#f1f1f1",
+              aspectRatio: "1 / 1",
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+            }}
           >
             <Typography
               variant="p"
@@ -268,29 +280,27 @@ function SliderViewMobile({
             >
               nenhuma imagem encontrada
             </Typography>
-          </Grid>
+          </Box>
         )}
       </TabPanel>
       <TabPanel value={value} index={2}>
-        <Box sx={{ aspectRatio: "2 / 1" }}>
+        <Box sx={{ background: "#f1f1f1", aspectRatio: "1 / 1" }}>
           <BaseGoogleMap markersData={markersData} height={352} />
         </Box>
       </TabPanel>
       <TabPanel value={value} index={3}>
-        <Box sx={{ aspectRatio: "2 / 1" }}>
-          <BaseStreetView
-            addressData={addressData}
-            widthDevice={"mobile"}
-            height={352}
-          />
+        <Box sx={{ background: "#f1f1f1", aspectRatio: "1 / 1" }}>
+          <BaseStreetView addressData={addressData} widthDevice={"mobile"} />
         </Box>
       </TabPanel>
       <TabPanel value={value} index={4}>
-        <VideoCarousel
-          videoLinks={videoIds}
-          widthDevice={"mobile"}
-          height={352}
-        />
+        <Box sx={{ background: "#f1f1f1", aspectRatio: "1 / 1" }}>
+          <VideoCarousel
+            videoLinks={videoIds}
+            widthDevice={"mobile"}
+            // height={352}
+          />
+        </Box>
       </TabPanel>
     </Container>
   );

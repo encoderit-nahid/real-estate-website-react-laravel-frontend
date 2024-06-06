@@ -154,7 +154,7 @@ export default function ProjectView({
         <meta property="og:image:height" content="630" />
       </Head>
 
-      <main className="section">
+      <main>
         <Navbar
           shape={false}
           paddingY={"1vh"}
@@ -173,6 +173,12 @@ export default function ProjectView({
             direction="row"
             justifyContent="flex-end"
             alignItems="flex-start"
+            sx={{
+              display: {
+                xs: "none",
+                lg: "flex",
+              },
+            }}
           >
             <Button
               color="inherit"
@@ -202,13 +208,8 @@ export default function ProjectView({
           >
             <Button
               sx={{
-                display: {
-                  xs: "grid",
-                  sm: "grid",
-                  md: "flex",
-                  lg: "flex",
-                  xl: "flex",
-                },
+                display: "flex",
+                gap: 1,
                 color: "#1A1859",
               }}
             >
@@ -217,15 +218,24 @@ export default function ProjectView({
               <Typography
                 variant="p"
                 sx={{
-                  fontSize: "24px",
+                  fontSize: { xs: "17px", sm: "17px", md: "17px", lg: "24px" },
                   fontWeight: 700,
                   color: "#1A1859",
                 }}
               >
-                {singleProjectData?.project?.name}
+                {`${singleProjectData?.project?.name || "No title found"}`}
               </Typography>
             </Button>
-            <Stack direction="row" alignItems={"center"} spacing={1}>
+            <Stack
+              direction="row"
+              spacing={1}
+              sx={{
+                display: {
+                  xs: "none",
+                  md: "flex",
+                },
+              }}
+            >
               <BaseShareButton
                 base_url={`https://www.lokkan.site/project-view/${id}`}
               />
@@ -249,9 +259,10 @@ export default function ProjectView({
         </Box>
         <Box
           sx={{
-            ml: { xs: 1, sm: 3, md: 3, lg: 3, xl: 3 },
-            mr: { xs: 1, sm: 3, md: 3, lg: 3, xl: 3 },
-            my: 4,
+            // ml: { xs: 1, sm: 3, md: 3, lg: 3, xl: 3 },
+            // mr: { xs: 1, sm: 3, md: 3, lg: 3, xl: 3 },
+            // my: 4,
+            mx: { lg: 3, xl: 3 },
           }}
         >
           <Grid
@@ -261,8 +272,8 @@ export default function ProjectView({
                 xs: "inline",
                 sm: "inline",
                 md: "none",
-                lg: "none",
-                xl: "none",
+                // lg: "none",
+                // xl: "none",
               },
             }}
           >
@@ -286,8 +297,8 @@ export default function ProjectView({
                   xs: "none",
                   sm: "none",
                   md: "inline",
-                  lg: "inline",
-                  xl: "inline",
+                  // lg: "inline",
+                  // xl: "inline",
                 },
               }}
             >
@@ -304,12 +315,11 @@ export default function ProjectView({
             </Grid>
           </Grid>
         </Box>
-
         <Box
           sx={{
-            mx: 3,
-            mt: 4,
-
+            mx: { lg: 3 },
+            mt: { lg: 3 },
+            // border: "1px solid red",
             background: "linear-gradient(90deg, #20BAF6 0%, #7450F0 100%);",
           }}
         >
@@ -318,8 +328,7 @@ export default function ProjectView({
               container
               spacing={2}
               sx={{
-                pt: 1,
-                pb: 1,
+                py: 2,
               }}
             >
               <Grid item xs={12} sm={12} md={12} lg={12}>
@@ -366,7 +375,7 @@ export default function ProjectView({
             </Grid>
           </Container>
         </Box>
-        <Box sx={{ mx: 3 }}>
+        <Box sx={{ mx: { lg: 3 } }}>
           <Grid item xs={12} sm={12} md={12} lg={9} xl={9}>
             {Object.keys(singleProjectData?.projectFeatures || {})?.map(
               (key, index) => (
@@ -379,46 +388,52 @@ export default function ProjectView({
             )}
           </Grid>
         </Box>
-        <Box>
-          <ImageList
-            cols={5}
-            sx={{
-              gridAutoFlow: "column",
-              gridTemplateColumns:
-                "repeat(auto-fill,minmax(140px,1fr)) !important",
-              gridAutoColumns: "minmax(140px, 1fr)",
-              pl: 3,
-              pb: 4,
-            }}
-          >
-            {singleProjectData?.propject_wise_properties?.map((data, index) => (
-              <Link
-                key={data.id}
-                href={`/property-view/${data.id}`}
-                as={`/property-view/${data.id}`}
-              >
-                <ImageListItem
-                  key={index}
-                  cols={2}
-                  sx={{
-                    width: {
-                      xl: "90%",
-                      lg: "90%",
-                      md: "70%",
-                      sm: "90%",
-                      xs: "90%",
-                    },
-                  }}
-                >
-                  <HouseCard
-                    propertyInfo={data}
-                    shadow={"0px 4px 18px rgba(0, 0, 0, 0.1)"}
-                  />
-                </ImageListItem>
-              </Link>
-            ))}
-          </ImageList>
-        </Box>
+
+        {singleProjectData?.propject_wise_properties.length > 0 && (
+          <Box>
+            <ImageList
+              cols={5}
+              sx={{
+                gridAutoFlow: "column",
+                gridTemplateColumns:
+                  "repeat(auto-fill,minmax(140px,1fr)) !important",
+                gridAutoColumns: "minmax(140px, 1fr)",
+                pl: 3,
+                pb: 4,
+              }}
+            >
+              {singleProjectData?.propject_wise_properties?.map(
+                (data, index) => (
+                  <Link
+                    key={data.id}
+                    href={`/property-view/${data.id}`}
+                    as={`/property-view/${data.id}`}
+                  >
+                    <ImageListItem
+                      key={index}
+                      cols={2}
+                      sx={{
+                        width: {
+                          xl: "90%",
+                          lg: "90%",
+                          md: "70%",
+                          sm: "90%",
+                          xs: "90%",
+                        },
+                      }}
+                    >
+                      <HouseCard
+                        propertyInfo={data}
+                        shadow={"0px 4px 18px rgba(0, 0, 0, 0.1)"}
+                      />
+                    </ImageListItem>
+                  </Link>
+                )
+              )}
+            </ImageList>
+          </Box>
+        )}
+
         <Footer />
       </main>
     </div>

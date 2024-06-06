@@ -194,6 +194,12 @@ export default function PropertyView({
             direction="row"
             justifyContent="flex-end"
             alignItems="flex-start"
+            sx={{
+              display: {
+                xs: "none",
+                lg: "flex",
+              },
+            }}
           >
             <Button
               color="inherit"
@@ -227,13 +233,8 @@ export default function PropertyView({
           >
             <Button
               sx={{
-                display: {
-                  xs: "flex",
-                  sm: "flex",
-                  md: "flex",
-                  lg: "flex",
-                  xl: "flex",
-                },
+                display: "flex",
+                gap: 1,
                 color: "#1A1859",
               }}
             >
@@ -275,9 +276,7 @@ export default function PropertyView({
         </Box>
         <Box
           sx={{
-            ml: { xs: 1, sm: 3, md: 3, lg: 3, xl: 3 },
-            mr: { xs: 1, sm: 3, md: 3, lg: 3, xl: 3 },
-            my: 4,
+            mx: { lg: 3, xl: 3 },
           }}
         >
           <Grid
@@ -332,25 +331,16 @@ export default function PropertyView({
             </Grid>
           </Grid>
         </Box>
-        <Box sx={{ mx: { xs: 1, sm: 3, md: 3, lg: 3, xl: 3 } }}>
+        <Box sx={{ mx: { lg: 3, xl: 3 }, mt: { lg: 3 } }}>
           <Grid
             container
             direction="row"
             alignItems="center"
             sx={{
-              // height: {
-              //   xs: "60vh",
-              //   sm: "60vh",
-              //   md: "60vh",
-              //   lg: "40vh",
-              //   xl: "40vh",
-              // },
               background: "#0E97F7",
 
               px: { xs: 2, sm: 2, md: 2, lg: 2, xl: 20 },
               py: 3,
-              // pt: { xs: 2, sm: 2, md: 0, lg: 0, xl: 0 },
-              // pb: { xs: 0.5, sm: 0.5, md: 0, lg: 0, xl: 0 },
             }}
           >
             <AmountView
@@ -363,7 +353,7 @@ export default function PropertyView({
             />
           </Grid>
         </Box>
-        <Box sx={{ mx: 3, mt: 4 }}>
+        <Box sx={{ mx: { lg: 3 }, mt: { lg: 4 } }}>
           <Grid container spacing={2}>
             <Grid item xs={12} sm={12} md={12} lg={9} xl={9}>
               <Box

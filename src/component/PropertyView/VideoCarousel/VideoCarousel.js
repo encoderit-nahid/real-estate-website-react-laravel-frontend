@@ -92,9 +92,9 @@ const VideoCarousel = ({ videoLinks, height }) => {
         <iframe
           title="YouTube Video"
           style={{
-            aspectRatio: "4 / 2",
+            aspectRatio: "1 / 1",
             width: "100%",
-            height: height,
+            // height: height,
           }}
           src={`https://www.youtube.com/embed/${videoLinks[currentVideoIndex]}?autoplay=1`}
           frameborder="0"
@@ -102,12 +102,26 @@ const VideoCarousel = ({ videoLinks, height }) => {
           onEnd={onVideoEnd}
         ></iframe>
       ) : (
-        <Typography
-          color={"red"}
-          sx={{ p: 2, fontWeight: 600, textAlign: "center" }}
+        <Box
+          sx={{
+            background: "#f1f1f1",
+            aspectRatio: "1 / 1",
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+          }}
         >
-          No video available
-        </Typography>
+          <Typography
+            variant="p"
+            sx={{
+              color: " #7450F0",
+              fontWeight: "600",
+              fontSize: "20px",
+            }}
+          >
+            No videos Found
+          </Typography>
+        </Box>
       )}
     </div>
   );
