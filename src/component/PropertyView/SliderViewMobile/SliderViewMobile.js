@@ -207,9 +207,6 @@ function SliderViewMobile({
                   sx={{
                     background: "#f1f1f1",
                     aspectRatio: "1 / 1",
-                    display: "flex",
-                    alignItems: "center",
-                    justifyContent: "center",
                   }}
                   key={index}
                 >
@@ -252,14 +249,22 @@ function SliderViewMobile({
 
       <TabPanel value={value} index={1}>
         {selectImage != null ? (
-          <Image
-            loader={myLoader}
-            src={`${selectImage}`}
-            alt="home"
-            width={800}
-            height={700}
-            objectFit="cover"
-          />
+          <Box
+            sx={{
+              background: "#f1f1f1",
+              aspectRatio: "1 / 1",
+            }}
+          >
+            <Image
+              loader={myLoader}
+              src={`${selectImage}`}
+              alt="home"
+              width={"100%"}
+              height={"100%"}
+              layout="responsive"
+              objectFit="cover"
+            />
+          </Box>
         ) : (
           <Box
             sx={{

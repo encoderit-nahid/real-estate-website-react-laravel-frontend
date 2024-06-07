@@ -11,6 +11,7 @@ import {
   ListItem,
   ListItemButton,
   ListItemText,
+  Typography,
 } from "@mui/material";
 import { useEffect, useState } from "react";
 const Releases = dynamic(() =>
@@ -203,7 +204,7 @@ export default function MyProperties({ language }) {
               sx={{ mt: 3 }}
             >
               {session?.user?.role !== "buyer" && (
-                <Grid item xs={3}>
+                <Grid item xs={5}>
                   <BaseButton
                     fullWidth
                     handleFunction={() =>
@@ -212,13 +213,15 @@ export default function MyProperties({ language }) {
                       })
                     }
                   >
-                    {t["New property"]}
+                    <Typography sx={{ textWrap: "nowrap", fontWeight: 600 }}>
+                      {t["New property"]}
+                    </Typography>
                   </BaseButton>
                 </Grid>
               )}
 
               {session?.user?.role === "admin" && (
-                <Grid item xs={3}>
+                <Grid item xs={5}>
                   <BaseButton
                     fullWidth
                     sx="outlined"
@@ -228,7 +231,9 @@ export default function MyProperties({ language }) {
                       })
                     }
                   >
-                    {t["New venture"]}
+                    <Typography sx={{ textWrap: "nowrap", fontWeight: 600 }}>
+                      {t["New venture"]}
+                    </Typography>
                   </BaseButton>
                 </Grid>
               )}

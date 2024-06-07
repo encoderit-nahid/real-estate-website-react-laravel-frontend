@@ -364,7 +364,7 @@ function SliderView({
         {selectImage != null ? (
           <Box
             sx={{
-              aspectRatio: "4 / 2",
+              aspectRatio: "2 / 1",
 
               width: `${width - 300}px`,
             }}
@@ -372,12 +372,15 @@ function SliderView({
             <ImageCarousel imageUrls={imageUrls} imagesPerSlide={1} />
           </Box>
         ) : (
-          <Grid
-            container
-            direction="row"
-            justifyContent="center"
-            alignItems="center"
-            sx={{ height: "30vh", paddingLeft: "25vh" }}
+          <Box
+            sx={{
+              background: "#f1f1f1",
+              aspectRatio: "2 / 1",
+              width: `${width - 300}px`,
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+            }}
           >
             <Typography
               variant="p"
@@ -389,7 +392,7 @@ function SliderView({
             >
               nenhuma imagem encontrada
             </Typography>
-          </Grid>
+          </Box>
         )}
       </TabPanel>
 
@@ -397,7 +400,7 @@ function SliderView({
         {selectImage != null ? (
           <Box
             sx={{
-              aspectRatio: "4 / 2",
+              aspectRatio: "2 / 1",
               width: `${width - 300}px`,
             }}
           >
@@ -427,7 +430,7 @@ function SliderView({
       <TabPanel value={value} index={2}>
         <Box
           sx={{
-            aspectRatio: "4 / 2",
+            aspectRatio: "2 / 1",
             width: `${width - 300}px`,
           }}
         >
@@ -437,7 +440,7 @@ function SliderView({
       <TabPanel value={value} index={3}>
         <Box
           sx={{
-            aspectRatio: "4 / 2",
+            aspectRatio: "2 / 1",
             width: `${width - 300}px`,
           }}
         >
@@ -447,12 +450,12 @@ function SliderView({
       <TabPanel value={value} index={4}>
         <Box
           sx={{
-            aspectRatio: "4 / 2",
+            aspectRatio: "2 / 1",
             backgroundColor: "#F1F1F1",
             width: `${width - 300}px`,
           }}
         >
-          <VideoCarousel videoLinks={videoIds} />
+          <VideoCarousel videoLinks={videoIds} ratio="2 / 1" />
         </Box>
       </TabPanel>
     </Box>

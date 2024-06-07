@@ -489,7 +489,7 @@ export default function PropertyView({
           gap={2}
         >
           <BaseWhatsappButton />
-          <Button
+          {/* <Button
             variant="contained"
             color="primary"
             sx={{
@@ -517,9 +517,9 @@ export default function PropertyView({
             }}
           >
             {t["Negotiate"]}
-          </Button>
+          </Button> */}
 
-          {/* <Button
+          <Button
             variant="contained"
             color="secondary"
             sx={{
@@ -546,7 +546,7 @@ export default function PropertyView({
             }}
           >
             {t["Schedule visit"]}
-          </Button> */}
+          </Button>
         </Grid>
       </Grid>
     </div>
