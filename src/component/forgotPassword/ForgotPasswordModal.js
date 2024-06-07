@@ -4,6 +4,7 @@ import {
   Button,
   CircularProgress,
   Grid,
+  IconButton,
   Snackbar,
   Typography,
 } from "@mui/material";
@@ -21,6 +22,7 @@ import { useRouter } from "next/router";
 import en from "locales/en";
 import pt from "locales/pt";
 import CloseIcon from "@mui/icons-material/Close";
+import CloseOutlinedIcon from "@mui/icons-material/CloseOutlined";
 
 const validationSchema = Yup.object().shape({
   email: Yup.string()
@@ -102,7 +104,7 @@ function ForgotPasswordModal({ handleForgotClose }) {
 
   return (
     <Box sx={style}>
-      <Grid
+      {/* <Grid
         container
         direction="row"
         justifyContent="flex-end"
@@ -110,7 +112,24 @@ function ForgotPasswordModal({ handleForgotClose }) {
         sx={{ pr: 0, mb: 2 }}
       >
         <CloseIcon onClick={handleForgotClose} sx={{ cursor: "pointer" }} />
-      </Grid>
+      </Grid> */}
+      <IconButton
+        sx={{
+          top: 8,
+          right: 8,
+          width: 40,
+          height: 40,
+          position: "absolute",
+          bgcolor: "#FFEBEE",
+          ":hover": {
+            color: "red",
+            bgcolor: "#FFCDD2",
+          },
+        }}
+        onClick={handleForgotClose}
+      >
+        <CloseOutlinedIcon />
+      </IconButton>
       <Box sx={{ width: "100%" }}>
         <Grid
           container
