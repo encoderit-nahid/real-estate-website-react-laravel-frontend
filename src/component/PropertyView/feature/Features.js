@@ -14,12 +14,12 @@ import pt from "locales/pt";
 function Features({ singlePropertyData, languageName }) {
   const t = languageName === "en" ? en : pt;
   return (
-    <Grid
+    <Stack
       container
       direction="column"
       justifyContent="flex-start"
       alignItems="flex-start"
-      sx={{ pl: 3 }}
+      sx={{ pl: 3, my: 2 }}
     >
       <Typography
         variant="p"
@@ -28,18 +28,23 @@ function Features({ singlePropertyData, languageName }) {
         características
       </Typography>
       <Stack
-        direction="row"
-        justifyContent="center"
-        alignItems="center"
+        direction={{ xs: "column", lg: "row" }}
+        // justifyContent="center"
+        // alignItems="center"
+        justifyContent={"flex-start"}
+        alignItems={"flex-start"}
         spacing={2}
         sx={{ mt: 1 }}
       >
         {singlePropertyData?.property?.no_of_rooms && (
           <Stack
             direction="row"
-            justifyContent="center"
+            justifyContent="flex-start"
             alignItems="center"
             spacing={1}
+            sx={{
+              width: "100%",
+            }}
           >
             <Image src={bed} alt="bed" width={24} height={24} />
             <Typography
@@ -58,9 +63,12 @@ function Features({ singlePropertyData, languageName }) {
         {singlePropertyData?.property?.property_area && (
           <Stack
             direction="row"
-            justifyContent="center"
+            justifyContent="flex-start"
             alignItems="center"
             spacing={1}
+            sx={{
+              width: "100%",
+            }}
           >
             <Image src={rule} alt="rule" width={24} height={24} />
             <Typography
@@ -79,9 +87,12 @@ function Features({ singlePropertyData, languageName }) {
         {singlePropertyData?.property?.no_of_bathrooms && (
           <Stack
             direction="row"
-            justifyContent="center"
+            justifyContent="flex-start"
             alignItems="center"
             spacing={1}
+            sx={{
+              width: "100%",
+            }}
           >
             <Image src={bath} alt="bath" width={24} height={24} />
             <Typography
@@ -100,9 +111,12 @@ function Features({ singlePropertyData, languageName }) {
         {singlePropertyData?.property?.no_of_bathrooms && (
           <Stack
             direction="row"
-            justifyContent="center"
+            justifyContent="flex-start"
             alignItems="center"
             spacing={1}
+            sx={{
+              width: "100%",
+            }}
           >
             <Image src={car} alt="bath" width={24} height={24} />
             <Typography
@@ -118,7 +132,7 @@ function Features({ singlePropertyData, languageName }) {
           </Stack>
         )}
       </Stack>
-    </Grid>
+    </Stack>
   );
 }
 

@@ -3,8 +3,9 @@ import React, { useState } from "react";
 import ArrowBackIosOutlinedIcon from "@mui/icons-material/ArrowBackIosOutlined";
 import ArrowForwardIosOutlinedIcon from "@mui/icons-material/ArrowForwardIosOutlined";
 import { Box, Stack, Typography } from "@mui/material";
+import zIndex from "@mui/material/styles/zIndex";
 
-const VideoCarousel = ({ videoLinks, height }) => {
+const VideoCarousel = ({ videoLinks, ratio = "1 / 1" }) => {
   console.log("🟥 ~ VideoCarousel ~ VideoCarousel:", videoLinks);
 
   const [currentVideoIndex, setCurrentVideoIndex] = useState(0);
@@ -23,14 +24,15 @@ const VideoCarousel = ({ videoLinks, height }) => {
         position: "relative",
       }}
     >
-      {videoLinks.length > 0 && (
+      {videoLinks?.length > 0 && (
         <Box
           // className="nav-icons"
           style={{
             position: "absolute",
-            bottom: "50px",
-            right: "50px",
+            bottom: "70px",
+            right: "20px",
             display: "flex",
+            zIndex: 10,
           }}
         >
           {/* Navigation buttons */}
@@ -92,9 +94,10 @@ const VideoCarousel = ({ videoLinks, height }) => {
         <iframe
           title="YouTube Video"
           style={{
-            aspectRatio: "4 / 2",
+            aspectRatio: ratio,
+
             width: "100%",
-            height: height,
+            // height: height,
           }}
           src={`https://www.youtube.com/embed/${videoLinks[currentVideoIndex]}?autoplay=1`}
           frameborder="0"
@@ -102,12 +105,26 @@ const VideoCarousel = ({ videoLinks, height }) => {
           onEnd={onVideoEnd}
         ></iframe>
       ) : (
-        <Typography
-          color={"red"}
-          sx={{ p: 2, fontWeight: 600, textAlign: "center" }}
+        <Box
+          sx={{
+            background: "#f1f1f1",
+            aspectRatio: "1 / 1",
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+          }}
         >
-          No video available
-        </Typography>
+          <Typography
+            variant="p"
+            sx={{
+              color: " #7450F0",
+              fontWeight: "600",
+              fontSize: "20px",
+            }}
+          >
+            No videos Found
+          </Typography>
+        </Box>
       )}
     </div>
   );

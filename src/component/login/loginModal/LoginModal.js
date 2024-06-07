@@ -5,6 +5,7 @@ import {
   CircularProgress,
   Divider,
   Grid,
+  IconButton,
   InputAdornment,
   Snackbar,
   Tooltip,
@@ -12,6 +13,9 @@ import {
 } from "@mui/material";
 import loginImage from "../../../../public/Images/login.png";
 import React from "react";
+import SetCookie from "@/hooks/setCookie";
+import { _baseURL } from "consts";
+
 import Image from "next/image";
 import BaseButton from "../../reuseable/button/BaseButton";
 import Link from "next/link";
@@ -32,22 +36,15 @@ import CloseIcon from "@mui/icons-material/Close";
 import en from "locales/en";
 import pt from "locales/pt";
 
-const style = {
-  position: "absolute",
-  top: "50%",
-  left: "50%",
-  // top:{xs:"80%"},
-  transform: "translate(-50%, -50%)",
-  width: { xs: "80%", sm: "80%", md: "60%", lg: "35%", xl: "25%" },
-  bgcolor: "#ffffff",
-  // border: "2px solid #000",
-  boxShadow: "none",
-  borderRadius: "12px",
-  maxHeight: "85vh",
-  overflowY: "scroll",
-  px: 0,
-  py: 6,
-};
+import Accordion from "@mui/material/Accordion";
+import AccordionDetails from "@mui/material/AccordionDetails";
+import AccordionSummary from "@mui/material/AccordionSummary";
+// import Typography from "@mui/material/Typography";
+import GoogleIcon from "@mui/icons-material/Google";
+import FacebookOutlinedIcon from "@mui/icons-material/FacebookOutlined";
+import CloseOutlinedIcon from "@mui/icons-material/CloseOutlined";
+
+import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 
 function LoginModal({ handleLoginClose, myValue }) {
   const t = myValue === "en" ? en : pt;
@@ -95,7 +92,17 @@ function LoginModal({ handleLoginClose, myValue }) {
   } = useForm({
     resolver: yupResolver(validationSchema),
   });
-
+  const [expanded, setExpanded] = useState(false);
+  const handleChangeAccordion = (panel) => (event, isExpanded) => {
+    setExpanded(isExpanded ? panel : false);
+  };
+  const handleSocialLogin = (provider, user_type) => {
+    SetCookie(
+      "role_id",
+      user_type === "broker" ? 2 : user_type === "owner" ? 3 : 4
+    );
+    window.location.replace(`${_baseURL}/api/redirect/${provider}`);
+  };
   const onSubmit = async (data) => {
     setLoading(true);
     const [errorToken, responseToken] = await loginApi(data);
@@ -130,16 +137,64 @@ function LoginModal({ handleLoginClose, myValue }) {
   const allValues = watch();
 
   return (
-    <Box sx={style}>
-      <Grid
-        container
-        direction="row"
-        justifyContent="flex-end"
-        alignItems="center"
-        sx={{ pr: 5, mb: 2 }}
+    <Box
+      sx={{
+        position: "absolute",
+        top: "50%",
+        left: "50%",
+        // top:{xs:"80%"},
+        transform: "translate(-50%, -50%)",
+        // width: { xs: "80%", sm: "80%", md: "60%", lg: "35%", xl: "25%" },
+        // m: 1,
+        width: "100%",
+        maxWidth: { xs: "350px", sm: "450px", md: "500px", lg: "550px" },
+        bgcolor: "#ffffff",
+        // border: "2px solid #000",
+        boxShadow: "none",
+        borderRadius: "12px",
+        maxHeight: "85vh",
+        overflowY: "scroll",
+        px: 0,
+        pt: 4,
+        pb: 6,
+        position: "relative",
+      }}
+    >
+      {/* <CloseIcon
+        onClick={handleLoginClose}
+        sx={{
+          cursor: "pointer",
+          position: "absolute",
+          color: "#ffffff",
+          // p: 1,
+          fontSize: "22px",
+          top: 10,
+          right: 10,
+          borderRadius: 111,
+          bgcolor: "#ff1717",
+          "&:hover": {
+            bgcolor: "#FF0000",
+          },
+        }}
+      /> */}
+      <IconButton
+        sx={{
+          top: 8,
+          right: 8,
+          width: 40,
+          height: 40,
+          position: "absolute",
+          bgcolor: "#FFEBEE",
+          ":hover": {
+            color: "red",
+            bgcolor: "#FFCDD2",
+          },
+        }}
+        onClick={handleLoginClose}
       >
-        <CloseIcon onClick={handleLoginClose} sx={{ cursor: "pointer" }} />
-      </Grid>
+        <CloseOutlinedIcon />
+      </IconButton>
+
       <form onSubmit={handleSubmit(onSubmit)}>
         <Grid
           container
@@ -306,7 +361,7 @@ function LoginModal({ handleLoginClose, myValue }) {
             direction="row"
             justifyContent="flex-end"
             alignItems="flex-start"
-            sx={{ mt: 1 }}
+            sx={{ my: 1 }}
             onClick={handleForgotOpen}
           >
             <Typography
@@ -324,44 +379,281 @@ function LoginModal({ handleLoginClose, myValue }) {
           </Grid>
         </Grid>
         {/* <Box sx={{ borderTop: "2px dashed #D3D3DF", mt: 3 }} /> */}
-        <Grid
-          container
-          direction="column"
-          justifyContent="center"
-          alignItems="center"
-          sx={{ px: 3, mt: 4 }}
+
+        <Accordion
+          expanded={expanded === "panel1"}
+          onChange={handleChangeAccordion("panel1")}
+          sx={{
+            border: "none",
+            boxShadow: "none",
+            outline: "none",
+            margin: "0",
+            "&:before": { display: "none" },
+            "&.MuiAccordion-root": { margin: "0" },
+          }}
         >
-          {/* <Box>
-            <Image src={loginImage} alt="register" />
-          </Box>
-          <Typography
-            variant="p"
+          <AccordionSummary
+            // expandIcon={<ExpandMoreIcon />}
+            aria-controls="panel1bh-content"
+            id="panel1bh-header"
             sx={{
-              color: "#1A1859",
-              fontSize: "18px",
-              fontWeight: "800",
-              lineHeight: "28px",
-              pb: 1,
+              borderBottom: "none",
+              boxShadow: "none",
+              outline: "none",
+              margin: "0",
             }}
           >
-            {t["Register now"]}
-          </Typography> */}
-          {/* <Link href="/registration">
-            <a
-              style={{
-                textDecoration: "none",
-                listStyle: "none",
+            <Button
+              sx={{
+                display: "flex",
+                background: "#DC4C3F",
+                borderRadius: "4px",
+                textTransform: "none",
+                px: 2,
+                py: 1,
                 width: "100%",
+                "&:hover": {
+                  background: "#DC4C3F",
+                  borderRadius: "4px",
+                  textTransform: "none",
+                  px: 2,
+                  py: 1,
+                  width: "100%",
+                },
               }}
             >
-              <BaseButton
-                width={"100%"}
-                name={t["Register"]}
-                handleFunction={handleLoginClose}
-              />
-            </a>
-          </Link> */}
-        </Grid>
+              <GoogleIcon sx={{ color: "#ffffff" }} />
+              <Typography
+                sx={{
+                  color: "#ffffff",
+                  fontSize: {
+                    xs: "12px",
+                    sm: "12px",
+                    md: "12px",
+                    lg: "12px",
+                    xl: "12px",
+                    xxl: "14px",
+                  },
+                  lineHeight: "17px",
+                  fontWeight: "400",
+                }}
+              >
+                Login with Gmail
+              </Typography>
+            </Button>
+          </AccordionSummary>
+          <AccordionDetails
+            sx={{
+              borderTop: "none",
+              boxShadow: "none",
+              outline: "none",
+              margin: "0",
+            }}
+          >
+            <Button
+              fullWidth
+              sx={{
+                display: "flex",
+                border: "1px solid #DC4C3F",
+
+                borderRadius: "4px",
+                textTransform: "none",
+
+                height: "40px",
+              }}
+              onClick={() => handleSocialLogin("google", "broker")}
+            >
+              <Typography
+                sx={{
+                  color: "#DC4C3F",
+
+                  fontWeight: "600",
+                }}
+              >
+                Broker
+              </Typography>
+            </Button>
+            <Button
+              fullWidth
+              sx={{
+                display: "flex",
+                border: "1px solid #DC4C3F",
+                borderRadius: "4px",
+                textTransform: "none",
+                mt: 1,
+                height: "40px",
+              }}
+              onClick={() => handleSocialLogin("google", "owner")}
+            >
+              <Typography
+                sx={{
+                  color: "#DC4C3F",
+
+                  fontWeight: "600",
+                }}
+              >
+                Owner
+              </Typography>
+            </Button>
+            <Button
+              fullWidth
+              sx={{
+                display: "flex",
+                border: "1px solid #DC4C3F",
+                borderRadius: "4px",
+                textTransform: "none",
+                mt: 1,
+                height: "40px",
+              }}
+              onClick={() => handleSocialLogin("google", "buyer")}
+            >
+              <Typography
+                sx={{
+                  color: "#DC4C3F",
+
+                  fontWeight: "600",
+                }}
+              >
+                Buyer
+              </Typography>
+            </Button>
+          </AccordionDetails>
+        </Accordion>
+        <Accordion
+          expanded={expanded === "panel2"}
+          onChange={handleChangeAccordion("panel2")}
+          sx={{
+            border: "none",
+            boxShadow: "none",
+            outline: "none",
+            "&:before": { display: "none" },
+          }}
+        >
+          <AccordionSummary
+            aria-controls="panel2bh-content"
+            id="panel2bh-header"
+            sx={{
+              borderBottom: "none",
+              boxShadow: "none",
+              outline: "none",
+            }}
+          >
+            <Button
+              sx={{
+                display: "flex",
+                background: "#4469B0",
+                borderRadius: "4px",
+                textTransform: "none",
+                px: 2,
+                py: 1,
+                width: "100%",
+                "&:hover": {
+                  background: "#4469B0",
+                  borderRadius: "4px",
+                  textTransform: "none",
+                  px: 2,
+                  py: 1,
+                  width: "100%",
+                },
+              }}
+              // onClick={() => handleSocialLogin("facebook")}
+            >
+              <FacebookOutlinedIcon sx={{ color: "#ffffff" }} />
+              <Typography
+                sx={{
+                  color: "#ffffff",
+                  fontSize: {
+                    xs: "12px",
+                    sm: "12px",
+                    md: "12px",
+                    lg: "12px",
+                    xl: "12px",
+                    xxl: "14px",
+                  },
+                  lineHeight: "17px",
+                  fontWeight: "400",
+                }}
+              >
+                Login with Facebook
+              </Typography>
+            </Button>
+          </AccordionSummary>
+          <AccordionDetails
+            sx={{
+              borderTop: "none",
+              boxShadow: "none",
+              outline: "none",
+            }}
+          >
+            <Button
+              fullWidth
+              sx={{
+                display: "flex",
+                border: "1px solid #4469B0",
+
+                borderRadius: "4px",
+                textTransform: "none",
+
+                height: "40px",
+              }}
+              onClick={() => handleSocialLogin("facebook", "broker")}
+            >
+              <Typography
+                sx={{
+                  color: "#4469B0",
+
+                  fontWeight: "600",
+                }}
+              >
+                Broker
+              </Typography>
+            </Button>
+            <Button
+              fullWidth
+              sx={{
+                display: "flex",
+                border: "1px solid #4469B0",
+                borderRadius: "4px",
+                textTransform: "none",
+                mt: 1,
+                height: "40px",
+              }}
+              onClick={() => handleSocialLogin("facebook", "owner")}
+            >
+              <Typography
+                sx={{
+                  color: "#4469B0",
+
+                  fontWeight: "600",
+                }}
+              >
+                Owner
+              </Typography>
+            </Button>
+            <Button
+              fullWidth
+              sx={{
+                display: "flex",
+                border: "1px solid #4469B0",
+                borderRadius: "4px",
+                textTransform: "none",
+                mt: 1,
+                height: "40px",
+              }}
+              onClick={() => handleSocialLogin("facebook", "buyer")}
+            >
+              <Typography
+                sx={{
+                  color: "#4469B0",
+
+                  fontWeight: "600",
+                }}
+              >
+                Buyer
+              </Typography>
+            </Button>
+          </AccordionDetails>
+        </Accordion>
       </form>
       <Snackbar
         open={snackbarOpen}

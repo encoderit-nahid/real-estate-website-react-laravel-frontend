@@ -421,12 +421,7 @@ function Navbar({
         </Toolbar>
         <BaseModal isShowing={loginOpen} isClose={handleLoginClose}>
           <Tooltip title="Something">
-            <>
-              <LoginModal
-                handleLoginClose={handleLoginClose}
-                myValue={myValue}
-              />
-            </>
+            <LoginModal handleLoginClose={handleLoginClose} myValue={myValue} />
           </Tooltip>
         </BaseModal>
       </Container>

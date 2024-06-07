@@ -38,12 +38,19 @@ const UserUpdateForm = ({ language }) => {
   const allStateData = useSelector((state) => state.state.stateData);
 
   useEffect(() => {
+    console.log("✅✅ ~ useEffect ~ currentUser:", currentUser);
+
     setValue("user_id", currentUser?.id);
-    setValue("image", `${_imageURL}/${currentUser?.attachments[0]?.file_path}`);
+    setValue(
+      "image",
+      currentUser?.attachments.length > 0
+        ? `${_imageURL}/${currentUser?.attachments[0]?.file_path}`
+        : ""
+    );
     setValue("name", currentUser?.name);
 
     setValue("email", currentUser?.email);
-    setValue("description", currentUser?.description);
+    setValue("description", currentUser?.additional_info?.description);
     setValue("phone", currentUser?.phone);
     setValue("zip_code", currentUser?.address?.zip_code);
     setValue("address", currentUser?.address?.address);
@@ -71,14 +78,18 @@ const UserUpdateForm = ({ language }) => {
     const body = serialize(
       omitEmpties({
         email: email,
-        description: description,
+        // description: description,
         phone: phone,
         user_id: user_id,
         image: image instanceof File ? data?.image : null,
         name: name,
         password: password,
         password_confirmation: repeat_password,
-        address: omitEmpties({ ...rest, state_id: data.state_id.id }),
+        address: omitEmpties({
+          ...rest,
+          state_id: data.state_id.id,
+        }),
+        additional_info: { description },
       }),
       {
         indices: true,
@@ -148,6 +159,7 @@ const UserUpdateForm = ({ language }) => {
     resolver: yupResolver(validationSchema),
   });
   const allValues = watch();
+  console.log("🟥 ~ UserUpdateForm ~ allValues:", allValues);
   const [showPass, setShowPass] = useState(false);
   const [showRepeatPass, setShowRepeatPass] = useState(false);
 
@@ -184,7 +196,7 @@ const UserUpdateForm = ({ language }) => {
             }}
           >
             <Box>
-              {allValues?.image?.includes("undefined") ? (
+              {allValues?.image == "" ? (
                 <Avatar sx={{ width: 100, height: 100 }} />
               ) : (
                 <Image

@@ -128,6 +128,7 @@ export const userDetailsApi = async () => {
   try {
     const response = await apiInstance.get(`auth-user`);
     console.log("🟥 ~ userDetailsApi ~ response:", response);
+    // localStorage.setItem("additional_info", response?.data?.additional_info);
     localStorage.setItem("wishList", response?.data?.wishlists);
     localStorage.setItem("projectWishList", response?.data?.project_wishlists);
     localStorage.setItem("brokerWishList", response?.data?.broker_wishlists);
