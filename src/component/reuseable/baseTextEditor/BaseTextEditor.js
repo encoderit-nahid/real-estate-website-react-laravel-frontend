@@ -11,11 +11,11 @@ function BaseTextEditor({ control, name, allValues }) {
   const t = myValue === "en" ? en : pt;
 
   // Update editorValue when allValues.description changes
-  useEffect(() => {
-    setEditorValue(
-      RichTextEditor.createValueFromString(allValues?.description || "", "html")
-    );
-  }, [allValues?.description]);
+  // useEffect(() => {
+  //   setEditorValue(
+  //     RichTextEditor.createValueFromString(allValues?.description || "", "html")
+  //   );
+  // }, [allValues?.description]);
   return (
     <Controller
       name={name}

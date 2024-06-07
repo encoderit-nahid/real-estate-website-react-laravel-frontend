@@ -357,8 +357,8 @@ export default function PropertyView({
           <Grid container spacing={2}>
             <Grid item xs={12} sm={12} md={12} lg={9} xl={9}>
               <Box
-                component="div"
-                sx={{ p: 3, backgroundColor: "#f9f9fb" }}
+                // component="div"
+                sx={{ p: 3, backgroundColor: "#f9f9fb"}}
                 dangerouslySetInnerHTML={{
                   __html: singlePropertyData?.property?.property_description,
                 }}
