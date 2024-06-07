@@ -103,14 +103,6 @@ export default function PropertyJourney({ language }) {
     { stage: t["My Properties"], route: "" },
   ];
 
-  // const [activeStep, setActiveStep] = useState((+query?.step_count || 1) + 1);
-  // useEffect(() => {
-  //   const requireStep = (+query?.step_count || 1) + 1;
-  //   if (requireStep !== activeStep) {
-  //     setActiveStep(requireStep);
-  //   }
-  // }, [query, activeStep]);
-  // console.log({ activeStep });
   const [skipped, setSkipped] = useState(new Set());
   const dispatch = useDispatch();
 
@@ -120,6 +112,10 @@ export default function PropertyJourney({ language }) {
     dispatch(findSinglePropertyData(query?.propertyId));
   }, [dispatch, query]);
   const [activeStep, setActiveStep] = useState((+query?.step_count || 1) + 1);
+  useEffect(()=> {
+    setActiveStep((+query?.step_count || 1) + 1)
+  },[query])
+
 
   const singlePropertyData = useSelector(
     (state) => state?.singleProperty?.singlePropertyData
@@ -143,11 +139,19 @@ export default function PropertyJourney({ language }) {
     }
 
     setActiveStep((prevActiveStep) => prevActiveStep + 1);
+    router.replace({
+      query: {...router.query, step_count: +query?.step_count + 1}
+    })
     setSkipped(newSkipped);
   };
 
   const handleBack = () => {
-    setActiveStep((prevActiveStep) => prevActiveStep - 1);
+    if(+query?.step_count > 1){
+      setActiveStep((prevActiveStep) => prevActiveStep - 1);
+      router.replace({
+        query: {...router.query, step_count: +query?.step_count - 1}
+      })
+    }
   };
 
   const handleSkip = () => {

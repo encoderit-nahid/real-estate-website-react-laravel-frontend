@@ -57,12 +57,20 @@ export const findContractDetailsData = (id) => async (dispatch) => {
 
 //ADD
 
-export const signatureAddData = (body) => async (dispatch) => {
+export const signatureAddData = (body,signIds) => async (dispatch) => {
   const [error, response] = await createSignatureApi(body);
-
+  
   if (!error) {
     // dispatch(contactDetailsSuccess(response?.data));
-    dispatch(signatureCreate(response?.data?.users));
+    console.log({response})
+  const isIncluded = signIds.some(obj => obj.id === response?.data?.users?.id);
+  console.log(isIncluded)
+   if(isIncluded){
+    dispatch(signatureUpdate({contract_sign_id: response?.data?.users?.id, status: response?.data?.users?.is_signed, name: response?.data?.users?.name}));
+   }
+   else{
+       dispatch(signatureCreate(response?.data?.users));
+   }
   } else {
     const errorMassage =
       error?.response?.data?.data || error?.response?.data?.status;
@@ -73,6 +81,7 @@ export const signatureAddData = (body) => async (dispatch) => {
 export const signatureUpdateData = (body) => async (dispatch) => {
   const [error, resp] = await contractSignApi(body);
   if (!error) {
+    console.log({resp})
     dispatch(signatureUpdate(body));
   }
 

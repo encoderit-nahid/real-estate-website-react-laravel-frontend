@@ -38,7 +38,7 @@ const ContractDetailsReducer = (state = InitialState, action) => {
         (signData) => {
           console.log({ signData });
           if (signData?.id === action?.payload?.contract_sign_id) {
-            return { ...signData, is_signed: signData?.is_signed ? 0 : 1 };
+            return { ...signData, is_signed: action?.payload?.status,name: action?.payload?.name ? action?.payload?.name : signData?.name };
           } else {
             return signData;
           }

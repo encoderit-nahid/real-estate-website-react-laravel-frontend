@@ -15,124 +15,124 @@ import {
   TextareaAutosize,
   Tooltip,
   Typography,
-} from "@mui/material";
-import React, { useEffect, useState } from "react";
-import Image from "next/image";
-import Link from "next/link";
-import CloseIcon from "@mui/icons-material/Close";
-import logoIcon from "../../../../../../public/Images/logo.png";
-import { styled, useTheme } from "@mui/material/styles";
+} from '@mui/material'
+import React, { useEffect, useState } from 'react'
+import Image from 'next/image'
+import Link from 'next/link'
+import CloseIcon from '@mui/icons-material/Close'
+import logoIcon from '../../../../../../public/Images/logo.png'
+import { styled, useTheme } from '@mui/material/styles'
 
-import Drawer from "@mui/material/Drawer";
-import MuiAppBar from "@mui/material/AppBar";
-import Toolbar from "@mui/material/Toolbar";
-import CssBaseline from "@mui/material/CssBaseline";
+import Drawer from '@mui/material/Drawer'
+import MuiAppBar from '@mui/material/AppBar'
+import Toolbar from '@mui/material/Toolbar'
+import CssBaseline from '@mui/material/CssBaseline'
 
-import IconButton from "@mui/material/IconButton";
-import MenuIcon from "@mui/icons-material/Menu";
-import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
-import ChevronRightIcon from "@mui/icons-material/ChevronRight";
+import IconButton from '@mui/material/IconButton'
+import MenuIcon from '@mui/icons-material/Menu'
+import ChevronLeftIcon from '@mui/icons-material/ChevronLeft'
+import ChevronRightIcon from '@mui/icons-material/ChevronRight'
 
-import ListItemButton from "@mui/material/ListItemButton";
-import ListItemIcon from "@mui/material/ListItemIcon";
-import InsertDriveFileOutlinedIcon from "@mui/icons-material/InsertDriveFileOutlined";
-import pdfImage from "../../../../../../public/Images/pdfImage.png";
-import InboxIcon from "@mui/icons-material/MoveToInbox";
-import MailIcon from "@mui/icons-material/Mail";
-import FormGroup from "@mui/material/FormGroup";
-import FormControlLabel from "@mui/material/FormControlLabel";
-import dynamic from "next/dynamic";
-import BaseTextField from "../../../../reuseable/baseTextField/BaseTextField";
-import { useDispatch, useSelector } from "react-redux";
+import ListItemButton from '@mui/material/ListItemButton'
+import ListItemIcon from '@mui/material/ListItemIcon'
+import InsertDriveFileOutlinedIcon from '@mui/icons-material/InsertDriveFileOutlined'
+import pdfImage from '../../../../../../public/Images/pdfImage.png'
+import InboxIcon from '@mui/icons-material/MoveToInbox'
+import MailIcon from '@mui/icons-material/Mail'
+import FormGroup from '@mui/material/FormGroup'
+import FormControlLabel from '@mui/material/FormControlLabel'
+import dynamic from 'next/dynamic'
+import BaseTextField from '../../../../reuseable/baseTextField/BaseTextField'
+import { useDispatch, useSelector } from 'react-redux'
 import {
   findContractDetailsData,
   signatureAddData,
   signatureUpdateData,
-} from "../../../../../redux/contractDetails/actions";
-import { contractDownloadApi, contractSignApi } from "../../../../../api";
-import { useForm, Controller } from "react-hook-form";
-import { yupResolver } from "@hookform/resolvers/yup";
-import * as Yup from "yup";
-import { useSession } from "next-auth/react";
-import en from "locales/en";
-import pt from "locales/pt";
+} from '../../../../../redux/contractDetails/actions'
+import { contractDownloadApi, contractSignApi } from '../../../../../api'
+import { useForm, Controller } from 'react-hook-form'
+import { yupResolver } from '@hookform/resolvers/yup'
+import * as Yup from 'yup'
+import { useSession } from 'next-auth/react'
+import en from 'locales/en'
+import pt from 'locales/pt'
 const PDFViewer = dynamic(
-  () => import("../../../../reuseable/PDFComponent/pdf-viewer"),
+  () => import('../../../../reuseable/PDFComponent/pdf-viewer'),
   {
     ssr: false,
-  }
-);
-const drawerWidth = 300;
+  },
+)
+const drawerWidth = 300
 
 const validationSchema = Yup.object().shape({
-  name: Yup.string().required("nome é obrigatório"),
-  details: Yup.string().required("e-mail é obrigatório"),
-});
+  name: Yup.string().required('nome é obrigatório'),
+  details: Yup.string().required('e-mail é obrigatório'),
+})
 
-const Main = styled("main", { shouldForwardProp: (prop) => prop !== "open" })(
+const Main = styled('main', { shouldForwardProp: (prop) => prop !== 'open' })(
   ({ theme, open }) => ({
     flexGrow: 1,
 
     padding: theme.spacing(3),
 
-    transition: theme.transitions.create("margin", {
+    transition: theme.transitions.create('margin', {
       easing: theme.transitions.easing.sharp,
       duration: theme.transitions.duration.leavingScreen,
     }),
     marginRight: -drawerWidth,
     ...(open && {
-      transition: theme.transitions.create("margin", {
+      transition: theme.transitions.create('margin', {
         easing: theme.transitions.easing.easeOut,
         duration: theme.transitions.duration.enteringScreen,
       }),
 
       marginRight: 0,
     }),
-  })
-);
+  }),
+)
 
 const AppBar = styled(MuiAppBar, {
-  shouldForwardProp: (prop) => prop !== "open",
+  shouldForwardProp: (prop) => prop !== 'open',
 })(({ theme, open }) => ({
-  transition: theme.transitions.create(["margin", "width"], {
+  transition: theme.transitions.create(['margin', 'width'], {
     easing: theme.transitions.easing.sharp,
     duration: theme.transitions.duration.leavingScreen,
   }),
   ...(open && {
     width: `calc(100% - ${drawerWidth}px)`,
-    transition: theme.transitions.create(["margin", "width"], {
+    transition: theme.transitions.create(['margin', 'width'], {
       easing: theme.transitions.easing.easeOut,
       duration: theme.transitions.duration.enteringScreen,
     }),
     marginRight: drawerWidth,
   }),
-}));
+}))
 
-const DrawerHeader = styled("div")(({ theme }) => ({
-  display: "flex",
-  alignItems: "center",
+const DrawerHeader = styled('div')(({ theme }) => ({
+  display: 'flex',
+  alignItems: 'center',
   padding: theme.spacing(0, 1),
   // necessary for content to be below app bar
   ...theme.mixins.toolbar,
-  justifyContent: "flex-start",
-}));
+  justifyContent: 'flex-start',
+}))
 
 const style = {
-  position: "absolute",
-  top: "50%",
-  left: "50%",
+  position: 'absolute',
+  top: '50%',
+  left: '50%',
   // top:{xs:"80%"},
-  transform: "translate(-50%, -50%)",
-  width: { xs: "95%", sm: "95%", md: "95%", lg: "90%", xl: "75%" },
-  bgcolor: "#ffffff",
+  transform: 'translate(-50%, -50%)',
+  width: { xs: '95%', sm: '95%', md: '95%', lg: '90%', xl: '75%' },
+  bgcolor: '#ffffff',
   // border: "2px solid #000",
-  boxShadow: "none",
-  borderRadius: "4px",
-  maxHeight: "90vh",
+  boxShadow: 'none',
+  borderRadius: '4px',
+  maxHeight: '90vh',
   // overflowY: "scroll",
   //   px: 0,
   //   py: 1,
-};
+}
 
 function ContractPdfModal({
   handleClose,
@@ -141,18 +141,18 @@ function ContractPdfModal({
   singlePropertyData,
   languageName,
 }) {
-  const { data: session } = useSession();
-  const dispatch = useDispatch();
-  const t = languageName === "en" ? en : pt;
+  const { data: session } = useSession()
+  const dispatch = useDispatch()
+  const t = languageName === 'en' ? en : pt
   useEffect(() => {
-    dispatch(findContractDetailsData(+singlePropertyData?.contract?.id));
-  }, [dispatch, singlePropertyData]);
+    dispatch(findContractDetailsData(+singlePropertyData?.contract?.id))
+  }, [dispatch, singlePropertyData])
 
   const contractDetailsInfo = useSelector(
-    (state) => state?.contractDetails?.ContactDetailsData
-  );
+    (state) => state?.contractDetails?.ContactDetailsData,
+  )
 
-  console.log({ contractDetailsInfo });
+  console.log({ contractDetailsInfo })
 
   const {
     register,
@@ -164,46 +164,53 @@ function ContractPdfModal({
     setError,
   } = useForm({
     resolver: yupResolver(validationSchema),
-  });
+  })
 
-  const [loading, setLoading] = useState(false);
-  const theme = useTheme();
-  const [open, setOpen] = React.useState(true);
+  const [loading, setLoading] = useState(false)
+  const theme = useTheme()
+  const [open, setOpen] = React.useState(true)
 
   const handleDrawerOpen = () => {
-    setOpen(true);
-  };
+    setOpen(true)
+  }
 
   const handleDrawerClose = () => {
-    setOpen(false);
-  };
+    setOpen(false)
+  }
+
+  const signIds = contractDetailsInfo?.signatures || []
+
+  console.log({ signIds })
 
   const onSubmit = async (data) => {
-    setLoading(true);
+    setLoading(true)
     dispatch(
-      signatureAddData({
-        ...data,
-        contract_id: +singlePropertyData?.contract?.id,
-      })
-    );
-    setLoading(false);
-  };
+      signatureAddData(
+        {
+          ...data,
+          contract_id: +singlePropertyData?.contract?.id,
+        },
+        signIds,
+      ),
+    )
+    setLoading(false)
+  }
 
-  const [switchLoading, setSwitchLoading] = useState(false);
+  const [switchLoading, setSwitchLoading] = useState(false)
 
   const handleSwitchChange = async (data) => {
-    setSwitchLoading(true);
-    const status = data?.is_signed ? 0 : 1;
-    const bodyData = { contract_sign_id: data?.id, status: status };
-    dispatch(signatureUpdateData(bodyData));
+    setSwitchLoading(true)
+    const status = data?.is_signed ? 0 : 1
+    const bodyData = { contract_sign_id: data?.id, status: status }
+    dispatch(signatureUpdateData(bodyData))
     // const status = data?.is_signed === 0 ? 1 : 0;
     // const bodyData = { contract_sign_id: data?.id, status: status };
     // const [error, resp] = await contractSignApi(bodyData);
-    setSwitchLoading(false);
+    setSwitchLoading(false)
     // if (!error) {
     //   dispatch(findContractDetailsData(+singlePropertyData?.contract?.id));
     // }
-  };
+  }
 
   return (
     <Box sx={style}>
@@ -250,14 +257,14 @@ function ContractPdfModal({
           <PDFViewer />
         </div>
       </Box> */}
-      <Box sx={{ display: "flex" }}>
+      <Box sx={{ display: 'flex' }}>
         <CssBaseline />
         <AppBar
           position="fixed"
           sx={{
-            backgroundColor: "#ffffff",
-            borderBottom: "1px solid #DBE1E5",
-            boxShadow: "none",
+            backgroundColor: '#ffffff',
+            borderBottom: '1px solid #DBE1E5',
+            boxShadow: 'none',
           }}
           open={open}
         >
@@ -265,10 +272,10 @@ function ContractPdfModal({
             <Box
               sx={{
                 display: {
-                  xs: "none",
-                  sm: "none",
-                  md: "none",
-                  lg: "inline",
+                  xs: 'none',
+                  sm: 'none',
+                  md: 'none',
+                  lg: 'inline',
                 },
               }}
             >
@@ -293,10 +300,10 @@ function ContractPdfModal({
                 alignItems="center"
                 sx={{
                   display: {
-                    xs: "inline",
-                    sm: "inline",
-                    md: "inline",
-                    lg: "none",
+                    xs: 'inline',
+                    sm: 'inline',
+                    md: 'inline',
+                    lg: 'none',
                   },
                 }}
               >
@@ -305,7 +312,7 @@ function ContractPdfModal({
                   <CloseIcon
                     onClick={handleClose}
                     sx={{
-                      color: "#1A1859",
+                      color: '#1A1859',
                       marginLeft: 10,
                       marginTop: 0.5,
                     }}
@@ -318,60 +325,60 @@ function ContractPdfModal({
                     contractDownloadApi(singlePropertyData?.contract?.id)
                   }
                   sx={{
-                    borderColor: "#002152",
-                    fontSize: "14px",
-                    lineHeight: "18px",
-                    fontWeight: "600",
-                    color: "#002152",
-                    textTransform: "none",
+                    borderColor: '#002152',
+                    fontSize: '14px',
+                    lineHeight: '18px',
+                    fontWeight: '600',
+                    color: '#002152',
+                    textTransform: 'none',
                     paddingX: 4,
                     paddingY: 0.6,
                     mb: 2,
 
                     mr: 3,
-                    "&:hover": {
-                      borderColor: "#002152",
-                      fontSize: "14px",
-                      lineHeight: "18px",
-                      fontWeight: "600",
-                      color: "#002152",
-                      textTransform: "none",
+                    '&:hover': {
+                      borderColor: '#002152',
+                      fontSize: '14px',
+                      lineHeight: '18px',
+                      fontWeight: '600',
+                      color: '#002152',
+                      textTransform: 'none',
                       paddingX: 4,
                       paddingY: 0.6,
                     },
                   }}
                 >
-                  {t["Download"]}
+                  {t['Download']}
                 </Button>
                 <Button
                   onClick={handleDrawerOpen}
                   sx={{
-                    background: "#0362F0",
-                    borderRadius: "4px",
+                    background: '#0362F0',
+                    borderRadius: '4px',
                     px: 2,
                     py: 0.5,
-                    color: "#ffffff",
-                    fontSize: "16px",
-                    fontWeight: "600",
-                    lineHeight: "22px",
-                    textTransform: "none",
-                    boxShadow: "0px 4px 8px rgba(81, 51, 182, 0.32)",
+                    color: '#ffffff',
+                    fontSize: '16px',
+                    fontWeight: '600',
+                    lineHeight: '22px',
+                    textTransform: 'none',
+                    boxShadow: '0px 4px 8px rgba(81, 51, 182, 0.32)',
                     mb: 2,
-                    "&:hover": {
-                      background: "#0362F0",
-                      borderRadius: "4px",
+                    '&:hover': {
+                      background: '#0362F0',
+                      borderRadius: '4px',
                       px: 2,
                       py: 0.5,
-                      color: "#ffffff",
-                      fontSize: "16px",
-                      fontWeight: "600",
-                      lineHeight: "22px",
-                      textTransform: "none",
-                      boxShadow: "0px 4px 8px rgba(81, 51, 182, 0.32)",
+                      color: '#ffffff',
+                      fontSize: '16px',
+                      fontWeight: '600',
+                      lineHeight: '22px',
+                      textTransform: 'none',
+                      boxShadow: '0px 4px 8px rgba(81, 51, 182, 0.32)',
                     },
                   }}
                 >
-                  {t["Details"]}
+                  {t['Details']}
                 </Button>
               </Grid>
             )}
@@ -385,7 +392,7 @@ function ContractPdfModal({
           sx={{
             width: drawerWidth,
             flexShrink: 0,
-            "& .MuiDrawer-paper": {
+            '& .MuiDrawer-paper': {
               width: drawerWidth,
             },
           }}
@@ -401,23 +408,23 @@ function ContractPdfModal({
               alignItems="center"
               sx={{
                 display: {
-                  xs: "inline",
-                  sm: "inline",
-                  md: "inline",
-                  lg: "none",
+                  xs: 'inline',
+                  sm: 'inline',
+                  md: 'inline',
+                  lg: 'none',
                 },
               }}
             >
               <Typography
                 variant="p"
                 sx={{
-                  color: "#002152",
-                  fontSize: "24px",
-                  lineHeight: "32px",
-                  fontWeight: "700",
+                  color: '#002152',
+                  fontSize: '24px',
+                  lineHeight: '32px',
+                  fontWeight: '700',
                 }}
               >
-                {t["Details"]}
+                {t['Details']}
               </Typography>
               <IconButton onClick={handleDrawerClose}>
                 <CloseIcon />
@@ -435,43 +442,43 @@ function ContractPdfModal({
                   contractDownloadApi(singlePropertyData?.contract?.id)
                 }
                 sx={{
-                  borderColor: "#002152",
-                  fontSize: "14px",
-                  lineHeight: "18px",
-                  fontWeight: "600",
-                  color: "#002152",
-                  textTransform: "none",
+                  borderColor: '#002152',
+                  fontSize: '14px',
+                  lineHeight: '18px',
+                  fontWeight: '600',
+                  color: '#002152',
+                  textTransform: 'none',
                   paddingX: 4,
                   paddingY: 0.6,
                   display: {
-                    xs: "none",
-                    sm: "none",
-                    md: "none",
-                    lg: "inline",
+                    xs: 'none',
+                    sm: 'none',
+                    md: 'none',
+                    lg: 'inline',
                   },
                   mr: 3,
-                  "&:hover": {
-                    borderColor: "#002152",
-                    fontSize: "14px",
-                    lineHeight: "18px",
-                    fontWeight: "600",
-                    color: "#002152",
-                    textTransform: "none",
+                  '&:hover': {
+                    borderColor: '#002152',
+                    fontSize: '14px',
+                    lineHeight: '18px',
+                    fontWeight: '600',
+                    color: '#002152',
+                    textTransform: 'none',
                     paddingX: 4,
                     paddingY: 0.6,
                   },
                 }}
               >
-                {t["Download"]}
+                {t['Download']}
               </Button>
               <CloseIcon
                 onClick={handleClose}
                 sx={{
                   display: {
-                    xs: "none",
-                    sm: "none",
-                    md: "none",
-                    lg: "inline",
+                    xs: 'none',
+                    sm: 'none',
+                    md: 'none',
+                    lg: 'inline',
                   },
                 }}
               />
@@ -480,30 +487,30 @@ function ContractPdfModal({
           <Divider />
           <Button
             sx={{
-              textTransform: "none",
-              background: "#E0F2FE",
-              borderRadius: "2px",
+              textTransform: 'none',
+              background: '#E0F2FE',
+              borderRadius: '2px',
 
-              color: "#0362F0",
-              fontSize: "14px",
-              lineHeight: "18px",
-              fontWeight: "400",
+              color: '#0362F0',
+              fontSize: '14px',
+              lineHeight: '18px',
+              fontWeight: '400',
               mt: 2,
               mb: 1,
               mx: 2,
-              width: "50%",
+              width: '50%',
               p: 0,
             }}
           >
-            {t["waiting for signature"]}
+            {t['waiting for signature']}
           </Button>
 
           <Button
             sx={{
               // mx: 2,
-              display: "flex",
-              textAlign: "left",
-              textTransform: "none",
+              display: 'flex',
+              textAlign: 'left',
+              textTransform: 'none',
               p: 0,
               mb: 2,
             }}
@@ -515,10 +522,10 @@ function ContractPdfModal({
             <Typography
               variant="p"
               sx={{
-                color: "#1A1859",
-                fontSize: "16px",
-                lineHeight: "16px",
-                fontWeight: "400",
+                color: '#1A1859',
+                fontSize: '16px',
+                lineHeight: '16px',
+                fontWeight: '400',
                 ml: 0.5,
               }}
             >
@@ -531,28 +538,28 @@ function ContractPdfModal({
             <Typography
               variant="p"
               sx={{
-                color: "#000F1A",
-                fontSize: "16px",
-                lineHeight: "22px",
-                fontWeight: "400",
+                color: '#000F1A',
+                fontSize: '16px',
+                lineHeight: '22px',
+                fontWeight: '400',
               }}
             >
-              {t["Include signers"]}:
+              {t['Include signers']}:
             </Typography>
-            {session?.user?.role === "admin" && (
+            {session?.user?.role === 'admin' && (
               <form onSubmit={handleSubmit(onSubmit)}>
                 <Controller
                   name="name"
                   control={control}
-                  defaultValue={""}
+                  defaultValue={''}
                   render={({ field }) => (
                     <BaseTextField
-                      size={"medium"}
-                      placeholder={t["Name"]}
+                      size={'medium'}
+                      placeholder={t['Name']}
                       onChange={(e) => {
-                        field.onChange(e.target.value);
+                        field.onChange(e.target.value)
                       }}
-                      name={"name"}
+                      name={'name'}
                       value={field.value}
                     />
                   )}
@@ -560,22 +567,22 @@ function ContractPdfModal({
                 <Typography
                   variant="inherit"
                   color="textSecondary"
-                  sx={{ color: "#b91c1c", mt: 0.5 }}
+                  sx={{ color: '#b91c1c', mt: 0.5 }}
                 >
                   {errors.name?.message}
                 </Typography>
                 <Controller
                   name="details"
                   control={control}
-                  defaultValue={""}
+                  defaultValue={''}
                   render={({ field }) => (
                     <BaseTextField
-                      size={"medium"}
-                      placeholder={t["Email"]}
+                      size={'medium'}
+                      placeholder={t['Email']}
                       onChange={(e) => {
-                        field.onChange(e.target.value);
+                        field.onChange(e.target.value)
                       }}
-                      name={"details"}
+                      name={'details'}
                       value={field.value}
                     />
                   )}
@@ -583,7 +590,7 @@ function ContractPdfModal({
                 <Typography
                   variant="inherit"
                   color="textSecondary"
-                  sx={{ color: "#b91c1c", mt: 0.5 }}
+                  sx={{ color: '#b91c1c', mt: 0.5 }}
                 >
                   {errors.details?.message}
                 </Typography>
@@ -593,26 +600,26 @@ function ContractPdfModal({
                   type="submit"
                   sx={{
                     mt: 1.5,
-                    background: "#7450F0",
-                    borderRadius: "4px",
-                    color: "#ffffff",
-                    textTransform: "none",
-                    fontSize: "16px",
-                    lineHeight: "22px",
-                    fontWeight: "600",
-                    "&:hover": {
-                      background: "#7450F0",
-                      borderRadius: "4px",
-                      color: "#ffffff",
-                      textTransform: "none",
-                      fontSize: "16px",
-                      lineHeight: "22px",
-                      fontWeight: "600",
+                    background: '#7450F0',
+                    borderRadius: '4px',
+                    color: '#ffffff',
+                    textTransform: 'none',
+                    fontSize: '16px',
+                    lineHeight: '22px',
+                    fontWeight: '600',
+                    '&:hover': {
+                      background: '#7450F0',
+                      borderRadius: '4px',
+                      color: '#ffffff',
+                      textTransform: 'none',
+                      fontSize: '16px',
+                      lineHeight: '22px',
+                      fontWeight: '600',
                     },
                   }}
                 >
                   {loading && <CircularProgress size={22} color="inherit" />}
-                  {!loading && "Add signatories"}
+                  {!loading && 'Add signatories'}
                 </Button>
               </form>
             )}
@@ -629,10 +636,10 @@ function ContractPdfModal({
                   <Typography
                     variant="h1"
                     sx={{
-                      color: "#1A1859",
-                      fontWeight: "400",
-                      fontSize: "16px",
-                      lineHeight: "22px",
+                      color: '#1A1859',
+                      fontWeight: '400',
+                      fontSize: '16px',
+                      lineHeight: '22px',
                     }}
                   >
                     {data?.name}
@@ -640,10 +647,10 @@ function ContractPdfModal({
                   <Typography
                     variant="h1"
                     sx={{
-                      color: "#6C7A84",
-                      fontWeight: "400",
-                      fontSize: "16px",
-                      lineHeight: "22px",
+                      color: '#6C7A84',
+                      fontWeight: '400',
+                      fontSize: '16px',
+                      lineHeight: '22px',
                     }}
                   >
                     {data?.details}
@@ -654,24 +661,18 @@ function ContractPdfModal({
                         <Switch
                           // defaultChecked
                           disabled={
-                            session?.user?.role === "broker" ? true : false
+                            session?.user?.role === 'broker' ? true : false
                           }
-                          checked={
-                            data?.is_signed === 0
-                              ? false
-                              : data?.is_signed === 1
-                              ? true
-                              : false
-                          }
+                          checked={data?.is_signed}
                           sx={{
-                            "& .MuiSwitch-switchBase.Mui-checked": {
-                              color: "#34BE84",
+                            '& .MuiSwitch-switchBase.Mui-checked': {
+                              color: '#34BE84',
                             },
                             // "& ."
                           }}
                         />
                       }
-                      label={data?.is_signed === 0 ? "Unsigned" : "signed"}
+                      label={data?.is_signed === 0 ? 'Unsigned' : 'signed'}
                       onChange={() => handleSwitchChange(data)}
                     />
                   </FormGroup>
@@ -683,7 +684,7 @@ function ContractPdfModal({
         </Drawer>
       </Box>
     </Box>
-  );
+  )
 }
 
-export default ContractPdfModal;
+export default ContractPdfModal

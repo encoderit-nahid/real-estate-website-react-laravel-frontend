@@ -551,6 +551,9 @@ function PersonalData({
                   size={"small"}
                   type={"number"}
                   placeholder={t["CRECI Number"]}
+                  inputProps={{
+                    autoComplete: 'off'
+                  }}
                   onChange={(e) => {
                     field.onChange(e.target.value);
                   }}
