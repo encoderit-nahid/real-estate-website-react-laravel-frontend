@@ -144,52 +144,7 @@ export default function Brokers({ language }) {
               )}
             </Tabs>
           </Box>
-          <Box sx={{ mt: 2 }}>
-            <Grid container spacing={2}>
-              <Grid item xs={10}>
-                <TextField
-                  variant="outlined"
-                  placeholder="Search by business name or address..."
-                  size="small"
-                  fullWidth
-                  InputProps={{
-                    endAdornment: (
-                      <InputAdornment position="end">
-                        <IconButton
-                          edge="end"
-                          aria-label="Search by business name or address..."
-                        >
-                          <SearchIcon />
-                        </IconButton>
-                      </InputAdornment>
-                    ),
-                  }}
-                />
-              </Grid>
-              <Grid item xs={2}>
-                <Button
-                  variant="outlined"
-                  fullWidth
-                  sx={{
-                    fontSize: "16px",
-                    fontWeight: "600",
-                    lineHeight: "22px",
-                    color: "#002152",
-                    textTransform: "none",
-                    borderColor: "#002152",
-                    px: 2,
-                    py: 1,
-                    "&:hover": {
-                      color: "#002152",
-                      borderColor: "#002152",
-                    },
-                  }}
-                >
-                  {t["filter"]}
-                </Button>
-              </Grid>
-            </Grid>
-          </Box>
+      
 
           <TabPanel value={value} index={0}>
             {/* <Pendants /> */}
