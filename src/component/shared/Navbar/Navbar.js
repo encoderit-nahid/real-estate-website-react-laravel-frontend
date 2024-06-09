@@ -130,7 +130,7 @@ function Navbar({
         backgroundColor: "transparent",
         color: "#1A1859",
         boxShadow: "none",
-        paddingRight: 10,
+        // paddingRight: 10,
 
         paddingY: paddingY,
       }}
@@ -247,40 +247,15 @@ function Navbar({
                   cursor: "pointer",
                 }}
               >
-                <Image src={logoIcon} height={25} width={100} alt="logo" />
+                <Image
+                  src={logoIconColored}
+                  height={25}
+                  width={100}
+                  alt="logo"
+                />
               </a>
             </Link>
           </Grid>
-          {/* <AdbIcon sx={{ display: { xs: "flex", md: "none" }, mr: 1 }} />
-          <Typography
-            variant="h5"
-            noWrap
-            component="a"
-            href=""
-            sx={{
-              mr: 2,
-              display: { xs: "flex", md: "none" },
-              flexGrow: 1,
-              fontFamily: "monospace",
-              fontWeight: 700,
-              letterSpacing: ".3rem",
-              color: "inherit",
-              textDecoration: "none",
-            }}
-          >
-            LOGO
-          </Typography> */}
-          {/* <Box sx={{ flexGrow: 1, display: { xs: "none", md: "flex" } }}>
-            {pages.map((page) => (
-              <Button
-                key={page}
-                onClick={handleCloseNavMenu}
-                sx={{ my: 2, color: "white", display: "block" }}
-              >
-                {page}
-              </Button>
-            ))}
-          </Box> */}
 
           <Grid
             container
