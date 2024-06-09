@@ -97,11 +97,11 @@ function LoginModal({ handleLoginClose, myValue }) {
   const handleChangeAccordion = (panel) => (event, isExpanded) => {
     setExpanded(isExpanded ? panel : false);
   };
-  const handleSocialLogin = (provider, user_type) => {
-    SetCookie(
-      "role_id",
-      user_type === "broker" ? 2 : user_type === "owner" ? 3 : 4
-    );
+  const handleSocialLogin = (provider) => {
+    // SetCookie(
+    //   "role_id",
+    //   user_type === "broker" ? 2 : user_type === "owner" ? 3 : 4
+    // );
     window.location.replace(`${_baseURL}/api/redirect/${provider}`);
   };
   const onSubmit = async (data) => {
@@ -378,10 +378,103 @@ function LoginModal({ handleLoginClose, myValue }) {
               {t["I forgot the password"]}
             </Typography>
           </Grid>
+          <Grid
+            container
+            direction="row"
+            justifyContent="flex-start"
+            alignItems="flex-start"
+            sx={{ mt: 3, mb: 1 }}
+          >
+            <Button
+              sx={{
+                display: "flex",
+                background: "#DC4C3F",
+                borderRadius: "4px",
+                textTransform: "none",
+                px: 2,
+                py: 1,
+                width: "100%",
+                "&:hover": {
+                  background: "#DC4C3F",
+                  borderRadius: "4px",
+                  textTransform: "none",
+                  px: 2,
+                  py: 1,
+                  width: "100%",
+                },
+              }}
+              onClick={() => handleSocialLogin("google")}
+            >
+              <GoogleIcon sx={{ color: "#ffffff" }} />
+              <Typography
+                sx={{
+                  color: "#ffffff",
+                  fontSize: {
+                    xs: "12px",
+                    sm: "12px",
+                    md: "12px",
+                    lg: "12px",
+                    xl: "12px",
+                    xxl: "14px",
+                  },
+                  lineHeight: "17px",
+                  fontWeight: "400",
+                }}
+              >
+                Login with Gmail
+              </Typography>
+            </Button>
+          </Grid>
+          <Grid
+            container
+            direction="row"
+            justifyContent="flex-start"
+            alignItems="flex-start"
+            sx={{ mt: 3, mb: 1 }}
+          >
+            <Button
+              sx={{
+                display: "flex",
+                background: "#4469B0",
+                borderRadius: "4px",
+                textTransform: "none",
+                px: 2,
+                py: 1,
+                width: "100%",
+                "&:hover": {
+                  background: "#4469B0",
+                  borderRadius: "4px",
+                  textTransform: "none",
+                  px: 2,
+                  py: 1,
+                  width: "100%",
+                },
+              }}
+              onClick={() => handleSocialLogin("facebook")}
+            >
+              <FacebookOutlinedIcon sx={{ color: "#ffffff" }} />
+              <Typography
+                sx={{
+                  color: "#ffffff",
+                  fontSize: {
+                    xs: "12px",
+                    sm: "12px",
+                    md: "12px",
+                    lg: "12px",
+                    xl: "12px",
+                    xxl: "14px",
+                  },
+                  lineHeight: "17px",
+                  fontWeight: "400",
+                }}
+              >
+                Login with Facebook
+              </Typography>
+            </Button>
+          </Grid>
         </Grid>
         {/* <Box sx={{ borderTop: "2px dashed #D3D3DF", mt: 3 }} /> */}
-
-        <Accordion
+        {/* <Accordion
           expanded={expanded === "panel1"}
           onChange={handleChangeAccordion("panel1")}
           sx={{
@@ -658,7 +751,7 @@ function LoginModal({ handleLoginClose, myValue }) {
               </Button>
             </Stack>
           </AccordionDetails>
-        </Accordion>
+        </Accordion> */}
       </form>
       <Snackbar
         open={snackbarOpen}
