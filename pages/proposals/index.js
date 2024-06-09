@@ -41,7 +41,6 @@ import NotificationContent from "@/component/notificationContent/NotificationCon
 import { useGetProposalCountQuery } from "@/queries/useGetProposalCountQuery";
 import useParams from "@/hooks/useParams";
 import { omitEmpties } from "@/api";
-import CloseIcon from "@mui/icons-material/Close";
 import { useForm, Controller } from "react-hook-form";
 import SearchIcon from "@mui/icons-material/Search";
 import BaseOutlinedCurrencyInput from "@/component/reuseable/baseOutlinedCurrencyInput/BaseOutlinedCurrencyInput";
@@ -50,6 +49,7 @@ import FilterAltOutlinedIcon from "@mui/icons-material/FilterAltOutlined";
 import { findPropertyTypeData } from "@/redux/propertyType/actions";
 import { findFeatureData } from "@/redux/features/actions";
 import { useQueryClient } from "@tanstack/react-query";
+import BaseCloseButton from "@/component/reuseable/baseCloseButton/BaseCloseButton";
 
 const drawerWidth = 240;
 
@@ -264,10 +264,8 @@ export default function Proposals({ language }) {
           >
             {t["filters"]}
           </Typography>
-          <CloseIcon
-            onClick={toggleDrawer(anchor, false)}
-            sx={{ cursor: "pointer" }}
-          />
+          <BaseCloseButton handleClose={toggleDrawer(anchor, false)}/>
+        
         </Grid>
 
         <Box sx={{ mx: 2, mt: 3 }}>

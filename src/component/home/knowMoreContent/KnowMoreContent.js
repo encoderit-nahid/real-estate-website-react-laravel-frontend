@@ -7,12 +7,11 @@ import technologyImage from "../../../../public/Images/track.png";
 import clientsImage from "../../../../public/Images/clients.png";
 import colaborateImage from "../../../../public/Images/colaborate.png";
 import earnImage from "../../../../public/Images/fast.png";
-
 import Link from "next/link";
-import CloseIcon from "@mui/icons-material/Close";
 import en from "locales/en";
 import pt from "locales/pt";
 import BaseButton from "@/component/reuseable/button/BaseButton";
+import BaseCloseButton from "@/component/reuseable/baseCloseButton/BaseCloseButton";
 
 function KnowMoreContent({ handleClose, languageName, buttonName, href }) {
   const style = {
@@ -77,7 +76,7 @@ function KnowMoreContent({ handleClose, languageName, buttonName, href }) {
           >
             Quero comprar
           </Typography>
-          <CloseIcon sx={{ cursor: "pointer" }} onClick={handleClose} />
+          <BaseCloseButton handleClose={handleClose}/>
         </Grid>
         <Grid container spacing={4} sx={{ pt: 2 }}>
           {brokerData?.map((data, index) => (

@@ -96,7 +96,6 @@ export default function ResetPassword({ languageName }) {
             callbackUrl: "/my-properties",
           });
         }
-        //
       } else {
         const errors = errorToken?.response?.data?.errors ?? {};
         Object.entries(errors).forEach(([name, messages]) => {

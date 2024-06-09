@@ -17,7 +17,6 @@ import PermIdentityOutlinedIcon from "@mui/icons-material/PermIdentityOutlined";
 import EmailOutlinedIcon from "@mui/icons-material/EmailOutlined";
 import PhoneEnabledOutlinedIcon from "@mui/icons-material/PhoneEnabledOutlined";
 import AssignmentOutlinedIcon from "@mui/icons-material/AssignmentOutlined";
-import CloseIcon from "@mui/icons-material/Close";
 import Image from "next/image";
 import { useState } from "react";
 import dayjs from "dayjs";
@@ -25,6 +24,7 @@ import pt from "locales/pt";
 import en from "locales/en";
 import { _imageURL } from "consts";
 import Link from "next/link";
+import BaseCloseButton from "@/component/reuseable/baseCloseButton/BaseCloseButton";
 
 function TabRegisteredCard({ brokerInfo, languageName }) {
   const t = languageName === "en" ? en : pt;
@@ -76,7 +76,7 @@ function TabRegisteredCard({ brokerInfo, languageName }) {
         >
           {t["Brokers"]}
         </Typography>
-        <CloseIcon onClick={toggleDrawer(anchor, false)} />
+        <BaseCloseButton handleClose={toggleDrawer(anchor, false)}/>
       </Grid>
       <Box
         sx={{

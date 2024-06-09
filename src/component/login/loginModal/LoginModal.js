@@ -10,78 +10,77 @@ import {
   Snackbar,
   Tooltip,
   Typography,
-} from "@mui/material";
-import loginImage from "../../../../public/Images/login.png";
-import React from "react";
-import SetCookie from "@/hooks/setCookie";
-import { _baseURL } from "consts";
+} from '@mui/material'
+import loginImage from '../../../../public/Images/login.png'
+import React from 'react'
+import SetCookie from '@/hooks/setCookie'
+import { _baseURL } from 'consts'
 
-import Image from "next/image";
-import BaseButton from "../../reuseable/button/BaseButton";
-import Link from "next/link";
-import { useState } from "react";
-import BaseTextField from "../../reuseable/baseTextField/BaseTextField";
-import { useForm, Controller } from "react-hook-form";
-import { yupResolver } from "@hookform/resolvers/yup";
-import * as Yup from "yup";
-import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
-import NoEncryptionOutlinedIcon from "@mui/icons-material/NoEncryptionOutlined";
-import axios from "axios";
-import { signIn } from "next-auth/react";
-import { loginApi, userDetailsApi } from "../../../api";
-import { useRouter } from "next/router";
-import BaseModal from "../../reuseable/baseModal/BaseModal";
-import ForgotPasswordModal from "../../forgotPassword/ForgotPasswordModal";
-import CloseIcon from "@mui/icons-material/Close";
-import en from "locales/en";
-import pt from "locales/pt";
+import Image from 'next/image'
+import BaseButton from '../../reuseable/button/BaseButton'
+import Link from 'next/link'
+import { useState } from 'react'
+import BaseTextField from '../../reuseable/baseTextField/BaseTextField'
+import { useForm, Controller } from 'react-hook-form'
+import { yupResolver } from '@hookform/resolvers/yup'
+import * as Yup from 'yup'
+import LockOutlinedIcon from '@mui/icons-material/LockOutlined'
+import NoEncryptionOutlinedIcon from '@mui/icons-material/NoEncryptionOutlined'
+import axios from 'axios'
+import { signIn } from 'next-auth/react'
+import { loginApi, userDetailsApi } from '../../../api'
+import { useRouter } from 'next/router'
+import BaseModal from '../../reuseable/baseModal/BaseModal'
+import ForgotPasswordModal from '../../forgotPassword/ForgotPasswordModal'
+import en from 'locales/en'
+import pt from 'locales/pt'
 
-import Accordion from "@mui/material/Accordion";
-import AccordionDetails from "@mui/material/AccordionDetails";
-import AccordionSummary from "@mui/material/AccordionSummary";
+import Accordion from '@mui/material/Accordion'
+import AccordionDetails from '@mui/material/AccordionDetails'
+import AccordionSummary from '@mui/material/AccordionSummary'
 // import Typography from "@mui/material/Typography";
-import GoogleIcon from "@mui/icons-material/Google";
-import FacebookOutlinedIcon from "@mui/icons-material/FacebookOutlined";
-import CloseOutlinedIcon from "@mui/icons-material/CloseOutlined";
+import GoogleIcon from '@mui/icons-material/Google'
+import FacebookOutlinedIcon from '@mui/icons-material/FacebookOutlined'
 
-import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
+import ExpandMoreIcon from '@mui/icons-material/ExpandMore'
+import BaseCloseButton from '@/component/reuseable/baseCloseButton/BaseCloseButton'
 
 function LoginModal({ handleLoginClose, myValue }) {
-  const t = myValue === "en" ? en : pt;
+  const t = myValue === 'en' ? en : pt
 
   const validationSchema = Yup.object().shape({
     email: Yup.string()
-      .required(t["Email is required"])
-      .matches(/.+@.+\.[A-Za-z]+$/, t["Email is invalid"]),
+      .required(t['Email is required'])
+      .matches(/.+@.+\.[A-Za-z]+$/, t['Email is invalid']),
     password: Yup.string()
-      .required(t["Password is required"])
-      .min(6, t["Password must be at least 6 characters"])
-      .max(40, t["Password must not exceed 40 characters"]),
-  });
-  const [validEmail, setValidEmail] = useState(false);
-  const [loading, setLoading] = useState(false);
-  const router = useRouter();
-  const [showPass, setShowPass] = useState(false);
+      .required(t['Password is required'])
+      .min(6, t['Password must be at least 6 characters'])
+      .max(40, t['Password must not exceed 40 characters']),
+  })
+  const [validEmail, setValidEmail] = useState(false)
+  const [loading, setLoading] = useState(false)
+  const router = useRouter()
+  const [showPass, setShowPass] = useState(false)
   const handleClickShowPassword = () => {
-    setShowPass(!showPass);
-  };
-  const [snackbarOpen, setSnackbarOpen] = React.useState(false);
-  const [message, setMessage] = useState("");
+    setShowPass(!showPass)
+  }
+  const [snackbarOpen, setSnackbarOpen] = React.useState(false)
+  const [message, setMessage] = useState('')
 
-  const [forgotOpen, setForgotOpen] = useState(false);
-  const handleForgotOpen = () => setForgotOpen(true);
-  const handleForgotClose = () => setForgotOpen(false);
+  const [forgotOpen, setForgotOpen] = useState(false)
+  const handleForgotOpen = () => setForgotOpen(true)
+  const handleForgotClose = () => setForgotOpen(false)
 
   const handleClickSnackbar = () => {
-    setSnackbarOpen(true);
-  };
+    setSnackbarOpen(true)
+  }
 
   const handleCloseSnackbar = (event, reason) => {
-    if (reason === "clickaway") {
-      return;
+    if (reason === 'clickaway') {
+      return
     }
-    setSnackbarOpen(false);
-  };
+    setSnackbarOpen(false)
+  }
 
   const {
     register,
@@ -91,29 +90,29 @@ function LoginModal({ handleLoginClose, myValue }) {
     formState: { errors },
   } = useForm({
     resolver: yupResolver(validationSchema),
-  });
-  const [expanded, setExpanded] = useState(false);
+  })
+  const [expanded, setExpanded] = useState(false)
   const handleChangeAccordion = (panel) => (event, isExpanded) => {
-    setExpanded(isExpanded ? panel : false);
-  };
+    setExpanded(isExpanded ? panel : false)
+  }
   const handleSocialLogin = (provider, user_type) => {
     SetCookie(
-      "role_id",
-      user_type === "broker" ? 2 : user_type === "owner" ? 3 : 4
-    );
-    window.location.replace(`${_baseURL}/api/redirect/${provider}`);
-  };
+      'role_id',
+      user_type === 'broker' ? 2 : user_type === 'owner' ? 3 : 4,
+    )
+    window.location.replace(`${_baseURL}/api/redirect/${provider}`)
+  }
   const onSubmit = async (data) => {
-    setLoading(true);
-    const [errorToken, responseToken] = await loginApi(data);
+    setLoading(true)
+    const [errorToken, responseToken] = await loginApi(data)
 
     if (!errorToken) {
-      localStorage.setItem("token", responseToken?.data?.token);
-      const [error, response] = await userDetailsApi();
-      setLoading(false);
+      localStorage.setItem('token', responseToken?.data?.token)
+      const [error, response] = await userDetailsApi()
+      setLoading(false)
 
       if (!error) {
-        signIn("credentials", {
+        signIn('credentials', {
           userId: response?.data?.user?.id,
           userEmail: response?.data?.user?.email,
           name: response?.data?.user?.name,
@@ -123,78 +122,44 @@ function LoginModal({ handleLoginClose, myValue }) {
           roleId: response?.data?.user?.roles[0]?.id,
           userImage: response?.data?.user?.attachments[0]?.file_path,
           wishList: response?.data?.wishlists,
-          callbackUrl: "/my-properties",
-        });
+          callbackUrl: '/my-properties',
+        })
       }
     } else {
-      handleClickSnackbar();
-      setLoading(false);
+      handleClickSnackbar()
+      setLoading(false)
 
-      setMessage(errorToken?.response?.data?.message);
+      setMessage(errorToken?.response?.data?.message)
     }
-  };
+  }
 
-  const allValues = watch();
+  const allValues = watch()
 
   return (
     <Box
       sx={{
-        position: "absolute",
-        top: "50%",
-        left: "50%",
+        position: 'absolute',
+        top: '50%',
+        left: '50%',
         // top:{xs:"80%"},
-        transform: "translate(-50%, -50%)",
+        transform: 'translate(-50%, -50%)',
         // width: { xs: "80%", sm: "80%", md: "60%", lg: "35%", xl: "25%" },
         // m: 1,
-        width: "100%",
-        maxWidth: { xs: "350px", sm: "450px", md: "500px", lg: "550px" },
-        bgcolor: "#ffffff",
+        width: '100%',
+        maxWidth: { xs: '350px', sm: '450px', md: '500px', lg: '550px' },
+        bgcolor: '#ffffff',
         // border: "2px solid #000",
-        boxShadow: "none",
-        borderRadius: "12px",
-        maxHeight: "85vh",
-        overflowY: "scroll",
+        boxShadow: 'none',
+        borderRadius: '12px',
+        maxHeight: '85vh',
+        overflowY: 'scroll',
         px: 0,
         pt: 4,
         pb: 6,
-        position: "relative",
+        position: 'relative',
       }}
     >
-      {/* <CloseIcon
-        onClick={handleLoginClose}
-        sx={{
-          cursor: "pointer",
-          position: "absolute",
-          color: "#ffffff",
-          // p: 1,
-          fontSize: "22px",
-          top: 10,
-          right: 10,
-          borderRadius: 111,
-          bgcolor: "#ff1717",
-          "&:hover": {
-            bgcolor: "#FF0000",
-          },
-        }}
-      /> */}
-      <IconButton
-        sx={{
-          top: 8,
-          right: 8,
-          width: 40,
-          height: 40,
-          position: "absolute",
-          bgcolor: "#FFEBEE",
-          ":hover": {
-            color: "red",
-            bgcolor: "#FFCDD2",
-          },
-        }}
-        onClick={handleLoginClose}
-      >
-        <CloseOutlinedIcon />
-      </IconButton>
-
+      <BaseCloseButton handleClose={handleLoginClose} />
       <form onSubmit={handleSubmit(onSubmit)}>
         <Grid
           container
@@ -206,13 +171,13 @@ function LoginModal({ handleLoginClose, myValue }) {
           <Typography
             variant="p"
             sx={{
-              fontSize: "18px",
-              fontWeight: "700",
-              lineHeight: "22px",
-              color: "#1A1859",
+              fontSize: '18px',
+              fontWeight: '700',
+              lineHeight: '22px',
+              color: '#1A1859',
             }}
           >
-            {t["Already have registration?"]}
+            {t['Already have registration?']}
           </Typography>
 
           <Grid
@@ -225,13 +190,13 @@ function LoginModal({ handleLoginClose, myValue }) {
             <Typography
               variant="p"
               sx={{
-                color: "#253858",
-                fontSize: "14px",
-                fontWeight: "400",
-                lineHeight: "16px",
+                color: '#253858',
+                fontSize: '14px',
+                fontWeight: '400',
+                lineHeight: '16px',
               }}
             >
-              {t["Email"]}
+              {t['Email']}
             </Typography>
           </Grid>
           <Controller
@@ -239,22 +204,22 @@ function LoginModal({ handleLoginClose, myValue }) {
             control={control}
             render={({ field }) => (
               <BaseTextField
-                size={"small"}
-                placeholder={"Email"}
+                size={'small'}
+                placeholder={'Email'}
                 onChange={(e) => {
                   if (/.+@.+\.[A-Za-z]+$/.test(e.target.value)) {
-                    setValidEmail(false);
+                    setValidEmail(false)
                   } else {
-                    setValidEmail(true);
+                    setValidEmail(true)
                   }
-                  field.onChange(e.target.value);
+                  field.onChange(e.target.value)
                 }}
-                name={"email"}
+                name={'email'}
                 // value={field.value}
                 sx={{
-                  "& .MuiOutlinedInput-root": {
-                    "&.Mui-focused fieldset": {
-                      borderColor: `${validEmail ? "#dc2626" : ""}`,
+                  '& .MuiOutlinedInput-root': {
+                    '&.Mui-focused fieldset': {
+                      borderColor: `${validEmail ? '#dc2626' : ''}`,
                     },
                   },
 
@@ -280,13 +245,13 @@ function LoginModal({ handleLoginClose, myValue }) {
             <Typography
               variant="p"
               sx={{
-                color: "#253858",
-                fontSize: "14px",
-                fontWeight: "400",
-                lineHeight: "16px",
+                color: '#253858',
+                fontSize: '14px',
+                fontWeight: '400',
+                lineHeight: '16px',
               }}
             >
-              {t["Password"]}
+              {t['Password']}
             </Typography>
           </Grid>
           <Controller
@@ -294,20 +259,20 @@ function LoginModal({ handleLoginClose, myValue }) {
             control={control}
             render={({ field }) => (
               <BaseTextField
-                size={"small"}
-                placeholder={t["Password"]}
-                type={showPass ? "text" : "password"}
-                name={"password"}
+                size={'small'}
+                placeholder={t['Password']}
+                type={showPass ? 'text' : 'password'}
+                name={'password'}
                 // {...field}
                 onChange={(e) => {
-                  field.onChange(e.target.value);
+                  field.onChange(e.target.value)
                 }}
                 // value={field.value}
                 error={errors.password ? true : false}
                 InputProps={{
                   endAdornment: (
                     <InputAdornment
-                      sx={{ cursor: "pointer" }}
+                      sx={{ cursor: 'pointer' }}
                       position="end"
                       onClick={handleClickShowPassword}
                     >
@@ -339,19 +304,19 @@ function LoginModal({ handleLoginClose, myValue }) {
             fullWidth
             sx={{
               background:
-                "linear-gradient(270deg, #1DEECB 1.2%, #00C1B4 98.7%)",
-              boxShadow: "0px 4px 34px rgba(0, 0, 0, 0.08)",
-              borderRadius: "4px",
-              color: "#ffffff",
-              fontSize: "16px",
-              lineHeight: "22px",
-              fontWeight: "600",
+                'linear-gradient(270deg, #1DEECB 1.2%, #00C1B4 98.7%)',
+              boxShadow: '0px 4px 34px rgba(0, 0, 0, 0.08)',
+              borderRadius: '4px',
+              color: '#ffffff',
+              fontSize: '16px',
+              lineHeight: '22px',
+              fontWeight: '600',
               mt: 3,
-              textTransform: "none",
+              textTransform: 'none',
             }}
           >
             {loading && <CircularProgress size={22} color="inherit" />}
-            {!loading && t["To enter"]}
+            {!loading && t['To enter']}
           </Button>
           {/* </a>
           </Link> */}
@@ -367,29 +332,29 @@ function LoginModal({ handleLoginClose, myValue }) {
             <Typography
               variant="p"
               sx={{
-                color: "#0E97F7",
-                fontSize: "12px",
-                fontWeight: "600",
-                lineHeight: "16px",
-                cursor: "pointer",
+                color: '#0E97F7',
+                fontSize: '12px',
+                fontWeight: '600',
+                lineHeight: '16px',
+                cursor: 'pointer',
               }}
             >
-              {t["I forgot the password"]}
+              {t['I forgot the password']}
             </Typography>
           </Grid>
         </Grid>
         {/* <Box sx={{ borderTop: "2px dashed #D3D3DF", mt: 3 }} /> */}
 
         <Accordion
-          expanded={expanded === "panel1"}
-          onChange={handleChangeAccordion("panel1")}
+          expanded={expanded === 'panel1'}
+          onChange={handleChangeAccordion('panel1')}
           sx={{
-            border: "none",
-            boxShadow: "none",
-            outline: "none",
-            margin: "0",
-            "&:before": { display: "none" },
-            "&.MuiAccordion-root": { margin: "0" },
+            border: 'none',
+            boxShadow: 'none',
+            outline: 'none',
+            margin: '0',
+            '&:before': { display: 'none' },
+            '&.MuiAccordion-root': { margin: '0' },
           }}
         >
           <AccordionSummary
@@ -397,45 +362,45 @@ function LoginModal({ handleLoginClose, myValue }) {
             aria-controls="panel1bh-content"
             id="panel1bh-header"
             sx={{
-              borderBottom: "none",
-              boxShadow: "none",
-              outline: "none",
-              margin: "0",
+              borderBottom: 'none',
+              boxShadow: 'none',
+              outline: 'none',
+              margin: '0',
             }}
           >
             <Button
               sx={{
-                display: "flex",
-                background: "#DC4C3F",
-                borderRadius: "4px",
-                textTransform: "none",
+                display: 'flex',
+                background: '#DC4C3F',
+                borderRadius: '4px',
+                textTransform: 'none',
                 px: 2,
                 py: 1,
-                width: "100%",
-                "&:hover": {
-                  background: "#DC4C3F",
-                  borderRadius: "4px",
-                  textTransform: "none",
+                width: '100%',
+                '&:hover': {
+                  background: '#DC4C3F',
+                  borderRadius: '4px',
+                  textTransform: 'none',
                   px: 2,
                   py: 1,
-                  width: "100%",
+                  width: '100%',
                 },
               }}
             >
-              <GoogleIcon sx={{ color: "#ffffff" }} />
+              <GoogleIcon sx={{ color: '#ffffff' }} />
               <Typography
                 sx={{
-                  color: "#ffffff",
+                  color: '#ffffff',
                   fontSize: {
-                    xs: "12px",
-                    sm: "12px",
-                    md: "12px",
-                    lg: "12px",
-                    xl: "12px",
-                    xxl: "14px",
+                    xs: '12px',
+                    sm: '12px',
+                    md: '12px',
+                    lg: '12px',
+                    xl: '12px',
+                    xxl: '14px',
                   },
-                  lineHeight: "17px",
-                  fontWeight: "400",
+                  lineHeight: '17px',
+                  fontWeight: '400',
                 }}
               >
                 Login with Gmail
@@ -444,30 +409,30 @@ function LoginModal({ handleLoginClose, myValue }) {
           </AccordionSummary>
           <AccordionDetails
             sx={{
-              borderTop: "none",
-              boxShadow: "none",
-              outline: "none",
-              margin: "0",
+              borderTop: 'none',
+              boxShadow: 'none',
+              outline: 'none',
+              margin: '0',
             }}
           >
             <Button
               fullWidth
               sx={{
-                display: "flex",
-                border: "1px solid #DC4C3F",
+                display: 'flex',
+                border: '1px solid #DC4C3F',
 
-                borderRadius: "4px",
-                textTransform: "none",
+                borderRadius: '4px',
+                textTransform: 'none',
 
-                height: "40px",
+                height: '40px',
               }}
-              onClick={() => handleSocialLogin("google", "broker")}
+              onClick={() => handleSocialLogin('google', 'broker')}
             >
               <Typography
                 sx={{
-                  color: "#DC4C3F",
+                  color: '#DC4C3F',
 
-                  fontWeight: "600",
+                  fontWeight: '600',
                 }}
               >
                 Broker
@@ -476,20 +441,20 @@ function LoginModal({ handleLoginClose, myValue }) {
             <Button
               fullWidth
               sx={{
-                display: "flex",
-                border: "1px solid #DC4C3F",
-                borderRadius: "4px",
-                textTransform: "none",
+                display: 'flex',
+                border: '1px solid #DC4C3F',
+                borderRadius: '4px',
+                textTransform: 'none',
                 mt: 1,
-                height: "40px",
+                height: '40px',
               }}
-              onClick={() => handleSocialLogin("google", "owner")}
+              onClick={() => handleSocialLogin('google', 'owner')}
             >
               <Typography
                 sx={{
-                  color: "#DC4C3F",
+                  color: '#DC4C3F',
 
-                  fontWeight: "600",
+                  fontWeight: '600',
                 }}
               >
                 Owner
@@ -498,20 +463,20 @@ function LoginModal({ handleLoginClose, myValue }) {
             <Button
               fullWidth
               sx={{
-                display: "flex",
-                border: "1px solid #DC4C3F",
-                borderRadius: "4px",
-                textTransform: "none",
+                display: 'flex',
+                border: '1px solid #DC4C3F',
+                borderRadius: '4px',
+                textTransform: 'none',
                 mt: 1,
-                height: "40px",
+                height: '40px',
               }}
-              onClick={() => handleSocialLogin("google", "buyer")}
+              onClick={() => handleSocialLogin('google', 'buyer')}
             >
               <Typography
                 sx={{
-                  color: "#DC4C3F",
+                  color: '#DC4C3F',
 
-                  fontWeight: "600",
+                  fontWeight: '600',
                 }}
               >
                 Buyer
@@ -520,58 +485,58 @@ function LoginModal({ handleLoginClose, myValue }) {
           </AccordionDetails>
         </Accordion>
         <Accordion
-          expanded={expanded === "panel2"}
-          onChange={handleChangeAccordion("panel2")}
+          expanded={expanded === 'panel2'}
+          onChange={handleChangeAccordion('panel2')}
           sx={{
-            border: "none",
-            boxShadow: "none",
-            outline: "none",
-            "&:before": { display: "none" },
+            border: 'none',
+            boxShadow: 'none',
+            outline: 'none',
+            '&:before': { display: 'none' },
           }}
         >
           <AccordionSummary
             aria-controls="panel2bh-content"
             id="panel2bh-header"
             sx={{
-              borderBottom: "none",
-              boxShadow: "none",
-              outline: "none",
+              borderBottom: 'none',
+              boxShadow: 'none',
+              outline: 'none',
             }}
           >
             <Button
               sx={{
-                display: "flex",
-                background: "#4469B0",
-                borderRadius: "4px",
-                textTransform: "none",
+                display: 'flex',
+                background: '#4469B0',
+                borderRadius: '4px',
+                textTransform: 'none',
                 px: 2,
                 py: 1,
-                width: "100%",
-                "&:hover": {
-                  background: "#4469B0",
-                  borderRadius: "4px",
-                  textTransform: "none",
+                width: '100%',
+                '&:hover': {
+                  background: '#4469B0',
+                  borderRadius: '4px',
+                  textTransform: 'none',
                   px: 2,
                   py: 1,
-                  width: "100%",
+                  width: '100%',
                 },
               }}
               // onClick={() => handleSocialLogin("facebook")}
             >
-              <FacebookOutlinedIcon sx={{ color: "#ffffff" }} />
+              <FacebookOutlinedIcon sx={{ color: '#ffffff' }} />
               <Typography
                 sx={{
-                  color: "#ffffff",
+                  color: '#ffffff',
                   fontSize: {
-                    xs: "12px",
-                    sm: "12px",
-                    md: "12px",
-                    lg: "12px",
-                    xl: "12px",
-                    xxl: "14px",
+                    xs: '12px',
+                    sm: '12px',
+                    md: '12px',
+                    lg: '12px',
+                    xl: '12px',
+                    xxl: '14px',
                   },
-                  lineHeight: "17px",
-                  fontWeight: "400",
+                  lineHeight: '17px',
+                  fontWeight: '400',
                 }}
               >
                 Login with Facebook
@@ -580,29 +545,29 @@ function LoginModal({ handleLoginClose, myValue }) {
           </AccordionSummary>
           <AccordionDetails
             sx={{
-              borderTop: "none",
-              boxShadow: "none",
-              outline: "none",
+              borderTop: 'none',
+              boxShadow: 'none',
+              outline: 'none',
             }}
           >
             <Button
               fullWidth
               sx={{
-                display: "flex",
-                border: "1px solid #4469B0",
+                display: 'flex',
+                border: '1px solid #4469B0',
 
-                borderRadius: "4px",
-                textTransform: "none",
+                borderRadius: '4px',
+                textTransform: 'none',
 
-                height: "40px",
+                height: '40px',
               }}
-              onClick={() => handleSocialLogin("facebook", "broker")}
+              onClick={() => handleSocialLogin('facebook', 'broker')}
             >
               <Typography
                 sx={{
-                  color: "#4469B0",
+                  color: '#4469B0',
 
-                  fontWeight: "600",
+                  fontWeight: '600',
                 }}
               >
                 Broker
@@ -611,20 +576,20 @@ function LoginModal({ handleLoginClose, myValue }) {
             <Button
               fullWidth
               sx={{
-                display: "flex",
-                border: "1px solid #4469B0",
-                borderRadius: "4px",
-                textTransform: "none",
+                display: 'flex',
+                border: '1px solid #4469B0',
+                borderRadius: '4px',
+                textTransform: 'none',
                 mt: 1,
-                height: "40px",
+                height: '40px',
               }}
-              onClick={() => handleSocialLogin("facebook", "owner")}
+              onClick={() => handleSocialLogin('facebook', 'owner')}
             >
               <Typography
                 sx={{
-                  color: "#4469B0",
+                  color: '#4469B0',
 
-                  fontWeight: "600",
+                  fontWeight: '600',
                 }}
               >
                 Owner
@@ -633,20 +598,20 @@ function LoginModal({ handleLoginClose, myValue }) {
             <Button
               fullWidth
               sx={{
-                display: "flex",
-                border: "1px solid #4469B0",
-                borderRadius: "4px",
-                textTransform: "none",
+                display: 'flex',
+                border: '1px solid #4469B0',
+                borderRadius: '4px',
+                textTransform: 'none',
                 mt: 1,
-                height: "40px",
+                height: '40px',
               }}
-              onClick={() => handleSocialLogin("facebook", "buyer")}
+              onClick={() => handleSocialLogin('facebook', 'buyer')}
             >
               <Typography
                 sx={{
-                  color: "#4469B0",
+                  color: '#4469B0',
 
-                  fontWeight: "600",
+                  fontWeight: '600',
                 }}
               >
                 Buyer
@@ -660,15 +625,15 @@ function LoginModal({ handleLoginClose, myValue }) {
         autoHideDuration={6000}
         onClose={handleCloseSnackbar}
         anchorOrigin={{
-          vertical: "top",
-          horizontal: "right",
+          vertical: 'top',
+          horizontal: 'right',
         }}
-        key={"top"}
+        key={'top'}
       >
         <Alert
           onClose={handleCloseSnackbar}
           severity="error"
-          sx={{ width: "100%" }}
+          sx={{ width: '100%' }}
         >
           {message}
         </Alert>
@@ -684,7 +649,7 @@ function LoginModal({ handleLoginClose, myValue }) {
         </Tooltip>
       </BaseModal>
     </Box>
-  );
+  )
 }
 
-export default LoginModal;
+export default LoginModal

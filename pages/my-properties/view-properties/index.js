@@ -28,7 +28,6 @@ const BaseOutlinedCurrencyInput = dynamic(() =>
     "@/component/reuseable/baseOutlinedCurrencyInput/BaseOutlinedCurrencyInput"
   )
 );
-import CloseIcon from "@mui/icons-material/Close";
 import { getSession } from "next-auth/react";
 import { useDispatch, useSelector } from "react-redux";
 import { useRouter } from "next/router";
@@ -41,6 +40,7 @@ const SearchComponent = dynamic(() =>
 );
 import en from "locales/en";
 import pt from "locales/pt";
+import BaseCloseButton from "@/component/reuseable/baseCloseButton/BaseCloseButton";
 
 function valuetext(value) {
   return `${value}°C`;
@@ -339,7 +339,7 @@ export default function ViewProperties({
           >
             {t["filters"]}
           </Typography>
-          <CloseIcon onClick={toggleDrawer(anchor, false)} />
+          <BaseCloseButton handleClose={toggleDrawer(anchor, false)}/>
         </Grid>
 
         <Box sx={{ mx: 2, mt: 3 }}>

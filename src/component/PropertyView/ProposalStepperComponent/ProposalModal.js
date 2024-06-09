@@ -1,89 +1,89 @@
-import { Box, Button, Grid, TextareaAutosize, Typography } from "@mui/material";
-import React from "react";
-import CloseIcon from "@mui/icons-material/Close";
-import Stepper from "@mui/material/Stepper";
-import Step from "@mui/material/Step";
-import StepLabel from "@mui/material/StepLabel";
-import Image from "next/image";
-import proposeImage from "../../../../public/Images/proposal_modal.png";
-import ProposalStep from "../proposalStep/ProposalStep";
-import BuyerStep from "../BuyerStep/BuyerStep";
-import submitProposal from "../../../../public/Images/submit_proposal.png";
-import BaseStepper from "../../reuseable/baseStepper/BaseStepper";
-import en from "locales/en";
-import pt from "locales/pt";
+import { Box, Button, Grid, TextareaAutosize, Typography } from '@mui/material'
+import React from 'react'
+import Stepper from '@mui/material/Stepper'
+import Step from '@mui/material/Step'
+import StepLabel from '@mui/material/StepLabel'
+import Image from 'next/image'
+import proposeImage from '../../../../public/Images/proposal_modal.png'
+import ProposalStep from '../proposalStep/ProposalStep'
+import BuyerStep from '../BuyerStep/BuyerStep'
+import submitProposal from '../../../../public/Images/submit_proposal.png'
+import BaseStepper from '../../reuseable/baseStepper/BaseStepper'
+import en from 'locales/en'
+import pt from 'locales/pt'
+import BaseCloseButton from '@/component/reuseable/baseCloseButton/BaseCloseButton'
 
 function ProposalModal({
   handleProposalClose,
   singlePropertyId,
   languageName,
 }) {
-  const t = languageName === "en" ? en : pt;
+  const t = languageName === 'en' ? en : pt
 
-  const steps = [t["proposal values"]];
-  const [activeStep, setActiveStep] = React.useState(0);
-  const [skipped, setSkipped] = React.useState(new Set());
+  const steps = [t['proposal values']]
+  const [activeStep, setActiveStep] = React.useState(0)
+  const [skipped, setSkipped] = React.useState(new Set())
 
   const isStepOptional = (step) => {
-    return step === 1;
-  };
+    return step === 1
+  }
 
   const isStepSkipped = (step) => {
-    return skipped.has(step);
-  };
+    return skipped.has(step)
+  }
 
   const handleNext = () => {
-    let newSkipped = skipped;
+    let newSkipped = skipped
     if (isStepSkipped(activeStep)) {
-      newSkipped = new Set(newSkipped.values());
-      newSkipped.delete(activeStep);
+      newSkipped = new Set(newSkipped.values())
+      newSkipped.delete(activeStep)
     }
 
-    setActiveStep((prevActiveStep) => prevActiveStep + 1);
-    setSkipped(newSkipped);
-  };
+    setActiveStep((prevActiveStep) => prevActiveStep + 1)
+    setSkipped(newSkipped)
+  }
 
   const handleBack = () => {
-    setActiveStep((prevActiveStep) => prevActiveStep - 1);
-  };
+    setActiveStep((prevActiveStep) => prevActiveStep - 1)
+  }
 
   const handleSkip = () => {
     if (!isStepOptional(activeStep)) {
       // You probably want to guard against something like this,
       // it should never occur unless someone's actively trying to break something.
-      throw new Error("You can't skip a step that isn't optional.");
+      throw new Error("You can't skip a step that isn't optional.")
     }
 
-    setActiveStep((prevActiveStep) => prevActiveStep + 1);
+    setActiveStep((prevActiveStep) => prevActiveStep + 1)
     setSkipped((prevSkipped) => {
-      const newSkipped = new Set(prevSkipped.values());
-      newSkipped.add(activeStep);
-      return newSkipped;
-    });
-  };
+      const newSkipped = new Set(prevSkipped.values())
+      newSkipped.add(activeStep)
+      return newSkipped
+    })
+  }
 
   const handleReset = () => {
-    setActiveStep(0);
-  };
+    setActiveStep(0)
+  }
   const style = {
-    position: "absolute",
-    top: "50%",
-    left: "50%",
+    position: 'absolute',
+    top: '50%',
+    left: '50%',
     // top:{xs:"80%"},
-    transform: "translate(-50%, -50%)",
-    width: { xs: "80%", sm: "80%", md: "60%", lg: "35%", xl: "35%" },
-    bgcolor: "#ffffff",
+    transform: 'translate(-50%, -50%)',
+    width: { xs: '80%', sm: '80%', md: '60%', lg: '35%', xl: '35%' },
+    bgcolor: '#ffffff',
     // border: "2px solid #000",
-    boxShadow: "none",
-    borderRadius: "12px",
-    maxHeight: "70vh",
-    overflowY: "scroll",
+    boxShadow: 'none',
+    borderRadius: '12px',
+    maxHeight: '70vh',
+    overflowY: 'scroll',
     px: 3,
     py: 2,
-  };
+  }
   return (
     <Box sx={style}>
-      <Box sx={{ width: "100%" }}>
+      <Box sx={{ width: '100%' }}>
         {activeStep === 0 && (
           <Grid
             container
@@ -94,17 +94,15 @@ function ProposalModal({
             <Typography
               variant="p"
               sx={{
-                fontSize: "24px",
-                fontWeight: "700",
-                color: "#002152",
+                fontSize: '24px',
+                fontWeight: '700',
+                color: '#002152',
               }}
             >
-              {t["Proposal"]}
+              {t['Proposal']}
             </Typography>
 
-            <Button onClick={handleProposalClose}>
-              <CloseIcon sx={{ color: "#6C7A84" }} />
-            </Button>
+            <BaseCloseButton handleClose={handleProposalClose} />
           </Grid>
         )}
 
@@ -133,7 +131,7 @@ function ProposalModal({
             activeStep={activeStep}
             isStepSkipped={isStepSkipped}
             setActiveStep={setActiveStep}
-            marginTop={"2vh"}
+            marginTop={'2vh'}
           />
         )}
         {activeStep === steps.length ? (
@@ -157,10 +155,10 @@ function ProposalModal({
               <Typography
                 variant="p"
                 sx={{
-                  fontSize: "24px",
-                  fontWeight: "700",
-                  color: "#1A1859",
-                  lineHeight: "32px",
+                  fontSize: '24px',
+                  fontWeight: '700',
+                  color: '#1A1859',
+                  lineHeight: '32px',
                 }}
               >
                 proposta enviada com sucesso
@@ -172,16 +170,16 @@ function ProposalModal({
               sx={{
                 mt: 1,
                 py: 1,
-                background: "#DBE1E5",
-                color: "#1A1859",
-                fontSize: "16px",
-                fontWeight: "600",
-                lineHeight: "22px",
-                textTransform: "none",
+                background: '#DBE1E5',
+                color: '#1A1859',
+                fontSize: '16px',
+                fontWeight: '600',
+                lineHeight: '22px',
+                textTransform: 'none',
               }}
               onClick={handleProposalClose}
             >
-              {t["Close"]}
+              {t['Close']}
             </Button>
             {/* <Box sx={{ display: "flex", flexDirection: "row", pt: 2 }}>
               <Box sx={{ flex: "1 1 auto" }} />
@@ -204,11 +202,11 @@ function ProposalModal({
               container
               direction="row"
               justifyContent={{
-                xs: "flex-start",
-                sm: "flex-start",
-                md: "flex-start",
-                lg: "flex-end",
-                xl: "flex-end",
+                xs: 'flex-start',
+                sm: 'flex-start',
+                md: 'flex-start',
+                lg: 'flex-end',
+                xl: 'flex-end',
               }}
               alignItems="center"
               sx={{
@@ -293,7 +291,7 @@ function ProposalModal({
         )}
       </Box>
     </Box>
-  );
+  )
 }
 
-export default ProposalModal;
+export default ProposalModal

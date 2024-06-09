@@ -12,7 +12,6 @@ import PermIdentityOutlinedIcon from "@mui/icons-material/PermIdentityOutlined";
 import EmailOutlinedIcon from "@mui/icons-material/EmailOutlined";
 import PhoneEnabledOutlinedIcon from "@mui/icons-material/PhoneEnabledOutlined";
 import AssignmentOutlinedIcon from "@mui/icons-material/AssignmentOutlined";
-import CloseIcon from "@mui/icons-material/Close";
 import Image from "next/image";
 import { useDispatch } from "react-redux";
 import {
@@ -23,6 +22,7 @@ import dayjs from "dayjs";
 import { _baseURL, _imageURL } from "consts";
 import pt from "locales/pt";
 import en from "locales/en";
+import BaseCloseButton from "@/component/reuseable/baseCloseButton/BaseCloseButton";
 
 function TabpendantCard({ brokerInfo, languageName,brokerCountRefetch,brokerRefetch }) {
   const t = languageName === "en" ? en : pt;
@@ -92,7 +92,7 @@ function TabpendantCard({ brokerInfo, languageName,brokerCountRefetch,brokerRefe
         >
           {t["Brokers"]}
         </Typography>
-        <CloseIcon onClick={toggleDrawer(anchor, false)} />
+        <BaseCloseButton handleClose={toggleDrawer(anchor, false)}/>
       </Grid>
       <Box
         sx={{

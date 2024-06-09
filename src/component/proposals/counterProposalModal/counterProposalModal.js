@@ -19,7 +19,6 @@ import React from "react";
 import Image from "next/image";
 import BaseButton from "../../reuseable/button/BaseButton";
 import Link from "next/link";
-import CloseIcon from "@mui/icons-material/Close";
 import rentImage from "../../../../public/Images/rentImage.png";
 import avatar from "../../../../public/Images/AvatarPendant.png";
 import { useState } from "react";
@@ -34,6 +33,7 @@ import { useSession } from "next-auth/react";
 import { createProposalApi } from "../../../api";
 import en from "locales/en";
 import pt from "locales/pt";
+import BaseCloseButton from "@/component/reuseable/baseCloseButton/BaseCloseButton";
 
 const style = {
   position: "absolute",
@@ -137,7 +137,7 @@ function CounterProposalModal({
         >
           {t["Counter proposal"]}
         </Typography>
-        <CloseIcon onClick={handleCounterProposalClose} />
+        <BaseCloseButton handleClose={handleCounterProposalClose} />
       </Grid>
 
       <Box

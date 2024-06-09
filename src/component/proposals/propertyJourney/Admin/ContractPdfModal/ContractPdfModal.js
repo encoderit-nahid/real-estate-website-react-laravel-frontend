@@ -19,10 +19,8 @@ import {
 import React, { useEffect, useState } from 'react'
 import Image from 'next/image'
 import Link from 'next/link'
-import CloseIcon from '@mui/icons-material/Close'
 import logoIcon from '../../../../../../public/Images/logo.png'
 import { styled, useTheme } from '@mui/material/styles'
-
 import Drawer from '@mui/material/Drawer'
 import MuiAppBar from '@mui/material/AppBar'
 import Toolbar from '@mui/material/Toolbar'
@@ -56,6 +54,7 @@ import * as Yup from 'yup'
 import { useSession } from 'next-auth/react'
 import en from 'locales/en'
 import pt from 'locales/pt'
+import BaseCloseButton from '@/component/reuseable/baseCloseButton/BaseCloseButton'
 const PDFViewer = dynamic(
   () => import('../../../../reuseable/PDFComponent/pdf-viewer'),
   {
@@ -309,14 +308,7 @@ function ContractPdfModal({
               >
                 <Box sx={{ marginTop: 1, marginBottom: 1 }}>
                   <Image src={logoIcon} height={25} width={110} alt="logo" />
-                  <CloseIcon
-                    onClick={handleClose}
-                    sx={{
-                      color: '#1A1859',
-                      marginLeft: 10,
-                      marginTop: 0.5,
-                    }}
-                  />
+                  <BaseCloseButton handleClose={handleClose}/>
                 </Box>
 
                 <Button
@@ -426,9 +418,7 @@ function ContractPdfModal({
               >
                 {t['Details']}
               </Typography>
-              <IconButton onClick={handleDrawerClose}>
-                <CloseIcon />
-              </IconButton>
+              <BaseCloseButton/>
             </Grid>
             <Grid
               container
@@ -471,17 +461,7 @@ function ContractPdfModal({
               >
                 {t['Download']}
               </Button>
-              <CloseIcon
-                onClick={handleClose}
-                sx={{
-                  display: {
-                    xs: 'none',
-                    sm: 'none',
-                    md: 'none',
-                    lg: 'inline',
-                  },
-                }}
-              />
+              <BaseCloseButton handleClose={handleClose}/>
             </Grid>
           </DrawerHeader>
           <Divider />

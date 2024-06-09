@@ -23,7 +23,6 @@ import cardMedia from "../../../../public/Images/pendant.png";
 import rentImage from "../../../../public/Images/rentImage.png";
 import avatar from "../../../../public/Images/AvatarPendant.png";
 import Image from "next/image";
-import CloseIcon from "@mui/icons-material/Close";
 import Link from "next/link";
 import { useState } from "react";
 import BaseModal from "../../reuseable/baseModal/BaseModal";
@@ -38,6 +37,7 @@ import { proposalRefuseData } from "../../../redux/proposalRefuse/actions";
 import en from "locales/en";
 import pt from "locales/pt";
 import { useSession } from "next-auth/react";
+import BaseCloseButton from "@/component/reuseable/baseCloseButton/BaseCloseButton";
 
 const omitEmpties = (obj) => {
   return Object.entries(obj).reduce((carry, [key, value]) => {
@@ -135,7 +135,7 @@ function PendantsCard({ propertyData, languageName,refetch,loadingRefetch }) {
           >
             {t["Proposals"]}
           </Typography>
-          <CloseIcon />
+          <BaseCloseButton/>
         </Grid>
         <Box
           sx={{

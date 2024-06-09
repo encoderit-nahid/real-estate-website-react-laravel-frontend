@@ -1,8 +1,5 @@
 import React, { useEffect, useMemo } from "react";
-
 import { useState, useCallback } from "react";
-import mapIcon from "../../../../public/Images/mapIcon.png";
-
 import {
   GoogleMap,
   MarkerF,

@@ -12,7 +12,6 @@ import {
 } from "@mui/material";
 import accountIcon from "../../../../public/Images/account.png";
 import React, { useEffect, useState } from "react";
-import CloseIcon from "@mui/icons-material/Close";
 import Image from "next/image";
 import BaseOutlinedRgInput from "../../reuseable/baseOutlinedRgInput/BaseOutlinedRgInput";
 import BaseOutlinedCpfInput from "../../reuseable/baseOutlinedCpfInput/BaseOutlinedCpfInput";
@@ -40,6 +39,7 @@ import BaseButton from "@/component/reuseable/baseButton/BaseButton";
 // import useCurrentUser from "@/hooks/useCurrentUser";
 
 import useRequiredFieldsToDisableButton from "@/hooks/useRequiredFieldsToDisableButton";
+import BaseCloseButton from "@/component/reuseable/baseCloseButton/BaseCloseButton";
 
 function PersonalData({
   handleNext,
@@ -162,10 +162,7 @@ function PersonalData({
         >
           {t["Select broker"]}
         </Typography>
-        <CloseIcon
-          onClick={toggleDrawer("right", false)}
-          sx={{ cursor: "pointer" }}
-        />
+        <BaseCloseButton handleClose={toggleDrawer("right", false)}/>
       </Grid>
       <Box sx={{ px: 2, mt: 1 }}>
         <TextField
@@ -550,10 +547,9 @@ function PersonalData({
                 <BaseTextField
                   size={"small"}
                   type={"number"}
+                  autoComplete={"new-Text"}
                   placeholder={t["CRECI Number"]}
-                  inputProps={{
-                    autoComplete: 'off'
-                  }}
+                
                   onChange={(e) => {
                     field.onChange(e.target.value);
                   }}
