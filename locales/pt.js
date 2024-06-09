@@ -94,6 +94,11 @@ export default {
 
   Broker: "Corretor",
   profile: "Perfil",
+  "Physical person": "Pessoa física",
+  "Legal person": "Pessoa jurídica",
+  "State registration": "Inscrição estadual",
+  "Corporate reason": "Razão social",
+
   "Personal data": "Dados pessoais",
   Address: "Endereço",
   Performance: "Performance",
