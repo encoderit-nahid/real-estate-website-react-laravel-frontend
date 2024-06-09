@@ -1,21 +1,21 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { Controller } from "react-hook-form";
 import RichTextEditor from "react-rte";
 import en from "locales/en";
 import pt from "locales/pt";
 function BaseTextEditor({ control, name, allValues }) {
-  const [editorValue, setEditorValue] = useState(
-    RichTextEditor.createValueFromString(allValues?.description || "", "html")
-  );
+  const [editorValue, setEditorValue] = useState(RichTextEditor.createEmptyValue());
+  const [initialValueSet, setInitialValueSet] = useState(false);
   const [myValue, setMyValue] = useState("pt");
   const t = myValue === "en" ? en : pt;
 
-  // Update editorValue when allValues.description changes
-  // useEffect(() => {
-  //   setEditorValue(
-  //     RichTextEditor.createValueFromString(allValues?.description || "", "html")
-  //   );
-  // }, [allValues?.description]);
+  // Update editorValue when allValues.description changes, but only if not already set by the user
+  useEffect(() => {
+    if (!initialValueSet && allValues?.description) {
+      setEditorValue(RichTextEditor.createValueFromString(allValues.description, "html"));
+      setInitialValueSet(true);
+    }
+  }, [allValues?.description, initialValueSet]);
   return (
     <Controller
       name={name}
