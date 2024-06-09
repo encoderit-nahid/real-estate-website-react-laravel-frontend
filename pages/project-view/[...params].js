@@ -2,6 +2,8 @@ import dynamic from "next/dynamic";
 const Navbar = dynamic(() => import("@/component/shared/Navbar/Navbar"), {
   ssr: false,
 });
+import KeyboardBackspaceIcon from "@mui/icons-material/KeyboardBackspace";
+
 import Head from "next/head";
 import {
   Box,
@@ -167,8 +169,127 @@ export default function ProjectView({
           myValue={myValue}
           colorLogo={true}
         />
+        <Container maxWidth="xxl">
+          <Stack
+            sx={{
+              display: {
+                xs: "none",
+                md: "flex",
+              },
+            }}
+          >
+            <Button
+              color="inherit"
+              // disabled={activeStep === 0}
+              onClick={goBack}
+              sx={{
+                mr: 1,
+                border: "1px solid #38bdf8",
+                borderRadius: "4px",
+                px: 2,
+                py: 1,
+                my: 1,
+                color: "#38bdf8",
+                fontSize: "16px",
+                fontWeight: "600",
+                lineHeight: "22px",
+                textTransform: "none",
+                width: "fit-content",
+                ml: "auto",
+              }}
+            >
+              {t["come back"]}
+            </Button>
+          </Stack>
+
+          <Stack
+            direction="row"
+            justifyContent="space-between"
+            alignItems="center"
+            sx={{ mb: 2 }}
+          >
+            <Stack
+              direction={"row"}
+              // justifyContent={"center"}
+              alignItems="center"
+              spacing={2}
+            >
+              <Box
+                sx={{
+                  width: { xs: 25, lg: 40 },
+                  minWidth: 25,
+                  // height: { xs: 30, lg: 40 },
+                  // bgcolor: "red",
+                  display: "flex",
+                  justifyContent: "center",
+                }}
+              >
+                <Image
+                  src={orionImage}
+                  alt="orionImage"
+                  width={"100%"}
+                  height={"100%"}
+                  // style={{ flexShrink: 0 }}
+                />
+              </Box>
+              <Box
+              // sx={{
+              //   width: { xs: 25, lg: 40 },
+              //   minWidth: 25,
+              //   // height: { xs: 30, lg: 40 },
+              //   // bgcolor: "red",
+              //   display: "flex",
+              //   justifyContent: "center",
+              // }}
+              >
+                <Typography
+                  sx={{
+                    fontSize: {
+                      xs: "20px",
+                      sm: "22px",
+                      md: "26px",
+                      lg: "28px",
+                    },
+                    // bgcolor: "red",
+                    fontWeight: 700,
+                    lineHeight: "normal",
+                    color: "#1A1859",
+                    wordWrap: "break-word",
+                    wordBreak: "break-all",
+                    overflowWrap: "break-word",
+                    overflow: "hidden",
+                    textAlign: "left",
+                    pb: 1,
+                  }}
+                >
+                  {`${singleProjectData?.project?.name || "No title found"}`}
+                </Typography>
+              </Box>
+            </Stack>
+
+            <Stack
+              direction="row"
+              spacing={1}
+              sx={{
+                display: {
+                  xs: "none",
+                  md: "flex",
+                },
+              }}
+            >
+              <BaseShareButton
+                base_url={`https://www.lokkan.site/project-view/${id}`}
+              />
+              <BaseFavoriteButton
+                handleLoginOpen={handleLoginOpen}
+                itemID={id}
+                type="project"
+              />
+            </Stack>
+          </Stack>
+        </Container>
         <Box sx={{ ml: 3 }}>
-          <Grid
+          {/* <Grid
             container
             direction="row"
             justifyContent="flex-end"
@@ -213,7 +334,13 @@ export default function ProjectView({
                 color: "#1A1859",
               }}
             >
-              <Image src={orionImage} alt="orionImage" />
+              <Image
+                src={orionImage}
+                alt="orionImage"
+                // width={24}
+                // height={24}
+                // style={{ flexShrink: 0 }}
+              />
 
               <Typography
                 variant="p"
@@ -221,6 +348,11 @@ export default function ProjectView({
                   fontSize: { xs: "17px", sm: "17px", md: "17px", lg: "24px" },
                   fontWeight: 700,
                   color: "#1A1859",
+                  wordWrap: "break-word",
+                  wordBreak: "break-all",
+                  overflowWrap: "break-word",
+                  overflow: "hidden",
+                  textAlign: "left",
                 }}
               >
                 {`${singleProjectData?.project?.name || "No title found"}`}
@@ -246,16 +378,7 @@ export default function ProjectView({
                 type="project"
               />
             </Stack>
-          </Grid>
-          <Grid
-            container
-            direction="row"
-            justifyContent="flex-start"
-            alignItems="flex-start"
-            sx={{ marginTop: 1 }}
-          >
-            {/* <TabView /> */}
-          </Grid>
+          </Grid> */}
         </Box>
         <Box
           sx={{
@@ -263,8 +386,45 @@ export default function ProjectView({
             // mr: { xs: 1, sm: 3, md: 3, lg: 3, xl: 3 },
             // my: 4,
             mx: { lg: 3, xl: 3 },
+            position: "relative",
           }}
         >
+          <Button
+            color="inherit"
+            // disabled={activeStep === 0}
+            startIcon={<KeyboardBackspaceIcon />}
+            onClick={goBack}
+            variant="contained"
+            disableElevation
+            sx={{
+              position: "absolute",
+              borderRadius: 1111,
+              top: 60,
+              left: { xs: 10, sm: 90 },
+              mr: 1,
+              zIndex: 2,
+              // border: "1px solid #878787",
+              // borderRadius: "4px",
+              px: 2,
+              py: 1,
+
+              background: "#fff",
+              color: "#878787",
+              fontSize: "16px",
+              fontWeight: "600",
+              lineHeight: "22px",
+              textTransform: "none",
+              width: "fit-content",
+
+              // ml: "auto",
+              display: {
+                xs: "flex",
+                md: "none",
+              },
+            }}
+          >
+            {t["come back"]}
+          </Button>
           <Grid
             container
             sx={{

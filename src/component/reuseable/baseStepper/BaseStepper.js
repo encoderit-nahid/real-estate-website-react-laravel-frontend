@@ -9,7 +9,10 @@ function BaseStepper({
   setActiveStep,
 }) {
   return (
-    <Stepper activeStep={activeStep} sx={{ marginTop: marginTop }}>
+    <Stepper
+      activeStep={activeStep}
+      sx={{ marginTop: marginTop, width: "100%" }}
+    >
       {steps.map((label, index) => {
         const stepProps = {};
         const labelProps = {};

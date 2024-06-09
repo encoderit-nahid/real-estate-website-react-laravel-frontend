@@ -90,10 +90,6 @@ function AboutProperty({ name, array }) {
                   fontSize: "18px",
                   fontWeight: "400",
                   color: "#4B4B66",
-                  wordWrap: "break-word" /* Break long words */,
-                  wordBreak: "break-all" /* Break long words */,
-                  overflowWrap: "break-word" /* Ensures the text will wrap */,
-                  overflow: "hidden" /* Hide any overflow content */,
                 }}
               >
                 {data.name}

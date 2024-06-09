@@ -18,6 +18,10 @@ export default {
   "earn more": "earn more",
   Register: "Register",
   sales: "sales",
+  "Physical person": "Physical person",
+  "Legal person": "Legal person",
+  "State registration": "State registration",
+  "Corporate reason": "Corporate reason",
   "Referral Credits": "Referral Credits",
 
   "The best deals for you": "The best deals for you",
@@ -423,13 +427,13 @@ export default {
   "Receive customers who have already negotiated price and payment method and are ready to close the deal":
     "Receive customers who have already negotiated price and payment method and are ready to close the deal",
 
-  "surronding": "surronding",
- "condominium":  "condominium",
-  "amenities":  "amenities",
-  "wellbeing": "wellbeing",
-  "appliances": "appliances",
-  "rooms": "rooms",
-  "room": "room",
-  "acessibility": "acessibility",
-  "feature":"feature"
+  surronding: "surronding",
+  condominium: "condominium",
+  amenities: "amenities",
+  wellbeing: "wellbeing",
+  appliances: "appliances",
+  rooms: "rooms",
+  room: "room",
+  acessibility: "acessibility",
+  feature: "feature",
 };

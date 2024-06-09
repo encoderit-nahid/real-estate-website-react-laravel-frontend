@@ -8,6 +8,7 @@ import {
   IconButton,
   InputAdornment,
   Snackbar,
+  Stack,
   Tooltip,
   Typography,
 } from '@mui/material'
@@ -93,15 +94,15 @@ function LoginModal({ handleLoginClose, myValue }) {
   })
   const [expanded, setExpanded] = useState(false)
   const handleChangeAccordion = (panel) => (event, isExpanded) => {
-    setExpanded(isExpanded ? panel : false)
-  }
-  const handleSocialLogin = (provider, user_type) => {
-    SetCookie(
-      'role_id',
-      user_type === 'broker' ? 2 : user_type === 'owner' ? 3 : 4,
-    )
-    window.location.replace(`${_baseURL}/api/redirect/${provider}`)
-  }
+    setExpanded(isExpanded ? panel : false);
+  };
+  const handleSocialLogin = (provider) => {
+    // SetCookie(
+    //   "role_id",
+    //   user_type === "broker" ? 2 : user_type === "owner" ? 3 : 4
+    // );
+    window.location.replace(`${_baseURL}/api/redirect/${provider}`);
+  };
   const onSubmit = async (data) => {
     setLoading(true)
     const [errorToken, responseToken] = await loginApi(data)
@@ -342,12 +343,105 @@ function LoginModal({ handleLoginClose, myValue }) {
               {t['I forgot the password']}
             </Typography>
           </Grid>
+          <Grid
+            container
+            direction="row"
+            justifyContent="flex-start"
+            alignItems="flex-start"
+            sx={{ mt: 3, mb: 1 }}
+          >
+            <Button
+              sx={{
+                display: "flex",
+                background: "#DC4C3F",
+                borderRadius: "4px",
+                textTransform: "none",
+                px: 2,
+                py: 1,
+                width: "100%",
+                "&:hover": {
+                  background: "#DC4C3F",
+                  borderRadius: "4px",
+                  textTransform: "none",
+                  px: 2,
+                  py: 1,
+                  width: "100%",
+                },
+              }}
+              onClick={() => handleSocialLogin("google")}
+            >
+              <GoogleIcon sx={{ color: "#ffffff" }} />
+              <Typography
+                sx={{
+                  color: "#ffffff",
+                  fontSize: {
+                    xs: "12px",
+                    sm: "12px",
+                    md: "12px",
+                    lg: "12px",
+                    xl: "12px",
+                    xxl: "14px",
+                  },
+                  lineHeight: "17px",
+                  fontWeight: "400",
+                }}
+              >
+                Login with Gmail
+              </Typography>
+            </Button>
+          </Grid>
+          <Grid
+            container
+            direction="row"
+            justifyContent="flex-start"
+            alignItems="flex-start"
+            sx={{ mt: 3, mb: 1 }}
+          >
+            <Button
+              sx={{
+                display: "flex",
+                background: "#4469B0",
+                borderRadius: "4px",
+                textTransform: "none",
+                px: 2,
+                py: 1,
+                width: "100%",
+                "&:hover": {
+                  background: "#4469B0",
+                  borderRadius: "4px",
+                  textTransform: "none",
+                  px: 2,
+                  py: 1,
+                  width: "100%",
+                },
+              }}
+              onClick={() => handleSocialLogin("facebook")}
+            >
+              <FacebookOutlinedIcon sx={{ color: "#ffffff" }} />
+              <Typography
+                sx={{
+                  color: "#ffffff",
+                  fontSize: {
+                    xs: "12px",
+                    sm: "12px",
+                    md: "12px",
+                    lg: "12px",
+                    xl: "12px",
+                    xxl: "14px",
+                  },
+                  lineHeight: "17px",
+                  fontWeight: "400",
+                }}
+              >
+                Login with Facebook
+              </Typography>
+            </Button>
+          </Grid>
         </Grid>
         {/* <Box sx={{ borderTop: "2px dashed #D3D3DF", mt: 3 }} /> */}
-
-        <Accordion
-          expanded={expanded === 'panel1'}
-          onChange={handleChangeAccordion('panel1')}
+        {/* <Accordion
+          expanded={expanded === "panel1"}
+          onChange={handleChangeAccordion("panel1")}
           sx={{
             border: 'none',
             boxShadow: 'none',
@@ -415,73 +509,75 @@ function LoginModal({ handleLoginClose, myValue }) {
               margin: '0',
             }}
           >
-            <Button
-              fullWidth
-              sx={{
-                display: 'flex',
-                border: '1px solid #DC4C3F',
-
-                borderRadius: '4px',
-                textTransform: 'none',
-
-                height: '40px',
-              }}
-              onClick={() => handleSocialLogin('google', 'broker')}
-            >
-              <Typography
+            <Stack direction={"row"} alignItems={"center"} spacing={2}>
+              <Button
+                fullWidth
                 sx={{
-                  color: '#DC4C3F',
+                  display: "flex",
+                  border: "1px solid #DC4C3F",
 
-                  fontWeight: '600',
+                  borderRadius: "4px",
+                  textTransform: "none",
+
+                  height: "40px",
                 }}
+                onClick={() => handleSocialLogin("google", "broker")}
               >
-                Broker
-              </Typography>
-            </Button>
-            <Button
-              fullWidth
-              sx={{
-                display: 'flex',
-                border: '1px solid #DC4C3F',
-                borderRadius: '4px',
-                textTransform: 'none',
-                mt: 1,
-                height: '40px',
-              }}
-              onClick={() => handleSocialLogin('google', 'owner')}
-            >
-              <Typography
+                <Typography
+                  sx={{
+                    color: "#DC4C3F",
+
+                    fontWeight: "600",
+                  }}
+                >
+                  Broker
+                </Typography>
+              </Button>
+              <Button
+                fullWidth
                 sx={{
-                  color: '#DC4C3F',
+                  display: "flex",
+                  border: "1px solid #DC4C3F",
+                  borderRadius: "4px",
+                  textTransform: "none",
 
-                  fontWeight: '600',
+                  height: "40px",
                 }}
+                onClick={() => handleSocialLogin("google", "owner")}
               >
-                Owner
-              </Typography>
-            </Button>
-            <Button
-              fullWidth
-              sx={{
-                display: 'flex',
-                border: '1px solid #DC4C3F',
-                borderRadius: '4px',
-                textTransform: 'none',
-                mt: 1,
-                height: '40px',
-              }}
-              onClick={() => handleSocialLogin('google', 'buyer')}
-            >
-              <Typography
+                <Typography
+                  sx={{
+                    color: "#DC4C3F",
+
+                    fontWeight: "600",
+                  }}
+                >
+                  Owner
+                </Typography>
+              </Button>
+              <Button
+                fullWidth
                 sx={{
-                  color: '#DC4C3F',
+                  display: "flex",
+                  border: "1px solid #DC4C3F",
+                  borderRadius: "4px",
+                  textTransform: "none",
 
-                  fontWeight: '600',
+                  height: "40px",
                 }}
+                onClick={() => handleSocialLogin("google", "buyer")}
               >
-                Buyer
-              </Typography>
-            </Button>
+                <Typography
+                  sx={{
+                    color: "#DC4C3F",
+
+                    fontWeight: "600",
+                  }}
+                >
+                  Buyer
+                </Typography>
+              </Button>
+            </Stack>
           </AccordionDetails>
         </Accordion>
         <Accordion
@@ -550,75 +646,77 @@ function LoginModal({ handleLoginClose, myValue }) {
               outline: 'none',
             }}
           >
-            <Button
-              fullWidth
-              sx={{
-                display: 'flex',
-                border: '1px solid #4469B0',
-
-                borderRadius: '4px',
-                textTransform: 'none',
-
-                height: '40px',
-              }}
-              onClick={() => handleSocialLogin('facebook', 'broker')}
-            >
-              <Typography
+            <Stack direction={"row"} alignItems={"center"} spacing={2}>
+              <Button
+                fullWidth
                 sx={{
-                  color: '#4469B0',
+                  display: "flex",
+                  border: "1px solid #4469B0",
 
-                  fontWeight: '600',
+                  borderRadius: "4px",
+                  textTransform: "none",
+
+                  height: "40px",
                 }}
+                onClick={() => handleSocialLogin("facebook", "broker")}
               >
-                Broker
-              </Typography>
-            </Button>
-            <Button
-              fullWidth
-              sx={{
-                display: 'flex',
-                border: '1px solid #4469B0',
-                borderRadius: '4px',
-                textTransform: 'none',
-                mt: 1,
-                height: '40px',
-              }}
-              onClick={() => handleSocialLogin('facebook', 'owner')}
-            >
-              <Typography
+                <Typography
+                  sx={{
+                    color: "#4469B0",
+
+                    fontWeight: "600",
+                  }}
+                >
+                  Broker
+                </Typography>
+              </Button>
+              <Button
+                fullWidth
                 sx={{
-                  color: '#4469B0',
+                  display: "flex",
+                  border: "1px solid #4469B0",
+                  borderRadius: "4px",
+                  textTransform: "none",
 
-                  fontWeight: '600',
+                  height: "40px",
                 }}
+                onClick={() => handleSocialLogin("facebook", "owner")}
               >
-                Owner
-              </Typography>
-            </Button>
-            <Button
-              fullWidth
-              sx={{
-                display: 'flex',
-                border: '1px solid #4469B0',
-                borderRadius: '4px',
-                textTransform: 'none',
-                mt: 1,
-                height: '40px',
-              }}
-              onClick={() => handleSocialLogin('facebook', 'buyer')}
-            >
-              <Typography
+                <Typography
+                  sx={{
+                    color: "#4469B0",
+
+                    fontWeight: "600",
+                  }}
+                >
+                  Owner
+                </Typography>
+              </Button>
+              <Button
+                fullWidth
                 sx={{
-                  color: '#4469B0',
+                  display: "flex",
+                  border: "1px solid #4469B0",
+                  borderRadius: "4px",
+                  textTransform: "none",
 
-                  fontWeight: '600',
+                  height: "40px",
                 }}
+                onClick={() => handleSocialLogin("facebook", "buyer")}
               >
-                Buyer
-              </Typography>
-            </Button>
+                <Typography
+                  sx={{
+                    color: "#4469B0",
+
+                    fontWeight: "600",
+                  }}
+                >
+                  Buyer
+                </Typography>
+              </Button>
+            </Stack>
           </AccordionDetails>
-        </Accordion>
+        </Accordion> */}
       </form>
       <Snackbar
         open={snackbarOpen}

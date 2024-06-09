@@ -11,6 +11,7 @@ import {
   Button,
   Tooltip,
   Stack,
+  Container,
 } from "@mui/material";
 
 import orionImage from "../../public/Images/orion_view.svg";
@@ -60,6 +61,7 @@ import pt from "locales/pt";
 import { useRouter } from "next/router";
 import { _imageURL } from "consts";
 import { stripHtmlTags } from "@/utils/stripHtmlTags";
+import KeyboardBackspaceIcon from "@mui/icons-material/KeyboardBackspace";
 const BaseShareButton = dynamic(
   () => import("@/component/reuseable/baseShareButton/BaseShareButton"),
   {
@@ -188,16 +190,12 @@ export default function PropertyView({
           myValue={myValue}
           colorLogo={true}
         />
-        <Box sx={{ ml: 3 }}>
-          <Grid
-            container
-            direction="row"
-            justifyContent="flex-end"
-            alignItems="flex-start"
+        <Container maxWidth="xxl">
+          <Stack
             sx={{
               display: {
                 xs: "none",
-                lg: "flex",
+                md: "flex",
               },
             }}
           >
@@ -217,43 +215,82 @@ export default function PropertyView({
                 fontWeight: "600",
                 lineHeight: "22px",
                 textTransform: "none",
+                width: "fit-content",
+                ml: "auto",
               }}
             >
               {t["come back"]}
             </Button>
-          </Grid>
-          <Grid
-            container
+          </Stack>
+
+          <Stack
             direction="row"
             justifyContent="space-between"
-            alignItems="flex-start"
-            sx={{
-              pr: 7,
-            }}
+            alignItems="center"
+            sx={{ mb: 2 }}
           >
-            <Button
-              sx={{
-                display: "flex",
-                gap: 1,
-                color: "#1A1859",
-              }}
+            <Stack
+              direction={"row"}
+              // justifyContent={"center"}
+              alignItems="center"
+              spacing={2}
             >
-              <Image src={orionImage} alt="orionImage" />
-
-              <Typography
-                variant="p"
+              <Box
                 sx={{
-                  fontSize: { xs: "17px", sm: "17px", md: "17px", lg: "24px" },
-                  fontWeight: 700,
-                  color: "#1A1859",
+                  width: { xs: 25, lg: 40 },
+                  minWidth: 25,
+                  // height: { xs: 30, lg: 40 },
+                  // bgcolor: "red",
+                  display: "flex",
+                  justifyContent: "center",
                 }}
               >
-                {`${
-                  singlePropertyData?.property?.property_title ||
-                  "No title found"
-                }`}
-              </Typography>
-            </Button>
+                <Image
+                  src={orionImage}
+                  alt="orionImage"
+                  width={"100%"}
+                  height={"100%"}
+                  // style={{ flexShrink: 0 }}
+                />
+              </Box>
+              <Box
+              // sx={{
+              //   width: { xs: 25, lg: 40 },
+              //   minWidth: 25,
+              //   // height: { xs: 30, lg: 40 },
+              //   // bgcolor: "red",
+              //   display: "flex",
+              //   justifyContent: "center",
+              // }}
+              >
+                <Typography
+                  sx={{
+                    fontSize: {
+                      xs: "20px",
+                      sm: "22px",
+                      md: "26px",
+                      lg: "28px",
+                    },
+                    // bgcolor: "red",
+                    fontWeight: 700,
+                    lineHeight: "normal",
+                    color: "#1A1859",
+                    wordWrap: "break-word",
+                    wordBreak: "break-all",
+                    overflowWrap: "break-word",
+                    overflow: "hidden",
+                    textAlign: "left",
+                    pb: 1,
+                  }}
+                >
+                  {`${
+                    singlePropertyData?.property?.property_title ||
+                    "No title found"
+                  }`}
+                </Typography>
+              </Box>
+            </Stack>
+
             <Stack
               direction="row"
               spacing={1}
@@ -272,13 +309,50 @@ export default function PropertyView({
                 itemID={singlePropertyData?.property?.id}
               />
             </Stack>
-          </Grid>
-        </Box>
+          </Stack>
+        </Container>
         <Box
           sx={{
             mx: { lg: 3, xl: 3 },
+            position: "relative",
           }}
         >
+          <Button
+            color="inherit"
+            // disabled={activeStep === 0}
+            startIcon={<KeyboardBackspaceIcon />}
+            onClick={goBack}
+            variant="contained"
+            disableElevation
+            sx={{
+              position: "absolute",
+              borderRadius: 1111,
+              top: 60,
+              left: { xs: 10, sm: 90 },
+              mr: 1,
+              zIndex: 2,
+              // border: "1px solid #878787",
+              // borderRadius: "4px",
+              px: 2,
+              py: 1,
+
+              background: "#fff",
+              color: "#878787",
+              fontSize: "16px",
+              fontWeight: "600",
+              lineHeight: "22px",
+              textTransform: "none",
+              width: "fit-content",
+
+              // ml: "auto",
+              display: {
+                xs: "flex",
+                md: "none",
+              },
+            }}
+          >
+            {t["come back"]}
+          </Button>
           <Grid
             container
             sx={{
@@ -358,7 +432,15 @@ export default function PropertyView({
             <Grid item xs={12} sm={12} md={12} lg={9} xl={9}>
               <Box
                 // component="div"
-                sx={{ p: 3, backgroundColor: "#f9f9fb"}}
+                sx={{
+                  p: 3,
+                  backgroundColor: "#f9f9fb",
+                  fontSize: 18,
+                  wordWrap: "break-word",
+                  wordBreak: "break-all",
+                  overflowWrap: "break-word",
+                  overflow: "hidden",
+                }}
                 dangerouslySetInnerHTML={{
                   __html: singlePropertyData?.property?.property_description,
                 }}

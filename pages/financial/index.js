@@ -12,7 +12,7 @@ import Tabs from "@mui/material/Tabs";
 import Tab from "@mui/material/Tab";
 import Typography from "@mui/material/Typography";
 import Box from "@mui/material/Box";
-import homeImage from "../public/Images/homeImage.jpg";
+import homeImage from "../../public/Images/homeImage.jpg";
 import { Button, Container, Grid, Stack } from "@mui/material";
 import { useState } from "react";
 import { useSession } from "next-auth/react";
