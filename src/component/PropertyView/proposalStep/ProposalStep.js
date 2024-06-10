@@ -14,7 +14,7 @@ import { useForm, Controller } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as Yup from "yup";
 import BaseTextField from "../../reuseable/baseTextField/BaseTextField";
-import { createProposalApi } from "../../../api";
+import { createProposalApi, omitEmpties } from "../../../api";
 import { useSession } from "next-auth/react";
 import en from "locales/en";
 import pt from "locales/pt";
@@ -88,14 +88,14 @@ function ProposalStep({
     const conditions = localStorage.getItem("condition") || null;
 
     setLoading(true);
-    const allData = {
+    const allData = omitEmpties({
       ...data,
       user_id: session?.user?.userId,
       payment_type: (cash && "cash") || (installment && "installment"),
       property_id: singlePropertyId,
       proposal_type: "general",
-      condition: conditions !== null && conditions,
-    };
+      condition: conditions,
+    });
 
     const [error, response] = await createProposalApi(allData);
     setLoading(false);

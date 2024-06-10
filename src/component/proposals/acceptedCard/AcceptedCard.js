@@ -18,12 +18,16 @@ import FiberManualRecordIcon from "@mui/icons-material/FiberManualRecord";
 import { _baseURL, _imageURL } from "../../../../consts";
 import pt from "locales/pt";
 import en from "locales/en";
+import { IsBuyerRegisteredApi } from "@/api";
+import toast from "react-hot-toast";
+import { useRouter } from "next/router";
 
 function AcceptedCard({ propertyData, languageName }) {
   const t = languageName === "en" ? en : pt;
   const myLoader = ({ src }) => {
     return `${_imageURL}/${src}`;
   };
+  const router = useRouter();
 
   const Status = [
     { name: t["Announce"], slug: "announcement" },
@@ -37,6 +41,49 @@ function AcceptedCard({ propertyData, languageName }) {
   const Statusindex = Status.findIndex((object) => {
     return object.slug === propertyData?.contract?.status;
   });
+
+  const handleGenerateContract = async () => {
+    const [error, response] = await IsBuyerRegisteredApi();
+    if (!error) {
+      if (response?.data?.status) {
+        router.replace({
+          pathname: "/proposals/property-journey",
+          query: {
+            propertyId: propertyData?.id,
+            contractId: propertyData?.contract?.id,
+            step_count: 1,
+          },
+        });
+      } else {
+        toast.error("Você tem que preencher as informações do usuário");
+      }
+    }
+  };
+
+  const handleGoToTheJourney = async () => {
+    const [error, response] = await IsBuyerRegisteredApi();
+    if (!error) {
+      if (response?.data?.status) {
+        router.replace({
+          pathname: "/proposals/property-journey",
+          query: {
+            propertyId: propertyData?.id,
+            contractId: propertyData?.contract?.id,
+            step_count:
+              propertyData?.contract?.status === "certificate"
+                ? 2
+                : propertyData?.contract?.status === "certificate_validated"
+                ? 3
+                : propertyData?.contract?.status === "notary"
+                ? 4
+                : 1,
+          },
+        });
+      } else {
+        toast.error("Você tem que preencher as informações do usuário");
+      }
+    }
+  };
 
   return (
     <Box
@@ -240,66 +287,50 @@ function AcceptedCard({ propertyData, languageName }) {
       </Box>
       <Grid container spacing={1} sx={{ px: 2, mt: 1 }}>
         <Grid item xs={12} sm={12} md={12} lg={6} xl={6}>
-          <Link
-            href={{
-              pathname: "/proposals/property-journey",
-              query: {
-                propertyId: propertyData?.id,
-                contractId: propertyData?.contract?.id,
-                step_count:
-                  propertyData?.contract?.status === "certificate"
-                    ? 2
-                    : propertyData?.contract?.status === "certificate_validated"
-                    ? 3
-                    : propertyData?.contract?.status === "notary"
-                    ? 4
-                    : 1,
-              },
-            }}
-          >
-            <Button
-              fullWidth
-              sx={{
+          <Button
+            fullWidth
+            sx={{
+              color: "#FFFFFF",
+              fontSize: "14px",
+              lineHeight: "18px",
+              fontWeight: "600",
+
+              background: "#0362F0",
+              borderRadius: "4px",
+
+              textTransform: "none",
+              "&:hover": {
                 color: "#FFFFFF",
                 fontSize: "14px",
                 lineHeight: "18px",
                 fontWeight: "600",
-
                 background: "#0362F0",
                 borderRadius: "4px",
 
                 textTransform: "none",
-                "&:hover": {
-                  color: "#FFFFFF",
-                  fontSize: "14px",
-                  lineHeight: "18px",
-                  fontWeight: "600",
-                  background: "#0362F0",
-                  borderRadius: "4px",
-
-                  textTransform: "none",
-                },
-              }}
-            >
-              {t["Go to the journey"]}
-            </Button>
-          </Link>
-        </Grid>
-        <Grid item xs={12} sm={12} md={12} lg={6} xl={6}>
-          <Link
-            href={{
-              pathname: "/proposals/property-journey",
-              query: {
-                propertyId: propertyData?.id,
-                contractId: propertyData?.contract?.id,
-                step_count: 1,
               },
             }}
+            onClick={handleGoToTheJourney}
           >
-            <Button
-              fullWidth
-              disabled={Statusindex - 1 > 2}
-              sx={{
+            {t["Go to the journey"]}
+          </Button>
+        </Grid>
+        <Grid item xs={12} sm={12} md={12} lg={6} xl={6}>
+          <Button
+            fullWidth
+            disabled={Statusindex - 1 > 2}
+            sx={{
+              color: "#FFFFFF",
+              fontSize: "14px",
+
+              lineHeight: "18px",
+              fontWeight: "600",
+              background: "#7450F0",
+              borderRadius: "4px",
+
+              textTransform: "none",
+
+              "&:hover": {
                 color: "#FFFFFF",
                 fontSize: "14px",
 
@@ -309,23 +340,12 @@ function AcceptedCard({ propertyData, languageName }) {
                 borderRadius: "4px",
 
                 textTransform: "none",
-
-                "&:hover": {
-                  color: "#FFFFFF",
-                  fontSize: "14px",
-
-                  lineHeight: "18px",
-                  fontWeight: "600",
-                  background: "#7450F0",
-                  borderRadius: "4px",
-
-                  textTransform: "none",
-                },
-              }}
-            >
-              {t["Generate contract"]}
-            </Button>
-          </Link>
+              },
+            }}
+            onClick={handleGenerateContract}
+          >
+            {t["Generate contract"]}
+          </Button>
         </Grid>
       </Grid>
     </Box>

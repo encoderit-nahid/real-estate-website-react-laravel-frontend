@@ -279,7 +279,7 @@ function AddCompanyPersonalData({
           sx="error"
           handleFunction={() => {
             reset();
-            replace("/registration");
+            replace("/my-properties");
           }}
         >
           {t["Cancel"]}

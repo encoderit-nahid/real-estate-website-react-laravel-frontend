@@ -772,3 +772,13 @@ export const MakeFavouriteBrokerApi = async (projectId) => {
     return [error, null];
   }
 };
+
+//buyer-registered
+export const IsBuyerRegisteredApi = async () => {
+  try {
+    const response = await apiInstance.get(`is-buyer-registered`);
+    return [false, response];
+  } catch (error) {
+    return [error, null];
+  }
+};

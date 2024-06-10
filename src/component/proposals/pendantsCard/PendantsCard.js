@@ -48,7 +48,7 @@ const omitEmpties = (obj) => {
   }, {});
 };
 
-function PendantsCard({ propertyData, languageName,refetch,loadingRefetch }) {
+function PendantsCard({ propertyData, languageName, refetch, loadingRefetch }) {
   const t = languageName === "en" ? en : pt;
   const dispatch = useDispatch();
   const { data: session } = useSession();
@@ -61,24 +61,28 @@ function PendantsCard({ propertyData, languageName,refetch,loadingRefetch }) {
     setSeeProposalOpen(true);
   };
   const handleSeeProposalClose = () => setSeeProposalOpen(false);
-  const [acceptid, setAcceptId] = useState("");
-  const [refuseId, setRefuseId] = useState("");
-  const { query } = useRouter();
+  // const [acceptid, setAcceptId] = useState("");
+  // const [refuseId, setRefuseId] = useState("");
+  // const { query } = useRouter();
 
-  const handleProposalRefuse = async(id) => {
-    setRefuseId(id);
+  const handleProposalRefuse = (id) => {
+    // setRefuseId(id);
     dispatch(proposalRefuseData(propertyData?.id, id));
-    await refetch()
-    await loadingRefetch()
+    setTimeout(() => {
+      loadingRefetch();
+      refetch();
+    }, 500);
   };
 
-  const handleProposalAccept = async(id) => {
-    setAcceptId(id);
+  const handleProposalAccept = async (id) => {
+    // setAcceptId(id);
     dispatch(
       propertyAcceptData({ property_id: propertyData?.id, proposal_id: id })
     );
-    await refetch()
-    await loadingRefetch()
+    setTimeout(() => {
+      loadingRefetch();
+      refetch();
+    }, 500);
   };
 
   // const acceptLoading = useSelector((state) => state?.propertyAccept?.loading);
@@ -135,7 +139,7 @@ function PendantsCard({ propertyData, languageName,refetch,loadingRefetch }) {
           >
             {t["Proposals"]}
           </Typography>
-          <BaseCloseButton/>
+          <BaseCloseButton />
         </Grid>
         <Box
           sx={{
@@ -344,9 +348,7 @@ function PendantsCard({ propertyData, languageName,refetch,loadingRefetch }) {
                       },
                     }}
                   >
-               
-                     { t["refuse"]}
-               
+                    {t["refuse"]}
                   </Button>
                 </Grid>
                 <Grid item xs={12} sm={12} md={12} lg={6}>
@@ -408,9 +410,7 @@ function PendantsCard({ propertyData, languageName,refetch,loadingRefetch }) {
                     }}
                     onClick={() => handleProposalAccept(data.id)}
                   >
-                
-                      {t["To accept"]}
-                  
+                    {t["To accept"]}
                   </Button>
                 </Grid>
               </Grid>

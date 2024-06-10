@@ -336,6 +336,7 @@ const UserUpdateForm = ({ language }) => {
                     size={"medium"}
                     placeholder={t["Email"]}
                     label={t["Email"]}
+                    disabled={true}
                     onChange={(e) => {
                       field.onChange(e.target.value);
                     }}

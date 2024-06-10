@@ -17,6 +17,7 @@ function BaseTextField({
   error,
   required,
   multiline,
+  disabled,
   helperText,
 }) {
   return (
@@ -34,6 +35,7 @@ function BaseTextField({
       name={name}
       variant="outlined"
       sx={sx}
+      disabled={disabled}
       InputProps={InputProps}
       error={error}
       multiline={multiline}

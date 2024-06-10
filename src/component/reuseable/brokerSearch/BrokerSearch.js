@@ -1,39 +1,39 @@
-import { Box, Button, Grid, IconButton, InputAdornment } from '@mui/material'
-import React, { useCallback } from 'react'
+import { Box, Button, Grid, IconButton, InputAdornment } from "@mui/material";
+import React, { useCallback } from "react";
 import SearchIcon from "@mui/icons-material/Search";
-import BaseTextField from '../baseTextField/BaseTextField';
-import pt from 'locales/pt';
-import { useRouter } from 'next/router';
-import { debounce } from '@/utils/debounce';
+import BaseTextField from "../baseTextField/BaseTextField";
+import pt from "locales/pt";
+import { useRouter } from "next/router";
+import { debounce } from "@/utils/debounce";
 
-function BrokerSearch({handleSearchBroker,searchValue}) {
-  const t= pt
+function BrokerSearch({ handleSearchBroker, searchValue }) {
+  const t = pt;
 
   return (
-    <Box sx={{ mt:1,mb:2 }}>
-    <Grid container spacing={2}>
-      <Grid item xs={12}>
-        <BaseTextField
-          variant="outlined"
-          placeholder="Search by business name or address..."
-          size="small"
-          fullWidth
-          onChange={handleSearchBroker}
-          InputProps={{
-            endAdornment: (
-              <InputAdornment position="end">
-                <IconButton
-                  edge="end"
-                  aria-label="Search by business name or address..."
-                >
-                  <SearchIcon />
-                </IconButton>
-              </InputAdornment>
-            ),
-          }}
-        />
-      </Grid>
-      {/* <Grid item xs={2}>
+    <Box sx={{ mt: 1, mb: 2 }}>
+      <Grid container spacing={2}>
+        <Grid item xs={12}>
+          <BaseTextField
+            variant="outlined"
+            placeholder="Search by name, city or neighborhood..."
+            size="small"
+            fullWidth
+            onChange={handleSearchBroker}
+            InputProps={{
+              endAdornment: (
+                <InputAdornment position="end">
+                  <IconButton
+                    edge="end"
+                    aria-label="Search by business name or address..."
+                  >
+                    <SearchIcon />
+                  </IconButton>
+                </InputAdornment>
+              ),
+            }}
+          />
+        </Grid>
+        {/* <Grid item xs={2}>
         <Button
           variant="outlined"
           fullWidth
@@ -56,9 +56,9 @@ function BrokerSearch({handleSearchBroker,searchValue}) {
           {t["filter"]}
         </Button>
       </Grid> */}
-    </Grid>
-  </Box>
-  )
+      </Grid>
+    </Box>
+  );
 }
 
-export default BrokerSearch
+export default BrokerSearch;

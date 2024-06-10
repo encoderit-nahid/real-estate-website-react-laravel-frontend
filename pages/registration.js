@@ -31,6 +31,7 @@ import { _baseURL } from "consts";
 
 import SetCookie from "@/hooks/setCookie";
 import BaseButton from "@/component/reuseable/baseButton/BaseButton";
+import toast from "react-hot-toast";
 
 export default function Registration({ language, handleLoginOpen }) {
   const router = useRouter();
@@ -126,18 +127,22 @@ export default function Registration({ language, handleLoginOpen }) {
           : query?.user_type === "owner"
           ? 3
           : 4,
-      redirect_url: window.location.href,
+      redirect_url: `${window.location.origin}/user-loading`,
     };
 
     const [errorToken, responseToken] = await registrationApi(allData);
     setLoading(false);
     if (!errorToken) {
-      localStorage.setItem("registration_id", responseToken?.data?.user?.id);
-      localStorage.setItem("user_role", responseToken?.data?.userRole);
-      localStorage.setItem("Reg_user_name", data?.name);
-      router.replace({
-        pathname: "/other-information",
-      });
+      if (responseToken?.data?.userRole === "buyer") {
+        toast.success(responseToken?.data?.message);
+      } else {
+        localStorage.setItem("registration_id", responseToken?.data?.user?.id);
+        localStorage.setItem("user_role", responseToken?.data?.userRole);
+        localStorage.setItem("Reg_user_name", data?.name);
+        router.replace({
+          pathname: "/other-information",
+        });
+      }
     } else {
       const errors = errorToken?.response?.data?.errors ?? {};
       Object.entries(errors).forEach(([name, messages]) => {

@@ -112,10 +112,9 @@ export default function PropertyJourney({ language }) {
     dispatch(findSinglePropertyData(query?.propertyId));
   }, [dispatch, query]);
   const [activeStep, setActiveStep] = useState((+query?.step_count || 1) + 1);
-  useEffect(()=> {
-    setActiveStep((+query?.step_count || 1) + 1)
-  },[query])
-
+  useEffect(() => {
+    setActiveStep((+query?.step_count || 1) + 1);
+  }, [query]);
 
   const singlePropertyData = useSelector(
     (state) => state?.singleProperty?.singlePropertyData
@@ -140,17 +139,17 @@ export default function PropertyJourney({ language }) {
 
     setActiveStep((prevActiveStep) => prevActiveStep + 1);
     router.replace({
-      query: {...router.query, step_count: +query?.step_count + 1}
-    })
+      query: { ...router.query, step_count: +query?.step_count + 1 },
+    });
     setSkipped(newSkipped);
   };
 
   const handleBack = () => {
-    if(+query?.step_count > 1){
+    if (+query?.step_count > 1) {
       setActiveStep((prevActiveStep) => prevActiveStep - 1);
       router.replace({
-        query: {...router.query, step_count: +query?.step_count - 1}
-      })
+        query: { ...router.query, step_count: +query?.step_count - 1 },
+      });
     }
   };
 

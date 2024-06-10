@@ -37,6 +37,7 @@ import pt from "locales/pt";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/router";
 import MuiAlert from "@mui/material/Alert";
+import BaseButton from "@/component/reuseable/baseButton/BaseButton";
 
 const Alert = React.forwardRef(function Alert(props, ref) {
   return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
@@ -111,22 +112,42 @@ function PreAnalise({
       <Grid
         container
         direction="row"
-        justifyContent="flex-start"
+        justifyContent="space-between"
         alignItems="flex-start"
       >
-        <Image height={40} width={40} src={analise} alt="analise" />
-        <Typography
-          variant="p"
+        <Box
           sx={{
-            color: "#002152",
-            fontSize: "24px",
-            fontWeight: "700",
-            lineHeight: "32px",
-            ml: 1,
+            display: "flex",
+            alignItems: "center",
           }}
         >
-          {t["Pre analysis"]}
-        </Typography>
+          <Image height={40} width={40} src={analise} alt="analise" />
+          <Typography
+            variant="p"
+            sx={{
+              color: "#002152",
+              fontSize: "24px",
+              fontWeight: "700",
+              lineHeight: "32px",
+              ml: 1,
+            }}
+          >
+            {t["Pre analysis"]}
+          </Typography>
+        </Box>
+        <Box>
+          <BaseButton
+            type="button"
+            variant="outlined"
+            color="error"
+            sx="error"
+            handleFunction={() => {
+              router.replace("/proposals");
+            }}
+          >
+            {t["Cancel"]}
+          </BaseButton>
+        </Box>
       </Grid>
       <Box sx={{ mt: { xs: 2, sm: 2, md: 2, lg: 4 } }}>
         <Grid container spacing={2}>

@@ -4,6 +4,7 @@ import { signIn } from "next-auth/react";
 import { useRouter } from "next/router";
 import { useEffect } from "react";
 import { apiInstance, socialLoginApi, userDetailsApi } from "@/api";
+import toast from "react-hot-toast";
 
 export default function Google({ roleId }) {
   const router = useRouter();
@@ -36,7 +37,7 @@ export default function Google({ roleId }) {
       } else {
         console.log(errorAuth?.response);
         if (errorAuth.response.status === 402) {
-          alert(errorAuth?.response?.data?.message);
+          toast.error(errorAuth?.response?.data?.message);
           router.replace({
             pathname: "/",
           });
