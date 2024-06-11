@@ -200,6 +200,8 @@ function BuyerDataStep({
                     }}
                     name={"cpf_number"}
                     value={field.value}
+                    // onBlur={() => trigger("cpf")}
+
                     // error={errors.cpf_number ? true : false}
                   />
                 )}

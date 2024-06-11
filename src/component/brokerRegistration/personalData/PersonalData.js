@@ -52,6 +52,7 @@ function PersonalData({
   activeStep,
   reset,
   replace,
+  trigger,
 }) {
   const [preview, setPreview] = useState();
 
@@ -162,7 +163,7 @@ function PersonalData({
         >
           {t["Select broker"]}
         </Typography>
-        <BaseCloseButton handleClose={toggleDrawer("right", false)}/>
+        <BaseCloseButton handleClose={toggleDrawer("right", false)} />
       </Grid>
       <Box sx={{ px: 2, mt: 1 }}>
         <TextField
@@ -549,7 +550,6 @@ function PersonalData({
                   type={"number"}
                   autoComplete={"new-Text"}
                   placeholder={t["CRECI Number"]}
-                
                   onChange={(e) => {
                     field.onChange(e.target.value);
                   }}
@@ -600,6 +600,8 @@ function PersonalData({
                   }}
                   name={"cpf_number"}
                   value={field.value}
+                  onBlur={() => trigger("cpf_number")}
+
                   // error={errors.cpf_number ? true : false}
                 />
               )}
@@ -651,6 +653,8 @@ function PersonalData({
                   }}
                   name={"RG_number"}
                   value={field.value}
+                  onBlur={() => trigger("rg_number")}
+
                   // error={errors?.rg_number ? true : false}
                 />
               )}

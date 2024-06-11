@@ -73,6 +73,7 @@ function Owner({
   setMarried,
   reset,
   replace,
+  trigger,
 }) {
   const t = languageName === "en" ? en : pt;
   const dispatch = useDispatch();
@@ -294,6 +295,8 @@ function Owner({
                   }}
                   name={"owner_rg"}
                   value={field.value}
+                  onBlur={() => trigger("owner_rg")}
+
                   // error={errors?.rg_number ? true : false}
                 />
               )}
@@ -321,6 +324,8 @@ function Owner({
                   }}
                   name={"owner_cpf"}
                   value={field.value}
+                  onBlur={() => trigger("owner_cpf")}
+
                   // error={errors.cpf_number ? true : false}
                 />
               )}
@@ -395,6 +400,8 @@ function Owner({
                       }}
                       name={"owner_spouse_rg"}
                       value={field.value}
+                      onBlur={() => trigger("owner_spouse_rg")}
+
                       // error={errors?.rg_number ? true : false}
                     />
                   )}
@@ -422,6 +429,8 @@ function Owner({
                       }}
                       name={"owner_spouse_cpf"}
                       value={field.value}
+                      onBlur={() => trigger("owner_spouse_cpf")}
+
                       // error={errors.cpf_number ? true : false}
                     />
                   )}

@@ -9,6 +9,8 @@ export default {
   "Make your": "Encontre seu",
   "Dream!": "Sonho!",
   Location: "Localização",
+  Car: "Carro",
+  Construction: "Construção",
   "For those who want to sell": "Pra quem de seja vender",
   "track everything online": "Acompanhe sua venda online em tempo real",
   "100% digital processes": "Venda seu imóvel sem sair do sofá, 100% digital",

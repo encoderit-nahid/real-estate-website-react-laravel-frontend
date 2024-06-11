@@ -3,7 +3,6 @@ import {
   Box,
   Button,
   Divider,
-  FormControl,
   Grid,
   ListItemAvatar,
   Rating,
@@ -23,8 +22,6 @@ import BaseDateField from "@/component/reuseable/baseDateField/BaseDateField";
 import { formatISO } from "date-fns";
 import en from "locales/en";
 import pt from "locales/pt";
-import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
-import SwipeableDrawer from "@mui/material/SwipeableDrawer";
 import List from "@mui/material/List";
 import ListItem from "@mui/material/ListItem";
 
@@ -32,7 +29,6 @@ import ListItemText from "@mui/material/ListItemText";
 
 import { InputAdornment, IconButton } from "@mui/material";
 import SearchIcon from "@mui/icons-material/Search";
-import BorderColorOutlinedIcon from "@mui/icons-material/BorderColorOutlined";
 import { _imageURL } from "consts";
 import { useGetAllReferralBrokerQuery } from "@/queries/useGetAllReferralBrokerQuery";
 import { debounce } from "@/utils/debounce";
@@ -53,10 +49,16 @@ function AddCompanyPersonalData({
   activeStep,
   reset,
   replace,
+  addPerson,
+  setAddPerson,
+  addType,
+  setAddType,
+  trigger,
 }) {
+  console.log("🟥 ~ control:", control);
   const [preview, setPreview] = useState();
-  const [addPerson, setAddPerson] = useState("Physical person");
-  console.log("🟥 ~ addPerson:", addPerson);
+  // const [addPerson, setAddPerson] = useState("Physical person");
+  // const [addType, setAddType] = useState("Car");
 
   const t = languageName === "en" ? en : pt;
   // const currentUser = useCurrentUser();
@@ -99,159 +101,9 @@ function AddCompanyPersonalData({
     return () => URL.revokeObjectURL(objectUrl);
   }, [allValues.image]);
 
-  // const [disableBtn, setDisableBtn] = useState(true);
-  const requiredFields = {
-    broker: ["full_name", "cpf_number", "rg_number", "dob", "description"],
-    owner: ["full_name", "cpf_number", "rg_number", "dob"],
-  };
-  const [disableBtn, setDisableBtn] = useRequiredFieldsToDisableButton(
-    userRole === "broker" ? requiredFields.broker : requiredFields.owner,
-    allValues
-  );
-
-  const [state, setState] = React.useState({
-    top: false,
-    left: false,
-    bottom: false,
-    right: false,
-  });
-
-  const toggleDrawer = (anchor, open) => (event) => {
-    console.log("🟥 ~ toggleDrawer ");
-    if (
-      event &&
-      event.type === "keydown" &&
-      (event.key === "Tab" || event.key === "Shift")
-    ) {
-      return;
-    }
-
-    setState({ ...state, [anchor]: open });
-  };
-
   const myLoader = ({ src }) => {
     return `${_imageURL}/${src}`;
   };
-
-  const handleSearchBroker = (e) => {
-    setSearchValue(e.target.value);
-    refetch({});
-  };
-
-  const debouncedHandleChangeBroker = debounce(handleSearchBroker);
-
-  const list = (anchor) => (
-    <Box
-      sx={{ width: anchor === "top" || anchor === "bottom" ? "auto" : 380 }}
-      role="presentation"
-    >
-      <Stack
-        direction="row"
-        justifyContent="space-between"
-        alignItems="center"
-        sx={{ mt: 2, px: 2 }}
-      >
-        <Typography
-          variant="p"
-          sx={{
-            color: "#1A1859",
-            fontSize: "24px",
-            lineHeight: "32px",
-            fontWeight: "700",
-          }}
-        >
-          {t["Select broker"]}
-        </Typography>
-        <CloseIcon
-          onClick={toggleDrawer("right", false)}
-          sx={{ cursor: "pointer" }}
-        />
-      </Stack>
-      <Box sx={{ px: 2, mt: 1 }}>
-        <TextField
-          variant="outlined"
-          placeholder={t["Search by broker name"]}
-          size="small"
-          onChange={debouncedHandleChangeBroker}
-          fullWidth
-          InputProps={{
-            endAdornment: (
-              <InputAdornment position="end">
-                <IconButton edge="end" aria-label="Search by broker name">
-                  <SearchIcon />
-                </IconButton>
-              </InputAdornment>
-            ),
-          }}
-        />
-      </Box>
-      <Box sx={{ px: 2 }}>
-        <List
-          sx={{
-            width: "100%",
-            bgcolor: "background.paper",
-          }}
-        >
-          {brokerUserData?.data?.users?.data?.map((brokerInfo, index) => (
-            <Box
-              key={index}
-              onClick={(event) => {
-                setSelectedBroker(brokerInfo);
-                toggleDrawer("right", false)(event);
-              }}
-            >
-              <ListItem
-                sx={{
-                  background: `${
-                    selectedBroker?.id === brokerInfo?.id
-                      ? "#bae6fd"
-                      : "#ffffff"
-                  }`,
-                  "&:hover": {
-                    background: "#bae6fd",
-                  },
-                }}
-              >
-                <ListItemAvatar>
-                  {brokerInfo?.attachments[0]?.file_path ? (
-                    <Image
-                      loader={myLoader}
-                      src={`${brokerInfo?.attachments[0]?.file_path}`}
-                      alt="brokerImahe"
-                      height={70}
-                      width={70}
-                      style={{ borderRadius: "50px" }}
-                    />
-                  ) : (
-                    <Avatar />
-                  )}
-                </ListItemAvatar>
-                <ListItemText
-                  primary={
-                    <Typography
-                      variant="body1"
-                      sx={{
-                        fontSize: "16px",
-                        fontWeight: 700,
-                        lineHeight: "22px",
-                        color: "#002152",
-                      }}
-                    >
-                      {brokerInfo?.name}
-                    </Typography>
-                  }
-                  secondary={
-                    <Rating name="size-large" defaultValue={4} readOnly />
-                  }
-                />
-              </ListItem>
-              <Divider />
-            </Box>
-          ))}
-        </List>
-      </Box>
-    </Box>
-  );
 
   return (
     <Box sx={{ mt: 4 }}>
@@ -313,19 +165,20 @@ function AddCompanyPersonalData({
           <Box sx={{ mt: 1 }}>
             <Grid container spacing={1}>
               {[
-                { name: "New", slug: t["New"] },
-                { name: "Used", slug: t["Used"] },
+                { name: "Car", slug: t["Car"] },
+                { name: "Construction", slug: t["Construction"] },
               ].map((data, index) => (
                 <Grid item xs={6} key={index}>
                   <Button
-                    // onClick={() => setAdType(data?.name)}
+                    onClick={() => setAddType(data?.name)}
                     sx={{
                       width: "100%",
-                      // background: adType === data?.name ? "#0362F0" : "#F2F5F6",
-                      background: "#F2F5F6",
+                      background:
+                        addType === data?.name ? "#0362F0" : "#F2F5F6",
+
                       borderRadius: "152px",
-                      // color: adType === data?.name ? "#ffffff" : "#002152",
-                      color: "#002152",
+                      color: addType === data?.name ? "#ffffff" : "#002152",
+
                       fontSize: {
                         xs: "12px",
                         sm: "13px",
@@ -397,16 +250,18 @@ function AddCompanyPersonalData({
               ].map((data, index) => (
                 <Grid item xs={6} key={index}>
                   <Button
-                    onClick={() => setAddPerson(data?.name)}
+                    onClick={() => {
+                      reset();
+                      setAddPerson(data?.name);
+                    }}
                     sx={{
                       textWrap: "nowrap",
                       width: "100%",
                       background:
                         addPerson == data?.name ? "#0362F0" : "#F2F5F6",
-                      background: "#F2F5F6",
+
                       borderRadius: "152px",
                       color: addPerson == data?.name ? "#ffffff" : "#002152",
-                      color: "#002152",
                       fontSize: {
                         xs: "12px",
                         sm: "13px",
@@ -805,7 +660,8 @@ function AddCompanyPersonalData({
       <Divider sx={{ mt: 3 }} />
       <Grid container spacing={1} sx={{ mt: 3 }}>
         {addPerson != "Physical person" && (
-          <Grid item xs={16}>
+          <Grid item xs={12}>
+            {/* full_name */}
             <Stack direction={"column"} spacing={1}>
               <Typography
                 variant="p"
@@ -822,16 +678,17 @@ function AddCompanyPersonalData({
               <Controller
                 name="full_name"
                 control={control}
+                defaultValue={""}
                 render={({ field }) => (
-                  <BaseOutlinedCpfInput
-                    placeholder={t["Full Name"]}
+                  <BaseTextField
                     size={"small"}
+                    placeholder={t["Full Name"]}
+                    // sx={{ mb: 2 }}
                     onChange={(e) => {
                       field.onChange(e.target.value);
                     }}
                     name={"full_name"}
                     value={field.value}
-                    // error={errors.cpf_number ? true : false}
                   />
                 )}
               />
@@ -843,6 +700,7 @@ function AddCompanyPersonalData({
                 {errors.full_name?.message}
               </Typography>
             </Stack>
+            {/* full_name */}
           </Grid>
         )}
         <Grid item xs={6}>
@@ -870,6 +728,7 @@ function AddCompanyPersonalData({
                   }}
                   name={"cpf_number"}
                   value={field.value}
+                  onBlur={() => trigger("cpf_number")}
                   // error={errors.cpf_number ? true : false}
                 />
               )}
@@ -908,6 +767,8 @@ function AddCompanyPersonalData({
                   }}
                   name={"RG_number"}
                   value={field.value}
+                  onBlur={() => trigger("rg_number")}
+
                   // error={errors?.rg_number ? true : false}
                 />
               )}
@@ -922,7 +783,7 @@ function AddCompanyPersonalData({
           </Stack>
         </Grid>
       </Grid>
-      <Grid container spacing={1} sx={{ mt: 2 }}>
+      {/* <Grid container spacing={1} sx={{ mt: 2 }}>
         <Grid container spacing={1} sx={{ mt: 2, mb: 5 }}>
           <Grid item xs={3} sx={{ ml: "auto" }}>
             <BaseButton
@@ -952,7 +813,7 @@ function AddCompanyPersonalData({
             </BaseButton>
           </Grid>
         </Grid>
-      </Grid>
+      </Grid> */}
     </Box>
   );
 }

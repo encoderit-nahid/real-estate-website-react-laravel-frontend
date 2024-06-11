@@ -47,6 +47,7 @@ import en from "locales/en";
 import pt from "locales/pt";
 import BaseButton from "@/component/reuseable/baseButton/BaseButton";
 import { useRouter } from "next/router";
+import useRequiredFieldsToDisableButton from "@/hooks/useRequiredFieldsToDisableButton";
 
 const aboutLokkanData = [
   "Indicação de amigo",
@@ -66,7 +67,7 @@ const omitEmpties = (obj) => {
   }, {});
 };
 
-export default function OtherInformation({
+export default function AddCompany({
   loginOpen,
   setLoginOpen,
   handleLoginOpen,
@@ -79,25 +80,8 @@ export default function OtherInformation({
 
   const t = myValue === "en" ? en : pt;
 
-  const validationSchema = Yup.object().shape({
-    full_name: Yup.string().required(t["Full Name is required"]),
-    // creci_number: Yup.string().required(t["CRECI number is required"]),
-    cpf_number: Yup.string().required(t["CPF number is required"]),
-    rg_number: Yup.string().required(t["RG number is required"]),
-    dob: Yup.string().required(t["Date of Birth number is required"]),
-    zip_code: Yup.string().required(t["Zip code number is required"]),
-    address: Yup.string().required(t["Address is required"]),
-    number: Yup.string().required(t["Number is required"]),
-    neighbourhood: Yup.string().required(t["Neighbourhood is required"]),
-    state: Yup.object().required(t["State is required"]),
-    city: Yup.string().required(t["City is required"]),
-  });
-
-  const preferenceData = [
-    { name: "rent", slug: t["rent"] },
-    { name: "sale", slug: t["sale"] },
-    { name: "both", slug: t["both"] },
-  ];
+  const [addPerson, setAddPerson] = useState("Physical person");
+  const [addType, setAddType] = useState("Car");
 
   const steps = [t["Personal data"], t["Address"]];
 
@@ -177,11 +161,57 @@ export default function OtherInformation({
   const handleOpen = () => setSentModalOpen(true);
   const handleClose = () => setSentModalOpen(false);
 
-  const [actingPreferenceBtn, setActingPreferenceBtn] = useState(
-    preferenceData[0]?.name
-  );
+  // const [actingPreferenceBtn, setActingPreferenceBtn] = useState(
+  //   preferenceData[0]?.name
+  // );
   const [aboutLokkanBtn, setAboutLokkanBtn] = useState(aboutLokkanData[0]);
   const [loading, setLoading] = useState(false);
+  const validationSchema = Yup.object().shape({
+    image: Yup.mixed()
+      .required("File is required")
+      .test("fileType", "Unsupported File Format", (value) => {
+        return (
+          value && ["image/jpeg", "image/png", "image/jpg"].includes(value.type)
+        );
+      }),
+    full_name: Yup.string().required(t["Full Name is required"]),
+    dob: Yup.string().required(t["Date of Birth number is required"]),
+    description: Yup.string().required(t["Description is required"]),
+    cpf_number: Yup.string()
+      .required(t["CPF number is required"])
+      .test("isValid", t["CPF number is required"], (cpf) => {
+        cpf = cpf.replace(/\D/g, ""); // Remove non-numeric characters
+        if (cpf.length !== 11) {
+          return false;
+        }
+        // Eliminate known invalid CPFs
+        if (/(\d)\1{10}/.test(cpf)) {
+          return false;
+        }
+        // Validate the check digits
+        for (let t = 9; t < 11; t++) {
+          let d = 0;
+          for (let c = 0; c < t; c++) {
+            d += parseInt(cpf.charAt(c)) * (t + 1 - c);
+          }
+          d = ((10 * d) % 11) % 10;
+          if (cpf.charAt(t) != d) {
+            return false;
+          }
+        }
+        return true;
+      }),
+    rg_number: Yup.string()
+      .required(t["RG number is required"])
+      .min(12, t["RG number is required"]),
+
+    zip_code: Yup.string().required(t["Zip code number is required"]),
+    address: Yup.string().required(t["Address is required"]),
+    number: Yup.string().required(t["Number is required"]),
+    neighbourhood: Yup.string().required(t["Neighbourhood is required"]),
+    state: Yup.object().required(t["State is required"]),
+    city: Yup.string().required(t["City is required"]),
+  });
   const {
     register,
     watch,
@@ -190,14 +220,50 @@ export default function OtherInformation({
     setValue,
     formState: { errors },
     setError,
+    trigger,
     reset,
   } = useForm({
     resolver: yupResolver(validationSchema),
   });
+  console.log("🟥 ~ errors:", errors);
 
   const allValues = watch();
   const { replace } = useRouter();
-
+  const requiredFields = {
+    physical_person: [
+      "image",
+      "full_name",
+      "cpf_number",
+      "rg_number",
+      "dob",
+      "description",
+    ],
+    legal_person: [
+      "image",
+      "full_name",
+      "state_registration",
+      "cnpj",
+      "corporate_reason",
+      "cpf_number",
+      "rg_number",
+    ],
+    address_data: [
+      "zip_code",
+      "address",
+      "neighbourhood",
+      "add_on",
+      "city",
+      "state",
+    ],
+  };
+  const [disableBtn, setDisableBtn] = useRequiredFieldsToDisableButton(
+    activeStep === 0 && addPerson == "Physical person"
+      ? requiredFields.physical_person
+      : activeStep === 0 && addPerson == "Legal person"
+      ? requiredFields.legal_person
+      : requiredFields.address_data,
+    allValues
+  );
   useEffect(() => {
     if (Object.keys(errors).length > 0) {
       handleClickSnackbar();
@@ -205,69 +271,74 @@ export default function OtherInformation({
   }, [errors]);
 
   const onSubmit = async (data) => {
-    setLoading(true);
+    console.log("🟥 ~ onSubmit ~ data:", {
+      ...data,
+      type: addType,
+      person_type: addPerson,
+    });
+    // setLoading(true);
     // const previousFieldData = JSON.parse(
     //   localStorage.getItem("broker_registration")
     // );
 
-    const registrationId = localStorage.getItem("registration_id");
+    // const registrationId = localStorage.getItem("registration_id");
 
-    const additionalInfoData = omitEmpties({
-      full_name: data.full_name,
-      description: data.description,
-      creci_number: data.creci_number,
-      cpf: data.cpf_number,
-      rg: data.rg_number,
-      dob: dayjs(data.dob).format("YYYY-MM-DD"),
-      social_name: data.social_name,
-      broker_type: actingPreferenceBtn,
-      referred_from: aboutLokkanBtn,
-      broker_referral_id: selectedBroker?.id,
-    });
-    const addressData = omitEmpties({
-      zip_code: data.zip_code,
-      address: data.address,
-      number: data.number,
-      neighbourhood: data.neighbourhood,
-      add_on: data.add_on,
-      city: data.city,
-      state_id: data.state.id,
-    });
+    // const additionalInfoData = omitEmpties({
+    //   full_name: data.full_name,
+    //   description: data.description,
+    //   creci_number: data.creci_number,
+    //   cpf: data.cpf_number,
+    //   rg: data.rg_number,
+    //   dob: dayjs(data.dob).format("YYYY-MM-DD"),
+    //   social_name: data.social_name,
+    //   broker_type: actingPreferenceBtn,
+    //   referred_from: aboutLokkanBtn,
+    //   broker_referral_id: selectedBroker?.id,
+    // });
+    // const addressData = omitEmpties({
+    //   zip_code: data.zip_code,
+    //   address: data.address,
+    //   number: data.number,
+    //   neighbourhood: data.neighbourhood,
+    //   add_on: data.add_on,
+    //   city: data.city,
+    //   state_id: data.state.id,
+    // });
 
-    const firstPartData = omitEmpties({
-      image: data.image,
-      user_id: registrationId,
-      broker_url: window.location.origin,
-      redirect_url: `${window.location.origin}/user-loading`,
-    });
+    // const firstPartData = omitEmpties({
+    //   image: data.image,
+    //   user_id: registrationId,
+    //   broker_url: window.location.origin,
+    //   redirect_url: `${window.location.origin}/user-loading`,
+    // });
 
-    const requireData = {
-      ...firstPartData,
-      additional_info: additionalInfoData,
-      address: addressData,
-    };
+    // const requireData = {
+    //   ...firstPartData,
+    //   additional_info: additionalInfoData,
+    //   address: addressData,
+    // };
 
-    console.log(requireData);
+    // console.log(requireData);
 
-    const formData = serialize(requireData, { indices: true });
-    const [error, responseToken] = await userInfoRegistrationApi(formData);
+    // const formData = serialize(requireData, { indices: true });
+    // const [error, responseToken] = await userInfoRegistrationApi(formData);
 
-    setLoading(false);
-    if (!error) {
-      setSentModalOpen(true);
-      setSuccessMessage(responseToken?.data?.message);
-      handleClickSuccessSnackbar();
-      localStorage.removeItem("Reg_user_name");
-      localStorage.removeItem("user_role");
-      localStorage.removeItem("registration_id");
-    } else {
-      const errors = error?.response?.data?.errors ?? {};
+    // setLoading(false);
+    // if (!error) {
+    //   setSentModalOpen(true);
+    //   setSuccessMessage(responseToken?.data?.message);
+    //   handleClickSuccessSnackbar();
+    //   localStorage.removeItem("Reg_user_name");
+    //   localStorage.removeItem("user_role");
+    //   localStorage.removeItem("registration_id");
+    // } else {
+    //   const errors = error?.response?.data?.errors ?? {};
 
-      Object.entries(errors).forEach(([name, messages]) => {
-        setError(name, { type: "manual", message: messages[0] });
-      });
-      // setLoading(false);
-    }
+    //   Object.entries(errors).forEach(([name, messages]) => {
+    //     setError(name, { type: "manual", message: messages[0] });
+    //   });
+    //   // setLoading(false);
+    // }
   };
 
   useEffect(() => {
@@ -306,6 +377,7 @@ export default function OtherInformation({
               {activeStep === 0 ? (
                 <AddCompanyPersonalData
                   handleNext={handleNext}
+                  trigger={trigger}
                   control={control}
                   errors={errors}
                   allValues={allValues}
@@ -315,6 +387,10 @@ export default function OtherInformation({
                   setSelectedBroker={setSelectedBroker}
                   reset={reset}
                   replace={replace}
+                  addPerson={addPerson}
+                  setAddPerson={setAddPerson}
+                  addType={addType}
+                  setAddType={setAddType}
                 />
               ) : (
                 <AddCompanyAddressData
@@ -330,7 +406,7 @@ export default function OtherInformation({
                   replace={replace}
                 />
               )}
-              {errors && (
+              {/* {errors && (
                 <Stack sx={{ width: "100%", mt: 2 }} spacing={2}>
                   {Object.keys(errors).map((key, index) => (
                     <Alert key={index} severity="error">
@@ -338,34 +414,50 @@ export default function OtherInformation({
                     </Alert>
                   ))}
                 </Stack>
-              )}
+              )} */}
               <Grid container spacing={1} sx={{ mt: 2, mb: 5 }}>
-                {activeStep === 1 && (
-                  <>
-                    <Grid item xs={3} sx={{ ml: "auto" }}>
-                      <BaseButton
-                        fullWidth
-                        disabled={activeStep === 0}
-                        handleFunction={handleBack}
-                        sx="mute"
-                      >
-                        {t["Come back"]}
-                      </BaseButton>
-                    </Grid>
-                    <Grid item xs={3}>
-                      <BaseButton type="submit" fullWidth sx="success">
-                        {loading && (
-                          <CircularProgress size={22} color="inherit" />
-                        )}
-                        {!loading && t["Register"]}
-                      </BaseButton>
-                    </Grid>
-                  </>
+                <Grid item xs={3} sx={{ ml: "auto" }}>
+                  <BaseButton
+                    fullWidth
+                    disabled={activeStep === 0}
+                    handleFunction={handleBack}
+                    sx="mute"
+                  >
+                    {t["Come back"]}
+                  </BaseButton>
+                </Grid>
+                {activeStep == 0 && (
+                  <Grid item xs={3}>
+                    <BaseButton
+                      handleFunction={handleNext}
+                      disabled={disableBtn}
+                      fullWidth
+                      type="button"
+                      sx="success"
+                    >
+                      {t["Continue"]}
+                    </BaseButton>
+                  </Grid>
+                )}
+                {activeStep == 1 && (
+                  <Grid item xs={3}>
+                    <BaseButton
+                      type={"submit"}
+                      fullWidth
+                      sx="success"
+                      disabled={disableBtn}
+                    >
+                      {loading && (
+                        <CircularProgress size={22} color="inherit" />
+                      )}
+                      {!loading && t["Register"]}
+                    </BaseButton>
+                  </Grid>
                 )}
               </Grid>
             </form>
 
-            <Snackbar
+            {/* <Snackbar
               open={snackbarOpen}
               autoHideDuration={6000}
               onClose={handleCloseSnackbar}
@@ -400,16 +492,16 @@ export default function OtherInformation({
               >
                 {successMessage && successMessage}
               </Alert>
-            </Snackbar>
+            </Snackbar> */}
           </Fragment>
         )}
-        <BaseModal isShowing={sentModalOpen} isClose={handleClose}>
+        {/* <BaseModal isShowing={sentModalOpen} isClose={handleClose}>
           <Tooltip title="Something">
             <>
               <BrokerRegistrationSentModal handleClose={handleClose} />
             </>
           </Tooltip>
-        </BaseModal>
+        </BaseModal> */}
       </Container>
     </Box>
   );
