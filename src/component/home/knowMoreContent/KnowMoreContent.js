@@ -35,24 +35,24 @@ function KnowMoreContent({ handleClose, languageName, buttonName, href }) {
 
   const brokerData = [
     {
-      name: "Praticidade",
-      info: "descomplicar a compra e venda de imóveis é com a gente! todo o processo é feito online, de forma 100% digital e sem burocracia. conheça a facilidade que a lokkan pode trazer para sua vida!",
+      name: "Compra garantida",
+      info: "Devolução integral do seu investimento em caso de distrato justificado*, tranquilidade para realizar o seu sonho sem preocupações.",
       imageSrc: clientsImage,
     },
     {
-      name: "Processo de venda rápido: venda seu imóvel com facilidade e rapidez",
-      info: "vender seu imóvel nunca foi tão fácil! Com a lokkan, todo o processo é feito online, de forma 100% digital e sem burocracia, incluindo documentação e assinatura digital. Ganhe tempo e agilidade!",
+      name: "Processo 100% digital",
+      info: "Do agendamento de visitas à escritura pública, tudo online, com praticidade e economia de tempo. Acessibilidade em qualquer lugar e a qualquer hora.",
       imageSrc: clientsImage,
       imageSrc: technologyImage,
     },
     {
-      name: "Documentação digital: agilize suas transações com a lokkan!",
-      info: "tempo com a papelada e idas ao cartório! com a lokkan, a documentação para compra e venda de imóveis é digital, incluindo contratos, matrículas, certidões e consultas ao SPC e Serasa (vendedor). até a elaboração de escritura e assinatura são digitais, tudo para tornar sua vida mais fácil!",
+      name: "Transparência e eficiência",
+      info: "Negociação direta entre proprietário e comprador, sem intermediários.Todos os trâmites e documentos online, com total clareza e segurança.",
       imageSrc: earnImage,
     },
     {
-      name: "100% digital: faça transações mais rápidas e seguras!",
-      info: "com a lokkan, você pode esquecer a papelada e a burocracia. oferecemos todo o processo de compra e venda de imóveis 100% digital, incluindo documentação e assinatura. aproveite a facilidade e agilidade que a lokkan oferece!",
+      name: "Praticidade",
+      info: "Diga adeus à burocracia! O que antes era moroso e complicado, agora é simples e acessível para todos.",
       imageSrc: colaborateImage,
     },
   ];
@@ -74,9 +74,9 @@ function KnowMoreContent({ handleClose, languageName, buttonName, href }) {
               color: "#002152",
             }}
           >
-            Quero comprar
+            Cansado das complicações e inseguranças da compra de um imóvel?
           </Typography>
-          <BaseCloseButton handleClose={handleClose}/>
+          <BaseCloseButton handleClose={handleClose} />
         </Grid>
         <Grid container spacing={4} sx={{ pt: 2 }}>
           {brokerData?.map((data, index) => (
@@ -87,17 +87,21 @@ function KnowMoreContent({ handleClose, languageName, buttonName, href }) {
                 sx={{
                   backgroundColor: "#F9F9FB",
                   borderRadius: "6px",
+                  minHeight: "300px",
                   paddingX: 4,
                   paddingY: 2.5,
                   position: { xs: "relative", sm: "relative" },
-                  paddingBottom: `${
-                    index === 0 ? "4.5vh" : index === 3 ? "5.5vh" : "0.5vh"
-                  }`,
+                  paddingBottom: `2.5vh`,
                   //   mb: { xs: 2, xm: 2, md: 5, xl: 5, lg: 5 },
                 }}
               >
                 <Grid item xs={12}>
-                  <Image src={data.imageSrc} alt="track" />
+                  <Image
+                    src={data.imageSrc}
+                    alt="track"
+                    height={100}
+                    width={140}
+                  />
                 </Grid>
                 <Grid item xs={12}>
                   <Grid
