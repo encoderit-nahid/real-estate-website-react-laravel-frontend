@@ -34,7 +34,6 @@ export default function Google({ roleId, type, date, time, brlValue, propertyId 
       console.log({ query });
       const [errorAuth, responseAuth] = await socialLoginApi(query, "google");
       if (!errorAuth) {
-        clearMultipleCookies(["role_id", "type", "date", "time", "brl_value", "property_id"]);
         localStorage.setItem("token", responseAuth?.data?.token);
         apiInstance.defaults.headers.common[
           "Authorization"
@@ -52,6 +51,7 @@ export default function Google({ roleId, type, date, time, brlValue, propertyId 
             userImage: response?.data?.user?.attachments[0]?.file_path,
             callbackUrl: "/my-properties",
           });
+          clearMultipleCookies(["role_id", "type", "date", "time", "brl_value", "property_id"]);
         }
       } else {
         console.log(errorAuth?.response);
