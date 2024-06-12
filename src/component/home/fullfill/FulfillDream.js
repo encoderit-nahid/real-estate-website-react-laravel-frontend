@@ -75,6 +75,13 @@ function FulfillDream({ languageName, setKnowMoreModal }) {
               borderRadius: "25px",
             },
           },
+          "&:hover": {
+            "& .MuiOutlinedInput-root": {
+              "& fieldset": {
+                borderColor: "#0362F0",
+              },
+            },
+          }
         }}
         inputProps={{
           style: { color: "#ffffff" }, // Change placeholder color here
@@ -105,6 +112,13 @@ function FulfillDream({ languageName, setKnowMoreModal }) {
           "& .MuiSvgIcon-root": {
             color: "#ffffff", // Change arrow icon color here
           },
+          "&:hover": {
+            "& .MuiOutlinedInput-root": {
+              "& fieldset": {
+                borderColor: "#0362F0",
+              },
+            },
+          }
         }}
         isOptionEqualToValue={(option, value) => option.value === value.value}
         size={"medium"}

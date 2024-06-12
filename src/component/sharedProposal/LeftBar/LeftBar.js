@@ -240,7 +240,7 @@ function LeftBar(props) {
                 // className="btn-leftbar"
                 selected={selectedLabel === leftData.route}
                 onClick={
-                  index === 6
+                  index === 7
                     ? handleLogout
                     : () => handleListItemClick(index, leftData)
                 }

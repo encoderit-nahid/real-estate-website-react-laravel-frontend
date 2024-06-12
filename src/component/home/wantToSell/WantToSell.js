@@ -164,7 +164,7 @@ function WantToSell({ languageName }) {
           </Grid>
         </Grid>
       </Grid>
-      <Link href="/advertise">
+      <Link href="/cadastro-de-proprietario">
         <a
           style={{
             textDecoration: "none",
