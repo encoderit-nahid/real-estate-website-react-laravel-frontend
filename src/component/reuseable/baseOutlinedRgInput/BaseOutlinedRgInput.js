@@ -26,6 +26,7 @@ function BaseOutlinedRgInput({
   size,
   name,
   error,
+  onBlur,
 }) {
   return (
     <OutlinedInput
@@ -38,6 +39,7 @@ function BaseOutlinedRgInput({
       label={label}
       size={size}
       inputProps={{ style: { textTransform: "uppercase" } }}
+      onBlur={onBlur}
 
       // startAdornment={
       //   <InputAdornment position="start">

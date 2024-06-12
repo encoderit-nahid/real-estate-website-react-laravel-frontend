@@ -40,6 +40,7 @@ import BaseButton from "@/component/reuseable/baseButton/BaseButton";
 
 import useRequiredFieldsToDisableButton from "@/hooks/useRequiredFieldsToDisableButton";
 import BaseCloseButton from "@/component/reuseable/baseCloseButton/BaseCloseButton";
+import triggerValidation from "@/hooks/triggerValidation";
 
 function PersonalData({
   handleNext,
@@ -52,6 +53,7 @@ function PersonalData({
   activeStep,
   reset,
   replace,
+  trigger,
 }) {
   const [preview, setPreview] = useState();
 
@@ -97,15 +99,39 @@ function PersonalData({
   }, [allValues.image]);
 
   // const [disableBtn, setDisableBtn] = useState(true);
-  const requiredFields = {
-    broker: ["full_name", "cpf_number", "rg_number", "dob", "description"],
-    owner: ["full_name", "cpf_number", "rg_number", "dob"],
-  };
+  // const requiredFields = {
+  //   broker: ["full_name", "cpf_number", "rg_number", "dob", "description"],
+  //   owner: ["full_name", "cpf_number", "rg_number", "dob"],
+  // };
+  const requiredFields =
+    userRole === "broker"
+      ? ["full_name", "cpf_number", "rg_number", "dob", "description"]
+      : ["full_name", "cpf_number", "rg_number", "dob"];
   const [disableBtn, setDisableBtn] = useRequiredFieldsToDisableButton(
-    userRole === "broker" ? requiredFields.broker : requiredFields.owner,
+    requiredFields,
     allValues
   );
-
+  // async function triggerValidation() {
+  //   try {
+  //     const data = await Promise.all(
+  //       requiredFields.map(async (field) => {
+  //         try {
+  //           const response = await trigger(field);
+  //           return response;
+  //         } catch (error) {
+  //           console.error(error);
+  //           return false;
+  //         }
+  //       })
+  //     );
+  //     const allTrue = data.every((result) => result === true);
+  //     console.log("🟥 ~ triggerValidation ~ allTrue:", allTrue);
+  //     return allTrue;
+  //   } catch (error) {
+  //     console.error("Error in triggerValidation:", error);
+  //     return false;
+  //   }
+  // }
   const [state, setState] = React.useState({
     top: false,
     left: false,
@@ -162,7 +188,7 @@ function PersonalData({
         >
           {t["Select broker"]}
         </Typography>
-        <BaseCloseButton handleClose={toggleDrawer("right", false)}/>
+        <BaseCloseButton handleClose={toggleDrawer("right", false)} />
       </Grid>
       <Box sx={{ px: 2, mt: 1 }}>
         <TextField
@@ -549,7 +575,6 @@ function PersonalData({
                   type={"number"}
                   autoComplete={"new-Text"}
                   placeholder={t["CRECI Number"]}
-                
                   onChange={(e) => {
                     field.onChange(e.target.value);
                   }}
@@ -600,6 +625,8 @@ function PersonalData({
                   }}
                   name={"cpf_number"}
                   value={field.value}
+                  onBlur={() => trigger("cpf_number")}
+
                   // error={errors.cpf_number ? true : false}
                 />
               )}
@@ -651,6 +678,8 @@ function PersonalData({
                   }}
                   name={"RG_number"}
                   value={field.value}
+                  onBlur={() => trigger("rg_number")}
+
                   // error={errors?.rg_number ? true : false}
                 />
               )}
@@ -861,7 +890,11 @@ function PersonalData({
           </Grid>
           <Grid item xs={3}>
             <BaseButton
-              handleFunction={handleNext}
+              handleFunction={async () => {
+                if (await triggerValidation(requiredFields, trigger)) {
+                  handleNext();
+                }
+              }}
               disabled={disableBtn}
               fullWidth
               sx="success"

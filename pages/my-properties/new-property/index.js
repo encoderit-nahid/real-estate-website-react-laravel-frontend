@@ -93,6 +93,30 @@ export default function NewProperty({ language }) {
   ];
 
   const steps = session?.user?.role === "owner" ? ownerSteps : otherSteps;
+  const [maritalStatus, setMaritalStatus] = useState("Married");
+
+  const validateCPF = (cpf) => {
+    cpf = cpf.replace(/\D/g, ""); // Remove non-numeric characters
+    if (cpf.length !== 11) {
+      return false;
+    }
+    // Eliminate known invalid CPFs
+    if (/(\d)\1{10}/.test(cpf)) {
+      return false;
+    }
+    // Validate the check digits
+    for (let t = 9; t < 11; t++) {
+      let d = 0;
+      for (let c = 0; c < t; c++) {
+        d += parseInt(cpf.charAt(c)) * (t + 1 - c);
+      }
+      d = ((10 * d) % 11) % 10;
+      if (cpf.charAt(t) != d) {
+        return false;
+      }
+    }
+    return true;
+  };
 
   const validationSchema = Yup.object().shape({
     zip_code: Yup.string().required(t["Zip code is required"]),
@@ -100,7 +124,25 @@ export default function NewProperty({ language }) {
     number: Yup.string().required(t["Number is required"]),
     neighbourhood: Yup.string().required(t["Neighbourhood is required"]),
     city: Yup.string().required(t["City is required"]),
-    state: Yup.object().required(t["State is required"]),
+    state: Yup.object().required(t["State is required"]), // Assuming state is a string
+    owner_cpf: Yup.string()
+      .required(t["CPF number is required"])
+      .test("isValidCPF", t["CPF number is required"], validateCPF),
+    owner_spouse_cpf:
+      maritalStatus === "Married"
+        ? Yup.string()
+            .required(t["CPF number is required"])
+            .test("isValidCPF", t["CPF number is required"], validateCPF)
+        : Yup.string().optional(),
+    owner_rg: Yup.string()
+      .required(t["RG number is required"])
+      .length(12, t["RG number is required"]),
+    owner_spouse_rg:
+      maritalStatus === "Married"
+        ? Yup.string()
+            .required(t["RG number is required"])
+            .length(12, t["RG number is required"])
+        : Yup.string().optional(),
   });
 
   const dispatch = useDispatch();
@@ -120,6 +162,7 @@ export default function NewProperty({ language }) {
     reset,
     handleSubmit,
     formState: { errors },
+    trigger,
   } = useForm({
     resolver: yupResolver(validationSchema),
     defaultValues: {
@@ -131,6 +174,7 @@ export default function NewProperty({ language }) {
       ],
     },
   });
+  console.log({ errors });
   const allValues = watch();
 
   const { fields, append, remove } = useFieldArray({
@@ -152,7 +196,6 @@ export default function NewProperty({ language }) {
   const [imageErrorMessage, setImageErrorMessage] = useState("");
   const [ErrorsData, setErrorsData] = useState(false);
   const [ErrorMessage, setErrorMessage] = useState({});
-  const [maritalStatus, setMaritalStatus] = useState("Married");
   const [sentModalOpen, setSentModalOpen] = useState(false);
   const [action, setAction] = useState("");
   const [deletedContent, setDeletedContent] = useState([]);
@@ -671,6 +714,7 @@ export default function NewProperty({ language }) {
                   setMarried={setMarried}
                   reset={reset}
                   replace={replace}
+                  trigger={trigger}
                 />
               )}
 

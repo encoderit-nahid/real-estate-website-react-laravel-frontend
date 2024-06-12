@@ -7,6 +7,8 @@ export default {
   "Make your": "Make your",
   "Dream!": "Dream!",
   Loacation: "Loacation",
+  Car: "Car",
+  Construction: "Construction",
   "For those who want to sell": "For those who want to sell",
   "For anyone who is a broker": "For anyone who is a broker",
   "track everything online": "track everything online",
