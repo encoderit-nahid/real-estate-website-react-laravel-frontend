@@ -98,15 +98,39 @@ function PersonalData({
   }, [allValues.image]);
 
   // const [disableBtn, setDisableBtn] = useState(true);
-  const requiredFields = {
-    broker: ["full_name", "cpf_number", "rg_number", "dob", "description"],
-    owner: ["full_name", "cpf_number", "rg_number", "dob"],
-  };
+  // const requiredFields = {
+  //   broker: ["full_name", "cpf_number", "rg_number", "dob", "description"],
+  //   owner: ["full_name", "cpf_number", "rg_number", "dob"],
+  // };
+  const requiredFields =
+    userRole === "broker"
+      ? ["full_name", "cpf_number", "rg_number", "dob", "description"]
+      : ["full_name", "cpf_number", "rg_number", "dob"];
   const [disableBtn, setDisableBtn] = useRequiredFieldsToDisableButton(
-    userRole === "broker" ? requiredFields.broker : requiredFields.owner,
+    requiredFields,
     allValues
   );
-
+  async function triggerValidation() {
+    try {
+      const data = await Promise.all(
+        requiredFields.map(async (field) => {
+          try {
+            const response = await trigger(field);
+            return response;
+          } catch (error) {
+            console.error(error);
+            return false;
+          }
+        })
+      );
+      const allTrue = data.every((result) => result === true);
+      console.log("🟥 ~ triggerValidation ~ allTrue:", allTrue);
+      return allTrue;
+    } catch (error) {
+      console.error("Error in triggerValidation:", error);
+      return false;
+    }
+  }
   const [state, setState] = React.useState({
     top: false,
     left: false,
@@ -865,7 +889,12 @@ function PersonalData({
           </Grid>
           <Grid item xs={3}>
             <BaseButton
-              handleFunction={handleNext}
+              handleFunction={async () => {
+                if (await triggerValidation()) {
+                  handleNext();
+                }
+              }}
+              // handleFunction={triggerValidation}
               disabled={disableBtn}
               fullWidth
               sx="success"
