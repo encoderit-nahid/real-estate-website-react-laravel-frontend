@@ -55,14 +55,19 @@ function Footer() {
             alignItems="flex-start"
             sx={{ color: "#ffffff", fontSize: "14px" }}
           >
-            <Link href="/terms">
+            <Link href="/termos-de-uso">
               <Typography variant="p" sx={{ cursor: "pointer" }}>
                 termos de uso
               </Typography>
             </Link>
-            <Link href="/privacy">
+            <Link href="/politicas-de-privacidade">
               <Typography variant="p" sx={{ cursor: "pointer" }}>
                 política de privacidade
+              </Typography>
+            </Link>
+            <Link href="/contato">
+              <Typography variant="p" sx={{ cursor: "pointer" }}>
+                contato
               </Typography>
             </Link>
             <Link href="/user_manual">
