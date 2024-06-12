@@ -55,6 +55,16 @@ function Footer() {
             alignItems="flex-start"
             sx={{ color: "#ffffff", fontSize: "14px" }}
           >
+            <Link href="/cadastro-de-corretor">
+              <Typography variant="p" sx={{ cursor: "pointer" }}>
+                Cadastro de corretor
+              </Typography>
+            </Link>
+            <Link href="/cadastro-de-proprietario">
+              <Typography variant="p" sx={{ cursor: "pointer" }}>
+                Cadastro de proprietario
+              </Typography>
+            </Link>
             <Link href="/termos-de-uso">
               <Typography variant="p" sx={{ cursor: "pointer" }}>
                 termos de uso
@@ -68,16 +78,6 @@ function Footer() {
             <Link href="/contato">
               <Typography variant="p" sx={{ cursor: "pointer" }}>
                 contato
-              </Typography>
-            </Link>
-            <Link href="/user_manual">
-              <Typography variant="p" sx={{ cursor: "pointer" }}>
-                manual dos usuários
-              </Typography>
-            </Link>
-            <Link href="/cookie_policy">
-              <Typography variant="p" sx={{ cursor: "pointer" }}>
-                política de cookies
               </Typography>
             </Link>
           </Grid>

@@ -19,6 +19,9 @@ export async function middleware(req) {
     "/auth/facebook/callback",
     "/auth/google/callback",
     "/user-loading",
+    "/contato",
+    "/politicas-de-privacidade",
+    "/termos-de-uso",
   ];
 
   const requestPath = req.nextUrl.pathname;
@@ -39,6 +42,6 @@ export async function middleware(req) {
 
 export const config = {
   matcher: [
-    "/((?!api/auth|_next/static|_next/image|favicon.ico|cadastro-de-proprietario|cadastro-de-corretor|search-real-estate|other-information|registration|reset-password|auth/facebook/callback|auth/google/callback).*)",
+    "/((?!api/auth|_next/static|_next/image|favicon.ico|termos-de-uso|politicas-de-privacidade|contato|cadastro-de-proprietario|cadastro-de-corretor|search-real-estate|other-information|registration|reset-password|auth/facebook/callback|auth/google/callback).*)",
   ],
 };
