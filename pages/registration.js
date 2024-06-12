@@ -8,48 +8,50 @@ import {
   InputAdornment,
   Snackbar,
   Typography,
-} from "@mui/material";
-import Head from "next/head";
-import registerImage from "../public/Images/register.png";
-import GoogleIcon from "@mui/icons-material/Google";
-import FacebookOutlinedIcon from "@mui/icons-material/FacebookOutlined";
-import ArrowBackIosNewOutlinedIcon from "@mui/icons-material/ArrowBackIosNewOutlined";
-import Image from "next/image";
-import BaseTextField from "../src/component/reuseable/baseTextField/BaseTextField";
-import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
-import NoEncryptionOutlinedIcon from "@mui/icons-material/NoEncryptionOutlined";
-import React, { useEffect, useState } from "react";
-import { useForm, Controller } from "react-hook-form";
-import { yupResolver } from "@hookform/resolvers/yup";
-import * as Yup from "yup";
-import BaseOutlinedPhoneInput from "../src/component/reuseable/baseOutlinedPhoneInput/BaseOutlinedPhoneInput";
-import { registrationApi } from "../src/api";
-import { useRouter } from "next/router";
-import en from "locales/en";
-import pt from "locales/pt";
-import { _baseURL } from "consts";
+} from '@mui/material'
+import Head from 'next/head'
+import registerImage from '../public/Images/register.png'
+import GoogleIcon from '@mui/icons-material/Google'
+import FacebookOutlinedIcon from '@mui/icons-material/FacebookOutlined'
+import ArrowBackIosNewOutlinedIcon from '@mui/icons-material/ArrowBackIosNewOutlined'
+import Image from 'next/image'
+import BaseTextField from '../src/component/reuseable/baseTextField/BaseTextField'
+import LockOutlinedIcon from '@mui/icons-material/LockOutlined'
+import NoEncryptionOutlinedIcon from '@mui/icons-material/NoEncryptionOutlined'
+import React, { useEffect, useState } from 'react'
+import { useForm, Controller } from 'react-hook-form'
+import { yupResolver } from '@hookform/resolvers/yup'
+import * as Yup from 'yup'
+import BaseOutlinedPhoneInput from '../src/component/reuseable/baseOutlinedPhoneInput/BaseOutlinedPhoneInput'
+import { omitEmpties, registrationApi } from '../src/api'
+import { useRouter } from 'next/router'
+import en from 'locales/en'
+import pt from 'locales/pt'
+import { _baseURL } from 'consts'
 
-import SetCookie from "@/hooks/setCookie";
-import BaseButton from "@/component/reuseable/baseButton/BaseButton";
-import toast from "react-hot-toast";
+import SetCookie from '@/hooks/setCookie'
+import BaseButton from '@/component/reuseable/baseButton/BaseButton'
+import toast from 'react-hot-toast'
 
 export default function Registration({ language, handleLoginOpen }) {
-  const router = useRouter();
-  console.log("🟥 ~ Registration ~ router:", router);
-  const { query } = router;
-  const [myValue, setMyValue] = useState(language || "pt");
-  const t = myValue === "en" ? en : pt;
+  const router = useRouter()
+  console.log('🟥 ~ Registration ~ router:', router)
+  const { query } = router
+  const {user_type, brl_value, property_id , type, date, time} = query;
+
+  const [myValue, setMyValue] = useState(language || 'pt')
+  const t = myValue === 'en' ? en : pt
   const validationSchema = Yup.object().shape({
-    name: Yup.string().required(t["Name is required"]),
-    phone: Yup.string().required(t["Phone is required"]),
+    name: Yup.string().required(t['Name is required']),
+    phone: Yup.string().required(t['Phone is required']),
     email: Yup.string()
-      .required(t["Email is required"])
-      .matches(/.+@.+\.[A-Za-z]+$/, t["Email is invalid"]),
+      .required(t['Email is required'])
+      .matches(/.+@.+\.[A-Za-z]+$/, t['Email is invalid']),
     password: Yup.string()
-      .required(t["Password is required"])
-      .min(6, t["Password must be at least 6 characters"])
-      .max(40, t["Password must not exceed 40 characters"]),
-  });
+      .required(t['Password is required'])
+      .min(6, t['Password must be at least 6 characters'])
+      .max(40, t['Password must not exceed 40 characters']),
+  })
 
   const {
     register,
@@ -61,97 +63,125 @@ export default function Registration({ language, handleLoginOpen }) {
     formState: { errors },
   } = useForm({
     resolver: yupResolver(validationSchema),
-  });
+  })
 
-  const [successMessage, setSuccessMessage] = useState("");
-  const [successSnackbarOpen, setSuccessSnackbarOpen] = React.useState(false);
+  const [successMessage, setSuccessMessage] = useState('')
+  const [successSnackbarOpen, setSuccessSnackbarOpen] = React.useState(false)
 
   const handleClickSuccessSnackbar = () => {
-    setSuccessSnackbarOpen(true);
-  };
+    setSuccessSnackbarOpen(true)
+  }
 
   const handleCloseSuccessSnackbar = (event, reason) => {
-    if (reason === "clickaway") {
-      return;
+    if (reason === 'clickaway') {
+      return
     }
-    setSuccessSnackbarOpen(false);
-  };
+    setSuccessSnackbarOpen(false)
+  }
 
   const handleSocialLogin = (provider) => {
-    SetCookie(
-      "role_id",
-      query?.user_type === "broker" ? 2 : query?.user_type === "owner" ? 3 : 4
-    );
-    window.location.replace(`${_baseURL}/api/redirect/${provider}`);
-  };
+    if (type === 'schedule') {
+      SetCookie(
+        'role_id',
+        user_type === 'broker'
+          ? 2
+          : user_type === 'owner'
+          ? 3
+          : 4,
+      )
+      SetCookie('date', date)
+      SetCookie('type', type)
+      SetCookie('time', time)
+      SetCookie('property_id', property_id)
+    }
+    else{
+      SetCookie(
+        'role_id',
+        user_type === 'broker'
+          ? 2
+          : user_type === 'owner'
+          ? 3
+          : 4,
+      )
+      SetCookie('brl_value', brl_value)
+      SetCookie('type', type)
+      SetCookie('property_id', property_id)
+    }
+    window.location.replace(`${_baseURL}/api/redirect/${provider}`)
+  }
 
-  const [activeBtn, setActiveBtn] = useState(4);
+  const [activeBtn, setActiveBtn] = useState(4)
 
-  const [showPass, setShowPass] = React.useState(false);
+  const [showPass, setShowPass] = React.useState(false)
   const handleClickShowPassword = () => {
-    setShowPass(!showPass);
-  };
-  const [snackbarOpen, setSnackbarOpen] = React.useState(false);
-  const [message, setMessage] = useState("");
+    setShowPass(!showPass)
+  }
+  const [snackbarOpen, setSnackbarOpen] = React.useState(false)
+  const [message, setMessage] = useState('')
 
   const handleClickSnackbar = () => {
-    setSnackbarOpen(true);
-  };
+    setSnackbarOpen(true)
+  }
 
   const handleCloseSnackbar = (event, reason) => {
-    if (reason === "clickaway") {
-      return;
+    if (reason === 'clickaway') {
+      return
     }
-    setSnackbarOpen(false);
-  };
-  const [loading, setLoading] = useState(false);
-  const allValues = watch();
+    setSnackbarOpen(false)
+  }
+  const [loading, setLoading] = useState(false)
+  const allValues = watch()
 
   useEffect(() => {
     if (activeBtn === 2) {
       localStorage.setItem(
-        "broker_registration",
-        JSON.stringify({ ...allValues, role_id: activeBtn })
-      );
+        'broker_registration',
+        JSON.stringify({ ...allValues, role_id: activeBtn }),
+      )
     }
-  }, [activeBtn, allValues]);
+  }, [activeBtn, allValues])
 
   const onSubmit = async (data) => {
-    setLoading(true);
+    setLoading(true)
 
-    const allData = {
+    const allData = omitEmpties({
       ...data,
       role_id:
-        query?.user_type === "broker"
+        user_type === 'broker'
           ? 2
-          : query?.user_type === "owner"
+          : user_type === 'owner'
           ? 3
           : 4,
+      type: type,
+      date: date,
+      time: time,
+      brl_value: brl_value,
+      property_id: property_id,
       redirect_url: `${window.location.origin}/user-loading`,
-    };
+    })
 
-    const [errorToken, responseToken] = await registrationApi(allData);
-    setLoading(false);
+    const [errorToken, responseToken] = await registrationApi(allData)
+    setLoading(false)
     if (!errorToken) {
-      if (responseToken?.data?.userRole === "buyer") {
-        toast.success(responseToken?.data?.message);
+      if (responseToken?.data?.userRole === 'buyer') {
+        toast.success(responseToken?.data?.message)
       } else {
-        localStorage.setItem("registration_id", responseToken?.data?.user?.id);
-        localStorage.setItem("user_role", responseToken?.data?.userRole);
-        localStorage.setItem("Reg_user_name", data?.name);
+        localStorage.setItem('registration_id', responseToken?.data?.user?.id)
+        localStorage.setItem('user_role', responseToken?.data?.userRole)
+        localStorage.setItem('Reg_user_name', data?.name)
         router.replace({
-          pathname: "/other-information",
-        });
+          pathname: '/other-information',
+        })
       }
     } else {
-      const errors = errorToken?.response?.data?.errors ?? {};
+      const errors = errorToken?.response?.data?.errors ?? {}
       Object.entries(errors).forEach(([name, messages]) => {
-        setError(name, { type: "manual", message: messages[0] });
-      });
-      setLoading(false);
-      setMessage(errorToken?.response?.data?.message);
+        setError(name, { type: 'manual', message: messages[0] })
+      })
+      setLoading(false)
+      setMessage(errorToken?.response?.data?.message)
     }
-  };
+  }
 
   return (
     <div>
@@ -173,20 +203,20 @@ export default function Registration({ language, handleLoginOpen }) {
                 sx={{ py: 4 }}
               >
                 <Button
-                  sx={{ textTransform: "none" }}
+                  sx={{ textTransform: 'none' }}
                   onClick={() => router.back()}
                 >
-                  <ArrowBackIosNewOutlinedIcon sx={{ color: "#7450F0" }} />
+                  <ArrowBackIosNewOutlinedIcon sx={{ color: '#7450F0' }} />
                   <Typography
                     variant="p"
                     sx={{
-                      color: "#7450F0",
-                      fontSize: "14px",
-                      fontWeight: "600",
-                      lineHeight: "17px",
+                      color: '#7450F0',
+                      fontSize: '14px',
+                      fontWeight: '600',
+                      lineHeight: '17px',
                     }}
                   >
-                    {t["Cancel registration"]}
+                    {t['Cancel registration']}
                   </Typography>
                 </Button>
                 <Container maxWidth="xs">
@@ -201,14 +231,14 @@ export default function Registration({ language, handleLoginOpen }) {
                       <Typography
                         variant="p"
                         sx={{
-                          color: "#253858",
-                          fontSize: "14px",
-                          fontWeight: "400",
-                          lineHeight: "16px",
+                          color: '#253858',
+                          fontSize: '14px',
+                          fontWeight: '400',
+                          lineHeight: '16px',
                         }}
                       >
-                        {t["Name"]}
-                        <span style={{ color: "#E63333" }}>*</span>
+                        {t['Name']}
+                        <span style={{ color: '#E63333' }}>*</span>
                       </Typography>
                     </Grid>
                     <Controller
@@ -216,19 +246,19 @@ export default function Registration({ language, handleLoginOpen }) {
                       control={control}
                       render={({ field }) => (
                         <BaseTextField
-                          size={"small"}
-                          placeholder={t["Name"]}
+                          size={'small'}
+                          placeholder={t['Name']}
                           onChange={(e) => {
-                            field.onChange(e.target.value);
+                            field.onChange(e.target.value)
                           }}
-                          name={"name"}
+                          name={'name'}
                         />
                       )}
                     />
                     <Typography
                       variant="inherit"
                       color="textSecondary"
-                      sx={{ color: "#b91c1c" }}
+                      sx={{ color: '#b91c1c' }}
                     >
                       {errors.name?.message}
                     </Typography>
@@ -242,14 +272,14 @@ export default function Registration({ language, handleLoginOpen }) {
                       <Typography
                         variant="p"
                         sx={{
-                          color: "#253858",
-                          fontSize: "14px",
-                          fontWeight: "400",
-                          lineHeight: "16px",
+                          color: '#253858',
+                          fontSize: '14px',
+                          fontWeight: '400',
+                          lineHeight: '16px',
                         }}
                       >
-                        {t["Email"]}
-                        <span style={{ color: "#E63333" }}>*</span>
+                        {t['Email']}
+                        <span style={{ color: '#E63333' }}>*</span>
                       </Typography>
                     </Grid>
                     <Controller
@@ -257,19 +287,19 @@ export default function Registration({ language, handleLoginOpen }) {
                       control={control}
                       render={({ field }) => (
                         <BaseTextField
-                          size={"small"}
-                          placeholder={t["Email"]}
+                          size={'small'}
+                          placeholder={t['Email']}
                           onChange={(e) => {
-                            field.onChange(e.target.value);
+                            field.onChange(e.target.value)
                           }}
-                          name={"email"}
+                          name={'email'}
                         />
                       )}
                     />
                     <Typography
                       variant="inherit"
                       color="textSecondary"
-                      sx={{ color: "#b91c1c" }}
+                      sx={{ color: '#b91c1c' }}
                     >
                       {errors.email?.message}
                     </Typography>
@@ -283,14 +313,14 @@ export default function Registration({ language, handleLoginOpen }) {
                       <Typography
                         variant="p"
                         sx={{
-                          color: "#253858",
-                          fontSize: "14px",
-                          fontWeight: "400",
-                          lineHeight: "16px",
+                          color: '#253858',
+                          fontSize: '14px',
+                          fontWeight: '400',
+                          lineHeight: '16px',
                         }}
                       >
-                        {t["Phone"]}
-                        <span style={{ color: "#E63333" }}>*</span>
+                        {t['Phone']}
+                        <span style={{ color: '#E63333' }}>*</span>
                       </Typography>
                     </Grid>
                     <Controller
@@ -298,12 +328,12 @@ export default function Registration({ language, handleLoginOpen }) {
                       control={control}
                       render={({ field }) => (
                         <BaseOutlinedPhoneInput
-                          size={"small"}
-                          placeholder={t["Phone"]}
+                          size={'small'}
+                          placeholder={t['Phone']}
                           onChange={(e) => {
-                            field.onChange(e.target.value);
+                            field.onChange(e.target.value)
                           }}
-                          name={"phone"}
+                          name={'phone'}
                           value={field.value}
                           error={errors.phone ? true : false}
                         />
@@ -312,7 +342,7 @@ export default function Registration({ language, handleLoginOpen }) {
                     <Typography
                       variant="inherit"
                       color="textSecondary"
-                      sx={{ color: "#b91c1c" }}
+                      sx={{ color: '#b91c1c' }}
                     >
                       {errors.phone?.message}
                     </Typography>
@@ -327,14 +357,14 @@ export default function Registration({ language, handleLoginOpen }) {
                       <Typography
                         variant="p"
                         sx={{
-                          color: "#253858",
-                          fontSize: "14px",
-                          fontWeight: "400",
-                          lineHeight: "16px",
+                          color: '#253858',
+                          fontSize: '14px',
+                          fontWeight: '400',
+                          lineHeight: '16px',
                         }}
                       >
-                        {t["Password"]}
-                        <span style={{ color: "#E63333" }}>*</span>
+                        {t['Password']}
+                        <span style={{ color: '#E63333' }}>*</span>
                       </Typography>
                     </Grid>
                     <Controller
@@ -342,18 +372,18 @@ export default function Registration({ language, handleLoginOpen }) {
                       control={control}
                       render={({ field }) => (
                         <BaseTextField
-                          size={"small"}
-                          placeholder={t["Password"]}
-                          type={showPass ? "text" : "password"}
-                          name={"password"}
+                          size={'small'}
+                          placeholder={t['Password']}
+                          type={showPass ? 'text' : 'password'}
+                          name={'password'}
                           // {...field}
                           onChange={(e) => {
-                            field.onChange(e.target.value);
+                            field.onChange(e.target.value)
                           }}
                           InputProps={{
                             endAdornment: (
                               <InputAdornment
-                                sx={{ cursor: "pointer" }}
+                                sx={{ cursor: 'pointer' }}
                                 position="end"
                                 onClick={handleClickShowPassword}
                               >
@@ -371,7 +401,7 @@ export default function Registration({ language, handleLoginOpen }) {
                     <Typography
                       variant="inherit"
                       color="textSecondary"
-                      sx={{ color: "#b91c1c" }}
+                      sx={{ color: '#b91c1c' }}
                     >
                       {errors.password?.message}
                     </Typography>
@@ -390,11 +420,11 @@ export default function Registration({ language, handleLoginOpen }) {
                           variant="outlined"
                           fullWidth
                           handleFunction={() => {
-                            reset();
-                            router.replace("/");
+                            reset()
+                            router.replace('/')
                           }}
                         >
-                          {t["Cancel"]}
+                          {t['Cancel']}
                         </BaseButton>
                       </Grid>
                       <Grid item xs={12} sm={12} md={12} lg={6} xl={6}>
@@ -403,21 +433,21 @@ export default function Registration({ language, handleLoginOpen }) {
                           fullWidth
                           custom_sx={{
                             background:
-                              "linear-gradient(270deg, #1DEECB 1.2%, #00C1B4 98.7%)",
-                            boxShadow: "0px 4px 34px rgba(0, 0, 0, 0.08)",
-                            borderRadius: "4px",
-                            color: "#ffffff",
-                            fontSize: "16px",
-                            lineHeight: "22px",
-                            fontWeight: "600",
-                            textTransform: "none",
+                              'linear-gradient(270deg, #1DEECB 1.2%, #00C1B4 98.7%)',
+                            boxShadow: '0px 4px 34px rgba(0, 0, 0, 0.08)',
+                            borderRadius: '4px',
+                            color: '#ffffff',
+                            fontSize: '16px',
+                            lineHeight: '22px',
+                            fontWeight: '600',
+                            textTransform: 'none',
                             py: 1,
                           }}
                         >
                           {loading && (
                             <CircularProgress size={22} color="inherit" />
                           )}
-                          {!loading && t["Register"]}
+                          {!loading && t['Register']}
                         </BaseButton>
                       </Grid>
                     </Grid>
@@ -427,7 +457,7 @@ export default function Registration({ language, handleLoginOpen }) {
                     direction="row"
                     justifyContent="center"
                     alignItems="center"
-                    sx={{ height: "8vh" }}
+                    sx={{ height: '8vh' }}
                   >
                     ou
                   </Grid>
@@ -435,38 +465,38 @@ export default function Registration({ language, handleLoginOpen }) {
                     <Grid item xs={12} sm={12} md={12} lg={6} xl={6}>
                       <Button
                         sx={{
-                          display: "flex",
-                          background: "#DC4C3F",
-                          borderRadius: "4px",
-                          textTransform: "none",
+                          display: 'flex',
+                          background: '#DC4C3F',
+                          borderRadius: '4px',
+                          textTransform: 'none',
                           px: 2,
                           py: 1,
-                          width: "100%",
-                          "&:hover": {
-                            background: "#DC4C3F",
-                            borderRadius: "4px",
-                            textTransform: "none",
+                          width: '100%',
+                          '&:hover': {
+                            background: '#DC4C3F',
+                            borderRadius: '4px',
+                            textTransform: 'none',
                             px: 2,
                             py: 1,
-                            width: "100%",
+                            width: '100%',
                           },
                         }}
-                        onClick={() => handleSocialLogin("google")}
+                        onClick={() => handleSocialLogin('google')}
                       >
-                        <GoogleIcon sx={{ color: "#ffffff" }} />
+                        <GoogleIcon sx={{ color: '#ffffff' }} />
                         <Typography
                           sx={{
-                            color: "#ffffff",
+                            color: '#ffffff',
                             fontSize: {
-                              xs: "12px",
-                              sm: "12px",
-                              md: "12px",
-                              lg: "12px",
-                              xl: "12px",
-                              xxl: "14px",
+                              xs: '12px',
+                              sm: '12px',
+                              md: '12px',
+                              lg: '12px',
+                              xl: '12px',
+                              xxl: '14px',
                             },
-                            lineHeight: "17px",
-                            fontWeight: "400",
+                            lineHeight: '17px',
+                            fontWeight: '400',
                           }}
                         >
                           Login with Gmail
@@ -476,38 +506,38 @@ export default function Registration({ language, handleLoginOpen }) {
                     <Grid item xs={12} sm={12} md={12} lg={6} xl={6}>
                       <Button
                         sx={{
-                          display: "flex",
-                          background: "#4469B0",
-                          borderRadius: "4px",
-                          textTransform: "none",
+                          display: 'flex',
+                          background: '#4469B0',
+                          borderRadius: '4px',
+                          textTransform: 'none',
                           px: 2,
                           py: 1,
-                          width: "100%",
-                          "&:hover": {
-                            background: "#4469B0",
-                            borderRadius: "4px",
-                            textTransform: "none",
+                          width: '100%',
+                          '&:hover': {
+                            background: '#4469B0',
+                            borderRadius: '4px',
+                            textTransform: 'none',
                             px: 2,
                             py: 1,
-                            width: "100%",
+                            width: '100%',
                           },
                         }}
-                        onClick={() => handleSocialLogin("facebook")}
+                        onClick={() => handleSocialLogin('facebook')}
                       >
-                        <FacebookOutlinedIcon sx={{ color: "#ffffff" }} />
+                        <FacebookOutlinedIcon sx={{ color: '#ffffff' }} />
                         <Typography
                           sx={{
-                            color: "#ffffff",
+                            color: '#ffffff',
                             fontSize: {
-                              xs: "12px",
-                              sm: "12px",
-                              md: "12px",
-                              lg: "12px",
-                              xl: "12px",
-                              xxl: "14px",
+                              xs: '12px',
+                              sm: '12px',
+                              md: '12px',
+                              lg: '12px',
+                              xl: '12px',
+                              xxl: '14px',
                             },
-                            lineHeight: "17px",
-                            fontWeight: "400",
+                            lineHeight: '17px',
+                            fontWeight: '400',
                           }}
                         >
                           Login with Facebook
@@ -521,20 +551,20 @@ export default function Registration({ language, handleLoginOpen }) {
                         fullWidth
                         sx={{
                           background:
-                            "linear-gradient(270deg, #0ea5e9 1.2%, #083344 98.7%)",
-                          boxShadow: "0px 4px 34px rgba(0, 0, 0, 0.08)",
-                          borderRadius: "4px",
-                          color: "#ffffff",
-                          fontSize: "16px",
-                          lineHeight: "22px",
-                          fontWeight: "600",
+                            'linear-gradient(270deg, #0ea5e9 1.2%, #083344 98.7%)',
+                          boxShadow: '0px 4px 34px rgba(0, 0, 0, 0.08)',
+                          borderRadius: '4px',
+                          color: '#ffffff',
+                          fontSize: '16px',
+                          lineHeight: '22px',
+                          fontWeight: '600',
                           mt: 5,
-                          textTransform: "none",
+                          textTransform: 'none',
                           py: 1,
                         }}
                         onClick={() => {
-                          router.replace({ pathname: "/" });
-                          handleLoginOpen();
+                          router.replace({ pathname: '/' })
+                          handleLoginOpen()
                         }}
                       >
                         Entrar
@@ -556,15 +586,15 @@ export default function Registration({ language, handleLoginOpen }) {
           autoHideDuration={6000}
           onClose={handleCloseSnackbar}
           anchorOrigin={{
-            vertical: "top",
-            horizontal: "right",
+            vertical: 'top',
+            horizontal: 'right',
           }}
-          key={"top"}
+          key={'top'}
         >
           <Alert
             onClose={handleCloseSnackbar}
             severity="error"
-            sx={{ width: "100%" }}
+            sx={{ width: '100%' }}
           >
             {message && message}
           </Alert>
@@ -575,20 +605,20 @@ export default function Registration({ language, handleLoginOpen }) {
           autoHideDuration={6000}
           onClose={handleCloseSuccessSnackbar}
           anchorOrigin={{
-            vertical: "top",
-            horizontal: "left",
+            vertical: 'top',
+            horizontal: 'left',
           }}
-          key={"bottom"}
+          key={'bottom'}
         >
           <Alert
             onClose={handleCloseSuccessSnackbar}
             severity="success"
-            sx={{ width: "100%" }}
+            sx={{ width: '100%' }}
           >
             {successMessage && successMessage}
           </Alert>
         </Snackbar>
       </main>
     </div>
-  );
+  )
 }

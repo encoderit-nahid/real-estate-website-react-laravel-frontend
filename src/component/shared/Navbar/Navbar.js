@@ -83,8 +83,8 @@ function Navbar({
 
   const pagesData = [
     { name: "Quero comprar", page: "search-real-estate" },
-    { name: t["I am broker"], page: "sou-corretor" },
-    { name: t["I am owner"], page: "advertise" },
+    { name: t["I am broker"], page: "cadastro-de-corretor" },
+    { name: t["I am owner"], page: "cadastro-de-proprietario" },
   ];
 
   return (

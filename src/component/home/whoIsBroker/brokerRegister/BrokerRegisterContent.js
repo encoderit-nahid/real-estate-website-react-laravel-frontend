@@ -153,7 +153,7 @@ function BrokerRegisterContent({ contentData, buttonVisible, languageName }) {
         </Grid>
       </Grid> */}
       {buttonVisible && (
-        <Link href="/sou-corretor">
+        <Link href="/cadastro-de-corretor">
           <a
             style={{
               textDecoration: "none",

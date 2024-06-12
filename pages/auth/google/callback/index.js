@@ -6,16 +6,35 @@ import { useEffect } from "react";
 import { apiInstance, socialLoginApi, userDetailsApi } from "@/api";
 import toast from "react-hot-toast";
 
-export default function Google({ roleId }) {
+const clearMultipleCookies = (cookieNames) => {
+  cookieNames.forEach((name) => {
+    clearCookie(name);
+  });
+};
+
+export default function Google({ roleId, type, date, time, brlValue, propertyId }) {
   const router = useRouter();
   const { query } = router;
 
   useEffect(() => {
     const getData = async () => {
-      query["role_id"] = roleId;
+      if(type === "schedule"){
+        query["role_id"] = roleId;
+        query["type"] = type;
+        query["date"] = date;
+        query["time"] = time;
+        query["property_id"] = propertyId;
+      }
+      else{
+        query["role_id"] = roleId;
+        query["type"] = type;
+        query["brl_value"] = brlValue;
+        query["property_id"] = propertyId;
+      }
       console.log({ query });
       const [errorAuth, responseAuth] = await socialLoginApi(query, "google");
       if (!errorAuth) {
+        clearMultipleCookies(["role_id", "type", "date", "time", "brl_value", "property_id"]);
         localStorage.setItem("token", responseAuth?.data?.token);
         apiInstance.defaults.headers.common[
           "Authorization"
@@ -94,9 +113,10 @@ export default function Google({ roleId }) {
 }
 
 export async function getServerSideProps(context) {
-  const cookies = context.req.cookies["role_id"];
+  // const cookies = context.req.cookies["role_id"];
+  const { role_id, type, date,time, brl_value, property_id } = context.req.cookies;
 
   return {
-    props: { roleId: cookies }, // will be passed to the page component as props
+    props: { roleId: role_id, type: type, date: date, time: time, brlValue: brl_value, propertyId: property_id }, // will be passed to the page component as props
   };
 }

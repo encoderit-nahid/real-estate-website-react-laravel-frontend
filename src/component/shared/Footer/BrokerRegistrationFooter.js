@@ -8,7 +8,7 @@ import {
 } from "@mui/material";
 import Image from "next/image";
 import React from "react";
-import logoWhiteIcon from "../../../../public/Images/branca.png";
+import logoWhiteIcon from "../../../../public/Images/branca-op1.png";
 import facebook from "../../../../public/Images/facebook.png";
 import twitter from "../../../../public/Images/twitter.png";
 import instagram from "../../../../public/Images/instagram.png";

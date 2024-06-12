@@ -1,7 +1,7 @@
 import { Box, Divider, Grid, Typography } from "@mui/material";
 import Image from "next/image";
 import React from "react";
-import logoWhiteIcon from "../../../../public/Images/branca.png";
+import logoWhiteIcon from "../../../../public/Images/branca-op1.png";
 import facebook from "../../../../public/Images/facebook.png";
 import twitter from "../../../../public/Images/twitter.png";
 import instagram from "../../../../public/Images/instagram.png";
@@ -89,7 +89,7 @@ function Footer() {
             <Typography variant="p" sx={{ cursor: "pointer" }}>
               minha conta
             </Typography>
-            <Link href="/advertise">
+            <Link href="/cadastro-de-proprietario">
               <Typography variant="p" sx={{ cursor: "pointer" }}>
                 anuncie seu imóvel
               </Typography>

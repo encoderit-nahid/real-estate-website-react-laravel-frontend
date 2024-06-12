@@ -7,8 +7,8 @@ export async function middleware(req) {
 
   const publicPaths = [
     "/",
-    "/advertise",
-    "/sou-corretor",
+    "/cadastro-de-proprietario",
+    "/cadastro-de-corretor",
     "/search-real-estate",
     "/other-information",
     "/registration",
@@ -39,6 +39,6 @@ export async function middleware(req) {
 
 export const config = {
   matcher: [
-    "/((?!api/auth|_next/static|_next/image|favicon.ico|advertise|sou-corretor|search-real-estate|other-information|registration|reset-password|auth/facebook/callback|auth/google/callback).*)",
+    "/((?!api/auth|_next/static|_next/image|favicon.ico|cadastro-de-proprietario|cadastro-de-corretor|search-real-estate|other-information|registration|reset-password|auth/facebook/callback|auth/google/callback).*)",
   ],
 };
