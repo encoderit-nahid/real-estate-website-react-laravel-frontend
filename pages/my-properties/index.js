@@ -204,7 +204,7 @@ export default function MyProperties({ language }) {
               sx={{ mt: 3 }}
             >
               {session?.user?.role !== "buyer" && (
-                <Grid item xs={5}>
+                <Grid item xs={5} md={3}>
                   <BaseButton
                     fullWidth
                     handleFunction={() =>
@@ -221,7 +221,7 @@ export default function MyProperties({ language }) {
               )}
 
               {session?.user?.role === "admin" && (
-                <Grid item xs={5}>
+                <Grid item xs={5} md={3}>
                   <BaseButton
                     fullWidth
                     sx="outlined"

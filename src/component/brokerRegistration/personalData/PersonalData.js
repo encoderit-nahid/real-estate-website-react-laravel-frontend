@@ -40,6 +40,7 @@ import BaseButton from "@/component/reuseable/baseButton/BaseButton";
 
 import useRequiredFieldsToDisableButton from "@/hooks/useRequiredFieldsToDisableButton";
 import BaseCloseButton from "@/component/reuseable/baseCloseButton/BaseCloseButton";
+import triggerValidation from "@/hooks/triggerValidation";
 
 function PersonalData({
   handleNext,
@@ -110,27 +111,27 @@ function PersonalData({
     requiredFields,
     allValues
   );
-  async function triggerValidation() {
-    try {
-      const data = await Promise.all(
-        requiredFields.map(async (field) => {
-          try {
-            const response = await trigger(field);
-            return response;
-          } catch (error) {
-            console.error(error);
-            return false;
-          }
-        })
-      );
-      const allTrue = data.every((result) => result === true);
-      console.log("🟥 ~ triggerValidation ~ allTrue:", allTrue);
-      return allTrue;
-    } catch (error) {
-      console.error("Error in triggerValidation:", error);
-      return false;
-    }
-  }
+  // async function triggerValidation() {
+  //   try {
+  //     const data = await Promise.all(
+  //       requiredFields.map(async (field) => {
+  //         try {
+  //           const response = await trigger(field);
+  //           return response;
+  //         } catch (error) {
+  //           console.error(error);
+  //           return false;
+  //         }
+  //       })
+  //     );
+  //     const allTrue = data.every((result) => result === true);
+  //     console.log("🟥 ~ triggerValidation ~ allTrue:", allTrue);
+  //     return allTrue;
+  //   } catch (error) {
+  //     console.error("Error in triggerValidation:", error);
+  //     return false;
+  //   }
+  // }
   const [state, setState] = React.useState({
     top: false,
     left: false,
@@ -890,11 +891,10 @@ function PersonalData({
           <Grid item xs={3}>
             <BaseButton
               handleFunction={async () => {
-                if (await triggerValidation()) {
+                if (await triggerValidation(requiredFields, trigger)) {
                   handleNext();
                 }
               }}
-              // handleFunction={triggerValidation}
               disabled={disableBtn}
               fullWidth
               sx="success"

@@ -48,6 +48,7 @@ import pt from "locales/pt";
 import BaseButton from "@/component/reuseable/baseButton/BaseButton";
 import { useRouter } from "next/router";
 import useRequiredFieldsToDisableButton from "@/hooks/useRequiredFieldsToDisableButton";
+import triggerValidation from "@/hooks/triggerValidation";
 
 const aboutLokkanData = [
   "Indicação de amigo",
@@ -429,7 +430,21 @@ export default function AddCompany({
                 {activeStep == 0 && (
                   <Grid item xs={3}>
                     <BaseButton
-                      handleFunction={handleNext}
+                      handleFunction={async () => {
+                        if (
+                          await triggerValidation(
+                            activeStep === 0 && addPerson == "Physical person"
+                              ? requiredFields.physical_person
+                              : activeStep === 0 && addPerson == "Legal person"
+                              ? requiredFields.legal_person
+                              : requiredFields.address_data,
+                            trigger
+                          )
+                        ) {
+                          handleNext();
+                        }
+                      }}
+                      // handleFunction={handleNext}
                       disabled={disableBtn}
                       fullWidth
                       type="button"
