@@ -164,7 +164,9 @@ export default function Registration({ language, handleLoginOpen }) {
     setLoading(false)
     if (!errorToken) {
       if (responseToken?.data?.userRole === 'buyer') {
-        toast.success(responseToken?.data?.message)
+        toast.success(responseToken?.data?.message, {
+          duration: 15000, // Duration in milliseconds (5000 ms = 5 seconds)
+        })
       } else {
         localStorage.setItem('registration_id', responseToken?.data?.user?.id)
         localStorage.setItem('user_role', responseToken?.data?.userRole)

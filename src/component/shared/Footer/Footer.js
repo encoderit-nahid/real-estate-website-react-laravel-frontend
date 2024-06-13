@@ -32,7 +32,7 @@ function Footer() {
         justifyContent="center"
         gap={{xs:2,sm:2,md:4,lg:6,xl:8}}
         alignItems="flex-start"
-        sx={{ color: '#ffffff', fontSize: {xs:'14px',sm:'14px',md:'20px',lg:'25px'}, pt: 2 }}
+        sx={{ color: '#ffffff', fontSize: {xs:'14px',sm:'14px',md:'20px',lg:'20px'}, pt: 2 }}
       >
         <Link href="/cadastro-de-corretor">
           <Typography variant="p" sx={{ cursor: 'pointer' }}>
@@ -237,8 +237,7 @@ function Footer() {
         sx={{ paddingY: 2, paddingX: 3 }}
       >
         <Typography variant="p" sx={{ color: '#ffffff', fontSize: '14px' }}>
-          © 2024. todos os direitos reservados a lokkan serviços imobiliários
-          LTDA.
+          © Lokkan Soluções Imobiliárias  Ltda - CRECI 028810J - CNPJ 24.713.429/0001-94 - 2024 copyright - Todos os direitos reservados.
         </Typography>
       </Grid>
     </Box>
