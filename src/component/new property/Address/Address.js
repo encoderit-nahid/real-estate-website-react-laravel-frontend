@@ -33,6 +33,7 @@ import { useSession } from "next-auth/react";
 import { useRouter } from "next/router";
 
 import BaseButton from "@/component/reuseable/baseButton/BaseButton";
+import { getAddressData } from "@/api";
 const BaseTextEditor = dynamic(
   () => import("@/component/reuseable/baseTextEditor/BaseTextEditor"),
   {
@@ -117,6 +118,29 @@ function Address({
   const allStateData = useSelector((state) => state.state.stateData);
 
   console.log({ allStateData });
+
+
+  useEffect(() => {
+    const getData = async () => {
+      const [error, response] = await getAddressData(allValues?.zip_code)
+      if (error) {
+        setValue('address', "")
+        setValue('neighbourhood', "")
+        setValue('add_on', "")
+        setValue('city', "")
+        setValue('state', '')
+      } else {
+        setValue('address', response?.data?.logradouro)
+        setValue('neighbourhood', response?.data?.bairro)
+        setValue('add_on', response?.data?.complemento)
+        setValue('city', response?.data?.localidade)
+        setValue('state', allStateData?.find((data) => data?.uf === response?.data?.uf ))
+      }
+    }
+    if (allValues?.zip_code && allValues?.zip_code?.length > 8) {
+      getData()
+    }
+  }, [allValues?.zip_code, setValue,allStateData])
 
   // console.log({ documents })
   // const filterDocs = documents?.filter((d) => d instanceof File)

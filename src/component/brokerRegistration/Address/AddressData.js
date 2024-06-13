@@ -16,6 +16,7 @@ import { findStateData } from "../../../redux/state/actions";
 import en from "locales/en";
 import pt from "locales/pt";
 import BaseButton from "@/component/reuseable/baseButton/BaseButton";
+import { getAddressData } from "@/api";
 
 function AddressData({
   handleBack,
@@ -61,9 +62,32 @@ function AddressData({
 
   const allStateData = useSelector((state) => state.state.stateData);
 
+
+  // useEffect(() => {
+  //   setValue("state", allStateData[0]);
+  // }, [allStateData, setValue]);
+
   useEffect(() => {
-    setValue("state", allStateData[0]);
-  }, [allStateData, setValue]);
+    const getData = async () => {
+      const [error, response] = await getAddressData(allValues?.zip_code)
+      if (error) {
+        setValue('address', "")
+        setValue('neighbourhood', "")
+        setValue('add_on', "")
+        setValue('city', "")
+        setValue('state', '')
+      } else {
+        setValue('address', response?.data?.logradouro)
+        setValue('neighbourhood', response?.data?.bairro)
+        setValue('add_on', response?.data?.complemento)
+        setValue('city', response?.data?.localidade)
+        setValue('state', allStateData?.find((data) => data?.uf === response?.data?.uf ))
+      }
+    }
+    if (allValues?.zip_code && allValues?.zip_code?.length > 8) {
+      getData()
+    }
+  }, [allValues?.zip_code, setValue,allStateData])
 
   return (
     <Box sx={{ mt: 4 }}>
@@ -377,7 +401,7 @@ function AddressData({
           <Controller
             name="state"
             control={control}
-            defaultValue={allStateData[0] || {}}
+            defaultValue={""}
             render={({ field }) => (
               <BaseAutocomplete
                 //   sx={{ margin: "0.6vh 0" }}

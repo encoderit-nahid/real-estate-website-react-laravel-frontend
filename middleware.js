@@ -22,6 +22,7 @@ export async function middleware(req) {
     "/contato",
     "/politicas-de-privacidade",
     "/termos-de-uso",
+    "/api/getCep",
   ];
 
   const requestPath = req.nextUrl.pathname;
@@ -42,6 +43,6 @@ export async function middleware(req) {
 
 export const config = {
   matcher: [
-    "/((?!api/auth|_next/static|_next/image|favicon.ico|termos-de-uso|politicas-de-privacidade|contato|cadastro-de-proprietario|cadastro-de-corretor|search-real-estate|other-information|registration|reset-password|auth/facebook/callback|auth/google/callback).*)",
+    "/((?!api/auth|/api/getCep|_next/static|_next/image|favicon.ico|termos-de-uso|politicas-de-privacidade|contato|cadastro-de-proprietario|cadastro-de-corretor|search-real-estate|other-information|registration|reset-password|auth/facebook/callback|auth/google/callback).*)",
   ],
 };
