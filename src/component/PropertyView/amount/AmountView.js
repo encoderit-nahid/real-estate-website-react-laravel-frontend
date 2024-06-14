@@ -8,6 +8,7 @@ function AmountView({
   setNegotiate,
   setSchedule,
   singlePropertyData,
+  handleProposalOpen,
   languageName,
 }) {
   const t = languageName === "en" ? en : pt;
@@ -158,6 +159,7 @@ function AmountView({
           onClick={() => {
             setNegotiate(true);
             setSchedule(false);
+            handleProposalOpen()
           }}
         >
           {t["Negotiate"]}

@@ -3,10 +3,12 @@ import { Button, Typography } from "@mui/material";
 import WhatsAppIcon from "@mui/icons-material/WhatsApp";
 
 const BaseWhatsappButton = () => {
+  const number = "5511911280640";
   return (
     <Button
       variant="contained"
       color="primary"
+      href={`https://api.whatsapp.com/send?phone=${number}`}
       fullWidth
       sx={{
         px: 4,

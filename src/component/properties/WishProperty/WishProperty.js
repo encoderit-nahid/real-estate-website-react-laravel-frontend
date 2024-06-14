@@ -5,25 +5,26 @@ import {
   Pagination,
   Skeleton,
   Stack,
-} from "@mui/material";
-import React from "react";
-import NewRegistrationCard from "../NewRegistrationCard/NewRegistrationCard";
-import { useDispatch, useSelector } from "react-redux";
-import { useRouter } from "next/router";
-import { findPropertyData } from "../../../redux/property/actions";
-import { useEffect } from "react";
-import { useGetPropertyQuery } from "@/queries/useGetPropertyQuery";
-import HouseCard from "@/component/reuseable/HouseCard/HouseCard";
-import WishPropertyCard from "../WishPropertyCard/WishPropertyCard";
+} from '@mui/material'
+import React from 'react'
+import NewRegistrationCard from '../NewRegistrationCard/NewRegistrationCard'
+import { useDispatch, useSelector } from 'react-redux'
+import { useRouter } from 'next/router'
+import { findPropertyData } from '../../../redux/property/actions'
+import { useEffect } from 'react'
+import { useGetPropertyQuery } from '@/queries/useGetPropertyQuery'
+import HouseCard from '@/component/reuseable/HouseCard/HouseCard'
+import WishPropertyCard from '../WishPropertyCard/WishPropertyCard'
+import Link from 'next/link'
 
 function WishProperty({ languageName, loadingRefetch }) {
-  const router = useRouter();
-  const { query } = router;
+  const router = useRouter()
+  const { query } = router
 
-  const [page, setPage] = React.useState(1);
+  const [page, setPage] = React.useState(1)
   useEffect(() => {
     setPage(+query?.page)
-  },[query])
+  }, [query])
 
   const {
     data: newProperty,
@@ -31,20 +32,20 @@ function WishProperty({ languageName, loadingRefetch }) {
     refetch,
     isFetched,
     isFetching,
-  } = useGetPropertyQuery({ status: "wishlist", page: page, per_page: 9 });
+  } = useGetPropertyQuery({ status: 'wishlist', page: page, per_page: 9 })
 
-  console.log({ newProperty });
+  console.log({ newProperty })
 
   const handlePageChange = (event, value) => {
-    setPage(value);
+    setPage(value)
     router.replace({
-      query: { ...router.query,page:value },
-    });
-  };
+      query: { ...router.query, page: value },
+    })
+  }
 
   useEffect(() => {
-    refetch();
-  }, [page, refetch]);
+    refetch()
+  }, [page, refetch])
 
   if (Loading) {
     return (
@@ -54,32 +55,42 @@ function WishProperty({ languageName, loadingRefetch }) {
             <Skeleton
               variant="rect"
               height={220}
-              sx={{ mx: 2, my: 2, borderRadius: "8px" }}
+              sx={{ mx: 2, my: 2, borderRadius: '8px' }}
             />
           </Grid>
         ))}
       </Grid>
-    );
+    )
   }
 
   if (isFetched && isFetching) {
     return (
-      <Box sx={{ width: "100%" }}>
+      <Box sx={{ width: '100%' }}>
         <LinearProgress />
       </Box>
-    );
+    )
   }
   return (
     <Box>
       <Grid container spacing={4}>
         {newProperty?.data?.map((data, index) => (
           <Grid key={index} item xs={12} sm={12} md={12} lg={6} xl={4} xxl={4}>
-            <WishPropertyCard
-              propertyInfo={data}
-              languageName={languageName}
-              refetch={refetch}
-              loadingRefetch={loadingRefetch}
-            />
+            <Link href={`/property-view/${data?.id}`}>
+              <a
+                style={{
+                  textDecoration: 'none',
+                  listStyle: 'none',
+                  width: '100%',
+                }}
+              >
+                <WishPropertyCard
+                  propertyInfo={data}
+                  languageName={languageName}
+                  refetch={refetch}
+                  loadingRefetch={loadingRefetch}
+                />
+              </a>
+            </Link>
           </Grid>
         ))}
       </Grid>
@@ -93,7 +104,7 @@ function WishProperty({ languageName, loadingRefetch }) {
         />
       </Stack>
     </Box>
-  );
+  )
 }
 
-export default WishProperty;
+export default WishProperty

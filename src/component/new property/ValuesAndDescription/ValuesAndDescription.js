@@ -18,6 +18,7 @@ import en from "locales/en";
 import pt from "locales/pt";
 import BaseCancelButton from "@/component/reuseable/button/BaseCancelButton";
 import BaseButton from "@/component/reuseable/baseButton/BaseButton";
+import BaseValueField from "@/component/reuseable/baseValueField/BaseValueFiled";
 
 //matched_with_property_details
 const matchedForCondominio = [1, 2, 4, 8, 10, 11, 13, 15, 16];
@@ -136,7 +137,7 @@ function ValuesAndDescription({
             control={control}
             defaultValue={""}
             render={({ field }) => (
-              <BaseTextField
+              <BaseValueField
                 size={"medium"}
                 placeholder={`${t["BRL Rent"]}*`}
                 type={"number"}
@@ -163,7 +164,7 @@ function ValuesAndDescription({
               control={control}
               defaultValue={""}
               render={({ field }) => (
-                <BaseTextField
+                <BaseValueField
                   size={"medium"}
                   placeholder={`R$ ${t["Condominium"]}*`}
                   type={"number"}
@@ -190,7 +191,7 @@ function ValuesAndDescription({
             control={control}
             defaultValue={""}
             render={({ field }) => (
-              <BaseTextField
+              <BaseValueField
                 size={"medium"}
                 placeholder={"R$ IPTU*"}
                 type={"number"}
