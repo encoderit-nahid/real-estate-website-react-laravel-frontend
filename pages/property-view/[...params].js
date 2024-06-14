@@ -423,6 +423,7 @@ export default function PropertyView({
               schedule={schedule}
               setSchedule={setSchedule}
               singlePropertyData={singlePropertyData}
+              handleProposalOpen={handleProposalOpen}
               languageName={myValue.toString()}
             />
           </Grid>

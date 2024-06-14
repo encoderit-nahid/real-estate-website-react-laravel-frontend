@@ -32,6 +32,9 @@ import en from 'locales/en'
 import pt from 'locales/pt'
 import { Router, useRouter } from 'next/router'
 import BaseWhatsappButton from '@/component/reuseable/baseWhatsappButton/BaseWhatsappButton'
+import BaseValueField from '@/component/reuseable/baseValueField/BaseValueFiled'
+import { formatBrCurrency } from '@/utils/formatBrCurrency'
+import { reverseBrCurrencyFormat } from '@/utils/reverseBrCurrencyFormat'
 
 function Negotiate({
   handleProposalOpen,
@@ -89,7 +92,7 @@ function Negotiate({
             pathname: '/registration',
             query: {
               user_type: 'buyer',
-              brl_value: brlValue,
+              brl_value: reverseBrCurrencyFormat(brlValue),
               property_id: singlePropertyId,
               type: "proposal"
             },
@@ -287,14 +290,15 @@ function Negotiate({
           >
             {t['Proposal']}
           </Typography>
-          <BaseTextField
+          <BaseValueField
             size={'small'}
             type={'number'}
             placeholder={'R$'}
             value={brlValue}
             onChange={(e) => {
-              setBrlValue(e.target.value)
-              localStorage.setItem('brl', e.target.value)
+              const value = e.target.value;
+              setBrlValue(value);
+              localStorage.setItem('brl', value);
             }}
           />
           <Button

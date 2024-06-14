@@ -18,15 +18,17 @@ import { createProposalApi, omitEmpties } from "../../../api";
 import { useSession } from "next-auth/react";
 import en from "locales/en";
 import pt from "locales/pt";
+import BaseValueField from "@/component/reuseable/baseValueField/BaseValueFiled";
+import { reverseBrCurrencyFormat } from "@/utils/reverseBrCurrencyFormat";
 
 const validationSchemaCash = Yup.object().shape({
-  total_amount: Yup.number().required("valor é obrigatório"),
+  total_amount: Yup.string().required("valor é obrigatório"),
 });
 
 const validationSchemaInstallment = Yup.object().shape({
-  total_amount: Yup.number().required("nome é obrigatório"),
-  cash_amount: Yup.number().required("valor é obrigatório"),
-  payment_per_installment: Yup.number().required("valor é obrigatório"),
+  total_amount: Yup.string().required("nome é obrigatório"),
+  cash_amount: Yup.string().required("valor é obrigatório"),
+  payment_per_installment: Yup.string().required("valor é obrigatório"),
   no_of_installment: Yup.number().required("valor é obrigatório"),
 });
 
@@ -85,8 +87,11 @@ function ProposalStep({
   // }, [amount, setValue]);
 
   const onSubmit = async (data) => {
+    console.log({data})
     const conditions = localStorage.getItem("condition") || null;
-
+    data.total_amount = reverseBrCurrencyFormat(data.total_amount)
+    data.cash_amount = reverseBrCurrencyFormat(data.cash_amount)
+    data.payment_per_installment = reverseBrCurrencyFormat(data.payment_per_installment)
     setLoading(true);
     const allData = omitEmpties({
       ...data,
@@ -194,7 +199,7 @@ function ProposalStep({
             control={control}
             defaultValue={amount}
             render={({ field }) => (
-              <BaseTextField
+              <BaseValueField
                 size={"small"}
                 placeholder={t["Total amount"]}
                 variant={"outlined"}
@@ -220,13 +225,14 @@ function ProposalStep({
                 name="cash_amount"
                 control={control}
                 render={({ field }) => (
-                  <BaseTextField
+                  <BaseValueField
                     size={"small"}
                     placeholder={t["Cash value"]}
                     type={"number"}
                     sx={{ mt: 2 }}
                     variant={"outlined"}
                     name={"cash_amount"}
+                    value={field.value}
                     onChange={(e) => {
                       field.onChange(e.target.value);
                     }}
@@ -244,13 +250,14 @@ function ProposalStep({
                 name="payment_per_installment"
                 control={control}
                 render={({ field }) => (
-                  <BaseTextField
+                  <BaseValueField
                     size={"small"}
                     placeholder={t["Term value"]}
                     type={"number"}
                     sx={{ mt: 2 }}
                     variant={"outlined"}
                     name={"payment_per_installment"}
+                    value={field.value}
                     onChange={(e) => {
                       field.onChange(e.target.value);
                     }}

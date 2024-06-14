@@ -61,6 +61,7 @@ import en from "locales/en";
 import pt from "locales/pt";
 import BaseButton from "@/component/reuseable/baseButton/BaseButton";
 import uploadImage from "@/utils/uploadImage";
+import { reverseBrCurrencyFormat } from "@/utils/reverseBrCurrencyFormat";
 
 const drawerWidth = 240;
 
@@ -440,9 +441,9 @@ export default function NewProperty({ language }) {
       property_detail_id: +property_detail_id,
       ad_type: adType.toLocaleLowerCase(),
       property_type: propertyType.toLocaleLowerCase(),
-      condominium: data?.condominium,
-      brl_rent: data?.brl_rent,
-      brl_iptu: data?.brl_iptu,
+      condominium: reverseBrCurrencyFormat(data?.condominium),
+      brl_rent: reverseBrCurrencyFormat(data?.brl_rent),
+      brl_iptu: reverseBrCurrencyFormat(data?.brl_iptu),
       land_area: data?.land_area,
       property_area: data?.property_area,
       no_of_rooms: data?.no_of_rooms,
