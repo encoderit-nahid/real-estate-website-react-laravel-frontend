@@ -715,6 +715,8 @@ export default function NewProperty({ language }) {
                   reset={reset}
                   replace={replace}
                   trigger={trigger}
+                  allValues={allValues}
+                  setValue={setValue}
                 />
               )}
 

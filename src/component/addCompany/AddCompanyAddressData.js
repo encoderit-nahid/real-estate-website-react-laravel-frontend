@@ -5,17 +5,18 @@ import {
   Grid,
   TextField,
   Typography,
-} from "@mui/material";
-import React, { useEffect, useState } from "react";
-import BaseOutlinedZipInput from "@/component/reuseable/baseOutlinedZipInput/BaseOutlinedZipInput";
-import BaseTextField from "@/component/reuseable/baseTextField/BaseTextField";
-import { Controller } from "react-hook-form";
-import BaseAutocomplete from "@/component/reuseable/baseAutocomplete/BaseAutocomplete";
-import { useDispatch, useSelector } from "react-redux";
-import { findStateData } from "../../redux/state/actions";
-import en from "locales/en";
-import pt from "locales/pt";
-import BaseButton from "@/component/reuseable/baseButton/BaseButton";
+} from '@mui/material'
+import React, { useEffect, useState } from 'react'
+import BaseOutlinedZipInput from '@/component/reuseable/baseOutlinedZipInput/BaseOutlinedZipInput'
+import BaseTextField from '@/component/reuseable/baseTextField/BaseTextField'
+import { Controller } from 'react-hook-form'
+import BaseAutocomplete from '@/component/reuseable/baseAutocomplete/BaseAutocomplete'
+import { useDispatch, useSelector } from 'react-redux'
+import { findStateData } from '../../redux/state/actions'
+import en from 'locales/en'
+import pt from 'locales/pt'
+import BaseButton from '@/component/reuseable/baseButton/BaseButton'
+import { getAddressData } from '@/api'
 
 function AddCompanyAddressData({
   handleBack,
@@ -29,13 +30,13 @@ function AddCompanyAddressData({
   reset,
   replace,
 }) {
-  const t = languageName === "en" ? en : pt;
-  const dispatch = useDispatch();
+  const t = languageName === 'en' ? en : pt
+  const dispatch = useDispatch()
   useEffect(() => {
-    dispatch(findStateData());
-  }, [dispatch]);
+    dispatch(findStateData())
+  }, [dispatch])
 
-  const [disableBtn, setDisableBtn] = useState(true);
+  const [disableBtn, setDisableBtn] = useState(true)
   useEffect(() => {
     if (
       allValues?.zip_code != null &&
@@ -45,25 +46,49 @@ function AddCompanyAddressData({
       allValues?.state != null &&
       allValues?.city != null
     ) {
-      setDisableBtn(false);
+      setDisableBtn(false)
     }
     if (
-      allValues?.zip_code === "" ||
-      allValues?.address === "" ||
-      allValues?.number === "" ||
-      allValues?.neighbourhood === "" ||
-      allValues?.state === "" ||
-      allValues?.city === ""
+      allValues?.zip_code === '' ||
+      allValues?.address === '' ||
+      allValues?.number === '' ||
+      allValues?.neighbourhood === '' ||
+      allValues?.state === '' ||
+      allValues?.city === ''
     ) {
-      setDisableBtn(true);
+      setDisableBtn(true)
     }
-  }, [allValues]);
+  }, [allValues])
 
-  const allStateData = useSelector((state) => state.state.stateData);
+  const allStateData = useSelector((state) => state.state.stateData)
+
+  // useEffect(() => {
+  //   setValue('state', allStateData[0])
+  // }, [allStateData, setValue])
+
+  console.log({ allValues })
 
   useEffect(() => {
-    setValue("state", allStateData[0]);
-  }, [allStateData, setValue]);
+    const getData = async () => {
+      const [error, response] = await getAddressData(allValues?.zip_code)
+      if (error) {
+        setValue('address', "")
+        setValue('neighbourhood', "")
+        setValue('add_on', "")
+        setValue('city', "")
+        setValue('state', '')
+      } else {
+        setValue('address', response?.data?.logradouro)
+        setValue('neighbourhood', response?.data?.bairro)
+        setValue('add_on', response?.data?.complemento)
+        setValue('city', response?.data?.localidade)
+        setValue('state', allStateData?.find((data) => data?.uf === response?.data?.uf ))
+      }
+    }
+    if (allValues?.zip_code && allValues?.zip_code?.length > 8) {
+      getData()
+    }
+  }, [allValues?.zip_code, setValue])
 
   return (
     <Box sx={{ mt: 4 }}>
@@ -76,13 +101,13 @@ function AddCompanyAddressData({
         <Typography
           variant="p"
           sx={{
-            color: "#1A1859",
-            fontSize: "24px",
-            fontWeight: "700",
-            lineHeight: "29px",
+            color: '#1A1859',
+            fontSize: '24px',
+            fontWeight: '700',
+            lineHeight: '29px',
           }}
         >
-          {t["Address"]}
+          {t['Address']}
         </Typography>
         <BaseButton
           type="button"
@@ -90,11 +115,11 @@ function AddCompanyAddressData({
           color="error"
           sx="error"
           handleFunction={() => {
-            reset();
-            replace("/my-properties");
+            reset()
+            replace('/my-properties')
           }}
         >
-          {t["Cancel"]}
+          {t['Cancel']}
         </BaseButton>
       </Grid>
 
@@ -110,29 +135,29 @@ function AddCompanyAddressData({
             <Typography
               variant="p"
               sx={{
-                color: "#253858",
-                fontSize: "14px",
-                fontWeight: "400",
-                lineHeight: "16px",
+                color: '#253858',
+                fontSize: '14px',
+                fontWeight: '400',
+                lineHeight: '16px',
               }}
             >
-              {t["Zip code"]}
-              <span style={{ color: "#E63333" }}>*</span>
+              {t['Zip code']}
+              <span style={{ color: '#E63333' }}>*</span>
             </Typography>
           </Grid>
 
-          <FormControl variant="outlined" sx={{ width: "100%", mb: 1 }}>
+          <FormControl variant="outlined" sx={{ width: '100%', mb: 1 }}>
             <Controller
               name="zip_code"
               control={control}
               render={({ field }) => (
                 <BaseOutlinedZipInput
-                  placeholder={t["Zip code"]}
-                  size={"small"}
+                  placeholder={t['Zip code']}
+                  size={'small'}
                   onChange={(e) => {
-                    field.onChange(e.target.value);
+                    field.onChange(e.target.value)
                   }}
-                  name={"zip_code"}
+                  name={'zip_code'}
                   value={field.value}
                   // error={errors.cpf_number ? true : false}
                 />
@@ -141,7 +166,7 @@ function AddCompanyAddressData({
             <Typography
               variant="inherit"
               color="textSecondary"
-              sx={{ color: "#b91c1c" }}
+              sx={{ color: '#b91c1c' }}
             >
               {errors.zip_code?.message}
             </Typography>
@@ -161,27 +186,27 @@ function AddCompanyAddressData({
           <Typography
             variant="p"
             sx={{
-              color: "#253858",
-              fontSize: "14px",
-              fontWeight: "400",
-              lineHeight: "16px",
+              color: '#253858',
+              fontSize: '14px',
+              fontWeight: '400',
+              lineHeight: '16px',
             }}
           >
-            {t["Address"]}
-            <span style={{ color: "#E63333" }}>*</span>
+            {t['Address']}
+            <span style={{ color: '#E63333' }}>*</span>
           </Typography>
           <Controller
             name="address"
             control={control}
-            defaultValue={""}
+            defaultValue={''}
             render={({ field }) => (
               <BaseTextField
-                size={"small"}
-                placeholder={t["Address"]}
+                size={'small'}
+                placeholder={t['Address']}
                 onChange={(e) => {
-                  field.onChange(e.target.value);
+                  field.onChange(e.target.value)
                 }}
-                name={"address"}
+                name={'address'}
                 value={field.value}
               />
             )}
@@ -189,7 +214,7 @@ function AddCompanyAddressData({
           <Typography
             variant="inherit"
             color="textSecondary"
-            sx={{ color: "#b91c1c" }}
+            sx={{ color: '#b91c1c' }}
           >
             {errors.address?.message}
           </Typography>
@@ -208,28 +233,28 @@ function AddCompanyAddressData({
             <Typography
               variant="p"
               sx={{
-                color: "#253858",
-                fontSize: "14px",
-                fontWeight: "400",
-                lineHeight: "16px",
+                color: '#253858',
+                fontSize: '14px',
+                fontWeight: '400',
+                lineHeight: '16px',
               }}
             >
-              {t["Neighborhood"]}
-              <span style={{ color: "#E63333" }}>*</span>
+              {t['Neighborhood']}
+              <span style={{ color: '#E63333' }}>*</span>
             </Typography>
           </Grid>
           <Controller
             name="neighbourhood"
             control={control}
-            defaultValue={""}
+            defaultValue={''}
             render={({ field }) => (
               <BaseTextField
-                size={"small"}
-                placeholder={t["Neighborhood"]}
+                size={'small'}
+                placeholder={t['Neighborhood']}
                 onChange={(e) => {
-                  field.onChange(e.target.value);
+                  field.onChange(e.target.value)
                 }}
-                name={"neighbourhood"}
+                name={'neighbourhood'}
                 value={field.value}
               />
             )}
@@ -237,7 +262,7 @@ function AddCompanyAddressData({
           <Typography
             variant="inherit"
             color="textSecondary"
-            sx={{ color: "#b91c1c" }}
+            sx={{ color: '#b91c1c' }}
           >
             {errors.neighbourhood?.message}
           </Typography>
@@ -253,28 +278,28 @@ function AddCompanyAddressData({
             <Typography
               variant="p"
               sx={{
-                color: "#253858",
-                fontSize: "14px",
-                fontWeight: "400",
-                lineHeight: "16px",
+                color: '#253858',
+                fontSize: '14px',
+                fontWeight: '400',
+                lineHeight: '16px',
               }}
             >
-              {t["Complement"]}
-              <span style={{ color: "#E63333" }}>*</span>
+              {t['Complement']}
+              <span style={{ color: '#E63333' }}>*</span>
             </Typography>
           </Grid>
           <Controller
             name="add_on"
             control={control}
-            defaultValue={""}
+            defaultValue={''}
             render={({ field }) => (
               <BaseTextField
-                size={"small"}
-                placeholder={t["Add-on"]}
+                size={'small'}
+                placeholder={t['Add-on']}
                 onChange={(e) => {
-                  field.onChange(e.target.value);
+                  field.onChange(e.target.value)
                 }}
-                name={"add_on"}
+                name={'add_on'}
                 value={field.value}
               />
             )}
@@ -294,28 +319,28 @@ function AddCompanyAddressData({
             <Typography
               variant="p"
               sx={{
-                color: "#253858",
-                fontSize: "14px",
-                fontWeight: "400",
-                lineHeight: "16px",
+                color: '#253858',
+                fontSize: '14px',
+                fontWeight: '400',
+                lineHeight: '16px',
               }}
             >
-              {t["city"]}
-              <span style={{ color: "#E63333" }}>*</span>
+              {t['city']}
+              <span style={{ color: '#E63333' }}>*</span>
             </Typography>
           </Grid>
           <Controller
             name="city"
             control={control}
-            defaultValue={""}
+            defaultValue={''}
             render={({ field }) => (
               <BaseTextField
-                size={"small"}
-                placeholder={t["city"]}
+                size={'small'}
+                placeholder={t['city']}
                 onChange={(e) => {
-                  field.onChange(e.target.value);
+                  field.onChange(e.target.value)
                 }}
-                name={"city"}
+                name={'city'}
                 value={field.value}
               />
             )}
@@ -323,7 +348,7 @@ function AddCompanyAddressData({
           <Typography
             variant="inherit"
             color="textSecondary"
-            sx={{ color: "#b91c1c" }}
+            sx={{ color: '#b91c1c' }}
           >
             {errors.city?.message}
           </Typography>
@@ -339,14 +364,14 @@ function AddCompanyAddressData({
             <Typography
               variant="p"
               sx={{
-                color: "#253858",
-                fontSize: "14px",
-                fontWeight: "400",
-                lineHeight: "16px",
+                color: '#253858',
+                fontSize: '14px',
+                fontWeight: '400',
+                lineHeight: '16px',
               }}
             >
-              {t["state"]}
-              <span style={{ color: "#E63333" }}>*</span>
+              {t['state']}
+              <span style={{ color: '#E63333' }}>*</span>
             </Typography>
           </Grid>
           <Controller
@@ -357,10 +382,10 @@ function AddCompanyAddressData({
               <BaseAutocomplete
                 //   sx={{ margin: "0.6vh 0" }}
                 options={allStateData || []}
-                getOptionLabel={(option) => option.name || ""}
+                getOptionLabel={(option) => option.name || ''}
                 isOptionEqualToValue={(option, value) => option.id === value.id}
-                size={"small"}
-                placeholder={t["state"]}
+                size={'small'}
+                placeholder={t['state']}
                 onChange={(e, v, r, d) => field.onChange(v)}
                 value={field.value}
               />
@@ -369,14 +394,14 @@ function AddCompanyAddressData({
           <Typography
             variant="inherit"
             color="textSecondary"
-            sx={{ color: "#b91c1c" }}
+            sx={{ color: '#b91c1c' }}
           >
             {errors.state?.message}
           </Typography>
         </Grid>
       </Grid>
     </Box>
-  );
+  )
 }
 
-export default AddCompanyAddressData;
+export default AddCompanyAddressData

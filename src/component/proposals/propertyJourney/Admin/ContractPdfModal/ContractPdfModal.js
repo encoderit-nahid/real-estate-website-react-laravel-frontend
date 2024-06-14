@@ -640,9 +640,9 @@ function ContractPdfModal({
                       control={
                         <Switch
                           // defaultChecked
-                          disabled={
-                            session?.user?.role === 'broker' ? true : false
-                          }
+                          // disabled={
+                          //   session?.user?.role === 'broker' ? true : false
+                          // }
                           checked={data?.is_signed}
                           sx={{
                             '& .MuiSwitch-switchBase.Mui-checked': {

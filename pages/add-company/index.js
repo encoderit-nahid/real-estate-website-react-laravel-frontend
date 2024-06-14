@@ -210,7 +210,13 @@ export default function AddCompany({
     address: Yup.string().required(t["Address is required"]),
     number: Yup.string().required(t["Number is required"]),
     neighbourhood: Yup.string().required(t["Neighbourhood is required"]),
-    state: Yup.object().required(t["State is required"]),
+    state: Yup.mixed()
+    .test(
+      "is-object",
+      t["State is required"],
+      (value) => !!value
+    )
+    .required(t["State is required"]),
     city: Yup.string().required(t["City is required"]),
   });
   const {

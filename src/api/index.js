@@ -782,3 +782,13 @@ export const IsBuyerRegisteredApi = async () => {
     return [error, null];
   }
 };
+
+export const getAddressData =  async (zipCode) => {
+  try {
+    const response = await axios.get(`/api/getCep?cep=${zipCode}`);
+    return [false, response];
+  }
+  catch(error) {
+    return [error, null];
+  }
+}

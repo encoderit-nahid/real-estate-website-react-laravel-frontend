@@ -27,6 +27,7 @@ import DeleteOutlineOutlinedIcon from "@mui/icons-material/DeleteOutlineOutlined
 import pinImage from "../../../../public/Images/pin.png";
 import BaseCancelButton from "@/component/reuseable/button/BaseCancelButton";
 import BaseButton from "@/component/reuseable/baseButton/BaseButton";
+import { getAddressData } from "@/api";
 
 const baseStyle = {
   flex: 1,
@@ -68,10 +69,12 @@ function Owner({
   documents,
   setDocuments,
   setSingle,
+  allValues,
   single,
   married,
   setMarried,
   reset,
+  setValue,
   replace,
   trigger,
 }) {
@@ -126,6 +129,28 @@ function Owner({
     dispatch(findStateData());
   }, [dispatch]);
   const allStateData = useSelector((state) => state.state.stateData);
+
+  useEffect(() => {
+    const getData = async () => {
+      const [error, response] = await getAddressData(allValues?.owner_zip_code)
+      if (error) {
+        setValue('owner_address', "")
+        setValue('owner_neighbourhood', "")
+        setValue('owner_complement', "")
+        setValue('owner_city', "")
+        setValue('owner_state', '')
+      } else {
+        setValue('owner_address', response?.data?.logradouro)
+        setValue('owner_neighbourhood', response?.data?.bairro)
+        setValue('owner_complement', response?.data?.complemento)
+        setValue('owner_city', response?.data?.localidade)
+        setValue('owner_state', allStateData?.find((data) => data?.uf === response?.data?.uf ))
+      }
+    }
+    if (allValues?.owner_zip_code && allValues?.owner_zip_code?.length > 8) {
+      getData()
+    }
+  }, [allValues?.owner_zip_code, setValue,allStateData])
 
   return (
     <Box sx={{ mt: 4 }}>
