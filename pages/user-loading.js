@@ -1,29 +1,29 @@
-import Head from 'next/head'
-import { CircularProgress, Container, Grid, Tooltip } from '@mui/material'
-import { useRouter } from 'next/router'
-import { emailVerifyApi, userDetailsApi } from '@/api'
-import { signIn } from 'next-auth/react'
-import { useEffect } from 'react'
-import toast from 'react-hot-toast'
+import Head from "next/head";
+import { CircularProgress, Container, Grid, Tooltip } from "@mui/material";
+import { useRouter } from "next/router";
+import { emailVerifyApi, userDetailsApi } from "@/api";
+import { signIn } from "next-auth/react";
+import { useEffect } from "react";
+import toast from "react-hot-toast";
 
 export default function UserLoading() {
-  const router = useRouter()
-  const { query } = router
+  const router = useRouter();
+  const { query } = router;
 
   useEffect(() => {
     const getData = async () => {
       if (query?.token) {
-        const [err, resp] = await emailVerifyApi(query?.token)
+        const [err, resp] = await emailVerifyApi(query?.token);
         if (!err) {
-          if (resp?.data?.role === 'broker') {
-            router.replace({ pathname: '/' })
-            toast.suceess(resp?.data?.message)
+          if (resp?.data?.role === "broker") {
+            router.replace({ pathname: "/" });
+            toast.success(resp?.data?.message);
           } else {
-            localStorage.setItem('token', resp?.data?.token)
-            const [error, response] = await userDetailsApi()
+            localStorage.setItem("token", resp?.data?.token);
+            const [error, response] = await userDetailsApi();
 
             if (!error) {
-              return signIn('credentials', {
+              return signIn("credentials", {
                 userId: response?.data?.user?.id,
                 userEmail: response?.data?.user?.email,
                 name: response?.data?.user?.name,
@@ -32,19 +32,19 @@ export default function UserLoading() {
                 role: response?.data?.user?.roles[0]?.slug,
                 roleId: response?.data?.user?.roles[0]?.id,
                 userImage: response?.data?.user?.attachments[0]?.file_path,
-                callbackUrl: '/my-properties',
-              })
+                callbackUrl: "/my-properties",
+              });
             } else {
-              router.push('/')
+              router.push("/");
             }
           }
         }
       } else {
-        return
+        return;
       }
-    }
-    getData()
-  }, [query?.token, router])
+    };
+    getData();
+  }, [query?.token, router]);
 
   return (
     <div>
@@ -61,12 +61,12 @@ export default function UserLoading() {
             direction="row"
             justifyContent="center"
             alignItems="center"
-            sx={{ height: '100vh' }}
+            sx={{ height: "100vh" }}
           >
             <CircularProgress size="8rem" />
           </Grid>
         </Container>
       </main>
     </div>
-  )
+  );
 }
