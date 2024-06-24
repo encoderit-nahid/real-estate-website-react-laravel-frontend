@@ -108,7 +108,7 @@ const VideoCarousel = ({ videoLinks, ratio = "1 / 1" }) => {
         <Box
           sx={{
             background: "#f1f1f1",
-            aspectRatio: "1 / 1",
+            aspectRatio: ratio,
             display: "flex",
             alignItems: "center",
             justifyContent: "center",

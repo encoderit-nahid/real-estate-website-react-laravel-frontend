@@ -49,8 +49,8 @@ function AddCompanyPersonalData({
   activeStep,
   reset,
   replace,
-  addPerson,
-  setAddPerson,
+  // addPerson,
+  // setAddPerson,
   addType,
   setAddType,
   trigger,
@@ -225,7 +225,7 @@ function AddCompanyPersonalData({
           </Box>
         </Stack>
 
-        <Stack
+        {/* <Stack
           spacing={1}
           direction="column"
           justifyContent="flex-start"
@@ -306,7 +306,7 @@ function AddCompanyPersonalData({
               ))}
             </Grid>
           </Box>
-        </Stack>
+        </Stack> */}
       </Stack>
 
       <Grid container spacing={3} sx={{ mt: 2 }}>
@@ -400,9 +400,9 @@ function AddCompanyPersonalData({
         </Grid>
 
         <Grid item xs={12} sm={12} md={9}>
-          {addPerson == "Physical person" ? (
+          {/* {addPerson == "Physical person" ? (
             <Stack direction={"column"} spacing={2}>
-              {/* full_name */}
+              
               <Stack direction={"column"} spacing={1}>
                 <Typography
                   variant="p"
@@ -441,9 +441,7 @@ function AddCompanyPersonalData({
                   {errors.full_name?.message}
                 </Typography>
               </Stack>
-              {/* full_name */}
-
-              {/* dob */}
+              
               <Stack direction={"column"} spacing={1}>
                 <Typography
                   variant="p"
@@ -484,9 +482,7 @@ function AddCompanyPersonalData({
                   {errors?.dob?.message}
                 </Typography>
               </Stack>
-              {/* dob */}
-
-              {/* description */}
+            
               <Stack direction={"column"} spacing={1}>
                 <Typography
                   variant="p"
@@ -526,11 +522,11 @@ function AddCompanyPersonalData({
                   {errors.description?.message}
                 </Typography>
               </Stack>
-              {/* description */}
+           
             </Stack>
           ) : (
             <Stack direction={"column"} spacing={2}>
-              {/* state_registration */}
+            
               <Stack direction={"column"} spacing={1}>
                 <Typography
                   variant="p"
@@ -569,9 +565,7 @@ function AddCompanyPersonalData({
                   {errors.state_registration?.message}
                 </Typography>
               </Stack>
-              {/* state_registration */}
-
-              {/* CNPJ */}
+            
               <Stack direction={"column"} spacing={1}>
                 <Typography
                   variant="p"
@@ -582,7 +576,7 @@ function AddCompanyPersonalData({
                     lineHeight: "16px",
                   }}
                 >
-                  {/* {t["State registration"]} */}
+                
                   CNPJ
                   <span style={{ color: "#E63333" }}>*</span>
                 </Typography>
@@ -611,9 +605,7 @@ function AddCompanyPersonalData({
                   {errors.cnpj?.message}
                 </Typography>
               </Stack>
-              {/* CNPJ */}
-
-              {/* Corporate reason */}
+             
               <Stack direction={"column"} spacing={1}>
                 <Typography
                   variant="p"
@@ -652,16 +644,141 @@ function AddCompanyPersonalData({
                   {errors.corporate_reason?.message}
                 </Typography>
               </Stack>
-              {/* Corporate reason */}
+             
             </Stack>
-          )}
+          )} */}
+          <Stack direction={"column"} spacing={2}>
+            {/* state_registration */}
+            <Stack direction={"column"} spacing={1}>
+              <Typography
+                variant="p"
+                sx={{
+                  color: "#253858",
+                  fontSize: "14px",
+                  fontWeight: "400",
+                  lineHeight: "16px",
+                }}
+              >
+                {t["State registration"]}
+                <span style={{ color: "#E63333" }}>*</span>
+              </Typography>
+              <Controller
+                name="state_registration"
+                control={control}
+                defaultValue={""}
+                render={({ field }) => (
+                  <BaseTextField
+                    size={"small"}
+                    placeholder={t["State registration"]}
+                    // sx={{ mb: 2 }}
+                    onChange={(e) => {
+                      field.onChange(e.target.value);
+                    }}
+                    name={"state_registration"}
+                    value={field.value}
+                  />
+                )}
+              />
+              <Typography
+                variant="inherit"
+                color="textSecondary"
+                sx={{ color: "#b91c1c" }}
+              >
+                {errors.state_registration?.message}
+              </Typography>
+            </Stack>
+            {/* state_registration */}
+
+            {/* CNPJ */}
+            <Stack direction={"column"} spacing={1}>
+              <Typography
+                variant="p"
+                sx={{
+                  color: "#253858",
+                  fontSize: "14px",
+                  fontWeight: "400",
+                  lineHeight: "16px",
+                }}
+              >
+                {/* {t["State registration"]} */}
+                CNPJ
+                <span style={{ color: "#E63333" }}>*</span>
+              </Typography>
+              <Controller
+                name="cnpj"
+                control={control}
+                defaultValue={""}
+                render={({ field }) => (
+                  <BaseTextField
+                    size={"small"}
+                    placeholder={t["CNPJ"]}
+                    // sx={{ mb: 2 }}
+                    onChange={(e) => {
+                      field.onChange(e.target.value);
+                    }}
+                    name={"cnpj"}
+                    value={field.value}
+                  />
+                )}
+              />
+              <Typography
+                variant="inherit"
+                color="textSecondary"
+                sx={{ color: "#b91c1c" }}
+              >
+                {errors.cnpj?.message}
+              </Typography>
+            </Stack>
+            {/* CNPJ */}
+
+            {/* Corporate reason */}
+            <Stack direction={"column"} spacing={1}>
+              <Typography
+                variant="p"
+                sx={{
+                  color: "#253858",
+                  fontSize: "14px",
+                  fontWeight: "400",
+                  lineHeight: "16px",
+                }}
+              >
+                {t["Corporate reason"]}
+                <span style={{ color: "#E63333" }}>*</span>
+              </Typography>
+              <Controller
+                name="corporate_reason"
+                control={control}
+                defaultValue={""}
+                render={({ field }) => (
+                  <BaseTextField
+                    size={"small"}
+                    placeholder={t["Corporate reason"]}
+                    // sx={{ mb: 2 }}
+                    onChange={(e) => {
+                      field.onChange(e.target.value);
+                    }}
+                    name={"corporate_reason"}
+                    value={field.value}
+                  />
+                )}
+              />
+              <Typography
+                variant="inherit"
+                color="textSecondary"
+                sx={{ color: "#b91c1c" }}
+              >
+                {errors.corporate_reason?.message}
+              </Typography>
+            </Stack>
+            {/* Corporate reason */}
+          </Stack>
         </Grid>
       </Grid>
       <Divider sx={{ mt: 3 }} />
       <Grid container spacing={1} sx={{ mt: 3 }}>
-        {addPerson != "Physical person" && (
+        {/* {addPerson != "Physical person" && (
           <Grid item xs={12}>
-            {/* full_name */}
+           
             <Stack direction={"column"} spacing={1}>
               <Typography
                 variant="p"
@@ -700,9 +817,49 @@ function AddCompanyPersonalData({
                 {errors.full_name?.message}
               </Typography>
             </Stack>
-            {/* full_name */}
+           
           </Grid>
-        )}
+        )} */}
+        <Grid item xs={12}>
+          <Stack direction={"column"} spacing={1}>
+            <Typography
+              variant="p"
+              sx={{
+                color: "#253858",
+                fontSize: "14px",
+                fontWeight: "400",
+                lineHeight: "16px",
+              }}
+            >
+              {t["Full Name"]}
+              <span style={{ color: "#E63333" }}>*</span>
+            </Typography>
+            <Controller
+              name="full_name"
+              control={control}
+              defaultValue={""}
+              render={({ field }) => (
+                <BaseTextField
+                  size={"small"}
+                  placeholder={t["Full Name"]}
+                  // sx={{ mb: 2 }}
+                  onChange={(e) => {
+                    field.onChange(e.target.value);
+                  }}
+                  name={"full_name"}
+                  value={field.value}
+                />
+              )}
+            />
+            <Typography
+              variant="inherit"
+              color="textSecondary"
+              sx={{ color: "#b91c1c" }}
+            >
+              {errors.full_name?.message}
+            </Typography>
+          </Stack>
+        </Grid>
         <Grid item xs={6}>
           <Stack direction={"column"} spacing={1}>
             <Typography

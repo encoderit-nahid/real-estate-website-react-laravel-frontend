@@ -81,7 +81,7 @@ export default function AddCompany({
 
   const t = myValue === "en" ? en : pt;
 
-  const [addPerson, setAddPerson] = useState("Physical person");
+  // const [addPerson, setAddPerson] = useState("Physical person");
   const [addType, setAddType] = useState("Car");
 
   const steps = [t["Personal data"], t["Address"]];
@@ -176,8 +176,10 @@ export default function AddCompany({
         );
       }),
     full_name: Yup.string().required(t["Full Name is required"]),
-    dob: Yup.string().required(t["Date of Birth number is required"]),
-    description: Yup.string().required(t["Description is required"]),
+    dob: Yup.string()
+      .required(t["Date of Birth number is required"])
+      .optional(),
+    description: Yup.string().required(t["Description is required"]).optional(),
     cpf_number: Yup.string()
       .required(t["CPF number is required"])
       .test("isValid", t["CPF number is required"], (cpf) => {
@@ -208,15 +210,11 @@ export default function AddCompany({
 
     zip_code: Yup.string().required(t["Zip code number is required"]),
     address: Yup.string().required(t["Address is required"]),
-    number: Yup.string().required(t["Number is required"]),
+    number: Yup.string().required(t["Number is required"]).optional(),
     neighbourhood: Yup.string().required(t["Neighbourhood is required"]),
     state: Yup.mixed()
-    .test(
-      "is-object",
-      t["State is required"],
-      (value) => !!value
-    )
-    .required(t["State is required"]),
+      .test("is-object", t["State is required"], (value) => !!value)
+      .required(t["State is required"]),
     city: Yup.string().required(t["City is required"]),
   });
   const {
@@ -237,14 +235,14 @@ export default function AddCompany({
   const allValues = watch();
   const { replace } = useRouter();
   const requiredFields = {
-    physical_person: [
-      "image",
-      "full_name",
-      "cpf_number",
-      "rg_number",
-      "dob",
-      "description",
-    ],
+    // physical_person: [
+    //   "image",
+    //   "full_name",
+    //   "cpf_number",
+    //   "rg_number",
+    //   "dob",
+    //   "description",
+    // ],
     legal_person: [
       "image",
       "full_name",
@@ -264,9 +262,7 @@ export default function AddCompany({
     ],
   };
   const [disableBtn, setDisableBtn] = useRequiredFieldsToDisableButton(
-    activeStep === 0 && addPerson == "Physical person"
-      ? requiredFields.physical_person
-      : activeStep === 0 && addPerson == "Legal person"
+    activeStep === 0
       ? requiredFields.legal_person
       : requiredFields.address_data,
     allValues
@@ -281,7 +277,7 @@ export default function AddCompany({
     console.log("🟥 ~ onSubmit ~ data:", {
       ...data,
       type: addType,
-      person_type: addPerson,
+      // person_type: addPerson,
     });
     // setLoading(true);
     // const previousFieldData = JSON.parse(
@@ -394,8 +390,8 @@ export default function AddCompany({
                   setSelectedBroker={setSelectedBroker}
                   reset={reset}
                   replace={replace}
-                  addPerson={addPerson}
-                  setAddPerson={setAddPerson}
+                  // addPerson={addPerson}
+                  // setAddPerson={setAddPerson}
                   addType={addType}
                   setAddType={setAddType}
                 />
@@ -439,9 +435,7 @@ export default function AddCompany({
                       handleFunction={async () => {
                         if (
                           await triggerValidation(
-                            activeStep === 0 && addPerson == "Physical person"
-                              ? requiredFields.physical_person
-                              : activeStep === 0 && addPerson == "Legal person"
+                            activeStep === 0
                               ? requiredFields.legal_person
                               : requiredFields.address_data,
                             trigger

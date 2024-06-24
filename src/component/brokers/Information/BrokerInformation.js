@@ -32,7 +32,12 @@ const BrokerInformation = ({
   return (
     <>
       <Grid item xs={12} lg={2}>
-        <Stack direction="column" alignItems="center" justifyItems="center">
+        <Stack
+          direction="column"
+          alignItems="center"
+          justifyItems="center"
+          spacing={1}
+        >
           <Image
             loader={myLoader}
             src={`${singleBrokerData.broker?.attachments[0]?.file_path}`}
@@ -54,7 +59,28 @@ const BrokerInformation = ({
               color: "#6C7A84",
             }}
           >
-            {avgRating}{" "}
+            CRECI{" "}
+            <span
+              style={{
+                fontSize: "14px",
+                fontWeight: 400,
+                lineHeight: "18px",
+                color: "#6C7A84",
+              }}
+            >
+              {singleBrokerData.broker.additional_info.creci_number}
+            </span>
+          </Typography>
+          <Typography
+            variant="body1"
+            sx={{
+              fontSize: "16px",
+              fontWeight: 700,
+              lineHeight: "22px",
+              color: "#6C7A84",
+            }}
+          >
+            {avgRating > 0 ? avgRating : 0}{" "}
             <span
               style={{
                 fontSize: "14px",
@@ -126,7 +152,7 @@ const BrokerInformation = ({
               Magnis quam congue sed.
             </Typography>
           </Grid>
-          <Grid item xs={12}>
+          {/* <Grid item xs={12}>
             <Grid container sx={{ gap: { xs: 2, lg: 0 } }}>
               <Grid item xs={12} lg={4}>
                 <Stack direction="row" spacing={1}>
@@ -188,7 +214,7 @@ const BrokerInformation = ({
                 </Stack>
               </Grid>
             </Grid>
-          </Grid>
+          </Grid> */}
         </Grid>
       </Grid>
     </>
