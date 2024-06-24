@@ -62,32 +62,34 @@ function AddressData({
 
   const allStateData = useSelector((state) => state.state.stateData);
 
-
   // useEffect(() => {
   //   setValue("state", allStateData[0]);
   // }, [allStateData, setValue]);
 
   useEffect(() => {
     const getData = async () => {
-      const [error, response] = await getAddressData(allValues?.zip_code)
+      const [error, response] = await getAddressData(allValues?.zip_code);
       if (error) {
-        setValue('address', "")
-        setValue('neighbourhood', "")
-        setValue('add_on', "")
-        setValue('city', "")
-        setValue('state', '')
+        setValue("address", "");
+        setValue("neighbourhood", "");
+        setValue("add_on", "");
+        setValue("city", "");
+        setValue("state", "");
       } else {
-        setValue('address', response?.data?.logradouro)
-        setValue('neighbourhood', response?.data?.bairro)
-        setValue('add_on', response?.data?.complemento)
-        setValue('city', response?.data?.localidade)
-        setValue('state', allStateData?.find((data) => data?.uf === response?.data?.uf ))
+        setValue("address", response?.data?.logradouro);
+        setValue("neighbourhood", response?.data?.bairro);
+        setValue("add_on", response?.data?.complemento);
+        setValue("city", response?.data?.localidade);
+        setValue(
+          "state",
+          allStateData?.find((data) => data?.uf === response?.data?.uf)
+        );
       }
-    }
+    };
     if (allValues?.zip_code && allValues?.zip_code?.length > 8) {
-      getData()
+      getData();
     }
-  }, [allValues?.zip_code, setValue,allStateData])
+  }, [allValues?.zip_code, setValue, allStateData]);
 
   return (
     <Box sx={{ mt: 4 }}>
@@ -115,7 +117,7 @@ function AddressData({
           sx="error"
           handleFunction={() => {
             reset();
-            replace("/registration");
+            replace("/");
           }}
         >
           {t["Cancel"]}

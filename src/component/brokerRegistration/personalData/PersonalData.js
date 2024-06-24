@@ -302,7 +302,7 @@ function PersonalData({
           sx="error"
           handleFunction={() => {
             reset();
-            replace("/registration");
+            replace("/");
           }}
         >
           {t["Cancel"]}

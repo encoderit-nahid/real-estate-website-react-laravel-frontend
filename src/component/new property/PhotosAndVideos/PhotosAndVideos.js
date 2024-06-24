@@ -79,6 +79,8 @@ function PhotosAndVideos({
   languageName,
   handleNext,
   handleBack,
+  reset,
+  replace,
 }) {
   const dispatch = useDispatch();
   const { query } = useRouter();
