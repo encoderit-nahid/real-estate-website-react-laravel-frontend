@@ -659,7 +659,7 @@ function PreAnalise({
                                       lineHeight: "22px",
                                     }}
                                   >
-                                    {data?.remarks || "No comment available"}
+                                    {data?.remarks || t["No comment available"]}
                                   </Typography>
                                 </Button>
                               </Grid>

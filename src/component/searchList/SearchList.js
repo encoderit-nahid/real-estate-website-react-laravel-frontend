@@ -510,7 +510,7 @@ function SearchList({ propertyData, language, handleLoginOpen }) {
                   render={({ field }) => (
                     <BaseOutlinedCurrencyInput
                       size={"medium"}
-                      placeholder={"Minimum"}
+                      placeholder={t["Minimum"]}
                       onChange={(e) => {
                         field.onChange(e.target.value);
                       }}
@@ -539,7 +539,7 @@ function SearchList({ propertyData, language, handleLoginOpen }) {
                   render={({ field }) => (
                     <BaseOutlinedCurrencyInput
                       size={"medium"}
-                      placeholder={"Maximum"}
+                      placeholder={t["Maximum"]}
                       // type={"number"}
                       onChange={(e) => {
                         field.onChange(e.target.value);
@@ -845,7 +845,7 @@ function SearchList({ propertyData, language, handleLoginOpen }) {
                   render={({ field }) => (
                     <BaseOutlinedAreaInput
                       size={"medium"}
-                      placeholder={"Minimum"}
+                      placeholder={t["Minimum"]}
                       onChange={(e) => {
                         field.onChange(e.target.value);
                       }}
@@ -872,7 +872,7 @@ function SearchList({ propertyData, language, handleLoginOpen }) {
                   render={({ field }) => (
                     <BaseOutlinedAreaInput
                       size={"medium"}
-                      placeholder={"Maximum"}
+                      placeholder={t["Maximum"]}
                       onChange={(e) => {
                         field.onChange(e.target.value);
                       }}

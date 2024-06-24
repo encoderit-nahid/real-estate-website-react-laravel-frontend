@@ -43,6 +43,7 @@ const ImageCarousel = ({ imageUrls, imagesPerSlide }) => {
           position: "relative",
           width: "100%",
           height: "100%",
+          backgroundColor: "#B4B4B8",
         }}
       >
         {imageUrls
@@ -56,9 +57,12 @@ const ImageCarousel = ({ imageUrls, imagesPerSlide }) => {
               className="carousel-image"
               loader={myLoader}
               src={imageUrl}
+              // width="100%"
+              // height="100%"
               alt={`image_${index}`}
               layout={"fill"}
-              objectFit="cover"
+              // layout={"responsive"}
+              objectFit="contain"
             />
           ))}
       </Box>

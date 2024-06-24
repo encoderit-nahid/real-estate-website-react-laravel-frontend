@@ -317,7 +317,7 @@ export default function Proposals({ language }) {
                 lineHeight: "19px",
               }}
             >
-              Proposal Status
+              {t["Proposal Status"]}
             </Typography>
 
             <Grid
@@ -384,7 +384,7 @@ export default function Proposals({ language }) {
                 lineHeight: "19px",
               }}
             >
-              Journey Stage
+              {t["Journey Stage"]}
             </Typography>
 
             <Grid
@@ -437,7 +437,7 @@ export default function Proposals({ language }) {
                     },
                   }}
                 >
-                  {data?.slug}
+                  {t[data?.slug]}
                 </Button>
               ))}
             </Grid>
@@ -520,7 +520,7 @@ export default function Proposals({ language }) {
                   render={({ field }) => (
                     <BaseOutlinedCurrencyInput
                       size={"medium"}
-                      placeholder={"Minimum"}
+                      placeholder={t["Minimum"]}
                       onChange={(e) => {
                         field.onChange(e.target.value);
                       }}
@@ -549,7 +549,7 @@ export default function Proposals({ language }) {
                   render={({ field }) => (
                     <BaseOutlinedCurrencyInput
                       size={"medium"}
-                      placeholder={"Maximum"}
+                      placeholder={t["Maximum"]}
                       // type={"number"}
                       onChange={(e) => {
                         field.onChange(e.target.value);
