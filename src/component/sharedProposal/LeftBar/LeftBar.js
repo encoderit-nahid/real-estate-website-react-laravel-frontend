@@ -99,12 +99,12 @@ function LeftBar(props) {
     },
     {
       icon: <AddBusinessIcon />,
-      label: "Add Company",
+      label: t["Add company"],
       route: "add-company",
     },
     {
       icon: <PaidIcon />,
-      label: "Financial",
+      label: t["Financial"],
       route: "financial",
     },
     { icon: <HelpOutlineOutlinedIcon />, label: "FAQ", route: "faq" },

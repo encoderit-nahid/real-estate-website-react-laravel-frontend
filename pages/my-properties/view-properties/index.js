@@ -339,7 +339,7 @@ export default function ViewProperties({
           >
             {t["filters"]}
           </Typography>
-          <BaseCloseButton handleClose={toggleDrawer(anchor, false)}/>
+          <BaseCloseButton handleClose={toggleDrawer(anchor, false)} />
         </Grid>
 
         <Box sx={{ mx: 2, mt: 3 }}>
@@ -426,7 +426,7 @@ export default function ViewProperties({
                   render={({ field }) => (
                     <BaseOutlinedCurrencyInput
                       size={"medium"}
-                      placeholder={"Minimum"}
+                      placeholder={t["Minimum"]}
                       onChange={(e) => {
                         field.onChange(e.target.value);
                       }}
@@ -455,7 +455,7 @@ export default function ViewProperties({
                   render={({ field }) => (
                     <BaseOutlinedCurrencyInput
                       size={"medium"}
-                      placeholder={"Maximum"}
+                      placeholder={t["Maximum"]}
                       // type={"number"}
                       onChange={(e) => {
                         field.onChange(e.target.value);
@@ -755,7 +755,7 @@ export default function ViewProperties({
                   render={({ field }) => (
                     <BaseOutlinedCurrencyInput
                       size={"medium"}
-                      placeholder={"Minimum"}
+                      placeholder={t["Minimum"]}
                       onChange={(e) => {
                         field.onChange(e.target.value);
                       }}
@@ -782,7 +782,7 @@ export default function ViewProperties({
                   render={({ field }) => (
                     <BaseOutlinedCurrencyInput
                       size={"medium"}
-                      placeholder={"Maximum"}
+                      placeholder={t["Maximum"]}
                       onChange={(e) => {
                         field.onChange(e.target.value);
                       }}
