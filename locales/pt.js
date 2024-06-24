@@ -478,4 +478,6 @@ export default {
   "Digital notary": "Cartório Digital",
   "Add company": "Parceiros",
   Financial: "Financeiro",
+  "No comment available": "Nenhum comentário",
+  "Validate documents": "Validar documento",
 };

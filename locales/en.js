@@ -456,4 +456,6 @@ export default {
   "Digital notary": "Digital notary",
   "Add company": "Add company",
   Financial: "Financial",
+  "No comment available": "No comment available",
+  "Validate documents": "Validate documents",
 };

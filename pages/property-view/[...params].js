@@ -133,7 +133,11 @@ export default function PropertyView({
 
   console.log({ sideTabValue });
 
-  const [selectImage, setSelectImage] = useState(() => Images[0]?.file_path);
+  console.log("🟥 ~ Images:", Images);
+  const [selectImage, setSelectImage] = useState(() =>
+    Images == undefined ? null : Images[0]?.file_path
+  );
+  // const [selectImage, setSelectImage] = useState(null);
 
   useEffect(() => {
     if (Images.length > 0) {
