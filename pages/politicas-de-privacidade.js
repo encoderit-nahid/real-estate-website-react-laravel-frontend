@@ -32,10 +32,6 @@ import PrivacyContent from "../src/component/privacy/privacyContent/PrivacyConte
 function PoliticasDePrivacidade() {
   const contents = [
     {
-      title: "",
-      description: ``,
-    },
-    {
       title: " 1. Introdução",
       description: `Nós estamos comprometidos com a segurança de seus Dados Pessoais e
       com sua privacidade durante toda a sua jornada dentro do Lokkan,

@@ -66,6 +66,7 @@ export async function getServerSideProps(context) {
     url.searchParams.append(key, params[key])
   );
   const res = await fetch(url);
+  console.log("🟥 ~ getServerSideProps ~ res:", res);
   const data = await res.json();
   const cookies = context.req.cookies["language"] || "pt";
   return {
