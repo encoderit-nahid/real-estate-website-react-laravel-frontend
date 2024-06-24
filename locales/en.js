@@ -7,8 +7,12 @@ export default {
   "Make your": "Make your",
   "Dream!": "Dream!",
   Loacation: "Loacation",
+  new: "new",
+  used: "used",
   Car: "Car",
   Construction: "Construction",
+  "Search by name, city or neighborhood":
+    "Search by name, city or neighborhood",
   "For those who want to sell": "For those who want to sell",
   "For anyone who is a broker": "For anyone who is a broker",
   "track everything online": "track everything online",
@@ -149,7 +153,9 @@ export default {
   Value: "Value",
   "There is no proposal or schedule yet":
     "There is no proposal or schedule yet",
-  search: "search..",
+  search: "search",
+  "You can search by broker,development or condominium":
+    "You can search by broker,development or condominium",
   edit: "edit",
   approve: "approve",
   reject: "reject",

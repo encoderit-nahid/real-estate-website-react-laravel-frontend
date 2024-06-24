@@ -5,6 +5,8 @@ export default {
   "I am owner": "Sou proprietário",
   login: "Entrar",
   New: "Novo",
+  new: "Novo",
+  used: "Usado",
   Used: "Terceiro",
   "Make your": "Encontre seu",
   "Dream!": "Sonho!",
@@ -179,7 +181,10 @@ export default {
   Value: "Valor",
   "There is no proposal or schedule yet":
     "Ainda não há nenhuma proposta ou agendamento",
-  search: "Buscar anúncio..",
+  search: "Pesquisar",
+  "You can search by broker,development or condominium":
+    "Pesquise por cidade, bairro, corretor,  lançamento ou condomínio",
+
   edit: "Editar",
   approve: "Aprovar",
   reject: "Rejeitar",
@@ -402,6 +407,7 @@ export default {
   Close: "Fechar",
   dimension: "dimensões",
   "Search by broker name": "Pesquise por nome",
+  "Search by name, city or neighborhood": "Pesquise por nome, cidade ou bairro",
 
   "Name of broker you referred": "Nome do corretor (a) que indicou a Lokkan",
   "Select broker": "Selecione o (a) corretor (a)",

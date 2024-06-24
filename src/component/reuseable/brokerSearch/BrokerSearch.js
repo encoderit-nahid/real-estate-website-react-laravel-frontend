@@ -15,7 +15,7 @@ function BrokerSearch({ handleSearchBroker, searchValue }) {
         <Grid item xs={12}>
           <BaseTextField
             variant="outlined"
-            placeholder="Search by name, city or neighborhood..."
+            placeholder={t["Search by name, city or neighborhood"]}
             size="small"
             fullWidth
             onChange={handleSearchBroker}

@@ -1,8 +1,8 @@
-import dynamic from 'next/dynamic'
-const Navbar = dynamic(() => import('@/component/shared/Navbar/Navbar'), {
+import dynamic from "next/dynamic";
+const Navbar = dynamic(() => import("@/component/shared/Navbar/Navbar"), {
   ssr: false,
-})
-import Head from 'next/head'
+});
+import Head from "next/head";
 import {
   Box,
   Grid,
@@ -13,138 +13,138 @@ import {
   TextField,
   InputAdornment,
   IconButton,
-} from '@mui/material'
+} from "@mui/material";
 const PropertyList = dynamic(() =>
-  import('@/component/IAmOwner/propertyList/PropertyList'),
-)
+  import("@/component/IAmOwner/propertyList/PropertyList")
+);
 const SearchComponent = dynamic(() =>
-  import('@/component/reuseable/SearchComponent/SearchComponent'),
-)
+  import("@/component/reuseable/SearchComponent/SearchComponent")
+);
 const BaseOutlinedCurrencyInput = dynamic(() =>
   import(
-    '@/component/reuseable/baseOutlinedCurrencyInput/BaseOutlinedCurrencyInput'
-  ),
-)
-import Pagination from '@mui/material/Pagination'
-import Stack from '@mui/material/Stack'
-import { useRouter } from 'next/router'
-import FilterAltOutlinedIcon from '@mui/icons-material/FilterAltOutlined'
-import React, { useState } from 'react'
-import { useForm, Controller } from 'react-hook-form'
+    "@/component/reuseable/baseOutlinedCurrencyInput/BaseOutlinedCurrencyInput"
+  )
+);
+import Pagination from "@mui/material/Pagination";
+import Stack from "@mui/material/Stack";
+import { useRouter } from "next/router";
+import FilterAltOutlinedIcon from "@mui/icons-material/FilterAltOutlined";
+import React, { useState } from "react";
+import { useForm, Controller } from "react-hook-form";
 
 const BaseGoogleMap = dynamic(() =>
-  import('@/component/IAmOwner/map/BaseGoogleMap'),
-)
+  import("@/component/IAmOwner/map/BaseGoogleMap")
+);
 
-import Slider from '@mui/material/Slider'
-import { useEffect } from 'react'
-import { useDispatch, useSelector } from 'react-redux'
-import { findPropertyTypeData } from '@/redux/propertyType/actions'
-import { findFeatureData } from '@/redux/features/actions'
-import { serialize } from 'object-to-formdata'
+import Slider from "@mui/material/Slider";
+import { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { findPropertyTypeData } from "@/redux/propertyType/actions";
+import { findFeatureData } from "@/redux/features/actions";
+import { serialize } from "object-to-formdata";
 const BaseAutocomplete = dynamic(() =>
-  import('@/component/reuseable/baseAutocomplete/BaseAutocomplete'),
-)
-import en from 'locales/en'
-import pt from 'locales/pt'
+  import("@/component/reuseable/baseAutocomplete/BaseAutocomplete")
+);
+import en from "locales/en";
+import pt from "locales/pt";
 const BaseOutlinedAreaInput = dynamic(() =>
-  import('@/component/reuseable/baseOutlinedAreaInput/BaseOutlinedAreaInput'),
-)
-import { userDetailsApi } from '@/api'
-import SearchIcon from '@mui/icons-material/Search'
-import BaseCloseButton from '../reuseable/baseCloseButton/BaseCloseButton'
+  import("@/component/reuseable/baseOutlinedAreaInput/BaseOutlinedAreaInput")
+);
+import { userDetailsApi } from "@/api";
+import SearchIcon from "@mui/icons-material/Search";
+import BaseCloseButton from "../reuseable/baseCloseButton/BaseCloseButton";
 
-const unflatten = require('flat').unflatten
+const unflatten = require("flat").unflatten;
 
 function valuetext(value) {
-  return `${value}°C`
+  return `${value}°C`;
 }
 
 const $params = {
   encode(input) {
-    const searchParams = new URLSearchParams(window.location.search)
+    const searchParams = new URLSearchParams(window.location.search);
 
     const formData = serialize(input, {
       indices: true,
       allowEmptyArrays: false,
       booleansAsIntegers: true,
-    })
+    });
 
-    const inputSearchParams = new URLSearchParams(formData.entries())
+    const inputSearchParams = new URLSearchParams(formData.entries());
     for (const [key, value] of inputSearchParams.entries()) {
-      searchParams.set(key, value)
+      searchParams.set(key, value);
     }
 
-    return searchParams
+    return searchParams;
   },
   decode(input = new URLSearchParams(window.location.search)) {
     return unflatten(
       [...input.entries()].reduce((carry, [key, value]) => {
-        const numValue = +value
+        const numValue = +value;
         return {
           ...carry,
-          [key.replace(/\[([^\]]+)\]/g, '.$1')]: !isNaN(numValue)
+          [key.replace(/\[([^\]]+)\]/g, ".$1")]: !isNaN(numValue)
             ? numValue
             : value,
-        }
-      }, {}),
-    )
+        };
+      }, {})
+    );
   },
-}
+};
 
 function SearchList({ propertyData, language, handleLoginOpen }) {
-  const [myValue, setMyValue] = useState(language || 'pt')
+  const [myValue, setMyValue] = useState(language || "pt");
 
-  const router = useRouter()
+  const router = useRouter();
 
-  const { query } = router
+  const { query } = router;
 
-  const t = myValue === 'en' ? en : pt
+  const t = myValue === "en" ? en : pt;
   useEffect(() => {
-    userDetailsApi()
-  }, [])
+    userDetailsApi();
+  }, []);
 
-  const dispatch = useDispatch()
+  const dispatch = useDispatch();
 
-  const [pageSize, setPageSize] = React.useState(3)
-  const [page, setPage] = React.useState(1)
-  const [selectval, setSelectVal] = useState(null)
-  const [propertyType, setPropertyType] = useState('Residential')
-  const [proposalStatus, setProposalStatus] = useState('pending')
-  const [journeyStage, setJourneyStage] = useState('contract')
+  const [pageSize, setPageSize] = React.useState(3);
+  const [page, setPage] = React.useState(1);
+  const [selectval, setSelectVal] = useState(null);
+  const [propertyType, setPropertyType] = useState("Residential");
+  const [proposalStatus, setProposalStatus] = useState("pending");
+  const [journeyStage, setJourneyStage] = useState("contract");
 
   const omitEmpties = (obj) => {
     return Object.entries(obj).reduce((carry, [key, value]) => {
-      if (![null, undefined, '', []].includes(value)) {
-        carry[key] = value
+      if (![null, undefined, "", []].includes(value)) {
+        carry[key] = value;
       }
-      return carry
-    }, {})
-  }
+      return carry;
+    }, {});
+  };
 
   useEffect(() => {
     dispatch(
       findPropertyTypeData(
-        propertyType === 'Residential' ? 'residential' : 'commercial',
-      ),
-    )
-    dispatch(findFeatureData())
-  }, [dispatch, propertyType])
+        propertyType === "Residential" ? "residential" : "commercial"
+      )
+    );
+    dispatch(findFeatureData());
+  }, [dispatch, propertyType]);
 
   const propertyCategory = useSelector(
-    (state) => state.propertyType.propertyTypeData,
-  )
+    (state) => state.propertyType.propertyTypeData
+  );
 
-  const featureData = useSelector((state) => state.feature.featureData)
+  const featureData = useSelector((state) => state.feature.featureData);
 
   const handlePageChange = (event, value) => {
-    setPage(value)
+    setPage(value);
     router.replace({
-      pathname: '/search-real-estate',
+      pathname: "/search-real-estate",
       query: { ...router.query, page: value },
-    })
+    });
     // setData(datas.slice(firstIndex + pageSize * (value - 1), pageSize * value));
-  }
+  };
 
   const {
     register,
@@ -154,94 +154,94 @@ function SearchList({ propertyData, language, handleLoginOpen }) {
     setValue,
     formState: { errors },
     setError,
-  } = useForm()
+  } = useForm();
 
-  const allValues = watch()
-  const [searchValue, setSearchValue] = useState(null)
-  const [type, setType] = useState('')
-  const [bedrooms, setBedrooms] = useState('')
-  const [bathrooms, setBathrooms] = useState('')
-  const [furnished, setFurnished] = useState('')
-  const [pets, setPets] = useState('')
-  const [closeToTheMetro, setCloseToTheMetro] = useState('')
-  const [availability, setAvailability] = useState('')
-  const [featuretypes, setFeatureTypes] = useState([])
-  const [valueSlider, setValueSlider] = React.useState([22, 5000000])
-  const [areaSlider, setAreaSlider] = React.useState([20, 370000])
-  const [relevantValue, setRelevantValue] = useState('')
+  const allValues = watch();
+  const [searchValue, setSearchValue] = useState(null);
+  const [type, setType] = useState("");
+  const [bedrooms, setBedrooms] = useState("");
+  const [bathrooms, setBathrooms] = useState("");
+  const [furnished, setFurnished] = useState("");
+  const [pets, setPets] = useState("");
+  const [closeToTheMetro, setCloseToTheMetro] = useState("");
+  const [availability, setAvailability] = useState("");
+  const [featuretypes, setFeatureTypes] = useState([]);
+  const [valueSlider, setValueSlider] = React.useState([22, 5000000]);
+  const [areaSlider, setAreaSlider] = React.useState([20, 370000]);
+  const [relevantValue, setRelevantValue] = useState("");
 
   useEffect(() => {
     if (valueSlider) {
-      setValue('min_value', valueSlider[0])
-      setValue('max_value', valueSlider[1])
+      setValue("min_value", valueSlider[0]);
+      setValue("max_value", valueSlider[1]);
     }
-  }, [valueSlider, setValue])
+  }, [valueSlider, setValue]);
 
   useEffect(() => {
     if (areaSlider) {
-      setValue('min_area', areaSlider[0])
-      setValue('max_area', areaSlider[1])
+      setValue("min_area", areaSlider[0]);
+      setValue("max_area", areaSlider[1]);
     }
-  }, [areaSlider, setValue])
+  }, [areaSlider, setValue]);
 
   useEffect(() => {
-    const searchParams = $params.decode()
-    setType(searchParams?.type || '')
-    setBedrooms(searchParams?.bedroom || '')
-    setBathrooms(searchParams?.bathroom || '')
-    setPets(searchParams?.pets || '')
-    setFurnished(searchParams?.furnish || '')
-    setCloseToTheMetro(searchParams?.metro || '')
-    setFeatureTypes(searchParams?.tag || [])
-    setValue('min_value', searchParams.min_value || 22)
-    setValue('max_value', searchParams.max_value || 5000000)
-    setValue('min_area', searchParams.min_area || 22)
-    setValue('max_area', searchParams.max_area || 370000)
-    setProposalStatus(searchParams?.proposal_status)
-    setJourneyStage(searchParams.journey_stage)
-  }, [setValue])
+    const searchParams = $params.decode();
+    setType(searchParams?.type || "");
+    setBedrooms(searchParams?.bedroom || "");
+    setBathrooms(searchParams?.bathroom || "");
+    setPets(searchParams?.pets || "");
+    setFurnished(searchParams?.furnish || "");
+    setCloseToTheMetro(searchParams?.metro || "");
+    setFeatureTypes(searchParams?.tag || []);
+    setValue("min_value", searchParams.min_value || 22);
+    setValue("max_value", searchParams.max_value || 5000000);
+    setValue("min_area", searchParams.min_area || 22);
+    setValue("max_area", searchParams.max_area || 370000);
+    setProposalStatus(searchParams?.proposal_status);
+    setJourneyStage(searchParams.journey_stage);
+  }, [setValue]);
 
   const [state, setState] = useState({
     top: false,
     left: false,
     bottom: false,
     right: false,
-  })
+  });
 
   const toggleDrawer = (anchor, open) => (event) => {
     if (
       event &&
-      event.type === 'keydown' &&
-      (event.key === 'Tab' || event.key === 'Shift')
+      event.type === "keydown" &&
+      (event.key === "Tab" || event.key === "Shift")
     ) {
-      return
+      return;
     }
 
-    setState({ ...state, [anchor]: open })
-  }
+    setState({ ...state, [anchor]: open });
+  };
 
   const handleSearch = (e) => {
-    setSearchValue(e.target.value)
-  }
+    setSearchValue(e.target.value);
+  };
 
   const handleSearchBtn = () => {
     router.replace({
-      pathname: '/search-real-estate',
+      pathname: "/search-real-estate",
       query: { ...router.query, all: searchValue },
-    })
-  }
+    });
+  };
 
   const handleChange = (event, newValue) => {
-    setValueSlider(newValue)
-    setValue('min_value', newValue[0])
-    setValue('max_value', newValue[1])
-  }
+    setValueSlider(newValue);
+    setValue("min_value", newValue[0]);
+    setValue("max_value", newValue[1]);
+  };
 
   const handleAreaChange = (event, newValue) => {
-    setAreaSlider(newValue)
-    setValue('min_area', newValue[0])
-    setValue('max_area', newValue[1])
-  }
+    setAreaSlider(newValue);
+    setValue("min_area", newValue[0]);
+    setValue("max_area", newValue[1]);
+  };
 
   const onSubmit = async (data) => {
     const allFilterData = {
@@ -255,39 +255,39 @@ function SearchList({ propertyData, language, handleLoginOpen }) {
       tag: featuretypes,
       // proposal_status: proposalStatus,
       // journey_stage: journeyStage,
-    }
+    };
     router.replace({
-      pathname: '/search-real-estate',
+      pathname: "/search-real-estate",
       query: $params.encode(omitEmpties(allFilterData)).toString(),
-    })
-  }
+    });
+  };
 
   const handleCancelFilter = () => {
     router.replace({
-      pathname: '/search-real-estate',
+      pathname: "/search-real-estate",
       query: omitEmpties({
         location: query?.location,
         value_up_to: query?.value_up_to,
         page: 1,
         per_page: 9,
       }),
-    })
-  }
+    });
+  };
 
   const handleRelevantValueChange = (v) => {
-    setRelevantValue(v)
+    setRelevantValue(v);
     router.replace({
-      pathname: '/search-real-estate',
+      pathname: "/search-real-estate",
       query: omitEmpties({
         ...router.query,
         relevant_filter: v?.value,
       }),
-    })
-  }
+    });
+  };
 
   const list = (anchor) => (
     <Box
-      sx={{ width: anchor === 'top' || anchor === 'bottom' ? 'auto' : 450 }}
+      sx={{ width: anchor === "top" || anchor === "bottom" ? "auto" : 450 }}
       role="presentation"
       // onClick={toggleDrawer(anchor, false)}
       // onKeyDown={toggleDrawer(anchor, false)}
@@ -303,15 +303,15 @@ function SearchList({ propertyData, language, handleLoginOpen }) {
           <Typography
             variant="p"
             sx={{
-              color: '#1A1859',
-              fontSize: '24px',
-              lineHeight: '32px',
-              fontWeight: '700',
+              color: "#1A1859",
+              fontSize: "24px",
+              lineHeight: "32px",
+              fontWeight: "700",
             }}
           >
-            {t['filters']}
+            {t["filters"]}
           </Typography>
-          <BaseCloseButton handleClose={toggleDrawer(anchor, false)}/>
+          <BaseCloseButton handleClose={toggleDrawer(anchor, false)} />
         </Grid>
 
         <Box sx={{ mx: 2, mt: 3 }}>
@@ -345,13 +345,13 @@ function SearchList({ propertyData, language, handleLoginOpen }) {
             <Typography
               variant="p"
               sx={{
-                color: '#6C7A84',
-                fontSize: '14px',
+                color: "#6C7A84",
+                fontSize: "14px",
                 fontWeight: 400,
-                lineHeight: '18px',
+                lineHeight: "18px",
               }}
             >
-              You can search by broker,development or condominium
+              {t["You can search by broker,development or condominium"]}
             </Typography>
           </Box>
 
@@ -359,56 +359,56 @@ function SearchList({ propertyData, language, handleLoginOpen }) {
             <Typography
               variant="p"
               sx={{
-                color: '#4B4B66',
-                fontSize: '16px',
-                fontWeight: '400',
-                lineHeight: '19px',
+                color: "#4B4B66",
+                fontSize: "16px",
+                fontWeight: "400",
+                lineHeight: "19px",
               }}
             >
-              {t['Property type']}
+              {t["Property type"]}
             </Typography>
             <Grid container spacing={1} sx={{ mt: 1 }}>
               {[
-                { name: 'Residential', slug: t['Residential'] },
-                { name: 'Commercial', slug: t['Commercial'] },
+                { name: "Residential", slug: t["Residential"] },
+                { name: "Commercial", slug: t["Commercial"] },
               ].map((data, index) => (
                 <Grid item xs={6} key={index}>
                   <Button
                     onClick={() => setPropertyType(data?.name)}
                     sx={{
-                      width: '100%',
+                      width: "100%",
                       background:
-                        propertyType === data?.name ? '#0362F0' : '#F2F5F6',
-                      borderRadius: '152px',
+                        propertyType === data?.name ? "#0362F0" : "#F2F5F6",
+                      borderRadius: "152px",
                       color:
-                        propertyType === data?.name ? '#ffffff' : '#002152',
+                        propertyType === data?.name ? "#ffffff" : "#002152",
                       fontSize: {
-                        xs: '12px',
-                        sm: '13px',
-                        md: '16px',
-                        lg: '13px',
-                        xl: '16px',
+                        xs: "12px",
+                        sm: "13px",
+                        md: "16px",
+                        lg: "13px",
+                        xl: "16px",
                       },
-                      fontWeight: '400',
-                      lineHeight: '22px',
-                      textTransform: 'none',
+                      fontWeight: "400",
+                      lineHeight: "22px",
+                      textTransform: "none",
                       px: { xs: 0, sm: 2, md: 2, lg: 2, xl: 2 },
                       py: 1,
-                      '&:hover': {
-                        width: '100%',
-                        background: '#0362F0',
-                        borderRadius: '152px',
-                        color: '#ffffff',
+                      "&:hover": {
+                        width: "100%",
+                        background: "#0362F0",
+                        borderRadius: "152px",
+                        color: "#ffffff",
                         fontSize: {
-                          xs: '12px',
-                          sm: '13px',
-                          md: '16px',
-                          lg: '13px',
-                          xl: '16px',
+                          xs: "12px",
+                          sm: "13px",
+                          md: "16px",
+                          lg: "13px",
+                          xl: "16px",
                         },
-                        fontWeight: '400',
-                        lineHeight: '22px',
-                        textTransform: 'none',
+                        fontWeight: "400",
+                        lineHeight: "22px",
+                        textTransform: "none",
                         px: {
                           xs: 0,
                           sm: 2,
@@ -431,13 +431,13 @@ function SearchList({ propertyData, language, handleLoginOpen }) {
             <Typography
               variant="p"
               sx={{
-                color: '#4B4B66',
-                fontSize: '16px',
-                fontWeight: '400',
-                lineHeight: '19px',
+                color: "#4B4B66",
+                fontSize: "16px",
+                fontWeight: "400",
+                lineHeight: "19px",
               }}
             >
-              {`${t['Property detail']}:`}
+              {`${t["Property detail"]}:`}
             </Typography>
             <Grid
               container
@@ -453,28 +453,28 @@ function SearchList({ propertyData, language, handleLoginOpen }) {
                   onClick={() => setType(data.id)}
                   sx={{
                     background: `${
-                      data.id === type ? '#7450F0' : 'transparent'
+                      data.id === type ? "#7450F0" : "transparent"
                     }`,
-                    borderRadius: '56px',
+                    borderRadius: "56px",
 
-                    color: `${data.id === type ? '#ffffff' : '#32414C'}`,
-                    border: `${data.id === type ? '' : '1px solid #9FAAB1'}`,
+                    color: `${data.id === type ? "#ffffff" : "#32414C"}`,
+                    border: `${data.id === type ? "" : "1px solid #9FAAB1"}`,
                     fontSize: {
-                      xs: '12px',
-                      sm: '13px',
-                      md: '14px',
-                      lg: '13px',
-                      xl: '14px',
+                      xs: "12px",
+                      sm: "13px",
+                      md: "14px",
+                      lg: "13px",
+                      xl: "14px",
                     },
-                    fontWeight: '400',
-                    lineHeight: '17px',
-                    textTransform: 'none',
+                    fontWeight: "400",
+                    lineHeight: "17px",
+                    textTransform: "none",
                     px: { xs: 0, sm: 1, md: 1, lg: 1, xl: 1 },
                     py: 1,
-                    '&:hover': {
-                      background: '#7450F0',
-                      borderRadius: '56px',
-                      color: '#ffffff',
+                    "&:hover": {
+                      background: "#7450F0",
+                      borderRadius: "56px",
+                      color: "#ffffff",
                     },
                   }}
                 >
@@ -488,13 +488,13 @@ function SearchList({ propertyData, language, handleLoginOpen }) {
             <Typography
               variant="p"
               sx={{
-                color: '#4B4B66',
-                fontSize: '16px',
-                fontWeight: '400',
-                lineHeight: '19px',
+                color: "#4B4B66",
+                fontSize: "16px",
+                fontWeight: "400",
+                lineHeight: "19px",
               }}
             >
-              {t['Value']}
+              {t["Value"]}
             </Typography>
             <Grid container spacing={2} sx={{ mt: 0.5 }}>
               <Grid item xs={12} sm={12} md={12} lg={6} xl={6}>
@@ -509,23 +509,23 @@ function SearchList({ propertyData, language, handleLoginOpen }) {
                   control={control}
                   render={({ field }) => (
                     <BaseOutlinedCurrencyInput
-                      size={'medium'}
-                      placeholder={'Minimum'}
+                      size={"medium"}
+                      placeholder={"Minimum"}
                       onChange={(e) => {
-                        field.onChange(e.target.value)
+                        field.onChange(e.target.value);
                       }}
                       // label={"Minimum"}
                       // type={"number"}
-                      name={'min_value'}
+                      name={"min_value"}
                       value={field.value}
                       sx={{
-                        '& .MuiOutlinedInput-root': {
-                          '&.Mui-focused fieldset': {
-                            borderColor: '#7450F0',
+                        "& .MuiOutlinedInput-root": {
+                          "&.Mui-focused fieldset": {
+                            borderColor: "#7450F0",
                           },
                         },
-                        '& label.Mui-focused': {
-                          color: '#7450F0',
+                        "& label.Mui-focused": {
+                          color: "#7450F0",
                         },
                       }}
                     />
@@ -538,23 +538,23 @@ function SearchList({ propertyData, language, handleLoginOpen }) {
                   control={control}
                   render={({ field }) => (
                     <BaseOutlinedCurrencyInput
-                      size={'medium'}
-                      placeholder={'Maximum'}
+                      size={"medium"}
+                      placeholder={"Maximum"}
                       // type={"number"}
                       onChange={(e) => {
-                        field.onChange(e.target.value)
+                        field.onChange(e.target.value);
                       }}
                       // label={"Maximum"}
-                      name={'max_value'}
+                      name={"max_value"}
                       value={field.value}
                       sx={{
-                        '& .MuiOutlinedInput-root': {
-                          '&.Mui-focused fieldset': {
-                            borderColor: '#7450F0',
+                        "& .MuiOutlinedInput-root": {
+                          "&.Mui-focused fieldset": {
+                            borderColor: "#7450F0",
                           },
                         },
-                        '& label.Mui-focused': {
-                          color: '#7450F0',
+                        "& label.Mui-focused": {
+                          color: "#7450F0",
                         },
                       }}
                     />
@@ -565,7 +565,7 @@ function SearchList({ propertyData, language, handleLoginOpen }) {
 
             <Box sx={{ mt: 1 }}>
               <Slider
-                getAriaLabel={() => 'Temperature range'}
+                getAriaLabel={() => "Temperature range"}
                 value={
                   allValues.min_value && allValues?.max_value
                     ? [allValues.min_value, allValues?.max_value]
@@ -576,7 +576,7 @@ function SearchList({ propertyData, language, handleLoginOpen }) {
                 onChange={handleChange}
                 valueLabelDisplay="auto"
                 getAriaValueText={valuetext}
-                sx={{ color: '#7450F0' }}
+                sx={{ color: "#7450F0" }}
               />
             </Box>
           </Box>
@@ -587,13 +587,13 @@ function SearchList({ propertyData, language, handleLoginOpen }) {
                 <Typography
                   variant="p"
                   sx={{
-                    color: '#4B4B66',
-                    fontSize: '16px',
-                    fontWeight: '400',
-                    lineHeight: '19px',
+                    color: "#4B4B66",
+                    fontSize: "16px",
+                    fontWeight: "400",
+                    lineHeight: "19px",
                   }}
                 >
-                  {t['bedrooms']}
+                  {t["bedrooms"]}
                 </Typography>
               </Grid>
               <Grid item xs={12} sm={12} md={12} lg={8} xl={8}>
@@ -604,29 +604,29 @@ function SearchList({ propertyData, language, handleLoginOpen }) {
                     key={index}
                     sx={{
                       background: `${
-                        data === bedrooms ? '#7450F0' : 'transparent'
+                        data === bedrooms ? "#7450F0" : "transparent"
                       }`,
-                      borderRadius: '56px',
+                      borderRadius: "56px",
                       // width: "100%",
-                      color: `${data === bedrooms ? '#ffffff' : '#32414C'}`,
-                      border: `${data === bedrooms ? '' : '1px solid #9FAAB1'}`,
+                      color: `${data === bedrooms ? "#ffffff" : "#32414C"}`,
+                      border: `${data === bedrooms ? "" : "1px solid #9FAAB1"}`,
                       ml: 0.5,
                       fontSize: {
-                        xs: '12px',
-                        sm: '13px',
-                        md: '14px',
-                        lg: '13px',
-                        xl: '14px',
+                        xs: "12px",
+                        sm: "13px",
+                        md: "14px",
+                        lg: "13px",
+                        xl: "14px",
                       },
-                      fontWeight: '400',
-                      lineHeight: '17px',
-                      textTransform: 'none',
+                      fontWeight: "400",
+                      lineHeight: "17px",
+                      textTransform: "none",
                       px: { xs: 0, sm: 1, md: 1, lg: 1, xl: 1 },
                       py: 1,
-                      '&:hover': {
-                        background: '#7450F0',
-                        borderRadius: '56px',
-                        color: '#ffffff',
+                      "&:hover": {
+                        background: "#7450F0",
+                        borderRadius: "56px",
+                        color: "#ffffff",
                       },
                     }}
                   >
@@ -644,13 +644,13 @@ function SearchList({ propertyData, language, handleLoginOpen }) {
                 <Typography
                   variant="p"
                   sx={{
-                    color: '#4B4B66',
-                    fontSize: '16px',
-                    fontWeight: '400',
-                    lineHeight: '19px',
+                    color: "#4B4B66",
+                    fontSize: "16px",
+                    fontWeight: "400",
+                    lineHeight: "19px",
                   }}
                 >
-                  {t['bathrooms']}
+                  {t["bathrooms"]}
                 </Typography>
               </Grid>
               <Grid item xs={12} sm={12} md={12} lg={8} xl={8}>
@@ -661,31 +661,31 @@ function SearchList({ propertyData, language, handleLoginOpen }) {
                     key={index}
                     sx={{
                       background: `${
-                        data === bathrooms ? '#7450F0' : 'transparent'
+                        data === bathrooms ? "#7450F0" : "transparent"
                       }`,
-                      borderRadius: '56px',
+                      borderRadius: "56px",
                       // width: "100%",
-                      color: `${data === bathrooms ? '#ffffff' : '#32414C'}`,
+                      color: `${data === bathrooms ? "#ffffff" : "#32414C"}`,
                       border: `${
-                        data === bathrooms ? '' : '1px solid #9FAAB1'
+                        data === bathrooms ? "" : "1px solid #9FAAB1"
                       }`,
                       ml: 0.5,
                       fontSize: {
-                        xs: '12px',
-                        sm: '13px',
-                        md: '14px',
-                        lg: '13px',
-                        xl: '14px',
+                        xs: "12px",
+                        sm: "13px",
+                        md: "14px",
+                        lg: "13px",
+                        xl: "14px",
                       },
-                      fontWeight: '400',
-                      lineHeight: '17px',
-                      textTransform: 'none',
+                      fontWeight: "400",
+                      lineHeight: "17px",
+                      textTransform: "none",
                       px: { xs: 0, sm: 1, md: 1, lg: 1, xl: 1 },
                       py: 1,
-                      '&:hover': {
-                        background: '#7450F0',
-                        borderRadius: '56px',
-                        color: '#ffffff',
+                      "&:hover": {
+                        background: "#7450F0",
+                        borderRadius: "56px",
+                        color: "#ffffff",
                       },
                     }}
                   >
@@ -703,20 +703,20 @@ function SearchList({ propertyData, language, handleLoginOpen }) {
                 <Typography
                   variant="p"
                   sx={{
-                    color: '#4B4B66',
-                    fontSize: '16px',
-                    fontWeight: '400',
-                    lineHeight: '19px',
+                    color: "#4B4B66",
+                    fontSize: "16px",
+                    fontWeight: "400",
+                    lineHeight: "19px",
                   }}
                 >
-                  {t['furnished']}
+                  {t["furnished"]}
                 </Typography>
               </Grid>
               <Grid item xs={12} sm={12} md={12} lg={8} xl={8}>
                 {[
-                  { name: 'Yes', slug: t['yes'] },
-                  { name: 'No', slug: t['no'] },
-                  { name: 'Whatever', slug: t['whatever'] },
+                  { name: "Yes", slug: t["yes"] },
+                  { name: "No", slug: t["no"] },
+                  { name: "Whatever", slug: t["whatever"] },
                 ].map((data, index) => (
                   // <Grid xs={6} sm={6} md={6} lg={3} xl={3} key={index}>
                   <Button
@@ -724,33 +724,33 @@ function SearchList({ propertyData, language, handleLoginOpen }) {
                     onClick={() => setFurnished(data?.name)}
                     sx={{
                       background: `${
-                        data?.name === furnished ? '#7450F0' : 'transparent'
+                        data?.name === furnished ? "#7450F0" : "transparent"
                       }`,
-                      borderRadius: '56px',
+                      borderRadius: "56px",
                       // width: "100%",
                       color: `${
-                        data?.name === furnished ? '#ffffff' : '#32414C'
+                        data?.name === furnished ? "#ffffff" : "#32414C"
                       }`,
                       border: `${
-                        data?.name === furnished ? '' : '1px solid #9FAAB1'
+                        data?.name === furnished ? "" : "1px solid #9FAAB1"
                       }`,
                       ml: 0.5,
                       fontSize: {
-                        xs: '12px',
-                        sm: '13px',
-                        md: '14px',
-                        lg: '13px',
-                        xl: '14px',
+                        xs: "12px",
+                        sm: "13px",
+                        md: "14px",
+                        lg: "13px",
+                        xl: "14px",
                       },
-                      fontWeight: '400',
-                      lineHeight: '17px',
-                      textTransform: 'none',
+                      fontWeight: "400",
+                      lineHeight: "17px",
+                      textTransform: "none",
                       px: { xs: 0, sm: 1, md: 1, lg: 1, xl: 1 },
                       py: 1,
-                      '&:hover': {
-                        background: '#7450F0',
-                        borderRadius: '56px',
-                        color: '#ffffff',
+                      "&:hover": {
+                        background: "#7450F0",
+                        borderRadius: "56px",
+                        color: "#ffffff",
                       },
                     }}
                   >
@@ -768,20 +768,20 @@ function SearchList({ propertyData, language, handleLoginOpen }) {
                 <Typography
                   variant="p"
                   sx={{
-                    color: '#4B4B66',
-                    fontSize: '16px',
-                    fontWeight: '400',
-                    lineHeight: '19px',
+                    color: "#4B4B66",
+                    fontSize: "16px",
+                    fontWeight: "400",
+                    lineHeight: "19px",
                   }}
                 >
-                  {t['do you accept pets']}
+                  {t["do you accept pets"]}
                 </Typography>
               </Grid>
               <Grid item xs={12} sm={12} md={12} lg={8} xl={8}>
                 {[
-                  { name: 'Yes', slug: t['yes'] },
-                  { name: 'No', slug: t['no'] },
-                  { name: 'Whatever', slug: t['whatever'] },
+                  { name: "Yes", slug: t["yes"] },
+                  { name: "No", slug: t["no"] },
+                  { name: "Whatever", slug: t["whatever"] },
                 ].map((data, index) => (
                   // <Grid xs={6} sm={6} md={6} lg={3} xl={3} key={index}>
                   <Button
@@ -789,31 +789,31 @@ function SearchList({ propertyData, language, handleLoginOpen }) {
                     onClick={() => setPets(data?.name)}
                     sx={{
                       background: `${
-                        data?.name === pets ? '#7450F0' : 'transparent'
+                        data?.name === pets ? "#7450F0" : "transparent"
                       }`,
-                      borderRadius: '56px',
+                      borderRadius: "56px",
                       // width: "100%",
-                      color: `${data?.name === pets ? '#ffffff' : '#32414C'}`,
+                      color: `${data?.name === pets ? "#ffffff" : "#32414C"}`,
                       border: `${
-                        data?.name === pets ? '' : '1px solid #9FAAB1'
+                        data?.name === pets ? "" : "1px solid #9FAAB1"
                       }`,
                       ml: 0.5,
                       fontSize: {
-                        xs: '12px',
-                        sm: '13px',
-                        md: '14px',
-                        lg: '13px',
-                        xl: '14px',
+                        xs: "12px",
+                        sm: "13px",
+                        md: "14px",
+                        lg: "13px",
+                        xl: "14px",
                       },
-                      fontWeight: '400',
-                      lineHeight: '17px',
-                      textTransform: 'none',
+                      fontWeight: "400",
+                      lineHeight: "17px",
+                      textTransform: "none",
                       px: { xs: 0, sm: 1, md: 1, lg: 1, xl: 1 },
                       py: 1,
-                      '&:hover': {
-                        background: '#7450F0',
-                        borderRadius: '56px',
-                        color: '#ffffff',
+                      "&:hover": {
+                        background: "#7450F0",
+                        borderRadius: "56px",
+                        color: "#ffffff",
                       },
                     }}
                   >
@@ -829,10 +829,10 @@ function SearchList({ propertyData, language, handleLoginOpen }) {
             <Typography
               variant="p"
               sx={{
-                color: '#4B4B66',
-                fontSize: '16px',
-                fontWeight: '400',
-                lineHeight: '19px',
+                color: "#4B4B66",
+                fontSize: "16px",
+                fontWeight: "400",
+                lineHeight: "19px",
               }}
             >
               Area (m²)
@@ -844,21 +844,21 @@ function SearchList({ propertyData, language, handleLoginOpen }) {
                   control={control}
                   render={({ field }) => (
                     <BaseOutlinedAreaInput
-                      size={'medium'}
-                      placeholder={'Minimum'}
+                      size={"medium"}
+                      placeholder={"Minimum"}
                       onChange={(e) => {
-                        field.onChange(e.target.value)
+                        field.onChange(e.target.value);
                       }}
-                      name={'min_area'}
+                      name={"min_area"}
                       value={field.value}
                       sx={{
-                        '& .MuiOutlinedInput-root': {
-                          '&.Mui-focused fieldset': {
-                            borderColor: '#7450F0',
+                        "& .MuiOutlinedInput-root": {
+                          "&.Mui-focused fieldset": {
+                            borderColor: "#7450F0",
                           },
                         },
-                        '& label.Mui-focused': {
-                          color: '#7450F0',
+                        "& label.Mui-focused": {
+                          color: "#7450F0",
                         },
                       }}
                     />
@@ -871,21 +871,21 @@ function SearchList({ propertyData, language, handleLoginOpen }) {
                   control={control}
                   render={({ field }) => (
                     <BaseOutlinedAreaInput
-                      size={'medium'}
-                      placeholder={'Maximum'}
+                      size={"medium"}
+                      placeholder={"Maximum"}
                       onChange={(e) => {
-                        field.onChange(e.target.value)
+                        field.onChange(e.target.value);
                       }}
-                      name={'max_area'}
+                      name={"max_area"}
                       value={field.value}
                       sx={{
-                        '& .MuiOutlinedInput-root': {
-                          '&.Mui-focused fieldset': {
-                            borderColor: '#7450F0',
+                        "& .MuiOutlinedInput-root": {
+                          "&.Mui-focused fieldset": {
+                            borderColor: "#7450F0",
                           },
                         },
-                        '& label.Mui-focused': {
-                          color: '#7450F0',
+                        "& label.Mui-focused": {
+                          color: "#7450F0",
                         },
                       }}
                     />
@@ -896,7 +896,7 @@ function SearchList({ propertyData, language, handleLoginOpen }) {
 
             <Box sx={{ mt: 1 }}>
               <Slider
-                getAriaLabel={() => 'Temperature range'}
+                getAriaLabel={() => "Temperature range"}
                 value={
                   allValues.min_area && allValues?.max_area
                     ? [allValues.min_area, allValues?.max_area]
@@ -907,7 +907,7 @@ function SearchList({ propertyData, language, handleLoginOpen }) {
                 onChange={handleAreaChange}
                 valueLabelDisplay="auto"
                 getAriaValueText={valuetext}
-                sx={{ color: '#7450F0' }}
+                sx={{ color: "#7450F0" }}
               />
             </Box>
           </Box>
@@ -918,20 +918,20 @@ function SearchList({ propertyData, language, handleLoginOpen }) {
                 <Typography
                   variant="p"
                   sx={{
-                    color: '#4B4B66',
-                    fontSize: '16px',
-                    fontWeight: '400',
-                    lineHeight: '19px',
+                    color: "#4B4B66",
+                    fontSize: "16px",
+                    fontWeight: "400",
+                    lineHeight: "19px",
                   }}
                 >
-                  {t['close to the metro']}
+                  {t["close to the metro"]}
                 </Typography>
               </Grid>
               <Grid item xs={12} sm={12} md={12} lg={8} xl={8}>
                 {[
-                  { name: 'Yes', slug: t['yes'] },
-                  { name: 'No', slug: t['no'] },
-                  { name: 'Whatever', slug: t['whatever'] },
+                  { name: "Yes", slug: t["yes"] },
+                  { name: "No", slug: t["no"] },
+                  { name: "Whatever", slug: t["whatever"] },
                 ].map((data, index) => (
                   // <Grid xs={6} sm={6} md={6} lg={3} xl={3} key={index}>
                   <Button
@@ -940,36 +940,36 @@ function SearchList({ propertyData, language, handleLoginOpen }) {
                     sx={{
                       background: `${
                         data?.name === closeToTheMetro
-                          ? '#7450F0'
-                          : 'transparent'
+                          ? "#7450F0"
+                          : "transparent"
                       }`,
-                      borderRadius: '56px',
+                      borderRadius: "56px",
                       // width: "100%",
                       color: `${
-                        data?.name === closeToTheMetro ? '#ffffff' : '#32414C'
+                        data?.name === closeToTheMetro ? "#ffffff" : "#32414C"
                       }`,
                       border: `${
                         data?.name === closeToTheMetro
-                          ? ''
-                          : '1px solid #9FAAB1'
+                          ? ""
+                          : "1px solid #9FAAB1"
                       }`,
                       ml: 0.5,
                       fontSize: {
-                        xs: '12px',
-                        sm: '13px',
-                        md: '14px',
-                        lg: '13px',
-                        xl: '14px',
+                        xs: "12px",
+                        sm: "13px",
+                        md: "14px",
+                        lg: "13px",
+                        xl: "14px",
                       },
-                      fontWeight: '400',
-                      lineHeight: '17px',
-                      textTransform: 'none',
+                      fontWeight: "400",
+                      lineHeight: "17px",
+                      textTransform: "none",
                       px: { xs: 0, sm: 1, md: 1, lg: 1, xl: 1 },
                       py: 1,
-                      '&:hover': {
-                        background: '#7450F0',
-                        borderRadius: '56px',
-                        color: '#ffffff',
+                      "&:hover": {
+                        background: "#7450F0",
+                        borderRadius: "56px",
+                        color: "#ffffff",
                       },
                     }}
                   >
@@ -987,20 +987,20 @@ function SearchList({ propertyData, language, handleLoginOpen }) {
                 <Typography
                   variant="p"
                   sx={{
-                    color: '#4B4B66',
-                    fontSize: '16px',
-                    fontWeight: '400',
-                    lineHeight: '19px',
+                    color: "#4B4B66",
+                    fontSize: "16px",
+                    fontWeight: "400",
+                    lineHeight: "19px",
                   }}
                 >
-                  {t['Availability']}
+                  {t["Availability"]}
                 </Typography>
               </Grid>
               <Grid item xs={12} sm={12} md={12} lg={8} xl={8}>
                 {[
-                  { name: 'Immediate', slug: t['immediate'] },
-                  { name: 'Shortly', slug: t['shortly'] },
-                  { name: 'Whatever', slug: t['whatever'] },
+                  { name: "Immediate", slug: t["immediate"] },
+                  { name: "Shortly", slug: t["shortly"] },
+                  { name: "Whatever", slug: t["whatever"] },
                 ].map((data, index) => (
                   // <Grid xs={6} sm={6} md={6} lg={3} xl={3} key={index}>
                   <Button
@@ -1008,33 +1008,33 @@ function SearchList({ propertyData, language, handleLoginOpen }) {
                     onClick={() => setAvailability(data?.name)}
                     sx={{
                       background: `${
-                        data?.name === availability ? '#7450F0' : 'transparent'
+                        data?.name === availability ? "#7450F0" : "transparent"
                       }`,
-                      borderRadius: '56px',
+                      borderRadius: "56px",
                       // width: "100%",
                       color: `${
-                        data?.name === availability ? '#ffffff' : '#32414C'
+                        data?.name === availability ? "#ffffff" : "#32414C"
                       }`,
                       border: `${
-                        data?.name === availability ? '' : '1px solid #9FAAB1'
+                        data?.name === availability ? "" : "1px solid #9FAAB1"
                       }`,
                       ml: 0.5,
                       fontSize: {
-                        xs: '12px',
-                        sm: '13px',
-                        md: '14px',
-                        lg: '13px',
-                        xl: '14px',
+                        xs: "12px",
+                        sm: "13px",
+                        md: "14px",
+                        lg: "13px",
+                        xl: "14px",
                       },
-                      fontWeight: '400',
-                      lineHeight: '17px',
-                      textTransform: 'none',
+                      fontWeight: "400",
+                      lineHeight: "17px",
+                      textTransform: "none",
                       px: { xs: 0, sm: 1, md: 1, lg: 1, xl: 1 },
                       py: 1,
-                      '&:hover': {
-                        background: '#7450F0',
-                        borderRadius: '56px',
-                        color: '#ffffff',
+                      "&:hover": {
+                        background: "#7450F0",
+                        borderRadius: "56px",
+                        color: "#ffffff",
                       },
                     }}
                   >
@@ -1051,23 +1051,23 @@ function SearchList({ propertyData, language, handleLoginOpen }) {
               <Typography
                 variant="p"
                 sx={{
-                  color: '#4B4B66',
-                  fontSize: '16px',
-                  fontWeight: '400',
-                  lineHeight: '19px',
+                  color: "#4B4B66",
+                  fontSize: "16px",
+                  fontWeight: "400",
+                  lineHeight: "19px",
                 }}
               >
                 {
                   t[
-                    (key === 'condominium' ||
-                      key === 'accessibility' ||
-                      key === 'amenities' ||
-                      key === 'appliances' ||
-                      key === 'room' ||
-                      key === 'rooms' ||
-                      key === 'sorrounding' ||
-                      key === 'wellbeing' ||
-                      key === 'feature') &&
+                    (key === "condominium" ||
+                      key === "accessibility" ||
+                      key === "amenities" ||
+                      key === "appliances" ||
+                      key === "room" ||
+                      key === "rooms" ||
+                      key === "sorrounding" ||
+                      key === "wellbeing" ||
+                      key === "feature") &&
                       key
                   ]
                 }
@@ -1080,62 +1080,62 @@ function SearchList({ propertyData, language, handleLoginOpen }) {
                 gap={1}
                 sx={{ mt: 2 }}
               >
-                {(key === 'condominium' ||
-                  key === 'accessibility' ||
-                  key === 'amenities' ||
-                  key === 'appliances' ||
-                  key === 'rooms' ||
-                  key === 'room' ||
-                  key === 'sorrounding' ||
-                  key === 'wellbeing' ||
-                  key === 'feature') &&
+                {(key === "condominium" ||
+                  key === "accessibility" ||
+                  key === "amenities" ||
+                  key === "appliances" ||
+                  key === "rooms" ||
+                  key === "room" ||
+                  key === "sorrounding" ||
+                  key === "wellbeing" ||
+                  key === "feature") &&
                   featureData[key].map((data, index) => (
                     <Button
                       key={index}
                       onClick={() => {
                         if (!featuretypes?.includes(data.id)) {
-                          setFeatureTypes((current) => [...current, data.id])
+                          setFeatureTypes((current) => [...current, data.id]);
                         } else {
                           const newArray = featuretypes?.filter(
-                            (value) => value !== data.id,
-                          )
-                          setFeatureTypes(newArray)
+                            (value) => value !== data.id
+                          );
+                          setFeatureTypes(newArray);
                         }
                       }}
                       sx={{
                         background: `${
                           featuretypes?.includes(data.id)
-                            ? '#7450F0'
-                            : 'transparent'
+                            ? "#7450F0"
+                            : "transparent"
                         }`,
-                        borderRadius: '56px',
+                        borderRadius: "56px",
                         // width: "100%",
                         color: `${
                           featuretypes?.includes(data.id)
-                            ? '#ffffff'
-                            : '#32414C'
+                            ? "#ffffff"
+                            : "#32414C"
                         }`,
                         border: `${
                           featuretypes?.includes(data.id)
-                            ? ''
-                            : '1px solid #9FAAB1'
+                            ? ""
+                            : "1px solid #9FAAB1"
                         }`,
                         fontSize: {
-                          xs: '12px',
-                          sm: '13px',
-                          md: '14px',
-                          lg: '13px',
-                          xl: '14px',
+                          xs: "12px",
+                          sm: "13px",
+                          md: "14px",
+                          lg: "13px",
+                          xl: "14px",
                         },
-                        fontWeight: '400',
-                        lineHeight: '17px',
-                        textTransform: 'none',
+                        fontWeight: "400",
+                        lineHeight: "17px",
+                        textTransform: "none",
                         px: { xs: 0, sm: 1, md: 1, lg: 1, xl: 1 },
                         py: 1,
-                        '&:hover': {
-                          background: '#7450F0',
-                          borderRadius: '56px',
-                          color: '#ffffff',
+                        "&:hover": {
+                          background: "#7450F0",
+                          borderRadius: "56px",
+                          color: "#ffffff",
                         },
                       }}
                     >
@@ -1153,10 +1153,10 @@ function SearchList({ propertyData, language, handleLoginOpen }) {
             // mx: 2,
             // my: 2,
 
-            position: 'sticky',
+            position: "sticky",
             bottom: 0,
-            width: '100%',
-            background: '#ffffff',
+            width: "100%",
+            background: "#ffffff",
             px: 2,
             py: 2,
           }}
@@ -1168,21 +1168,21 @@ function SearchList({ propertyData, language, handleLoginOpen }) {
                 fullWidth
                 variant="outlined"
                 sx={{
-                  borderColor: '#002152',
-                  borderRadius: '4px',
-                  color: '#002152',
-                  fontSize: '16px',
-                  fontWeight: '600',
-                  lineHeight: '22px',
-                  textTransform: 'none',
-                  '&:hover': {
-                    borderColor: '#002152',
-                    borderRadius: '4px',
-                    color: '#002152',
+                  borderColor: "#002152",
+                  borderRadius: "4px",
+                  color: "#002152",
+                  fontSize: "16px",
+                  fontWeight: "600",
+                  lineHeight: "22px",
+                  textTransform: "none",
+                  "&:hover": {
+                    borderColor: "#002152",
+                    borderRadius: "4px",
+                    color: "#002152",
                   },
                 }}
               >
-                {t['cancel filter']}
+                {t["cancel filter"]}
               </Button>
             </Grid>
             <Grid item xs={12} sm={12} md={12} lg={6}>
@@ -1191,33 +1191,33 @@ function SearchList({ propertyData, language, handleLoginOpen }) {
                 variant="contained"
                 type="submit"
                 sx={{
-                  background: ' #7450F0',
-                  borderRadius: '4px',
-                  color: '#ffffff',
-                  fontSize: '16px',
-                  fontWeight: '600',
-                  lineHeight: '22px',
-                  textTransform: 'none',
-                  '&:hover': {
-                    background: ' #7450F0',
-                    borderRadius: '4px',
-                    color: '#ffffff',
+                  background: " #7450F0",
+                  borderRadius: "4px",
+                  color: "#ffffff",
+                  fontSize: "16px",
+                  fontWeight: "600",
+                  lineHeight: "22px",
+                  textTransform: "none",
+                  "&:hover": {
+                    background: " #7450F0",
+                    borderRadius: "4px",
+                    color: "#ffffff",
                   },
                 }}
               >
-                {t['apply filters']}
+                {t["apply filters"]}
               </Button>
             </Grid>
           </Grid>
         </Box>
       </form>
     </Box>
-  )
+  );
   return (
     <Grid
       container
       spacing={2}
-      sx={{ px: 3, pb: 2, background: '#F9F9FB', aspectRatio: '4/3' }}
+      sx={{ px: 3, pb: 2, background: "#F9F9FB", aspectRatio: "4/3" }}
     >
       <Grid item xs={12} sm={12} md={12} lg={8} xl={8}>
         <SearchComponent
@@ -1227,8 +1227,8 @@ function SearchList({ propertyData, language, handleLoginOpen }) {
         />
         <Divider
           sx={{
-            background: '#F9F9FB',
-            boxShadow: '0px 4px 4px rgba(0, 0, 0, 0.25)',
+            background: "#F9F9FB",
+            boxShadow: "0px 4px 4px rgba(0, 0, 0, 0.25)",
           }}
         />
         <Grid
@@ -1241,27 +1241,27 @@ function SearchList({ propertyData, language, handleLoginOpen }) {
           <Typography
             variant="p"
             sx={{
-              fontSize: '24px',
-              fontWeight: '600',
-              color: '#1A1859',
+              fontSize: "24px",
+              fontWeight: "600",
+              color: "#1A1859",
             }}
           >
-            {`${t['property for sale in']} ${
-              query?.location ? query?.location : ''
+            {`${t["property for sale in"]} ${
+              query?.location ? query?.location : ""
             }`}
           </Typography>
           <Typography
             variant="p"
             sx={{
-              fontSize: '16px',
-              fontWeight: '400',
-              color: '#4B4B66',
+              fontSize: "16px",
+              fontWeight: "400",
+              color: "#4B4B66",
             }}
           >
-            {`${propertyData?.properties?.total} ${t['Properties found']} `}
+            {`${propertyData?.properties?.total} ${t["Properties found"]} `}
           </Typography>
         </Grid>
-        <Box sx={{ borderBottom: '1px dashed #D3D3DF' }}></Box>
+        <Box sx={{ borderBottom: "1px dashed #D3D3DF" }}></Box>
         <Grid
           container
           direction="row"
@@ -1270,54 +1270,54 @@ function SearchList({ propertyData, language, handleLoginOpen }) {
           sx={{ marginTop: 2 }}
         >
           <Button
-            onClick={toggleDrawer('left', true)}
+            onClick={toggleDrawer("left", true)}
             sx={{
-              fontSize: '14px',
+              fontSize: "14px",
               fontWeight: 600,
-              textTransform: 'none',
-              lineHeight: '17px',
-              background: '#0E97F7',
-              boxShadow: '0px 4px 24px rgba(26, 85, 181, 0.3)',
-              borderRadius: '4px',
-              color: '#ffffff',
-              display: 'flex',
-              '&:hover': {
-                fontSize: '14px',
+              textTransform: "none",
+              lineHeight: "17px",
+              background: "#0E97F7",
+              boxShadow: "0px 4px 24px rgba(26, 85, 181, 0.3)",
+              borderRadius: "4px",
+              color: "#ffffff",
+              display: "flex",
+              "&:hover": {
+                fontSize: "14px",
                 fontWeight: 600,
-                background: '#0E97F7',
+                background: "#0E97F7",
               },
             }}
           >
             <FilterAltOutlinedIcon />
-            <Typography variant="p">{t['filter']}</Typography>
+            <Typography variant="p">{t["filter"]}</Typography>
           </Button>
           <SwipeableDrawer
-            anchor={'left'}
-            open={state['left']}
-            onClose={toggleDrawer('left', false)}
-            onOpen={toggleDrawer('left', true)}
+            anchor={"left"}
+            open={state["left"]}
+            onClose={toggleDrawer("left", false)}
+            onOpen={toggleDrawer("left", true)}
           >
-            {list('left')}
+            {list("left")}
           </SwipeableDrawer>
 
           <BaseAutocomplete
             options={relevant || []}
             defaultValue={relevant[0]}
-            getOptionLabel={(option) => option.label || ''}
+            getOptionLabel={(option) => option.label || ""}
             sx={{
               width: {
-                xs: '50%',
-                sm: '50%',
-                md: '50%',
-                lg: '25%',
-                xl: '20%',
+                xs: "50%",
+                sm: "50%",
+                md: "50%",
+                lg: "25%",
+                xl: "20%",
               },
             }}
             isOptionEqualToValue={(option, value) =>
               option.value === value.value
             }
-            size={'small'}
-            placeholder={'Most Relevant'}
+            size={"small"}
+            placeholder={"Most relevant"}
             onChange={(e, v, r, d) => handleRelevantValueChange(v)}
             value={relevantValue}
           />
@@ -1343,25 +1343,25 @@ function SearchList({ propertyData, language, handleLoginOpen }) {
         lg={4}
         sx={{
           display: {
-            xs: 'none',
-            sm: 'none',
-            md: 'none',
-            lg: 'inline',
-            xl: 'inline',
+            xs: "none",
+            sm: "none",
+            md: "none",
+            lg: "inline",
+            xl: "inline",
           },
         }}
       >
-        <BaseGoogleMap height={'245vh'} markersData={propertyData} />
+        <BaseGoogleMap height={"245vh"} markersData={propertyData} />
       </Grid>
     </Grid>
-  )
+  );
 }
 
-export default SearchList
+export default SearchList;
 
 const relevant = [
-  { value: 'most_relevant', label: 'mais relevante' },
-  { value: 'latest', label: 'recentes' },
-  { value: 'cheapest', label: 'mais barato' },
-  { value: 'most_expensive', label: 'mais caro' },
-]
+  { value: "most_relevant", label: "Mais relevante" },
+  { value: "latest", label: "Recentes" },
+  { value: "cheapest", label: "Mais barato" },
+  { value: "most_expensive", label: "Mais caro" },
+];

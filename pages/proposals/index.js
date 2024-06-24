@@ -213,7 +213,7 @@ export default function Proposals({ language }) {
       query: omitEmpties({
         proposal_status: "pending",
         status: "approved",
-        page:  1,
+        page: 1,
         per_page: 9,
       }),
     });
@@ -264,8 +264,7 @@ export default function Proposals({ language }) {
           >
             {t["filters"]}
           </Typography>
-          <BaseCloseButton handleClose={toggleDrawer(anchor, false)}/>
-        
+          <BaseCloseButton handleClose={toggleDrawer(anchor, false)} />
         </Grid>
 
         <Box sx={{ mx: 2, mt: 3 }}>
@@ -285,7 +284,7 @@ export default function Proposals({ language }) {
                     endAdornment: (
                       <InputAdornment position="end">
                         <IconButton
-                        edge="end"
+                          edge="end"
                           aria-label="Search by broker name"
                         >
                           <SearchIcon />
@@ -305,7 +304,7 @@ export default function Proposals({ language }) {
                 lineHeight: "18px",
               }}
             >
-              You can search by broker,development or condominium
+              {t["You can search by broker,development or condominium"]}
             </Typography>
           </Box>
           <Box>
@@ -515,7 +514,6 @@ export default function Proposals({ language }) {
             </Typography>
             <Grid container spacing={2} sx={{ mt: 0.5 }}>
               <Grid item xs={12} sm={12} md={12} lg={6} xl={6}>
-    
                 <Controller
                   name="min_value"
                   control={control}
@@ -1322,7 +1320,10 @@ export default function Proposals({ language }) {
             </Grid>
           </Container>
           <TabPanel value={value} index={0}>
-            <Pendants languageName={myValue.toString()} loadingRefetch={loadingRefetch} />
+            <Pendants
+              languageName={myValue.toString()}
+              loadingRefetch={loadingRefetch}
+            />
           </TabPanel>
           <TabPanel value={value} index={1}>
             <Accepted languageName={myValue.toString()} />
