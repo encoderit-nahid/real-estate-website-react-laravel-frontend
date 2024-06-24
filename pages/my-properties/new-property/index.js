@@ -126,20 +126,30 @@ export default function NewProperty({ language }) {
     neighbourhood: Yup.string().required(t["Neighbourhood is required"]),
     city: Yup.string().required(t["City is required"]),
     state: Yup.object().required(t["State is required"]), // Assuming state is a string
-    owner_cpf: Yup.string()
-      .required(t["CPF number is required"])
-      .test("isValidCPF", t["CPF number is required"], validateCPF),
+    owner_cpf:
+      session?.user?.role === "owner"
+        ? Yup.string().optional()
+        : Yup.string()
+            .required(t["CPF number is required"])
+            .test("isValidCPF", t["CPF number is required"], validateCPF),
     owner_spouse_cpf:
-      maritalStatus === "Married"
+      session?.user?.role === "owner"
+        ? Yup.string().optional()
+        : maritalStatus === "Married"
         ? Yup.string()
             .required(t["CPF number is required"])
             .test("isValidCPF", t["CPF number is required"], validateCPF)
         : Yup.string().optional(),
-    owner_rg: Yup.string()
-      .required(t["RG number is required"])
-      .length(12, t["RG number is required"]),
+    owner_rg:
+      session?.user?.role === "owner"
+        ? Yup.string().optional()
+        : Yup.string()
+            .required(t["RG number is required"])
+            .length(12, t["RG number is required"]),
     owner_spouse_rg:
-      maritalStatus === "Married"
+      session?.user?.role === "owner"
+        ? Yup.string().optional()
+        : maritalStatus === "Married"
         ? Yup.string()
             .required(t["RG number is required"])
             .length(12, t["RG number is required"])

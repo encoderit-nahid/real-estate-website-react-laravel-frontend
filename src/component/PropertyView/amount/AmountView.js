@@ -10,6 +10,7 @@ function AmountView({
   singlePropertyData,
   handleProposalOpen,
   languageName,
+  content,
 }) {
   const t = languageName === "en" ? en : pt;
   const { data: session } = useSession();
@@ -131,7 +132,7 @@ function AmountView({
         }}
         spacing={1}
       >
-        <BaseWhatsappButton />
+        <BaseWhatsappButton content={content} />
         <Button
           disabled={
             session?.user?.role === "broker" || session?.user?.role === "owner"
@@ -159,7 +160,7 @@ function AmountView({
           onClick={() => {
             setNegotiate(true);
             setSchedule(false);
-            handleProposalOpen()
+            handleProposalOpen();
           }}
         >
           {t["Negotiate"]}

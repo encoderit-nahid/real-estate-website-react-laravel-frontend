@@ -425,6 +425,7 @@ export default function PropertyView({
               singlePropertyData={singlePropertyData}
               handleProposalOpen={handleProposalOpen}
               languageName={myValue.toString()}
+              content={`Immóvel nome :  ${singlePropertyData?.property?.property_title}, Código : ${singlePropertyData?.property?.id}`}
             />
           </Grid>
         </Box>
@@ -472,6 +473,7 @@ export default function PropertyView({
                 handleLoginOpen={handleLoginOpen}
                 singlePropertyId={singlePropertyData?.property?.id}
                 languageName={myValue.toString()}
+                content={`Immóvel nome :  ${singlePropertyData?.property?.property_title}, Código : ${singlePropertyData?.property?.id}`}
               />
             </Grid>
           </Grid>
@@ -571,7 +573,9 @@ export default function PropertyView({
           }}
           gap={2}
         >
-          <BaseWhatsappButton />
+          <BaseWhatsappButton
+            content={`Immóvel nome :  ${singlePropertyData?.property?.property_title}, Código : ${singlePropertyData?.property?.id}`}
+          />
           {/* <Button
             variant="contained"
             color="primary"

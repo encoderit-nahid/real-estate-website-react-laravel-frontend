@@ -25,7 +25,7 @@ import * as Yup from "yup";
 import useCurrentUser from "@/hooks/useCurrentUser";
 import { _baseURL, _imageURL } from "consts";
 import { useUserUpdateMutation } from "@/queries/useUserQuery";
-import { omitEmpties, userDetailsApi } from "@/api";
+import { getAddressData, omitEmpties, userDetailsApi } from "@/api";
 import { serialize } from "object-to-formdata";
 import { useRouter } from "next/router";
 const UserUpdateForm = ({ language }) => {
@@ -170,6 +170,31 @@ const UserUpdateForm = ({ language }) => {
   const handleClickShowRepeatPassword = () => {
     setShowRepeatPass(!showRepeatPass);
   };
+
+  useEffect(() => {
+    const getData = async () => {
+      const [error, response] = await getAddressData(allValues?.zip_code);
+      if (error) {
+        setValue("address", "");
+        setValue("neighbourhood", "");
+        setValue("add_on", "");
+        setValue("city", "");
+        setValue("state_id", "");
+      } else {
+        setValue("address", response?.data?.logradouro);
+        setValue("neighbourhood", response?.data?.bairro);
+        setValue("add_on", response?.data?.complemento);
+        setValue("city", response?.data?.localidade);
+        setValue(
+          "state_id",
+          allStateData?.find((data) => data?.uf === response?.data?.uf)
+        );
+      }
+    };
+    if (allValues?.zip_code && allValues?.zip_code?.length > 8) {
+      getData();
+    }
+  }, [allValues?.zip_code, setValue, allStateData]);
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
       <Grid
