@@ -2,13 +2,18 @@ import React from "react";
 import { Button, Typography } from "@mui/material";
 import WhatsAppIcon from "@mui/icons-material/WhatsApp";
 
-const BaseWhatsappButton = () => {
+const BaseWhatsappButton = ({ content }) => {
   const number = "5511911280640";
+  const message = content;
+
+  // Encode the message for URL
+  const encodedMessage = encodeURIComponent(message);
   return (
     <Button
       variant="contained"
       color="primary"
-      href={`https://api.whatsapp.com/send?phone=${number}`}
+      href={`https://api.whatsapp.com/send?phone=${number}&text=${encodedMessage}`}
+      target="_blank"
       fullWidth
       sx={{
         px: 4,

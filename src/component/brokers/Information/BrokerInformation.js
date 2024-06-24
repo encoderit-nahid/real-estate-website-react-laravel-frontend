@@ -120,7 +120,9 @@ const BrokerInformation = ({
                 >
                   {singleBrokerData.broker.name}
                 </Typography>
-                <BaseWhatsappButton />
+                <BaseWhatsappButton
+                  content={`Corretor nome :  ${singleBrokerData.broker.name}, CRECI : ${singleBrokerData.broker.additional_info.creci_number}`}
+                />
               </Stack>
               <Stack direction="row" alignItems={"center"} spacing={1}>
                 <BaseShareButton
