@@ -1,3 +1,4 @@
+import { formatBrazilianCurrency } from "@/utils/useUtilities";
 import { OutlinedInput, TextField } from "@mui/material";
 import React from "react";
 
@@ -42,15 +43,16 @@ function BaseOutlinedCurrencyInput({
     <TextField
       onChange={onChange}
       name={name}
-      value={value}
+      value={formatBrazilianCurrency(value)}
+      // value={value}
       type={type}
       placeholder={placeholder}
       id="formatted-text-mask-input"
       label={label}
       size={size}
-      InputProps={{
-        inputComponent: NumericFormatCustom,
-      }}
+      // InputProps={{
+      //   inputComponent: NumericFormatCustom,
+      // }}
       variant="outlined"
       sx={sx}
     />

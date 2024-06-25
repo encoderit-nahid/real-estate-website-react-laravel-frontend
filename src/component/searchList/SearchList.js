@@ -53,6 +53,7 @@ const BaseOutlinedAreaInput = dynamic(() =>
 import { userDetailsApi } from "@/api";
 import SearchIcon from "@mui/icons-material/Search";
 import BaseCloseButton from "../reuseable/baseCloseButton/BaseCloseButton";
+import { formatBrazilianCurrency } from "@/utils/useUtilities";
 
 const unflatten = require("flat").unflatten;
 
@@ -222,6 +223,12 @@ function SearchList({ propertyData, language, handleLoginOpen }) {
 
   const handleSearch = (e) => {
     setSearchValue(e.target.value);
+    if (e.target.value === "") {
+      router.replace({
+        pathname: "/buscar-imoveis",
+        query: { ...router.query, all: "" },
+      });
+    }
   };
 
   const handleSearchBtn = () => {
