@@ -566,8 +566,8 @@ export default function ProjectView({
                 (data, index) => (
                   <Link
                     key={data.id}
-                    href={`/property-view/${data.id}`}
-                    as={`/property-view/${data.id}`}
+                    href={`/visualizacao-da-propriedade/${data.id}/${data?.property_title}`}
+                    as={`/visualizacao-da-propriedade/${data.id}/${data?.property_title}`}
                   >
                     <ImageListItem
                       key={index}

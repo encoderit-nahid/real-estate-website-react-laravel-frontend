@@ -9,9 +9,9 @@ const HouseCard = dynamic(
   }
 );
 import Link from "next/link";
+import { stripHtmlTags } from "@/utils/stripHtmlTags";
 
 function PropertyList({ propertyData, isLoading, handleLoginOpen }) {
-  console.log("🟥 ~ PropertyList ~ propertyData:", propertyData);
   return (
     <Box>
       <Grid container spacing={1}>
@@ -43,8 +43,8 @@ function PropertyList({ propertyData, isLoading, handleLoginOpen }) {
           : propertyData?.properties?.data?.map((data, index) => (
               <Grid item xs={12} sm={12} md={6} lg={4} xl={4} key={index}>
                 <Link
-                  href={`/property-view/${data.id}`}
-                  as={`/property-view/${data.id}`}
+                  href={`/visualizacao-da-propriedade/${data.id}/${data?.property_title}`}
+                  as={`/visualizacao-da-propriedade/${data.id}/${data?.property_title}`}
                 >
                   <a
                     style={{

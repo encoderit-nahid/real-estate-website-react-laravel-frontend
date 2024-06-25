@@ -1266,7 +1266,10 @@ export default function ViewProperties({
               xl={6}
               xxl={6}
             >
-              <Link href={`/property-view/${data?.id}`}>
+              <Link
+                href={`/visualizacao-da-propriedade/${data?.id}/${data?.property_title}`}
+                as={`/visualizacao-da-propriedade/${data.id}/${data?.property_title}`}
+              >
                 <a
                   style={{
                     textDecoration: "none",

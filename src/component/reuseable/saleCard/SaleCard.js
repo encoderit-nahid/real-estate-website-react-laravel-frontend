@@ -20,7 +20,10 @@ function SaleCard({ singlePropertyData }) {
     return `${_imageURL}/${src}`;
   };
   return (
-    <Link href={`/property-view/${singlePropertyData?.id}`}>
+    <Link
+      href={`/visualizacao-da-propriedade/${singlePropertyData?.id}/${singlePropertyData?.property_title}`}
+      as={`/visualizacao-da-propriedade/${singlePropertyData.id}/${singlePropertyData?.property_title}`}
+    >
       <a
         style={{
           textDecoration: "none",

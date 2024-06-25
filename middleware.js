@@ -13,7 +13,7 @@ export async function middleware(req) {
     "/other-information",
     "/registration",
     "/reset-password",
-    "/property-view",
+    "/visualizacao-da-propriedade",
     "/project-view",
     "/broker-details-view",
     "/auth/facebook/callback",
