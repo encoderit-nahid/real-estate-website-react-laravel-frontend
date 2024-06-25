@@ -81,7 +81,7 @@ function FulfillDream({ languageName, setKnowMoreModal }) {
                 borderColor: "#0362F0",
               },
             },
-          }
+          },
         }}
         inputProps={{
           style: { color: "#ffffff" }, // Change placeholder color here
@@ -118,7 +118,7 @@ function FulfillDream({ languageName, setKnowMoreModal }) {
                 borderColor: "#0362F0",
               },
             },
-          }
+          },
         }}
         isOptionEqualToValue={(option, value) => option.value === value.value}
         size={"medium"}
@@ -129,7 +129,7 @@ function FulfillDream({ languageName, setKnowMoreModal }) {
       />
       <Link
         href={{
-          pathname: "/search-real-estate",
+          pathname: "/buscar-imoveis",
           query: omitEmpties({
             status: "approved",
             location: locationName && locationName,
