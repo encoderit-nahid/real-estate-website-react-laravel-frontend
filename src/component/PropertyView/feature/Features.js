@@ -28,109 +28,124 @@ function Features({ singlePropertyData, languageName }) {
         características
       </Typography>
       <Stack
-        direction={{ xs: "column", lg: "row" }}
-        // justifyContent="center"
-        // alignItems="center"
-        justifyContent={"flex-start"}
-        alignItems={"flex-start"}
+        direction={{
+          xs: "column",
+          md: "row",
+        }}
+        alignItems={"center"}
+        justifyContent={"space-between"}
         spacing={2}
         sx={{ mt: 1 }}
       >
-        {singlePropertyData?.property?.no_of_rooms && (
-          <Stack
-            direction="row"
-            justifyContent="flex-start"
-            alignItems="center"
-            spacing={1}
-            sx={{
-              width: "100%",
-            }}
-          >
-            <Image src={bed} alt="bed" width={24} height={24} />
-            <Typography
-              variant="p"
+        <Stack
+          spacing={3}
+          direction={{
+            xs: "column",
+            md: "row",
+          }}
+          sx={{
+            flex: 1,
+            // bgcolor: "red",
+          }}
+          alignItems={"center"}
+          justifyContent={"center"}
+        >
+          {+singlePropertyData?.property?.no_of_rooms > 0 && (
+            <Stack
+              direction="row"
+              justifyContent="flex-start"
+              alignItems="center"
+              spacing={1}
               sx={{
-                fontSize: "14px",
-                fontWeight: "400",
-                color: "#7C7C99",
+                width: "100%",
               }}
             >
-              {`${singlePropertyData?.property?.no_of_rooms} ${t["bedrooms"]}`}
-            </Typography>
-          </Stack>
-        )}
+              <Image src={bed} alt="bed" width={24} height={24} />
+              <Typography
+                variant="p"
+                sx={{
+                  fontSize: "14px",
+                  fontWeight: "400",
+                  color: "#7C7C99",
+                }}
+              >
+                {`${singlePropertyData?.property?.no_of_rooms} ${t["bedrooms"]}`}
+              </Typography>
+            </Stack>
+          )}
 
-        {singlePropertyData?.property?.property_area && (
-          <Stack
-            direction="row"
-            justifyContent="flex-start"
-            alignItems="center"
-            spacing={1}
-            sx={{
-              width: "100%",
-            }}
-          >
-            <Image src={rule} alt="rule" width={24} height={24} />
-            <Typography
-              variant="p"
+          {+singlePropertyData?.property?.property_area > 0 && (
+            <Stack
+              direction="row"
+              justifyContent="flex-start"
+              alignItems="center"
+              spacing={1}
               sx={{
-                fontSize: "14px",
-                fontWeight: "400",
-                color: "#7C7C99",
+                width: "100%",
               }}
             >
-              {`${singlePropertyData?.property?.property_area} m²`}
-            </Typography>
-          </Stack>
-        )}
+              <Image src={rule} alt="rule" width={24} height={24} />
+              <Typography
+                variant="p"
+                sx={{
+                  fontSize: "14px",
+                  fontWeight: "400",
+                  color: "#7C7C99",
+                }}
+              >
+                {`${singlePropertyData?.property?.property_area} m²`}
+              </Typography>
+            </Stack>
+          )}
 
-        {singlePropertyData?.property?.no_of_bathrooms && (
-          <Stack
-            direction="row"
-            justifyContent="flex-start"
-            alignItems="center"
-            spacing={1}
-            sx={{
-              width: "100%",
-            }}
-          >
-            <Image src={bath} alt="bath" width={24} height={24} />
-            <Typography
-              variant="p"
+          {+singlePropertyData?.property?.no_of_bathrooms > 0 && (
+            <Stack
+              direction="row"
+              justifyContent="flex-start"
+              alignItems="center"
+              spacing={1}
               sx={{
-                fontSize: "14px",
-                fontWeight: "400",
-                color: "#7C7C99",
+                width: "100%",
               }}
             >
-              {`${singlePropertyData?.property?.no_of_bathrooms} ${t["bathrooms"]}`}
-            </Typography>
-          </Stack>
-        )}
+              <Image src={bath} alt="bath" width={24} height={24} />
+              <Typography
+                variant="p"
+                sx={{
+                  fontSize: "14px",
+                  fontWeight: "400",
+                  color: "#7C7C99",
+                }}
+              >
+                {`${singlePropertyData?.property?.no_of_bathrooms} ${t["bathrooms"]}`}
+              </Typography>
+            </Stack>
+          )}
 
-        {singlePropertyData?.property?.no_of_bathrooms && (
-          <Stack
-            direction="row"
-            justifyContent="flex-start"
-            alignItems="center"
-            spacing={1}
-            sx={{
-              width: "100%",
-            }}
-          >
-            <Image src={car} alt="bath" width={24} height={24} />
-            <Typography
-              variant="p"
+          {+singlePropertyData?.property?.no_of_parking_spaces > 0 && (
+            <Stack
+              direction="row"
+              justifyContent="flex-start"
+              alignItems="center"
+              spacing={1}
               sx={{
-                fontSize: "14px",
-                fontWeight: "400",
-                color: "#7C7C99",
+                width: "100%",
               }}
             >
-              {`${singlePropertyData?.property?.no_of_bathrooms} ${t["parking space"]}`}
-            </Typography>
-          </Stack>
-        )}
+              <Image src={car} alt="bath" width={24} height={24} />
+              <Typography
+                variant="p"
+                sx={{
+                  fontSize: "14px",
+                  fontWeight: "400",
+                  color: "#7C7C99",
+                }}
+              >
+                {`${singlePropertyData?.property?.no_of_parking_spaces} ${t["parking space"]}`}
+              </Typography>
+            </Stack>
+          )}
+        </Stack>
       </Stack>
     </Stack>
   );

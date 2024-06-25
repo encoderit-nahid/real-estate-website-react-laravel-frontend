@@ -451,10 +451,15 @@ export default function PropertyView({
                   __html: singlePropertyData?.property?.property_description,
                 }}
               ></Box>
-              <Features
-                singlePropertyData={singlePropertyData}
-                languageName={myValue.toString()}
-              />
+              {(+singlePropertyData?.property?.no_of_rooms > 0 ||
+                +singlePropertyData?.property?.property_area > 0 ||
+                +singlePropertyData?.property?.no_of_bathrooms > 0 ||
+                +singlePropertyData?.property?.no_of_parking_spaces > 0) && (
+                <Features
+                  singlePropertyData={singlePropertyData}
+                  languageName={myValue.toString()}
+                />
+              )}
 
               {Object.keys(singlePropertyData?.propertyFeatures).map(
                 (key, index) => (
