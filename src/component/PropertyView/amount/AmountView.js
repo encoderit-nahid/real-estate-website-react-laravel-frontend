@@ -33,92 +33,118 @@ function AmountView({
       alignItems={"center"}
       justifyContent={"space-between"}
     >
-      {singlePropertyData?.property?.brl_rent && (
-        <Stack
-          direction="column"
-          justifyContent="flex-start"
-          alignItems="flex-start"
-        >
-          <Typography
-            variant="p"
+      <Stack
+        spacing={3}
+        direction={{
+          xs: "column",
+          md: "row",
+        }}
+        sx={{
+          flex: 1,
+          // bgcolor: "red",
+        }}
+        alignItems={"center"}
+        justifyContent={"center"}
+      >
+        {+singlePropertyData?.property?.brl_rent > 0 && (
+          <Stack
+            direction="column"
+            justifyContent="center"
+            alignItems="center"
             sx={{
-              fontSize: "16px",
-              fontWeight: "400",
-              color: "#1A1859",
+              flex: 1,
+              // bgcolor: "red",
             }}
           >
-            {t["sale value"]}
-          </Typography>
-          <Typography
-            variant="p"
-            sx={{
-              fontSize: "24px",
-              fontWeight: "800",
-              color: "#1A1859",
-            }}
-          >
-            {`R$ ${singlePropertyData?.property?.brl_rent}`}
-          </Typography>
-        </Stack>
-      )}
+            <Typography
+              variant="p"
+              sx={{
+                fontSize: "16px",
+                fontWeight: "400",
+                color: "#1A1859",
+              }}
+            >
+              {t["sale value"]}
+            </Typography>
+            <Typography
+              variant="p"
+              sx={{
+                fontSize: "24px",
+                fontWeight: "800",
+                color: "#1A1859",
+              }}
+            >
+              {`R$ ${singlePropertyData?.property?.brl_rent}`}
+            </Typography>
+          </Stack>
+        )}
 
-      {singlePropertyData?.property?.condominium && (
-        <Stack
-          direction="column"
-          justifyContent="flex-start"
-          alignItems="flex-start"
-        >
-          <Typography
-            variant="p"
+        {+singlePropertyData?.property?.condominium > 0 && (
+          <Stack
+            direction="column"
+            justifyContent="center"
+            alignItems="center"
             sx={{
-              fontSize: "16px",
-              fontWeight: "400",
-              color: "#1A1859",
+              flex: 1,
+              // bgcolor: "red",
             }}
           >
-            {t["Condominium"]}
-          </Typography>
-          <Typography
-            variant="p"
-            sx={{
-              fontSize: "24px",
-              fontWeight: "800",
-              color: "#1A1859",
-            }}
-          >
-            {`R$ ${singlePropertyData?.property?.condominium}`}
-          </Typography>
-        </Stack>
-      )}
+            <Typography
+              variant="p"
+              sx={{
+                fontSize: "16px",
+                fontWeight: "400",
+                color: "#1A1859",
+              }}
+            >
+              {t["Condominium"]}
+            </Typography>
+            <Typography
+              variant="p"
+              sx={{
+                fontSize: "24px",
+                fontWeight: "800",
+                color: "#1A1859",
+              }}
+            >
+              {`R$ ${singlePropertyData?.property?.condominium}`}
+            </Typography>
+          </Stack>
+        )}
 
-      {singlePropertyData?.property?.brl_iptu && (
-        <Stack
-          direction="column"
-          justifyContent="flex-start"
-          alignItems="flex-start"
-        >
-          <Typography
-            variant="p"
+        {+singlePropertyData?.property?.brl_iptu > 0 && (
+          <Stack
+            direction="column"
+            justifyContent="center"
+            alignItems="center"
             sx={{
-              fontSize: "16px",
-              fontWeight: "400",
-              color: "#1A1859",
+              flex: 1,
+              // bgcolor: "red",
             }}
           >
-            IPTU
-          </Typography>
-          <Typography
-            variant="p"
-            sx={{
-              fontSize: "24px",
-              fontWeight: "800",
-              color: "#1A1859",
-            }}
-          >
-            {`R$ ${singlePropertyData?.property?.brl_iptu}`}
-          </Typography>
-        </Stack>
-      )}
+            <Typography
+              variant="p"
+              sx={{
+                fontSize: "16px",
+                fontWeight: "400",
+                color: "#1A1859",
+              }}
+            >
+              IPTU
+            </Typography>
+            <Typography
+              variant="p"
+              sx={{
+                fontSize: "24px",
+                fontWeight: "800",
+                color: "#1A1859",
+              }}
+            >
+              {`R$ ${singlePropertyData?.property?.brl_iptu}`}
+            </Typography>
+          </Stack>
+        )}
+      </Stack>
 
       <Stack
         direction="column"
