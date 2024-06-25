@@ -140,7 +140,7 @@ function SearchList({ propertyData, language, handleLoginOpen }) {
   const handlePageChange = (event, value) => {
     setPage(value);
     router.replace({
-      pathname: "/search-real-estate",
+      pathname: "/buscar-imoveis",
       query: { ...router.query, page: value },
     });
     // setData(datas.slice(firstIndex + pageSize * (value - 1), pageSize * value));
@@ -226,7 +226,7 @@ function SearchList({ propertyData, language, handleLoginOpen }) {
 
   const handleSearchBtn = () => {
     router.replace({
-      pathname: "/search-real-estate",
+      pathname: "/buscar-imoveis",
       query: { ...router.query, all: searchValue },
     });
   };
@@ -257,14 +257,14 @@ function SearchList({ propertyData, language, handleLoginOpen }) {
       // journey_stage: journeyStage,
     };
     router.replace({
-      pathname: "/search-real-estate",
+      pathname: "/buscar-imoveis",
       query: $params.encode(omitEmpties(allFilterData)).toString(),
     });
   };
 
   const handleCancelFilter = () => {
     router.replace({
-      pathname: "/search-real-estate",
+      pathname: "/buscar-imoveis",
       query: omitEmpties({
         location: query?.location,
         value_up_to: query?.value_up_to,
@@ -277,7 +277,7 @@ function SearchList({ propertyData, language, handleLoginOpen }) {
   const handleRelevantValueChange = (v) => {
     setRelevantValue(v);
     router.replace({
-      pathname: "/search-real-estate",
+      pathname: "/buscar-imoveis",
       query: omitEmpties({
         ...router.query,
         relevant_filter: v?.value,

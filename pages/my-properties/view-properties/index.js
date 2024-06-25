@@ -161,7 +161,7 @@ export default function ViewProperties({
   const handlePageChange = (event, value) => {
     setPage(value);
     router.replace({
-      pathname: "/search-real-estate",
+      pathname: "/buscar-imoveis",
       query: { ...router.query, page: value },
     });
   };

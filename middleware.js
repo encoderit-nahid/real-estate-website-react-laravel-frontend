@@ -9,7 +9,7 @@ export async function middleware(req) {
     "/",
     "/cadastro-de-proprietario",
     "/cadastro-de-corretor",
-    "/search-real-estate",
+    "/buscar-imoveis",
     "/other-information",
     "/registration",
     "/reset-password",
@@ -43,6 +43,6 @@ export async function middleware(req) {
 
 export const config = {
   matcher: [
-    "/((?!api/auth|/api/getCep|_next/static|_next/image|favicon.ico|termos-de-uso|politicas-de-privacidade|contato|cadastro-de-proprietario|cadastro-de-corretor|search-real-estate|other-information|registration|reset-password|auth/facebook/callback|auth/google/callback).*)",
+    "/((?!api/auth|/api/getCep|_next/static|_next/image|favicon.ico|termos-de-uso|politicas-de-privacidade|contato|cadastro-de-proprietario|cadastro-de-corretor|buscar-imoveis|other-information|registration|reset-password|auth/facebook/callback|auth/google/callback).*)",
   ],
 };
