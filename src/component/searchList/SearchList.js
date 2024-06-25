@@ -209,18 +209,6 @@ function SearchList({ propertyData, language, handleLoginOpen }) {
     right: false,
   });
 
-  const toggleDrawer = (anchor, open) => (event) => {
-    if (
-      event &&
-      event.type === "keydown" &&
-      (event.key === "Tab" || event.key === "Shift")
-    ) {
-      return;
-    }
-
-    setState({ ...state, [anchor]: open });
-  };
-
   const handleSearch = (e) => {
     setSearchValue(e.target.value);
     if (e.target.value === "") {
@@ -267,9 +255,11 @@ function SearchList({ propertyData, language, handleLoginOpen }) {
       pathname: "/buscar-imoveis",
       query: $params.encode(omitEmpties(allFilterData)).toString(),
     });
+    toggleDrawer("left", false)();
   };
 
   const handleCancelFilter = () => {
+    console.log("🟥 ~ handleCancelFilter");
     router.replace({
       pathname: "/buscar-imoveis",
       query: omitEmpties({
@@ -280,7 +270,17 @@ function SearchList({ propertyData, language, handleLoginOpen }) {
       }),
     });
   };
+  const toggleDrawer = (anchor, open) => (event) => {
+    if (
+      event &&
+      event.type === "keydown" &&
+      (event.key === "Tab" || event.key === "Shift")
+    ) {
+      return;
+    }
 
+    setState({ ...state, [anchor]: open });
+  };
   const handleRelevantValueChange = (v) => {
     setRelevantValue(v);
     router.replace({
@@ -1171,7 +1171,10 @@ function SearchList({ propertyData, language, handleLoginOpen }) {
           <Grid container spacing={3}>
             <Grid item xs={12} sm={12} md={12} lg={6}>
               <Button
-                onClick={handleCancelFilter}
+                onClick={(e) => {
+                  handleCancelFilter();
+                  toggleDrawer("left", false)(e);
+                }}
                 fullWidth
                 variant="outlined"
                 sx={{
