@@ -108,7 +108,7 @@ function HouseCard({
           variant="p"
           sx={{ fontSize: "18px", fontWeight: "700", color: "#1A1859" }}
         >
-          {propertyInfo?.address?.address}
+          {propertyInfo?.property_title.slice(0, 43)}
         </Typography>
         <Typography
           variant="p"
