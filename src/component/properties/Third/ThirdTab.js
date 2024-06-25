@@ -83,7 +83,10 @@ function ThirdTab({ languageName }) {
             xxl={6}
             sx={{ cursor: "pointer" }}
           >
-            <Link href={`/property-view/${data?.id}`}>
+            <Link
+              href={`/visualizacao-da-propriedade/${data?.id}/${data?.property_title}`}
+              as={`/visualizacao-da-propriedade/${data.id}/${data?.property_title}`}
+            >
               <a
                 style={{
                   textDecoration: "none",

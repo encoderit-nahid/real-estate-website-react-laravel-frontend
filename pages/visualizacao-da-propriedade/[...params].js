@@ -166,7 +166,7 @@ export default function PropertyView({
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
         <meta
           property="og:url"
-          content={`https://www.lokkan.site/property-view/${singlePropertyData?.property?.id}`}
+          content={`https://www.lokkan.site/visualizacao-da-propriedade/${singlePropertyData?.property?.id}`}
         />
         <meta
           property="og:title"
@@ -306,7 +306,7 @@ export default function PropertyView({
               }}
             >
               <BaseShareButton
-                base_url={`https://www.lokkan.site/property-view/${singlePropertyData?.property?.id}`}
+                base_url={`https://www.lokkan.site/visualizacao-da-propriedade/${singlePropertyData?.property?.id}`}
               />
               <BaseFavoriteButton
                 handleLoginOpen={handleLoginOpen}
@@ -502,8 +502,8 @@ export default function PropertyView({
             {singlePropertyData?.similarProperties?.map((stateInfo, index) => (
               <Link
                 key={stateInfo.id}
-                href={`/property-view/${stateInfo.id}`}
-                as={`/property-view/${stateInfo.id}`}
+                href={`/visualizacao-da-propriedade/${stateInfo.id}/${stateInfo?.property_title}`}
+                as={`/visualizacao-da-propriedade/${stateInfo.id}/${stateInfo?.property_title}`}
               >
                 <ImageListItem
                   key={index}
