@@ -414,12 +414,6 @@ export default function ViewProperties({
             </Typography>
             <Grid container spacing={2} sx={{ mt: 0.5 }}>
               <Grid item xs={12} sm={12} md={12} lg={6} xl={6}>
-                {/* <BaseOutlinedCurrencyInput
-                  size={"medium"}
-                  placeholder={"Minimum"}
-                  label={"Minimum"}
-                  borderColor={"#7450F0"}
-                /> */}
                 <Controller
                   name="min_value"
                   control={control}

@@ -54,6 +54,7 @@ import { userDetailsApi } from "@/api";
 import SearchIcon from "@mui/icons-material/Search";
 import BaseCloseButton from "../reuseable/baseCloseButton/BaseCloseButton";
 import { formatBrazilianCurrency } from "@/utils/useUtilities";
+import { reverseBrCurrencyFormat } from "@/utils/reverseBrCurrencyFormat";
 
 const unflatten = require("flat").unflatten;
 
@@ -228,8 +229,13 @@ function SearchList({ propertyData, language, handleLoginOpen }) {
 
   const handleChange = (event, newValue) => {
     setValueSlider(newValue);
-    setValue("min_value", newValue[0]);
+
+    setValue("min_value", formatBrazilianCurrency(newValue[0]));
     setValue("max_value", newValue[1]);
+    console.log(
+      "🟥 ~ handleChange ~ formatBrazilianCurrency(newValue[0]):",
+      formatBrazilianCurrency(newValue[0])
+    );
   };
 
   const handleAreaChange = (event, newValue) => {
@@ -241,6 +247,13 @@ function SearchList({ propertyData, language, handleLoginOpen }) {
   const onSubmit = async (data) => {
     const allFilterData = {
       ...data,
+      min_value: reverseBrCurrencyFormat(
+        formatBrazilianCurrency(data.min_value)
+      ),
+      max_value: reverseBrCurrencyFormat(
+        formatBrazilianCurrency(data.max_value)
+      ),
+
       type: type,
       bedroom: bedrooms,
       bathroom: bathrooms,
@@ -505,12 +518,6 @@ function SearchList({ propertyData, language, handleLoginOpen }) {
             </Typography>
             <Grid container spacing={2} sx={{ mt: 0.5 }}>
               <Grid item xs={12} sm={12} md={12} lg={6} xl={6}>
-                {/* <BaseOutlinedCurrencyInput
-                      size={"medium"}
-                      placeholder={"Minimum"}
-                      label={"Minimum"}
-                      borderColor={"#7450F0"}
-                    /> */}
                 <Controller
                   name="min_value"
                   control={control}
@@ -521,8 +528,6 @@ function SearchList({ propertyData, language, handleLoginOpen }) {
                       onChange={(e) => {
                         field.onChange(e.target.value);
                       }}
-                      // label={"Minimum"}
-                      // type={"number"}
                       name={"min_value"}
                       value={field.value}
                       sx={{
