@@ -61,7 +61,7 @@ const UserUpdateForm = ({ language }) => {
     setValue("neighbourhood", currentUser?.address?.neighbourhood);
     setValue("city", currentUser?.address?.city);
     setValue("state_id", currentUser?.address?.state);
-    setValue("cpf_number", currentUser?.additional_info?.cdf);
+    setValue("cpf_number", currentUser?.additional_info?.cpf);
     setValue("rg_number", currentUser?.additional_info?.rg);
   }, [setValue, currentUser]);
   const mutation = useUserUpdateMutation();

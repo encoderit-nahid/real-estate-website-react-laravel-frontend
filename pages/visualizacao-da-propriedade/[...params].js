@@ -657,7 +657,7 @@ export default function PropertyView({
             onClick={() => {
               setSchedule(true);
               setNegotiate(false);
-              if (window.scrollY < 2500) {
+              if (window.scrollY < 2700) {
                 window.scrollBy({ top: 4000, left: 0, behavior: "smooth" });
               }
             }}
