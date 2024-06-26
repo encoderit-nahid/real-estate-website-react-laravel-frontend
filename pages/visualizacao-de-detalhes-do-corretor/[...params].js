@@ -115,7 +115,7 @@ export default function BrokerDetails({
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
         <meta
           property="og:url"
-          content={`https://www.lokkan.site/broker-details-view/${id}`}
+          content={`https://www.lokkan.site/visualizacao-de-detalhes-do-corretor/${id}`}
         />
         <meta property="og:title" content={`${singleBrokerData.broker.name}`} />
         <meta property="og:description" content={`I am a broker`} />

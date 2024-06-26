@@ -573,6 +573,16 @@ export const cancelScheduleApi = async (body) => {
   }
 };
 
+//complete_schedule
+export const completeScheduleApi = async (body) => {
+  try {
+    const response = await apiInstance.post(`/schedule/completed`, body);
+    return [false, response];
+  } catch (error) {
+    return [error, null];
+  }
+};
+
 //get_broker
 export const getBrokerApi = async (query) => {
   try {
@@ -783,12 +793,11 @@ export const IsBuyerRegisteredApi = async () => {
   }
 };
 
-export const getAddressData =  async (zipCode) => {
+export const getAddressData = async (zipCode) => {
   try {
     const response = await axios.get(`/api/getCep?cep=${zipCode}`);
     return [false, response];
-  }
-  catch(error) {
+  } catch (error) {
     return [error, null];
   }
-}
+};
