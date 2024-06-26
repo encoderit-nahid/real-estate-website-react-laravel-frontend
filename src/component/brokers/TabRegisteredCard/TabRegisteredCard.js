@@ -76,7 +76,7 @@ function TabRegisteredCard({ brokerInfo, languageName }) {
         >
           {t["Brokers"]}
         </Typography>
-        <BaseCloseButton handleClose={toggleDrawer(anchor, false)}/>
+        <BaseCloseButton handleClose={toggleDrawer(anchor, false)} />
       </Grid>
       <Box
         sx={{
@@ -388,7 +388,11 @@ function TabRegisteredCard({ brokerInfo, languageName }) {
         </Button>
       </Grid>
       <Box sx={{ px: 1.5, mt: 2 }}>
-        <Link href={`/broker-details-view/${brokerInfo?.id}`}>
+        <Link
+          href={`/visualizacao-de-detalhes-do-corretor/${
+            brokerInfo?.id
+          }/${encodeURIComponent(brokerInfo?.name.replace(/-/g, " "))}`}
+        >
           <a>
             <Button
               fullWidth
