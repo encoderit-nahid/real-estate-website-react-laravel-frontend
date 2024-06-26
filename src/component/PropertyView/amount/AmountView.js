@@ -1,4 +1,5 @@
 import BaseWhatsappButton from "@/component/reuseable/baseWhatsappButton/BaseWhatsappButton";
+import { formatBrazilianCurrency } from "@/utils/useUtilities";
 import { Box, Button, Grid, Stack, Typography } from "@mui/material";
 import en from "locales/en";
 import pt from "locales/pt";
@@ -74,7 +75,7 @@ function AmountView({
                 color: "#1A1859",
               }}
             >
-              {`R$ ${singlePropertyData?.property?.brl_rent}`}
+              {formatBrazilianCurrency(singlePropertyData?.property?.brl_rent)}
             </Typography>
           </Stack>
         )}
@@ -107,7 +108,9 @@ function AmountView({
                 color: "#1A1859",
               }}
             >
-              {`R$ ${singlePropertyData?.property?.condominium}`}
+              {formatBrazilianCurrency(
+                singlePropertyData?.property?.condominium
+              )}
             </Typography>
           </Stack>
         )}
@@ -140,12 +143,11 @@ function AmountView({
                 color: "#1A1859",
               }}
             >
-              {`R$ ${singlePropertyData?.property?.brl_iptu}`}
+              {formatBrazilianCurrency(singlePropertyData?.property?.brl_iptu)}
             </Typography>
           </Stack>
         )}
       </Stack>
-
       <Stack
         direction="column"
         justifyContent="flex-start"
