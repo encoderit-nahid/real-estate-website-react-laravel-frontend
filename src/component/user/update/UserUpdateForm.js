@@ -10,6 +10,7 @@ import {
   FormControl,
   Grid,
   InputAdornment,
+  Stack,
   Typography,
 } from "@mui/material";
 import React, { useEffect, useState } from "react";
@@ -28,6 +29,8 @@ import { useUserUpdateMutation } from "@/queries/useUserQuery";
 import { getAddressData, omitEmpties, userDetailsApi } from "@/api";
 import { serialize } from "object-to-formdata";
 import { useRouter } from "next/router";
+import BaseOutlinedCpfInput from "@/component/reuseable/baseOutlinedCpfInput/BaseOutlinedCpfInput";
+import BaseOutlinedRgInput from "@/component/reuseable/baseOutlinedRgInput/BaseOutlinedRgInput";
 const UserUpdateForm = ({ language }) => {
   const [myValue, setMyValue] = useState(language || "pt");
   const currentUser = useCurrentUser();
@@ -58,6 +61,8 @@ const UserUpdateForm = ({ language }) => {
     setValue("neighbourhood", currentUser?.address?.neighbourhood);
     setValue("city", currentUser?.address?.city);
     setValue("state_id", currentUser?.address?.state);
+    setValue("cpf_number", currentUser?.additional_info?.cdf);
+    setValue("rg_number", currentUser?.additional_info?.rg);
   }, [setValue, currentUser]);
   const mutation = useUserUpdateMutation();
   const [loading, setLoading] = useState(false);
@@ -73,6 +78,8 @@ const UserUpdateForm = ({ language }) => {
       password,
       description,
       repeat_password,
+      rg_number,
+      cpf_number,
       ...rest
     } = data;
     const body = serialize(
@@ -89,7 +96,7 @@ const UserUpdateForm = ({ language }) => {
           ...rest,
           state_id: data.state_id.id,
         }),
-        additional_info: { description },
+        additional_info: { description, rg_number, cpf_number },
       }),
       {
         indices: true,
@@ -111,6 +118,7 @@ const UserUpdateForm = ({ language }) => {
     });
   };
   const userRole = currentUser?.roles[0]?.slug;
+  console.log("🟥 ~ UserUpdateForm ~ userRole:", userRole);
   const t = myValue === "en" ? en : pt;
 
   const validationSchema = Yup.object().shape({
@@ -131,9 +139,9 @@ const UserUpdateForm = ({ language }) => {
     zip_code: Yup.string().required(t["Zip code number is required"]),
     address: Yup.string().required(t["Address is required"]),
     description:
-      userRole == "broker"
-        ? Yup.string().required(t["Description is required"])
-        : Yup.string().optional(),
+      userRole == "broker" &&
+      Yup.string().required(t["Description is required"]),
+    // description: Yup.string().optional(),
 
     number: Yup.string().required(t["Number is required"]),
     neighbourhood: Yup.string().required(t["Neighbourhood is required"]),
@@ -148,6 +156,33 @@ const UserUpdateForm = ({ language }) => {
     email: Yup.string()
       .required(t["Email is required"])
       .matches(/.+@.+\.[A-Za-z]+$/, t["Email is invalid"]),
+    cpf_number: Yup.string()
+      .required(t["CPF number is required"])
+      .test("isValid", t["CPF number is required"], (cpf) => {
+        cpf = cpf.replace(/\D/g, ""); // Remove non-numeric characters
+        if (cpf.length !== 11) {
+          return false;
+        }
+        // Eliminate known invalid CPFs
+        if (/(\d)\1{10}/.test(cpf)) {
+          return false;
+        }
+        // Validate the check digits
+        for (let t = 9; t < 11; t++) {
+          let d = 0;
+          for (let c = 0; c < t; c++) {
+            d += parseInt(cpf.charAt(c)) * (t + 1 - c);
+          }
+          d = ((10 * d) % 11) % 10;
+          if (cpf.charAt(t) != d) {
+            return false;
+          }
+        }
+        return true;
+      }),
+    rg_number: Yup.string()
+      .required(t["RG number is required"])
+      .min(12, t["RG number is required"]),
   });
   const {
     watch,
@@ -155,9 +190,11 @@ const UserUpdateForm = ({ language }) => {
     handleSubmit,
     setValue,
     formState: { errors },
+    trigger,
   } = useForm({
     resolver: yupResolver(validationSchema),
   });
+  console.log("🟥 ~ UserUpdateForm ~ errors:", errors);
   const allValues = watch();
   console.log("🟥 ~ UserUpdateForm ~ allValues:", allValues);
   const [showPass, setShowPass] = useState(false);
@@ -686,6 +723,93 @@ const UserUpdateForm = ({ language }) => {
               >
                 {errors.state_id?.message}
               </Typography>
+            </Grid>
+            <Grid item xs={12} sm={6}>
+              <Grid
+                container
+                direction="row"
+                justifyContent="flex-start"
+                alignItems="flex-start"
+                sx={{ mb: 1 }}
+              >
+                <Typography
+                  variant="p"
+                  sx={{
+                    color: "#253858",
+                    fontSize: "14px",
+                    fontWeight: "400",
+                    lineHeight: "16px",
+                  }}
+                >
+                  CPF<span style={{ color: "#E63333" }}>*</span>
+                </Typography>
+              </Grid>
+              <FormControl variant="outlined" sx={{ width: "100%" }}>
+                <Controller
+                  name="cpf_number"
+                  control={control}
+                  render={({ field }) => (
+                    <BaseOutlinedCpfInput
+                      placeholder={"CPF"}
+                      // size={"small"}
+                      onChange={(e) => {
+                        field.onChange(e.target.value);
+                      }}
+                      name={"cpf_number"}
+                      value={field.value}
+                      onBlur={() => trigger("cpf_number")}
+
+                      // error={errors.cpf_number ? true : false}
+                    />
+                  )}
+                />
+                <Typography
+                  variant="inherit"
+                  color="textSecondary"
+                  sx={{ color: "#b91c1c" }}
+                >
+                  {errors.cpf_number?.message}
+                </Typography>
+              </FormControl>
+            </Grid>
+            <Grid item xs={6}>
+              <Stack direction={"column"} spacing={1}>
+                <Typography
+                  variant="p"
+                  sx={{
+                    color: "#253858",
+                    fontSize: "14px",
+                    fontWeight: "400",
+                    lineHeight: "16px",
+                  }}
+                >
+                  RG<span style={{ color: "#E63333" }}>*</span>
+                </Typography>
+                <Controller
+                  name="rg_number"
+                  control={control}
+                  render={({ field }) => (
+                    <BaseOutlinedRgInput
+                      placeholder={"RG"}
+                      onChange={(e) => {
+                        field.onChange(e.target.value);
+                      }}
+                      name={"RG_number"}
+                      value={field.value}
+                      onBlur={() => trigger("rg_number")}
+
+                      // error={errors?.rg_number ? true : false}
+                    />
+                  )}
+                />
+                <Typography
+                  variant="inherit"
+                  color="textSecondary"
+                  sx={{ color: "#b91c1c" }}
+                >
+                  {errors?.rg_number?.message}
+                </Typography>
+              </Stack>
             </Grid>
           </Grid>
 

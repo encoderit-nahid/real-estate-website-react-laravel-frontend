@@ -13,6 +13,8 @@ function BaseAutocomplete({
   isOptionEqualToValue,
   inputTextColor,
   defaultValue,
+  inputValue,
+  onInputChange,
 }) {
   return (
     <Autocomplete
@@ -27,6 +29,8 @@ function BaseAutocomplete({
       onChange={onChange}
       defaultValue={defaultValue}
       value={value}
+      inputValue={inputValue}
+      onInputChange={onInputChange}
       renderInput={(params) => (
         <TextField
           {...params}

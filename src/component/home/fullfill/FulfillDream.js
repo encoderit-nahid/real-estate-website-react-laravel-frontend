@@ -18,6 +18,10 @@ import BaseAutocomplete from "../../reuseable/baseAutocomplete/BaseAutocomplete"
 import en from "locales/en";
 import pt from "locales/pt";
 import BaseHomeButton from "@/component/reuseable/button/BaseHomeButton";
+import { formatBrazilianCurrency } from "@/utils/useUtilities";
+import BaseOutlinedAreaInput from "@/component/reuseable/baseOutlinedAreaInput/BaseOutlinedAreaInput";
+import { useRouter } from "next/router";
+import { reverseBrCurrencyFormat } from "@/utils/reverseBrCurrencyFormat";
 
 // const AutoComplete = styled(Autocomplete)`
 //   & .MuiInputBase-input {
@@ -35,18 +39,26 @@ const omitEmpties = (obj) => {
 };
 
 function FulfillDream({ languageName, setKnowMoreModal }) {
-  const [value, setValue] = useState(null);
+  const [value, setValue] = useState("");
+
+  const router = useRouter();
 
   const t = languageName === "en" ? en : pt;
 
   const [locationName, setLocationName] = useState(null);
 
   const handleValueChange = (v) => {
-    setValue(v);
+    v != null && setValue(v);
   };
 
   const handleLocationChange = (e) => {
     setLocationName(e.target.value);
+  };
+  const [inputValue, setInputValue] = useState("");
+
+  const handleInputChange = (event, newInputValue) => {
+    const formattedValue = formatBrazilianCurrency(newInputValue);
+    setInputValue(formattedValue);
   };
 
   return (
@@ -95,7 +107,6 @@ function FulfillDream({ languageName, setKnowMoreModal }) {
           ),
         }}
       />
-
       <BaseAutocomplete
         options={valueUpto || []}
         label={"Faixa de preço"}
@@ -120,50 +131,80 @@ function FulfillDream({ languageName, setKnowMoreModal }) {
             },
           },
         }}
-        isOptionEqualToValue={(option, value) => option.value === value.value}
+        isOptionEqualToValue={(option, value) => option.label === value.value}
         size={"medium"}
         placeholder={t["Value up to"]}
         onChange={(e, v, r, d) => handleValueChange(v)}
         value={value}
+        inputValue={inputValue}
+        onInputChange={handleInputChange}
         inputTextColor={{ color: "#ffffff" }}
       />
-      <Link
-        href={{
-          pathname: "/buscar-imoveis",
-          query: omitEmpties({
-            status: "approved",
-            location: locationName && locationName,
-            value_up_to: value && value.label,
-            page: 1,
-            per_page: 9,
-          }),
-        }}
-      >
-        <a
-          style={{
-            textDecoration: "none",
-            listStyle: "none",
-            width: "100%",
-            display: "flex",
-            justifyContent: "center",
-            alignItems: "center",
-          }}
-        >
-          <BaseButton
-            name={t["search real estate"]}
-            width={{
-              xs: "90%",
-              sm: "90%",
-              md: "50%",
-              xl: "30%",
-              lg: "35%",
+      {/* <Autocomplete
+        getOptionLabel={(option) => option.label || ""}
+        options={valueUpto || []}
+        inputValue={inputValue}
+        onInputChange={handleInputChange}
+        renderInput={(params) => (
+          <TextField
+            {...params}
+            label={"Faixa de preço"}
+            variant="outlined"
+            sx={{
+              color: "#ffffff",
             }}
-            fontSize={"24px"}
-            borderRadius={"25px"}
-            margin={"4vh 0 0 0"}
+            InputLabelProps={{ sx: { color: "#ffffff" } }}
           />
-        </a>
-      </Link>
+        )}
+        sx={{
+          mt: 4,
+          width: { xs: "90%", sm: "90%", md: "50%", xl: "30%", lg: "35%" },
+          "& .MuiOutlinedInput-root": {
+            "& fieldset": {
+              borderColor: "#ffffff", // Change border color here
+              borderRadius: "25px",
+            },
+          },
+          "& .MuiSvgIcon-root": {
+            color: "#ffffff", // Change arrow icon color here
+          },
+          "&:hover": {
+            "& .MuiOutlinedInput-root": {
+              "& fieldset": {
+                borderColor: "#0362F0",
+                color: "#ffffff",
+              },
+            },
+          },
+        }}
+      />
+     */}
+
+      <BaseButton
+        name={t["search real estate"]}
+        width={{
+          xs: "90%",
+          sm: "90%",
+          md: "50%",
+          xl: "30%",
+          lg: "35%",
+        }}
+        fontSize={"24px"}
+        borderRadius={"25px"}
+        margin={"4vh 0 0 0"}
+        handleFunction={() =>
+          router.push({
+            pathname: "/buscar-imoveis",
+            query: omitEmpties({
+              status: "approved",
+              location: locationName && locationName,
+              value_up_to: value && reverseBrCurrencyFormat(value.label),
+              page: 1,
+              per_page: 9,
+            }),
+          })
+        }
+      />
 
       <BaseHomeButton
         name={"Saiba mais"}
@@ -188,11 +229,12 @@ function FulfillDream({ languageName, setKnowMoreModal }) {
 export default FulfillDream;
 
 const valueUpto = [
-  { label: "5000", id: 1 },
-  { label: "10000", id: 2 },
-  { label: "15000", id: 3 },
-  { label: "20000", id: 4 },
-  { label: "25000", id: 5 },
-  { label: "30000", id: 6 },
-  { label: "35000", id: 7 },
+  { label: "R$ 1.000,00", id: 1 },
+  { label: "R$ 2.000,00", id: 2 },
+  { label: "R$ 3.000,00", id: 3 },
+  { label: "R$ 4.000,00", id: 4 },
+  { label: "R$ 5.000,00", id: 5 },
+  { label: "R$ 6.000,00", id: 6 },
+  { label: "R$ 10.000,00", id: 7 },
+  { label: "R$ 15.000,00", id: 8 },
 ];
