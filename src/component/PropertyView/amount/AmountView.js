@@ -10,6 +10,7 @@ function AmountView({
   setSchedule,
   singlePropertyData,
   handleProposalOpen,
+
   languageName,
   content,
 }) {
@@ -220,6 +221,9 @@ function AmountView({
           onClick={() => {
             setSchedule(true);
             setNegotiate(false);
+            if (window.scrollY < 500) {
+              window.scrollBy({ top: 500, left: 0, behavior: "smooth" });
+            }
           }}
         >
           {t["Schedule visit"]}

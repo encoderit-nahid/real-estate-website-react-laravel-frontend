@@ -53,7 +53,7 @@ const BaseModal = dynamic(() =>
 const ProposalModal = dynamic(() =>
   import("@/component/PropertyView/ProposalStepperComponent/ProposalModal")
 );
-import { useMemo, useState } from "react";
+import { useMemo, useRef, useState } from "react";
 import { useEffect } from "react";
 import Link from "next/link";
 import en from "locales/en";
@@ -154,7 +154,25 @@ export default function PropertyView({
   };
 
   console.log("🟥 ~ singlePropertyData:", singlePropertyData);
+  const [scrollPosition, setScrollPosition] = useState(0);
 
+  // Function to update the scroll position
+  const handleScroll = () => {
+    const position = window.scrollY;
+    setScrollPosition(position);
+    // Call your custom function here
+    console.log("Scroll position:", position);
+  };
+
+  // useEffect to add the scroll event listener
+  useEffect(() => {
+    window.addEventListener("scroll", handleScroll);
+
+    // Cleanup the event listener on component unmount
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+    };
+  }, []);
   return (
     <div>
       <Head>
@@ -639,6 +657,9 @@ export default function PropertyView({
             onClick={() => {
               setSchedule(true);
               setNegotiate(false);
+              if (window.scrollY < 2500) {
+                window.scrollBy({ top: 4000, left: 0, behavior: "smooth" });
+              }
             }}
           >
             {t["Schedule visit"]}
