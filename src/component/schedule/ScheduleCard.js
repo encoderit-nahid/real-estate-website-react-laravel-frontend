@@ -12,15 +12,20 @@ import EmailOutlinedIcon from "@mui/icons-material/EmailOutlined";
 import PhoneEnabledOutlinedIcon from "@mui/icons-material/PhoneEnabledOutlined";
 import dayjs from "dayjs";
 import { useDispatch } from "react-redux";
-import { cancelSchedule } from "../../redux/schedules/actions";
+import {
+  cancelSchedule,
+  completeSchedule,
+} from "../../redux/schedules/actions";
 import { _baseURL, _imageURL } from "../../../consts";
 import en from "locales/en";
 import pt from "locales/pt";
 import { useSession } from "next-auth/react";
+import { useRouter } from "next/router";
 
 function ScheduleCard({ data, languageName }) {
   const t = languageName === "en" ? en : pt;
   const [loading, setLoading] = useState(false);
+  const [compelteLoading, setCompleteLoading] = useState(false);
   const { data: session } = useSession();
   const dispatch = useDispatch();
   const handleCancelSchedule = (id) => {
@@ -30,6 +35,15 @@ function ScheduleCard({ data, languageName }) {
     };
     dispatch(cancelSchedule(data));
     setLoading(false);
+  };
+
+  const handleCompleteSchedule = (id) => {
+    setCompleteLoading(true);
+    const data = {
+      schedule_id: id,
+    };
+    dispatch(completeSchedule(data));
+    setCompleteLoading(false);
   };
 
   const myLoader = ({ src }) => {
@@ -94,6 +108,8 @@ function ScheduleCard({ data, languageName }) {
     };
   }, []);
 
+  const router = useRouter();
+
   return (
     <Container maxWidth="xl" sx={{ marginTop: 5 }}>
       <Box
@@ -106,7 +122,14 @@ function ScheduleCard({ data, languageName }) {
       >
         <Grid container spacing={{ xs: 0, sm: 0, md: 0, lg: 2, xl: 2, xxl: 2 }}>
           <Grid item xs={12} sm={12} md={12} lg={4} className="rentImage">
-            <Box>
+            <Box
+              sx={{ cursor: "pointer" }}
+              onClick={() =>
+                router.replace({
+                  pathname: `/visualizacao-da-propriedade/${data?.property?.id}/${data?.property?.property_title}`,
+                })
+              }
+            >
               <Image
                 loader={myLoader}
                 src={`${data?.property?.attachments?.[0]?.file_path}`}
@@ -432,6 +455,30 @@ function ScheduleCard({ data, languageName }) {
               }}
               sx={{ ml: { xs: 1, sm: 1, md: 1, lg: 0 } }}
             >
+              <Button
+                disabled={session?.user?.role === "broker"}
+                onClick={() => handleCompleteSchedule(data?.id)}
+                variant="outlined"
+                sx={{
+                  borderColor: "#047857",
+                  color: "#047857",
+                  textTransform: "none",
+                  fontSize: "16px",
+                  fontWeight: "600",
+                  lineHeight: "22px",
+                  mt: { xs: 3, sm: 3, md: 3, lg: 0, xl: 3 },
+                  mb: 1,
+                  "&:hover": {
+                    borderColor: "#047857",
+                    color: "#047857",
+                  },
+                }}
+              >
+                {compelteLoading && (
+                  <CircularProgress size={22} color="inherit" />
+                )}
+                {!compelteLoading && "Visita completa"}
+              </Button>
               <Button
                 disabled={session?.user?.role === "broker"}
                 onClick={() => handleCancelSchedule(data?.id)}
