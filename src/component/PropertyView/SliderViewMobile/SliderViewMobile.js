@@ -157,7 +157,7 @@ function SliderViewMobile({
       >
         <BaseShareButton
           bg
-          base_url={`https://www.lokkan.site/property-view/${singlePropertyData?.property?.id}`}
+          base_url={`https://www.lokkan.site/visualizacao-da-propriedade/${singlePropertyData?.property?.id}`}
         />
         <BaseFavoriteButton
           // handleLoginOpen={handleLoginOpen}

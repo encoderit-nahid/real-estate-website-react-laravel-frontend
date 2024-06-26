@@ -114,8 +114,8 @@ function NewRegistrationCard({
             <Image src={rentImage} layout="responsive" alt="rent" />
           </Box> */}
           <Link
-            href={`/property-view/${propertyData?.id}`}
-            as={`/property-view/${propertyData?.id}`}
+            href={`/visualizacao-da-propriedade/${propertyData?.id}/${propertyData?.property_title}`}
+            as={`/visualizacao-da-propriedade/${propertyData?.id}/${propertyData?.property_title}`}
           >
             <Box
               style={{
