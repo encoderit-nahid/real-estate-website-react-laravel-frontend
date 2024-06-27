@@ -576,10 +576,14 @@ function PersonalData({
                   autoComplete={"new-Text"}
                   placeholder={t["CRECI Number"]}
                   onChange={(e) => {
-                    field.onChange(e.target.value);
+                    if (e.target.value.length <= 6) {
+                      field.onChange(e.target.value);
+                    }
                   }}
                   value={field.value}
                   name={"creci_number"}
+                  max
+                  onBlur={() => trigger("creci_number")}
                 />
               )}
             />

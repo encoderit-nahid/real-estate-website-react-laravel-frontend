@@ -19,6 +19,7 @@ function BaseTextField({
   multiline,
   disabled,
   helperText,
+  onBlur,
 }) {
   return (
     <TextField
@@ -41,6 +42,7 @@ function BaseTextField({
       multiline={multiline}
       required={required}
       helperText={helperText}
+      onBlur={onBlur}
     />
   );
 }
