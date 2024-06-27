@@ -463,6 +463,7 @@ export default function ProjectView({
                 videos={Videos}
                 languageName={myValue.toString()}
                 images={Images}
+                shareUrl={`https://www.lokkan.site/visualizacao-do-projeto/${singleProjectData?.project?.id}`}
               />
             </Grid>
           </Grid>

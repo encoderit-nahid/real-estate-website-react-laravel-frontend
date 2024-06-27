@@ -77,6 +77,7 @@ function SliderViewMobile({
   languageName,
   images,
   singlePropertyData,
+  shareUrl,
 }) {
   const imageUrls = images?.map((data) => {
     return data?.file_path;
@@ -155,10 +156,7 @@ function SliderViewMobile({
           zIndex: 2,
         }}
       >
-        <BaseShareButton
-          bg
-          base_url={`https://www.lokkan.site/visualizacao-da-propriedade/${singlePropertyData?.property?.id}`}
-        />
+        <BaseShareButton bg base_url={shareUrl} />
         <BaseFavoriteButton
           // handleLoginOpen={handleLoginOpen}
           bg

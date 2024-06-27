@@ -415,6 +415,7 @@ export default function PropertyView({
                 addressData={singlePropertyData?.property?.address}
                 languageName={myValue.toString()}
                 images={Images}
+                shareUrl={`https://www.lokkan.site/visualizacao-da-propriedade/${singlePropertyData?.property?.id}`}
               />
             </Grid>
           </Grid>
