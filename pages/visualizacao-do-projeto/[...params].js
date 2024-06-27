@@ -142,7 +142,7 @@ export default function ProjectView({
 
         <meta
           property="og:url"
-          content={`https://www.lokkan.site/visualizacao-do-projeto/${id}`}
+          content={`https://www.lokkan.site/visualizacao-do-projeto/${singleProjectData?.project?.id}`}
         />
         <meta
           property="og:title"
@@ -296,7 +296,7 @@ export default function ProjectView({
               }}
             >
               <BaseShareButton
-                base_url={`https://www.lokkan.site/visualizacao-do-projeto/${id}`}
+                base_url={`https://www.lokkan.site/visualizacao-do-projeto/${singleProjectData?.project?.id}`}
               />
               <BaseFavoriteButton
                 handleLoginOpen={handleLoginOpen}

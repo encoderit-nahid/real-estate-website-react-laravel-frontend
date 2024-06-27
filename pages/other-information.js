@@ -47,6 +47,7 @@ import en from "locales/en";
 import pt from "locales/pt";
 import BaseButton from "@/component/reuseable/baseButton/BaseButton";
 import { useRouter } from "next/router";
+import Footer from "@/component/shared/Footer/Footer";
 
 const aboutLokkanData = [
   "Indicação de amigo",
@@ -115,12 +116,8 @@ export default function OtherInformation({
     number: Yup.string().required(t["Number is required"]),
     neighbourhood: Yup.string().required(t["Neighbourhood is required"]),
     state: Yup.mixed()
-    .test(
-      "is-object",
-      t["State is required"],
-      (value) => !!value
-    )
-    .required(t["State is required"]),
+      .test("is-object", t["State is required"], (value) => !!value)
+      .required(t["State is required"]),
     city: Yup.string().required(t["City is required"]),
   });
 
@@ -227,11 +224,11 @@ export default function OtherInformation({
     resolver: yupResolver(validationSchema),
   });
 
-  console.log({errors})
+  console.log({ errors });
 
   const allValues = watch();
 
-  console.log({allValues})
+  console.log({ allValues });
   const { replace } = useRouter();
 
   useEffect(() => {
@@ -451,7 +448,7 @@ export default function OtherInformation({
             </Tooltip>
           </BaseModal>
         </Box>
-        <BrokerRegistrationFooter />
+        <Footer />
       </main>
     </div>
   );
