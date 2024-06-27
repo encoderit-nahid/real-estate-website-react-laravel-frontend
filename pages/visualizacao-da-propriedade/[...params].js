@@ -198,6 +198,10 @@ export default function PropertyView({
         />
         <meta property="og:image:width" content="1200" />
         <meta property="og:image:height" content="630" />
+        <meta
+          property="og:image:secure_url"
+          content={`${_imageURL}/${seoImage?.file_path}`}
+        />
 
         <meta name="twitter:card" content="summary_large_image" />
         <meta
@@ -209,6 +213,8 @@ export default function PropertyView({
           name="twitter:image"
           content={`${_imageURL}/${seoImage?.file_path}`}
         />
+
+        <link rel="prefetch" href={`${_imageURL}/${seoImage?.file_path}`} />
       </Head>
 
       <main className="section">
