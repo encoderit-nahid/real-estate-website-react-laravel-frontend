@@ -47,6 +47,7 @@ import en from "locales/en";
 import pt from "locales/pt";
 import BaseButton from "@/component/reuseable/baseButton/BaseButton";
 import { useRouter } from "next/router";
+import Footer from "@/component/shared/Footer/Footer";
 
 const aboutLokkanData = [
   "Indicação de amigo",
@@ -447,7 +448,7 @@ export default function OtherInformation({
             </Tooltip>
           </BaseModal>
         </Box>
-        <BrokerRegistrationFooter />
+        <Footer />
       </main>
     </div>
   );

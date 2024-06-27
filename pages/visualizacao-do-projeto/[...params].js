@@ -139,9 +139,10 @@ export default function ProjectView({
         <meta charset="UTF-8" />
         <meta http-equiv="X-UA-Compatible" content="IE=edge" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
         <meta
           property="og:url"
-          content={`https://www.lokkan.site/visualizacao-do-projeto/${id}`}
+          content={`https://www.lokkan.site/visualizacao-do-projeto/${singleProjectData?.project?.id}`}
         />
         <meta
           property="og:title"
@@ -152,8 +153,25 @@ export default function ProjectView({
           property="og:image"
           content={`${_imageURL}/${seoImage?.file_path}`}
         />
+        <meta
+          property="og:image:secure_url"
+          content={`${_imageURL}/${seoImage?.file_path}`}
+        />
         <meta property="og:image:width" content="1200" />
         <meta property="og:image:height" content="630" />
+
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta
+          name="twitter:title"
+          content={`${singleProjectData?.project?.name}`}
+        />
+        <meta name="twitter:description" content={`${projectDescription}`} />
+        <meta
+          name="twitter:image"
+          content={`${_imageURL}/${seoImage?.file_path}`}
+        />
+
+        <link rel="prefetch" href={`${_imageURL}/${seoImage?.file_path}`} />
       </Head>
 
       <main>
@@ -278,7 +296,7 @@ export default function ProjectView({
               }}
             >
               <BaseShareButton
-                base_url={`https://www.lokkan.site/visualizacao-do-projeto/${id}`}
+                base_url={`https://www.lokkan.site/visualizacao-do-projeto/${singleProjectData?.project?.id}`}
               />
               <BaseFavoriteButton
                 handleLoginOpen={handleLoginOpen}
@@ -445,6 +463,7 @@ export default function ProjectView({
                 videos={Videos}
                 languageName={myValue.toString()}
                 images={Images}
+                shareUrl={`https://www.lokkan.site/visualizacao-do-projeto/${singleProjectData?.project?.id}`}
               />
             </Grid>
           </Grid>

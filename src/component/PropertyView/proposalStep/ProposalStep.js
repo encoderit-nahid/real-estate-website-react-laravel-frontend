@@ -20,6 +20,7 @@ import en from "locales/en";
 import pt from "locales/pt";
 import BaseValueField from "@/component/reuseable/baseValueField/BaseValueFiled";
 import { reverseBrCurrencyFormat } from "@/utils/reverseBrCurrencyFormat";
+import { useRouter } from "next/router";
 
 const validationSchemaCash = Yup.object().shape({
   total_amount: Yup.string().required("valor é obrigatório"),
@@ -55,6 +56,8 @@ function ProposalStep({
 
   const { data: session } = useSession();
 
+  const router = useRouter();
+
   const isStepOptional = (step) => {
     return step === 1;
   };
@@ -87,11 +90,12 @@ function ProposalStep({
   // }, [amount, setValue]);
 
   const onSubmit = async (data) => {
-    console.log({data})
     const conditions = localStorage.getItem("condition") || null;
-    data.total_amount = reverseBrCurrencyFormat(data.total_amount)
-    data.cash_amount = reverseBrCurrencyFormat(data.cash_amount)
-    data.payment_per_installment = reverseBrCurrencyFormat(data.payment_per_installment)
+    data.total_amount = reverseBrCurrencyFormat(data.total_amount);
+    data.cash_amount = reverseBrCurrencyFormat(data.cash_amount);
+    data.payment_per_installment = reverseBrCurrencyFormat(
+      data.payment_per_installment
+    );
     setLoading(true);
     const allData = omitEmpties({
       ...data,
@@ -102,24 +106,36 @@ function ProposalStep({
       condition: conditions,
     });
 
-    const [error, response] = await createProposalApi(allData);
-    setLoading(false);
-    if (!error) {
-      let newSkipped = skipped;
-      if (isStepSkipped(activeStep)) {
-        newSkipped = new Set(newSkipped.values());
-        newSkipped.delete(activeStep);
-      }
-      setActiveStep((prevActiveStep) => prevActiveStep + 1);
-      setSkipped(newSkipped);
-      localStorage.removeItem("brl");
-      localStorage.removeItem("condition");
-    } else {
-      const errors = error?.response?.data?.errors ?? {};
-
-      Object.entries(errors).forEach(([name, messages]) => {
-        setError(name, { type: "manual", message: messages[0] });
+    if (!session) {
+      router.replace({
+        pathname: "/registration",
+        query: {
+          user_type: "buyer",
+          brl_value: data.total_amount,
+          property_id: singlePropertyId,
+          type: "proposal",
+        },
       });
+    } else {
+      const [error, response] = await createProposalApi(allData);
+      setLoading(false);
+      if (!error) {
+        let newSkipped = skipped;
+        if (isStepSkipped(activeStep)) {
+          newSkipped = new Set(newSkipped.values());
+          newSkipped.delete(activeStep);
+        }
+        setActiveStep((prevActiveStep) => prevActiveStep + 1);
+        setSkipped(newSkipped);
+        localStorage.removeItem("brl");
+        localStorage.removeItem("condition");
+      } else {
+        const errors = error?.response?.data?.errors ?? {};
+
+        Object.entries(errors).forEach(([name, messages]) => {
+          setError(name, { type: "manual", message: messages[0] });
+        });
+      }
     }
   };
 

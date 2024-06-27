@@ -150,10 +150,7 @@ const BrokerInformation = ({
                 letterSpacing: "0.5px",
               }}
             >
-              Lorem ipsum dolor sit amet consectetur. Cursus amet mi vestibulum
-              nunc urna. Posuere congue sit urna in mattis sem. Pregnant nibh
-              turpis in tincidunt enim. Condimentum amet proin commodo interdum.
-              Magnis quam congue sed.
+              {singleBrokerData.broker?.additional_info?.description}
             </Typography>
           </Grid>
           {/* <Grid item xs={12}>
