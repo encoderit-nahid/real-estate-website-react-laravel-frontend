@@ -119,7 +119,10 @@ export default function BrokerDetails({
           content={`https://www.lokkan.site/visualizacao-de-detalhes-do-corretor/${id}`}
         />
         <meta property="og:title" content={`${singleBrokerData.broker.name}`} />
-        <meta property="og:description" content="I am a broker" />
+        <meta
+          property="og:description"
+          content={`${singleBrokerData.broker?.additional_info?.description}`}
+        />
         <meta
           property="og:image"
           content={`${_imageURL}/${singleBrokerData.broker?.attachments[0]?.file_path}`}
