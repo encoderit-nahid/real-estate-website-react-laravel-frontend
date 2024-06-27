@@ -229,12 +229,11 @@ function FulfillDream({ languageName, setKnowMoreModal }) {
 export default FulfillDream;
 
 const valueUpto = [
-  { label: "R$ 1.000,00", id: 1 },
-  { label: "R$ 2.000,00", id: 2 },
-  { label: "R$ 3.000,00", id: 3 },
-  { label: "R$ 4.000,00", id: 4 },
-  { label: "R$ 5.000,00", id: 5 },
-  { label: "R$ 6.000,00", id: 6 },
-  { label: "R$ 10.000,00", id: 7 },
-  { label: "R$ 15.000,00", id: 8 },
+  { label: "R$ 100.000,00", id: 1 },
+  { label: "R$ 200.000,00", id: 2 },
+  { label: "R$ 300.000,00", id: 3 },
+  { label: "R$ 500.000,00", id: 4 },
+  { label: "R$ 700.000,00", id: 5 },
+  { label: "R$ 1.000.000,00", id: 6 },
+  { label: "R$ 10.000.000,00", id: 7 },
 ];
