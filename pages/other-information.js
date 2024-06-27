@@ -81,9 +81,7 @@ export default function OtherInformation({
 
   const validationSchema = Yup.object().shape({
     full_name: Yup.string().required(t["Full Name is required"]),
-    creci_number: Yup.string()
-      .required(t["CRECI number is required"])
-      .max(6, t["CRECI number is required"]),
+    creci_number: Yup.string().required(t["CRECI number is required"]),
     cpf_number: Yup.string()
       .required(t["CPF number is required"])
       .test("isValid", t["CPF number is required"], (cpf) => {

@@ -105,7 +105,14 @@ function PersonalData({
   // };
   const requiredFields =
     userRole === "broker"
-      ? ["full_name", "cpf_number", "rg_number", "dob", "description"]
+      ? [
+          "full_name",
+          "cpf_number",
+          "rg_number",
+          "dob",
+          "description",
+          "creci_number",
+        ]
       : ["full_name", "cpf_number", "rg_number", "dob"];
   const [disableBtn, setDisableBtn] = useRequiredFieldsToDisableButton(
     requiredFields,
