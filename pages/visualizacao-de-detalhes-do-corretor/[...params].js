@@ -109,7 +109,7 @@ export default function BrokerDetails({
       <Head>
         <title>{`${singleBrokerData.broker.name} - Lokkan`}</title>
         <link rel="icon" href="/negotiate.png" />
-        <meta name="description" content={`I am a broker`} />
+        <meta name="description" content="I am a broker" />
         <meta charset="UTF-8" />
         <meta http-equiv="X-UA-Compatible" content="IE=edge" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -118,13 +118,23 @@ export default function BrokerDetails({
           content={`https://www.lokkan.site/visualizacao-de-detalhes-do-corretor/${id}`}
         />
         <meta property="og:title" content={`${singleBrokerData.broker.name}`} />
-        <meta property="og:description" content={`I am a broker`} />
+        <meta property="og:description" content="I am a broker" />
         <meta
           property="og:image"
           content={`${_imageURL}/${singleBrokerData.broker?.attachments[0]?.file_path}`}
         />
         <meta property="og:image:width" content="1200" />
         <meta property="og:image:height" content="630" />
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta
+          name="twitter:title"
+          content={`${singleBrokerData.broker.name}`}
+        />
+        <meta name="twitter:description" content="I am a broker" />
+        <meta
+          name="twitter:image"
+          content={`${_imageURL}/${singleBrokerData.broker?.attachments[0]?.file_path}`}
+        />
       </Head>
       <main className="section">
         <Box
