@@ -182,6 +182,7 @@ export default function PropertyView({
         <meta charset="UTF-8" />
         <meta http-equiv="X-UA-Compatible" content="IE=edge" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
         <meta
           property="og:url"
           content={`https://www.lokkan.site/visualizacao-da-propriedade/${singlePropertyData?.property?.id}`}
@@ -197,6 +198,17 @@ export default function PropertyView({
         />
         <meta property="og:image:width" content="1200" />
         <meta property="og:image:height" content="630" />
+
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta
+          name="twitter:title"
+          content={`${singlePropertyData?.property?.property_title}`}
+        />
+        <meta name="twitter:description" content={`${propertyDescription}`} />
+        <meta
+          name="twitter:image"
+          content={`${_imageURL}/${seoImage?.file_path}`}
+        />
       </Head>
 
       <main className="section">
