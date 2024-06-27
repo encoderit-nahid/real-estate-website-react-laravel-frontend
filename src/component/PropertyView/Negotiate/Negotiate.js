@@ -88,19 +88,20 @@ function Negotiate({
 
   const handleProposal = useCallback(() => {
     if (brlValue) {
-      !session
-        ? router.replace({
-            pathname: "/registration",
-            query: {
-              user_type: "buyer",
-              brl_value: reverseBrCurrencyFormat(brlValue),
-              property_id: singlePropertyId,
-              type: "proposal",
-            },
-          })
-        : handleProposalOpen();
+      // !session
+      //   ? router.replace({
+      //       pathname: "/registration",
+      //       query: {
+      //         user_type: "buyer",
+      //         brl_value: reverseBrCurrencyFormat(brlValue),
+      //         property_id: singlePropertyId,
+      //         type: "proposal",
+      //       },
+      //     })
+      //   :
+      handleProposalOpen();
     }
-  }, [handleProposalOpen, session, router, brlValue]);
+  }, [handleProposalOpen, brlValue]);
 
   const handleSchedule = useCallback(() => {
     const dateString = dayjs(value, "YYYY-MM-DD+h:mm").format("YYYY-MM-DD");
