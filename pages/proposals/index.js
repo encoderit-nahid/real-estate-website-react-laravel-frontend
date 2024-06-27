@@ -156,6 +156,7 @@ export default function Proposals({ language }) {
     router.push({
       query: filteredData,
     });
+    toggleDrawer("left", false)();
   };
 
   const {
@@ -1174,7 +1175,10 @@ export default function Proposals({ language }) {
           <Grid container spacing={3}>
             <Grid item xs={12} sm={12} md={12} lg={6}>
               <Button
-                onClick={handleCancelFilter}
+                onClick={(e) => {
+                  handleCancelFilter();
+                  toggleDrawer("left", false)(e);
+                }}
                 fullWidth
                 variant="outlined"
                 sx={{
