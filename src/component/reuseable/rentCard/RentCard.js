@@ -8,6 +8,7 @@ import dayjs from "dayjs";
 import { useSession } from "next-auth/react";
 import en from "locales/en";
 import pt from "locales/pt";
+import { formatBrazilianCurrency } from "@/utils/useUtilities";
 
 const omitEmpties = (obj) => {
   return Object.entries(obj).reduce((carry, [key, value]) => {
@@ -191,7 +192,7 @@ function RentCard({ propertyData, languageName }) {
                 mt: 1,
               }}
             >
-              {`R$ ${propertyData?.brl_rent}`}
+              {formatBrazilianCurrency(propertyData?.brl_rent)}
             </Typography>
             <Typography
               variant="p"

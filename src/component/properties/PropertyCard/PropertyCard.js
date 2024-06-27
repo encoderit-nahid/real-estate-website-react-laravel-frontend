@@ -3,6 +3,7 @@ import Image from "next/image";
 import React from "react";
 import propertyImage from "../../../../public/Images/propertyImage.png";
 import { _baseURL, _imageURL } from "../../../../consts";
+import { formatBrazilianCurrency } from "@/utils/useUtilities";
 
 function PropertyCard({ srcImage, amount }) {
   const myLoader = ({ src }) => {
@@ -13,23 +14,25 @@ function PropertyCard({ srcImage, amount }) {
       sx={{
         border: "1px solid #9FAAB1",
         borderRadius: "6px",
-
-        // height: { lg: "17.8vh", xl: "17.5vh", xxl: "18.5vh" },
+        overflow: "hidden",
       }}
     >
       <Grid container spacing={2}>
         <Grid item xs={5}>
           <Box
             sx={{
-              height: "100%",
+              height: 200,
               width: "100%",
-              display: { xs: "none", sm: "none", md: "none", lg: "inline" },
+              display: { xs: "none", sm: "none", md: "none", lg: "block" },
+              overflow: "hidden",
+              position: "relative",
             }}
           >
             <Image
               loader={myLoader}
-              height={150}
-              width={250}
+              layout="fill"
+              objectFit="cover"
+              objectPosition="center"
               src={`${srcImage?.[0]?.file_path}`}
               alt="property"
             />
@@ -38,12 +41,15 @@ function PropertyCard({ srcImage, amount }) {
             sx={{
               height: "100%",
               width: "100%",
-              display: { xs: "inline", sm: "inline", md: "inline", lg: "none" },
+              display: { lg: "none" },
+              overflow: "hidden",
+              position: "relative",
             }}
           >
             <Image
-              layout="responsive"
-              height={300}
+              layout="fill"
+              objectFit="cover"
+              objectPosition="center"
               src={propertyImage}
               alt="property"
             />
@@ -72,7 +78,7 @@ function PropertyCard({ srcImage, amount }) {
                 lineHeight: "32px",
               }}
             >
-              {`R$ ${amount}`}
+              {formatBrazilianCurrency(amount)}
             </Typography>
             <Typography
               variant="p"

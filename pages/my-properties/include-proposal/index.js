@@ -40,6 +40,7 @@ const PropertyCard = dynamic(() =>
 );
 import en from "locales/en";
 import pt from "locales/pt";
+import { _imageURL } from "consts";
 
 const drawerWidth = 240;
 
@@ -116,7 +117,13 @@ export default function IncludeProposal({ language }) {
   );
 
   const srcImage = useMemo(() => {
-    return propertyData?.attachments?.filter((data) => data.title === "logo");
+    console.log(
+      "🟥 ~ srcImage ~ propertyData?.attachments:",
+      propertyData?.attachments
+    );
+    return propertyData?.attachments?.find(
+      (data) => data.title === "cover_photo"
+    );
   }, [propertyData]);
 
   const [cash, setCash] = useState(true);
@@ -271,10 +278,11 @@ export default function IncludeProposal({ language }) {
             <Fragment>
               <Box sx={{ mt: 4 }}>
                 <PropertyCard
-                  srcImage={srcImage}
+                  srcImage={[srcImage]}
                   amount={propertyData?.brl_rent}
                 />
               </Box>
+
               <form onSubmit={handleSubmit(onSubmit)}>
                 {activeStep === 0 ? (
                   <ProposalValueStep

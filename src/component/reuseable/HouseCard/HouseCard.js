@@ -1,5 +1,12 @@
 import React, { useEffect, useState } from "react";
-import { Box, Grid, Typography, Container, IconButton } from "@mui/material";
+import {
+  Box,
+  Grid,
+  Typography,
+  Container,
+  IconButton,
+  Stack,
+} from "@mui/material";
 import houseImage from "../../../../public/Images/house.png";
 import bed from "../../../../public/Images/bed.png";
 import rule from "../../../../public/Images/rule.png";
@@ -15,6 +22,7 @@ import { useSelector } from "react-redux";
 import { useSession } from "next-auth/react";
 import useCurrentUser from "@/hooks/useCurrentUser";
 import { MakeFavouriteApi, userDetailsApi } from "@/api";
+import { formatBrazilianCurrency } from "@/utils/useUtilities";
 
 function HouseCard({
   shadow,
@@ -140,46 +148,79 @@ function HouseCard({
           >
             R$
           </span>
-          {` ${propertyInfo?.brl_rent}`}
+          {` ${formatBrazilianCurrency(propertyInfo?.brl_rent).slice(2)}`}
         </Typography>
       </Grid>
-      <Grid
-        container
+      <Stack
+        // container
         direction="row"
-        justifyContent="flex-start"
-        alignItems="flex-start"
+        // justifyContent="space-between"
+        spacing={2}
+        alignItems="center"
         sx={{ pl: 3 }}
       >
-        <Box>
-          <Image src={bed} alt="bed" />
-          <Typography
-            variant="p"
-            sx={{
-              fontSize: "14px",
-              fontWeight: "400",
-              color: "#7C7C99",
-              ml: "0.5vh",
-            }}
+        {+propertyInfo?.no_of_rooms > 0 && (
+          <Stack
+            direction="row"
+            alignItems={"center"}
+            justifyContent={"center"}
           >
-            {`${propertyInfo?.no_of_rooms} ${t["bedrooms"]}`}
-          </Typography>
-        </Box>
-        <Box sx={{ pl: 1, pr: 1 }}>
-          <Image src={rule} alt="rule" />
-          <Typography
-            variant="p"
-            sx={{
-              fontSize: "14px",
-              fontWeight: "400",
-              color: "#7C7C99",
-              ml: "0.5vh",
-            }}
+            <Image
+              src={bed}
+              alt="bed"
+              width={20}
+              layout="fixed"
+              style={{ flexShrink: 0 }}
+            />
+            <Typography
+              variant="p"
+              sx={{
+                fontSize: "14px",
+                fontWeight: "400",
+                color: "#7C7C99",
+                ml: "0.5vh",
+                // textWrap: "nowrap",
+                // wordWrap: "break-word",
+              }}
+            >
+              {`${propertyInfo?.no_of_rooms} ${t["bedrooms"]}`}
+            </Typography>
+          </Stack>
+        )}
+        {+propertyInfo?.land_area > 0 && (
+          <Stack
+            direction="row"
+            alignItems={"center"}
+            justifyContent={"center"}
           >
-            {`${propertyInfo?.land_area}m²`}
-          </Typography>
-        </Box>
-        <Box>
-          <Image src={check} alt="rule" />
+            <Image
+              src={rule}
+              alt="rule"
+              width={15}
+              layout="fixed"
+              style={{ flexShrink: 0 }}
+            />
+            <Typography
+              variant="p"
+              sx={{
+                fontSize: "14px",
+                fontWeight: "400",
+                color: "#7C7C99",
+                ml: "0.5vh",
+              }}
+            >
+              {`${propertyInfo?.land_area}m²`}
+            </Typography>
+          </Stack>
+        )}
+        <Stack direction="row" alignItems={"center"} justifyContent={"center"}>
+          <Image
+            src={check}
+            alt="rule"
+            width={15}
+            layout="fixed"
+            style={{ flexShrink: 0 }}
+          />
           <Typography
             variant="p"
             sx={{
@@ -191,8 +232,8 @@ function HouseCard({
           >
             {`${t[propertyInfo?.property_type]}`}
           </Typography>
-        </Box>
-      </Grid>
+        </Stack>
+      </Stack>
     </Box>
   );
 }
