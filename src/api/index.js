@@ -229,6 +229,14 @@ export const createProjectApi = async (body) => {
     return [error, null];
   }
 };
+export const updateProjectApi = async (body) => {
+  try {
+    const response = await apiInstance.post(`project/update`, body);
+    return [false, response];
+  } catch (error) {
+    return [error, null];
+  }
+};
 
 //photo_type
 export const photoTypeApi = async (type) => {

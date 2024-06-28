@@ -154,8 +154,8 @@ function FinancialData({
               <BaseAutocomplete
                 //   sx={{ margin: "0.6vh 0" }}
                 options={demoData || []}
-                getOptionLabel={(option) => option.name || ""}
-                isOptionEqualToValue={(option, value) => option.id === value.id}
+                getOptionLabel={(option) => option || ""}
+                isOptionEqualToValue={(option, value) => option === value}
                 size={"medium"}
                 placeholder={`% ${t["Prohibited"]}`}
                 onChange={(e, v, r, d) => field.onChange(v)}
@@ -180,8 +180,8 @@ function FinancialData({
               <BaseAutocomplete
                 //   sx={{ margin: "0.6vh 0" }}
                 options={demoData || []}
-                getOptionLabel={(option) => option.name || ""}
-                isOptionEqualToValue={(option, value) => option.id === value.id}
+                getOptionLabel={(option) => option || ""}
+                isOptionEqualToValue={(option, value) => option === value}
                 size={"medium"}
                 placeholder={t[`Adjustment index`]}
                 onChange={(e, v, r, d) => field.onChange(v)}
@@ -206,8 +206,8 @@ function FinancialData({
               <BaseAutocomplete
                 //   sx={{ margin: "0.6vh 0" }}
                 options={numberOfInstallment || []}
-                getOptionLabel={(option) => option.name || ""}
-                isOptionEqualToValue={(option, value) => option.id === value.id}
+                getOptionLabel={(option) => option || ""}
+                isOptionEqualToValue={(option, value) => option === value}
                 size={"medium"}
                 placeholder={t[`Number of installments`]}
                 onChange={(e, v, r, d) => field.onChange(v)}
@@ -362,26 +362,21 @@ function FinancialData({
 export default FinancialData;
 
 const featureTypeData = [
-  { id: 1, name: "condominium" },
-  { id: 2, name: "accessibility" },
-  { id: 3, name: "amenties" },
-  { id: 4, name: "appliances" },
-  { id: 5, name: "room" },
-  { id: 6, name: "sorrounding" },
-  { id: 7, name: "wellbeing" },
-  { id: 8, name: "feature" },
+  "condominium",
+  "accessibility",
+  "amenties",
+  "appliances",
+  "room",
+  "sorrounding",
+  "wellbeing",
+  "feature",
 ];
 
-const numberOfInstallment = [
-  { id: 1, name: "2" },
-  { id: 2, name: "4" },
-  { id: 3, name: "6" },
-  { id: 3, name: "8" },
-];
+const numberOfInstallment = ["2", "4", "6", "8"];
 
 const demoData = [
-  { name: "The Godfather", id: 1972 },
-  { name: "The Godfather: Part II", id: 1974 },
-  { name: "The Dark Knight", id: 2008 },
-  { name: "12 Angry Men", id: 1957 },
+  "The Godfather",
+  "The Godfather: Part II",
+  "The Dark Knight",
+  "12 Angry Men",
 ];

@@ -28,24 +28,21 @@ function Features({
   setFeatureTypes,
   errors,
   languageName,
-
   reset,
   replace,
 }) {
   const t = languageName === "en" ? en : pt;
 
-  console.log({ t });
-
   const [featureSelectData, setFeatureSelectData] = useState(null);
   const { data: session } = useSession();
   const [item, setItem] = useState("");
   const dispatch = useDispatch();
+
   useEffect(() => {
     dispatch(findFeatureData());
   }, [dispatch]);
 
   const featureData = useSelector((state) => state.feature.featureData);
-  console.log({ featureData });
 
   const loading = useSelector((state) => state.feature?.loading);
 
