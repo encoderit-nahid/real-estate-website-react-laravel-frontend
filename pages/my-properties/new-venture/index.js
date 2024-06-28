@@ -270,28 +270,48 @@ export default function NewVenture({ language, session }) {
       : serialize(requireData, { indices: true });
     if (query.project_id) {
       const [error, response] = await updateProjectApi(formData);
+      if (!error) {
+        const id = response?.data?.project?.id;
+        const type = "project";
+        setIsUploading(true);
+        setUploadComplete(false);
+        setUploadedCount(0); // Reset count before starting upload
+        const uploadPromises = newArr.map((image, index) =>
+          uploadImage(image, index, id, type, setProgress, setUploadedCount)
+        );
+        await Promise.all(uploadPromises);
+        setIsUploading(false);
+        setLoading(false);
+        setUploadComplete(true);
+        setSentModalOpen(true);
+      } else {
+        const errors = error?.response?.data?.errors ?? {};
+        Object.entries(errors).forEach(([name, messages]) => {
+          setError(name, { type: "manual", message: messages[0] });
+        });
+      }
     } else {
       const [error, response] = await createProjectApi(formData);
-    }
-    if (!error) {
-      const id = response?.data?.project?.id;
-      const type = "project";
-      setIsUploading(true);
-      setUploadComplete(false);
-      setUploadedCount(0); // Reset count before starting upload
-      const uploadPromises = newArr.map((image, index) =>
-        uploadImage(image, index, id, type, setProgress, setUploadedCount)
-      );
-      await Promise.all(uploadPromises);
-      setIsUploading(false);
-      setLoading(false);
-      setUploadComplete(true);
-      setSentModalOpen(true);
-    } else {
-      const errors = error?.response?.data?.errors ?? {};
-      Object.entries(errors).forEach(([name, messages]) => {
-        setError(name, { type: "manual", message: messages[0] });
-      });
+      if (!error) {
+        const id = response?.data?.project?.id;
+        const type = "project";
+        setIsUploading(true);
+        setUploadComplete(false);
+        setUploadedCount(0); // Reset count before starting upload
+        const uploadPromises = newArr.map((image, index) =>
+          uploadImage(image, index, id, type, setProgress, setUploadedCount)
+        );
+        await Promise.all(uploadPromises);
+        setIsUploading(false);
+        setLoading(false);
+        setUploadComplete(true);
+        setSentModalOpen(true);
+      } else {
+        const errors = error?.response?.data?.errors ?? {};
+        Object.entries(errors).forEach(([name, messages]) => {
+          setError(name, { type: "manual", message: messages[0] });
+        });
+      }
     }
   };
 
