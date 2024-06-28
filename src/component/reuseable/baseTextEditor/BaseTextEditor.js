@@ -30,6 +30,7 @@ function BaseTextEditor({ control, name, allValues }) {
           }}
           placeholder={t["Property Description"]}
           editorClassName="demo-editor"
+          editorStyle={{ height: 400 }}
         />
       )}
     />
