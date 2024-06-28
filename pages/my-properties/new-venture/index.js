@@ -17,7 +17,11 @@ import * as Yup from "yup";
 import { useEffect } from "react";
 
 import { serialize } from "object-to-formdata";
-import { apiInstance, createProjectApi } from "../../../src/api";
+import {
+  apiInstance,
+  createProjectApi,
+  updateProjectApi,
+} from "../../../src/api";
 import { useDispatch, useSelector } from "react-redux";
 import { GetPhotoTypeData } from "../../../src/redux/photo/actions";
 const requiredFields = [
@@ -43,6 +47,7 @@ const requiredFields = [
 import en from "locales/en";
 import pt from "locales/pt";
 import uploadImage from "@/utils/uploadImage";
+import { useGetSingleProjectQuery } from "@/queries/useGetSingleProjectQuery";
 const NewVentureSentModal = dynamic(() =>
   import("@/component/new venture/NewVentureSentModal/NewVentureSentModal")
 );
@@ -109,13 +114,18 @@ export default function NewVenture({ language, session }) {
       description: "",
     },
   });
-  const { replace } = useRouter();
+  const { replace, query } = useRouter();
+
+  const { data: singleProjectData } = useGetSingleProjectQuery(
+    query.project_id
+  );
 
   const [loading, setLoading] = useState(false);
   const [files, setFiles] = useState([]);
   const [videoFiles, setVideoFiles] = useState([]);
   const [deletedContent, setDeletedContent] = useState([]);
   const [featuretypes, setFeatureTypes] = useState([]);
+  console.log("🟥 ~ NewVenture ~ featuretypes:", featuretypes);
   const [documents, setDocuments] = useState([]);
   const [imageError, setImageError] = useState(false);
   const [imageErrorMessage, setImageErrorMessage] = useState("");
@@ -125,12 +135,70 @@ export default function NewVenture({ language, session }) {
   const handleClose = () => setSentModalOpen(false);
 
   const allValues = watch();
+  console.log("🟥 ~ NewVenture ~ allValues:", allValues);
 
   const [progress, setProgress] = useState({});
   const [isUploading, setIsUploading] = useState(false);
   const [uploadComplete, setUploadComplete] = useState(false);
   const [uploadedCount, setUploadedCount] = useState(0);
 
+  useEffect(() => {
+    if (singleProjectData) {
+      console.log("🟥 ~ useEffect ~ singleProjectData:", singleProjectData);
+      setValue("name", singleProjectData?.project?.name);
+      setValue("description", singleProjectData?.project?.description);
+      setValue("address", singleProjectData?.project?.address?.address);
+      setValue(
+        "neighbourhood",
+        singleProjectData?.project?.address?.neighbourhood
+      );
+      setValue("add_on", singleProjectData?.project?.address?.add_on);
+      setValue("city", singleProjectData?.project?.address?.city);
+      setValue("complement", singleProjectData?.project?.address?.complement);
+      setValue("zip_code", singleProjectData?.project?.address?.zip_code);
+      setValue("number", singleProjectData?.project?.address?.number);
+      setValue("state", singleProjectData?.project?.address?.state);
+      // setValue("features", singleProjectData?.project?.features);
+      setValue("prohibited", singleProjectData?.project?.finance.prohibited);
+      setValue(
+        "adjustment_index",
+        singleProjectData?.project?.finance.adjustment_index
+      );
+      setValue(
+        "number_of_installments",
+        singleProjectData?.project?.finance.number_of_installments
+      );
+      setValue(
+        "value_per_square_meter",
+        singleProjectData?.project?.finance.value_per_square_meter
+      );
+
+      let selectFeatures = [];
+      singleProjectData?.project?.features?.forEach((data) => {
+        selectFeatures.push(data.id);
+      });
+      setFeatureTypes(selectFeatures);
+      let allSelectImages = singleProjectData?.project?.attachments?.filter(
+        (data) => data?.file_type === "image"
+      );
+
+      setFiles(allSelectImages);
+
+      let allSelectVideos = singleProjectData?.project?.attachments?.filter(
+        (data) => data?.file_type === "url"
+      );
+
+      setVideoFiles(
+        allSelectVideos?.map((data) => {
+          return {
+            url: data?.file_path,
+            photo_type: data?.photo_type,
+            id: data?.id,
+          };
+        })
+      );
+    }
+  }, [singleProjectData, setValue]);
   const onSubmit = async (data) => {
     setLoading(true);
     const filterNewImageTitleData = [];
@@ -172,7 +240,7 @@ export default function NewVenture({ language, session }) {
     });
     const newDocuments = documents?.filter((data) => data instanceof File);
     const requireData = {
-      // images: newArr,
+      images: newArr,
       features: featuretypes,
       content_url: newVideoArr,
       description: data?.description?.toString("html"),
@@ -194,8 +262,17 @@ export default function NewVenture({ language, session }) {
         complement: data?.complement,
       },
     };
-    const formData = serialize(requireData, { indices: true });
-    const [error, response] = await createProjectApi(formData);
+    const formData = query.project_id
+      ? serialize(
+          { ...requireData, project_id: query.project_id },
+          { indices: true }
+        )
+      : serialize(requireData, { indices: true });
+    if (query.project_id) {
+      const [error, response] = await updateProjectApi(formData);
+    } else {
+      const [error, response] = await createProjectApi(formData);
+    }
     if (!error) {
       const id = response?.data?.project?.id;
       const type = "project";
@@ -217,8 +294,6 @@ export default function NewVenture({ language, session }) {
       });
     }
   };
-
-  console.log({ allValues });
 
   const getTotalProgress = () => {
     const totalImages = files.length;

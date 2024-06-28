@@ -118,6 +118,36 @@ function ReleaseCard({ projectData, languageName }) {
               </Button>
             </a>
           </Link>
+          <Link
+            href={{
+              pathname: "/my-properties/new-venture",
+              query: {
+                project_id: projectData?.id,
+              },
+            }}
+          >
+            <Button
+              sx={{
+                textTransform: "none",
+                border: "1px solid #002152",
+                borderRadius: "4px",
+                color: "#002152",
+                fontSize: "16px",
+                fontWeight: "600",
+                width: {
+                  xs: "92%",
+                  sm: "92%",
+                  md: "92%",
+                  lg: "85%",
+                  xl: "92%",
+                },
+                mx: 2,
+                mb: 2,
+              }}
+            >
+              {t["Edit"]}
+            </Button>
+          </Link>
         </Grid>
       </Box>
     </Link>
