@@ -10,19 +10,16 @@ import {
   Typography,
 } from "@mui/material";
 import { Box } from "@mui/material";
-
 import { useForm, useFieldArray } from "react-hook-form";
 import { useRouter } from "next/router";
-import * as Yup from "yup";
 import { useEffect } from "react";
 
 import { serialize } from "object-to-formdata";
 import {
-  apiInstance,
   createProjectApi,
   updateProjectApi,
 } from "../../../src/api";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { GetPhotoTypeData } from "../../../src/redux/photo/actions";
 const requiredFields = [
   [
@@ -158,7 +155,6 @@ export default function NewVenture({ language, session }) {
       setValue("zip_code", singleProjectData?.project?.address?.zip_code);
       setValue("number", singleProjectData?.project?.address?.number);
       setValue("state", singleProjectData?.project?.address?.state);
-      // setValue("features", singleProjectData?.project?.features);
       setValue("prohibited", singleProjectData?.project?.finance.prohibited);
       setValue(
         "adjustment_index",

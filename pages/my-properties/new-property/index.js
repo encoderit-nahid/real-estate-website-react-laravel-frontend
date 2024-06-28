@@ -12,9 +12,6 @@ import {
   Typography,
 } from "@mui/material";
 import { Box } from "@mui/material";
-const ResponsiveDrawer = dynamic(() =>
-  import("@/component/sharedProposal/ResponsiveDrawer/ResponsiveDrawer")
-);
 const BasicBreadcrumbs = dynamic(() =>
   import("@/component/reuseable/baseBreadCrumb/BaseBreadCrumb")
 );
@@ -44,7 +41,7 @@ const PropertySubmittedModal = dynamic(() =>
     "@/component/new property/PropertySubmittedModal/PropertySubmittedModal"
   )
 );
-import { getSession, useSession } from "next-auth/react";
+import {  useSession } from "next-auth/react";
 import { useForm, Controller, useFieldArray } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as Yup from "yup";
