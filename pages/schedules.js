@@ -89,6 +89,9 @@ export default function Schedules({ language }) {
             direction="row"
             justifyContent="space-between"
             alignItems="flex-start"
+            // sx={{
+            //   position: "relative",
+            // }}
           >
             <Typography
               variant="p"
@@ -103,7 +106,13 @@ export default function Schedules({ language }) {
             >
               {t["Schedules"]}
             </Typography>
-            <Image src={notifyImage} alt="notify" />
+            <Image
+              src={notifyImage}
+              alt="notify"
+              // width={"100%"}
+              // height={"100%"}
+              // layout="fill"
+            />
           </Grid>
           {[0, 1, 2, 3].map((data, index) => (
             <Container maxWidth="xl" sx={{ marginTop: 5 }} key={index}>
