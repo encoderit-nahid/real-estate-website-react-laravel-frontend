@@ -1,23 +1,23 @@
-import { Grid, Pagination, Skeleton, Stack } from '@mui/material'
-import React, { useCallback, useState } from 'react'
-import TabRegisteredCard from '../TabRegisteredCard/TabRegisteredCard'
-import { useDispatch, useSelector } from 'react-redux'
-import { findBrokerData } from '../../../redux/broker/actions'
-import { useEffect } from 'react'
-import { useGetBrokerDataQuery } from '@/queries/useGetBrokerDataQuery'
+import { Grid, Pagination, Skeleton, Stack } from "@mui/material";
+import React, { useCallback, useState } from "react";
+import TabRegisteredCard from "../TabRegisteredCard/TabRegisteredCard";
+import { useDispatch, useSelector } from "react-redux";
+import { findBrokerData } from "../../../redux/broker/actions";
+import { useEffect } from "react";
+import { useGetBrokerDataQuery } from "@/queries/useGetBrokerDataQuery";
 
-import LinearProgress from '@mui/material/LinearProgress'
-import { Box } from '@mui/material'
-import { useRouter } from 'next/router'
-import BrokerSearch from '@/component/reuseable/brokerSearch/BrokerSearch'
-import { debounce } from '@/utils/debounce'
+import LinearProgress from "@mui/material/LinearProgress";
+import { Box } from "@mui/material";
+import { useRouter } from "next/router";
+import BrokerSearch from "@/component/reuseable/brokerSearch/BrokerSearch";
+import { debounce } from "@/utils/debounce";
 
 function TabRegistered({ languageName }) {
-  const router = useRouter()
-  const { query } = router
-  const [page, setPage] = React.useState(1)
+  const router = useRouter();
+  const { query } = router;
+  const [page, setPage] = React.useState(1);
 
-  const [searchValue, setSearchValue] = useState(query.name || '');
+  const [searchValue, setSearchValue] = useState(query.name || "");
 
   const {
     data: brokerUserData,
@@ -26,12 +26,12 @@ function TabRegistered({ languageName }) {
     isFetching,
     refetch,
   } = useGetBrokerDataQuery({
-    user_type: 'broker',
-    status: 'active',
+    user_type: "broker",
+    status: "active",
     page: page,
-    per_page: 9,
-    name: searchValue
-  })
+    per_page: 12,
+    name: searchValue,
+  });
 
   const handlePageChange = (event, value) => {
     setPage(value);
@@ -67,16 +67,14 @@ function TabRegistered({ languageName }) {
             <Skeleton
               variant="rect"
               height={260}
-              sx={{ mx: 2, my: 2, borderRadius: '8px' }}
+              sx={{ mx: 2, my: 2, borderRadius: "8px" }}
             />
           </Grid>
         ))}
       </Grid>
-    )
+    );
   }
 
-
-  
   // if (isFetched && isFetching) {
   //   return (
   //     <Box sx={{ width: '100%' }}>
@@ -87,7 +85,10 @@ function TabRegistered({ languageName }) {
 
   return (
     <Box>
-      <BrokerSearch handleSearchBroker={handleSearchBroker} searchValue={searchValue} />
+      <BrokerSearch
+        handleSearchBroker={handleSearchBroker}
+        searchValue={searchValue}
+      />
       <Grid container spacing={2}>
         {brokerUserData?.data?.users?.data?.map((data, index) => (
           <Grid key={index} item xs={12} sm={12} md={12} lg={4} xl={3}>
@@ -105,7 +106,7 @@ function TabRegistered({ languageName }) {
         />
       </Stack>
     </Box>
-  )
+  );
 }
 
-export default TabRegistered
+export default TabRegistered;
