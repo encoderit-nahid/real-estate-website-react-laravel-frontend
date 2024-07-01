@@ -277,12 +277,21 @@ export default function BrokerDetails({
                   spacing={3}
                   sx={{ width: "100%" }}
                 >
-                  <Typography
-                    variant="h1"
-                    style={{ fontStyle: "italic", fontWeight: "bolder" }}
-                  >
-                    {(totalRating / totalRatingCount).toFixed(2)}
-                  </Typography>
+                  {totalRatingCount > 0 ? (
+                    <Typography
+                      variant="h1"
+                      style={{ fontStyle: "italic", fontWeight: "bolder" }}
+                    >
+                      {(totalRating / totalRatingCount).toFixed(2)}
+                    </Typography>
+                  ) : (
+                    <Typography
+                      variant="h4"
+                      style={{ color: "gray", letterSpacing: "0.5px" }}
+                    >
+                      No rating available
+                    </Typography>
+                  )}
                   <StarIcon sx={{ fontSize: 50, color: "#FFAB00" }} />
                 </Stack>
                 <Stack direction="column" spacing={1} sx={{ width: "100%" }}>

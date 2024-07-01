@@ -13,7 +13,7 @@ import {
   InputAdornment,
   TextField,
 } from "@mui/material";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import notifyImage from "../../public/Images/notify.png";
 const TabRegistered = dynamic(() =>
   import("@/component/brokers/TabRegistered/TabRegistered")
@@ -26,6 +26,12 @@ import SearchIcon from "@mui/icons-material/Search";
 import pt from "locales/pt";
 import en from "locales/en";
 import { useGetBrokerCountQuery } from "@/queries/useGetBrokerCountQuery";
+import BrokerSearch, {
+  MemoizedSearch,
+} from "@/component/reuseable/brokerSearch/BrokerSearch";
+import { debounce } from "@/utils/debounce";
+import { useRouter } from "next/router";
+import { useGetBrokerDataQuery } from "@/queries/useGetBrokerDataQuery";
 
 const drawerWidth = 240;
 
@@ -76,10 +82,24 @@ export default function Brokers({ language }) {
   const brokerCountData = data?.data;
 
   const [value, setValue] = useState(0);
+  const router = useRouter();
+  const { query } = router;
+
+  const [searchValue, setSearchValue] = useState(() => query.name | "");
 
   const handleChange = (event, newValue) => {
     setValue(newValue);
+    setSearchValue("");
+    router.replace({
+      query: {
+        name: "",
+      },
+    });
   };
+  // useEffect(() => {
+  //   console.log("🟥 ~ Brokers ~ value:", value);
+  // }, [value]);
+
   return (
     <Box
       sx={{
@@ -144,15 +164,23 @@ export default function Brokers({ language }) {
               )}
             </Tabs>
           </Box>
-      
 
           <TabPanel value={value} index={0}>
             {/* <Pendants /> */}
-            <TabRegistered languageName={myValue.toString()}  />
+            <TabRegistered
+              languageName={myValue.toString()}
+              searchValue={searchValue}
+              setSearchValue={setSearchValue}
+            />
           </TabPanel>
           <TabPanel value={value} index={1}>
             {/* <Accepted /> */}
-            <TabPendant languageName={myValue.toString()} brokerCountRefetch={loadingRefetch} />
+            <TabPendant
+              languageName={myValue.toString()}
+              brokerCountRefetch={loadingRefetch}
+              searchValue={searchValue}
+              setSearchValue={setSearchValue}
+            />
           </TabPanel>
         </Box>
       </Container>

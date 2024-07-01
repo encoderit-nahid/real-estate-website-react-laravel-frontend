@@ -124,7 +124,12 @@ function ScheduleCard({ data, languageName }) {
         <Grid container spacing={{ xs: 0, sm: 0, md: 0, lg: 2, xl: 2, xxl: 2 }}>
           <Grid item xs={12} sm={12} md={12} lg={4} className="rentImage">
             <Box
-              sx={{ cursor: "pointer" }}
+              sx={{
+                cursor: "pointer",
+                width: "100%",
+                height: "100%",
+                position: "relative",
+              }}
               onClick={() =>
                 router.replace({
                   pathname: `/visualizacao-da-propriedade/${data?.property?.id}/${data?.property?.property_title}`,
@@ -134,8 +139,8 @@ function ScheduleCard({ data, languageName }) {
               <Image
                 loader={myLoader}
                 src={`${data?.property?.attachments?.[0]?.file_path}`}
-                height={220}
-                width={300}
+                layout="fill"
+                objectFit="cover"
                 alt="rentImage"
               />
             </Box>
