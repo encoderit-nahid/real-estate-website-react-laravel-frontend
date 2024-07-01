@@ -34,12 +34,20 @@ function HouseCard({
 }) {
   const t = languageName === "en" ? en : pt;
   const myLoader = ({ src }) => {
+    console.log("🟥 ~ myLoader ~ src:", src);
+    if (
+      src ==
+      "https://broadbits.com/wp-content/themes/ryse/assets/images/no-image/No-Image-Found-400x264.png"
+    ) {
+      return src;
+    }
     return `${_imageURL}/${src}`;
   };
 
   const currentUser = useCurrentUser();
 
   const [favoriteList, setFavoriteList] = useState([]);
+
   useEffect(() => {
     if (currentUser?.wishList) {
       setFavoriteList(currentUser?.wishList.split(",").map(Number));
@@ -99,7 +107,12 @@ function HouseCard({
         {/* <Image src={houseImage} layout="responsive" alt="house" /> */}
         <Image
           loader={myLoader}
-          src={`${propertyInfo?.attachments[0]?.file_path}`}
+          src={`${
+            propertyInfo?.attachments?.find(
+              (attachment) => attachment.title == "cover_photo"
+            )?.file_path ||
+            "https://broadbits.com/wp-content/themes/ryse/assets/images/no-image/No-Image-Found-400x264.png"
+          }`}
           width={imageSize?.width || 500}
           height={imageSize?.height || 400}
           alt="house"
