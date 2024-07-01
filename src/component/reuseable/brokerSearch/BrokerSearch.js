@@ -1,5 +1,5 @@
 import { Box, Button, Grid, IconButton, InputAdornment } from "@mui/material";
-import React, { useCallback } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import SearchIcon from "@mui/icons-material/Search";
 import BaseTextField from "../baseTextField/BaseTextField";
 import pt from "locales/pt";
@@ -14,6 +14,7 @@ function BrokerSearch({ handleSearchBroker, searchValue }) {
       <Grid container spacing={2}>
         <Grid item xs={12}>
           <BaseTextField
+            defaultValue={searchValue}
             variant="outlined"
             placeholder={t["Search by name, city or neighborhood"]}
             size="small"

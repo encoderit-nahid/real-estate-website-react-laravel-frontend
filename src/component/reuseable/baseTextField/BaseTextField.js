@@ -20,6 +20,7 @@ function BaseTextField({
   disabled,
   helperText,
   onBlur,
+  defaultValue,
 }) {
   return (
     <TextField
@@ -43,6 +44,7 @@ function BaseTextField({
       required={required}
       helperText={helperText}
       onBlur={onBlur}
+      defaultValue={defaultValue}
     />
   );
 }

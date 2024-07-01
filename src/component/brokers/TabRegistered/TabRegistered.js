@@ -17,7 +17,7 @@ function TabRegistered({ languageName }) {
   const { query } = router;
   const [page, setPage] = React.useState(1);
 
-  const [searchValue, setSearchValue] = useState(query.name || "");
+  const [searchValue, setSearchValue] = useState(() => query.name || "");
 
   const {
     data: brokerUserData,
@@ -75,13 +75,13 @@ function TabRegistered({ languageName }) {
     );
   }
 
-  // if (isFetched && isFetching) {
-  //   return (
-  //     <Box sx={{ width: '100%' }}>
-  //       <LinearProgress />
-  //     </Box>
-  //   )
-  // }
+  if (isFetched && isFetching) {
+    return (
+      <Box sx={{ width: "100%" }}>
+        <LinearProgress />
+      </Box>
+    );
+  }
 
   return (
     <Box>

@@ -1,5 +1,5 @@
 import { Grid, Pagination, Skeleton, Stack } from "@mui/material";
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import TabRegisteredCard from "../TabRegisteredCard/TabRegisteredCard";
 import TabPendantCard from "../TabPendantCard/TabPendantCard";
 import { useDispatch, useSelector } from "react-redux";
@@ -15,7 +15,7 @@ function TabPendant({ languageName, brokerCountRefetch }) {
   const router = useRouter();
   const { query } = router;
   const [page, setPage] = React.useState(1);
-  const [searchValue, setSearchValue] = React.useState(query.name || "");
+  const [searchValue, setSearchValue] = useState(() => query.name || "");
 
   const {
     data: brokerUserData,
