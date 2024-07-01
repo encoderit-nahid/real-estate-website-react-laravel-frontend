@@ -11,13 +11,18 @@ import { Box } from "@mui/material";
 import { useRouter } from "next/router";
 import BrokerSearch from "@/component/reuseable/brokerSearch/BrokerSearch";
 import { debounce } from "@/utils/debounce";
+import { set } from "date-fns";
 
-function TabRegistered({ languageName }) {
+function TabRegistered({ languageName, searchValue, setSearchValue }) {
   const router = useRouter();
   const { query } = router;
   const [page, setPage] = React.useState(1);
 
-  const [searchValue, setSearchValue] = useState(() => query.name || "");
+  // const [searchValue, setSearchValue] = useState(() => query.name | "");
+
+  // useEffect(() => {
+  //   setSearchValue(query?.name);
+  // }, [query?.name]);
 
   const {
     data: brokerUserData,

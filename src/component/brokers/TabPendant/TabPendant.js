@@ -11,11 +11,16 @@ import { useRouter } from "next/router";
 import BrokerSearch from "@/component/reuseable/brokerSearch/BrokerSearch";
 import { debounce } from "@/utils/debounce";
 
-function TabPendant({ languageName, brokerCountRefetch }) {
+function TabPendant({
+  languageName,
+  brokerCountRefetch,
+  searchValue,
+  setSearchValue,
+}) {
   const router = useRouter();
   const { query } = router;
   const [page, setPage] = React.useState(1);
-  const [searchValue, setSearchValue] = useState(() => query.name || "");
+  // const [searchValue, setSearchValue] = useState(() => query.name || "");
 
   const {
     data: brokerUserData,

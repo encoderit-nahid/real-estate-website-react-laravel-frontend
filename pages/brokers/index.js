@@ -82,10 +82,23 @@ export default function Brokers({ language }) {
   const brokerCountData = data?.data;
 
   const [value, setValue] = useState(0);
+  const router = useRouter();
+  const { query } = router;
+
+  const [searchValue, setSearchValue] = useState(() => query.name | "");
 
   const handleChange = (event, newValue) => {
     setValue(newValue);
+    setSearchValue("");
+    router.replace({
+      query: {
+        name: "",
+      },
+    });
   };
+  // useEffect(() => {
+  //   console.log("🟥 ~ Brokers ~ value:", value);
+  // }, [value]);
 
   return (
     <Box
@@ -154,13 +167,19 @@ export default function Brokers({ language }) {
 
           <TabPanel value={value} index={0}>
             {/* <Pendants /> */}
-            <TabRegistered languageName={myValue.toString()} />
+            <TabRegistered
+              languageName={myValue.toString()}
+              searchValue={searchValue}
+              setSearchValue={setSearchValue}
+            />
           </TabPanel>
           <TabPanel value={value} index={1}>
             {/* <Accepted /> */}
             <TabPendant
               languageName={myValue.toString()}
               brokerCountRefetch={loadingRefetch}
+              searchValue={searchValue}
+              setSearchValue={setSearchValue}
             />
           </TabPanel>
         </Box>
