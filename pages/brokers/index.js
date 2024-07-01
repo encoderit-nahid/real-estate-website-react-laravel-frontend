@@ -85,7 +85,7 @@ export default function Brokers({ language }) {
   const router = useRouter();
   const { query } = router;
 
-  const [searchValue, setSearchValue] = useState(() => query.name | "");
+  const [searchValue, setSearchValue] = useState(() => query.name || "");
 
   const handleChange = (event, newValue) => {
     setValue(newValue);

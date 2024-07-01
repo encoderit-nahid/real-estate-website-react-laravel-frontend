@@ -6,9 +6,11 @@ import Link from "next/link";
 import { _baseURL, _imageURL } from "../../../../consts";
 import en from "locales/en";
 import pt from "locales/pt";
+import { useSession } from "next-auth/react";
 
 function ReleaseCard({ projectData, languageName }) {
   const t = languageName === "en" ? en : pt;
+  const { data: session } = useSession();
   const myLoader = ({ src }) => {
     return `${_imageURL}/${src}`;
   };
@@ -118,36 +120,38 @@ function ReleaseCard({ projectData, languageName }) {
               </Button>
             </a>
           </Link>
-          <Link
-            href={{
-              pathname: "/my-properties/new-venture",
-              query: {
-                project_id: projectData?.id,
-              },
-            }}
-          >
-            <Button
-              sx={{
-                textTransform: "none",
-                border: "1px solid #002152",
-                borderRadius: "4px",
-                color: "#002152",
-                fontSize: "16px",
-                fontWeight: "600",
-                width: {
-                  xs: "92%",
-                  sm: "92%",
-                  md: "92%",
-                  lg: "85%",
-                  xl: "92%",
+          {session?.user?.role === "admin" && (
+            <Link
+              href={{
+                pathname: "/my-properties/new-venture",
+                query: {
+                  project_id: projectData?.id,
                 },
-                mx: 2,
-                mb: 2,
               }}
             >
-              {t["Edit"]}
-            </Button>
-          </Link>
+              <Button
+                sx={{
+                  textTransform: "none",
+                  border: "1px solid #002152",
+                  borderRadius: "4px",
+                  color: "#002152",
+                  fontSize: "16px",
+                  fontWeight: "600",
+                  width: {
+                    xs: "92%",
+                    sm: "92%",
+                    md: "92%",
+                    lg: "85%",
+                    xl: "92%",
+                  },
+                  mx: 2,
+                  mb: 2,
+                }}
+              >
+                {t["Edit"]}
+              </Button>
+            </Link>
+          )}
         </Grid>
       </Box>
     </Link>
