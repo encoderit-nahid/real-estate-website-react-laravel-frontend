@@ -59,7 +59,7 @@ function TabRegistered({ languageName }) {
     debouncedHandleSearch(value);
   };
 
-  if (brokerLoading) {
+  if (brokerLoading || isFetching) {
     return (
       <Grid container spacing={1}>
         {[0, 1, 2, 3, 4, 5].map((data, index) => (
