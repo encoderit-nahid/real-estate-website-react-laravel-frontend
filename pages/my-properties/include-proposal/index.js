@@ -41,6 +41,7 @@ const PropertyCard = dynamic(() =>
 import en from "locales/en";
 import pt from "locales/pt";
 import { _imageURL } from "consts";
+import { reverseBrCurrencyFormat } from "@/utils/reverseBrCurrencyFormat";
 
 const drawerWidth = 240;
 
@@ -76,12 +77,10 @@ export default function IncludeProposal({ language }) {
   });
 
   const validationSchemaInstallment = Yup.object().shape({
-    total_amount: Yup.string().required(t["Total amount is required"]),
-    cash_amount: Yup.number().required(t["Cash Value is required"]),
-    payment_per_installment: Yup.number().required(t["Term Value is required"]),
-    no_of_installment: Yup.number().required(
-      t["Number of Installments is required"]
-    ),
+    total_amount: Yup.string().required("nome é obrigatório"),
+    cash_amount: Yup.string().required("valor é obrigatório"),
+    payment_per_installment: Yup.string().required("valor é obrigatório"),
+    no_of_installment: Yup.number().required("valor é obrigatório"),
     //   name: Yup.string().required("Full name is required"),
     //   rg: Yup.string().required("RG  is required"),
     //   cpf: Yup.string().required("CPF is required"),
@@ -199,6 +198,11 @@ export default function IncludeProposal({ language }) {
 
   const onSubmit = async (data) => {
     setLoading(true);
+    data.total_amount = reverseBrCurrencyFormat(data.total_amount);
+    data.cash_amount = reverseBrCurrencyFormat(data.cash_amount);
+    data.payment_per_installment = reverseBrCurrencyFormat(
+      data.payment_per_installment
+    );
 
     const requireData = omitEmpties({
       user_id: session?.user?.userId,
@@ -209,19 +213,6 @@ export default function IncludeProposal({ language }) {
       cash_amount: data?.cash_amount,
       payment_per_installment: data?.payment_per_installment,
       no_of_installment: data?.no_of_installment,
-      proposal_buyer: {
-        name: data?.name,
-        marital_status: maritalStatus,
-        rg: data?.rg,
-        cpf: data?.cpf,
-        zip_code: data?.zip_code,
-        address: data?.address,
-        number: data?.number,
-        neighbourhood: data?.neighbourhood,
-        city: data?.city,
-        state: data?.state?.name,
-        complement: data?.complement,
-      },
     });
 
     const [error, response] = await proposalCreateApi(requireData);

@@ -41,7 +41,7 @@ const PropertySubmittedModal = dynamic(() =>
     "@/component/new property/PropertySubmittedModal/PropertySubmittedModal"
   )
 );
-import {  useSession } from "next-auth/react";
+import { useSession } from "next-auth/react";
 import { useForm, Controller, useFieldArray } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as Yup from "yup";
@@ -131,12 +131,12 @@ export default function NewProperty({ language }) {
             .test("isValidCPF", t["CPF number is required"], validateCPF),
     owner_spouse_cpf:
       session?.user?.role === "owner"
-        ? Yup.string().optional()
+        ? Yup.string().notRequired()
         : maritalStatus === "Married"
         ? Yup.string()
             .required(t["CPF number is required"])
             .test("isValidCPF", t["CPF number is required"], validateCPF)
-        : Yup.string().optional(),
+        : Yup.string().notRequired(),
     owner_rg:
       session?.user?.role === "owner"
         ? Yup.string().optional()
@@ -145,12 +145,12 @@ export default function NewProperty({ language }) {
             .length(12, t["RG number is required"]),
     owner_spouse_rg:
       session?.user?.role === "owner"
-        ? Yup.string().optional()
+        ? Yup.string().notRequired()
         : maritalStatus === "Married"
         ? Yup.string()
             .required(t["RG number is required"])
             .length(12, t["RG number is required"])
-        : Yup.string().optional(),
+        : Yup.string().notRequired(),
   });
 
   const dispatch = useDispatch();

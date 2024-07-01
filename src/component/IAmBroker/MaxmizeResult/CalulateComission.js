@@ -43,11 +43,11 @@ function CalulateComission({
 
   const handleCalculation = () => {
     console.log("🟥 ~ handleCalculation ~ salevalue:");
-    const fullComissionValue = salevalue * (6 / 100);
+    const fullComissionValue = salevalue * (commission / 100);
     setFullCommission(fullComissionValue);
 
     // const yourComissionValue = fullComissionValue * (70 / 100);
-    const yourComissionValue = fullComissionValue * (commission / 100);
+    const yourComissionValue = fullComissionValue * (70 / 100);
 
     setYourCommission(yourComissionValue);
   };
