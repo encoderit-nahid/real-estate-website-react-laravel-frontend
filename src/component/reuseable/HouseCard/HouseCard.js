@@ -120,7 +120,6 @@ function HouseCard({
         backgroundColor: "#FFFFFF",
         borderRadius: "8px",
         pb: 3,
-        height: 460,
         boxShadow: shadow,
         marginTop: marginTop,
         cursor: "pointer",
