@@ -423,6 +423,9 @@ export default {
   "Copy information": "Copiar informações",
   "Buyer's agent agreement": "Contrato de agente do comprador",
   "Purchase Agreement": "Acordo de compra",
+  "Buyer agente": "Matrícula",
+
+  "Building Approval": "Contrato de compra e venda",
   "Building Approval Plan": "Plano de Aprovação de Construção",
   "Land Receipts": "Recibos de Terra",
   "To schedule": "Confirmar",

@@ -114,38 +114,20 @@ function HouseCard({
     }
   };
   return (
-    <Box
+    <Stack
+      direction={"column"}
       sx={{
         backgroundColor: "#FFFFFF",
         borderRadius: "8px",
         pb: 3,
+        height: 460,
         boxShadow: shadow,
         marginTop: marginTop,
         cursor: "pointer",
-        position: "relative", // Ensure the positioning context for absolute positioning of the favorite icon
+        overflow: "hidden",
       }}
     >
-      <IconButton
-        sx={{
-          position: "absolute",
-          bottom: { xs: 220, sm: 220, md: 200, lg: 190 },
-          right: 0,
-          zIndex: "1",
-        }} // Position the favorite icon at the top right corner
-        aria-label="favorite"
-        color="primary" // Set the color of the icon
-        onClick={(event) => toggleFavorite(event, propertyInfo?.id)} // Handle click event
-      >
-        <FavoriteIcon
-          sx={{
-            color: `${
-              favoriteList?.includes(propertyInfo.id) ? "red" : "#ffffff"
-            }`,
-          }}
-        />
-      </IconButton>
-      <Box sx={{ width: "100%" }}>
-        {/* <Image src={houseImage} layout="responsive" alt="house" /> */}
+      <Box sx={{ width: "100%", position: "relative" }}>
         <Image
           loader={myLoader}
           src={`${
@@ -158,62 +140,94 @@ function HouseCard({
           height={imageSize?.height || 400}
           alt="house"
         />
+        <IconButton
+          sx={{
+            position: "absolute",
+            bottom: 0,
+            right: 0,
+            zIndex: "1",
+          }} // Position the favorite icon at the top right corner
+          aria-label="favorite"
+          color="primary" // Set the color of the icon
+          onClick={(event) => toggleFavorite(event, propertyInfo?.id)} // Handle click event
+        >
+          <FavoriteIcon
+            sx={{
+              color: `${
+                favoriteList?.includes(propertyInfo.id) ? "red" : "#ffffff"
+              }`,
+            }}
+          />
+        </IconButton>
       </Box>
-      <Grid
+      <Stack
         container
         direction="column"
-        justifyContent="center"
+        justifyContent="space-between"
         alignItems="flex-start"
         sx={{ pl: 3, pt: 2 }}
       >
-        <Typography
-          variant="p"
-          sx={{ fontSize: "18px", fontWeight: "700", color: "#1A1859" }}
-        >
-          {propertyInfo?.property_title.slice(0, 43)}
-        </Typography>
-        <Typography
-          variant="p"
-          sx={{ fontSize: "16px", fontWeight: "400", color: "#1A1859" }}
-        >
-          {`${propertyInfo?.address?.city},${propertyInfo?.address?.state?.name}`}
-        </Typography>
-        <Typography
-          variant="p"
-          sx={{
-            fontSize: "12px",
-            fontWeight: "400",
-            color: "#7C7C99",
-            pt: 2,
-          }}
-        >
-          {`${t["sale value"]}:`}
-        </Typography>
-        <Typography
-          variant="p"
-          sx={{ fontSize: "24px", fontWeight: "800", color: "#0E97F7" }}
-        >
-          <span
-            style={{
-              fontSize: "16px",
-              fontWeight: "400",
-              color: "#0E97F7",
+        <Box>
+          <Typography
+            variant="p"
+            sx={{
+              fontSize: "18px",
+              fontWeight: "700",
+              color: "#1A1859",
+              overflow: "hidden",
+              display: "-webkit-box",
+              WebkitBoxOrient: "vertical",
+              WebkitLineClamp: 1,
+              textOverflow: "ellipsis",
             }}
           >
-            R$
-          </span>
-          {` ${formatBrazilianCurrency(propertyInfo?.brl_rent).slice(2)}`}
-        </Typography>
-      </Grid>
+            {propertyInfo?.property_title}
+          </Typography>
+          <Typography
+            variant="p"
+            sx={{ fontSize: "16px", fontWeight: "400", color: "#1A1859" }}
+          >
+            {`${propertyInfo?.address?.city},${propertyInfo?.address?.state?.name}`}
+          </Typography>
+        </Box>
+        <Stack direction={"column"}>
+          <Typography
+            variant="p"
+            sx={{
+              fontSize: "12px",
+              fontWeight: "400",
+              color: "#7C7C99",
+              pt: 2,
+            }}
+          >
+            {`${t["sale value"]}:`}
+          </Typography>
+          <Typography
+            variant="p"
+            sx={{ fontSize: "24px", fontWeight: "800", color: "#0E97F7" }}
+          >
+            <span
+              style={{
+                fontSize: "16px",
+                fontWeight: "400",
+                color: "#0E97F7",
+              }}
+            >
+              R$
+            </span>
+            {` ${formatBrazilianCurrency(propertyInfo?.brl_rent).slice(2)}`}
+          </Typography>
+        </Stack>
+      </Stack>
       <Stack
         // container
         direction="row"
         // justifyContent="space-between"
         spacing={2}
         alignItems="center"
-        // sx={{
-        //   pl: 3,
-        // }}
+        sx={{
+          mt: "auto",
+        }}
       >
         <Box
           sx={{
@@ -224,6 +238,7 @@ function HouseCard({
             position: "relative",
             // backgroundColor: "red",
             zIndex: 100,
+            // mt: "auto",
           }}
         >
           {showLeftButton && (
@@ -559,7 +574,7 @@ function HouseCard({
           </Stack>
         </Box>
       </Stack>
-    </Box>
+    </Stack>
   );
 }
 
