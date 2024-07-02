@@ -135,7 +135,7 @@ export default function Financial({ language }) {
                   mt: { xs: 1, sm: 1, md: 0, lg: 0, xl: 0 },
                 }}
               >
-                Financial
+                {t["Financial"]}
               </Typography>
             </Grid>
             <Container maxWidth="xl">

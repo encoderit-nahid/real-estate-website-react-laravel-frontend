@@ -217,6 +217,19 @@ function RentCard({
                 mt: 1,
               }}
             >
+              {propertyData?.property_title.length > 43
+                ? `${propertyData?.property_title.slice(0, 40)}...`
+                : propertyData?.property_title}
+            </Typography>
+            <Typography
+              variant="p"
+              sx={{
+                fontSize: "16px",
+                fontWeight: "600",
+                color: "#0E97F7",
+                mt: 1,
+              }}
+            >
               {formatBrazilianCurrency(propertyData?.brl_rent)}
             </Typography>
             <Typography

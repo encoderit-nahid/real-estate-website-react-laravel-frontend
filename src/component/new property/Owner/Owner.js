@@ -132,25 +132,28 @@ function Owner({
 
   useEffect(() => {
     const getData = async () => {
-      const [error, response] = await getAddressData(allValues?.owner_zip_code)
+      const [error, response] = await getAddressData(allValues?.owner_zip_code);
       if (error) {
-        setValue('owner_address', "")
-        setValue('owner_neighbourhood', "")
-        setValue('owner_complement', "")
-        setValue('owner_city', "")
-        setValue('owner_state', '')
+        setValue("owner_address", "");
+        setValue("owner_neighbourhood", "");
+        setValue("owner_complement", "");
+        setValue("owner_city", "");
+        setValue("owner_state", "");
       } else {
-        setValue('owner_address', response?.data?.logradouro)
-        setValue('owner_neighbourhood', response?.data?.bairro)
-        setValue('owner_complement', response?.data?.complemento)
-        setValue('owner_city', response?.data?.localidade)
-        setValue('owner_state', allStateData?.find((data) => data?.uf === response?.data?.uf ))
+        setValue("owner_address", response?.data?.logradouro);
+        setValue("owner_neighbourhood", response?.data?.bairro);
+        setValue("owner_complement", response?.data?.complemento);
+        setValue("owner_city", response?.data?.localidade);
+        setValue(
+          "owner_state",
+          allStateData?.find((data) => data?.uf === response?.data?.uf)
+        );
       }
-    }
+    };
     if (allValues?.owner_zip_code && allValues?.owner_zip_code?.length > 8) {
-      getData()
+      getData();
     }
-  }, [allValues?.owner_zip_code, setValue,allStateData])
+  }, [allValues?.owner_zip_code, setValue, allStateData]);
 
   return (
     <Box sx={{ mt: 4 }}>
@@ -696,8 +699,8 @@ function Owner({
             render={({ field }) => (
               <BaseAutocomplete
                 //   sx={{ margin: "0.6vh 0" }}
-                options={top100Films || []}
-                getOptionLabel={(option) => option.label || ""}
+                options={agreementType || []}
+                getOptionLabel={(option) => t[option.label] || ""}
                 isOptionEqualToValue={(option, value) =>
                   option.year === value.year
                 }
@@ -904,9 +907,9 @@ function Owner({
 }
 
 export default Owner;
-const top100Films = [
+const agreementType = [
   { label: "Buyer's agent agreement", year: 1994 },
   { label: "Purchase Agreement", year: 1972 },
   { label: "Building Approval Plan", year: 1974 },
-  { label: " Land Receipts", year: 2008 },
+  { label: "Land Receipts", year: 2008 },
 ];
