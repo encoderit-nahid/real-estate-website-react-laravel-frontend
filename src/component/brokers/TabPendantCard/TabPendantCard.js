@@ -24,7 +24,12 @@ import pt from "locales/pt";
 import en from "locales/en";
 import BaseCloseButton from "@/component/reuseable/baseCloseButton/BaseCloseButton";
 
-function TabpendantCard({ brokerInfo, languageName,brokerCountRefetch,brokerRefetch }) {
+function TabpendantCard({
+  brokerInfo,
+  languageName,
+  brokerCountRefetch,
+  brokerRefetch,
+}) {
   const t = languageName === "en" ? en : pt;
   const dispatch = useDispatch();
   const [state, setState] = React.useState({
@@ -53,14 +58,13 @@ function TabpendantCard({ brokerInfo, languageName,brokerCountRefetch,brokerRefe
     };
     dispatch(changeStatusBroker(data));
     brokerRefetch();
-    brokerCountRefetch()
-    
+    brokerCountRefetch();
   };
 
-  const handleFailBroker = (id) => {
+  const handleFailBroker = async (id) => {
     dispatch(deleteBroker(id));
-    brokerRefetch();
-    brokerCountRefetch()
+    await brokerRefetch();
+    await brokerCountRefetch();
   };
 
   const myLoader = ({ src }) => {
@@ -92,7 +96,7 @@ function TabpendantCard({ brokerInfo, languageName,brokerCountRefetch,brokerRefe
         >
           {t["Brokers"]}
         </Typography>
-        <BaseCloseButton handleClose={toggleDrawer(anchor, false)}/>
+        <BaseCloseButton handleClose={toggleDrawer(anchor, false)} />
       </Grid>
       <Box
         sx={{
