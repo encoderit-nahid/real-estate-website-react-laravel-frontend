@@ -23,6 +23,7 @@ export default {
   "Clients and full assistance": "Clients and full assistance",
   "earn more": "earn more",
   Register: "Register",
+  suites: "suites",
   sales: "sales",
   "Physical person": "Physical person",
   "Legal person": "Legal person",

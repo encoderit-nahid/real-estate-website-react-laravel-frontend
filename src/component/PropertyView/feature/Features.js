@@ -12,7 +12,9 @@ import en from "locales/en";
 import pt from "locales/pt";
 
 function Features({ singlePropertyData, languageName }) {
+  console.log("🟥 ~ Features ~ singlePropertyData:", singlePropertyData);
   const t = languageName === "en" ? en : pt;
+
   return (
     <Stack
       container
@@ -50,6 +52,53 @@ function Features({ singlePropertyData, languageName }) {
           alignItems={"center"}
           justifyContent={"center"}
         >
+          {+singlePropertyData?.property?.land_area > 0 && (
+            <Stack
+              direction="row"
+              justifyContent="flex-start"
+              alignItems="center"
+              spacing={1}
+              sx={{
+                width: "100%",
+              }}
+            >
+              <Image src={rule} alt="rule" width={24} height={24} />
+              <Typography
+                variant="p"
+                sx={{
+                  fontSize: "14px",
+                  fontWeight: "400",
+                  color: "#7C7C99",
+                }}
+              >
+                {`${singlePropertyData?.property?.land_area} m² of land`}
+              </Typography>
+            </Stack>
+          )}
+          {+singlePropertyData?.property?.property_area > 0 && (
+            <Stack
+              direction="row"
+              justifyContent="flex-start"
+              alignItems="center"
+              spacing={1}
+              sx={{
+                width: "100%",
+              }}
+            >
+              <Image src={rule} alt="rule" width={24} height={24} />
+              <Typography
+                variant="p"
+                sx={{
+                  fontSize: "14px",
+                  fontWeight: "400",
+                  color: "#7C7C99",
+                }}
+              >
+                {`${singlePropertyData?.property?.property_area} m² of construction`}
+              </Typography>
+            </Stack>
+          )}
+
           {+singlePropertyData?.property?.no_of_rooms > 0 && (
             <Stack
               direction="row"
@@ -73,8 +122,7 @@ function Features({ singlePropertyData, languageName }) {
               </Typography>
             </Stack>
           )}
-
-          {+singlePropertyData?.property?.property_area > 0 && (
+          {+singlePropertyData?.property?.no_of_suites > 0 && (
             <Stack
               direction="row"
               justifyContent="flex-start"
@@ -84,7 +132,7 @@ function Features({ singlePropertyData, languageName }) {
                 width: "100%",
               }}
             >
-              <Image src={rule} alt="rule" width={24} height={24} />
+              <Image src={bed} alt="bed" width={24} height={24} />
               <Typography
                 variant="p"
                 sx={{
@@ -93,7 +141,7 @@ function Features({ singlePropertyData, languageName }) {
                   color: "#7C7C99",
                 }}
               >
-                {`${singlePropertyData?.property?.property_area} m²`}
+                {`${singlePropertyData?.property?.no_of_suites} ${t["suites"]}`}
               </Typography>
             </Stack>
           )}

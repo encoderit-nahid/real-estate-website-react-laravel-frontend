@@ -20,6 +20,7 @@ const omitEmpties = (obj) => {
 };
 
 function RentCard({ propertyData, languageName }) {
+  console.log("🟥 ~ RentCard ~ propertyData:", propertyData);
   const t = languageName === "en" ? en : pt;
   const [progress, setProgress] = React.useState(87);
 
@@ -189,6 +190,19 @@ function RentCard({ propertyData, languageName }) {
                 fontSize: "24px",
                 lineHeight: "32px",
                 fontWeight: "700",
+                mt: 1,
+              }}
+            >
+              {propertyData?.property_title.length > 43
+                ? `${propertyData?.property_title.slice(0, 40)}...`
+                : propertyData?.property_title}
+            </Typography>
+            <Typography
+              variant="p"
+              sx={{
+                fontSize: "16px",
+                fontWeight: "600",
+                color: "#0E97F7",
                 mt: 1,
               }}
             >

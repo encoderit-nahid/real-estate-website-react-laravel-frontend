@@ -71,7 +71,7 @@ function FulfillDream({ languageName, setKnowMoreModal }) {
     >
       <BaseTextField
         fullWidth
-        label={"Onde você que o imóvel?"}
+        label={"Onde você quer um imóvel?"}
         placeholder={"procure por rua, bairro ou cidade"}
         InputLabelProps={{
           sx: {
