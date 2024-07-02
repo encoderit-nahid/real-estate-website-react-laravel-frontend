@@ -7,13 +7,39 @@ import { _baseURL, _imageURL } from "../../../../consts";
 import en from "locales/en";
 import pt from "locales/pt";
 import { useSession } from "next-auth/react";
+import { useProjectDeleteMutation } from "@/queries/useProjectDeleteMutation";
 
-function ReleaseCard({ projectData, languageName }) {
+function ReleaseCard({
+  projectData,
+  languageName,
+  page,
+  refetch,
+  loadingRefetch,
+}) {
   const t = languageName === "en" ? en : pt;
   const { data: session } = useSession();
   const myLoader = ({ src }) => {
     return `${_imageURL}/${src}`;
   };
+
+  const mutation = useProjectDeleteMutation(page);
+
+  const handleDeleteProject = (id, event) => {
+    event.preventDefault();
+    const body = {
+      project_id: id,
+    };
+    mutation.mutate(body, {
+      onError(error) {
+        console.log(error);
+      },
+      onSuccess: async (data) => {
+        await refetch();
+        await loadingRefetch();
+      },
+    });
+  };
+
   return (
     <Link href={`/visualizacao-do-projeto/${projectData?.id}`}>
       <Box
@@ -152,6 +178,28 @@ function ReleaseCard({ projectData, languageName }) {
               </Button>
             </Link>
           )}
+          <Button
+            sx={{
+              textTransform: "none",
+              border: "1px solid red",
+              borderRadius: "4px",
+              color: "red",
+              fontSize: "16px",
+              fontWeight: "600",
+              width: {
+                xs: "92%",
+                sm: "92%",
+                md: "92%",
+                lg: "85%",
+                xl: "92%",
+              },
+              mx: 2,
+              mb: 2,
+            }}
+            onClick={(event) => handleDeleteProject(projectData?.id, event)}
+          >
+            Excluir
+          </Button>
         </Grid>
       </Box>
     </Link>

@@ -34,6 +34,10 @@ import { createProposalApi } from "../../../api";
 import en from "locales/en";
 import pt from "locales/pt";
 import BaseCloseButton from "@/component/reuseable/baseCloseButton/BaseCloseButton";
+import { formatBrazilianCurrency } from "@/utils/useUtilities";
+import BaseValueField from "@/component/reuseable/baseValueField/BaseValueFiled";
+import { reverseBrCurrencyFormat } from "@/utils/reverseBrCurrencyFormat";
+import { _imageURL } from "consts";
 
 const style = {
   position: "absolute",
@@ -53,13 +57,13 @@ const style = {
 };
 
 const validationSchemaCash = Yup.object().shape({
-  total_amount: Yup.number().required("valor é obrigatório"),
+  total_amount: Yup.string().required("nome é obrigatório"),
 });
 
 const validationSchemaInstallment = Yup.object().shape({
-  total_amount: Yup.number().required("nome é obrigatório"),
-  cash_amount: Yup.number().required("valor é obrigatório"),
-  payment_per_installment: Yup.number().required("valor é obrigatório"),
+  total_amount: Yup.string().required("nome é obrigatório"),
+  cash_amount: Yup.string().required("valor é obrigatório"),
+  payment_per_installment: Yup.string().required("valor é obrigatório"),
   no_of_installment: Yup.number().required("valor é obrigatório"),
 });
 
@@ -96,6 +100,11 @@ function CounterProposalModal({
 
   const onSubmit = async (data) => {
     setLoading(true);
+    data.total_amount = reverseBrCurrencyFormat(data.total_amount);
+    data.cash_amount = reverseBrCurrencyFormat(data.cash_amount);
+    data.payment_per_installment = reverseBrCurrencyFormat(
+      data.payment_per_installment
+    );
     const allData = {
       ...data,
       user_id: session?.user?.userId,
@@ -115,6 +124,10 @@ function CounterProposalModal({
         setError(name, { type: "manual", message: messages[0] });
       });
     }
+  };
+
+  const myLoader = ({ src }) => {
+    return `${_imageURL}/${src}`;
   };
 
   return (
@@ -155,7 +168,13 @@ function CounterProposalModal({
           <ListItem sx={{ margin: 0, paddingY: "1px" }}>
             <ListItemAvatar>
               <Avatar>
-                <Image src={avatar} alt="avatar" />
+                <Image
+                  loader={myLoader}
+                  src={proposalData?.user?.attachments[0]?.file_path}
+                  alt="avatar"
+                  width={50}
+                  height={50}
+                />
               </Avatar>
             </ListItemAvatar>
             <ListItemText
@@ -204,7 +223,7 @@ function CounterProposalModal({
               fontWeight: "700",
             }}
           >
-            {`R$ ${proposalData?.total_amount}`}
+            {formatBrazilianCurrency(proposalData?.total_amount)}
           </Typography>
         </Grid>
         <Divider sx={{ mx: 2 }} />
@@ -312,11 +331,10 @@ function CounterProposalModal({
             control={control}
             defaultValue={""}
             render={({ field }) => (
-              <BaseTextField
+              <BaseValueField
                 size={"small"}
                 placeholder={t["Total amount"]}
                 variant={"outlined"}
-                type={"number"}
                 name={"total_amount"}
                 value={field.value}
                 onChange={(e) => {
@@ -338,12 +356,12 @@ function CounterProposalModal({
                 name="cash_amount"
                 control={control}
                 render={({ field }) => (
-                  <BaseTextField
+                  <BaseValueField
                     size={"small"}
                     placeholder={t["Cash value"]}
-                    type={"number"}
                     sx={{ mt: 2 }}
                     variant={"outlined"}
+                    value={field.value}
                     name={"cash_amount"}
                     onChange={(e) => {
                       field.onChange(e.target.value);
@@ -362,13 +380,13 @@ function CounterProposalModal({
                 name="payment_per_installment"
                 control={control}
                 render={({ field }) => (
-                  <BaseTextField
+                  <BaseValueField
                     size={"small"}
                     placeholder={t["Term value"]}
-                    type={"number"}
                     sx={{ mt: 2 }}
                     variant={"outlined"}
                     name={"payment_per_installment"}
+                    value={field.value}
                     onChange={(e) => {
                       field.onChange(e.target.value);
                     }}

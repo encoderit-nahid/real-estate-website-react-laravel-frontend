@@ -9,6 +9,7 @@ import { useSession } from "next-auth/react";
 import en from "locales/en";
 import pt from "locales/pt";
 import { formatBrazilianCurrency } from "@/utils/useUtilities";
+import { usePropertyDeleteMutation } from "@/queries/usePropertyDeleteMutation";
 
 const omitEmpties = (obj) => {
   return Object.entries(obj).reduce((carry, [key, value]) => {
@@ -19,11 +20,35 @@ const omitEmpties = (obj) => {
   }, {});
 };
 
-function RentCard({ propertyData, languageName }) {
+function RentCard({
+  propertyData,
+  languageName,
+  page,
+  loadingRefetch,
+  refetch,
+}) {
   const t = languageName === "en" ? en : pt;
   const [progress, setProgress] = React.useState(87);
 
   const { data: session } = useSession();
+
+  const mutation = usePropertyDeleteMutation(page);
+
+  const handleDeleteProperty = (id, event) => {
+    event.preventDefault();
+    const body = {
+      property_id: id,
+    };
+    mutation.mutate(body, {
+      onError(error) {
+        console.log(error);
+      },
+      onSuccess: async (data) => {
+        await refetch();
+        await loadingRefetch();
+      },
+    });
+  };
 
   const myLoader = ({ src }) => {
     return `${_imageURL}/${src}`;
@@ -308,6 +333,35 @@ function RentCard({ propertyData, languageName }) {
                   </Button>
                 </Link>
               )}
+              <Button
+                sx={{
+                  color: "red",
+                  fontSize: "14px",
+                  lineHeight: "18px",
+                  fontWeight: "600",
+                  border: "1px solid red",
+                  borderRadius: "4px",
+                  //   padding: "8px 20px",
+                  textTransform: "none",
+                  ml: 1,
+                  "&:hover": {
+                    color: "red",
+                    fontSize: "14px",
+                    lineHeight: "18px",
+                    fontWeight: "600",
+                    border: "1px solid red",
+                    borderRadius: "4px",
+                    //   padding: "8px 20px",
+                    textTransform: "none",
+                    ml: 1,
+                  },
+                }}
+                onClick={(event) =>
+                  handleDeleteProperty(propertyData?.id, event)
+                }
+              >
+                Excluir
+              </Button>
             </Box>
           </Grid>
         </Grid>

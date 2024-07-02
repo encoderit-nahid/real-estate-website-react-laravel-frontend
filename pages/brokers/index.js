@@ -171,6 +171,7 @@ export default function Brokers({ language }) {
               languageName={myValue.toString()}
               searchValue={searchValue}
               setSearchValue={setSearchValue}
+              brokerCountRefetch={loadingRefetch}
             />
           </TabPanel>
           <TabPanel value={value} index={1}>

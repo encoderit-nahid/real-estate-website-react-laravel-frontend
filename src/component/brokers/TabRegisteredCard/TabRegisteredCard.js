@@ -25,9 +25,17 @@ import en from "locales/en";
 import { _imageURL } from "consts";
 import Link from "next/link";
 import BaseCloseButton from "@/component/reuseable/baseCloseButton/BaseCloseButton";
+import { useDispatch } from "react-redux";
+import { deleteBroker } from "@/redux/broker/actions";
 
-function TabRegisteredCard({ brokerInfo, languageName }) {
+function TabRegisteredCard({
+  brokerInfo,
+  languageName,
+  brokerCountRefetch,
+  brokerRefetch,
+}) {
   const t = languageName === "en" ? en : pt;
+  const dispatch = useDispatch();
   const [state, setState] = React.useState({
     top: false,
     left: false,
@@ -51,193 +59,11 @@ function TabRegisteredCard({ brokerInfo, languageName }) {
     setState({ ...state, [anchor]: open });
   };
 
-  const list = (anchor) => (
-    <Box
-      sx={{ width: anchor === "top" || anchor === "bottom" ? "auto" : 380 }}
-      role="presentation"
-      // onClick={toggleDrawer(anchor, false)}
-      // onKeyDown={toggleDrawer(anchor, false)}
-    >
-      <Grid
-        container
-        direction="row"
-        justifyContent="space-between"
-        alignItems="center"
-        sx={{ mt: 2, px: 2 }}
-      >
-        <Typography
-          variant="p"
-          sx={{
-            color: "#1A1859",
-            fontSize: "24px",
-            lineHeight: "32px",
-            fontWeight: "700",
-          }}
-        >
-          {t["Brokers"]}
-        </Typography>
-        <BaseCloseButton handleClose={toggleDrawer(anchor, false)} />
-      </Grid>
-      <Box
-        sx={{
-          background: "#ffffff",
-          boxShadow: "0px 4px 8px rgba(0, 33, 82, 0.08)",
-          border: "1px solid #DBE1E5",
-          borderRadius: { xs: 0, sm: 0, md: 0, lg: "8px", xl: "8px" },
-          mt: 2,
-          mx: 2,
-        }}
-      ></Box>
-      <Grid
-        container
-        direction="row"
-        justifyContent="flex-start"
-        alignItems="flex-start"
-        sx={{ px: 1.5, py: 1 }}
-      >
-        <Box>
-          {brokerInfo?.attachments[0]?.file_path ? (
-            <Image
-              loader={myLoader}
-              src={`${brokerInfo?.attachments[0]?.file_path}`}
-              alt="brokerImahe"
-              height={70}
-              width={70}
-              style={{ borderRadius: "50px" }}
-            />
-          ) : (
-            <Avatar />
-          )}
-        </Box>
-      </Grid>
-      <Grid
-        container
-        direction="column"
-        justifyContent="flex-start"
-        alignItems="flex-start"
-        sx={{ px: 1.5, py: 1 }}
-      >
-        <Typography
-          variant="h6"
-          sx={{
-            color: "#002152",
-            fontWeight: "400",
-            fontSize: "16px",
-            lineHeight: "22px",
-            pl: 0.5,
-          }}
-        >
-          {`Name ${brokerInfo?.name}`}
-        </Typography>
-        <Typography
-          variant="h6"
-          sx={{
-            color: "#002152",
-            fontWeight: "400",
-            fontSize: "16px",
-            lineHeight: "22px",
-            pl: 0.5,
-            mt: 1,
-          }}
-        >
-          {`Date of birth: ${dayjs(brokerInfo?.additional_info?.dob).format(
-            "MM/DD/YYYY"
-          )}`}
-        </Typography>
-        <Typography
-          variant="h6"
-          sx={{
-            color: "#002152",
-            fontWeight: "400",
-            fontSize: "16px",
-            lineHeight: "22px",
-            pl: 0.5,
-            mt: 1,
-          }}
-        >
-          {` RG: ${brokerInfo?.additional_info?.rg}`}
-        </Typography>
-        <Typography
-          variant="h6"
-          sx={{
-            color: "#002152",
-            fontWeight: "400",
-            fontSize: "16px",
-            lineHeight: "22px",
-            pl: 0.5,
-            mt: 1,
-          }}
-        >
-          {`CPF: ${brokerInfo?.additional_info?.cpf}`}
-        </Typography>
-        <Typography
-          variant="h6"
-          sx={{
-            color: "#002152",
-            fontWeight: "400",
-            fontSize: "16px",
-            lineHeight: "22px",
-            pl: 0.5,
-            mt: 1,
-          }}
-        >
-          {`CRECI: ${brokerInfo?.additional_info?.creci_number}`}
-        </Typography>
-        <Typography
-          variant="h6"
-          sx={{
-            color: "#002152",
-            fontWeight: "400",
-            fontSize: "16px",
-            lineHeight: "22px",
-            pl: 0.5,
-            mt: 1,
-          }}
-        >
-          {`Email ${brokerInfo?.email}`}
-        </Typography>
-        <Typography
-          variant="h6"
-          sx={{
-            color: "#002152",
-            fontWeight: "400",
-            fontSize: "16px",
-            lineHeight: "22px",
-            pl: 0.5,
-            mt: 1,
-          }}
-        >
-          {`Phone ${brokerInfo?.phone}`}
-        </Typography>
-        <Typography
-          variant="h6"
-          sx={{
-            color: "#002152",
-            fontWeight: "700",
-            fontSize: "16px",
-            lineHeight: "22px",
-            pl: 0.5,
-            mt: 3,
-          }}
-        >
-          {t["Address"]}
-        </Typography>
-        <Typography
-          variant="h6"
-          sx={{
-            color: "#002152",
-            fontWeight: "400",
-            fontSize: "16px",
-            lineHeight: "22px",
-            pl: 0.5,
-            mt: 1,
-          }}
-        >
-          {brokerInfo?.address?.address}
-        </Typography>
-      </Grid>
-    </Box>
-  );
+  const handleDeleteBroker = async (id) => {
+    dispatch(deleteBroker(id));
+    await brokerRefetch();
+    await brokerCountRefetch();
+  };
 
   return (
     <Box sx={{ background: "#ffffff", borderRadius: "8px" }}>
@@ -415,6 +241,27 @@ function TabRegisteredCard({ brokerInfo, languageName }) {
             </Button>
           </a>
         </Link>
+      </Box>
+      <Box sx={{ px: 1.5 }}>
+        <Button
+          fullWidth
+          onClick={() => handleDeleteBroker(brokerInfo?.id)}
+          sx={{
+            background: "#ffffff",
+            color: "#F44336",
+            fontWeight: "600",
+            fontSize: "14px",
+            lineHeight: "18px",
+            textTransform: "none",
+            mb: 2,
+            "&:hover": {
+              background: "#ffffff",
+              color: "#F44336",
+            },
+          }}
+        >
+          Excluir
+        </Button>
       </Box>
     </Box>
   );
