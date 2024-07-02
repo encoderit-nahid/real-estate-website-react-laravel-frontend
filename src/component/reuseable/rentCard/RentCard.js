@@ -346,18 +346,10 @@ function RentCard({
                   </Button>
                 </Link>
               )}
-              <Button
-                sx={{
-                  color: "red",
-                  fontSize: "14px",
-                  lineHeight: "18px",
-                  fontWeight: "600",
-                  border: "1px solid red",
-                  borderRadius: "4px",
-                  //   padding: "8px 20px",
-                  textTransform: "none",
-                  ml: 1,
-                  "&:hover": {
+              {(parseInt(session?.user?.userId) === propertyData?.user?.id ||
+                session?.user?.role === "admin") && (
+                <Button
+                  sx={{
                     color: "red",
                     fontSize: "14px",
                     lineHeight: "18px",
@@ -367,14 +359,25 @@ function RentCard({
                     //   padding: "8px 20px",
                     textTransform: "none",
                     ml: 1,
-                  },
-                }}
-                onClick={(event) =>
-                  handleDeleteProperty(propertyData?.id, event)
-                }
-              >
-                Excluir
-              </Button>
+                    "&:hover": {
+                      color: "red",
+                      fontSize: "14px",
+                      lineHeight: "18px",
+                      fontWeight: "600",
+                      border: "1px solid red",
+                      borderRadius: "4px",
+                      //   padding: "8px 20px",
+                      textTransform: "none",
+                      ml: 1,
+                    },
+                  }}
+                  onClick={(event) =>
+                    handleDeleteProperty(propertyData?.id, event)
+                  }
+                >
+                  Excluir
+                </Button>
+              )}
             </Box>
           </Grid>
         </Grid>

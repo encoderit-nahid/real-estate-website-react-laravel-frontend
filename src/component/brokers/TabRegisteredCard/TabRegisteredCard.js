@@ -27,6 +27,7 @@ import Link from "next/link";
 import BaseCloseButton from "@/component/reuseable/baseCloseButton/BaseCloseButton";
 import { useDispatch } from "react-redux";
 import { deleteBroker } from "@/redux/broker/actions";
+import { useSession } from "next-auth/react";
 
 function TabRegisteredCard({
   brokerInfo,
@@ -36,6 +37,7 @@ function TabRegisteredCard({
 }) {
   const t = languageName === "en" ? en : pt;
   const dispatch = useDispatch();
+  const { data: session } = useSession();
   const [state, setState] = React.useState({
     top: false,
     left: false,
@@ -242,27 +244,29 @@ function TabRegisteredCard({
           </a>
         </Link>
       </Box>
-      <Box sx={{ px: 1.5 }}>
-        <Button
-          fullWidth
-          onClick={() => handleDeleteBroker(brokerInfo?.id)}
-          sx={{
-            background: "#ffffff",
-            color: "#F44336",
-            fontWeight: "600",
-            fontSize: "14px",
-            lineHeight: "18px",
-            textTransform: "none",
-            mb: 2,
-            "&:hover": {
+      {session?.user?.role === "admin" && (
+        <Box sx={{ px: 1.5 }}>
+          <Button
+            fullWidth
+            onClick={() => handleDeleteBroker(brokerInfo?.id)}
+            sx={{
               background: "#ffffff",
               color: "#F44336",
-            },
-          }}
-        >
-          Excluir
-        </Button>
-      </Box>
+              fontWeight: "600",
+              fontSize: "14px",
+              lineHeight: "18px",
+              textTransform: "none",
+              mb: 2,
+              "&:hover": {
+                background: "#ffffff",
+                color: "#F44336",
+              },
+            }}
+          >
+            Excluir
+          </Button>
+        </Box>
+      )}
     </Box>
   );
 }

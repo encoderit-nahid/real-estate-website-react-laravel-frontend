@@ -178,28 +178,30 @@ function ReleaseCard({
               </Button>
             </Link>
           )}
-          <Button
-            sx={{
-              textTransform: "none",
-              border: "1px solid red",
-              borderRadius: "4px",
-              color: "red",
-              fontSize: "16px",
-              fontWeight: "600",
-              width: {
-                xs: "92%",
-                sm: "92%",
-                md: "92%",
-                lg: "85%",
-                xl: "92%",
-              },
-              mx: 2,
-              mb: 2,
-            }}
-            onClick={(event) => handleDeleteProject(projectData?.id, event)}
-          >
-            Excluir
-          </Button>
+          {session?.user?.role === "admin" && (
+            <Button
+              sx={{
+                textTransform: "none",
+                border: "1px solid red",
+                borderRadius: "4px",
+                color: "red",
+                fontSize: "16px",
+                fontWeight: "600",
+                width: {
+                  xs: "92%",
+                  sm: "92%",
+                  md: "92%",
+                  lg: "85%",
+                  xl: "92%",
+                },
+                mx: 2,
+                mb: 2,
+              }}
+              onClick={(event) => handleDeleteProject(projectData?.id, event)}
+            >
+              Excluir
+            </Button>
+          )}
         </Grid>
       </Box>
     </Link>
