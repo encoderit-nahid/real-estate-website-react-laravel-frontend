@@ -28,12 +28,14 @@ import BaseCloseButton from "@/component/reuseable/baseCloseButton/BaseCloseButt
 import { useDispatch } from "react-redux";
 import { deleteBroker } from "@/redux/broker/actions";
 import { useSession } from "next-auth/react";
+import { useBrokerDeleteMutation } from "@/queries/useBrokerDeleteMutation";
 
 function TabRegisteredCard({
   brokerInfo,
   languageName,
   brokerCountRefetch,
-  brokerRefetch,
+  refetch,
+  page,
 }) {
   const t = languageName === "en" ? en : pt;
   const dispatch = useDispatch();
@@ -61,10 +63,21 @@ function TabRegisteredCard({
     setState({ ...state, [anchor]: open });
   };
 
+  const mutation = useBrokerDeleteMutation(page);
+
   const handleDeleteBroker = async (id) => {
-    dispatch(deleteBroker(id));
-    await brokerRefetch();
-    await brokerCountRefetch();
+    const body = {
+      broker_id: id,
+    };
+    mutation.mutate(body, {
+      onError(error) {
+        console.log(error);
+      },
+      onSuccess: async (data) => {
+        await refetch();
+        await brokerCountRefetch();
+      },
+    });
   };
 
   return (

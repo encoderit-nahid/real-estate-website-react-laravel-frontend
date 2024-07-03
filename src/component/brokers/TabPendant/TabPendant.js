@@ -27,7 +27,7 @@ function TabPendant({
     // isLoading: brokerLoading,
     isFetched,
     isFetching,
-    refetch: brokerRefetch,
+    refetch,
   } = useGetBrokerDataQuery({
     user_type: "broker",
     status: "pending",
@@ -48,8 +48,8 @@ function TabPendant({
   }, [query?.page]);
 
   useEffect(() => {
-    brokerRefetch();
-  }, [page, searchValue, brokerRefetch]);
+    refetch();
+  }, [page, searchValue, refetch]);
 
   const debouncedHandleSearch = debounce((e) => {
     setSearchValue(e.target.value);
@@ -100,7 +100,8 @@ function TabPendant({
               brokerInfo={data}
               languageName={languageName}
               brokerCountRefetch={brokerCountRefetch}
-              brokerRefetch={brokerRefetch}
+              refetch={refetch}
+              page={page}
             />
           </Grid>
         ))}

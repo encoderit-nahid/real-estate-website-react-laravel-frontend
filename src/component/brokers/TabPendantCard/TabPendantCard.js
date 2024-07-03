@@ -23,12 +23,14 @@ import { _baseURL, _imageURL } from "consts";
 import pt from "locales/pt";
 import en from "locales/en";
 import BaseCloseButton from "@/component/reuseable/baseCloseButton/BaseCloseButton";
+import { useBrokerDeleteMutation } from "@/queries/useBrokerDeleteMutation";
 
 function TabpendantCard({
   brokerInfo,
   languageName,
   brokerCountRefetch,
-  brokerRefetch,
+  refetch,
+  page,
 }) {
   const t = languageName === "en" ? en : pt;
   const dispatch = useDispatch();
@@ -57,14 +59,24 @@ function TabpendantCard({
       status: "active",
     };
     dispatch(changeStatusBroker(data));
-    brokerRefetch();
+    refetch();
     brokerCountRefetch();
   };
 
+  const mutation = useBrokerDeleteMutation(page);
   const handleFailBroker = async (id) => {
-    dispatch(deleteBroker(id));
-    await brokerRefetch();
-    await brokerCountRefetch();
+    const body = {
+      broker_id: id,
+    };
+    mutation.mutate(body, {
+      onError(error) {
+        console.log(error);
+      },
+      onSuccess: async (data) => {
+        await refetch();
+        await brokerCountRefetch();
+      },
+    });
   };
 
   const myLoader = ({ src }) => {

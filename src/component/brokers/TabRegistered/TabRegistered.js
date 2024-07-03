@@ -106,7 +106,8 @@ function TabRegistered({
               brokerInfo={data}
               languageName={languageName}
               brokerCountRefetch={brokerCountRefetch}
-              brokerRefetch={refetch}
+              refetch={refetch}
+              page={page}
             />
           </Grid>
         ))}
