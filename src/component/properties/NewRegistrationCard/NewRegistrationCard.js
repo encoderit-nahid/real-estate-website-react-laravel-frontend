@@ -123,7 +123,6 @@ function NewRegistrationCard({
                 width: "100%",
                 height: "100%",
                 position: "relative",
-                cursor: "pointer",
                 //   display: { lg: "inline" },
               }}
             >
@@ -161,8 +160,10 @@ function NewRegistrationCard({
           <Box>
             <Image
               alt="rent"
-              src={rentImage}
-              width={400}
+              loader={myLoader}
+              src={`${propertyData?.attachments[0]?.file_path}`}
+              height={200}
+              width={500}
               //   style={{ borderRadius: "8px 0 0 8px" }}
             />
           </Box>
@@ -256,6 +257,19 @@ function NewRegistrationCard({
                 fontSize: "24px",
                 lineHeight: "32px",
                 fontWeight: "700",
+                mt: 1,
+              }}
+            >
+              {propertyData?.property_title.length > 43
+                ? `${propertyData?.property_title.slice(0, 40)}...`
+                : propertyData?.property_title}
+            </Typography>
+            <Typography
+              variant="p"
+              sx={{
+                fontSize: "16px",
+                fontWeight: "600",
+                color: "#0E97F7",
                 mt: 1,
               }}
             >

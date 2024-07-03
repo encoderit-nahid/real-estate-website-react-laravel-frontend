@@ -35,6 +35,7 @@ import BaseWhatsappButton from "@/component/reuseable/baseWhatsappButton/BaseWha
 import BaseValueField from "@/component/reuseable/baseValueField/BaseValueFiled";
 import { formatBrCurrency } from "@/utils/formatBrCurrency";
 import { reverseBrCurrencyFormat } from "@/utils/reverseBrCurrencyFormat";
+import { formatBrazilianCurrency } from "@/utils/useUtilities";
 
 function Negotiate({
   handleProposalOpen,
@@ -147,51 +148,56 @@ function Negotiate({
           variant="p"
           sx={{ fontSize: "14px", fontWeight: "700", color: "#1A1859" }}
         >
-          {`R$ ${singlePropertyData?.property?.brl_rent}`}
+          {formatBrazilianCurrency(singlePropertyData?.property?.brl_rent)}
         </Typography>
       </Grid>
       <Box sx={{ borderBottom: "1px dashed #D3D3DF" }}></Box>
-      <Grid
-        container
-        direction="row"
-        justifyContent="space-between"
-        alignItems="center"
-        sx={{ px: 4, py: 1 }}
-      >
-        <Typography
-          variant="p"
-          sx={{ fontSize: "14px", fontWeight: "400", color: "#1A1859" }}
+      {singlePropertyData?.property?.condominium && (
+        <Grid
+          container
+          direction="row"
+          justifyContent="space-between"
+          alignItems="center"
+          sx={{ px: 4, py: 1 }}
         >
-          {t["Condominium"]}
-        </Typography>
-        <Typography
-          variant="p"
-          sx={{ fontSize: "14px", fontWeight: "700", color: "#1A1859" }}
-        >
-          {`R$ ${singlePropertyData?.property?.condominium}`}
-        </Typography>
-      </Grid>
+          <Typography
+            variant="p"
+            sx={{ fontSize: "14px", fontWeight: "400", color: "#1A1859" }}
+          >
+            {t["Condominium"]}
+          </Typography>
+
+          <Typography
+            variant="p"
+            sx={{ fontSize: "14px", fontWeight: "700", color: "#1A1859" }}
+          >
+            {formatBrazilianCurrency(singlePropertyData?.property?.condominium)}
+          </Typography>
+        </Grid>
+      )}
       <Box sx={{ borderBottom: "1px dashed #D3D3DF" }}></Box>
-      <Grid
-        container
-        direction="row"
-        justifyContent="space-between"
-        alignItems="center"
-        sx={{ px: 4, py: 1 }}
-      >
-        <Typography
-          variant="p"
-          sx={{ fontSize: "14px", fontWeight: "400", color: "#1A1859" }}
+      {singlePropertyData?.property?.brl_iptu && (
+        <Grid
+          container
+          direction="row"
+          justifyContent="space-between"
+          alignItems="center"
+          sx={{ px: 4, py: 1 }}
         >
-          IPTU
-        </Typography>
-        <Typography
-          variant="p"
-          sx={{ fontSize: "14px", fontWeight: "700", color: "#1A1859" }}
-        >
-          {`R$ ${singlePropertyData?.property?.brl_iptu}`}
-        </Typography>
-      </Grid>
+          <Typography
+            variant="p"
+            sx={{ fontSize: "14px", fontWeight: "400", color: "#1A1859" }}
+          >
+            IPTU
+          </Typography>
+          <Typography
+            variant="p"
+            sx={{ fontSize: "14px", fontWeight: "700", color: "#1A1859" }}
+          >
+            {formatBrazilianCurrency(singlePropertyData?.property?.brl_iptu)}
+          </Typography>
+        </Grid>
+      )}
       <Grid
         container
         direction="column"
