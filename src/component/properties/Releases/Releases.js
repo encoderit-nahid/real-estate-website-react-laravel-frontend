@@ -18,14 +18,14 @@ import en from "locales/en";
 import pt from "locales/pt";
 import { useGetAllProjectsQuery } from "@/queries/useGetAllProjectsQuery";
 
-function Releases({ queryData, languageName }) {
+function Releases({ queryData, languageName, loadingRefetch }) {
   const router = useRouter();
   const { query } = router;
   const [page, setPage] = React.useState(1);
-  
+
   useEffect(() => {
-    setPage(+query?.page)
-  },[query])
+    setPage(+query?.page);
+  }, [query]);
 
   const {
     data: AllProjects,
@@ -38,7 +38,7 @@ function Releases({ queryData, languageName }) {
   const handlePageChange = (event, value) => {
     setPage(value);
     router.replace({
-      query: { ...router.query,page:value },
+      query: { ...router.query, page: value },
     });
     // setData(datas.slice(firstIndex + pageSize * (value - 1), pageSize * value));
   };
@@ -82,7 +82,13 @@ function Releases({ queryData, languageName }) {
       <Grid container spacing={2}>
         {AllProjects?.data?.map((data, index) => (
           <Grid key={index} item xs={12} sm={12} md={12} lg={4} xl={4}>
-            <ReleaseCard projectData={data} languageName={languageName} />
+            <ReleaseCard
+              projectData={data}
+              languageName={languageName}
+              refetch={refetch}
+              loadingRefetch={loadingRefetch}
+              page={page}
+            />
           </Grid>
         ))}
       </Grid>

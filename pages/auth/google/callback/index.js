@@ -12,24 +12,38 @@ const clearMultipleCookies = (cookieNames) => {
   });
 };
 
-export default function Google({ roleId, type, date, time, brlValue, propertyId }) {
+export default function Google({
+  roleId,
+  type,
+  date,
+  time,
+  brlValue,
+  propertyId,
+  paymentType,
+  cashAmount,
+  paymentPerInstallment,
+  noOfInstallment,
+}) {
   const router = useRouter();
   const { query } = router;
 
   useEffect(() => {
     const getData = async () => {
-      if(type === "schedule"){
+      if (type === "schedule") {
         query["role_id"] = roleId;
         query["type"] = type;
         query["date"] = date;
         query["time"] = time;
         query["property_id"] = propertyId;
-      }
-      else{
+      } else {
         query["role_id"] = roleId;
         query["type"] = type;
         query["brl_value"] = brlValue;
         query["property_id"] = propertyId;
+        query["payment_type"] = paymentType;
+        query["cash_amount"] = cashAmount;
+        query["payment_per_installment"] = paymentPerInstallment;
+        query["no_of_installment"] = noOfInstallment;
       }
       console.log({ query });
       const [errorAuth, responseAuth] = await socialLoginApi(query, "google");
@@ -51,7 +65,14 @@ export default function Google({ roleId, type, date, time, brlValue, propertyId 
             userImage: response?.data?.user?.attachments[0]?.file_path,
             callbackUrl: "/my-properties",
           });
-          clearMultipleCookies(["role_id", "type", "date", "time", "brl_value", "property_id"]);
+          clearMultipleCookies([
+            "role_id",
+            "type",
+            "date",
+            "time",
+            "brl_value",
+            "property_id",
+          ]);
         }
       } else {
         console.log(errorAuth?.response);
@@ -114,9 +135,31 @@ export default function Google({ roleId, type, date, time, brlValue, propertyId 
 
 export async function getServerSideProps(context) {
   // const cookies = context.req.cookies["role_id"];
-  const { role_id, type, date,time, brl_value, property_id } = context.req.cookies;
+  const {
+    role_id,
+    type,
+    date,
+    time,
+    brl_value,
+    property_id,
+    payment_type,
+    cash_amount,
+    payment_per_installment,
+    no_of_installment,
+  } = context.req.cookies;
 
   return {
-    props: { roleId: role_id, type: type, date: date, time: time, brlValue: brl_value, propertyId: property_id }, // will be passed to the page component as props
+    props: {
+      roleId: role_id,
+      type: type,
+      date: date,
+      time: time,
+      brlValue: brl_value,
+      propertyId: property_id,
+      paymentType: payment_type,
+      cashAmount: cash_amount,
+      paymentPerInstallment: payment_per_installment,
+      noOfInstallment: no_of_installment,
+    }, // will be passed to the page component as props
   };
 }

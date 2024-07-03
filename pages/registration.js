@@ -37,7 +37,18 @@ export default function Registration({ language, handleLoginOpen }) {
   const router = useRouter();
   console.log("🟥 ~ Registration ~ router:", router);
   const { query } = router;
-  const { user_type, brl_value, property_id, type, date, time } = query;
+  const {
+    user_type,
+    brl_value,
+    property_id,
+    type,
+    date,
+    time,
+    payment_type,
+    cash_amount,
+    payment_per_installment,
+    no_of_installment,
+  } = query;
 
   const [myValue, setMyValue] = useState(language || "pt");
   const t = myValue === "en" ? en : pt;
@@ -94,7 +105,11 @@ export default function Registration({ language, handleLoginOpen }) {
         "role_id",
         user_type === "broker" ? 2 : user_type === "owner" ? 3 : 4
       );
+      SetCookie("payment_type", payment_type);
       SetCookie("brl_value", brl_value);
+      SetCookie("cash_amount", cash_amount);
+      SetCookie("payment_per_installment", payment_per_installment);
+      SetCookie("no_of_installment", no_of_installment);
       SetCookie("type", type);
       SetCookie("property_id", property_id);
     }
@@ -141,7 +156,11 @@ export default function Registration({ language, handleLoginOpen }) {
       type: type,
       date: date,
       time: time,
+      cash_amount: cash_amount,
       brl_value: brl_value,
+      payment_type: payment_type,
+      payment_per_installment: payment_per_installment,
+      no_of_installment: no_of_installment,
       property_id: property_id,
       redirect_url: `${window.location.origin}/user-loading`,
     });

@@ -59,8 +59,8 @@ function KnowMoreContentBroker({
     },
   ];
 
-  const [fullCommission, setFullCommission] = useState(30.0);
-  const [yourCommission, setYourCommission] = useState(21.0);
+  const [fullCommission, setFullCommission] = useState(0);
+  const [yourCommission, setYourCommission] = useState(0);
   return (
     <Box sx={style}>
       <Box sx={{ width: "100%" }}>

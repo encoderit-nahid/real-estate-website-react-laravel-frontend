@@ -109,12 +109,16 @@ function ProposalStep({
     if (!session) {
       router.replace({
         pathname: "/registration",
-        query: {
+        query: omitEmpties({
           user_type: "buyer",
           brl_value: data.total_amount,
           property_id: singlePropertyId,
           type: "proposal",
-        },
+          payment_type: (cash && "cash") || (installment && "installment"),
+          cash_amount: data?.cash_amount,
+          payment_per_installment: data?.payment_per_installment,
+          no_of_installment: data?.no_of_installment,
+        }),
       });
     } else {
       const [error, response] = await createProposalApi(allData);

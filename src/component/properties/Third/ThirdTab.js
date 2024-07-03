@@ -15,7 +15,7 @@ import { findPropertyData } from "../../../redux/property/actions";
 import Link from "next/link";
 import { useGetPropertyQuery } from "@/queries/useGetPropertyQuery";
 
-function ThirdTab({ languageName }) {
+function ThirdTab({ languageName, loadingRefetch }) {
   const router = useRouter();
   const { query } = router;
 
@@ -94,7 +94,13 @@ function ThirdTab({ languageName }) {
                   width: "100%",
                 }}
               >
-                <RentCard propertyData={data} languageName={languageName} />
+                <RentCard
+                  propertyData={data}
+                  languageName={languageName}
+                  page={page}
+                  loadingRefetch={loadingRefetch}
+                  refetch={refetch}
+                />
               </a>
             </Link>
           </Grid>

@@ -38,6 +38,7 @@ import en from "locales/en";
 import pt from "locales/pt";
 import { useSession } from "next-auth/react";
 import BaseCloseButton from "@/component/reuseable/baseCloseButton/BaseCloseButton";
+import { formatBrazilianCurrency } from "@/utils/useUtilities";
 
 const omitEmpties = (obj) => {
   return Object.entries(obj).reduce((carry, [key, value]) => {
@@ -227,7 +228,7 @@ function PendantsCard({ propertyData, languageName, refetch, loadingRefetch }) {
                     fontWeight: "500",
                   }}
                 >
-                  {`R$ ${propertyData?.brl_rent}`}
+                  {formatBrazilianCurrency(propertyData?.brl_rent)}
                 </Typography>
                 <Typography
                   variant="p"
@@ -303,7 +304,7 @@ function PendantsCard({ propertyData, languageName, refetch, loadingRefetch }) {
                 >
                   <ListItem>
                     <ListItemText
-                      primary={`${data?.total_amount}`}
+                      primary={formatBrazilianCurrency(data?.total_amount)}
                       secondary={`${data?.payment_type}`}
                     />
                   </ListItem>
@@ -511,7 +512,7 @@ function PendantsCard({ propertyData, languageName, refetch, loadingRefetch }) {
             lineHeight: "32px",
           }}
         >
-          {`R$ ${propertyData?.brl_rent}`}
+          {formatBrazilianCurrency(propertyData?.brl_rent)}
         </Typography>
         <Typography
           variant="p"
@@ -626,7 +627,7 @@ function PendantsCard({ propertyData, languageName, refetch, loadingRefetch }) {
                             width: "100%",
                           }}
                         >
-                          {`R$ ${data?.total_amount}`}
+                          {formatBrazilianCurrency(data?.total_amount)}
                         </Typography>
                       }
                     />

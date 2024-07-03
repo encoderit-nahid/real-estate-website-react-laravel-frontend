@@ -21,6 +21,7 @@ import en from "locales/en";
 import pt from "locales/pt";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/router";
+import { formatBrazilianCurrency } from "@/utils/useUtilities";
 
 function ScheduleCard({ data, languageName }) {
   const t = languageName === "en" ? en : pt;
@@ -189,7 +190,7 @@ function ScheduleCard({ data, languageName }) {
                       lineHeight: "32px",
                     }}
                   >
-                    {`R$ ${data?.property?.brl_rent}`}
+                    {formatBrazilianCurrency(data?.property?.brl_rent)}
                   </Typography>
                   <Typography
                     variant="h6"

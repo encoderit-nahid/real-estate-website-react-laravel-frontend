@@ -145,7 +145,7 @@ function Features({
       ) : (
         <Grid container spacing={1} sx={{ mt: 2 }}>
           {Object.keys(featureData).map((key, index) => (
-            <Box key={index}>
+            <Box key={index} sx={{ width: "100%" }}>
               <Typography
                 variant="p"
                 sx={{

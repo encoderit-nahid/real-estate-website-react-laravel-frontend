@@ -13,7 +13,12 @@ import BrokerSearch from "@/component/reuseable/brokerSearch/BrokerSearch";
 import { debounce } from "@/utils/debounce";
 import { set } from "date-fns";
 
-function TabRegistered({ languageName, searchValue, setSearchValue }) {
+function TabRegistered({
+  languageName,
+  searchValue,
+  setSearchValue,
+  brokerCountRefetch,
+}) {
   const router = useRouter();
   const { query } = router;
   const [page, setPage] = React.useState(1);
@@ -97,7 +102,12 @@ function TabRegistered({ languageName, searchValue, setSearchValue }) {
       <Grid container spacing={2}>
         {brokerUserData?.data?.users?.data?.map((data, index) => (
           <Grid key={index} item xs={12} sm={12} md={12} lg={4} xl={3}>
-            <TabRegisteredCard brokerInfo={data} languageName={languageName} />
+            <TabRegisteredCard
+              brokerInfo={data}
+              languageName={languageName}
+              brokerCountRefetch={brokerCountRefetch}
+              brokerRefetch={refetch}
+            />
           </Grid>
         ))}
       </Grid>

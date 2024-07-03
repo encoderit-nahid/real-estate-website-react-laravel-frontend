@@ -45,7 +45,7 @@ import useCurrentUser from "@/hooks/useCurrentUser";
 import { clearAllCookies } from "@/utils/clearCookies";
 function LeftBar(props) {
   const router = useRouter();
-  const { data: session } = useSession();
+  // const { data: session } = useSession();
   const currentUser = useCurrentUser();
 
   const myLoader = ({ src }) => {
@@ -76,40 +76,48 @@ function LeftBar(props) {
     });
   };
 
-  const data = [
+  const Tab = [
     {
       icon: <CampaignOutlinedIcon />,
       label: t["Properties"],
       route: "my-properties",
+      visible: ["admin", "broker", "buyer", "owner"]
     },
     {
       icon: <ArticleOutlinedIcon />,
       label: t["Proposals"],
       route: "proposals",
+      visible: ["admin", "broker", "buyer", "owner"]
     },
     {
       icon: <StarBorderOutlinedIcon />,
       label: t["Schedules"],
       route: "schedules",
+      visible: ["admin", "broker", "buyer", "owner"]
     },
     {
       icon: <PersonOutlineOutlinedIcon />,
       label: t["Brokers"],
       route: "brokers",
+      visible: ["admin", "broker", "buyer", "owner"]
     },
     {
       icon: <AddBusinessIcon />,
       label: t["Add company"],
       route: "add-company",
+      visible: ["admin"]
     },
     {
       icon: <PaidIcon />,
       label: t["Financial"],
       route: "financial",
+      visible: ["admin", "broker", "buyer", "owner"]
     },
-    { icon: <HelpOutlineOutlinedIcon />, label: "FAQ", route: "faq" },
-    { icon: <InputOutlinedIcon />, label: t["Leave"], route: "" },
+    { icon: <HelpOutlineOutlinedIcon />, label: "FAQ", route: "faq",visible: ["admin", "broker", "buyer", "owner"] },
+    { icon: <InputOutlinedIcon />, label: t["Leave"], route: "",visible: ["admin", "broker", "buyer", "owner"] },
   ];
+
+  const data = Tab?.filter((item) => item?.visible?.includes(currentUser?.roles[0]?.slug))
 
   // const [selectedLabel, setSelectedLabel] = useState("properties");
   // console.log(selectedLabel);
@@ -205,7 +213,7 @@ function LeftBar(props) {
                       textTransform: "capitalize",
                     }}
                   >
-                    {session?.user?.name}
+                    {currentUser?.name}
                   </Typography>
                   <ChevronRightIcon
                     sx={{
@@ -225,7 +233,7 @@ function LeftBar(props) {
                 mt: 2,
               }}
             >
-              {session?.user?.userEmail}
+              {currentUser?.email}
             </Typography>
           </Grid>
         </Box>
@@ -240,7 +248,7 @@ function LeftBar(props) {
                 // className="btn-leftbar"
                 selected={selectedLabel === leftData.route}
                 onClick={
-                  index === 7
+                  index === (data?.length - 1)
                     ? handleLogout
                     : () => handleListItemClick(index, leftData)
                 }

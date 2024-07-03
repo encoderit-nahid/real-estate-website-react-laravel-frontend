@@ -12,43 +12,44 @@ import {
   ListItemText,
   Tooltip,
   Typography,
-} from '@mui/material'
-import loginImage from '../../../../public/Images/login.png'
-import React from 'react'
-import Image from 'next/image'
-import BaseButton from '../../reuseable/button/BaseButton'
-import Link from 'next/link'
-import rentImage from '../../../../public/Images/rentImage.png'
-import avatar from '../../../../public/Images/AvatarPendant.png'
-import BaseModal from '../../reuseable/baseModal/BaseModal'
-import CounterProposalModal from '../counterProposalModal/counterProposalModal'
-import { useState } from 'react'
-import { _baseURL, _imageURL } from '../../../../consts'
-import { useRouter } from 'next/router'
-import { proposalRefuseData } from '../../../redux/proposalRefuse/actions'
-import { findPropertyData } from '../../../redux/property/actions'
-import { propertyAcceptData } from '../../../redux/proposalAccept/actions'
-import { useDispatch, useSelector } from 'react-redux'
-import en from 'locales/en'
-import pt from 'locales/pt'
-import BaseCloseButton from '@/component/reuseable/baseCloseButton/BaseCloseButton'
+} from "@mui/material";
+import loginImage from "../../../../public/Images/login.png";
+import React from "react";
+import Image from "next/image";
+import BaseButton from "../../reuseable/button/BaseButton";
+import Link from "next/link";
+import rentImage from "../../../../public/Images/rentImage.png";
+import avatar from "../../../../public/Images/AvatarPendant.png";
+import BaseModal from "../../reuseable/baseModal/BaseModal";
+import CounterProposalModal from "../counterProposalModal/counterProposalModal";
+import { useState } from "react";
+import { _baseURL, _imageURL } from "../../../../consts";
+import { useRouter } from "next/router";
+import { proposalRefuseData } from "../../../redux/proposalRefuse/actions";
+import { findPropertyData } from "../../../redux/property/actions";
+import { propertyAcceptData } from "../../../redux/proposalAccept/actions";
+import { useDispatch, useSelector } from "react-redux";
+import en from "locales/en";
+import pt from "locales/pt";
+import BaseCloseButton from "@/component/reuseable/baseCloseButton/BaseCloseButton";
+import { formatBrazilianCurrency } from "@/utils/useUtilities";
 
 const style = {
-  position: 'absolute',
-  top: '50%',
-  left: '50%',
+  position: "absolute",
+  top: "50%",
+  left: "50%",
   // top:{xs:"80%"},
-  transform: 'translate(-50%, -50%)',
-  width: { xs: '80%', sm: '80%', md: '60%', lg: '25%', xl: '25%' },
-  bgcolor: '#ffffff',
+  transform: "translate(-50%, -50%)",
+  width: { xs: "80%", sm: "80%", md: "60%", lg: "25%", xl: "25%" },
+  bgcolor: "#ffffff",
   // border: "2px solid #000",
-  boxShadow: 'none',
-  borderRadius: '12px',
-  maxHeight: '85vh',
-  overflowY: 'scroll',
+  boxShadow: "none",
+  borderRadius: "12px",
+  maxHeight: "85vh",
+  overflowY: "scroll",
   px: 0,
   py: 1,
-}
+};
 
 function SeeProposalModal({
   handleSeeProposalClose,
@@ -56,38 +57,38 @@ function SeeProposalModal({
   proposalData,
   languageName,
 }) {
-  const dispatch = useDispatch()
+  const dispatch = useDispatch();
 
-  const t = languageName === 'en' ? en : pt
+  const t = languageName === "en" ? en : pt;
   //add_counter_proposal_modal
-  const [counterProposalOpen, setCounterProposalOpen] = useState(false)
-  const handleCounterProposalOpen = () => setCounterProposalOpen(true)
-  const handleCounterProposalClose = () => setCounterProposalOpen(false)
+  const [counterProposalOpen, setCounterProposalOpen] = useState(false);
+  const handleCounterProposalOpen = () => setCounterProposalOpen(true);
+  const handleCounterProposalClose = () => setCounterProposalOpen(false);
 
-  const [acceptid, setAcceptId] = useState('')
-  const [refuseId, setRefuseId] = useState('')
-  const { query } = useRouter()
+  const [acceptid, setAcceptId] = useState("");
+  const [refuseId, setRefuseId] = useState("");
+  const { query } = useRouter();
 
   const handleProposalRefuse = (id) => {
-    setRefuseId(id)
-    dispatch(proposalRefuseData(propertyData?.id, id))
-    dispatch(findPropertyData(query))
-  }
+    setRefuseId(id);
+    dispatch(proposalRefuseData(propertyData?.id, id));
+    dispatch(findPropertyData(query));
+  };
 
   const handleProposalAccept = (id) => {
-    setAcceptId(id)
+    setAcceptId(id);
     dispatch(
-      propertyAcceptData({ property_id: propertyData?.id, proposal_id: id }),
-    )
-    handleSeeProposalClose(true)
-  }
+      propertyAcceptData({ property_id: propertyData?.id, proposal_id: id })
+    );
+    handleSeeProposalClose(true);
+  };
 
-  const acceptLoading = useSelector((state) => state?.propertyAccept?.loading)
-  const refuseLoading = useSelector((state) => state?.proposalRefuse?.loading)
+  const acceptLoading = useSelector((state) => state?.propertyAccept?.loading);
+  const refuseLoading = useSelector((state) => state?.proposalRefuse?.loading);
 
   const myLoader = ({ src }) => {
-    return `${_imageURL}/${src}`
-  }
+    return `${_imageURL}/${src}`;
+  };
 
   return (
     <Box sx={style}>
@@ -101,22 +102,22 @@ function SeeProposalModal({
         <Typography
           variant="p"
           sx={{
-            color: '#1A1859',
-            fontSize: '24px',
-            lineHeight: '32px',
-            fontWeight: '700',
+            color: "#1A1859",
+            fontSize: "24px",
+            lineHeight: "32px",
+            fontWeight: "700",
           }}
         >
-          {t['Confirm']}
+          {t["Confirm"]}
         </Typography>
         <BaseCloseButton handleClose={handleSeeProposalClose} />
       </Grid>
       <Box
         sx={{
-          background: '#ffffff',
-          boxShadow: '0px 4px 8px rgba(0, 33, 82, 0.08)',
-          border: '1px solid #DBE1E5',
-          borderRadius: { xs: 0, sm: 0, md: 0, lg: '8px', xl: '8px' },
+          background: "#ffffff",
+          boxShadow: "0px 4px 8px rgba(0, 33, 82, 0.08)",
+          border: "1px solid #DBE1E5",
+          borderRadius: { xs: 0, sm: 0, md: 0, lg: "8px", xl: "8px" },
           mt: 2,
           mx: 2,
         }}
@@ -138,7 +139,7 @@ function SeeProposalModal({
                 width={500}
                 height={500}
                 alt="rent"
-                style={{ borderRadius: '8px 0 0 8px' }}
+                style={{ borderRadius: "8px 0 0 8px" }}
               />
             </Box>
           </Grid>
@@ -159,53 +160,53 @@ function SeeProposalModal({
                 <Box>
                   <Button
                     sx={{
-                      textTransform: 'none',
-                      background: 'rgba(116, 80, 240, 0.2)',
-                      borderRadius: '2px',
-                      padding: '2px 8px',
-                      color: '#7450F0',
-                      fontSize: '12px',
-                      lineHeight: '18px',
-                      fontWeight: '400',
+                      textTransform: "none",
+                      background: "rgba(116, 80, 240, 0.2)",
+                      borderRadius: "2px",
+                      padding: "2px 8px",
+                      color: "#7450F0",
+                      fontSize: "12px",
+                      lineHeight: "18px",
+                      fontWeight: "400",
                     }}
                   >
                     {propertyData?.ad_type}
                   </Button>
                   <Button
                     sx={{
-                      textTransform: 'none',
-                      background: '#FFF7E6',
-                      borderRadius: '2px',
-                      padding: '2px 8px',
-                      color: '#229464',
-                      fontSize: '12px',
-                      lineHeight: '18px',
-                      fontWeight: '400',
-                      ml: '3px',
+                      textTransform: "none",
+                      background: "#FFF7E6",
+                      borderRadius: "2px",
+                      padding: "2px 8px",
+                      color: "#229464",
+                      fontSize: "12px",
+                      lineHeight: "18px",
+                      fontWeight: "400",
+                      ml: "3px",
                     }}
                   >
-                    {t['pending proposal']}
+                    {t["pending proposal"]}
                   </Button>
                 </Box>
               </Grid>
               <Typography
                 variant="p"
                 sx={{
-                  color: '#002152',
-                  fontSize: '16px',
-                  lineHeight: '28px',
-                  fontWeight: '500',
+                  color: "#002152",
+                  fontSize: "16px",
+                  lineHeight: "28px",
+                  fontWeight: "500",
                 }}
               >
-                {`R$ ${propertyData?.brl_rent}`}
+                {formatBrazilianCurrency(propertyData?.brl_rent)}
               </Typography>
               <Typography
                 variant="p"
                 sx={{
-                  color: ' #9FAAB1',
-                  fontSize: '12px',
-                  lineHeight: '20px',
-                  fontWeight: '300',
+                  color: " #9FAAB1",
+                  fontSize: "12px",
+                  lineHeight: "20px",
+                  fontWeight: "300",
 
                   mr: 0.5,
                 }}
@@ -220,20 +221,20 @@ function SeeProposalModal({
         <Typography
           variant="p"
           sx={{
-            color: '#9FAAB1',
-            fontSize: '14px',
-            fontWeight: '400',
-            lineHeight: '18px',
+            color: "#9FAAB1",
+            fontSize: "14px",
+            fontWeight: "400",
+            lineHeight: "18px",
 
             px: 2,
           }}
         >
-          {t['Proposal details']}
+          {t["Proposal details"]}
         </Typography>
       </Box>
       <Box>
         <List>
-          <ListItem sx={{ margin: 0, paddingY: '1px' }}>
+          <ListItem sx={{ margin: 0, paddingY: "1px" }}>
             <ListItemAvatar>
               <Avatar>
                 <Image
@@ -250,10 +251,10 @@ function SeeProposalModal({
                 <Typography
                   variant="p"
                   sx={{
-                    fontSize: '14px',
+                    fontSize: "14px",
                     fontWeight: 400,
-                    color: '#1A1859',
-                    lineHeight: '18px',
+                    color: "#1A1859",
+                    lineHeight: "18px",
                   }}
                 >
                   {proposalData?.user?.name}
@@ -274,24 +275,24 @@ function SeeProposalModal({
         <Typography
           variant="p"
           sx={{
-            color: '#1A1859',
-            fontSize: '14px',
-            lineHeight: '28px',
-            fontWeight: '400',
+            color: "#1A1859",
+            fontSize: "14px",
+            lineHeight: "28px",
+            fontWeight: "400",
           }}
         >
-          {`${t['Value']}:`}
+          {`${t["Value"]}:`}
         </Typography>
         <Typography
           variant="p"
           sx={{
-            color: '#1A1859',
-            fontSize: '14px',
-            lineHeight: '28px',
-            fontWeight: '700',
+            color: "#1A1859",
+            fontSize: "14px",
+            lineHeight: "28px",
+            fontWeight: "700",
           }}
         >
-          {`R$ ${proposalData?.total_amount}`}
+          {formatBrazilianCurrency(proposalData?.total_amount)}
         </Typography>
       </Grid>
       <Divider sx={{ mx: 2 }} />
@@ -305,21 +306,21 @@ function SeeProposalModal({
         <Typography
           variant="p"
           sx={{
-            color: '#1A1859',
-            fontSize: '14px',
-            lineHeight: '28px',
-            fontWeight: '400',
+            color: "#1A1859",
+            fontSize: "14px",
+            lineHeight: "28px",
+            fontWeight: "400",
           }}
         >
-          {`${t['Proposal type']}:`}
+          {`${t["Proposal type"]}:`}
         </Typography>
         <Typography
           variant="p"
           sx={{
-            color: '#1A1859',
-            fontSize: '14px',
-            lineHeight: '28px',
-            fontWeight: '400',
+            color: "#1A1859",
+            fontSize: "14px",
+            lineHeight: "28px",
+            fontWeight: "400",
           }}
         >
           {proposalData?.payment_type}
@@ -332,33 +333,33 @@ function SeeProposalModal({
             fullWidth
             onClick={() => handleProposalRefuse(proposalData?.id)}
             sx={{
-              color: ' #002152',
-              fontSize: '14px',
+              color: " #002152",
+              fontSize: "14px",
 
-              lineHeight: '18px',
-              fontWeight: '600',
-              background: '#DBE1E5',
-              borderRadius: '4px',
+              lineHeight: "18px",
+              fontWeight: "600",
+              background: "#DBE1E5",
+              borderRadius: "4px",
 
-              textTransform: 'none',
+              textTransform: "none",
 
-              '&:hover': {
-                color: ' #002152',
-                fontSize: '14px',
+              "&:hover": {
+                color: " #002152",
+                fontSize: "14px",
 
-                lineHeight: '18px',
-                fontWeight: '600',
-                background: '#DBE1E5',
-                borderRadius: '4px',
+                lineHeight: "18px",
+                fontWeight: "600",
+                background: "#DBE1E5",
+                borderRadius: "4px",
 
-                textTransform: 'none',
+                textTransform: "none",
               },
             }}
           >
             {refuseLoading && refuseId === proposalData?.id ? (
               <CircularProgress size={22} color="inherit" />
             ) : (
-              t['refuse']
+              t["refuse"]
             )}
           </Button>
         </Grid>
@@ -366,57 +367,57 @@ function SeeProposalModal({
           <Button
             fullWidth
             sx={{
-              color: '#FFFFFF',
-              fontSize: '14px',
+              color: "#FFFFFF",
+              fontSize: "14px",
 
-              lineHeight: '18px',
-              fontWeight: '600',
-              background: '#7450F0',
-              borderRadius: '4px',
+              lineHeight: "18px",
+              fontWeight: "600",
+              background: "#7450F0",
+              borderRadius: "4px",
 
-              textTransform: 'none',
+              textTransform: "none",
 
-              '&:hover': {
-                color: '#FFFFFF',
-                fontSize: '14px',
+              "&:hover": {
+                color: "#FFFFFF",
+                fontSize: "14px",
 
-                lineHeight: '18px',
-                fontWeight: '600',
-                background: '#7450F0',
-                borderRadius: '4px',
+                lineHeight: "18px",
+                fontWeight: "600",
+                background: "#7450F0",
+                borderRadius: "4px",
 
-                textTransform: 'none',
+                textTransform: "none",
               },
             }}
             onClick={handleCounterProposalOpen}
           >
-            {t['Counter proposal']}
+            {t["Counter proposal"]}
           </Button>
         </Grid>
         <Grid item xs={12} sm={12} md={12} lg={4}>
           <Button
             fullWidth
             sx={{
-              color: '#FFFFFF',
-              fontSize: '14px',
+              color: "#FFFFFF",
+              fontSize: "14px",
 
-              lineHeight: '18px',
-              fontWeight: '600',
-              background: ' #34BE84',
-              borderRadius: '4px',
+              lineHeight: "18px",
+              fontWeight: "600",
+              background: " #34BE84",
+              borderRadius: "4px",
 
-              textTransform: 'none',
+              textTransform: "none",
 
-              '&:hover': {
-                color: '#FFFFFF',
-                fontSize: '14px',
+              "&:hover": {
+                color: "#FFFFFF",
+                fontSize: "14px",
 
-                lineHeight: '18px',
-                fontWeight: '600',
-                background: ' #34BE84',
-                borderRadius: '4px',
+                lineHeight: "18px",
+                fontWeight: "600",
+                background: " #34BE84",
+                borderRadius: "4px",
 
-                textTransform: 'none',
+                textTransform: "none",
               },
             }}
             onClick={() => handleProposalAccept(proposalData?.id)}
@@ -424,7 +425,7 @@ function SeeProposalModal({
             {acceptLoading && acceptid === proposalData?.id ? (
               <CircularProgress size={22} color="inherit" />
             ) : (
-              t['To accept']
+              t["To accept"]
             )}
           </Button>
         </Grid>
@@ -445,7 +446,7 @@ function SeeProposalModal({
         </Tooltip>
       </BaseModal>
     </Box>
-  )
+  );
 }
 
-export default SeeProposalModal
+export default SeeProposalModal;
