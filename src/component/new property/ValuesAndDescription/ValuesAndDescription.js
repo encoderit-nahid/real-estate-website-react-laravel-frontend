@@ -238,14 +238,34 @@ function ValuesAndDescription({
       <Grid container spacing={2} sx={{ mt: 2 }}>
         {matchedForTerrenoAreaM2.includes(property_detail_id) && (
           <Grid item xs={12} md={6}>
+            <Grid
+              container
+              direction="row"
+              justifyContent="flex-start"
+              alignItems="flex-start"
+            >
+              <Typography
+                variant="p"
+                sx={{
+                  color: "#253858",
+                  fontSize: "14px",
+                  fontWeight: "400",
+                  lineHeight: "16px",
+                  mb: 1,
+                }}
+              >
+                {`${t["Land area"]}m² `}
+                <span style={{ color: "#E63333" }}>*</span>
+              </Typography>
+            </Grid>
             <Controller
               name="land_area"
               control={control}
               defaultValue={""}
               render={({ field }) => (
                 <BaseTextField
-                  size={"medium"}
-                  placeholder={`m² ${t["Land area"]}*`}
+                  size={"small"}
+                  // placeholder={`m² ${t["Land area"]}`}
                   type={"number"}
                   onChange={(e) => {
                     field.onChange(e.target.value);
@@ -266,14 +286,34 @@ function ValuesAndDescription({
         )}
         {matchedForAreaM2.includes(property_detail_id) && (
           <Grid item xs={12} md={6}>
+            <Grid
+              container
+              direction="row"
+              justifyContent="flex-start"
+              alignItems="flex-start"
+            >
+              <Typography
+                variant="p"
+                sx={{
+                  color: "#253858",
+                  fontSize: "14px",
+                  fontWeight: "400",
+                  lineHeight: "16px",
+                  mb: 1,
+                }}
+              >
+                {`${t["Size of the property"]} m² `}
+                <span style={{ color: "#E63333" }}>*</span>
+              </Typography>
+            </Grid>
             <Controller
               name="property_area"
               control={control}
               defaultValue={""}
               render={({ field }) => (
                 <BaseTextField
-                  size={"medium"}
-                  placeholder={`m² ${t["Size of the property"]}*`}
+                  size={"small"}
+                  // placeholder={`m² ${t["Size of the property"]}`}
                   type={"number"}
                   onChange={(e) => {
                     field.onChange(e.target.value);
@@ -294,14 +334,34 @@ function ValuesAndDescription({
         )}
         {matchedForQuartos.includes(property_detail_id) && (
           <Grid item xs={12} md={6}>
+            <Grid
+              container
+              direction="row"
+              justifyContent="flex-start"
+              alignItems="flex-start"
+            >
+              <Typography
+                variant="p"
+                sx={{
+                  color: "#253858",
+                  fontSize: "14px",
+                  fontWeight: "400",
+                  lineHeight: "16px",
+                  mb: 1,
+                }}
+              >
+                {t["number of rooms"]}
+                <span style={{ color: "#E63333" }}>*</span>
+              </Typography>
+            </Grid>
             <Controller
               name="no_of_rooms"
               control={control}
               defaultValue={""}
               render={({ field }) => (
                 <BaseTextField
-                  size={"medium"}
-                  placeholder={`${t["number of rooms"]}*`}
+                  size={"small"}
+                  // placeholder={`${t["number of rooms"]}`}
                   type={"number"}
                   onChange={(e) => {
                     field.onChange(e.target.value);
@@ -323,14 +383,34 @@ function ValuesAndDescription({
 
         {matchedForSuites.includes(property_detail_id) && (
           <Grid item xs={12} md={6}>
+            <Grid
+              container
+              direction="row"
+              justifyContent="flex-start"
+              alignItems="flex-start"
+            >
+              <Typography
+                variant="p"
+                sx={{
+                  color: "#253858",
+                  fontSize: "14px",
+                  fontWeight: "400",
+                  lineHeight: "16px",
+                  mb: 1,
+                }}
+              >
+                {t["number of suites"]}
+                <span style={{ color: "#E63333" }}>*</span>
+              </Typography>
+            </Grid>
             <Controller
               name="no_of_suites"
               control={control}
               defaultValue={""}
               render={({ field }) => (
                 <BaseTextField
-                  size={"medium"}
-                  placeholder={`${t["number of suites"]}*`}
+                  size={"small"}
+                  // placeholder={`${t["number of suites"]}`}
                   type={"number"}
                   onChange={(e) => {
                     field.onChange(e.target.value);
@@ -351,14 +431,34 @@ function ValuesAndDescription({
         )}
         {matchedForBanheiro.includes(property_detail_id) && (
           <Grid item xs={12} md={6}>
+            <Grid
+              container
+              direction="row"
+              justifyContent="flex-start"
+              alignItems="flex-start"
+            >
+              <Typography
+                variant="p"
+                sx={{
+                  color: "#253858",
+                  fontSize: "14px",
+                  fontWeight: "400",
+                  lineHeight: "16px",
+                  mb: 1,
+                }}
+              >
+                {t["bathrooms"]}
+                <span style={{ color: "#E63333" }}>*</span>
+              </Typography>
+            </Grid>
             <Controller
               name="no_of_bathrooms"
               control={control}
               defaultValue={""}
               render={({ field }) => (
                 <BaseTextField
-                  size={"medium"}
-                  placeholder={`${t["bathrooms"]}*`}
+                  size={"small"}
+                  // placeholder={`${t["bathrooms"]}`}
                   type={"number"}
                   onChange={(e) => {
                     field.onChange(e.target.value);
@@ -379,14 +479,34 @@ function ValuesAndDescription({
         )}
         {matchedForVagas.includes(property_detail_id) && (
           <Grid item xs={12} md={6}>
+            <Grid
+              container
+              direction="row"
+              justifyContent="flex-start"
+              alignItems="flex-start"
+            >
+              <Typography
+                variant="p"
+                sx={{
+                  color: "#253858",
+                  fontSize: "14px",
+                  fontWeight: "400",
+                  lineHeight: "16px",
+                  mb: 1,
+                }}
+              >
+                {t["number of parking spaces"]}
+                <span style={{ color: "#E63333" }}>*</span>
+              </Typography>
+            </Grid>
             <Controller
               name="no_of_parking_spaces"
               control={control}
               defaultValue={""}
               render={({ field }) => (
                 <BaseTextField
-                  size={"medium"}
-                  placeholder={`${t["number of parking spaces"]}*`}
+                  size={"small"}
+                  // placeholder={`${t["number of parking spaces"]}`}
                   type={"number"}
                   onChange={(e) => {
                     field.onChange(e.target.value);
@@ -407,15 +527,34 @@ function ValuesAndDescription({
         )}
         {matchedForDimension.includes(property_detail_id) && (
           <Grid item xs={12} md={6}>
+            <Grid
+              container
+              direction="row"
+              justifyContent="flex-start"
+              alignItems="flex-start"
+            >
+              <Typography
+                variant="p"
+                sx={{
+                  color: "#253858",
+                  fontSize: "14px",
+                  fontWeight: "400",
+                  lineHeight: "16px",
+                  mb: 1,
+                }}
+              >
+                {t["dimension"]}
+              </Typography>
+            </Grid>
             <Controller
               name="dimension"
               control={control}
               defaultValue={""}
               render={({ field }) => (
                 <BaseTextField
-                  size={"medium"}
-                  name={t["dimension"]}
-                  placeholder={`${t["dimension"]}`}
+                  size={"small"}
+                  name="dimension"
+                  // placeholder={`${t["dimension"]}`}
                   type={"number"}
                   onChange={(e) => {
                     field.onChange(e.target.value);

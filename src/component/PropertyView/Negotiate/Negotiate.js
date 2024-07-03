@@ -35,6 +35,7 @@ import BaseWhatsappButton from "@/component/reuseable/baseWhatsappButton/BaseWha
 import BaseValueField from "@/component/reuseable/baseValueField/BaseValueFiled";
 import { formatBrCurrency } from "@/utils/formatBrCurrency";
 import { reverseBrCurrencyFormat } from "@/utils/reverseBrCurrencyFormat";
+import { Element } from "react-scroll";
 
 function Negotiate({
   handleProposalOpen,
@@ -373,46 +374,49 @@ function Negotiate({
         </Grid>
       )}
       <Box sx={{ border: "1px dashed #D3D3DF", mt: 1 }}></Box>
-      <Grid
-        container
-        direction="row"
-        justifyContent="space-between"
-        alignItems="center"
-        sx={{ px: 4, py: 1 }}
-      >
-        <Button
-          disabled={
-            session?.user?.role === "broker" || session?.user?.role === "owner"
-          }
-          variant="contained"
-          color="secondary"
-          fullWidth
-          sx={{
-            mt: 1,
-            px: 4,
-            fontSize: "16px",
-            fontWeight: "600",
-            textTransform: "none",
-            background: "#7450F0",
-            borderRadius: "4px",
-            // mb: 2,
-            "&:hover": {
+      <Element name="schedule_visit">
+        <Grid
+          container
+          direction="row"
+          justifyContent="space-between"
+          alignItems="center"
+          sx={{ px: 4, py: 1 }}
+        >
+          <Button
+            disabled={
+              session?.user?.role === "broker" ||
+              session?.user?.role === "owner"
+            }
+            variant="contained"
+            color="secondary"
+            fullWidth
+            sx={{
+              mt: 1,
+              px: 4,
               fontSize: "16px",
               fontWeight: "600",
               textTransform: "none",
               background: "#7450F0",
               borderRadius: "4px",
-              px: 4,
-            },
-          }}
-          onClick={() => {
-            setNegotiate(false);
-            setSchedule(true);
-          }}
-        >
-          {t["Schedule visit"]}
-        </Button>
-      </Grid>
+              // mb: 2,
+              "&:hover": {
+                fontSize: "16px",
+                fontWeight: "600",
+                textTransform: "none",
+                background: "#7450F0",
+                borderRadius: "4px",
+                px: 4,
+              },
+            }}
+            onClick={() => {
+              setNegotiate(false);
+              setSchedule(true);
+            }}
+          >
+            {t["Schedule visit"]}
+          </Button>
+        </Grid>
+      </Element>
       {schedule && (
         <Box sx={{ mt: 1 }}>
           <Box
