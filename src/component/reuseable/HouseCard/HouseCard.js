@@ -155,6 +155,11 @@ function HouseCard({
               color: `${
                 favoriteList?.includes(propertyInfo.id) ? "red" : "#ffffff"
               }`,
+              // border: "2px solid black",
+              // borderRadius: "500px",
+              // p: 1,
+              // width: "50px",
+              // height: "50px",
             }}
           />
         </IconButton>

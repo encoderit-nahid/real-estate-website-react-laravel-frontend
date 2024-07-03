@@ -41,7 +41,7 @@ function PropertyList({ propertyData, isLoading, handleLoginOpen }) {
               </Grid>
             ))
           : propertyData?.properties?.data?.map((data, index) => (
-              <Grid item xs={12} sm={12} md={6} lg={4} xl={4} key={index}>
+              <Grid item xs={12} sm={12} md={6} lg={4} xxl={3} key={index}>
                 <Link
                   href={`/visualizacao-da-propriedade/${data.id}/${data?.property_title}`}
                   as={`/visualizacao-da-propriedade/${data.id}/${data?.property_title}`}
