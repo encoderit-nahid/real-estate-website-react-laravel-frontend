@@ -5,6 +5,7 @@ import en from "locales/en";
 import pt from "locales/pt";
 import { useSession } from "next-auth/react";
 import React from "react";
+import { Link as ScrollLink } from "react-scroll";
 function AmountView({
   setNegotiate,
   setSchedule,
@@ -194,21 +195,15 @@ function AmountView({
         >
           {t["Negotiate"]}
         </Button>
-        <Button
-          disabled={
-            session?.user?.role === "broker" || session?.user?.role === "owner"
-          }
-          variant="contained"
-          color="secondary"
-          sx={{
-            px: 4,
-            fontSize: "16px",
-            fontWeight: "600",
-            textTransform: "none",
-            minWidth: "195px",
-            background: "#7450F0",
-            borderRadius: "4px",
-            "&: hover": {
+        <ScrollLink to="schedule_visit" smooth={true} duration={500}>
+          <Button
+            disabled={
+              session?.user?.role === "broker" ||
+              session?.user?.role === "owner"
+            }
+            variant="contained"
+            color="secondary"
+            sx={{
               px: 4,
               fontSize: "16px",
               fontWeight: "600",
@@ -216,18 +211,27 @@ function AmountView({
               minWidth: "195px",
               background: "#7450F0",
               borderRadius: "4px",
-            },
-          }}
-          onClick={() => {
-            setSchedule(true);
-            setNegotiate(false);
-            if (window.scrollY < 500) {
-              window.scrollBy({ top: 500, left: 0, behavior: "smooth" });
-            }
-          }}
-        >
-          {t["Schedule visit"]}
-        </Button>
+              "&: hover": {
+                px: 4,
+                fontSize: "16px",
+                fontWeight: "600",
+                textTransform: "none",
+                minWidth: "195px",
+                background: "#7450F0",
+                borderRadius: "4px",
+              },
+            }}
+            onClick={() => {
+              setSchedule(true);
+              setNegotiate(false);
+              // if (window.scrollY < 500) {
+              //   window.scrollBy({ top: 500, left: 0, behavior: "smooth" });
+              // }
+            }}
+          >
+            {t["Schedule visit"]}
+          </Button>
+        </ScrollLink>
       </Stack>
     </Stack>
   );

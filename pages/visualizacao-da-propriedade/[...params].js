@@ -56,6 +56,7 @@ const ProposalModal = dynamic(() =>
 import { useMemo, useRef, useState } from "react";
 import { useEffect } from "react";
 import Link from "next/link";
+import { Link as ScrollLink } from "react-scroll";
 import en from "locales/en";
 import pt from "locales/pt";
 import { useRouter } from "next/router";
@@ -69,6 +70,7 @@ const BaseShareButton = dynamic(
   }
 );
 import BaseWhatsappButton from "@/component/reuseable/baseWhatsappButton/BaseWhatsappButton";
+import { ScrollElement } from "react-scroll";
 const BaseFavoriteButton = dynamic(
   () => import("@/component/reuseable/baseFavoriteButton/BaseFavoriteButton"),
   {
@@ -651,19 +653,11 @@ export default function PropertyView({
           >
             {t["Negotiate"]}
           </Button> */}
-
-          <Button
-            variant="contained"
-            color="secondary"
-            sx={{
-              px: 4,
-              fontSize: "16px",
-              fontWeight: "600",
-              textTransform: "none",
-              minWidth: "250px",
-              background: "#7450F0",
-              borderRadius: "4px",
-              "&: hover": {
+          <ScrollLink to="schedule_visit" smooth={true} duration={500}>
+            <Button
+              variant="contained"
+              color="secondary"
+              sx={{
                 px: 4,
                 fontSize: "16px",
                 fontWeight: "600",
@@ -671,18 +665,27 @@ export default function PropertyView({
                 minWidth: "250px",
                 background: "#7450F0",
                 borderRadius: "4px",
-              },
-            }}
-            onClick={() => {
-              setSchedule(true);
-              setNegotiate(false);
-              if (window.scrollY < 2700) {
-                window.scrollBy({ top: 4000, left: 0, behavior: "smooth" });
-              }
-            }}
-          >
-            {t["Schedule visit"]}
-          </Button>
+                "&: hover": {
+                  px: 4,
+                  fontSize: "16px",
+                  fontWeight: "600",
+                  textTransform: "none",
+                  minWidth: "250px",
+                  background: "#7450F0",
+                  borderRadius: "4px",
+                },
+              }}
+              onClick={() => {
+                setSchedule(true);
+                setNegotiate(false);
+                // if (window.scrollY < 2700) {
+                //   window.scrollBy({ top: 4000, left: 0, behavior: "smooth" });
+                // }
+              }}
+            >
+              {t["Schedule visit"]}
+            </Button>
+          </ScrollLink>
         </Grid>
       </Grid>
     </div>

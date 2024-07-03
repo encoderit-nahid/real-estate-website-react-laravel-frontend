@@ -1375,8 +1375,8 @@ function SearchList({ propertyData, language, handleLoginOpen }) {
 export default SearchList;
 
 const relevant = [
-  { value: "most_relevant", label: "Mais relevante" },
+  { value: "most_relevant", label: "Mais Relevante" },
   { value: "latest", label: "Recentes" },
-  { value: "cheapest", label: "Mais barato" },
-  { value: "most_expensive", label: "Mais caro" },
+  { value: "cheapest", label: "Mais Barato" },
+  { value: "most_expensive", label: "Mais Caro" },
 ];
