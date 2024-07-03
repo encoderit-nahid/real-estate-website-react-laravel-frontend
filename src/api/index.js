@@ -403,7 +403,7 @@ export const contractDownloadApi = async (id) => {
 //contract_download
 export const certificateDownloadApi = async (id, certificate_type_id) => {
   try {
-    const response = await apiInstance.get(`contract/download`, {
+    const response = await apiInstance.get(`contract/certificate/download`, {
       params: {
         id: id,
         certificate_type_id: certificate_type_id,
