@@ -195,7 +195,7 @@ function NewRegistrationCard({
                     fontWeight: "400",
                   }}
                 >
-                  {propertyData?.ad_type}
+                  {t[propertyData?.ad_type]}
                 </Button>
                 {propertyData?.status === "approved" && (
                   <Button
