@@ -232,3 +232,12 @@ iframe {
   color: rgb(0, 81, 255) !important;
   font-size: 32px !important;
 }
+
+.clamp-text {
+  display: -webkit-box;
+  -webkit-line-clamp: 3; /* Number of lines to show */
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-height: 3 * 1.2em; /* Number of lines * line height */
+}

@@ -185,8 +185,9 @@ function HouseCard({
               textOverflow: "ellipsis",
             }}
           >
-            {propertyInfo?.property_title}
+            {propertyInfo?.property_title.slice(0, 25)}..
           </Typography>
+
           <Typography
             variant="p"
             sx={{ fontSize: "16px", fontWeight: "400", color: "#1A1859" }}

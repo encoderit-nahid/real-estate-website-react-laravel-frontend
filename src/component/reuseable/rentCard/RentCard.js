@@ -217,8 +217,8 @@ function RentCard({
                 mt: 1,
               }}
             >
-              {propertyData?.property_title.length > 43
-                ? `${propertyData?.property_title.slice(0, 40)}...`
+              {propertyData?.property_title.length > 30
+                ? `${propertyData?.property_title.slice(0, 30)}...`
                 : propertyData?.property_title}
             </Typography>
             <Typography
