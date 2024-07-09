@@ -260,7 +260,9 @@ function WishPropertyCard({
               textOverflow: "ellipsis",
             }}
           >
-            {propertyInfo?.property_title.slice(0, 35)}..
+            {propertyInfo?.property_title.length > 35
+              ? `${propertyInfo?.property_title.slice(0, 35)}..`
+              : propertyInfo?.property_title}
           </Typography>
           <Typography
             variant="p"

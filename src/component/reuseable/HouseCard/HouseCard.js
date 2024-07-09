@@ -185,7 +185,9 @@ function HouseCard({
               textOverflow: "ellipsis",
             }}
           >
-            {propertyInfo?.property_title.slice(0, 25)}..
+            {propertyInfo?.property_title.length > 25
+              ? `${propertyInfo?.property_title.slice(0, 25)}..`
+              : propertyInfo?.property_title}
           </Typography>
 
           <Typography
