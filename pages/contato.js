@@ -87,8 +87,13 @@ import {
   Typography,
 } from "@mui/material";
 import React from "react";
-import Navbar from "../src/component/shared/Navbar/Navbar";
-import Footer from "../src/component/shared/Footer/Footer";
+import dynamic from "next/dynamic";
+const Navbar = dynamic(() => import("@/component/shared/Navbar/Navbar"), {
+  ssr: false,
+});
+const Footer = dynamic(() => import("@/component/shared/Footer/Footer"), {
+  ssr: false,
+});
 import Head from "next/head";
 import categoryImage from "../public/Images/category.png";
 import BlogCardUpper from "../src/component/blog/blogCardUpper/BlogCardUpper";

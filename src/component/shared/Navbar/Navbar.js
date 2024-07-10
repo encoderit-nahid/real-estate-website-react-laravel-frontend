@@ -25,6 +25,7 @@ import en from "../../../../locales/en";
 import pt from "../../../../locales/pt";
 import { languageChangeApi } from "@/api";
 import { clearAllCookies } from "@/utils/clearCookies";
+import useCurrentUser from "@/hooks/useCurrentUser";
 
 function Navbar({
   shape,
@@ -40,6 +41,7 @@ function Navbar({
   colorLogo,
 }) {
   const { data: session } = useSession();
+  const currentUser = useCurrentUser();
   const [anchorElNav, setAnchorElNav] = React.useState(null);
   const [anchorElUser, setAnchorElUser] = React.useState(null);
 
@@ -281,7 +283,7 @@ function Navbar({
                     fontSize: "16px",
                   }}
                 >
-                  {session.user.name}
+                  {currentUser?.name}
                 </Typography>
               </Button>
             ) : (

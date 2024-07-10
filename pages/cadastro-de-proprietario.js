@@ -1,6 +1,10 @@
 import dynamic from "next/dynamic";
-const Navbar = dynamic(() => import("@/component/shared/Navbar/Navbar"));
-const Footer = dynamic(() => import("@/component/shared/Footer/Footer"));
+const Navbar = dynamic(() => import("@/component/shared/Navbar/Navbar"), {
+  ssr: false,
+});
+const Footer = dynamic(() => import("@/component/shared/Footer/Footer"), {
+  ssr: false,
+});
 import Head from "next/head";
 import { Box, Tooltip } from "@mui/material";
 import ownerBackgroundImage from "../public/Images/ownerBackground.png";

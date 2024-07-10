@@ -33,7 +33,9 @@ const BrokerRegistrationSentModal = dynamic(() =>
     "@/component/brokerRegistration/BrokerRegistrationSendModal/BrokerRegistrationSendModal"
   )
 );
-const Navbar = dynamic(() => import("@/component/shared/Navbar/Navbar"));
+const Navbar = dynamic(() => import("@/component/shared/Navbar/Navbar"), {
+  ssr: false,
+});
 
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
@@ -46,7 +48,9 @@ import en from "locales/en";
 import pt from "locales/pt";
 import BaseButton from "@/component/reuseable/baseButton/BaseButton";
 import { useRouter } from "next/router";
-import Footer from "@/component/shared/Footer/Footer";
+const Footer = dynamic(() => import("@/component/shared/Footer/Footer"), {
+  ssr: false,
+});
 import { userInfoRegistrationApi } from "@/api";
 
 const aboutLokkanData = [

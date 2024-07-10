@@ -1,4 +1,5 @@
 import React, { useCallback, useEffect, useRef, useState } from "react";
+import dynamic from "next/dynamic";
 import {
   Box,
   Grid,
@@ -14,7 +15,9 @@ import bed from "../../../../public/Images/bed.png";
 import rule from "../../../../public/Images/rule.png";
 import check from "../../../../public/Images/check.png";
 import Image from "next/image";
-import Footer from "../../shared/Footer/Footer";
+const Footer = dynamic(() => import("@/component/shared/Footer/Footer"), {
+  ssr: false,
+});
 import { _baseURL, _imageURL } from "../../../../consts";
 import FavoriteBorderOutlinedIcon from "@mui/icons-material/FavoriteBorderOutlined";
 import en from "locales/en";
