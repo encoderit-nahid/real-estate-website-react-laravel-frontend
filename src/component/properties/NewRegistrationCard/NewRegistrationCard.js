@@ -49,7 +49,7 @@ function NewRegistrationCard({
   const handleReject = (id) => {
     const body = {
       property_id: id,
-      status: "approved",
+      status: "rejected",
     };
     mutation.mutate(body, {
       onError(error) {
