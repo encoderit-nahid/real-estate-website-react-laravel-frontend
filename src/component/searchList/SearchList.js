@@ -261,7 +261,6 @@ function SearchList({ propertyData, language, handleLoginOpen }) {
       pets: pets,
       metro: closeToTheMetro,
       tag: featuretypes,
-      status: "approved",
       // proposal_status: proposalStatus,
       // journey_stage: journeyStage,
     };

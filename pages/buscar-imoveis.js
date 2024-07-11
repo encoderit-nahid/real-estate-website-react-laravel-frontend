@@ -61,7 +61,7 @@ export async function getServerSideProps(context) {
   const queryValue = context.query;
 
   var url = new URL(`${base_url}/api/property/index`),
-    params = context.query;
+    params = { ...context.query, status: "approved" };
   Object.keys(params).forEach((key) =>
     url.searchParams.append(key, params[key])
   );
