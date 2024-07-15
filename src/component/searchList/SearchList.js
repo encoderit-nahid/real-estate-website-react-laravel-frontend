@@ -344,7 +344,7 @@ function SearchList({ propertyData, language, handleLoginOpen }) {
                 <TextField
                   {...field}
                   variant="outlined"
-                  placeholder="Search"
+                  placeholder="Pesquise por cidade, bairro, corretor, lançamento ou condomínio"
                   size="small"
                   fullWidth
                   InputProps={{

@@ -322,6 +322,7 @@ function WishPropertyCard({
             position: "relative",
             // backgroundColor: "red",
             zIndex: 100,
+            maxWidth: 400,
             // mt: "auto",
           }}
         >

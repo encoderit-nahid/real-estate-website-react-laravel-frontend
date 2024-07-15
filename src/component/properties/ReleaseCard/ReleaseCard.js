@@ -54,8 +54,8 @@ function ReleaseCard({
           <Image
             loader={myLoader}
             src={`${projectData?.attachments[0]?.file_path}`}
-            width={400}
-            height={300}
+            width={600}
+            height={400}
             alt="aston"
           />
         </Box>

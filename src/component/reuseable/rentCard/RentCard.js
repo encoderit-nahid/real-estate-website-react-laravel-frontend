@@ -308,7 +308,7 @@ function RentCard({
                 </Button>
                 {/* </a> */}
               </Link>
-              {(parseInt(session?.user?.userId) === propertyData?.user?.id ||
+              {(parseInt(session?.user?.userId) === propertyData?.owner_id ||
                 session?.user?.role === "admin") && (
                 <Link
                   href={{
