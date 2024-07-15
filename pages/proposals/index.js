@@ -278,7 +278,7 @@ export default function Proposals({ language }) {
                 <TextField
                   {...field}
                   variant="outlined"
-                  placeholder="Pesquise por cidade, bairro, corretor, lançamento ou condomínio"
+                  placeholder="Pesquisar"
                   size="small"
                   fullWidth
                   InputProps={{

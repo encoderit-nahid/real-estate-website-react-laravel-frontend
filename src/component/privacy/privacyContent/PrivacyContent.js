@@ -31,7 +31,7 @@ function PrivacyContent({ name, contents = [], children }) {
         >
           {name}
         </Typography>
-        <Typography
+        {/* <Typography
           variant="p"
           sx={{
             mt: 2,
@@ -42,7 +42,7 @@ function PrivacyContent({ name, contents = [], children }) {
           }}
         >
           Date of last change: 06/24/2022
-        </Typography>
+        </Typography> */}
         {contents.map((data) => (
           <>
             <Typography

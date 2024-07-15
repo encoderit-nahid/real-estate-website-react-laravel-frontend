@@ -344,7 +344,7 @@ function SearchList({ propertyData, language, handleLoginOpen }) {
                 <TextField
                   {...field}
                   variant="outlined"
-                  placeholder="Pesquise por cidade, bairro, corretor, lançamento ou condomínio"
+                  placeholder="Pesquisar"
                   size="small"
                   fullWidth
                   InputProps={{
@@ -1332,7 +1332,7 @@ function SearchList({ propertyData, language, handleLoginOpen }) {
               option.value === value.value
             }
             size={"small"}
-            placeholder={"Most relevant"}
+            placeholder={"Mais relevante"}
             onChange={(e, v, r, d) => handleRelevantValueChange(v)}
             value={relevantValue}
           />

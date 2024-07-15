@@ -490,7 +490,7 @@ function AnalysisPdfModal({
                   ml: 0.5,
                 }}
               >
-                1 items to review
+                1 item para revisar
               </Typography>
             </Grid>
           </Box>
