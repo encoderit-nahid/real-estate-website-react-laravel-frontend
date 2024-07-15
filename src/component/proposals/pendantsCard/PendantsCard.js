@@ -200,7 +200,7 @@ function PendantsCard({ propertyData, languageName, refetch, loadingRefetch }) {
                         fontWeight: "400",
                       }}
                     >
-                      {propertyData?.ad_type}
+                      {t[propertyData?.ad_type]}
                     </Button>
                     <Button
                       sx={{
@@ -476,7 +476,7 @@ function PendantsCard({ propertyData, languageName, refetch, loadingRefetch }) {
               mr: 1,
             }}
           >
-            {propertyData?.ad_type}
+            {t[propertyData?.ad_type]}
           </Button>
 
           <Button

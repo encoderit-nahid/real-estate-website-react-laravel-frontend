@@ -11,6 +11,8 @@ import media from "../../../../public/Images/Media.png";
 import Image from "next/image";
 import { _baseURL, _imageURL } from "../../../../consts";
 import Link from "next/link";
+import { formatBrazilianCurrency } from "@/utils/useUtilities";
+import pt from "locales/pt";
 
 function SaleCard({ singlePropertyData }) {
   const filterData = singlePropertyData?.attachments?.filter(
@@ -19,6 +21,7 @@ function SaleCard({ singlePropertyData }) {
   const myLoader = ({ src }) => {
     return `${_imageURL}/${src}`;
   };
+  const t = pt;
   return (
     <Link
       href={`/visualizacao-da-propriedade/${singlePropertyData?.id}/${singlePropertyData?.property_title}`}
@@ -59,7 +62,7 @@ function SaleCard({ singlePropertyData }) {
                 mr: 1,
               }}
             >
-              {singlePropertyData?.ad_type}
+              {t[singlePropertyData?.ad_type]}
             </Button>
             <Typography
               variant="h1"
@@ -71,7 +74,7 @@ function SaleCard({ singlePropertyData }) {
                 mt: 1,
               }}
             >
-              {`R$ ${singlePropertyData?.brl_rent}`}
+              {formatBrazilianCurrency(singlePropertyData?.brl_rent)}
             </Typography>
             <Typography
               variant="h1"

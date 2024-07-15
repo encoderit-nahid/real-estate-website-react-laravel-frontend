@@ -170,7 +170,7 @@ function SeeProposalModal({
                       fontWeight: "400",
                     }}
                   >
-                    {propertyData?.ad_type}
+                    {t[propertyData?.ad_type]}
                   </Button>
                   <Button
                     sx={{

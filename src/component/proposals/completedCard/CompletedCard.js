@@ -65,7 +65,7 @@ function CompletedCard({ propertyData, languageName }) {
               mr: 1,
             }}
           >
-            {propertyData?.ad_type}
+            {t[propertyData?.ad_type]}
           </Button>
         </Box>
       </Grid>
