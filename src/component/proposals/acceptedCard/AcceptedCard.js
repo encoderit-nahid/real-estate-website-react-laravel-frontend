@@ -21,6 +21,7 @@ import en from "locales/en";
 import { IsBuyerRegisteredApi } from "@/api";
 import toast from "react-hot-toast";
 import { useRouter } from "next/router";
+import { formatBrazilianCurrency } from "@/utils/useUtilities";
 
 function AcceptedCard({ propertyData, languageName }) {
   const t = languageName === "en" ? en : pt;
@@ -159,7 +160,7 @@ function AcceptedCard({ propertyData, languageName }) {
             lineHeight: "32px",
           }}
         >
-          {` R$  ${propertyData?.brl_rent}`}
+          {formatBrazilianCurrency(propertyData?.brl_rent)}
         </Typography>
         <Typography
           variant="p"

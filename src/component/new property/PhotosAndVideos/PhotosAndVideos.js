@@ -489,9 +489,12 @@ function PhotosAndVideos({
               borderRadius: "0px 4px 4px 0px",
             },
           }}
-          onClick={() =>
-            setVideoFiles([...videoFiles, { url: allValues.videos_url }])
-          }
+          onClick={() => {
+            if (!allValues.videos_url) {
+              return;
+            }
+            setVideoFiles([...videoFiles, { url: allValues.videos_url }]);
+          }}
         >
           <AddOutlinedIcon sx={{ color: "#002152" }} />
         </Button>

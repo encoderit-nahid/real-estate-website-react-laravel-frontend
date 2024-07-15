@@ -9,7 +9,14 @@ const BaseFavoriteButton = dynamic(
   { ssr: false }
 );
 import BaseWhatsappButton from "@/component/reuseable/baseWhatsappButton/BaseWhatsappButton";
-import { Grid, ListItemText, Rating, Stack, Typography } from "@mui/material";
+import {
+  Avatar,
+  Grid,
+  ListItemText,
+  Rating,
+  Stack,
+  Typography,
+} from "@mui/material";
 import Image from "next/image";
 import React from "react";
 import EmailIcon from "@mui/icons-material/Email";
@@ -38,18 +45,23 @@ const BrokerInformation = ({
           justifyItems="center"
           spacing={1}
         >
-          <Image
-            loader={myLoader}
-            src={`${singleBrokerData.broker?.attachments[0]?.file_path}`}
-            width={100}
-            height={100}
-            alt="broker image"
-            style={{
-              borderRadius: "100%",
-            }}
-            objectFit="cover"
-            objectPosition={"center"}
-          />
+          {singleBrokerData.broker?.attachments[0]?.file_path ? (
+            <Image
+              loader={myLoader}
+              src={`${singleBrokerData.broker?.attachments[0]?.file_path}`}
+              width={100}
+              height={100}
+              alt="broker image"
+              style={{
+                borderRadius: "100%",
+              }}
+              objectFit="cover"
+              objectPosition={"center"}
+            />
+          ) : (
+            <Avatar />
+          )}
+
           <Typography
             variant="body1"
             sx={{

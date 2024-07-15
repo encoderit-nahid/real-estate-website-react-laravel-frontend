@@ -17,6 +17,12 @@ import PropertyList from "@/component/IAmOwner/propertyList/PropertyList";
 import BaseButton from "@/component/reuseable/button/BaseButton";
 import { useSession } from "next-auth/react";
 import Head from "next/head";
+// import Navbar from "@/component/shared/Navbar/Navbar";
+// import NavBar from "@/component/sharedProposal/NavBar/NavBar";
+
+const Navbar = dynamic(() => import("@/component/shared/Navbar/Navbar"), {
+  ssr: false,
+});
 
 const BrokerInformation = dynamic(
   () => import("@/component/brokers/Information/BrokerInformation"),
@@ -60,7 +66,10 @@ function a11yProps(index) {
 }
 
 export default function BrokerDetails({
+  loginOpen,
+  setLoginOpen,
   handleLoginOpen,
+  handleLoginClose,
   language,
   singleBrokerData,
 }) {
@@ -151,6 +160,17 @@ export default function BrokerDetails({
         />
       </Head>
       <main className="section">
+        <Navbar
+          shape={false}
+          loginOpen={loginOpen}
+          setLoginOpen={setLoginOpen}
+          handleLoginClose={handleLoginClose}
+          handleLoginOpen={handleLoginOpen}
+          languageName={language}
+          setMyValue={setMyValue}
+          myValue={myValue}
+          colorLogo={true}
+        />
         <Box
           sx={{
             flexGrow: 1,

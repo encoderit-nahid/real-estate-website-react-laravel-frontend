@@ -18,6 +18,7 @@ import FiberManualRecordIcon from "@mui/icons-material/FiberManualRecord";
 import { _baseURL, _imageURL } from "../../../../consts";
 import en from "locales/en";
 import pt from "locales/pt";
+import { formatBrazilianCurrency } from "@/utils/useUtilities";
 
 function CompletedCard({ propertyData, languageName }) {
   const myLoader = ({ src }) => {
@@ -84,7 +85,7 @@ function CompletedCard({ propertyData, languageName }) {
             lineHeight: "32px",
           }}
         >
-          {` R$  ${propertyData?.brl_rent}`}
+          {formatBrazilianCurrency(propertyData?.brl_rent)}
         </Typography>
         <Typography
           variant="p"

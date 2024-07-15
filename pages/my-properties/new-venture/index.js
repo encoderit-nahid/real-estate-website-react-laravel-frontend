@@ -15,10 +15,7 @@ import { useRouter } from "next/router";
 import { useEffect } from "react";
 
 import { serialize } from "object-to-formdata";
-import {
-  createProjectApi,
-  updateProjectApi,
-} from "../../../src/api";
+import { createProjectApi, updateProjectApi } from "../../../src/api";
 import { useDispatch } from "react-redux";
 import { GetPhotoTypeData } from "../../../src/redux/photo/actions";
 const requiredFields = [
@@ -345,6 +342,8 @@ export default function NewVenture({ language, session }) {
       );
     } else if (activeStep == 1) {
       setDisableBtn(() => featuretypes.length > 0);
+    } else if (activeStep == 2) {
+      setDisableBtn(() => files.length > 0);
     }
   }, [allValues, activeStep, files, featuretypes, loading]);
 
