@@ -132,6 +132,27 @@ function ValuesAndDescription({
       </Grid>
       <Grid container spacing={2} sx={{ mt: 2 }}>
         <Grid item xs={12} md={6}>
+          <Grid
+            item
+            xs={12}
+            direction="row"
+            justifyContent="flex-start"
+            alignItems="flex-start"
+          >
+            <Typography
+              variant="p"
+              sx={{
+                color: "#253858",
+                fontSize: "14px",
+                fontWeight: "400",
+                lineHeight: "16px",
+                mb: 1,
+              }}
+            >
+              {t["BRL Rent"]}
+              <span style={{ color: "#E63333" }}>*</span>
+            </Typography>
+          </Grid>
           <Controller
             name="brl_rent"
             control={control}
@@ -159,6 +180,27 @@ function ValuesAndDescription({
         </Grid>
         {matchedForCondominio.includes(property_detail_id) && (
           <Grid item xs={12} md={6}>
+            <Grid
+              item
+              xs={12}
+              direction="row"
+              justifyContent="flex-start"
+              alignItems="flex-start"
+            >
+              <Typography
+                variant="p"
+                sx={{
+                  color: "#253858",
+                  fontSize: "14px",
+                  fontWeight: "400",
+                  lineHeight: "16px",
+                  mb: 1,
+                }}
+              >
+                {t["Condominium"]}
+                <span style={{ color: "#E63333" }}>*</span>
+              </Typography>
+            </Grid>
             <Controller
               name="condominium"
               control={control}
@@ -186,6 +228,27 @@ function ValuesAndDescription({
           </Grid>
         )}
         <Grid item xs={12} md={6}>
+          <Grid
+            item
+            xs={12}
+            direction="row"
+            justifyContent="flex-start"
+            alignItems="flex-start"
+          >
+            <Typography
+              variant="p"
+              sx={{
+                color: "#253858",
+                fontSize: "14px",
+                fontWeight: "400",
+                lineHeight: "16px",
+                mb: 1,
+              }}
+            >
+              R$ IPTU
+              <span style={{ color: "#E63333" }}>*</span>
+            </Typography>
+          </Grid>
           <Controller
             name="brl_iptu"
             control={control}

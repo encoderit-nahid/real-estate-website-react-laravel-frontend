@@ -119,28 +119,30 @@ function Address({
 
   console.log({ allStateData });
 
-
   useEffect(() => {
     const getData = async () => {
-      const [error, response] = await getAddressData(allValues?.zip_code)
+      const [error, response] = await getAddressData(allValues?.zip_code);
       if (error) {
-        setValue('address', "")
-        setValue('neighbourhood', "")
-        setValue('add_on', "")
-        setValue('city', "")
-        setValue('state', '')
+        setValue("address", "");
+        setValue("neighbourhood", "");
+        setValue("add_on", "");
+        setValue("city", "");
+        setValue("state", "");
       } else {
-        setValue('address', response?.data?.logradouro)
-        setValue('neighbourhood', response?.data?.bairro)
-        setValue('add_on', response?.data?.complemento)
-        setValue('city', response?.data?.localidade)
-        setValue('state', allStateData?.find((data) => data?.uf === response?.data?.uf ))
+        setValue("address", response?.data?.logradouro);
+        setValue("neighbourhood", response?.data?.bairro);
+        setValue("add_on", response?.data?.complemento);
+        setValue("city", response?.data?.localidade);
+        setValue(
+          "state",
+          allStateData?.find((data) => data?.uf === response?.data?.uf)
+        );
       }
-    }
+    };
     if (allValues?.zip_code && allValues?.zip_code?.length > 8) {
-      getData()
+      getData();
     }
-  }, [allValues?.zip_code, setValue,allStateData])
+  }, [allValues?.zip_code, setValue, allStateData]);
 
   // console.log({ documents })
   // const filterDocs = documents?.filter((d) => d instanceof File)
@@ -482,12 +484,31 @@ function Address({
 
       {matchedPropertyType.includes(property_detail_id) && (
         <Box>
+          <Grid
+            container
+            direction="row"
+            justifyContent="flex-start"
+            alignItems="flex-start"
+          >
+            <Typography
+              variant="p"
+              sx={{
+                color: "#253858",
+                fontSize: "14px",
+                fontWeight: "400",
+                lineHeight: "16px",
+                mt: 2,
+              }}
+            >
+              {t["select enterprise name"]}
+            </Typography>
+          </Grid>
           <Controller
             name="project_id"
             control={control}
             render={({ field }) => (
               <BaseAutocomplete
-                sx={{ mt: 3, width: "100%" }}
+                sx={{ mt: 1, width: "100%" }}
                 options={projectData || []}
                 getOptionLabel={(option) => option.name || ""}
                 isOptionEqualToValue={(option, value) => option.id === value.id}
@@ -545,6 +566,26 @@ function Address({
         </Box>
       )}
       <Grid container spacing={1} sx={{ mt: 3 }}>
+        <Grid
+          item
+          xs={12}
+          direction="row"
+          justifyContent="flex-start"
+          alignItems="flex-start"
+        >
+          <Typography
+            variant="p"
+            sx={{
+              color: "#253858",
+              fontSize: "14px",
+              fontWeight: "400",
+              lineHeight: "16px",
+              mb: 1,
+            }}
+          >
+            {t["Property Title"]}
+          </Typography>
+        </Grid>
         <Grid item xs={12}>
           <Controller
             name="property_title"
@@ -573,6 +614,26 @@ function Address({
       </Grid>
       <Grid container spacing={1} sx={{ mt: 3 }}>
         <Grid item xs={12}>
+          <Grid
+            item
+            xs={12}
+            direction="row"
+            justifyContent="flex-start"
+            alignItems="flex-start"
+          >
+            <Typography
+              variant="p"
+              sx={{
+                color: "#253858",
+                fontSize: "14px",
+                fontWeight: "400",
+                lineHeight: "16px",
+                mb: 1,
+              }}
+            >
+              {t["Property Description"]}
+            </Typography>
+          </Grid>
           <Controller
             name="description"
             control={control}
@@ -597,6 +658,27 @@ function Address({
       <Grid container spacing={1} sx={{ mt: 3 }}>
         <Grid item xs={12} sm={12} md={12} lg={3}>
           <FormControl variant="outlined" sx={{ width: "100%" }}>
+            <Grid
+              item
+              xs={12}
+              direction="row"
+              justifyContent="flex-start"
+              alignItems="flex-start"
+            >
+              <Typography
+                variant="p"
+                sx={{
+                  color: "#253858",
+                  fontSize: "14px",
+                  fontWeight: "400",
+                  lineHeight: "16px",
+                  mb: 1,
+                }}
+              >
+                {t["Zip code"]}
+                <span style={{ color: "#E63333" }}>*</span>
+              </Typography>
+            </Grid>
             <Controller
               name="zip_code"
               control={control}
@@ -625,6 +707,27 @@ function Address({
         </Grid>
 
         <Grid item xs={12} sm={12} md={12} lg={6}>
+          <Grid
+            item
+            xs={12}
+            direction="row"
+            justifyContent="flex-start"
+            alignItems="flex-start"
+          >
+            <Typography
+              variant="p"
+              sx={{
+                color: "#253858",
+                fontSize: "14px",
+                fontWeight: "400",
+                lineHeight: "16px",
+                mb: 1,
+              }}
+            >
+              {t["Address"]}
+              <span style={{ color: "#E63333" }}>*</span>
+            </Typography>
+          </Grid>
           <Controller
             name="address"
             control={control}
@@ -650,6 +753,27 @@ function Address({
           </Typography>
         </Grid>
         <Grid item xs={12} sm={12} md={12} lg={3}>
+          <Grid
+            item
+            xs={12}
+            direction="row"
+            justifyContent="flex-start"
+            alignItems="flex-start"
+          >
+            <Typography
+              variant="p"
+              sx={{
+                color: "#253858",
+                fontSize: "14px",
+                fontWeight: "400",
+                lineHeight: "16px",
+                mb: 1,
+              }}
+            >
+              {t["Number"]}
+              <span style={{ color: "#E63333" }}>*</span>
+            </Typography>
+          </Grid>
           <Controller
             name="number"
             control={control}
@@ -678,6 +802,27 @@ function Address({
       </Grid>
       <Grid container spacing={1} sx={{ mt: 3 }}>
         <Grid item xs={12} sm={12} md={12} lg={4}>
+          <Grid
+            item
+            xs={12}
+            direction="row"
+            justifyContent="flex-start"
+            alignItems="flex-start"
+          >
+            <Typography
+              variant="p"
+              sx={{
+                color: "#253858",
+                fontSize: "14px",
+                fontWeight: "400",
+                lineHeight: "16px",
+                mb: 1,
+              }}
+            >
+              {t["Neighborhood"]}
+              <span style={{ color: "#E63333" }}>*</span>
+            </Typography>
+          </Grid>
           <Controller
             name="neighbourhood"
             control={control}
@@ -703,6 +848,26 @@ function Address({
           </Typography>
         </Grid>
         <Grid item xs={12} sm={12} md={12} lg={8}>
+          <Grid
+            item
+            xs={12}
+            direction="row"
+            justifyContent="flex-start"
+            alignItems="flex-start"
+          >
+            <Typography
+              variant="p"
+              sx={{
+                color: "#253858",
+                fontSize: "14px",
+                fontWeight: "400",
+                lineHeight: "16px",
+                mb: 1,
+              }}
+            >
+              {t["Complement"]}
+            </Typography>
+          </Grid>
           <Controller
             name="complement"
             control={control}
@@ -730,6 +895,27 @@ function Address({
       </Grid>
       <Grid container spacing={1} sx={{ mt: 3 }}>
         <Grid item xs={12} sm={12} md={12} lg={6}>
+          <Grid
+            item
+            xs={12}
+            direction="row"
+            justifyContent="flex-start"
+            alignItems="flex-start"
+          >
+            <Typography
+              variant="p"
+              sx={{
+                color: "#253858",
+                fontSize: "14px",
+                fontWeight: "400",
+                lineHeight: "16px",
+                mb: 1,
+              }}
+            >
+              {t["City"]}
+              <span style={{ color: "#E63333" }}>*</span>
+            </Typography>
+          </Grid>
           <Controller
             name="city"
             control={control}
@@ -755,6 +941,27 @@ function Address({
           </Typography>
         </Grid>
         <Grid item xs={12} sm={12} md={12} lg={6}>
+          <Grid
+            item
+            xs={12}
+            direction="row"
+            justifyContent="flex-start"
+            alignItems="flex-start"
+          >
+            <Typography
+              variant="p"
+              sx={{
+                color: "#253858",
+                fontSize: "14px",
+                fontWeight: "400",
+                lineHeight: "16px",
+                mb: 1,
+              }}
+            >
+              {t["State"]}
+              <span style={{ color: "#E63333" }}>*</span>
+            </Typography>
+          </Grid>
           <Controller
             name="state"
             control={control}

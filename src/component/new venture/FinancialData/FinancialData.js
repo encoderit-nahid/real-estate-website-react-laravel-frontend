@@ -146,6 +146,26 @@ function FinancialData({
 
       <Grid container spacing={4} sx={{ mt: 3 }}>
         <Grid item xs={12} md={6}>
+          <Grid
+            item
+            xs={12}
+            direction="row"
+            justifyContent="flex-start"
+            alignItems="flex-start"
+          >
+            <Typography
+              variant="p"
+              sx={{
+                color: "#253858",
+                fontSize: "14px",
+                fontWeight: "400",
+                lineHeight: "16px",
+                mb: 1,
+              }}
+            >
+              {t["Prohibited"]}
+            </Typography>
+          </Grid>
           <Controller
             name="prohibited"
             control={control}
@@ -172,6 +192,26 @@ function FinancialData({
           </Typography>
         </Grid>
         <Grid item xs={12} md={6}>
+          <Grid
+            item
+            xs={12}
+            direction="row"
+            justifyContent="flex-start"
+            alignItems="flex-start"
+          >
+            <Typography
+              variant="p"
+              sx={{
+                color: "#253858",
+                fontSize: "14px",
+                fontWeight: "400",
+                lineHeight: "16px",
+                mb: 1,
+              }}
+            >
+              {t["Adjustment index"]}
+            </Typography>
+          </Grid>
           <Controller
             name="adjustment_index"
             control={control}
@@ -198,6 +238,26 @@ function FinancialData({
           </Typography>
         </Grid>
         <Grid item xs={12} md={6}>
+          <Grid
+            item
+            xs={12}
+            direction="row"
+            justifyContent="flex-start"
+            alignItems="flex-start"
+          >
+            <Typography
+              variant="p"
+              sx={{
+                color: "#253858",
+                fontSize: "14px",
+                fontWeight: "400",
+                lineHeight: "16px",
+                mb: 1,
+              }}
+            >
+              {t["Number of installments"]}
+            </Typography>
+          </Grid>
           <Controller
             name="number_of_installments"
             control={control}
@@ -224,6 +284,26 @@ function FinancialData({
           </Typography>
         </Grid>
         <Grid item xs={12} md={6}>
+          <Grid
+            item
+            xs={12}
+            direction="row"
+            justifyContent="flex-start"
+            alignItems="flex-start"
+          >
+            <Typography
+              variant="p"
+              sx={{
+                color: "#253858",
+                fontSize: "14px",
+                fontWeight: "400",
+                lineHeight: "16px",
+                mb: 1,
+              }}
+            >
+              {t["Value per square meter"]}
+            </Typography>
+          </Grid>
           <Controller
             name="value_per_square_meter"
             control={control}

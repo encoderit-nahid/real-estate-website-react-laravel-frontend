@@ -253,6 +253,27 @@ function Owner({
       </Grid>
       <Grid container sx={{ mt: 2 }}>
         <Grid item xs={12}>
+          <Grid
+            item
+            xs={12}
+            direction="row"
+            justifyContent="flex-start"
+            alignItems="flex-start"
+          >
+            <Typography
+              variant="p"
+              sx={{
+                color: "#253858",
+                fontSize: "14px",
+                fontWeight: "400",
+                lineHeight: "16px",
+                mb: 1,
+              }}
+            >
+              {t["Full Name"]}
+              <span style={{ color: "#E63333" }}>*</span>
+            </Typography>
+          </Grid>
           <Controller
             name="owner_name"
             control={control}
@@ -281,6 +302,26 @@ function Owner({
       </Grid>
       <Grid container spacing={1} sx={{ mt: 1 }}>
         <Grid item xs={12}>
+          <Grid
+            item
+            xs={12}
+            direction="row"
+            justifyContent="flex-start"
+            alignItems="flex-start"
+          >
+            <Typography
+              variant="p"
+              sx={{
+                color: "#253858",
+                fontSize: "14px",
+                fontWeight: "400",
+                lineHeight: "16px",
+                mb: 1,
+              }}
+            >
+              E-mail
+            </Typography>
+          </Grid>
           <FormControl variant="outlined" sx={{ width: "100%" }}>
             <Controller
               name="owner_email"
@@ -310,6 +351,27 @@ function Owner({
       </Grid>
       <Grid container spacing={1} sx={{ mt: 1 }}>
         <Grid item xs={12} sm={12} md={6} lg={6} xl={6}>
+          <Grid
+            item
+            xs={12}
+            direction="row"
+            justifyContent="flex-start"
+            alignItems="flex-start"
+          >
+            <Typography
+              variant="p"
+              sx={{
+                color: "#253858",
+                fontSize: "14px",
+                fontWeight: "400",
+                lineHeight: "16px",
+                mb: 1,
+              }}
+            >
+              RG
+              <span style={{ color: "#E63333" }}>*</span>
+            </Typography>
+          </Grid>
           <FormControl variant="outlined" sx={{ width: "100%" }}>
             <Controller
               name="owner_rg"
@@ -339,6 +401,27 @@ function Owner({
           </FormControl>
         </Grid>
         <Grid item xs={12} sm={12} md={6} lg={6} xl={6}>
+          <Grid
+            item
+            xs={12}
+            direction="row"
+            justifyContent="flex-start"
+            alignItems="flex-start"
+          >
+            <Typography
+              variant="p"
+              sx={{
+                color: "#253858",
+                fontSize: "14px",
+                fontWeight: "400",
+                lineHeight: "16px",
+                mb: 1,
+              }}
+            >
+              CPF
+              <span style={{ color: "#E63333" }}>*</span>
+            </Typography>
+          </Grid>
           <FormControl variant="outlined" sx={{ width: "100%" }}>
             <Controller
               name="owner_cpf"
@@ -387,6 +470,27 @@ function Owner({
           </Grid>
           <Grid container sx={{ mt: 2 }}>
             <Grid item xs={12}>
+              <Grid
+                item
+                xs={12}
+                direction="row"
+                justifyContent="flex-start"
+                alignItems="flex-start"
+              >
+                <Typography
+                  variant="p"
+                  sx={{
+                    color: "#253858",
+                    fontSize: "14px",
+                    fontWeight: "400",
+                    lineHeight: "16px",
+                    mb: 1,
+                  }}
+                >
+                  {t["Full Name"]}
+                  <span style={{ color: "#E63333" }}>*</span>
+                </Typography>
+              </Grid>
               <Controller
                 name="owner_spouse_name"
                 control={control}
@@ -415,6 +519,27 @@ function Owner({
           </Grid>
           <Grid container spacing={1} sx={{ mt: 1 }}>
             <Grid item xs={12} sm={12} md={6} lg={6} xl={6}>
+              <Grid
+                item
+                xs={12}
+                direction="row"
+                justifyContent="flex-start"
+                alignItems="flex-start"
+              >
+                <Typography
+                  variant="p"
+                  sx={{
+                    color: "#253858",
+                    fontSize: "14px",
+                    fontWeight: "400",
+                    lineHeight: "16px",
+                    mb: 1,
+                  }}
+                >
+                  RG
+                  <span style={{ color: "#E63333" }}>*</span>
+                </Typography>
+              </Grid>
               <FormControl variant="outlined" sx={{ width: "100%" }}>
                 <Controller
                   name="owner_spouse_rg"
@@ -444,6 +569,27 @@ function Owner({
               </FormControl>
             </Grid>
             <Grid item xs={12} sm={12} md={6} lg={6} xl={6}>
+              <Grid
+                item
+                xs={12}
+                direction="row"
+                justifyContent="flex-start"
+                alignItems="flex-start"
+              >
+                <Typography
+                  variant="p"
+                  sx={{
+                    color: "#253858",
+                    fontSize: "14px",
+                    fontWeight: "400",
+                    lineHeight: "16px",
+                    mb: 1,
+                  }}
+                >
+                  CPF
+                  <span style={{ color: "#E63333" }}>*</span>
+                </Typography>
+              </Grid>
               <FormControl variant="outlined" sx={{ width: "100%" }}>
                 <Controller
                   name="owner_spouse_cpf"
@@ -492,6 +638,27 @@ function Owner({
       </Grid>
       <Grid container spacing={1} sx={{ mt: 1 }}>
         <Grid item xs={12} sm={12} md={4} lg={4} xl={4}>
+          <Grid
+            item
+            xs={12}
+            direction="row"
+            justifyContent="flex-start"
+            alignItems="flex-start"
+          >
+            <Typography
+              variant="p"
+              sx={{
+                color: "#253858",
+                fontSize: "14px",
+                fontWeight: "400",
+                lineHeight: "16px",
+                mb: 1,
+              }}
+            >
+              {t["Zip code"]}
+              <span style={{ color: "#E63333" }}>*</span>
+            </Typography>
+          </Grid>
           <FormControl variant="outlined" sx={{ width: "100%" }}>
             <Controller
               name="owner_zip_code"
@@ -519,6 +686,27 @@ function Owner({
           </FormControl>
         </Grid>
         <Grid item xs={12} sm={12} md={4} lg={4} xl={4}>
+          <Grid
+            item
+            xs={12}
+            direction="row"
+            justifyContent="flex-start"
+            alignItems="flex-start"
+          >
+            <Typography
+              variant="p"
+              sx={{
+                color: "#253858",
+                fontSize: "14px",
+                fontWeight: "400",
+                lineHeight: "16px",
+                mb: 1,
+              }}
+            >
+              {t["Address"]}
+              <span style={{ color: "#E63333" }}>*</span>
+            </Typography>
+          </Grid>
           <Controller
             name="owner_address"
             control={control}
@@ -544,6 +732,27 @@ function Owner({
           </Typography>
         </Grid>
         <Grid item xs={12} sm={12} md={4} lg={4} xl={4}>
+          <Grid
+            item
+            xs={12}
+            direction="row"
+            justifyContent="flex-start"
+            alignItems="flex-start"
+          >
+            <Typography
+              variant="p"
+              sx={{
+                color: "#253858",
+                fontSize: "14px",
+                fontWeight: "400",
+                lineHeight: "16px",
+                mb: 1,
+              }}
+            >
+              {t["Number"]}
+              <span style={{ color: "#E63333" }}>*</span>
+            </Typography>
+          </Grid>
           <Controller
             name="owner_number"
             control={control}
@@ -572,6 +781,27 @@ function Owner({
       </Grid>
       <Grid container spacing={1} sx={{ mt: 1 }}>
         <Grid item xs={12} sm={12} md={6} lg={6} xl={6}>
+          <Grid
+            item
+            xs={12}
+            direction="row"
+            justifyContent="flex-start"
+            alignItems="flex-start"
+          >
+            <Typography
+              variant="p"
+              sx={{
+                color: "#253858",
+                fontSize: "14px",
+                fontWeight: "400",
+                lineHeight: "16px",
+                mb: 1,
+              }}
+            >
+              {t["Neighborhood"]}
+              <span style={{ color: "#E63333" }}>*</span>
+            </Typography>
+          </Grid>
           <Controller
             name="owner_neighbourhood"
             control={control}
@@ -597,6 +827,26 @@ function Owner({
           </Typography>
         </Grid>
         <Grid item xs={12} sm={12} md={6} lg={6} xl={6}>
+          <Grid
+            item
+            xs={12}
+            direction="row"
+            justifyContent="flex-start"
+            alignItems="flex-start"
+          >
+            <Typography
+              variant="p"
+              sx={{
+                color: "#253858",
+                fontSize: "14px",
+                fontWeight: "400",
+                lineHeight: "16px",
+                mb: 1,
+              }}
+            >
+              {t["Complement"]}
+            </Typography>
+          </Grid>
           <Controller
             name="owner_complement"
             control={control}
@@ -624,6 +874,27 @@ function Owner({
       </Grid>
       <Grid container spacing={1} sx={{ mt: 1 }}>
         <Grid item xs={12} sm={12} md={6} lg={6} xl={6}>
+          <Grid
+            item
+            xs={12}
+            direction="row"
+            justifyContent="flex-start"
+            alignItems="flex-start"
+          >
+            <Typography
+              variant="p"
+              sx={{
+                color: "#253858",
+                fontSize: "14px",
+                fontWeight: "400",
+                lineHeight: "16px",
+                mb: 1,
+              }}
+            >
+              {t["City"]}
+              <span style={{ color: "#E63333" }}>*</span>
+            </Typography>
+          </Grid>
           <Controller
             name="owner_city"
             control={control}
@@ -649,6 +920,27 @@ function Owner({
           </Typography>
         </Grid>
         <Grid item xs={12} sm={12} md={6} lg={6} xl={6}>
+          <Grid
+            item
+            xs={12}
+            direction="row"
+            justifyContent="flex-start"
+            alignItems="flex-start"
+          >
+            <Typography
+              variant="p"
+              sx={{
+                color: "#253858",
+                fontSize: "14px",
+                fontWeight: "400",
+                lineHeight: "16px",
+                mb: 1,
+              }}
+            >
+              {t["State"]}
+              <span style={{ color: "#E63333" }}>*</span>
+            </Typography>
+          </Grid>
           <Controller
             name="owner_state"
             control={control}
@@ -693,6 +985,27 @@ function Owner({
       </Grid>
       <Grid container spacing={1} sx={{ mt: 1 }}>
         <Grid item xs={12} sm={12} md={6} lg={4} xl={4}>
+          <Grid
+            item
+            xs={12}
+            direction="row"
+            justifyContent="flex-start"
+            alignItems="flex-start"
+          >
+            <Typography
+              variant="p"
+              sx={{
+                color: "#253858",
+                fontSize: "14px",
+                fontWeight: "400",
+                lineHeight: "16px",
+                mb: 1,
+              }}
+            >
+              {t["documents"]}
+              <span style={{ color: "#E63333" }}>*</span>
+            </Typography>
+          </Grid>
           <Controller
             name="owner_documnentation"
             control={control}
@@ -705,7 +1018,7 @@ function Owner({
                   option.year === value.year
                 }
                 size={"medium"}
-                placeholder={t["documents"]}
+                placeholder={`${t["documents"]}*`}
                 onChange={(e, v, r, d) => field.onChange(v)}
                 value={field.value}
               />
@@ -720,6 +1033,27 @@ function Owner({
           </Typography>
         </Grid>
         <Grid item xs={12} sm={12} md={6} lg={4} xl={4}>
+          <Grid
+            item
+            xs={12}
+            direction="row"
+            justifyContent="flex-start"
+            alignItems="flex-start"
+          >
+            <Typography
+              variant="p"
+              sx={{
+                color: "#253858",
+                fontSize: "14px",
+                fontWeight: "400",
+                lineHeight: "16px",
+                mb: 1,
+              }}
+            >
+              {t["registry office"]}
+              <span style={{ color: "#E63333" }}>*</span>
+            </Typography>
+          </Grid>
           <Controller
             name="owner_registry"
             control={control}
@@ -727,7 +1061,7 @@ function Owner({
             render={({ field }) => (
               <BaseTextField
                 size={"medium"}
-                placeholder={t["registry office"]}
+                placeholder={`${t["registry office"]}*`}
                 onChange={(e) => {
                   field.onChange(e.target.value);
                 }}
@@ -745,6 +1079,27 @@ function Owner({
           </Typography>
         </Grid>
         <Grid item xs={12} sm={12} md={6} lg={4} xl={4}>
+          <Grid
+            item
+            xs={12}
+            direction="row"
+            justifyContent="flex-start"
+            alignItems="flex-start"
+          >
+            <Typography
+              variant="p"
+              sx={{
+                color: "#253858",
+                fontSize: "14px",
+                fontWeight: "400",
+                lineHeight: "16px",
+                mb: 1,
+              }}
+            >
+              {t["registration number"]}
+              <span style={{ color: "#E63333" }}>*</span>
+            </Typography>
+          </Grid>
           <Controller
             name="owner_registration_number"
             control={control}
@@ -752,7 +1107,7 @@ function Owner({
             render={({ field }) => (
               <BaseTextField
                 size={"medium"}
-                placeholder={t["registration number"]}
+                placeholder={`${t["registration number"]}*`}
                 onChange={(e) => {
                   field.onChange(e.target.value);
                 }}

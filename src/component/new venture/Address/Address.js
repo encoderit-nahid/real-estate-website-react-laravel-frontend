@@ -58,25 +58,28 @@ function Address({
 
   useEffect(() => {
     const getData = async () => {
-      const [error, response] = await getAddressData(allValues?.zip_code)
+      const [error, response] = await getAddressData(allValues?.zip_code);
       if (error) {
-        setValue('address', "")
-        setValue('neighbourhood', "")
-        setValue('add_on', "")
-        setValue('city', "")
-        setValue('state', '')
+        setValue("address", "");
+        setValue("neighbourhood", "");
+        setValue("add_on", "");
+        setValue("city", "");
+        setValue("state", "");
       } else {
-        setValue('address', response?.data?.logradouro)
-        setValue('neighbourhood', response?.data?.bairro)
-        setValue('add_on', response?.data?.complemento)
-        setValue('city', response?.data?.localidade)
-        setValue('state', allStateData?.find((data) => data?.uf === response?.data?.uf ))
+        setValue("address", response?.data?.logradouro);
+        setValue("neighbourhood", response?.data?.bairro);
+        setValue("add_on", response?.data?.complemento);
+        setValue("city", response?.data?.localidade);
+        setValue(
+          "state",
+          allStateData?.find((data) => data?.uf === response?.data?.uf)
+        );
       }
-    }
+    };
     if (allValues?.zip_code && allValues?.zip_code?.length > 8) {
-      getData()
+      getData();
     }
-  }, [allValues?.zip_code, setValue,allStateData])
+  }, [allValues?.zip_code, setValue, allStateData]);
 
   return (
     <Box sx={{ mt: 4 }}>
@@ -120,6 +123,26 @@ function Address({
         </BaseButton>
       </Grid>
       <Grid container sx={{ mt: 2 }}>
+        <Grid
+          item
+          xs={12}
+          direction="row"
+          justifyContent="flex-start"
+          alignItems="flex-start"
+        >
+          <Typography
+            variant="p"
+            sx={{
+              color: "#253858",
+              fontSize: "14px",
+              fontWeight: "400",
+              lineHeight: "16px",
+              mb: 1,
+            }}
+          >
+            {t["Enterprise Name"]}
+          </Typography>
+        </Grid>
         <Controller
           name="name"
           control={control}
@@ -147,6 +170,26 @@ function Address({
 
       <Grid container spacing={1} sx={{ mt: 3 }}>
         <Grid item xs={12}>
+          <Grid
+            item
+            xs={12}
+            direction="row"
+            justifyContent="flex-start"
+            alignItems="flex-start"
+          >
+            <Typography
+              variant="p"
+              sx={{
+                color: "#253858",
+                fontSize: "14px",
+                fontWeight: "400",
+                lineHeight: "16px",
+                mb: 1,
+              }}
+            >
+              {t["Property Description"]}
+            </Typography>
+          </Grid>
           <Controller
             name="description"
             control={control}
@@ -171,6 +214,27 @@ function Address({
 
       <Grid container spacing={1} sx={{ mt: 3 }}>
         <Grid item xs={12} sm={12} md={12} lg={3}>
+          <Grid
+            item
+            xs={12}
+            direction="row"
+            justifyContent="flex-start"
+            alignItems="flex-start"
+          >
+            <Typography
+              variant="p"
+              sx={{
+                color: "#253858",
+                fontSize: "14px",
+                fontWeight: "400",
+                lineHeight: "16px",
+                mb: 1,
+              }}
+            >
+              {t["Zip code"]}
+              <span style={{ color: "#E63333" }}>*</span>
+            </Typography>
+          </Grid>
           <FormControl variant="outlined" sx={{ width: "100%" }}>
             <Controller
               name="zip_code"
@@ -200,6 +264,27 @@ function Address({
         </Grid>
 
         <Grid item xs={12} sm={12} md={12} lg={6}>
+          <Grid
+            item
+            xs={12}
+            direction="row"
+            justifyContent="flex-start"
+            alignItems="flex-start"
+          >
+            <Typography
+              variant="p"
+              sx={{
+                color: "#253858",
+                fontSize: "14px",
+                fontWeight: "400",
+                lineHeight: "16px",
+                mb: 1,
+              }}
+            >
+              {t["Address"]}
+              <span style={{ color: "#E63333" }}>*</span>
+            </Typography>
+          </Grid>
           <Controller
             name="address"
             control={control}
@@ -225,6 +310,27 @@ function Address({
           </Typography>
         </Grid>
         <Grid item xs={12} sm={12} md={12} lg={3}>
+          <Grid
+            item
+            xs={12}
+            direction="row"
+            justifyContent="flex-start"
+            alignItems="flex-start"
+          >
+            <Typography
+              variant="p"
+              sx={{
+                color: "#253858",
+                fontSize: "14px",
+                fontWeight: "400",
+                lineHeight: "16px",
+                mb: 1,
+              }}
+            >
+              {t["Number"]}
+              <span style={{ color: "#E63333" }}>*</span>
+            </Typography>
+          </Grid>
           <Controller
             name="number"
             control={control}
@@ -253,6 +359,27 @@ function Address({
       </Grid>
       <Grid container spacing={1} sx={{ mt: 3 }}>
         <Grid item xs={12} sm={12} md={12} lg={4}>
+          <Grid
+            item
+            xs={12}
+            direction="row"
+            justifyContent="flex-start"
+            alignItems="flex-start"
+          >
+            <Typography
+              variant="p"
+              sx={{
+                color: "#253858",
+                fontSize: "14px",
+                fontWeight: "400",
+                lineHeight: "16px",
+                mb: 1,
+              }}
+            >
+              {t["Neighborhood"]}
+              <span style={{ color: "#E63333" }}>*</span>
+            </Typography>
+          </Grid>
           <Controller
             name="neighbourhood"
             control={control}
@@ -278,6 +405,26 @@ function Address({
           </Typography>
         </Grid>
         <Grid item xs={12} sm={12} md={12} lg={8}>
+          <Grid
+            item
+            xs={12}
+            direction="row"
+            justifyContent="flex-start"
+            alignItems="flex-start"
+          >
+            <Typography
+              variant="p"
+              sx={{
+                color: "#253858",
+                fontSize: "14px",
+                fontWeight: "400",
+                lineHeight: "16px",
+                mb: 1,
+              }}
+            >
+              {t["Complement"]}
+            </Typography>
+          </Grid>
           <Controller
             name="complement"
             control={control}
@@ -305,6 +452,27 @@ function Address({
       </Grid>
       <Grid container spacing={1} sx={{ mt: 3 }}>
         <Grid item xs={12} sm={12} md={12} lg={6}>
+          <Grid
+            item
+            xs={12}
+            direction="row"
+            justifyContent="flex-start"
+            alignItems="flex-start"
+          >
+            <Typography
+              variant="p"
+              sx={{
+                color: "#253858",
+                fontSize: "14px",
+                fontWeight: "400",
+                lineHeight: "16px",
+                mb: 1,
+              }}
+            >
+              {t["City"]}
+              <span style={{ color: "#E63333" }}>*</span>
+            </Typography>
+          </Grid>
           <Controller
             name="city"
             control={control}
@@ -330,6 +498,27 @@ function Address({
           </Typography>
         </Grid>
         <Grid item xs={12} sm={12} md={12} lg={6}>
+          <Grid
+            item
+            xs={12}
+            direction="row"
+            justifyContent="flex-start"
+            alignItems="flex-start"
+          >
+            <Typography
+              variant="p"
+              sx={{
+                color: "#253858",
+                fontSize: "14px",
+                fontWeight: "400",
+                lineHeight: "16px",
+                mb: 1,
+              }}
+            >
+              {t["State"]}
+              <span style={{ color: "#E63333" }}>*</span>
+            </Typography>
+          </Grid>
           <Controller
             name="state"
             control={control}
