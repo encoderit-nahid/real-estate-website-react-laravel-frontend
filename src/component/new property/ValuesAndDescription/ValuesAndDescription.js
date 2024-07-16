@@ -327,8 +327,7 @@ function ValuesAndDescription({
               defaultValue={""}
               render={({ field }) => (
                 <BaseTextField
-                  size={"small"}
-                  // placeholder={`m² ${t["Land area"]}`}
+                  placeholder={`m² ${t["Land area"]}`}
                   type={"number"}
                   onChange={(e) => {
                     field.onChange(e.target.value);
@@ -375,8 +374,7 @@ function ValuesAndDescription({
               defaultValue={""}
               render={({ field }) => (
                 <BaseTextField
-                  size={"small"}
-                  // placeholder={`m² ${t["Size of the property"]}`}
+                  placeholder={`m² ${t["Size of the property"]}`}
                   type={"number"}
                   onChange={(e) => {
                     field.onChange(e.target.value);
@@ -423,8 +421,7 @@ function ValuesAndDescription({
               defaultValue={""}
               render={({ field }) => (
                 <BaseTextField
-                  size={"small"}
-                  // placeholder={`${t["number of rooms"]}`}
+                  placeholder={`${t["number of rooms"]}`}
                   type={"number"}
                   onChange={(e) => {
                     field.onChange(e.target.value);
@@ -472,8 +469,7 @@ function ValuesAndDescription({
               defaultValue={""}
               render={({ field }) => (
                 <BaseTextField
-                  size={"small"}
-                  // placeholder={`${t["number of suites"]}`}
+                  placeholder={`${t["number of suites"]}`}
                   type={"number"}
                   onChange={(e) => {
                     field.onChange(e.target.value);
@@ -520,8 +516,7 @@ function ValuesAndDescription({
               defaultValue={""}
               render={({ field }) => (
                 <BaseTextField
-                  size={"small"}
-                  // placeholder={`${t["bathrooms"]}`}
+                  placeholder={`${t["bathrooms"]}`}
                   type={"number"}
                   onChange={(e) => {
                     field.onChange(e.target.value);
@@ -568,8 +563,7 @@ function ValuesAndDescription({
               defaultValue={""}
               render={({ field }) => (
                 <BaseTextField
-                  size={"small"}
-                  // placeholder={`${t["number of parking spaces"]}`}
+                  placeholder={`${t["number of parking spaces"]}`}
                   type={"number"}
                   onChange={(e) => {
                     field.onChange(e.target.value);
@@ -615,9 +609,8 @@ function ValuesAndDescription({
               defaultValue={""}
               render={({ field }) => (
                 <BaseTextField
-                  size={"small"}
                   name="dimension"
-                  // placeholder={`${t["dimension"]}`}
+                  placeholder={`${t["dimension"]}`}
                   type={"number"}
                   onChange={(e) => {
                     field.onChange(e.target.value);
