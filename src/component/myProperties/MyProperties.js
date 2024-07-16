@@ -92,20 +92,39 @@ export default function MyProperties({ language }) {
   } = useGetPropertyCountQuery();
   const propertyCountData = data?.data;
 
-  const [value, setValue] = useState(+query?.value || 0);
+  const [value, setValue] = useState(
+    query?.status === "new"
+      ? 3
+      : query?.status === "third"
+      ? 2
+      : query?.status === "projects"
+      ? 1
+      : 0
+  );
+  useEffect(() => {
+    setValue(
+      query?.status === "new"
+        ? 3
+        : query?.status === "third"
+        ? 2
+        : query?.status === "projects"
+        ? 1
+        : 0
+    );
+  }, [query?.status, value]);
 
   const handleChange = (event, newValue) => {
     setValue(newValue);
     setParams(
       omitEmpties({
         status:
-          newValue === 1
-            ? "wishlist"
-            : newValue === 3
-            ? "third"
-            : newValue === 4
+          newValue === 3
             ? "new"
-            : null,
+            : newValue === 2
+            ? "third"
+            : newValue === 1
+            ? "projects"
+            : "wishlist",
         page: 1,
         per_page: 9,
       })
