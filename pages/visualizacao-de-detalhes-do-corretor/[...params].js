@@ -125,7 +125,7 @@ export default function BrokerDetails({
 
         <meta
           property="og:url"
-          content={`https://www.lokkan.site/visualizacao-de-detalhes-do-corretor/${id}`}
+          content={`https://www.lokkan.com.br/visualizacao-de-detalhes-do-corretor/${id}`}
         />
         <meta property="og:title" content={`${singleBrokerData.broker.name}`} />
         <meta

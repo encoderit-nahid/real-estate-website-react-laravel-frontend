@@ -19,7 +19,7 @@ module.exports = {
     remotePatterns: [
       {
         protocol: "https",
-        hostname: "https://api.lokkan.site/storage",
+        hostname: "https://api.lokkan.com.br/storage",
       },
     ],
   },

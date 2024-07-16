@@ -191,7 +191,7 @@ export default function PropertyView({
 
         <meta
           property="og:url"
-          content={`https://www.lokkan.site/visualizacao-da-propriedade/${singlePropertyData?.property?.id}`}
+          content={`https://www.lokkan.com.br/visualizacao-da-propriedade/${singlePropertyData?.property?.id}`}
         />
         <meta
           property="og:title"
@@ -348,7 +348,7 @@ export default function PropertyView({
               }}
             >
               <BaseShareButton
-                base_url={`https://www.lokkan.site/visualizacao-da-propriedade/${singlePropertyData?.property?.id}`}
+                base_url={`https://www.lokkan.com.br/visualizacao-da-propriedade/${singlePropertyData?.property?.id}`}
               />
               <BaseFavoriteButton
                 handleLoginOpen={handleLoginOpen}
@@ -421,7 +421,7 @@ export default function PropertyView({
                 addressData={singlePropertyData?.property?.address}
                 languageName={myValue.toString()}
                 images={Images}
-                shareUrl={`https://www.lokkan.site/visualizacao-da-propriedade/${singlePropertyData?.property?.id}`}
+                shareUrl={`https://www.lokkan.con.br/visualizacao-da-propriedade/${singlePropertyData?.property?.id}`}
               />
             </Grid>
           </Grid>

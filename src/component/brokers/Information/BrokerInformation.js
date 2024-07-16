@@ -138,7 +138,7 @@ const BrokerInformation = ({
               </Stack>
               <Stack direction="row" alignItems={"center"} spacing={1}>
                 <BaseShareButton
-                  base_url={`https://www.lokkan.site/visualizacao-de-detalhes-do-corretor/${id}/${encodeURIComponent(
+                  base_url={`https://www.lokkan.com.br/visualizacao-de-detalhes-do-corretor/${id}/${encodeURIComponent(
                     singleBrokerData?.broker?.name.replace(/-/g, " ")
                   )}`}
                 />

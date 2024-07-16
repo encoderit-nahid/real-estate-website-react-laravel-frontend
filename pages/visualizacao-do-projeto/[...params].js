@@ -142,7 +142,7 @@ export default function ProjectView({
 
         <meta
           property="og:url"
-          content={`https://www.lokkan.site/visualizacao-do-projeto/${singleProjectData?.project?.id}`}
+          content={`https://www.lokkan.com.br/visualizacao-do-projeto/${singleProjectData?.project?.id}`}
         />
         <meta
           property="og:title"
@@ -296,7 +296,7 @@ export default function ProjectView({
               }}
             >
               <BaseShareButton
-                base_url={`https://www.lokkan.site/visualizacao-do-projeto/${singleProjectData?.project?.id}`}
+                base_url={`https://www.lokkan.com.br/visualizacao-do-projeto/${singleProjectData?.project?.id}`}
               />
               <BaseFavoriteButton
                 handleLoginOpen={handleLoginOpen}
@@ -463,7 +463,7 @@ export default function ProjectView({
                 videos={Videos}
                 languageName={myValue.toString()}
                 images={Images}
-                shareUrl={`https://www.lokkan.site/visualizacao-do-projeto/${singleProjectData?.project?.id}`}
+                shareUrl={`https://www.lokkan.com.br/visualizacao-do-projeto/${singleProjectData?.project?.id}`}
               />
             </Grid>
           </Grid>
