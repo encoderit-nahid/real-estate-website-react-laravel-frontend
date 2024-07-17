@@ -5,8 +5,9 @@ export const useGetPropertyCountQuery = () => {
   return useQuery({
     queryKey: ["/count-property"],
     refetchOnMount: true,
-    // retry: 2,
+    retry: 2,
     refetchOnWindowFocus: true,
+    keepPreviousData: true,
     staleTime: 0,
     queryFn: async () => {
       return await apiInstance.get(`/property/register-count`);

@@ -6,7 +6,7 @@ export const useGetSingleProjectQuery = (projectId) => {
     queryKey: ["/get-single-project"],
     enabled: !!projectId,
     keepPreviousData: false,
-
+    refetchOnWindowFocus: true,
     // cacheTime: 0,
     // staleTime: 0,
 

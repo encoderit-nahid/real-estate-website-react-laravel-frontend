@@ -4,9 +4,10 @@ import { useQuery } from "@tanstack/react-query";
 export const useGetBrokerCountQuery = () => {
   return useQuery({
     queryKey: ["/count-broker"],
+    retry: 2,
     refetchOnMount: true,
-    // retry: 2,
     refetchOnWindowFocus: true,
+    keepPreviousData: true,
     staleTime: 0,
     queryFn: async () => {
       return await apiInstance.get(`/users/broker-count`);

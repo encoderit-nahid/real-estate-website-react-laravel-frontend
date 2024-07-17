@@ -163,6 +163,8 @@ export default function Proposals({ language }) {
     data,
     isLoading: countLoading,
     refetch: loadingRefetch,
+    isFetching,
+    isFetched
   } = useGetProposalCountQuery();
   const proposalCountData = data?.data;
 

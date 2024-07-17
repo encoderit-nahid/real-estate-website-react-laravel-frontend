@@ -89,6 +89,8 @@ export default function MyProperties({ language }) {
     data,
     isLoading: countLoading,
     refetch: loadingRefetch,
+    isFetched,
+    isFetching
   } = useGetPropertyCountQuery();
   const propertyCountData = data?.data;
 

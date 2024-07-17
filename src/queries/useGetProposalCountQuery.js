@@ -4,9 +4,10 @@ import { useQuery } from "@tanstack/react-query";
 export const useGetProposalCountQuery = () => {
   return useQuery({
     queryKey: ["/count-proposal"],
+    retry: 2,
     refetchOnMount: true,
-    // retry: 2,
     refetchOnWindowFocus: true,
+    keepPreviousData: true,
     staleTime: 0,
     queryFn: async () => {
       return await apiInstance.get(`/proposal/count`);
