@@ -52,6 +52,8 @@ function Address({
   }, [dispatch]);
   const t = languageName === "en" ? en : pt;
 
+  const router = useRouter()
+
   console.log({ allValues });
 
   const allStateData = useSelector((state) => state.state.stateData);
@@ -112,8 +114,7 @@ function Address({
         </Stack>
         <BaseButton
           handleFunction={() => {
-            reset();
-            replace("/my-properties");
+           router.back()
           }}
           sx="error"
           color="error"

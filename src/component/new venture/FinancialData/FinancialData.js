@@ -11,6 +11,7 @@ import BaseAutocomplete from "../../reuseable/baseAutocomplete/BaseAutocomplete"
 import en from "locales/en";
 import pt from "locales/pt";
 import BaseButton from "@/component/reuseable/baseButton/BaseButton";
+import { useRouter } from "next/router";
 
 const baseStyle = {
   flex: 1,
@@ -55,6 +56,8 @@ function FinancialData({
   replace,
 }) {
   const t = languageName === "en" ? en : pt;
+
+  const router = useRouter()
 
   console.log({ allValues });
 
@@ -136,8 +139,7 @@ function FinancialData({
           sx="error"
           variant="outlined"
           handleFunction={() => {
-            reset();
-            replace("/my-properties");
+            router.back()
           }}
         >
           {t["Cancel"]}

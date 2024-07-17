@@ -105,8 +105,7 @@ function Features({
         </Stack>
         <BaseButton
           handleFunction={() => {
-            reset();
-            replace("/my-properties");
+           router.back()
           }}
           sx="error"
           color="error"

@@ -28,6 +28,7 @@ import { useSession } from "next-auth/react";
 import BaseAutocomplete from "@/component/reuseable/baseAutocomplete/BaseAutocomplete";
 import BaseCancelButton from "@/component/reuseable/button/BaseCancelButton";
 import BaseButton from "@/component/reuseable/baseButton/BaseButton";
+import { useRouter } from "next/router";
 
 function Features({
   featuretypes,
@@ -40,7 +41,7 @@ function Features({
   replace,
 }) {
   const t = languageName === "en" ? en : pt;
-
+  const router = useRouter()
   const [featureSelectData, setFeatureSelectData] = useState(null);
   const { data: session } = useSession();
   const [item, setItem] = useState("");
@@ -112,8 +113,7 @@ function Features({
           sx="error"
           variant="outlined"
           handleFunction={() => {
-            reset();
-            replace("/my-properties");
+              router.back()
           }}
         >
           {t["Cancel"]}

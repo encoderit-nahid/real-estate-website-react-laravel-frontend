@@ -83,7 +83,7 @@ function PhotosAndVideos({
   replace,
 }) {
   const dispatch = useDispatch();
-  const { query } = useRouter();
+  const router = useRouter();
   const { data: session } = useSession();
   const t = languageName === "en" ? en : pt;
   useEffect(() => {
@@ -199,8 +199,7 @@ function PhotosAndVideos({
           sx="error"
           variant="outlined"
           handleFunction={() => {
-            reset();
-            replace("/my-properties");
+            router.back()
           }}
         >
           {t["Cancel"]}

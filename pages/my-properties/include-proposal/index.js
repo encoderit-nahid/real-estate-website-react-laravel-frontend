@@ -98,7 +98,9 @@ export default function IncludeProposal({ language }) {
     { stage: t["My Properties"], route: "" },
   ];
 
-  const { query } = useRouter();
+
+  const router = useRouter()
+  const { query } = router;
 
   const steps =
     session?.user?.role === "broker"
@@ -228,6 +230,10 @@ export default function IncludeProposal({ language }) {
 
       setLoading(false);
     }
+  };
+
+  const goBack = () => {
+    router.back();
   };
 
   return (
@@ -430,10 +436,11 @@ export default function IncludeProposal({ language }) {
                       session?.user?.role === "admin") && (
                       <Grid container spacing={1} sx={{ mt: 2, mb: 5 }}>
                         <Grid item xs={6} sm={6} md={6}>
-                          <Link href="/my-properties">
+                   
                             <Button
                               color="inherit"
                               // disabled={activeStep === 0}
+                              onClick={goBack}
 
                               sx={{
                                 mr: 1,
@@ -450,7 +457,7 @@ export default function IncludeProposal({ language }) {
                             >
                               {t["Cancel"]}
                             </Button>
-                          </Link>
+              
                         </Grid>
                         <Grid item xs={6} sm={6} md={6}>
                           <Box display="flex" justifyContent="flex-end">

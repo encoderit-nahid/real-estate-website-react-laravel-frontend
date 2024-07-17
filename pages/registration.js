@@ -60,7 +60,7 @@ export default function Registration({ language, handleLoginOpen }) {
       .matches(/.+@.+\.[A-Za-z]+$/, t["Email is invalid"]),
     password: Yup.string()
       .required(t["Password is required"])
-      .min(6, t["Password must be at least 6 characters"])
+      .min(8, t["Password must be at least 8 characters"])
       .max(40, t["Password must not exceed 40 characters"]),
   });
 

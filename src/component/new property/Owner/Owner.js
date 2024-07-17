@@ -28,6 +28,7 @@ import pinImage from "../../../../public/Images/pin.png";
 import BaseCancelButton from "@/component/reuseable/button/BaseCancelButton";
 import BaseButton from "@/component/reuseable/baseButton/BaseButton";
 import { getAddressData } from "@/api";
+import { useRouter } from "next/router";
 
 const baseStyle = {
   flex: 1,
@@ -79,6 +80,7 @@ function Owner({
   trigger,
 }) {
   const t = languageName === "en" ? en : pt;
+  const router = useRouter()
   const dispatch = useDispatch();
   const { data: session } = useSession();
   const onDrop = (acceptedFiles) => {
@@ -188,8 +190,7 @@ function Owner({
           sx="error"
           variant="outlined"
           handleFunction={() => {
-            reset();
-            replace("/my-properties");
+            router.back()
           }}
         >
           {t["Cancel"]}

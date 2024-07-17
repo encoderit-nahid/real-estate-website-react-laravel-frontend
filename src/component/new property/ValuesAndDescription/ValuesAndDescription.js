@@ -19,6 +19,7 @@ import pt from "locales/pt";
 import BaseCancelButton from "@/component/reuseable/button/BaseCancelButton";
 import BaseButton from "@/component/reuseable/baseButton/BaseButton";
 import BaseValueField from "@/component/reuseable/baseValueField/BaseValueFiled";
+import { useRouter } from "next/router";
 
 //matched_with_property_details
 const matchedForCondominio = [1, 2, 4, 8, 10, 11, 13, 15, 16];
@@ -86,6 +87,11 @@ function ValuesAndDescription({
   // useEffect(() => {
   //   setDisableBtn(shouldDisableButton(allValues));
   // }, [allValues]);
+  const router = useRouter()
+
+  const goBack = () => {
+    router.back()
+  }
 
   const disableBtn = useMemo(() => {
     return shouldDisableButton(allValues);
@@ -122,10 +128,7 @@ function ValuesAndDescription({
           color="error"
           sx="error"
           variant="outlined"
-          handleFunction={() => {
-            reset();
-            replace("/my-properties");
-          }}
+          handleFunction={goBack}
         >
           {t["Cancel"]}
         </BaseButton>
