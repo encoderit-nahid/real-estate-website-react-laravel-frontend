@@ -43,6 +43,7 @@ import dynamic from "next/dynamic";
 import { useEffect } from "react";
 import {
   ContractCertificateValidationApi,
+  certificateDownloadApi,
   certificateViewApi,
   getScheduleApi,
 } from "../../../../../api";
@@ -277,6 +278,12 @@ function AnalysisPdfModal({
                 </Box>
 
                 <Button
+                 onClick={() =>
+                  certificateDownloadApi(
+                    singlePropertyData?.contract?.id,
+                    certificateData?.certificate_type_id
+                  )
+                }
                   variant="outlined"
                   sx={{
                     borderColor: "#002152",
@@ -385,10 +392,16 @@ function AnalysisPdfModal({
             <Grid
               container
               direction="row"
-              justifyContent="flex-end"
+              justifyContent="space-around"
               alignItems="center"
             >
               <Button
+               onClick={() =>
+                certificateDownloadApi(
+                  singlePropertyData?.contract?.id,
+                  certificateData?.certificate_type_id
+                )
+              }
                 variant="outlined"
                 sx={{
                   borderColor: "#002152",
@@ -405,7 +418,7 @@ function AnalysisPdfModal({
                     md: "none",
                     lg: "inline",
                   },
-                  mr: 3,
+               
                   "&:hover": {
                     borderColor: "#002152",
                     fontSize: "14px",
