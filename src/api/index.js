@@ -1,5 +1,6 @@
 import axios from "axios";
 import { _baseURL } from "../../consts";
+import { signOut } from "next-auth/react";
 
 const baseURL = `${_baseURL}/api`;
 
@@ -12,6 +13,18 @@ apiInstance.interceptors.request.use((config) => {
 
   return config;
 });
+
+// Add a response interceptor
+apiInstance.interceptors.response.use(
+  (response) => response,
+  (error) => {
+    if (error.response && error.response.status === 401) {
+      // If 401, log out the user
+      signOut({ callbackUrl: '/api/auth/signin' });
+    }
+    return Promise.reject(error);
+  }
+);
 
 export const omitEmpties = (obj) => {
   return Object.entries(obj).reduce((carry, [key, value]) => {

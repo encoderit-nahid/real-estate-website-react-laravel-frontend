@@ -199,8 +199,8 @@ export default {
   Registered: "Cadastrado",
   "Email is invalid": "E-mail é obrigatório",
   "Name is required": "Nome é obrigatório",
-  "Password must be at least 6 characters":
-    "A senha deve ter pelo menos 6 caracteres",
+  "Password must be at least 8 characters":
+    "A senha deve ter pelo menos 8 caracteres",
   "Password must not exceed 40 characters":
     "A senha não deve exceder 40 caracteres",
   "Password is required": "Senha é obrigatória",

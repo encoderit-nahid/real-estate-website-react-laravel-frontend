@@ -179,8 +179,8 @@ export default {
   "Cancel visit": "Cancel visit",
   "Email is invalid": "Email is invalid",
   "Name is required": "Name is required",
-  "Password must be at least 6 characters":
-    "Password must be at least 6 characters",
+  "Password must be at least 8 characters":
+    "Password must be at least 8 characters",
   "Password must not exceed 40 characters":
     "Password must not exceed 40 characters",
   "Password is required": "Password is required",

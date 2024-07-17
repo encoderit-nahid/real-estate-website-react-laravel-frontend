@@ -237,8 +237,7 @@ function DigitalNotaryPdfModal({
                   textTransform: "none",
                   paddingX: 4,
                   paddingY: 0.6,
-
-                  mr: 3,
+                  mr:4,
                   "&:hover": {
                     borderColor: "#002152",
                     fontSize: "14px",
