@@ -14,6 +14,8 @@ import { findPropertyData } from "../../../redux/property/actions";
 import { useGetPropertyQuery } from "@/queries/useGetPropertyQuery";
 
 function Accepted({ languageName }) {
+
+  console.log('hhh')
   const router = useRouter();
   const { query } = router;
   const [page, setPage] = React.useState(1);
@@ -30,7 +32,7 @@ function Accepted({ languageName }) {
     isFetching,
   } = useGetPropertyQuery({
     ...query,
-    proposal_status: "accepted",
+    proposal_status:'accepted',
     status: "approved",
     page: page || 1,
     per_page: 9,

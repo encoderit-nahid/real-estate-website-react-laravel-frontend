@@ -233,7 +233,6 @@ export default function NewVenture({ language, session }) {
     });
     const newDocuments = documents?.filter((data) => data instanceof File);
     const requireData = {
-      images: newArr,
       features: featuretypes,
       content_url: newVideoArr,
       description: data?.description?.toString("html"),

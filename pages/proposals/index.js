@@ -166,7 +166,7 @@ export default function Proposals({ language }) {
   } = useGetProposalCountQuery();
   const proposalCountData = data?.data;
 
-  const [value, setValueType] = useState(+query?.value || 0);
+  const [value, setValueType] = useState(query?.proposal_status === "completed"  ? 2 : query?.proposal_status === "accepted" ? 1 : 0);
 
   const { setParams } = useParams();
 
