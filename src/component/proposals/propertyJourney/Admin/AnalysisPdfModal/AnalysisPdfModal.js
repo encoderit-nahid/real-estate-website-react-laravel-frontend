@@ -289,7 +289,7 @@ function AnalysisPdfModal({
                     paddingY: 0.6,
                     mb: 2,
 
-                    mr: 3,
+                    mr: 4,
                     "&:hover": {
                       borderColor: "#002152",
                       fontSize: "14px",
