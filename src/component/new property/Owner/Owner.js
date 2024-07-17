@@ -1014,7 +1014,7 @@ function Owner({
               <BaseAutocomplete
                 //   sx={{ margin: "0.6vh 0" }}
                 options={agreementType || []}
-                getOptionLabel={(option) => t[option.label] || ""}
+                getOptionLabel={(option) => option.label || ""}
                 isOptionEqualToValue={(option, value) =>
                   option.year === value.year
                 }
@@ -1263,9 +1263,9 @@ function Owner({
 }
 
 export default Owner;
+
 const agreementType = [
-  { label: "Buyer's agent agreement", year: 1994 },
-  { label: "Purchase Agreement", year: 1972 },
-  { label: "Building Approval Plan", year: 1974 },
-  { label: "Land Receipts", year: 2008 },
+  { label: "Matrícula", year: 1994 },
+  { label: "Escritura sem registro", year: 1972 },
+  { label: "Contrato de compra e venda", year: 1974 },
 ];
