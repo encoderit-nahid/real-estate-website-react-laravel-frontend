@@ -98,6 +98,7 @@ export default function Brokers({ language }) {
         name: "",
       },
     });
+    loadingRefetch()
   };
   // useEffect(() => {
   //   console.log("🟥 ~ Brokers ~ value:", value);

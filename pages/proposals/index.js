@@ -199,6 +199,7 @@ export default function Proposals({ language }) {
         per_page: 9,
       })
     );
+    loadingRefetch()
   };
 
   useEffect(() => {

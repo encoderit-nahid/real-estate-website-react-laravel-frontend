@@ -131,6 +131,7 @@ export default function MyProperties({ language }) {
         per_page: 9,
       })
     );
+    loadingRefetch()
   };
 
   return (

@@ -7,6 +7,7 @@ export const useGetPropertyCountQuery = () => {
     // refetchOnMount: true,
     retry: 2,
     // refetchOnWindowFocus: true,
+    refetchOnMount: true,
     keepPreviousData: true,
     staleTime: 0,
     queryFn: async () => {

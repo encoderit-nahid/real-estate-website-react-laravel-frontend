@@ -7,6 +7,7 @@ export const useGetProposalCountQuery = () => {
     retry: 2,
     // refetchOnMount: true,
     // refetchOnWindowFocus: true,
+    refetchOnMount: true,
     keepPreviousData: true,
     staleTime: 0,
     queryFn: async () => {
