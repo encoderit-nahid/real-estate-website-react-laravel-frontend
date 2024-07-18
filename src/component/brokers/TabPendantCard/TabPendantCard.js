@@ -24,6 +24,7 @@ import pt from "locales/pt";
 import en from "locales/en";
 import BaseCloseButton from "@/component/reuseable/baseCloseButton/BaseCloseButton";
 import { useBrokerDeleteMutation } from "@/queries/useBrokerDeleteMutation";
+import { useBrokerStatusUpdateMutation } from "@/queries/useBrokerStatusUpdateMutation";
 
 function TabpendantCard({
   brokerInfo,
@@ -53,17 +54,29 @@ function TabpendantCard({
     setState({ ...state, [anchor]: open });
   };
 
+  const mutation = useBrokerDeleteMutation(page);
+  const statusMutation = useBrokerStatusUpdateMutation(page);
+
   const handleStatusBroker = (id) => {
-    const data = {
+    const body = {
       user_id: id,
       status: "active",
     };
-    dispatch(changeStatusBroker(data));
-    refetch();
-    brokerCountRefetch();
+    statusMutation.mutate(body, {
+      onError(error) {
+        console.log(error);
+      },
+      onSuccess: async (data) => {
+        await refetch();
+        await brokerCountRefetch();
+      },
+    });
+    // dispatch(changeStatusBroker(data));
+    // refetch();
+    // brokerCountRefetch();
   };
 
-  const mutation = useBrokerDeleteMutation(page);
+
   const handleFailBroker = async (id) => {
     const body = {
       broker_id: id,

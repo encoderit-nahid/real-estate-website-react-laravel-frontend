@@ -6,7 +6,7 @@ export const useGetPropertyQuery = (params) => {
     queryKey: [`/get-all-property`],
     // enabled: !!q,'
     retry: 2,
-    refetchOnWindowFocus: true,
+    // refetchOnWindowFocus: true,
     keepPreviousData: true,
     staleTime: 0,
     // initialData: () => [],

@@ -78,9 +78,10 @@ export default function Brokers({ language }) {
     data,
     isLoading: countLoading,
     refetch: loadingRefetch,
-    isFetched,
-    isFetching
+    isFetching,
+    isFetched
   } = useGetBrokerCountQuery();
+  
   const brokerCountData = data?.data;
 
   const [value, setValue] = useState(0);
