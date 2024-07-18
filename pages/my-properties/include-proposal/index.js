@@ -348,23 +348,11 @@ export default function IncludeProposal({ language }) {
                         </Grid>
                       ) : (
                         <Grid item xs={6} sm={6} md={6}>
-                          <Link
-                            href={`/my-properties`}
-
-                            // href="/material-ui/getting-started/installation/"
-                          >
-                            <a
-                              style={{
-                                textDecoration: "none",
-                                listStyle: "none",
-                                width: "100%",
-                                color: "rgba(0, 0, 0, 0.87)",
-                              }}
-                            >
+               
                               <Button
                                 color="inherit"
                                 // disabled={activeStep === 0}
-
+                                onClick={goBack}
                                 sx={{
                                   mr: 1,
                                   border: "1px solid #002152",
@@ -380,8 +368,6 @@ export default function IncludeProposal({ language }) {
                               >
                                 {t["Come back"]}
                               </Button>
-                            </a>
-                          </Link>
                         </Grid>
                       )}
 

@@ -107,7 +107,15 @@ function DigitalNotary({
             color="error"
             sx="error"
             handleFunction={() => {
-              router.replace("/proposals");
+              router.replace({
+                pathname:"/proposals",
+                query: {
+                  proposal_status:"accepted",
+                  status: "approved",
+                  page: 1,
+                  per_page: 9
+                }
+              });
             }}
           >
             {t["Cancel"]}
