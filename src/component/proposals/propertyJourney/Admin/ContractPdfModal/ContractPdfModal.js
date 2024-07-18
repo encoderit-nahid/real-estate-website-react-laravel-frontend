@@ -340,7 +340,7 @@ function ContractPdfModal({
                     },
                   }}
                 >
-                  {t["Download"]}
+                    Baixar
                 </Button>
                 <Button
                   onClick={handleDrawerOpen}
@@ -459,7 +459,7 @@ function ContractPdfModal({
                   },
                 }}
               >
-                {t["Download"]}
+                  Baixar
               </Button>
               <BaseCloseButton handleClose={handleClose} />
             </Grid>

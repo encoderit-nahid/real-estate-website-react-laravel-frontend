@@ -129,7 +129,7 @@ function ScheduleCard({ data, languageName }) {
                 position: "relative",
               }}
               onClick={() =>
-                router.replace({
+                router.push({
                   pathname: `/visualizacao-da-propriedade/${data?.property?.id}/${data?.property?.property_title}`,
                 })
               }

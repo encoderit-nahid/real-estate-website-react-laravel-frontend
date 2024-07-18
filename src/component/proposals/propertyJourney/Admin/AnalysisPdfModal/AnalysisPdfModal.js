@@ -309,7 +309,7 @@ function AnalysisPdfModal({
                     },
                   }}
                 >
-                  Download
+                  Baixar
                 </Button>
                 <Button
                   onClick={handleDrawerOpen}
@@ -431,7 +431,7 @@ function AnalysisPdfModal({
                   },
                 }}
               >
-                Download
+                Baixar
               </Button>
               <BaseCloseButton handleClose={handleClose} />
             </Grid>

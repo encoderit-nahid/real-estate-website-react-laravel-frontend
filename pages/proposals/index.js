@@ -213,6 +213,8 @@ export default function Proposals({ language }) {
   }, [query]);
 
   const handleCancelFilter = () => {
+    setJourneyStage("")
+    setProposalStatus("")
     router.replace({
       query: omitEmpties({
         proposal_status: "pending",
@@ -447,7 +449,7 @@ export default function Proposals({ language }) {
             </Grid>
           </Box>
           <Divider sx={{ mt: 1, mb: 1 }} />
-          <Box>
+          {/* <Box>
             <Typography
               variant="p"
               sx={{
@@ -502,7 +504,7 @@ export default function Proposals({ language }) {
                 </Button>
               ))}
             </Grid>
-          </Box>
+          </Box> */}
           <Divider sx={{ mt: 1, mb: 1 }} />
           <Box>
             <Typography

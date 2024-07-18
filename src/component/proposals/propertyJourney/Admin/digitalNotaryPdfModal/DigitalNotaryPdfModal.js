@@ -250,7 +250,7 @@ function DigitalNotaryPdfModal({
                   },
                 }}
               >
-                Download
+                  Baixar
               </Button>
               <BaseCloseButton handleClose={handleClose} />
             </Grid>
@@ -336,7 +336,7 @@ function DigitalNotaryPdfModal({
                   },
                 }}
               >
-                Download
+                  Baixar
               </Button>
               <BaseCloseButton handleClose={handleClose} />
             </Grid>
