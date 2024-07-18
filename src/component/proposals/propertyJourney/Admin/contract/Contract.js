@@ -407,7 +407,7 @@ function Contract({
           alignItems="center"
           sx={{ mt: 2, mb: 2 }}
         >
-          <Button
+          {/* <Button
             color="inherit"
             onClick={handleBack}
             // disabled={activeStep === 0}
@@ -425,7 +425,7 @@ function Contract({
             }}
           >
             {t["come back"]}
-          </Button>
+          </Button> */}
 
           <Button
             onClick={handleContractNext}

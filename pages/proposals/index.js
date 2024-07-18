@@ -403,7 +403,7 @@ export default function Proposals({ language }) {
             >
               {[
                 { name: "contract", slug: "Contract" },
-                { name: "certificates", slug: "Certificates and documents" },
+                { name: "certificate", slug: "Certificates and documents" },
                 { name: "pre-analysis", slug: "Pre-analysis" },
                 { name: "digital-notary", slug: "Digital notary" },
               ].map((data, index) => (

@@ -1129,15 +1129,8 @@ export default function ViewProperties({
 
       <Grid container spacing={1} sx={{ mt: 1 }}>
         <Grid item xs={12} sm={12} md={12} lg={2} xl={2}>
-          <Link href="/my-properties">
-            <a
-              style={{
-                textDecoration: "none",
-                listStyle: "none",
-                width: "100%",
-              }}
-            >
-              <Button sx={{ textTransform: "none" }}>
+  
+              <Button sx={{ textTransform: "none" }} onClick={() => router.back()}>
                 <ArrowBackIosNewOutlinedIcon sx={{ color: "#7450F0" }} />
                 <Typography
                   variant="p"
@@ -1151,8 +1144,7 @@ export default function ViewProperties({
                   {t["Come back"]}
                 </Typography>
               </Button>
-            </a>
-          </Link>
+ 
         </Grid>
         <Grid item xs={0} sm={0} md={0} lg={0} xl={2}></Grid>
 

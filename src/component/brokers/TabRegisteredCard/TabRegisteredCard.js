@@ -118,7 +118,7 @@ function TabRegisteredCard({
                     color: "#6C7A84",
                   }}
                 >
-                  4.5{" "}
+                  0
                   <span
                     style={{
                       fontSize: "14px",
@@ -127,11 +127,11 @@ function TabRegisteredCard({
                       color: "#6C7A84",
                     }}
                   >
-                    (32 reviews)
+                    (0 reviews)
                   </span>
                 </Typography>
               }
-              secondary={<Rating name="size-large" defaultValue={4} readOnly />}
+              secondary={<Rating name="size-large"  readOnly />}
             />
           </ListItem>
         </Box>
