@@ -567,9 +567,12 @@ export default function NewProperty({ language }) {
         setUploadComplete(true);
         setSentModalOpen(true);
       } else {
+        setLoading(false);
         const errors = error?.response?.data?.errors ?? {};
         if(error.response.status === 500){
-          toast.error(error?.response?.data?.message)
+          toast.error(error?.response?.data?.message,{
+            duration: 20000, // Duration in milliseconds (5000 ms = 5 seconds)
+          })
         }
         Object.entries(errors).forEach(([name, messages]) => {
           setError(name, { type: "manual", message: messages[0] });
