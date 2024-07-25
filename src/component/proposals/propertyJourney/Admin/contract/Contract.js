@@ -284,7 +284,7 @@ function Contract({
                       25
                     )}
                   </Typography>
-                  <Typography
+                  {/* <Typography
                     variant="h1"
                     sx={{
                       color: "#6C7A84",
@@ -295,9 +295,9 @@ function Contract({
                     }}
                   >
                     {`${t["subscriptions"]} (2/5)`}
-                  </Typography>
+                  </Typography> */}
                 </Box>
-                <Box sx={{ width: "100%", px: 2, my: 1 }}>
+                {/* <Box sx={{ width: "100%", px: 2, my: 1 }}>
                   <LinearProgress
                     sx={{
                       "& .MuiLinearProgress-barColorPrimary": {
@@ -313,7 +313,7 @@ function Contract({
                     variant="determinate"
                     value={progress}
                   />
-                </Box>
+                </Box> */}
                 <Grid container spacing={2} sx={{ px: 2, my: 1 }}>
                   <Grid item xs={12} sm={12} md={12} lg={6}>
                     <Button

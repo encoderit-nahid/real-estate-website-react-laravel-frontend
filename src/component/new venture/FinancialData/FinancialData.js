@@ -12,6 +12,7 @@ import en from "locales/en";
 import pt from "locales/pt";
 import BaseButton from "@/component/reuseable/baseButton/BaseButton";
 import { useRouter } from "next/router";
+import BaseValueField from "@/component/reuseable/baseValueField/BaseValueFiled";
 
 const baseStyle = {
   flex: 1,
@@ -311,7 +312,7 @@ function FinancialData({
             control={control}
             defaultValue={""}
             render={({ field }) => (
-              <BaseTextField
+              <BaseValueField
                 size={"medium"}
                 placeholder={`R$ ${t["Value per square meter"]}`}
                 onChange={(e) => {
