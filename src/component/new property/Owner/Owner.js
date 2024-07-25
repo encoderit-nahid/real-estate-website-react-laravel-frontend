@@ -82,6 +82,7 @@ function Owner({
   const t = languageName === "en" ? en : pt;
   const router = useRouter()
   const dispatch = useDispatch();
+  const {query} = router
   const { data: session } = useSession();
   const onDrop = (acceptedFiles) => {
     acceptedFiles.map((file) =>
@@ -336,6 +337,7 @@ function Owner({
                   }}
                   name={"owner_email"}
                   value={field.value}
+                  disabled={query?.property_id ? true : false}
                   // error={errors?.rg_number ? true : false}
                 />
               )}
@@ -964,7 +966,7 @@ function Owner({
             color="textSecondary"
             sx={{ color: "#b91c1c" }}
           >
-            {errors.state?.message}
+            {errors.owner_state?.message}
           </Typography>
         </Grid>
       </Grid>

@@ -123,7 +123,7 @@ export default function NewProperty({ language }) {
     number: Yup.string().required(t["Number is required"]),
     neighbourhood: Yup.string().required(t["Neighbourhood is required"]),
     city: Yup.string().required(t["City is required"]),
-    state: Yup.object().required(t["State is required"]), // Assuming state is a string
+    // state: Yup.object().required(t["State is required"]), // Assuming state is a string
     owner_cpf:
       session?.user?.role === "owner"
         ? Yup.string().optional()
@@ -300,6 +300,7 @@ export default function NewProperty({ language }) {
         singleData?.property_owner?.address?.neighbourhood
       );
       setValue("owner_city", singleData?.property_owner?.address?.city);
+
       setValue("owner_state", singleData?.property_owner?.address?.state);
       setValue(
         "owner_complement",
