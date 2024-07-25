@@ -216,6 +216,12 @@ export default function NewVenture({ language, session }) {
         }
       }
     });
+
+    
+    const filterNewTitleData = [
+      ...filterNewImageTitleData,
+      ...filterNewVideoTitleData,
+    ];
     let newArr = [];
     files?.forEach((data, index) => {
       if (data instanceof File) {
@@ -237,10 +243,11 @@ export default function NewVenture({ language, session }) {
       content_url: newVideoArr,
       description: data?.description?.toString("html"),
       name: data?.name,
+      new_title: filterNewTitleData,
       financial: {
-        prohibited: data?.prohibited?.name,
-        adjustment_index: data?.adjustment_index?.name,
-        number_of_installments: data?.number_of_installments?.name,
+        prohibited: data?.prohibited,
+        adjustment_index: data?.adjustment_index,
+        number_of_installments: data?.number_of_installments,
         value_per_square_meter: data?.value_per_square_meter,
         document_files: newDocuments,
       },

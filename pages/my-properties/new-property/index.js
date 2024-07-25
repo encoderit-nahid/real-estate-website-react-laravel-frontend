@@ -59,6 +59,7 @@ import pt from "locales/pt";
 import BaseButton from "@/component/reuseable/baseButton/BaseButton";
 import uploadImage from "@/utils/uploadImage";
 import { reverseBrCurrencyFormat } from "@/utils/reverseBrCurrencyFormat";
+import toast from "react-hot-toast";
 
 const drawerWidth = 240;
 
@@ -567,6 +568,9 @@ export default function NewProperty({ language }) {
         setSentModalOpen(true);
       } else {
         const errors = error?.response?.data?.errors ?? {};
+        if(error.response.status === 500){
+          toast.error(error?.response?.data?.message)
+        }
         Object.entries(errors).forEach(([name, messages]) => {
           setError(name, { type: "manual", message: messages[0] });
         });
