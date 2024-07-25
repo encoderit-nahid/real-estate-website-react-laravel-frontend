@@ -543,6 +543,7 @@ export default function NewProperty({ language }) {
         setUploadComplete(true);
         setSentModalOpen(true);
       } else {
+        setLoading(false)
         const errors = error?.response?.data?.errors ?? {};
         Object.entries(errors).forEach(([name, messages]) => {
           setError(name, { type: "manual", message: messages[0] });
