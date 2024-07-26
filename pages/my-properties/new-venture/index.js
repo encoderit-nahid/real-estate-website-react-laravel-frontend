@@ -284,6 +284,7 @@ export default function NewVenture({ language, session }) {
         setUploadComplete(true);
         setSentModalOpen(true);
       } else {
+        setLoading(false);
         const errors = error?.response?.data?.errors ?? {};
         Object.entries(errors).forEach(([name, messages]) => {
           setError(name, { type: "manual", message: messages[0] });
@@ -306,6 +307,7 @@ export default function NewVenture({ language, session }) {
         setUploadComplete(true);
         setSentModalOpen(true);
       } else {
+        setLoading(false);
         const errors = error?.response?.data?.errors ?? {};
         Object.entries(errors).forEach(([name, messages]) => {
           setError(name, { type: "manual", message: messages[0] });
