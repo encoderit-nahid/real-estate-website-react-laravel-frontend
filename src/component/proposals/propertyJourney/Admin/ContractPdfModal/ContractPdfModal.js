@@ -197,15 +197,17 @@ function ContractPdfModal({
 
   const [switchLoading, setSwitchLoading] = useState(false);
 
+  console.log({switchLoading})
+
   const handleSwitchChange = async (data) => {
     setSwitchLoading(true);
     const status = data?.is_signed ? 0 : 1;
     const bodyData = { contract_sign_id: data?.id, status: status };
-    dispatch(signatureUpdateData(bodyData));
+    dispatch(signatureUpdateData(bodyData,setSwitchLoading));
     // const status = data?.is_signed === 0 ? 1 : 0;
     // const bodyData = { contract_sign_id: data?.id, status: status };
     // const [error, resp] = await contractSignApi(bodyData);
-    setSwitchLoading(false);
+    // setSwitchLoading(false);
     // if (!error) {
     //   dispatch(findContractDetailsData(+singlePropertyData?.contract?.id));
     // }
@@ -603,7 +605,7 @@ function ContractPdfModal({
                 </Button>
               </form>
             )}
-            {/* <Box>{switchLoading && <LinearProgress />}</Box> */}
+            <Box>{switchLoading && <LinearProgress sx={{mt:2}} size={30} />}</Box>
             <Grid
               container
               direction="column"

@@ -1,3 +1,4 @@
+import toast from "react-hot-toast";
 import {
   contractDetailsApi,
   contractSignApi,
@@ -72,14 +73,19 @@ export const signatureAddData = (body,signIds) => async (dispatch) => {
        dispatch(signatureCreate(response?.data?.users));
    }
   } else {
-    const errorMassage =
-      error?.response?.data?.data || error?.response?.data?.status;
-    // toast.error(errorMassage);
+    console.log({error})
+    if(error?.response?.status === 422) {
+      toast.error("não relacionado com esta propriedade")
+    }
+    else{
+      toast.error("há algo errado")
+    }
   }
 };
 
-export const signatureUpdateData = (body) => async (dispatch) => {
+export const signatureUpdateData = (body,setSwitchLoading) => async (dispatch) => {
   const [error, resp] = await contractSignApi(body);
+  setSwitchLoading(false)
   if (!error) {
     console.log({resp})
     dispatch(signatureUpdate(body));
