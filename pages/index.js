@@ -17,6 +17,8 @@ import { useEffect, useState } from "react";
 import SetCookie from "@/hooks/setCookie";
 import en from "locales/en";
 import pt from "locales/pt";
+import { useRouter } from "next/router";
+import AuthorizationMessage from "@/component/Dailog/AuthorizationMessage";
 const BaseModal = dynamic(() =>
   import("@/component/reuseable/baseModal/BaseModal")
 );
@@ -47,6 +49,22 @@ export default function App({
   };
   const handleKnowMoreModalClose = () => {
     setKnowMoreModal(false);
+  };
+
+  const router = useRouter();
+  const {type } = router.query;
+  const [dialogOpen, setDialogOpen] = useState(false);
+
+  useEffect(() => {
+    if (type) {
+      setDialogOpen(true);
+    }
+  }, [type]);
+
+  const handleDialogClose = () => {
+    setDialogOpen(false);
+    // Remove query parameters
+    router.replace(router.pathname, undefined, { shallow: true });
   };
 
   return (
@@ -104,6 +122,7 @@ export default function App({
             </>
           </Tooltip>
         </BaseModal>
+        <AuthorizationMessage dialogOpen={dialogOpen} handleDialogClose={handleDialogClose} type={type}/>
       </main>
     </div>
   );
