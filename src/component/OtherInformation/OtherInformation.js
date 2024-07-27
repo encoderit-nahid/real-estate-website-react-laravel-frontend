@@ -52,6 +52,8 @@ const Footer = dynamic(() => import("@/component/shared/Footer/Footer"), {
   ssr: false,
 });
 import { userInfoRegistrationApi } from "@/api";
+import { isValidDate } from "@/utils/dateValidate";
+import toast from "react-hot-toast";
 
 const aboutLokkanData = [
   "Indicação de amigo",
@@ -245,68 +247,68 @@ export default function OtherInformation({
   }, [errors]);
 
   const onSubmit = async (data) => {
-    setLoading(true);
-    // const previousFieldData = JSON.parse(
-    //   localStorage.getItem("broker_registration")
-    // );
-
-    const registrationId = localStorage.getItem("registration_id");
-
-    const additionalInfoData = omitEmpties({
-      full_name: data.full_name,
-      description: data.description,
-      creci_number: data.creci_number,
-      cpf: data.cpf_number,
-      rg: data.rg_number,
-      dob: dayjs(data.dob).format("YYYY-MM-DD"),
-      social_name: data.social_name,
-      broker_type: actingPreferenceBtn,
-      referred_from: aboutLokkanBtn,
-      broker_referral_id: selectedBroker?.id,
-    });
-    const addressData = omitEmpties({
-      zip_code: data.zip_code,
-      address: data.address,
-      number: data.number,
-      neighbourhood: data.neighbourhood,
-      add_on: data.add_on,
-      city: data.city,
-      state_id: data.state.id,
-    });
-
-    const firstPartData = omitEmpties({
-      image: data.image,
-      user_id: registrationId,
-      broker_url: window.location.origin,
-      redirect_url: `${window.location.origin}/user-loading`,
-    });
-
-    const requireData = {
-      ...firstPartData,
-      additional_info: additionalInfoData,
-      address: addressData,
-    };
-
-    console.log(requireData);
-
-    const formData = serialize(requireData, { indices: true });
-    const [error, responseToken] = await userInfoRegistrationApi(formData);
-
-    setLoading(false);
-    if (!error) {
-      setSentModalOpen(true);
-      setSuccessMessage(responseToken?.data?.message);
-      handleClickSuccessSnackbar();
-      localStorage.removeItem("Reg_user_name");
-      localStorage.removeItem("user_role");
-      localStorage.removeItem("registration_id");
-    } else {
-      const errors = error?.response?.data?.errors ?? {};
-
-      Object.entries(errors).forEach(([name, messages]) => {
-        setError(name, { type: "manual", message: messages[0] });
+    if(isValidDate(dayjs(data.dob).format("DD-MM-YYYY"))){
+      setLoading(true);
+      const registrationId = localStorage.getItem("registration_id");
+  
+      const additionalInfoData = omitEmpties({
+        full_name: data.full_name,
+        description: data.description,
+        creci_number: data.creci_number,
+        cpf: data.cpf_number,
+        rg: data.rg_number,
+        dob: dayjs(data.dob).format("YYYY-MM-DD"),
+        social_name: data.social_name,
+        broker_type: actingPreferenceBtn,
+        referred_from: aboutLokkanBtn,
+        broker_referral_id: selectedBroker?.id,
       });
-      // setLoading(false);
+      const addressData = omitEmpties({
+        zip_code: data.zip_code,
+        address: data.address,
+        number: data.number,
+        neighbourhood: data.neighbourhood,
+        add_on: data.add_on,
+        city: data.city,
+        state_id: data.state.id,
+      });
+  
+      const firstPartData = omitEmpties({
+        image: data.image,
+        user_id: registrationId,
+        broker_url: window.location.origin,
+        redirect_url: `${window.location.origin}/user-loading`,
+      });
+  
+      const requireData = {
+        ...firstPartData,
+        additional_info: additionalInfoData,
+        address: addressData,
+      };
+  
+      console.log(requireData);
+  
+      const formData = serialize(requireData, { indices: true });
+      const [error, responseToken] = await userInfoRegistrationApi(formData);
+  
+      setLoading(false);
+      if (!error) {
+        setSentModalOpen(true);
+        setSuccessMessage(responseToken?.data?.message);
+        handleClickSuccessSnackbar();
+        localStorage.removeItem("Reg_user_name");
+        localStorage.removeItem("user_role");
+        localStorage.removeItem("registration_id");
+      } else {
+        const errors = error?.response?.data?.errors ?? {};
+  
+        Object.entries(errors).forEach(([name, messages]) => {
+          setError(name, { type: "manual", message: messages[0] });
+        });
+      }
+    }
+    else{
+      toast.error("A data de nascimento é inválida")
     }
   };
 
@@ -447,7 +449,8 @@ export default function OtherInformation({
               </Fragment>
             )}
           </Container>
-          <BaseModal isShowing={sentModalOpen} isClose={handleClose}>
+          <BaseModal isShowing={sentModalOpen} isClose={handleClose}   disableBackdropClick={true}
+          disableEscapeKeyDown={true}>
             <Tooltip title="Something">
               <>
                 <BrokerRegistrationSentModal handleClose={handleClose} />

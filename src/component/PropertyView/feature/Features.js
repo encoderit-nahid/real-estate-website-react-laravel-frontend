@@ -71,7 +71,7 @@ function Features({ singlePropertyData, languageName }) {
                   color: "#7C7C99",
                 }}
               >
-                {`${singlePropertyData?.property?.land_area} m² of land`}
+                {`${singlePropertyData?.property?.land_area} m² of terreno`}
               </Typography>
             </Stack>
           )}
@@ -94,7 +94,7 @@ function Features({ singlePropertyData, languageName }) {
                   color: "#7C7C99",
                 }}
               >
-                {`${singlePropertyData?.property?.property_area} m² of construction`}
+                {`${singlePropertyData?.property?.property_area} m² of construcao`}
               </Typography>
             </Stack>
           )}

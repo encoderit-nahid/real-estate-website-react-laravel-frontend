@@ -421,7 +421,7 @@ export default function PropertyView({
                 addressData={singlePropertyData?.property?.address}
                 languageName={myValue.toString()}
                 images={Images}
-                shareUrl={`https://www.lokkan.con.br/visualizacao-da-propriedade/${singlePropertyData?.property?.id}`}
+                shareUrl={`https://www.lokkan.com.br/visualizacao-da-propriedade/${singlePropertyData?.property?.id}`}
               />
             </Grid>
           </Grid>
@@ -507,6 +507,7 @@ export default function PropertyView({
               {Object.keys(singlePropertyData?.propertyFeatures).map(
                 (key, index) => (
                   <AboutProperty
+                  languageName={myValue.toString()}
                     key={index}
                     name={key}
                     array={singlePropertyData?.propertyFeatures[key]}

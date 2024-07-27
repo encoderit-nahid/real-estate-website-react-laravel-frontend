@@ -11,6 +11,7 @@ function BaseDateField({
   value,
   placeholder,
   name,
+  onBlur,
   size,
   error,
   sx,
@@ -24,7 +25,7 @@ function BaseDateField({
           defaultValue={formatISO(new Date())}
           render={({ field: { onChange, value } }) => ( */}
         <DesktopDatePicker
-          inputFormat="MM-dd-yyyy"
+          inputFormat="dd-MM-yyyy"
           value={value}
           //   onChange={(value) => onChange(moment(value).format("YYYY-MM-DD"))}
           onChange={onChange}

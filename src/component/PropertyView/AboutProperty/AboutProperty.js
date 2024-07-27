@@ -2,8 +2,11 @@ import React from "react";
 import { Button, Grid, Typography, Box, Stack } from "@mui/material";
 import Image from "next/image";
 import checkRound from "../../../../public/Images/check-round.png";
+import en from "locales/en";
+import pt from "locales/pt";
 
-function AboutProperty({ name, array }) {
+function AboutProperty({ name, array,languageName }) {
+  const t = languageName === "en" ? en : pt;
   return (
     <Box sx={{ background: "#F9F9FB", px: 3, py: 2, mt: { lg: 2 } }}>
       <Typography
@@ -15,7 +18,7 @@ function AboutProperty({ name, array }) {
           textTransform: "capitalize",
         }}
       >
-        {name === "feature" ? "características" : name}
+        {name === "feature" ? "características" : t[name]}
       </Typography>
       <Grid container sx={{ mt: 2 }}>
         {/* {array?.map((data, index) => (
