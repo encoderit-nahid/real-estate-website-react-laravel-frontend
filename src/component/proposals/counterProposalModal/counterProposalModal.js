@@ -111,6 +111,7 @@ function CounterProposalModal({
       payment_type: (cash && "cash") || (installment && "installment"),
       property_id: propertyData?.id,
       proposal_type: "counter",
+      counter_proposal_to: proposalData?.id
     };
 
     const [error, response] = await createProposalApi(allData);
@@ -125,6 +126,8 @@ function CounterProposalModal({
       });
     }
   };
+
+  console.log({proposalData})
 
   const myLoader = ({ src }) => {
     return `${_imageURL}/${src}`;
