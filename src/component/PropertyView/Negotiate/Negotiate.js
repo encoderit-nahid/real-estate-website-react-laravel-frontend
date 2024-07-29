@@ -37,6 +37,8 @@ import { formatBrCurrency } from "@/utils/formatBrCurrency";
 import { reverseBrCurrencyFormat } from "@/utils/reverseBrCurrencyFormat";
 import { formatBrazilianCurrency } from "@/utils/useUtilities";
 import { Element } from "react-scroll";
+import toast from "react-hot-toast";
+import { isValidDate } from "@/utils/dateValidate";
 
 function Negotiate({
   handleProposalOpen,
@@ -69,6 +71,7 @@ function Negotiate({
   const handleClose = () => setScheduleModalOpen(false);
 
   const handleToSchedule = async () => {
+    if(isValidDate(dayjs(value).format("DD-MM-YYYY"))){
     setLoading(true);
     const dateString = dayjs(value, "YYYY-MM-DD+h:mm").format("YYYY-MM-DD");
     const timeString = dayjs(value, "YYYY-MM-DD+h:mm").format("HH:mm:00");
@@ -85,7 +88,12 @@ function Negotiate({
       setScheduleModalOpen(true);
     } else {
       const errors = error?.response?.data?.errors ?? {};
+      toast.error('Há algo errado. verifique seu back-end')
     }
+  }
+  else{
+    toast.error('A data da programação é inválida')
+  }
   };
 
   const handleProposal = useCallback(() => {
