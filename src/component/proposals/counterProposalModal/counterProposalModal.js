@@ -127,8 +127,6 @@ function CounterProposalModal({
     }
   };
 
-  console.log({proposalData})
-
   const myLoader = ({ src }) => {
     return `${_imageURL}/${src}`;
   };
