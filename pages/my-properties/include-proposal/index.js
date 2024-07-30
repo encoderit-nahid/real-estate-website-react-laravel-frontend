@@ -215,6 +215,7 @@ export default function IncludeProposal({ language }) {
       cash_amount: data?.cash_amount,
       payment_per_installment: data?.payment_per_installment,
       no_of_installment: data?.no_of_installment,
+      observation: data?.observation
     });
 
     const [error, response] = await proposalCreateApi(requireData);
