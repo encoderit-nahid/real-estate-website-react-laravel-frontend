@@ -56,8 +56,11 @@ function PreAnalise({
   const { data: session } = useSession();
   const dispatch = useDispatch();
   useEffect(() => {
+    if(!+singlePropertyData?.contract?.id){
+      return
+    }
     dispatch(findUploadCertificateData(+singlePropertyData?.contract?.id));
-  }, [dispatch, singlePropertyData]);
+  }, [dispatch, singlePropertyData?.contract?.id]);
   const uploadCertificateData = useSelector(
     (state) => state?.uploadCertificate?.uploadCertificateData
   );

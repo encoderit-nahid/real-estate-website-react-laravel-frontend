@@ -47,7 +47,7 @@ function DigitalNotary({
     dispatch(
       findUploadCertificateData(+singlePropertyData?.contract?.id, type)
     );
-  }, [dispatch, singlePropertyData]);
+  }, [dispatch, singlePropertyData?.contract?.id]);
   const uploadCertificateData = useSelector(
     (state) => state?.uploadCertificate?.uploadCertificateData
   );

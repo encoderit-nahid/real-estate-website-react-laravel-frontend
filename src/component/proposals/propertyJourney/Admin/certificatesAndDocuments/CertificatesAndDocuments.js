@@ -56,7 +56,7 @@ function CertificatesAndDocuments({
         +singlePropertyData?.contract?.id || +query?.contractId
       )
     );
-  }, [dispatch, singlePropertyData, query]);
+  }, [dispatch, singlePropertyData?.contract?.id, query?.contractId]);
   const requireCertificateData = useSelector(
     (state) => state?.requireCertificate?.requireCertificateData
   );
