@@ -1,4 +1,4 @@
-import React, { useCallback, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import {
   Button,
   Grid,
@@ -21,7 +21,7 @@ import ScheduleModal from "../scheduleModal/ScheduleModal";
 import BaseTextField from "../../reuseable/baseTextField/BaseTextField";
 import { useSession, signIn, signOut } from "next-auth/react";
 import BaseTextArea from "../../reuseable/baseTextArea/BaseTextArea";
-import { formatISO } from "date-fns";
+import { addDays, formatISO } from "date-fns";
 import { DateTimePicker } from "@mui/x-date-pickers";
 import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
 
@@ -54,7 +54,10 @@ function Negotiate({
 }) {
   // const [date, setDate] = React.useState(dayjs("2022-04-07"));
   const t = languageName === "en" ? en : pt;
-  const [value, setValue] = React.useState(new Date());
+ 
+  const [value, setValue] = React.useState(new Date(dayjs().add(6, 'hour').toDate()));
+
+
 
   const router = useRouter();
 
@@ -74,7 +77,7 @@ function Negotiate({
     if(isValidDate(dayjs(value).format("DD-MM-YYYY"))){
     setLoading(true);
     const dateString = dayjs(value, "YYYY-MM-DD+h:mm").format("YYYY-MM-DD");
-    const timeString = dayjs(value, "YYYY-MM-DD+h:mm").format("HH:mm:00");
+    const timeString = dayjs(value, "YYYY-MM-DD+h:mm").format("HH:mm");
     const allData = {
       date: dateString,
       time: timeString,
@@ -115,7 +118,7 @@ function Negotiate({
 
   const handleSchedule = useCallback(() => {
     const dateString = dayjs(value, "YYYY-MM-DD+h:mm").format("YYYY-MM-DD");
-    const timeString = dayjs(value, "YYYY-MM-DD+h:mm").format("HH:mm:00");
+    const timeString = dayjs(value, "YYYY-MM-DD+h:mm").format("HH:mm");
     !session
       ? router.replace({
           pathname: "/registration",
@@ -129,6 +132,9 @@ function Negotiate({
         })
       : handleToSchedule();
   }, [session, router, value]);
+
+  const [error, setError] = useState('');
+
 
   return (
     <Box
@@ -446,12 +452,24 @@ function Negotiate({
                 <DateTimePicker
                   inputFormat="dd/MM/yyyy hh:mm a"
                   value={value}
-                  onChange={(val) => setValue(val)}
+                  onChange={(val) => {
+                    if (val < new Date()) {
+                      setError('A data e a hora selecionadas não podem estar no passado');
+                    } else {
+                      setError('');
+                      setValue(val);
+                    }
+                  }}
+                 
+                  minDateTime={new Date()}
+              
                   renderInput={(params) => (
                     <TextField
                       {...params}
                       size="small"
                       variant="outlined"
+                      error={!!error}
+                      helperText={error}
                       InputProps={{
                         ...params.InputProps,
                       }}

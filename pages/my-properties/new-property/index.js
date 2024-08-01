@@ -545,6 +545,14 @@ export default function NewProperty({ language }) {
       } else {
         setLoading(false)
         const errors = error?.response?.data?.errors ?? {};
+        if(error.response.status === 500){
+          toast.error(error?.response?.data?.message,{
+            duration: 20000, 
+          })
+        }
+        if(error.response.status === 400){
+          toast.error("favor fornecer cartório e número de registro")
+        }
         Object.entries(errors).forEach(([name, messages]) => {
           setError(name, { type: "manual", message: messages[0] });
         });
@@ -573,8 +581,11 @@ export default function NewProperty({ language }) {
         const errors = error?.response?.data?.errors ?? {};
         if(error.response.status === 500){
           toast.error(error?.response?.data?.message,{
-            duration: 20000, // Duration in milliseconds (5000 ms = 5 seconds)
+            duration: 20000, 
           })
+        }
+        if(error.response.status === 400){
+          toast.error("favor fornecer cartório e número de registro")
         }
         Object.entries(errors).forEach(([name, messages]) => {
           setError(name, { type: "manual", message: messages[0] });
