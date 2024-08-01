@@ -14,6 +14,7 @@ import { useEffect, useState } from "react";
 import SetCookie from "@/hooks/setCookie";
 import en from "locales/en";
 import pt from "locales/pt";
+import Image from "next/image";
 const BaseModal = dynamic(() =>
   import("@/component/reuseable/baseModal/BaseModal")
 );
@@ -34,6 +35,7 @@ export default function Broker({
   const { data: session } = useSession();
 
   const [myValue, setMyValue] = useState(language || "pt");
+  const [imageLoaded, setImageLoaded] = useState(false);
 
   useEffect(() => {
     SetCookie("language", myValue);
@@ -49,6 +51,8 @@ export default function Broker({
     setKnowMoreModal(false);
   };
 
+  const handleImageLoad = () => setImageLoaded(true);
+
   return (
     <div>
       <Head>
@@ -59,19 +63,31 @@ export default function Broker({
 
       <main className="section">
         <Box
-          sx={{
-            backgroundImage: {
-              xs: `url(${brokerBackgroundImage.src})`,
-              sm: `url(${brokerBackgroundImage.src})`,
-              md: `url(${brokerBackgroundImage.src})`,
-              lg: `url(${brokerBackgroundImage.src})`,
-              xl: `url(${brokerBackgroundImage.src})`,
-            },
-            backgroundRepeat: "no-repeat",
-            backgroundSize: "100% 100%", // Set backgroundSize to cover the entire area
-            minHeight: "100vh", // Ensure the box covers at least the viewport height
+           sx={{
+            position: "relative",
+            backgroundColor: imageLoaded ? 'transparent' : 'black',
+            minHeight: "100vh",
+            transition: 'background-color 0.5s ease-out',
+            overflow: 'hidden',
           }}
         >
+                 {/* Next.js Image component for background */}
+            <Image
+            src={brokerBackgroundImage.src}
+            alt="Background"
+            layout="fill" // Fill the parent container
+            objectFit="cover" // Ensure the image covers the container
+            quality={100} // Optional: control image quality
+            onLoad={handleImageLoad}
+            style={{
+              position: 'absolute',
+              top: 0,
+              left: 0,
+              zIndex: -1, // Place the image behind other content
+              opacity: imageLoaded ? 1 : 0, // Fade in the image
+              transition: 'opacity 0.5s ease-out',
+            }}
+          />
           <Navbar
             shape={true}
             loginOpen={loginOpen}
