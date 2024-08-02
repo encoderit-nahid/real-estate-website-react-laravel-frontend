@@ -68,7 +68,7 @@ function ReleaseCard({
           <Typography
             variant="p"
             sx={{
-              fontSize: "24px",
+              fontSize: "22px",
               fontWeight: "700",
               color: "#1A1859",
               lineHeight: "32px",
@@ -76,7 +76,10 @@ function ReleaseCard({
               py: 2,
             }}
           >
-            {projectData?.name}
+              {projectData?.name.length > 35
+              ? `${projectData?.name.slice(0, 35)}..`
+              : projectData?.name}
+            {/* {projectData?.name} */}
           </Typography>
           <Typography
             variant="p"

@@ -176,7 +176,7 @@ function AcceptedCard({ propertyData, languageName }) {
         </Typography>
       </Grid>
 
-      <Box sx={{ mt: 1, px: 2 }}>
+      <Box sx={{ mt: 1, px: 2, minHeight:250 }}>
         {Status?.map((data, index) => (
           <Button key={index} sx={{ display: "flex", textTransform: "none" }}>
             {index <= Statusindex || index === 0 || index === 1 ? (

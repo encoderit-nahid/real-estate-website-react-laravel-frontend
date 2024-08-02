@@ -76,7 +76,7 @@ function Accepted({ languageName }) {
     <Box>
       <Grid container spacing={2}>
         {acceptedProperty?.data?.map((data, index) => (
-          <Grid key={data?.id} item xs={12} sm={12} md={12} lg={4} xl={4}>
+          <Grid key={data?.id} item xs={12} sm={12} md={12} lg={4} xl={4} >
             <AcceptedCard propertyData={data} languageName={languageName} />
           </Grid>
         ))}
