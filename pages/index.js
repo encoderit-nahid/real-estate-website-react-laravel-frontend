@@ -1,21 +1,31 @@
 import dynamic from "next/dynamic";
+const Navbar = dynamic(() => import("@/component/shared/Navbar/Navbar"), {
+  ssr: false,
+});
+const Footer = dynamic(() => import("@/component/shared/Footer/Footer"), {
+  ssr: false,
+});
 import Head from "next/head";
 import { Box, Tooltip } from "@mui/material";
-import Image from "next/image";
+const FulfillDream = dynamic(() =>
+  import("@/component/home/fullfill/FulfillDream")
+);
 import backgroundImage from "../public/Images/background.png";
 import { useSession } from "next-auth/react";
+import { _baseURL } from "../consts";
 import { useEffect, useState } from "react";
 import SetCookie from "@/hooks/setCookie";
 import en from "locales/en";
 import pt from "locales/pt";
 import { useRouter } from "next/router";
 import AuthorizationMessage from "@/component/Dailog/AuthorizationMessage";
-
-const Navbar = dynamic(() => import("@/component/shared/Navbar/Navbar"), { ssr: false });
-const Footer = dynamic(() => import("@/component/shared/Footer/Footer"), { ssr: false });
-const FulfillDream = dynamic(() => import("@/component/home/fullfill/FulfillDream"));
-const BaseModal = dynamic(() => import("@/component/reuseable/baseModal/BaseModal"));
-const KnowMoreContent = dynamic(() => import("@/component/home/knowMoreContent/KnowMoreContent"));
+import Image from "next/image";
+const BaseModal = dynamic(() =>
+  import("@/component/reuseable/baseModal/BaseModal")
+);
+const KnowMoreContent = dynamic(() =>
+  import("@/component/home/knowMoreContent/KnowMoreContent")
+);
 
 export default function App({
   loginOpen,
@@ -25,17 +35,27 @@ export default function App({
   language,
 }) {
   const { data: session } = useSession();
-  const [myValue, setMyValue] = useState(language || "pt");
   const [imageLoaded, setImageLoaded] = useState(false);
-  const [knowMoreModal, setKnowMoreModal] = useState(false);
-  const [dialogOpen, setDialogOpen] = useState(false);
 
-  const router = useRouter();
-  const { type } = router.query;
+  const [myValue, setMyValue] = useState(language || "pt");
 
   useEffect(() => {
     SetCookie("language", myValue);
   }, [myValue]);
+
+  const t = myValue === "en" ? en : pt;
+
+  const [knowMoreModal, setKnowMoreModal] = useState(false);
+  const handleKnowMoreModalOpen = () => {
+    setKnowMoreModal(true);
+  };
+  const handleKnowMoreModalClose = () => {
+    setKnowMoreModal(false);
+  };
+
+  const router = useRouter();
+  const {type } = router.query;
+  const [dialogOpen, setDialogOpen] = useState(false);
 
   useEffect(() => {
     if (type) {
@@ -45,15 +65,11 @@ export default function App({
 
   const handleDialogClose = () => {
     setDialogOpen(false);
+    // Remove query parameters
     router.replace(router.pathname, undefined, { shallow: true });
   };
 
-  const handleKnowMoreModalOpen = () => setKnowMoreModal(true);
-  const handleKnowMoreModalClose = () => setKnowMoreModal(false);
-
   const handleImageLoad = () => setImageLoaded(true);
-
-  const t = myValue === "en" ? en : pt;
 
   return (
     <div>
@@ -65,17 +81,16 @@ export default function App({
 
       <main className="section">
         <Box
-          sx={{
-            position: "relative",
-            backgroundColor: imageLoaded ? 'transparent' : 'black',
-            minHeight: "100vh",
-            transition: 'background-color 0.5s ease-out',
-            overflow: 'hidden',
-          }}
+         sx={{
+          position: "relative",
+          backgroundColor: imageLoaded ? 'transparent' : 'black',
+          minHeight: "100vh",
+          transition: 'background-color 0.5s ease-out',
+          overflow: 'hidden',
+        }}
         >
-          {/* Next.js Image component for background */}
-          <Image
-            src={backgroundImage}
+                <Image
+            src={backgroundImage.src}
             alt="Background"
             layout="fill" // Fill the parent container
             objectFit="cover" // Ensure the image covers the container
@@ -90,7 +105,6 @@ export default function App({
               transition: 'opacity 0.5s ease-out',
             }}
           />
-
           <Navbar
             shape={true}
             loginOpen={loginOpen}
@@ -112,16 +126,18 @@ export default function App({
 
         <BaseModal isShowing={knowMoreModal} isClose={handleKnowMoreModalClose}>
           <Tooltip title="Something">
-            <KnowMoreContent
-              handleClose={handleKnowMoreModalClose}
-              languageName={myValue.toString()}
-              href={{
-                pathname: "/buscar-imoveis",
-              }}
-            />
+            <>
+              <KnowMoreContent
+                handleClose={handleKnowMoreModalClose}
+                languageName={myValue.toString()}
+                href={{
+                  pathname: "/buscar-imoveis",
+                }}
+              />
+            </>
           </Tooltip>
         </BaseModal>
-        <AuthorizationMessage dialogOpen={dialogOpen} handleDialogClose={handleDialogClose} type={type} />
+        <AuthorizationMessage dialogOpen={dialogOpen} handleDialogClose={handleDialogClose} type={type}/>
       </main>
     </div>
   );
