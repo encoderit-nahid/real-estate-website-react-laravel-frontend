@@ -10,11 +10,13 @@ const ResponsiveDrawer = dynamic(() =>
 );
 import {
   Button,
+  CircularProgress,
   Container,
   Divider,
   Grid,
   IconButton,
   InputAdornment,
+  LinearProgress,
   Slider,
   SwipeableDrawer,
   TextField,
@@ -1232,6 +1234,22 @@ export default function Proposals({ language }) {
       </form>
     </Box>
   );
+
+  if (isFetched && isFetching) {
+    return (
+      <Container maxWidth="md" sx={{ px: 2, py: 0 }}>
+      <Grid
+        container
+        direction="row"
+        justifyContent="center"
+        alignItems="center"
+        sx={{ height: "100vh" }}
+      >
+        <CircularProgress size="8rem" />
+      </Grid>
+    </Container>
+    );
+  }
 
   return (
     <Box
