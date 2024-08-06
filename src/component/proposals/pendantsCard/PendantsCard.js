@@ -39,6 +39,8 @@ import pt from "locales/pt";
 import { useSession } from "next-auth/react";
 import BaseCloseButton from "@/component/reuseable/baseCloseButton/BaseCloseButton";
 import { formatBrazilianCurrency } from "@/utils/useUtilities";
+import { useProposalRefuseMutation } from "@/queries/useProposlaRefuseMutation";
+import { useProposalAcceptMutation } from "@/queries/useProposalAcceptMutation";
 
 const omitEmpties = (obj) => {
   return Object.entries(obj).reduce((carry, [key, value]) => {
@@ -66,24 +68,46 @@ function PendantsCard({ propertyData, languageName, refetch, loadingRefetch }) {
   // const [refuseId, setRefuseId] = useState("");
   // const { query } = useRouter();
 
+  const refuseMutation = useProposalRefuseMutation()
+  const acceptMutation = useProposalAcceptMutation()
+
   const handleProposalRefuse = (id) => {
-    // setRefuseId(id);
-    dispatch(proposalRefuseData(propertyData?.id, id));
-    setTimeout(() => {
-      loadingRefetch();
-      refetch();
-    }, 500);
+    const body = {
+      id: id,
+    };
+    refuseMutation.mutate(body, {
+      onError(error) {
+        console.log(error);
+      },
+      onSuccess: async (data) => {
+        await loadingRefetch();
+        await refetch();
+      },
+    });
   };
 
   const handleProposalAccept = async (id) => {
     // setAcceptId(id);
-    dispatch(
-      propertyAcceptData({ property_id: propertyData?.id, proposal_id: id })
-    );
-    setTimeout(() => {
-      loadingRefetch();
-      refetch();
-    }, 500);
+    const body = {
+      property_id: propertyData?.id, 
+      proposal_id: id 
+    }
+    acceptMutation.mutate(body, {
+      onError(error) {
+        console.log(error);
+      },
+      onSuccess: async (data) => {
+        await loadingRefetch();
+        await refetch();
+      },
+    });
+    // dispatch(
+    //   propertyAcceptData({ property_id: propertyData?.id, proposal_id: id })
+    // );
+    // setTimeout(() => {
+    //   loadingRefetch();
+    //   refetch();
+    // }, 1000);
   };
 
   // const acceptLoading = useSelector((state) => state?.propertyAccept?.loading);
