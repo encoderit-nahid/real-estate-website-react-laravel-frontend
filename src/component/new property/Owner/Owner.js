@@ -1,16 +1,16 @@
 import {
-  Autocomplete,
   Box,
   Button,
+  Checkbox,
   FormControl,
+  FormControlLabel,
   Grid,
-  TextField,
+  Stack,
   Typography,
 } from "@mui/material";
 import Image from "next/image";
-import React, { useEffect, useRef } from "react";
+import React, { useEffect, useMemo } from "react";
 import buyerProfile from "../../../../public/Images/buyer_profile.png";
-import { useState } from "react";
 import BaseOutlinedZipInput from "../../reuseable/baseOutlinedZipInput/BaseOutlinedZipInput";
 import BaseOutlinedCpfInput from "../../reuseable/baseOutlinedCpfInput/BaseOutlinedCpfInput";
 import BaseOutlinedRgInput from "../../reuseable/baseOutlinedRgInput/BaseOutlinedRgInput";
@@ -21,7 +21,45 @@ import { useDispatch, useSelector } from "react-redux";
 import { findStateData } from "../../../redux/state/actions";
 import pt from "locales/pt";
 import en from "locales/en";
-import{ buscaCEP } from "@/api";
+import { useDropzone } from "react-dropzone";
+import { useSession } from "next-auth/react";
+import DeleteOutlineOutlinedIcon from "@mui/icons-material/DeleteOutlineOutlined";
+import pinImage from "../../../../public/Images/pin.png";
+import BaseCancelButton from "@/component/reuseable/button/BaseCancelButton";
+import BaseButton from "@/component/reuseable/baseButton/BaseButton";
+import { getAddressData } from "@/api";
+import { useRouter } from "next/router";
+
+const baseStyle = {
+  flex: 1,
+  display: "flex",
+  flexDirection: "column",
+  alignItems: "center",
+  padding: "50px",
+  borderWidth: 2,
+  borderRadius: "4px",
+  borderColor: "#DBE1E5",
+  borderStyle: "dashed",
+  backgroundColor: "#F2F5F6",
+
+  color: "#c4c4c4",
+  outline: "none",
+  transition: "border .24s ease-in-out",
+  width: "100%",
+  marginTop: "2vh",
+};
+
+const activeStyle = {
+  borderColor: "#f2f",
+};
+
+const acceptStyle = {
+  borderColor: "#f8f",
+};
+
+const rejectStyle = {
+  borderColor: "#f2f",
+};
 
 function Owner({
   control,
@@ -29,132 +67,135 @@ function Owner({
   maritalStatus,
   setMaritalStatus,
   languageName,
+  documents,
+  setDocuments,
   setSingle,
+  allValues,
   single,
   married,
   setMarried,
-  allValues,
-  setV_owner_cep,
-  setV_owner_endereco,
-  setV_owner_cidade,
-  setV_owner_estado,
-  setV_owner_bairro
+  reset,
+  setValue,
+  replace,
+  trigger,
 }) {
   const t = languageName === "en" ? en : pt;
+  const router = useRouter()
   const dispatch = useDispatch();
+  const {query} = router
+  const { data: session } = useSession();
+  const onDrop = (acceptedFiles) => {
+    acceptedFiles.map((file) =>
+      Object.assign(file, {
+        preview: URL.createObjectURL(file),
+      })
+    );
+
+    const allFiles = [...documents, ...acceptedFiles]; //save all files here
+
+    setDocuments(allFiles);
+  };
+  const {
+    getRootProps,
+    getInputProps,
+    isDragActive,
+    isDragAccept,
+    isDragReject,
+  } = useDropzone({
+    onDrop,
+    accept: {
+      "application/pdf": [],
+      "application/vnd.openxmlformats-officedocument.wordprocessingml.document":
+        [],
+      "application/msword": [],
+    },
+  });
+
+  const handleDelete = (index) => {
+    const filterItem = documents.filter(
+      (file, fileIndex) => fileIndex !== index
+    );
+    setDocuments(filterItem);
+  };
+
+  const style = useMemo(
+    () => ({
+      ...baseStyle,
+      ...(isDragActive ? activeStyle : {}),
+      ...(isDragAccept ? acceptStyle : {}),
+      ...(isDragReject ? rejectStyle : {}),
+    }),
+    [isDragActive, isDragReject, isDragAccept]
+  );
+
   useEffect(() => {
     dispatch(findStateData());
   }, [dispatch]);
   const allStateData = useSelector((state) => state.state.stateData);
 
-  const owner_cep = useRef();
-  const owner_endereco = useRef();
-  const owner_cidade = useRef();
-  const owner_estado = useRef();
-  const owner_bairro = useRef();
-
-  var desabilitado = false;
-
-  var desabilitado = false;
-  if(owner_cep.current!=undefined && owner_cep.current!=null && owner_cep.current!='') {
-  if(owner_cep.current.value.length > 8){
-    owner_endereco.current.disabled = false;
-    owner_cidade.current.disabled = false;
-    owner_estado.current.disabled = false;
-    owner_bairro.current.disabled = false;
-    desabilitado = true;
-  }else{
-    owner_endereco.current.value = "";
-    owner_cidade.current.value = "";
-    owner_estado.current.value = "";
-    owner_bairro.current.value = "";
-    owner_endereco.current.disabled = false;
-    owner_cidade.current.disabled = false;
-    owner_estado.current.disabled = false;
-    owner_bairro.current.disabled = false;
-  }}
-
-  const carregaCEP = async () => {
-    if(owner_cep.current!=undefined && owner_cep.current.value!=null && owner_cep.current.value!='') {
-    if(owner_cep.current.value.length > 8){
-      setV_owner_cep(owner_cep.current.value);
-      const [error, response] = await buscaCEP(owner_cep.current.value);
-    if(owner_endereco.current!=undefined){
-      owner_endereco.current.disabled = false;
-      owner_cidade.current.disabled = false;
-      owner_estado.current.disabled = false;
-      owner_bairro.current.disabled = false;
+  useEffect(() => {
+    const getData = async () => {
+      const [error, response] = await getAddressData(allValues?.owner_zip_code);
+      if (error) {
+        setValue("owner_address", "");
+        setValue("owner_neighbourhood", "");
+        setValue("owner_complement", "");
+        setValue("owner_city", "");
+        setValue("owner_state", "");
+      } else {
+        setValue("owner_address", response?.data?.logradouro);
+        setValue("owner_neighbourhood", response?.data?.bairro);
+        setValue("owner_complement", response?.data?.complemento);
+        setValue("owner_city", response?.data?.localidade);
+        setValue(
+          "owner_state",
+          allStateData?.find((data) => data?.uf === response?.data?.uf)
+        );
       }
-      
-      if(response.data.logradouro!=""&& response.data.logradouro != null && owner_endereco.current!= undefined){
-        owner_endereco.current.value = response.data.logradouro;
-        owner_endereco.current.disabled = true;
-        allValues.owner_address = response.data.logradouro;
-        setV_owner_endereco(response.data.logradouro);
-      }else{
-        allValues.owner_address = owner_endereco.current.value;
-        allValues.teste = owner_endereco.current.value;
-      }
-      
-      if(response.data.localidade!=""&& response.data.localidade != null && owner_cidade.current!=undefined){
-        owner_cidade.current.value = response.data.localidade;
-        owner_cidade.current.disabled = true;
-        allValues.owner_city = response.data.localidade;
-        setV_owner_cidade(owner_cidade.current.value)
-        }else{
-          allValues.owner_city = owner_cidade.current.value;
-        }
-      
-      if(response.data.uf!=""&& response.data.uf != null && owner_estado.current!=undefined){
-        owner_estado.current.value = response.data.uf;
-     
-        
-        const valor_estado_lista = "";
-        allStateData.forEach(element => {
-          if(element.name ===  response.data.uf){
-            valor_estado_lista = element;
-          }
-        }); 
-        setV_owner_estado(valor_estado_lista);
-        allValues.owner_state = valor_estado_lista;
-        owner_estado.current.disabled = true;
-        }
-      
-      if(response.data.bairro!=""&& response.data.bairro != null && owner_bairro.current!=undefined){
-        owner_bairro.current.value= response.data.bairro;
-        owner_bairro.current.disabled = true;
-        desabilitado = true;
-        allValues.owner_neighbourhood = response.data.bairro;
-        setV_owner_bairro(response.data.bairro);
-        }else{
-          allValues.owner_neighbourhood = owner_bairro.current.value;
-        }
-   }}
-       
-  };
+    };
+    if (allValues?.owner_zip_code && allValues?.owner_zip_code?.length > 8) {
+      getData();
+    }
+  }, [allValues?.owner_zip_code, setValue, allStateData]);
 
   return (
     <Box sx={{ mt: 4 }}>
       <Grid
         container
         direction="row"
-        justifyContent="flex-start"
+        justifyContent="space-between"
         alignItems="center"
       >
-        <Box>
-          <Image src={buyerProfile} alt="buyerProfile" />
-        </Box>
-        <Typography
-          variant="p"
-          sx={{
-            marginLeft: 1,
-            fontWeight: "700",
-            fontSize: "24px",
-            lineHeight: "32px",
+        <Stack
+          direction="row"
+          justifyContent="space-between"
+          alignItems="center"
+        >
+          <Box>
+            <Image src={buyerProfile} alt="buyerProfile" />
+          </Box>
+          <Typography
+            variant="p"
+            sx={{
+              marginLeft: 1,
+              fontWeight: "700",
+              fontSize: "24px",
+              lineHeight: "32px",
+            }}
+          >
+            {t["Owner&apos;s Data"]}
+          </Typography>
+        </Stack>
+        <BaseButton
+          color="error"
+          sx="error"
+          variant="outlined"
+          handleFunction={() => {
+            router.back()
           }}
         >
-          {t["Owner&apos;s Data"]}
-        </Typography>
+          {t["Cancel"]}
+        </BaseButton>
       </Grid>
       <Grid
         container
@@ -214,6 +255,27 @@ function Owner({
       </Grid>
       <Grid container sx={{ mt: 2 }}>
         <Grid item xs={12}>
+          <Grid
+            item
+            xs={12}
+            direction="row"
+            justifyContent="flex-start"
+            alignItems="flex-start"
+          >
+            <Typography
+              variant="p"
+              sx={{
+                color: "#253858",
+                fontSize: "14px",
+                fontWeight: "400",
+                lineHeight: "16px",
+                mb: 1,
+              }}
+            >
+              {t["Full Name"]}
+              <span style={{ color: "#E63333" }}>*</span>
+            </Typography>
+          </Grid>
           <Controller
             name="owner_name"
             control={control}
@@ -241,7 +303,78 @@ function Owner({
         </Grid>
       </Grid>
       <Grid container spacing={1} sx={{ mt: 1 }}>
+        <Grid item xs={12}>
+          <Grid
+            item
+            xs={12}
+            direction="row"
+            justifyContent="flex-start"
+            alignItems="flex-start"
+          >
+            <Typography
+              variant="p"
+              sx={{
+                color: "#253858",
+                fontSize: "14px",
+                fontWeight: "400",
+                lineHeight: "16px",
+                mb: 1,
+              }}
+            >
+              E-mail
+            </Typography>
+          </Grid>
+          <FormControl variant="outlined" sx={{ width: "100%" }}>
+            <Controller
+              name="owner_email"
+              control={control}
+              render={({ field }) => (
+                <BaseTextField
+                  placeholder={"E-mail"}
+                  size={"medium"}
+                  onChange={(e) => {
+                    field.onChange(e.target.value);
+                  }}
+                  name={"owner_email"}
+                  value={field.value}
+                  disabled={query?.property_id ? true : false}
+                  // error={errors?.rg_number ? true : false}
+                />
+              )}
+            />
+            <Typography
+              variant="inherit"
+              color="textSecondary"
+              sx={{ color: "#b91c1c" }}
+            >
+              {errors?.owner_email?.message}
+            </Typography>
+          </FormControl>
+        </Grid>
+      </Grid>
+      <Grid container spacing={1} sx={{ mt: 1 }}>
         <Grid item xs={12} sm={12} md={6} lg={6} xl={6}>
+          <Grid
+            item
+            xs={12}
+            direction="row"
+            justifyContent="flex-start"
+            alignItems="flex-start"
+          >
+            <Typography
+              variant="p"
+              sx={{
+                color: "#253858",
+                fontSize: "14px",
+                fontWeight: "400",
+                lineHeight: "16px",
+                mb: 1,
+              }}
+            >
+              RG
+              <span style={{ color: "#E63333" }}>*</span>
+            </Typography>
+          </Grid>
           <FormControl variant="outlined" sx={{ width: "100%" }}>
             <Controller
               name="owner_rg"
@@ -255,6 +388,8 @@ function Owner({
                   }}
                   name={"owner_rg"}
                   value={field.value}
+                  onBlur={() => trigger("owner_rg")}
+
                   // error={errors?.rg_number ? true : false}
                 />
               )}
@@ -269,6 +404,27 @@ function Owner({
           </FormControl>
         </Grid>
         <Grid item xs={12} sm={12} md={6} lg={6} xl={6}>
+          <Grid
+            item
+            xs={12}
+            direction="row"
+            justifyContent="flex-start"
+            alignItems="flex-start"
+          >
+            <Typography
+              variant="p"
+              sx={{
+                color: "#253858",
+                fontSize: "14px",
+                fontWeight: "400",
+                lineHeight: "16px",
+                mb: 1,
+              }}
+            >
+              CPF
+              <span style={{ color: "#E63333" }}>*</span>
+            </Typography>
+          </Grid>
           <FormControl variant="outlined" sx={{ width: "100%" }}>
             <Controller
               name="owner_cpf"
@@ -282,6 +438,8 @@ function Owner({
                   }}
                   name={"owner_cpf"}
                   value={field.value}
+                  onBlur={() => trigger("owner_cpf")}
+
                   // error={errors.cpf_number ? true : false}
                 />
               )}
@@ -315,6 +473,27 @@ function Owner({
           </Grid>
           <Grid container sx={{ mt: 2 }}>
             <Grid item xs={12}>
+              <Grid
+                item
+                xs={12}
+                direction="row"
+                justifyContent="flex-start"
+                alignItems="flex-start"
+              >
+                <Typography
+                  variant="p"
+                  sx={{
+                    color: "#253858",
+                    fontSize: "14px",
+                    fontWeight: "400",
+                    lineHeight: "16px",
+                    mb: 1,
+                  }}
+                >
+                  {t["Full Name"]}
+                  <span style={{ color: "#E63333" }}>*</span>
+                </Typography>
+              </Grid>
               <Controller
                 name="owner_spouse_name"
                 control={control}
@@ -343,6 +522,27 @@ function Owner({
           </Grid>
           <Grid container spacing={1} sx={{ mt: 1 }}>
             <Grid item xs={12} sm={12} md={6} lg={6} xl={6}>
+              <Grid
+                item
+                xs={12}
+                direction="row"
+                justifyContent="flex-start"
+                alignItems="flex-start"
+              >
+                <Typography
+                  variant="p"
+                  sx={{
+                    color: "#253858",
+                    fontSize: "14px",
+                    fontWeight: "400",
+                    lineHeight: "16px",
+                    mb: 1,
+                  }}
+                >
+                  RG
+                  <span style={{ color: "#E63333" }}>*</span>
+                </Typography>
+              </Grid>
               <FormControl variant="outlined" sx={{ width: "100%" }}>
                 <Controller
                   name="owner_spouse_rg"
@@ -356,6 +556,8 @@ function Owner({
                       }}
                       name={"owner_spouse_rg"}
                       value={field.value}
+                      onBlur={() => trigger("owner_spouse_rg")}
+
                       // error={errors?.rg_number ? true : false}
                     />
                   )}
@@ -370,6 +572,27 @@ function Owner({
               </FormControl>
             </Grid>
             <Grid item xs={12} sm={12} md={6} lg={6} xl={6}>
+              <Grid
+                item
+                xs={12}
+                direction="row"
+                justifyContent="flex-start"
+                alignItems="flex-start"
+              >
+                <Typography
+                  variant="p"
+                  sx={{
+                    color: "#253858",
+                    fontSize: "14px",
+                    fontWeight: "400",
+                    lineHeight: "16px",
+                    mb: 1,
+                  }}
+                >
+                  CPF
+                  <span style={{ color: "#E63333" }}>*</span>
+                </Typography>
+              </Grid>
               <FormControl variant="outlined" sx={{ width: "100%" }}>
                 <Controller
                   name="owner_spouse_cpf"
@@ -383,6 +606,8 @@ function Owner({
                       }}
                       name={"owner_spouse_cpf"}
                       value={field.value}
+                      onBlur={() => trigger("owner_spouse_cpf")}
+
                       // error={errors.cpf_number ? true : false}
                     />
                   )}
@@ -410,23 +635,41 @@ function Owner({
               lineHeight: "22px",
             }}
           >
-            endereço:
+            Endereço:
           </Typography>
         </Grid>
       </Grid>
       <Grid container spacing={1} sx={{ mt: 1 }}>
         <Grid item xs={12} sm={12} md={4} lg={4} xl={4}>
+          <Grid
+            item
+            xs={12}
+            direction="row"
+            justifyContent="flex-start"
+            alignItems="flex-start"
+          >
+            <Typography
+              variant="p"
+              sx={{
+                color: "#253858",
+                fontSize: "14px",
+                fontWeight: "400",
+                lineHeight: "16px",
+                mb: 1,
+              }}
+            >
+              {t["Zip code"]}
+              <span style={{ color: "#E63333" }}>*</span>
+            </Typography>
+          </Grid>
           <FormControl variant="outlined" sx={{ width: "100%" }}>
             <Controller
               name="owner_zip_code"
               control={control}
-              onBlur={ carregaCEP() }
-              defaultValue={""}
               render={({ field }) => (
                 <BaseOutlinedZipInput
                   placeholder={`${t["Zip code"]}*`}
                   size={"medium"}
-                  referencia={owner_cep}
                   onChange={(e) => {
                     field.onChange(e.target.value);
                   }}
@@ -446,6 +689,27 @@ function Owner({
           </FormControl>
         </Grid>
         <Grid item xs={12} sm={12} md={4} lg={4} xl={4}>
+          <Grid
+            item
+            xs={12}
+            direction="row"
+            justifyContent="flex-start"
+            alignItems="flex-start"
+          >
+            <Typography
+              variant="p"
+              sx={{
+                color: "#253858",
+                fontSize: "14px",
+                fontWeight: "400",
+                lineHeight: "16px",
+                mb: 1,
+              }}
+            >
+              {t["Address"]}
+              <span style={{ color: "#E63333" }}>*</span>
+            </Typography>
+          </Grid>
           <Controller
             name="owner_address"
             control={control}
@@ -453,7 +717,6 @@ function Owner({
             render={({ field }) => (
               <BaseTextField
                 size={"medium"}
-                referencia={owner_endereco}
                 placeholder={`${t["Address"]}*`}
                 onChange={(e) => {
                   field.onChange(e.target.value);
@@ -472,6 +735,27 @@ function Owner({
           </Typography>
         </Grid>
         <Grid item xs={12} sm={12} md={4} lg={4} xl={4}>
+          <Grid
+            item
+            xs={12}
+            direction="row"
+            justifyContent="flex-start"
+            alignItems="flex-start"
+          >
+            <Typography
+              variant="p"
+              sx={{
+                color: "#253858",
+                fontSize: "14px",
+                fontWeight: "400",
+                lineHeight: "16px",
+                mb: 1,
+              }}
+            >
+              {t["Number"]}
+              <span style={{ color: "#E63333" }}>*</span>
+            </Typography>
+          </Grid>
           <Controller
             name="owner_number"
             control={control}
@@ -500,6 +784,27 @@ function Owner({
       </Grid>
       <Grid container spacing={1} sx={{ mt: 1 }}>
         <Grid item xs={12} sm={12} md={6} lg={6} xl={6}>
+          <Grid
+            item
+            xs={12}
+            direction="row"
+            justifyContent="flex-start"
+            alignItems="flex-start"
+          >
+            <Typography
+              variant="p"
+              sx={{
+                color: "#253858",
+                fontSize: "14px",
+                fontWeight: "400",
+                lineHeight: "16px",
+                mb: 1,
+              }}
+            >
+              {t["Neighborhood"]}
+              <span style={{ color: "#E63333" }}>*</span>
+            </Typography>
+          </Grid>
           <Controller
             name="owner_neighbourhood"
             control={control}
@@ -507,7 +812,6 @@ function Owner({
             render={({ field }) => (
               <BaseTextField
                 size={"medium"}
-                referencia={owner_bairro}
                 placeholder={`${t["Neighborhood"]}*`}
                 onChange={(e) => {
                   field.onChange(e.target.value);
@@ -526,6 +830,26 @@ function Owner({
           </Typography>
         </Grid>
         <Grid item xs={12} sm={12} md={6} lg={6} xl={6}>
+          <Grid
+            item
+            xs={12}
+            direction="row"
+            justifyContent="flex-start"
+            alignItems="flex-start"
+          >
+            <Typography
+              variant="p"
+              sx={{
+                color: "#253858",
+                fontSize: "14px",
+                fontWeight: "400",
+                lineHeight: "16px",
+                mb: 1,
+              }}
+            >
+              {t["Complement"]}
+            </Typography>
+          </Grid>
           <Controller
             name="owner_complement"
             control={control}
@@ -553,6 +877,27 @@ function Owner({
       </Grid>
       <Grid container spacing={1} sx={{ mt: 1 }}>
         <Grid item xs={12} sm={12} md={6} lg={6} xl={6}>
+          <Grid
+            item
+            xs={12}
+            direction="row"
+            justifyContent="flex-start"
+            alignItems="flex-start"
+          >
+            <Typography
+              variant="p"
+              sx={{
+                color: "#253858",
+                fontSize: "14px",
+                fontWeight: "400",
+                lineHeight: "16px",
+                mb: 1,
+              }}
+            >
+              {t["City"]}
+              <span style={{ color: "#E63333" }}>*</span>
+            </Typography>
+          </Grid>
           <Controller
             name="owner_city"
             control={control}
@@ -560,7 +905,6 @@ function Owner({
             render={({ field }) => (
               <BaseTextField
                 size={"medium"}
-                referencia={owner_cidade}
                 placeholder={`${t["City"]}*`}
                 onChange={(e) => {
                   field.onChange(e.target.value);
@@ -579,22 +923,41 @@ function Owner({
           </Typography>
         </Grid>
         <Grid item xs={12} sm={12} md={6} lg={6} xl={6}>
+          <Grid
+            item
+            xs={12}
+            direction="row"
+            justifyContent="flex-start"
+            alignItems="flex-start"
+          >
+            <Typography
+              variant="p"
+              sx={{
+                color: "#253858",
+                fontSize: "14px",
+                fontWeight: "400",
+                lineHeight: "16px",
+                mb: 1,
+              }}
+            >
+              {t["State"]}
+              <span style={{ color: "#E63333" }}>*</span>
+            </Typography>
+          </Grid>
           <Controller
             name="owner_state"
             control={control}
+            defaultValue={""}
             render={({ field }) => (
               <BaseAutocomplete
                 //   sx={{ margin: "0.6vh 0" }}
-                estado={owner_estado}
                 options={allStateData || []}
                 getOptionLabel={(option) => option.name || ""}
                 isOptionEqualToValue={(option, value) => option.id === value.id}
                 size={"medium"}
-                desabilitado={desabilitado}
                 placeholder={`${t["State"]}*`}
                 onChange={(e, v, r, d) => field.onChange(v)}
                 value={field.value}
-                name="owner_state"
               />
             )}
           />
@@ -607,7 +970,7 @@ function Owner({
           </Typography>
         </Grid>
       </Grid>
-      {/* <Grid container sx={{ mt: 2 }}>
+      <Grid container sx={{ mt: 2 }}>
         <Grid item xs={12} sm={12} md={6} lg={6} xl={6}>
           <Typography
             variant="p"
@@ -618,25 +981,47 @@ function Owner({
               lineHeight: "22px",
             }}
           >
-            {`${t["Document data"]}:`}
+            {t["Property ownership document"]}
+            {/* {`${t["Document data"]}:`} */}
           </Typography>
         </Grid>
-      </Grid> */}
-      {/* <Grid container spacing={1} sx={{ mt: 1 }}>
+      </Grid>
+      <Grid container spacing={1} sx={{ mt: 1 }}>
         <Grid item xs={12} sm={12} md={6} lg={4} xl={4}>
+          <Grid
+            item
+            xs={12}
+            direction="row"
+            justifyContent="flex-start"
+            alignItems="flex-start"
+          >
+            <Typography
+              variant="p"
+              sx={{
+                color: "#253858",
+                fontSize: "14px",
+                fontWeight: "400",
+                lineHeight: "16px",
+                mb: 1,
+              }}
+            >
+              {t["documents"]}
+              <span style={{ color: "#E63333" }}>*</span>
+            </Typography>
+          </Grid>
           <Controller
             name="owner_documnentation"
             control={control}
             render={({ field }) => (
               <BaseAutocomplete
                 //   sx={{ margin: "0.6vh 0" }}
-                options={top100Films || []}
+                options={agreementType || []}
                 getOptionLabel={(option) => option.label || ""}
                 isOptionEqualToValue={(option, value) =>
                   option.year === value.year
                 }
                 size={"medium"}
-                placeholder={t["documents"]}
+                placeholder={`${t["documents"]}*`}
                 onChange={(e, v, r, d) => field.onChange(v)}
                 value={field.value}
               />
@@ -651,6 +1036,27 @@ function Owner({
           </Typography>
         </Grid>
         <Grid item xs={12} sm={12} md={6} lg={4} xl={4}>
+          <Grid
+            item
+            xs={12}
+            direction="row"
+            justifyContent="flex-start"
+            alignItems="flex-start"
+          >
+            <Typography
+              variant="p"
+              sx={{
+                color: "#253858",
+                fontSize: "14px",
+                fontWeight: "400",
+                lineHeight: "16px",
+                mb: 1,
+              }}
+            >
+              {t["registry office"]}
+              <span style={{ color: "#E63333" }}>*</span>
+            </Typography>
+          </Grid>
           <Controller
             name="owner_registry"
             control={control}
@@ -658,7 +1064,7 @@ function Owner({
             render={({ field }) => (
               <BaseTextField
                 size={"medium"}
-                placeholder={t["registry office"]}
+                placeholder={`${t["registry office"]}*`}
                 onChange={(e) => {
                   field.onChange(e.target.value);
                 }}
@@ -676,6 +1082,27 @@ function Owner({
           </Typography>
         </Grid>
         <Grid item xs={12} sm={12} md={6} lg={4} xl={4}>
+          <Grid
+            item
+            xs={12}
+            direction="row"
+            justifyContent="flex-start"
+            alignItems="flex-start"
+          >
+            <Typography
+              variant="p"
+              sx={{
+                color: "#253858",
+                fontSize: "14px",
+                fontWeight: "400",
+                lineHeight: "16px",
+                mb: 1,
+              }}
+            >
+              {t["registration number"]}
+              <span style={{ color: "#E63333" }}>*</span>
+            </Typography>
+          </Grid>
           <Controller
             name="owner_registration_number"
             control={control}
@@ -683,7 +1110,7 @@ function Owner({
             render={({ field }) => (
               <BaseTextField
                 size={"medium"}
-                placeholder={t["registration number"]}
+                placeholder={`${t["registration number"]}*`}
                 onChange={(e) => {
                   field.onChange(e.target.value);
                 }}
@@ -701,15 +1128,146 @@ function Owner({
             {errors.owner_registration_number?.message}
           </Typography>
         </Grid>
-      </Grid> */}
+      </Grid>
+      <Grid container sx={{ mt: 2 }}>
+        <Grid item xs={12} sm={12} md={6} lg={6} xl={6}>
+          <Typography
+            variant="p"
+            sx={{
+              fontSize: "16px",
+              fontWeight: "400",
+              color: "#002152",
+              lineHeight: "22px",
+            }}
+          >
+            Selected document:
+          </Typography>
+        </Grid>
+      </Grid>
+      <Box {...getRootProps({ style })}>
+        <input {...getInputProps()} />
+        <Typography
+          variant="p"
+          sx={{
+            color: "#6C7A84",
+            fontSize: "14px",
+            fontWeight: "400",
+            lineHeight: "18px",
+            mt: 1,
+          }}
+        >
+          {t["Drag and drop documents here"]}
+        </Typography>
+        <Typography
+          variant="p"
+          sx={{
+            color: "#6C7A84",
+            fontSize: "14px",
+            fontWeight: "400",
+            lineHeight: "18px",
+            mt: 1,
+          }}
+        >
+          {t["or"]}
+        </Typography>
+        <Button
+          variant="contained"
+          sx={{
+            textTransform: "none",
+            mt: 1,
+            background: "#0362F0",
+            color: "#ffffff",
+            fontSize: "14px",
+            fontWeight: "600",
+            lineHeight: "18px",
+          }}
+        >
+          {t["select documents"]}
+        </Button>
+        <Typography
+          variant="inherit"
+          color="textSecondary"
+          sx={{ color: "#b91c1c" }}
+        >
+          {errors?.document_files?.message}
+        </Typography>
+      </Box>
+      {documents?.length > 0 && (
+        <Grid container spacing={1} sx={{ mt: 3 }}>
+          {documents?.map((file, index) => (
+            <Grid item xs={12} sm={12} md={4} lg={3} xl={3} key={index}>
+              <Box
+                sx={{
+                  p: 2,
+                  boxSizing: "border-box",
+                  border: "1px solid #DBE1E5",
+                  borderRadius: "6px",
+                }}
+              >
+                <Grid
+                  container
+                  direction="row"
+                  justifyContent="flex-end"
+                  alignItems="flex-start"
+                >
+                  <DeleteOutlineOutlinedIcon
+                    sx={{
+                      background: "#F44336",
+                      color: "#ffffff",
+                      borderRadius: "50%",
+                      height: "3vh",
+                      width: "3vh",
+                      paddingY: "3px",
+                    }}
+                    onClick={() => handleDelete(index)}
+                  />
+                </Grid>
+
+                <Typography
+                  variant="p"
+                  sx={{ color: "#38bdf8", fontWeight: "600" }}
+                >
+                  {file?.name?.slice(0, 15) || file?.title?.slice(0, 15)}
+                </Typography>
+              </Box>
+            </Grid>
+          ))}
+        </Grid>
+      )}
+      <Grid container sx={{ mt: 1 }}>
+        <Grid item xs={12}>
+          <Controller
+            name="email_authorization"
+            control={control}
+            defaultValue={false}
+            render={({ field }) => (
+              <FormControlLabel
+                control={
+                  <Checkbox
+                    {...field}
+                    checked={field.value}
+                    onChange={(v) => field.onChange(v)}
+                  />
+                }
+                label={
+                  <Typography variant="p" sx={{ color: "#002152" }}>
+                    {t["Send sales authorization by email"]}
+                  </Typography>
+                }
+                labelPlacement="end"
+              />
+            )}
+          />
+        </Grid>
+      </Grid>
     </Box>
   );
 }
 
 export default Owner;
-const top100Films = [
-  { label: "Buyer's agent agreement", year: 1994 },
-  { label: "Purchase Agreement", year: 1972 },
-  { label: "Building Approval Plan", year: 1974 },
-  { label: " Land Receipts", year: 2008 },
+
+const agreementType = [
+  { label: "Matrícula", year: 1994 },
+  { label: "Escritura sem registro", year: 1972 },
+  { label: "Contrato de compra e venda", year: 1974 },
 ];

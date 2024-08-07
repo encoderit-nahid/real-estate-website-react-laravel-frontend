@@ -15,6 +15,8 @@ import { useDispatch, useSelector } from "react-redux";
 import { findStateData } from "../../../redux/state/actions";
 import en from "locales/en";
 import pt from "locales/pt";
+import BaseButton from "@/component/reuseable/baseButton/BaseButton";
+import { getAddressData } from "@/api";
 
 function AddressData({
   handleBack,
@@ -25,6 +27,8 @@ function AddressData({
   setValue,
   activeStep,
   languageName,
+  reset,
+  replace,
 }) {
   const t = languageName === "en" ? en : pt;
   const dispatch = useDispatch();
@@ -58,16 +62,41 @@ function AddressData({
 
   const allStateData = useSelector((state) => state.state.stateData);
 
+  // useEffect(() => {
+  //   setValue("state", allStateData[0]);
+  // }, [allStateData, setValue]);
+
   useEffect(() => {
-    setValue("state", allStateData[0]);
-  }, [allStateData, setValue]);
+    const getData = async () => {
+      const [error, response] = await getAddressData(allValues?.zip_code);
+      if (error) {
+        setValue("address", "");
+        setValue("neighbourhood", "");
+        setValue("add_on", "");
+        setValue("city", "");
+        setValue("state", "");
+      } else {
+        setValue("address", response?.data?.logradouro);
+        setValue("neighbourhood", response?.data?.bairro);
+        setValue("add_on", response?.data?.complemento);
+        setValue("city", response?.data?.localidade);
+        setValue(
+          "state",
+          allStateData?.find((data) => data?.uf === response?.data?.uf)
+        );
+      }
+    };
+    if (allValues?.zip_code && allValues?.zip_code?.length > 8) {
+      getData();
+    }
+  }, [allValues?.zip_code, setValue, allStateData]);
 
   return (
     <Box sx={{ mt: 4 }}>
       <Grid
         container
         direction="row"
-        justifyContent="flex-start"
+        justifyContent="space-between"
         alignItems="center"
       >
         <Typography
@@ -81,6 +110,18 @@ function AddressData({
         >
           {t["Address"]}
         </Typography>
+        <BaseButton
+          type="button"
+          variant="outlined"
+          color="error"
+          sx="error"
+          handleFunction={() => {
+            reset();
+            replace("/");
+          }}
+        >
+          {t["Cancel"]}
+        </BaseButton>
       </Grid>
 
       <Grid container spacing={1} sx={{ mt: 2 }}>
@@ -362,7 +403,7 @@ function AddressData({
           <Controller
             name="state"
             control={control}
-            defaultValue={allStateData[0] || {}}
+            defaultValue={""}
             render={({ field }) => (
               <BaseAutocomplete
                 //   sx={{ margin: "0.6vh 0" }}
@@ -428,62 +469,6 @@ function AddressData({
           >
             {errors.city?.message}
           </Typography>
-        </Grid>
-      </Grid>
-      <Grid container spacing={1} sx={{ mt: 2, mb: 5 }}>
-        <Grid item xs={6} sm={6} md={6}>
-          <Button
-            color="inherit"
-            onClick={handleBack}
-            sx={{
-              //   mr: 1,
-              //   border: "1px solid #002152",
-              //   borderRadius: "4px",
-              background: "#ffffff",
-              px: 2,
-              py: 1,
-              color: "#4B4B66",
-              fontSize: "16px",
-              fontWeight: "600",
-              lineHeight: "22px",
-              textTransform: "none",
-            }}
-          >
-            {t["Come back"]}
-          </Button>
-        </Grid>
-        <Grid item xs={6} sm={6} md={6}>
-          <Button
-            onClick={handleNext}
-            disabled={disableBtn}
-            fullWidth
-            sx={{
-              background: "#00C1B4",
-              boxShadow: "0px 4px 34px rgba(0, 0, 0, 0.08)",
-              borderRadius: "4px",
-              color: "#ffffff",
-              fontSize: "16px",
-              lineHeight: "22px",
-              fontWeight: "600",
-              //   mt: 3,
-              textTransform: "none",
-              py: 1,
-              "&:hover": {
-                background: "#00C1B4",
-                boxShadow: "0px 4px 34px rgba(0, 0, 0, 0.08)",
-                borderRadius: "4px",
-                color: "#ffffff",
-                fontSize: "16px",
-                lineHeight: "22px",
-                fontWeight: "600",
-                // mt: 3,
-                textTransform: "none",
-                py: 1,
-              },
-            }}
-          >
-            {t["Continue"]}
-          </Button>
         </Grid>
       </Grid>
     </Box>

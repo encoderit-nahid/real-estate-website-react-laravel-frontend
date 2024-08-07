@@ -23,7 +23,7 @@ function BrokerHelp({
 
   const handleAdvertise = () => {
     if (!broker) {
-      router.push("/my_properties/new_property");
+      router.push("/my-properties/new-property");
       localStorage.setItem("Zip_code", value);
     } else {
       router.push("/brokers");
@@ -88,7 +88,7 @@ function BrokerHelp({
           </InputLabel>
           <BaseOutlinedZipInput
             placeholder={"Eg: 00000-000"}
-            label={"Zip Code"}
+            label={t["Zip Code"]}
             value={value}
             onChange={(e) => setValue(e.target.value)}
           />

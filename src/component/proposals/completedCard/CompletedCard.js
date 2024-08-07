@@ -18,6 +18,7 @@ import FiberManualRecordIcon from "@mui/icons-material/FiberManualRecord";
 import { _baseURL, _imageURL } from "../../../../consts";
 import en from "locales/en";
 import pt from "locales/pt";
+import { formatBrazilianCurrency } from "@/utils/useUtilities";
 
 function CompletedCard({ propertyData, languageName }) {
   const myLoader = ({ src }) => {
@@ -64,7 +65,7 @@ function CompletedCard({ propertyData, languageName }) {
               mr: 1,
             }}
           >
-            {propertyData?.ad_type}
+            {t[propertyData?.ad_type]}
           </Button>
         </Box>
       </Grid>
@@ -84,7 +85,7 @@ function CompletedCard({ propertyData, languageName }) {
             lineHeight: "32px",
           }}
         >
-          {` R$  ${propertyData?.brl_rent}`}
+          {formatBrazilianCurrency(propertyData?.brl_rent)}
         </Typography>
         <Typography
           variant="p"
@@ -190,7 +191,7 @@ function CompletedCard({ propertyData, languageName }) {
         <Grid item xs={12} sm={12} md={12} lg={12} xl={12}>
           <Link
             href={{
-              pathname: "/proposals/property_journey",
+              pathname: "/proposals/property-journey",
               query: {
                 propertyId: propertyData?.id,
                 contractId: propertyData?.contract?.id,

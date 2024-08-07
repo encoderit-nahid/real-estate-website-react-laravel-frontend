@@ -5,6 +5,7 @@ import {
   CircularProgress,
   Divider,
   Grid,
+  LinearProgress,
   List,
   ListItem,
   ListItemAvatar,
@@ -18,10 +19,8 @@ import {
 import React, { useEffect, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
-import CloseIcon from "@mui/icons-material/Close";
 import logoIcon from "../../../../../../public/Images/logo.png";
 import { styled, useTheme } from "@mui/material/styles";
-
 import Drawer from "@mui/material/Drawer";
 import MuiAppBar from "@mui/material/AppBar";
 import Toolbar from "@mui/material/Toolbar";
@@ -46,6 +45,7 @@ import { useDispatch, useSelector } from "react-redux";
 import {
   findContractDetailsData,
   signatureAddData,
+  signatureUpdateData,
 } from "../../../../../redux/contractDetails/actions";
 import { contractDownloadApi, contractSignApi } from "../../../../../api";
 import { useForm, Controller } from "react-hook-form";
@@ -54,6 +54,7 @@ import * as Yup from "yup";
 import { useSession } from "next-auth/react";
 import en from "locales/en";
 import pt from "locales/pt";
+import BaseCloseButton from "@/component/reuseable/baseCloseButton/BaseCloseButton";
 const PDFViewer = dynamic(
   () => import("../../../../reuseable/PDFComponent/pdf-viewer"),
   {
@@ -150,6 +151,8 @@ function ContractPdfModal({
     (state) => state?.contractDetails?.ContactDetailsData
   );
 
+  console.log({ contractDetailsInfo });
+
   const {
     register,
     watch,
@@ -174,28 +177,40 @@ function ContractPdfModal({
     setOpen(false);
   };
 
+  const signIds = contractDetailsInfo?.signatures || [];
+
+  console.log({ signIds });
+
   const onSubmit = async (data) => {
     setLoading(true);
     dispatch(
-      signatureAddData({
-        ...data,
-        contract_id: +singlePropertyData?.contract?.id,
-      })
+      signatureAddData(
+        {
+          ...data,
+          contract_id: +singlePropertyData?.contract?.id,
+        },
+        signIds
+      )
     );
     setLoading(false);
   };
 
   const [switchLoading, setSwitchLoading] = useState(false);
 
+  console.log({switchLoading})
+
   const handleSwitchChange = async (data) => {
     setSwitchLoading(true);
-    const status = data?.is_signed === 0 ? 1 : 0;
+    const status = data?.is_signed ? 0 : 1;
     const bodyData = { contract_sign_id: data?.id, status: status };
-    const [error, resp] = await contractSignApi(bodyData);
-    setSwitchLoading(false);
-    if (!error) {
-      dispatch(findContractDetailsData(+singlePropertyData?.contract?.id));
-    }
+    dispatch(signatureUpdateData(bodyData,setSwitchLoading));
+    // const status = data?.is_signed === 0 ? 1 : 0;
+    // const bodyData = { contract_sign_id: data?.id, status: status };
+    // const [error, resp] = await contractSignApi(bodyData);
+    // setSwitchLoading(false);
+    // if (!error) {
+    //   dispatch(findContractDetailsData(+singlePropertyData?.contract?.id));
+    // }
   };
 
   return (
@@ -295,14 +310,7 @@ function ContractPdfModal({
               >
                 <Box sx={{ marginTop: 1, marginBottom: 1 }}>
                   <Image src={logoIcon} height={25} width={110} alt="logo" />
-                  <CloseIcon
-                    onClick={handleClose}
-                    sx={{
-                      color: "#1A1859",
-                      marginLeft: 10,
-                      marginTop: 0.5,
-                    }}
-                  />
+                  <BaseCloseButton handleClose={handleClose} />
                 </Box>
 
                 <Button
@@ -334,7 +342,7 @@ function ContractPdfModal({
                     },
                   }}
                 >
-                  Download
+                    Baixar
                 </Button>
                 <Button
                   onClick={handleDrawerOpen}
@@ -364,7 +372,7 @@ function ContractPdfModal({
                     },
                   }}
                 >
-                  Details
+                  {t["Details"]}
                 </Button>
               </Grid>
             )}
@@ -410,16 +418,14 @@ function ContractPdfModal({
                   fontWeight: "700",
                 }}
               >
-                Details
+                {t["Details"]}
               </Typography>
-              <IconButton onClick={handleDrawerClose}>
-                <CloseIcon />
-              </IconButton>
+              <BaseCloseButton />
             </Grid>
             <Grid
               container
               direction="row"
-              justifyContent="flex-end"
+              justifyContent="space-around"
               alignItems="center"
             >
               <Button
@@ -455,19 +461,9 @@ function ContractPdfModal({
                   },
                 }}
               >
-                Download
+                  Baixar
               </Button>
-              <CloseIcon
-                onClick={handleClose}
-                sx={{
-                  display: {
-                    xs: "none",
-                    sm: "none",
-                    md: "none",
-                    lg: "inline",
-                  },
-                }}
-              />
+              <BaseCloseButton handleClose={handleClose} />
             </Grid>
           </DrawerHeader>
           <Divider />
@@ -488,7 +484,7 @@ function ContractPdfModal({
               p: 0,
             }}
           >
-            Waiting for signature
+            {t["waiting for signature"]}
           </Button>
 
           <Button
@@ -530,7 +526,7 @@ function ContractPdfModal({
                 fontWeight: "400",
               }}
             >
-              Include signers:
+              {t["Include signers"]}:
             </Typography>
             {session?.user?.role === "admin" && (
               <form onSubmit={handleSubmit(onSubmit)}>
@@ -609,9 +605,7 @@ function ContractPdfModal({
                 </Button>
               </form>
             )}
-            <Box>
-              {switchLoading && <CircularProgress size={22} color="inherit" />}
-            </Box>
+            <Box>{switchLoading && <LinearProgress sx={{mt:2}} size={30} />}</Box>
             <Grid
               container
               direction="column"
@@ -648,16 +642,10 @@ function ContractPdfModal({
                       control={
                         <Switch
                           // defaultChecked
-                          disabled={
-                            session?.user?.role === "broker" ? true : false
-                          }
-                          checked={
-                            data?.is_signed === 0
-                              ? false
-                              : data?.is_signed === 1
-                              ? true
-                              : false
-                          }
+                          // disabled={
+                          //   session?.user?.role === 'broker' ? true : false
+                          // }
+                          checked={data?.is_signed}
                           sx={{
                             "& .MuiSwitch-switchBase.Mui-checked": {
                               color: "#34BE84",

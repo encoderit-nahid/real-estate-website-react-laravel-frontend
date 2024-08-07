@@ -338,7 +338,7 @@ function DigitalNotaryFinalContent({ singlePropertyData, languageName }) {
                     },
                   }}
                 >
-                  Download
+                    Baixar
                 </Button>
                 <Button
                   onClick={handlePdfOpen}
@@ -490,7 +490,7 @@ function DigitalNotaryFinalContent({ singlePropertyData, languageName }) {
                                   },
                                 }}
                               >
-                                Download
+                                  Baixar
                               </Button>
                             </Grid>
                             <Grid item xs={6}>

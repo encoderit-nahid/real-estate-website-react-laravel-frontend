@@ -14,6 +14,7 @@ import BaseTextField from "../../reuseable/baseTextField/BaseTextField";
 import { Controller } from "react-hook-form";
 import en from "locales/en";
 import pt from "locales/pt";
+import BaseValueField from "@/component/reuseable/baseValueField/BaseValueFiled";
 
 function ProposalValueStep({
   cash,
@@ -105,7 +106,7 @@ function ProposalValueStep({
               control={control}
               defaultValue={""}
               render={({ field }) => (
-                <BaseTextField
+                <BaseValueField
                   size={"medium"}
                   placeholder={t["Total amount"]}
                   variant={"outlined"}
@@ -167,7 +168,7 @@ function ProposalValueStep({
                   control={control}
                   defaultValue={""}
                   render={({ field }) => (
-                    <BaseTextField
+                    <BaseValueField
                       size={"medium"}
                       placeholder={t["Total amount"]}
                       variant={"outlined"}
@@ -196,13 +197,14 @@ function ProposalValueStep({
                   name="cash_amount"
                   control={control}
                   render={({ field }) => (
-                    <BaseTextField
+                    <BaseValueField
                       size={"medium"}
                       placeholder={t["Cash value"]}
                       type={"number"}
                       // sx={{ mt: 2 }}
                       variant={"outlined"}
                       name={"cash_amount"}
+                      value={field.value}
                       onChange={(e) => {
                         field.onChange(e.target.value);
                       }}
@@ -227,13 +229,14 @@ function ProposalValueStep({
                   name="payment_per_installment"
                   control={control}
                   render={({ field }) => (
-                    <BaseTextField
+                    <BaseValueField
                       size={"medium"}
                       placeholder={t["Term value"]}
                       type={"number"}
                       // sx={{ mt: 2 }}
                       variant={"outlined"}
                       name={"payment_per_installment"}
+                      value={field.value}
                       onChange={(e) => {
                         field.onChange(e.target.value);
                       }}

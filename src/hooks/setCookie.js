@@ -7,3 +7,4 @@ const SetCookie = (cookieName, value) => {
 }
 
 export default SetCookie
+

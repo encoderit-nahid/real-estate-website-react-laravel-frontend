@@ -23,7 +23,6 @@ import cardMedia from "../../../../public/Images/pendant.png";
 import rentImage from "../../../../public/Images/rentImage.png";
 import avatar from "../../../../public/Images/AvatarPendant.png";
 import Image from "next/image";
-import CloseIcon from "@mui/icons-material/Close";
 import Link from "next/link";
 import { useState } from "react";
 import BaseModal from "../../reuseable/baseModal/BaseModal";
@@ -38,6 +37,10 @@ import { proposalRefuseData } from "../../../redux/proposalRefuse/actions";
 import en from "locales/en";
 import pt from "locales/pt";
 import { useSession } from "next-auth/react";
+import BaseCloseButton from "@/component/reuseable/baseCloseButton/BaseCloseButton";
+import { formatBrazilianCurrency } from "@/utils/useUtilities";
+import { useProposalRefuseMutation } from "@/queries/useProposlaRefuseMutation";
+import { useProposalAcceptMutation } from "@/queries/useProposalAcceptMutation";
 
 const omitEmpties = (obj) => {
   return Object.entries(obj).reduce((carry, [key, value]) => {
@@ -48,7 +51,7 @@ const omitEmpties = (obj) => {
   }, {});
 };
 
-function PendantsCard({ propertyData, languageName }) {
+function PendantsCard({ propertyData, languageName, refetch, loadingRefetch }) {
   const t = languageName === "en" ? en : pt;
   const dispatch = useDispatch();
   const { data: session } = useSession();
@@ -61,25 +64,54 @@ function PendantsCard({ propertyData, languageName }) {
     setSeeProposalOpen(true);
   };
   const handleSeeProposalClose = () => setSeeProposalOpen(false);
-  const [acceptid, setAcceptId] = useState("");
-  const [refuseId, setRefuseId] = useState("");
-  const { query } = useRouter();
+  // const [acceptid, setAcceptId] = useState("");
+  // const [refuseId, setRefuseId] = useState("");
+  // const { query } = useRouter();
+
+  const refuseMutation = useProposalRefuseMutation()
+  const acceptMutation = useProposalAcceptMutation()
 
   const handleProposalRefuse = (id) => {
-    setRefuseId(id);
-    dispatch(proposalRefuseData(propertyData?.id, id));
-    dispatch(findPropertyData(query));
+    const body = {
+      id: id,
+    };
+    refuseMutation.mutate(body, {
+      onError(error) {
+        console.log(error);
+      },
+      onSuccess: async (data) => {
+        await loadingRefetch();
+        await refetch();
+      },
+    });
   };
 
-  const handleProposalAccept = (id) => {
-    setAcceptId(id);
-    dispatch(
-      propertyAcceptData({ property_id: propertyData?.id, proposal_id: id })
-    );
+  const handleProposalAccept = async (id) => {
+    // setAcceptId(id);
+    const body = {
+      property_id: propertyData?.id, 
+      proposal_id: id 
+    }
+    acceptMutation.mutate(body, {
+      onError(error) {
+        console.log(error);
+      },
+      onSuccess: async (data) => {
+        await loadingRefetch();
+        await refetch();
+      },
+    });
+    // dispatch(
+    //   propertyAcceptData({ property_id: propertyData?.id, proposal_id: id })
+    // );
+    // setTimeout(() => {
+    //   loadingRefetch();
+    //   refetch();
+    // }, 1000);
   };
 
-  const acceptLoading = useSelector((state) => state?.propertyAccept?.loading);
-  const refuseLoading = useSelector((state) => state?.proposalRefuse?.loading);
+  // const acceptLoading = useSelector((state) => state?.propertyAccept?.loading);
+  // const refuseLoading = useSelector((state) => state?.proposalRefuse?.loading);
 
   const [state, setState] = React.useState({
     top: false,
@@ -132,7 +164,7 @@ function PendantsCard({ propertyData, languageName }) {
           >
             {t["Proposals"]}
           </Typography>
-          <CloseIcon />
+          <BaseCloseButton />
         </Grid>
         <Box
           sx={{
@@ -192,7 +224,7 @@ function PendantsCard({ propertyData, languageName }) {
                         fontWeight: "400",
                       }}
                     >
-                      {propertyData?.ad_type}
+                      {t[propertyData?.ad_type]}
                     </Button>
                     <Button
                       sx={{
@@ -220,7 +252,7 @@ function PendantsCard({ propertyData, languageName }) {
                     fontWeight: "500",
                   }}
                 >
-                  {`${parseInt(propertyData?.brl_rent.replaceAll(".00","").replaceAll(".","").replaceAll("R$","")).toLocaleString("pt-BR",{ style: 'currency', currency: 'BRL' })}`}
+                  {formatBrazilianCurrency(propertyData?.brl_rent)}
                 </Typography>
                 <Typography
                   variant="p"
@@ -296,7 +328,7 @@ function PendantsCard({ propertyData, languageName }) {
                 >
                   <ListItem>
                     <ListItemText
-                      primary={`${parseInt(data?.total_amount.replaceAll(".00","").replaceAll(".","").replaceAll("R$","")).toLocaleString("pt-BR",{ style: 'currency', currency: 'BRL' })}`}
+                      primary={formatBrazilianCurrency(data?.total_amount)}
                       secondary={`${data?.payment_type}`}
                     />
                   </ListItem>
@@ -341,11 +373,7 @@ function PendantsCard({ propertyData, languageName }) {
                       },
                     }}
                   >
-                    {refuseLoading && refuseId === data.id ? (
-                      <CircularProgress size={22} color="inherit" />
-                    ) : (
-                      t["refuse"]
-                    )}
+                    {t["refuse"]}
                   </Button>
                 </Grid>
                 <Grid item xs={12} sm={12} md={12} lg={6}>
@@ -407,11 +435,7 @@ function PendantsCard({ propertyData, languageName }) {
                     }}
                     onClick={() => handleProposalAccept(data.id)}
                   >
-                    {acceptLoading && acceptid === data.id ? (
-                      <CircularProgress size={22} color="inherit" />
-                    ) : (
-                      t["To accept"]
-                    )}
+                    {t["To accept"]}
                   </Button>
                 </Grid>
               </Grid>
@@ -476,7 +500,7 @@ function PendantsCard({ propertyData, languageName }) {
               mr: 1,
             }}
           >
-            {propertyData?.ad_type}
+            {t[propertyData?.ad_type]}
           </Button>
 
           <Button
@@ -512,7 +536,7 @@ function PendantsCard({ propertyData, languageName }) {
             lineHeight: "32px",
           }}
         >
-          {`${parseInt(propertyData?.brl_rent.replaceAll(".00","").replaceAll(".","").replaceAll("R$","")).toLocaleString("pt-BR",{ style: 'currency', currency: 'BRL' })}`}
+          {formatBrazilianCurrency(propertyData?.brl_rent)}
         </Typography>
         <Typography
           variant="p"
@@ -627,7 +651,7 @@ function PendantsCard({ propertyData, languageName }) {
                             width: "100%",
                           }}
                         >
-                          {`${parseInt(data?.total_amount.replaceAll(".00","").replaceAll(".","").replaceAll("R$","")).toLocaleString("pt-BR",{ style: 'currency', currency: 'BRL' })}`}
+                          {formatBrazilianCurrency(data?.total_amount)}
                         </Typography>
                       }
                     />
@@ -643,7 +667,7 @@ function PendantsCard({ propertyData, languageName }) {
         <Grid item xs={12} sm={12} md={12} lg={6} xl={6}>
           <Link
             href={{
-              pathname: "/my_properties/include_proposal",
+              pathname: "/my-properties/include-proposal",
               query: omitEmpties({
                 property_id: propertyData?.id,
               }),

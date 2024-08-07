@@ -12,7 +12,6 @@ import PermIdentityOutlinedIcon from "@mui/icons-material/PermIdentityOutlined";
 import EmailOutlinedIcon from "@mui/icons-material/EmailOutlined";
 import PhoneEnabledOutlinedIcon from "@mui/icons-material/PhoneEnabledOutlined";
 import AssignmentOutlinedIcon from "@mui/icons-material/AssignmentOutlined";
-import CloseIcon from "@mui/icons-material/Close";
 import Image from "next/image";
 import { useDispatch } from "react-redux";
 import {
@@ -23,8 +22,17 @@ import dayjs from "dayjs";
 import { _baseURL, _imageURL } from "consts";
 import pt from "locales/pt";
 import en from "locales/en";
+import BaseCloseButton from "@/component/reuseable/baseCloseButton/BaseCloseButton";
+import { useBrokerDeleteMutation } from "@/queries/useBrokerDeleteMutation";
+import { useBrokerStatusUpdateMutation } from "@/queries/useBrokerStatusUpdateMutation";
 
-function TabpendantCard({ brokerInfo, languageName }) {
+function TabpendantCard({
+  brokerInfo,
+  languageName,
+  brokerCountRefetch,
+  refetch,
+  page,
+}) {
   const t = languageName === "en" ? en : pt;
   const dispatch = useDispatch();
   const [state, setState] = React.useState({
@@ -46,16 +54,42 @@ function TabpendantCard({ brokerInfo, languageName }) {
     setState({ ...state, [anchor]: open });
   };
 
+  const mutation = useBrokerDeleteMutation(page);
+  const statusMutation = useBrokerStatusUpdateMutation(page);
+
   const handleStatusBroker = (id) => {
-    const data = {
+    const body = {
       user_id: id,
       status: "active",
     };
-    dispatch(changeStatusBroker(data));
+    statusMutation.mutate(body, {
+      onError(error) {
+        console.log(error);
+      },
+      onSuccess: async (data) => {
+        await refetch();
+        await brokerCountRefetch();
+      },
+    });
+    // dispatch(changeStatusBroker(data));
+    // refetch();
+    // brokerCountRefetch();
   };
 
-  const handleFailBroker = (id) => {
-    dispatch(deleteBroker(id));
+
+  const handleFailBroker = async (id) => {
+    const body = {
+      broker_id: id,
+    };
+    mutation.mutate(body, {
+      onError(error) {
+        console.log(error);
+      },
+      onSuccess: async (data) => {
+        await refetch();
+        await brokerCountRefetch();
+      },
+    });
   };
 
   const myLoader = ({ src }) => {
@@ -87,7 +121,7 @@ function TabpendantCard({ brokerInfo, languageName }) {
         >
           {t["Brokers"]}
         </Typography>
-        <CloseIcon onClick={toggleDrawer(anchor, false)} />
+        <BaseCloseButton handleClose={toggleDrawer(anchor, false)} />
       </Grid>
       <Box
         sx={{

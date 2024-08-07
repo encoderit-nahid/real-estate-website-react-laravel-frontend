@@ -24,6 +24,7 @@ import { findRequireCertificateData } from "../../../../../redux/requireCertific
 import BaseTextArea from "@/component/reuseable/baseTextArea/BaseTextArea";
 import en from "locales/en";
 import pt from "locales/pt";
+import toast from "react-hot-toast";
 
 const baseStyle = {
   display: "flex",
@@ -156,11 +157,7 @@ function CertificateModal({
       handleClose();
       // setSentModalOpen(true);
     } else {
-      const errors = error?.response?.data?.errors ?? {};
-      // console.log({ errors });
-      Object.entries(errors).forEach(([name, messages]) => {
-        setError(name, { type: "manual", message: messages[0] });
-      });
+        toast.error('O documento certificado é obrigatório')
     }
   };
   return (

@@ -17,7 +17,6 @@ import {
 import React, { useMemo } from "react";
 import Image from "next/image";
 import Link from "next/link";
-import CloseIcon from "@mui/icons-material/Close";
 import logoIcon from "../../../../../../public/Images/logo.png";
 import { styled, useTheme } from "@mui/material/styles";
 
@@ -25,7 +24,6 @@ import Drawer from "@mui/material/Drawer";
 import MuiAppBar from "@mui/material/AppBar";
 import Toolbar from "@mui/material/Toolbar";
 import CssBaseline from "@mui/material/CssBaseline";
-
 import IconButton from "@mui/material/IconButton";
 import MenuIcon from "@mui/icons-material/Menu";
 import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
@@ -45,6 +43,7 @@ import dynamic from "next/dynamic";
 import { useEffect } from "react";
 import {
   ContractCertificateValidationApi,
+  certificateDownloadApi,
   certificateViewApi,
   getScheduleApi,
 } from "../../../../../api";
@@ -53,6 +52,9 @@ import { useDispatch, useSelector } from "react-redux";
 import { getViewCertificateData } from "../../../../../redux/viewCertificate/actions";
 import { findFeatureData } from "../../../../../redux/features/actions";
 import { findUploadCertificateData } from "../../../../../redux/uploadCertificate/actions";
+import BaseCloseButton from "@/component/reuseable/baseCloseButton/BaseCloseButton";
+import pt from "locales/pt";
+import en from "locales/en";
 const PDFViewer = dynamic(
   () => import("../../../../reuseable/PDFComponent/pdf-viewer"),
   {
@@ -174,7 +176,7 @@ function AnalysisPdfModal({
       handleClose();
     }
   };
-
+  const t = pt;
   return (
     <Box sx={style}>
       {/* <Box sx={{ background: "#ffffff", border: "1px solid #DBE1E5" }}>
@@ -272,17 +274,16 @@ function AnalysisPdfModal({
               >
                 <Box sx={{ marginTop: 1, marginBottom: 1 }}>
                   <Image src={logoIcon} height={25} width={110} alt="logo" />
-                  <CloseIcon
-                    onClick={handleClose}
-                    sx={{
-                      color: "#1A1859",
-                      marginLeft: 10,
-                      marginTop: 0.5,
-                    }}
-                  />
+                  <BaseCloseButton handleClose={handleClose} />
                 </Box>
 
                 <Button
+                 onClick={() =>
+                  certificateDownloadApi(
+                    singlePropertyData?.contract?.id,
+                    certificateData?.certificate_type_id
+                  )
+                }
                   variant="outlined"
                   sx={{
                     borderColor: "#002152",
@@ -295,7 +296,7 @@ function AnalysisPdfModal({
                     paddingY: 0.6,
                     mb: 2,
 
-                    mr: 3,
+                    mr: 4,
                     "&:hover": {
                       borderColor: "#002152",
                       fontSize: "14px",
@@ -308,7 +309,7 @@ function AnalysisPdfModal({
                     },
                   }}
                 >
-                  Download
+                  Baixar
                 </Button>
                 <Button
                   onClick={handleDrawerOpen}
@@ -386,17 +387,21 @@ function AnalysisPdfModal({
               >
                 Details
               </Typography>
-              <IconButton onClick={handleDrawerClose}>
-                <CloseIcon />
-              </IconButton>
+              <BaseCloseButton />
             </Grid>
             <Grid
               container
               direction="row"
-              justifyContent="flex-end"
+              justifyContent="space-around"
               alignItems="center"
             >
               <Button
+               onClick={() =>
+                certificateDownloadApi(
+                  singlePropertyData?.contract?.id,
+                  certificateData?.certificate_type_id
+                )
+              }
                 variant="outlined"
                 sx={{
                   borderColor: "#002152",
@@ -413,7 +418,7 @@ function AnalysisPdfModal({
                     md: "none",
                     lg: "inline",
                   },
-                  mr: 3,
+               
                   "&:hover": {
                     borderColor: "#002152",
                     fontSize: "14px",
@@ -426,19 +431,9 @@ function AnalysisPdfModal({
                   },
                 }}
               >
-                Download
+                Baixar
               </Button>
-              <CloseIcon
-                onClick={handleClose}
-                sx={{
-                  display: {
-                    xs: "none",
-                    sm: "none",
-                    md: "none",
-                    lg: "inline",
-                  },
-                }}
-              />
+              <BaseCloseButton handleClose={handleClose} />
             </Grid>
           </DrawerHeader>
           <Divider />
@@ -459,7 +454,7 @@ function AnalysisPdfModal({
               p: 0,
             }}
           >
-            Waiting for signature
+            {t["waiting for signature"]}
           </Button>
           <Button
             sx={{
@@ -508,7 +503,7 @@ function AnalysisPdfModal({
                   ml: 0.5,
                 }}
               >
-                1 items to review
+                1 item para revisar
               </Typography>
             </Grid>
           </Box>
@@ -553,7 +548,7 @@ function AnalysisPdfModal({
                   lineHeight: "22px",
                 }}
               >
-                {viewData?.remarks || "No comment available"}
+                {viewData?.remarks || t["No comment available"]}
               </Typography>
             </Grid>
             <Divider />
@@ -585,7 +580,7 @@ function AnalysisPdfModal({
               }}
             >
               {loading && <CircularProgress size={22} color="inherit" />}
-              {!loading && "Validate documents"}
+              {!loading && t["Validate documents"]}
             </Button>
           </Box>
         </Drawer>

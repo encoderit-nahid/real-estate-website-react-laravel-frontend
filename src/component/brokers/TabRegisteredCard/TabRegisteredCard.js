@@ -4,6 +4,10 @@ import {
   Button,
   Divider,
   Grid,
+  ListItem,
+  ListItemAvatar,
+  ListItemText,
+  Rating,
   SwipeableDrawer,
   Typography,
 } from "@mui/material";
@@ -13,16 +17,29 @@ import PermIdentityOutlinedIcon from "@mui/icons-material/PermIdentityOutlined";
 import EmailOutlinedIcon from "@mui/icons-material/EmailOutlined";
 import PhoneEnabledOutlinedIcon from "@mui/icons-material/PhoneEnabledOutlined";
 import AssignmentOutlinedIcon from "@mui/icons-material/AssignmentOutlined";
-import CloseIcon from "@mui/icons-material/Close";
 import Image from "next/image";
 import { useState } from "react";
 import dayjs from "dayjs";
 import pt from "locales/pt";
 import en from "locales/en";
 import { _imageURL } from "consts";
+import Link from "next/link";
+import BaseCloseButton from "@/component/reuseable/baseCloseButton/BaseCloseButton";
+import { useDispatch } from "react-redux";
+import { deleteBroker } from "@/redux/broker/actions";
+import { useSession } from "next-auth/react";
+import { useBrokerDeleteMutation } from "@/queries/useBrokerDeleteMutation";
 
-function TabRegisteredCard({ brokerInfo, languageName }) {
+function TabRegisteredCard({
+  brokerInfo,
+  languageName,
+  brokerCountRefetch,
+  refetch,
+  page,
+}) {
   const t = languageName === "en" ? en : pt;
+  const dispatch = useDispatch();
+  const { data: session } = useSession();
   const [state, setState] = React.useState({
     top: false,
     left: false,
@@ -46,193 +63,22 @@ function TabRegisteredCard({ brokerInfo, languageName }) {
     setState({ ...state, [anchor]: open });
   };
 
-  const list = (anchor) => (
-    <Box
-      sx={{ width: anchor === "top" || anchor === "bottom" ? "auto" : 380 }}
-      role="presentation"
-      // onClick={toggleDrawer(anchor, false)}
-      // onKeyDown={toggleDrawer(anchor, false)}
-    >
-      <Grid
-        container
-        direction="row"
-        justifyContent="space-between"
-        alignItems="center"
-        sx={{ mt: 2, px: 2 }}
-      >
-        <Typography
-          variant="p"
-          sx={{
-            color: "#1A1859",
-            fontSize: "24px",
-            lineHeight: "32px",
-            fontWeight: "700",
-          }}
-        >
-          {t["Brokers"]}
-        </Typography>
-        <CloseIcon onClick={toggleDrawer(anchor, false)} />
-      </Grid>
-      <Box
-        sx={{
-          background: "#ffffff",
-          boxShadow: "0px 4px 8px rgba(0, 33, 82, 0.08)",
-          border: "1px solid #DBE1E5",
-          borderRadius: { xs: 0, sm: 0, md: 0, lg: "8px", xl: "8px" },
-          mt: 2,
-          mx: 2,
-        }}
-      ></Box>
-      <Grid
-        container
-        direction="row"
-        justifyContent="flex-start"
-        alignItems="flex-start"
-        sx={{ px: 1.5, py: 1 }}
-      >
-        <Box>
-          {brokerInfo?.attachments[0]?.file_path ? (
-            <Image
-              loader={myLoader}
-              src={`${brokerInfo?.attachments[0]?.file_path}`}
-              alt="brokerImahe"
-              height={70}
-              width={70}
-              style={{ borderRadius: "50px" }}
-            />
-          ) : (
-            <Avatar />
-          )}
-        </Box>
-      </Grid>
-      <Grid
-        container
-        direction="column"
-        justifyContent="flex-start"
-        alignItems="flex-start"
-        sx={{ px: 1.5, py: 1 }}
-      >
-        <Typography
-          variant="h6"
-          sx={{
-            color: "#002152",
-            fontWeight: "400",
-            fontSize: "16px",
-            lineHeight: "22px",
-            pl: 0.5,
-          }}
-        >
-          {`Name ${brokerInfo?.name}`}
-        </Typography>
-        <Typography
-          variant="h6"
-          sx={{
-            color: "#002152",
-            fontWeight: "400",
-            fontSize: "16px",
-            lineHeight: "22px",
-            pl: 0.5,
-            mt: 1,
-          }}
-        >
-          {`Date of birth: ${dayjs(brokerInfo?.additional_info?.dob).format(
-            "MM/DD/YYYY"
-          )}`}
-        </Typography>
-        <Typography
-          variant="h6"
-          sx={{
-            color: "#002152",
-            fontWeight: "400",
-            fontSize: "16px",
-            lineHeight: "22px",
-            pl: 0.5,
-            mt: 1,
-          }}
-        >
-          {` RG: ${brokerInfo?.additional_info?.rg}`}
-        </Typography>
-        <Typography
-          variant="h6"
-          sx={{
-            color: "#002152",
-            fontWeight: "400",
-            fontSize: "16px",
-            lineHeight: "22px",
-            pl: 0.5,
-            mt: 1,
-          }}
-        >
-          {`CPF: ${brokerInfo?.additional_info?.cpf}`}
-        </Typography>
-        <Typography
-          variant="h6"
-          sx={{
-            color: "#002152",
-            fontWeight: "400",
-            fontSize: "16px",
-            lineHeight: "22px",
-            pl: 0.5,
-            mt: 1,
-          }}
-        >
-          {`CRECI: ${brokerInfo?.additional_info?.creci_number}`}
-        </Typography>
-        <Typography
-          variant="h6"
-          sx={{
-            color: "#002152",
-            fontWeight: "400",
-            fontSize: "16px",
-            lineHeight: "22px",
-            pl: 0.5,
-            mt: 1,
-          }}
-        >
-          {`Email ${brokerInfo?.email}`}
-        </Typography>
-        <Typography
-          variant="h6"
-          sx={{
-            color: "#002152",
-            fontWeight: "400",
-            fontSize: "16px",
-            lineHeight: "22px",
-            pl: 0.5,
-            mt: 1,
-          }}
-        >
-          {`Phone ${brokerInfo?.phone}`}
-        </Typography>
-        <Typography
-          variant="h6"
-          sx={{
-            color: "#002152",
-            fontWeight: "700",
-            fontSize: "16px",
-            lineHeight: "22px",
-            pl: 0.5,
-            mt: 3,
-          }}
-        >
-          {t["Address"]}
-        </Typography>
-        <Typography
-          variant="h6"
-          sx={{
-            color: "#002152",
-            fontWeight: "400",
-            fontSize: "16px",
-            lineHeight: "22px",
-            pl: 0.5,
-            mt: 1,
-          }}
-        >
-          {brokerInfo?.address?.address}
-        </Typography>
-      </Grid>
-    </Box>
-  );
+  const mutation = useBrokerDeleteMutation(page);
+
+  const handleDeleteBroker = async (id) => {
+    const body = {
+      broker_id: id,
+    };
+    mutation.mutate(body, {
+      onError(error) {
+        console.log(error);
+      },
+      onSuccess: async (data) => {
+        await refetch();
+        await brokerCountRefetch();
+      },
+    });
+  };
 
   return (
     <Box sx={{ background: "#ffffff", borderRadius: "8px" }}>
@@ -244,18 +90,50 @@ function TabRegisteredCard({ brokerInfo, languageName }) {
         sx={{ px: 1.5, py: 1 }}
       >
         <Box>
-          {brokerInfo?.attachments[0]?.file_path ? (
-            <Image
-              loader={myLoader}
-              src={`${brokerInfo?.attachments[0]?.file_path}`}
-              alt="brokerImahe"
-              height={70}
-              width={70}
-              style={{ borderRadius: "50px" }}
+          <ListItem>
+            <ListItemAvatar>
+              <Avatar>
+                {brokerInfo?.attachments[0]?.file_path ? (
+                  <Image
+                    loader={myLoader}
+                    src={`${brokerInfo?.attachments[0]?.file_path}`}
+                    alt="brokerImahe"
+                    height={70}
+                    width={70}
+                    style={{ borderRadius: "50px" }}
+                  />
+                ) : (
+                  <Avatar />
+                )}
+              </Avatar>
+            </ListItemAvatar>
+            <ListItemText
+              primary={
+                <Typography
+                  variant="body1"
+                  sx={{
+                    fontSize: "16px",
+                    fontWeight: 700,
+                    lineHeight: "22px",
+                    color: "#6C7A84",
+                  }}
+                >
+                  0
+                  <span
+                    style={{
+                      fontSize: "14px",
+                      fontWeight: 400,
+                      lineHeight: "18px",
+                      color: "#6C7A84",
+                    }}
+                  >
+                    (0 reviews)
+                  </span>
+                </Typography>
+              }
+              secondary={<Rating name="size-large"  readOnly />}
             />
-          ) : (
-            <Avatar sx={{ height: "72px", width: "72px" }} />
-          )}
+          </ListItem>
         </Box>
       </Grid>
       <Grid
@@ -351,34 +229,57 @@ function TabRegisteredCard({ brokerInfo, languageName }) {
         </Button>
       </Grid>
       <Box sx={{ px: 1.5, mt: 2 }}>
-        <Button
-          fullWidth
-          onClick={toggleDrawer("right", true)}
-          sx={{
-            background: "#DBE1E5",
-            color: "#002152",
-            fontWeight: "600",
-            fontSize: "14px",
-            lineHeight: "18px",
-            textTransform: "none",
-            mb: 2,
-            "&:hover": {
-              background: "#DBE1E5",
-              color: "#002152",
-            },
-          }}
+        <Link
+          href={`/visualizacao-de-detalhes-do-corretor/${
+            brokerInfo?.id
+          }/${encodeURIComponent(brokerInfo?.name.replace(/-/g, " "))}`}
         >
-          {t["See all data"]}
-        </Button>
-        <SwipeableDrawer
-          anchor={"right"}
-          open={state["right"]}
-          onClose={toggleDrawer("right", false)}
-          onOpen={toggleDrawer("right", true)}
-        >
-          {list("right")}
-        </SwipeableDrawer>
+          <a>
+            <Button
+              fullWidth
+              onClick={toggleDrawer("right", true)}
+              sx={{
+                background: "#DBE1E5",
+                color: "#002152",
+                fontWeight: "600",
+                fontSize: "14px",
+                lineHeight: "18px",
+                textTransform: "none",
+                mb: 2,
+                "&:hover": {
+                  background: "#DBE1E5",
+                  color: "#002152",
+                },
+              }}
+            >
+              {t["See all data"]}
+            </Button>
+          </a>
+        </Link>
       </Box>
+      {session?.user?.role === "admin" && (
+        <Box sx={{ px: 1.5 }}>
+          <Button
+            fullWidth
+            onClick={() => handleDeleteBroker(brokerInfo?.id)}
+            sx={{
+              background: "#ffffff",
+              color: "#F44336",
+              fontWeight: "600",
+              fontSize: "14px",
+              lineHeight: "18px",
+              textTransform: "none",
+              mb: 2,
+              "&:hover": {
+                background: "#ffffff",
+                color: "#F44336",
+              },
+            }}
+          >
+            Excluir
+          </Button>
+        </Box>
+      )}
     </Box>
   );
 }

@@ -21,6 +21,7 @@ import { useRouter } from "next/router";
 import { findSinglePropertyData } from "../../../../../redux/singleProperty/actions";
 import en from "locales/en";
 import pt from "locales/pt";
+import toast from "react-hot-toast";
 
 const baseStyle = {
   display: "flex",
@@ -116,11 +117,7 @@ function ContractModal({
       handleClose();
       // setSentModalOpen(true);
     } else {
-      const errors = error?.response?.data?.errors ?? {};
-
-      Object.entries(errors).forEach(([name, messages]) => {
-        setError(name, { type: "manual", message: messages[0] });
-      });
+      toast.error('O documento do contrato é obrigatório')
     }
   };
 
@@ -200,7 +197,7 @@ function ContractModal({
                 mt: 1,
               }}
             >
-              Drag and drop here
+              {t["Drag and drop here"]}
             </Typography>
             <Typography
               variant="p"

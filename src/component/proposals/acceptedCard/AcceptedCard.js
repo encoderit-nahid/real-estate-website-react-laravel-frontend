@@ -18,12 +18,17 @@ import FiberManualRecordIcon from "@mui/icons-material/FiberManualRecord";
 import { _baseURL, _imageURL } from "../../../../consts";
 import pt from "locales/pt";
 import en from "locales/en";
+import { IsBuyerRegisteredApi } from "@/api";
+import toast from "react-hot-toast";
+import { useRouter } from "next/router";
+import { formatBrazilianCurrency } from "@/utils/useUtilities";
 
 function AcceptedCard({ propertyData, languageName }) {
   const t = languageName === "en" ? en : pt;
   const myLoader = ({ src }) => {
     return `${_imageURL}/${src}`;
   };
+  const router = useRouter();
 
   const Status = [
     { name: t["Announce"], slug: "announcement" },
@@ -37,6 +42,49 @@ function AcceptedCard({ propertyData, languageName }) {
   const Statusindex = Status.findIndex((object) => {
     return object.slug === propertyData?.contract?.status;
   });
+
+  const handleGenerateContract = async () => {
+    const [error, response] = await IsBuyerRegisteredApi();
+    if (!error) {
+      if (response?.data?.status) {
+        router.replace({
+          pathname: "/proposals/property-journey",
+          query: {
+            propertyId: propertyData?.id,
+            contractId: propertyData?.contract?.id,
+            step_count: 1,
+          },
+        });
+      } else {
+        toast.error("Você tem que preencher as informações do usuário");
+      }
+    }
+  };
+
+  const handleGoToTheJourney = async () => {
+    const [error, response] = await IsBuyerRegisteredApi();
+    if (!error) {
+      if (response?.data?.status) {
+        router.replace({
+          pathname: "/proposals/property-journey",
+          query: {
+            propertyId: propertyData?.id,
+            contractId: propertyData?.contract?.id,
+            step_count:
+              propertyData?.contract?.status === "certificate"
+                ? 2
+                : propertyData?.contract?.status === "certificate_validated"
+                ? 3
+                : propertyData?.contract?.status === "notary"
+                ? 4
+                : 1,
+          },
+        });
+      } else {
+        toast.error("Você tem que preencher as informações do usuário");
+      }
+    }
+  };
 
   return (
     <Box
@@ -77,7 +125,7 @@ function AcceptedCard({ propertyData, languageName }) {
               mr: 1,
             }}
           >
-            {propertyData?.ad_type}
+            {t[propertyData?.ad_type]}
           </Button>
           <Button
             sx={{
@@ -112,7 +160,7 @@ function AcceptedCard({ propertyData, languageName }) {
             lineHeight: "32px",
           }}
         >
-          {`${parseInt(propertyData?.brl_rent.replaceAll(".00","").replaceAll(".","").replaceAll("R$","")).toLocaleString("pt-BR",{ style: 'currency', currency: 'BRL' })}`}
+          {formatBrazilianCurrency(propertyData?.brl_rent)}
         </Typography>
         <Typography
           variant="p"
@@ -128,7 +176,7 @@ function AcceptedCard({ propertyData, languageName }) {
         </Typography>
       </Grid>
 
-      <Box sx={{ mt: 1, px: 2 }}>
+      <Box sx={{ mt: 1, px: 2, minHeight:250 }}>
         {Status?.map((data, index) => (
           <Button key={index} sx={{ display: "flex", textTransform: "none" }}>
             {index <= Statusindex || index === 0 || index === 1 ? (
@@ -240,58 +288,50 @@ function AcceptedCard({ propertyData, languageName }) {
       </Box>
       <Grid container spacing={1} sx={{ px: 2, mt: 1 }}>
         <Grid item xs={12} sm={12} md={12} lg={6} xl={6}>
-          <Link
-            href={{
-              pathname: "/proposals/property_journey",
-              query: {
-                propertyId: propertyData?.id,
-                contractId: propertyData?.contract?.id,
-                step_count: Statusindex,
-              },
-            }}
-          >
-            <Button
-              fullWidth
-              sx={{
+          <Button
+            fullWidth
+            sx={{
+              color: "#FFFFFF",
+              fontSize: "14px",
+              lineHeight: "18px",
+              fontWeight: "600",
+
+              background: "#0362F0",
+              borderRadius: "4px",
+
+              textTransform: "none",
+              "&:hover": {
                 color: "#FFFFFF",
                 fontSize: "14px",
                 lineHeight: "18px",
                 fontWeight: "600",
-
                 background: "#0362F0",
                 borderRadius: "4px",
 
                 textTransform: "none",
-                "&:hover": {
-                  color: "#FFFFFF",
-                  fontSize: "14px",
-                  lineHeight: "18px",
-                  fontWeight: "600",
-                  background: "#0362F0",
-                  borderRadius: "4px",
-
-                  textTransform: "none",
-                },
-              }}
-            >
-              {t["Go to the journey"]}
-            </Button>
-          </Link>
-        </Grid>
-        <Grid item xs={12} sm={12} md={12} lg={6} xl={6}>
-          <Link
-            href={{
-              pathname: "/proposals/property_journey",
-              query: {
-                propertyId: propertyData?.id,
-                contractId: propertyData?.contract?.id,
-                step_count: 1,
               },
             }}
+            onClick={handleGoToTheJourney}
           >
-            <Button
-              fullWidth
-              sx={{
+            {t["Go to the journey"]}
+          </Button>
+        </Grid>
+        <Grid item xs={12} sm={12} md={12} lg={6} xl={6}>
+          <Button
+            fullWidth
+            disabled={Statusindex - 1 > 2}
+            sx={{
+              color: "#FFFFFF",
+              fontSize: "14px",
+
+              lineHeight: "18px",
+              fontWeight: "600",
+              background: "#7450F0",
+              borderRadius: "4px",
+
+              textTransform: "none",
+
+              "&:hover": {
                 color: "#FFFFFF",
                 fontSize: "14px",
 
@@ -301,23 +341,12 @@ function AcceptedCard({ propertyData, languageName }) {
                 borderRadius: "4px",
 
                 textTransform: "none",
-
-                "&:hover": {
-                  color: "#FFFFFF",
-                  fontSize: "14px",
-
-                  lineHeight: "18px",
-                  fontWeight: "600",
-                  background: "#7450F0",
-                  borderRadius: "4px",
-
-                  textTransform: "none",
-                },
-              }}
-            >
-              {t["Generate contract"]}
-            </Button>
-          </Link>
+              },
+            }}
+            onClick={handleGenerateContract}
+          >
+            {t["Generate contract"]}
+          </Button>
         </Grid>
       </Grid>
     </Box>

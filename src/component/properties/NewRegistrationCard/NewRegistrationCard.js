@@ -17,6 +17,9 @@ import { ChangePropertyStatus } from "../../../redux/propertyStatus/actions";
 import { findPropertyData } from "../../../redux/property/actions";
 import en from "locales/en";
 import pt from "locales/pt";
+import { useMutation } from "@tanstack/react-query";
+import { usePropertyStatusUpdateMutation } from "@/queries/usePropertyStatusUpdateMutation";
+import { formatBrazilianCurrency } from "@/utils/useUtilities";
 
 const omitEmpties = (obj) => {
   return Object.entries(obj).reduce((carry, [key, value]) => {
@@ -27,32 +30,63 @@ const omitEmpties = (obj) => {
   }, {});
 };
 
-function NewRegistrationCard({ propertyData, newProperty, languageName }) {
+function NewRegistrationCard({
+  propertyData,
+  newProperty,
+  languageName,
+  loadingRefetch,
+  page,
+  refetch,
+}) {
   const t = languageName === "en" ? en : pt;
   const [progress, setProgress] = React.useState(87);
   const dispatch = useDispatch();
   const [approveid, setApproveId] = useState("");
   const [rejectid, setRejectId] = useState("");
 
+  const mutation = usePropertyStatusUpdateMutation(page);
+
   const handleReject = (id) => {
-    setRejectId(id);
-    dispatch(ChangePropertyStatus({ property_id: id, status: "rejected" }));
-    // dispatch(findPropertyData({ status: "new", page: 1, per_page: 9 }));
+    const body = {
+      property_id: id,
+      status: "rejected",
+    };
+    mutation.mutate(body, {
+      onError(error) {
+        console.log(error);
+      },
+      onSuccess: async (data) => {
+        await refetch();
+        await loadingRefetch();
+      },
+    });
   };
 
   const handleApprove = (id) => {
-    setApproveId(id);
-    dispatch(ChangePropertyStatus({ property_id: id, status: "approved" }));
+    const body = {
+      property_id: id,
+      status: "approved",
+    };
+    mutation.mutate(body, {
+      onError(error) {
+        console.log(error);
+      },
+      onSuccess: async (data) => {
+        await refetch();
+        await loadingRefetch();
+      },
+    });
+    // setApproveId(id);
     // dispatch(findPropertyData({ status: "new", page: 1, per_page: 9 }));
   };
 
-  const rejectLoading = useSelector(
-    (state) => state?.propertyStatus?.rejectLoading
-  );
+  // const rejectLoading = useSelector(
+  //   (state) => state?.propertyStatus?.rejectLoading
+  // );
 
-  const approveLoading = useSelector(
-    (state) => state?.propertyStatus?.approveLoading
-  );
+  // // const approveLoading = useSelector(
+  // //   (state) => state?.propertyStatus?.approveLoading
+  // // );
 
   const myLoader = ({ src }) => {
     return `${_imageURL}/${src}`;
@@ -81,15 +115,14 @@ function NewRegistrationCard({ propertyData, newProperty, languageName }) {
             <Image src={rentImage} layout="responsive" alt="rent" />
           </Box> */}
           <Link
-            href={`/property_view/${propertyData?.id}`}
-            as={`/property_view/${propertyData?.id}`}
+            href={`/visualizacao-da-propriedade/${propertyData?.id}/${propertyData?.property_title}`}
+            as={`/visualizacao-da-propriedade/${propertyData?.id}/${propertyData?.property_title}`}
           >
             <Box
               style={{
                 width: "100%",
                 height: "100%",
                 position: "relative",
-                cursor: "pointer",
                 //   display: { lg: "inline" },
               }}
             >
@@ -127,8 +160,10 @@ function NewRegistrationCard({ propertyData, newProperty, languageName }) {
           <Box>
             <Image
               alt="rent"
-              src={rentImage}
-              width={400}
+              loader={myLoader}
+              src={`${propertyData?.attachments[0]?.file_path}`}
+              height={200}
+              width={500}
               //   style={{ borderRadius: "8px 0 0 8px" }}
             />
           </Box>
@@ -160,7 +195,7 @@ function NewRegistrationCard({ propertyData, newProperty, languageName }) {
                     fontWeight: "400",
                   }}
                 >
-                  {propertyData?.ad_type}
+                  {t[propertyData?.ad_type]}
                 </Button>
                 {propertyData?.status === "approved" && (
                   <Button
@@ -225,7 +260,20 @@ function NewRegistrationCard({ propertyData, newProperty, languageName }) {
                 mt: 1,
               }}
             >
-              {`${parseInt(propertyData?.brl_rent.replaceAll(".00","").replaceAll(".","").replaceAll("R$","")).toLocaleString("pt-BR",{ style: 'currency', currency: 'BRL' })}`}
+              {propertyData?.property_title.length > 30
+                ? `${propertyData?.property_title.slice(0, 30)}...`
+                : propertyData?.property_title}
+            </Typography>
+            <Typography
+              variant="p"
+              sx={{
+                fontSize: "16px",
+                fontWeight: "600",
+                color: "#0E97F7",
+                mt: 1,
+              }}
+            >
+              {formatBrazilianCurrency(propertyData?.brl_rent)}
             </Typography>
             <Typography
               variant="p"
@@ -281,7 +329,7 @@ function NewRegistrationCard({ propertyData, newProperty, languageName }) {
                   },
                 }}
               >
-                {rejectLoading && rejectid === propertyData.id ? (
+                {mutation?.isLoading ? (
                   <CircularProgress size={22} color="inherit" />
                 ) : (
                   t["reject"]
@@ -289,7 +337,7 @@ function NewRegistrationCard({ propertyData, newProperty, languageName }) {
               </Button>
               <Link
                 href={{
-                  pathname: "/my_properties/new_property",
+                  pathname: "/my-properties/new-property",
                   query: omitEmpties({
                     property_id: propertyData?.id,
                   }),
@@ -348,7 +396,7 @@ function NewRegistrationCard({ propertyData, newProperty, languageName }) {
                   },
                 }}
               >
-                {approveLoading && approveid === propertyData.id ? (
+                {mutation?.isLoading ? (
                   <CircularProgress size={22} color="inherit" />
                 ) : (
                   t["approve"]

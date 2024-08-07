@@ -3,34 +3,29 @@ import AppBar from "@mui/material/AppBar";
 import Box from "@mui/material/Box";
 import Grid from "@mui/material/Grid";
 import Toolbar from "@mui/material/Toolbar";
-
 import IconButton from "@mui/material/IconButton";
 import Typography from "@mui/material/Typography";
 import Menu from "@mui/material/Menu";
 import MenuIcon from "@mui/icons-material/Menu";
 import Container from "@mui/material/Container";
-import Avatar from "@mui/material/Avatar";
 import Button from "@mui/material/Button";
 import Tooltip from "@mui/material/Tooltip";
 import MenuItem from "@mui/material/MenuItem";
-import AdbIcon from "@mui/icons-material/Adb";
-import logoIcon from "../../../../public/Images/logo.png";
+import logoIcon from "../../../../public/Images/branca-op1.png";
+import logoIconColored from "../../../../public/Images/logo.png";
 import Image from "next/image";
 import BaseButton from "../../reuseable/button/BaseButton";
-import { useState } from "react";
 import BaseModal from "../../reuseable/baseModal/BaseModal";
 import LoginModal from "../../login/loginModal/LoginModal";
 import Link from "next/link";
-import { useSession, signIn, signOut } from "next-auth/react";
+import { useSession, signOut } from "next-auth/react";
 import PersonOutlineOutlinedIcon from "@mui/icons-material/PersonOutlineOutlined";
 import { FormControl, InputLabel, Popover, Select } from "@mui/material";
-import { useRouter } from "next/router";
 import en from "../../../../locales/en";
 import pt from "../../../../locales/pt";
-import SetCookie from "@/hooks/setCookie";
-import GetCookie from "@/hooks/getCookie";
 import { languageChangeApi } from "@/api";
-// import { getCookies, setCookie, deleteCookie, getCookie } from 'cookies-next'
+import { clearAllCookies } from "@/utils/clearCookies";
+import useCurrentUser from "@/hooks/useCurrentUser";
 
 function Navbar({
   shape,
@@ -43,19 +38,12 @@ function Navbar({
   languageName,
   setMyValue,
   myValue,
+  colorLogo,
 }) {
   const { data: session } = useSession();
+  const currentUser = useCurrentUser();
   const [anchorElNav, setAnchorElNav] = React.useState(null);
   const [anchorElUser, setAnchorElUser] = React.useState(null);
-
-  // const languageName = GetCookie('language')?.toString()
-
-  // const [myValue, setMyValue] = useState(languageName || 'en')
-
-  // React.useEffect(() => {
-  // 	console.log('myValue', myValue)
-  // 	SetCookie('language', myValue)
-  // }, [myValue])
 
   const handleOpenNavMenu = (event) => {
     setAnchorElNav(event.currentTarget);
@@ -73,6 +61,8 @@ function Navbar({
   };
   const handleLogout = () => {
     localStorage.clear();
+    sessionStorage.clear();
+    clearAllCookies();
     signOut();
   };
 
@@ -89,34 +79,15 @@ function Navbar({
   const open = Boolean(anchorEl);
   const id = open ? "simple-popover" : undefined;
 
-  // React.useEffect(() => {
-  // 	Cookies.set('language', myValue, { expires: 1 })
-  // }, [myValue])
-
-  // //add_login_modal
-  // const [loginOpen, setLoginOpen] = useState(false);
-  // const handleLoginOpen = () => setLoginOpen(true);
-  // const handleLoginClose = () => setLoginOpen(false);
-
-  // const router = useRouter()
-  // const { locale } = router
-  // console.log('r', router)
   const locale = myValue.toString();
 
   const t = locale === "en" ? en : pt;
 
   const pagesData = [
-    { name: t["search real estate"], page: "search_real_estate" },
-    { name: t["I am broker"], page: "broker" },
-    { name: t["I am owner"], page: "advertise" },
-    // { name: "blog", page: "blog" },
+    { name: "Quero comprar", page: "buscar-imoveis" },
+    { name: t["I am broker"], page: "cadastro-de-corretor" },
+    { name: t["I am owner"], page: "cadastro-de-proprietario" },
   ];
-
-  // const changeLanguage = (e) => {
-  // 	const locale = e.target.value
-  // 	setMyValue(e.target.value)
-
-  // }
 
   return (
     <AppBar
@@ -125,7 +96,7 @@ function Navbar({
         backgroundColor: "transparent",
         color: "#1A1859",
         boxShadow: "none",
-        paddingRight: 10,
+        // paddingRight: 10,
 
         paddingY: paddingY,
       }}
@@ -145,7 +116,12 @@ function Navbar({
                   cursor: "pointer",
                 }}
               >
-                <Image src={logoIcon} height={25} width={110} alt="logo" />
+                <Image
+                  src={colorLogo ? logoIconColored : logoIcon}
+                  height={35}
+                  width={150}
+                  alt="logo"
+                />
               </Box>
             </a>
           </Link>
@@ -189,7 +165,7 @@ function Navbar({
                 <Link
                   href={{
                     pathname: `/${data.page}`,
-                    query: data.page === "search_real_estate" && {
+                    query: data.page === "buscar-imoveis" && {
                       status: "approved",
                       page: 1,
                       per_page: 9,
@@ -237,40 +213,15 @@ function Navbar({
                   cursor: "pointer",
                 }}
               >
-                <Image src={logoIcon} height={25} width={100} alt="logo" />
+                <Image
+                  src={colorLogo ? logoIconColored : logoIcon}
+                  height={25}
+                  width={100}
+                  alt="logo"
+                />
               </a>
             </Link>
           </Grid>
-          {/* <AdbIcon sx={{ display: { xs: "flex", md: "none" }, mr: 1 }} />
-          <Typography
-            variant="h5"
-            noWrap
-            component="a"
-            href=""
-            sx={{
-              mr: 2,
-              display: { xs: "flex", md: "none" },
-              flexGrow: 1,
-              fontFamily: "monospace",
-              fontWeight: 700,
-              letterSpacing: ".3rem",
-              color: "inherit",
-              textDecoration: "none",
-            }}
-          >
-            LOGO
-          </Typography> */}
-          {/* <Box sx={{ flexGrow: 1, display: { xs: "none", md: "flex" } }}>
-            {pages.map((page) => (
-              <Button
-                key={page}
-                onClick={handleCloseNavMenu}
-                sx={{ my: 2, color: "white", display: "block" }}
-              >
-                {page}
-              </Button>
-            ))}
-          </Box> */}
 
           <Grid
             container
@@ -285,7 +236,7 @@ function Navbar({
               <Link
                 href={{
                   pathname: `/${data.page}`,
-                  query: data.page === "search_real_estate" && {
+                  query: data.page === "buscar-imoveis" && {
                     status: "approved",
                     page: 1,
                     per_page: 9,
@@ -322,15 +273,17 @@ function Navbar({
                 sx={{ display: "flex", textTransform: "none" }}
                 onClick={handleClick}
               >
-                <PersonOutlineOutlinedIcon sx={{ color: "#1A1859" }} />
+                <PersonOutlineOutlinedIcon
+                  sx={{ color: `${colorLogo ? "#1A1859" : "#ffffff"}` }}
+                />
                 <Typography
                   variant="p"
                   sx={{
-                    color: `${"#1A1859"}`,
+                    color: `${colorLogo ? "#1A1859" : "#ffffff"}`,
                     fontSize: "16px",
                   }}
                 >
-                  {session.user.name}
+                  {currentUser?.name}
                 </Typography>
               </Button>
             ) : (
@@ -346,12 +299,7 @@ function Navbar({
         </Toolbar>
         <BaseModal isShowing={loginOpen} isClose={handleLoginClose}>
           <Tooltip title="Something">
-            <>
-              <LoginModal
-                handleLoginClose={handleLoginClose}
-                myValue={myValue}
-              />
-            </>
+            <LoginModal handleLoginClose={handleLoginClose} myValue={myValue} />
           </Tooltip>
         </BaseModal>
       </Container>
@@ -380,7 +328,7 @@ function Navbar({
         </Typography>
         <Link
           href={{
-            pathname: "/my_properties",
+            pathname: "/my-properties",
             query: {
               page: 1,
               per_page: 9,

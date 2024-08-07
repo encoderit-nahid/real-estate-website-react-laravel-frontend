@@ -4,6 +4,7 @@ import {
   Button,
   CircularProgress,
   Grid,
+  IconButton,
   Snackbar,
   Typography,
 } from "@mui/material";
@@ -20,7 +21,7 @@ import { useState } from "react";
 import { useRouter } from "next/router";
 import en from "locales/en";
 import pt from "locales/pt";
-import CloseIcon from "@mui/icons-material/Close";
+import BaseCloseButton from "../reuseable/baseCloseButton/BaseCloseButton";
 
 const validationSchema = Yup.object().shape({
   email: Yup.string()
@@ -82,14 +83,14 @@ function ForgotPasswordModal({ handleForgotClose }) {
     setLoading(true);
     const [error, response] = await forgotPasswordApi({
       ...data,
-      redirect_url: `${baseRedirectUrl}/reset_password`,
+      redirect_url: `${baseRedirectUrl}/reset-password`,
     });
 
     setLoading(false);
     if (!error) {
       setSnackbarOpen(true);
       console.log({ response });
-      // router.push("/reset_password");
+      // router.push("/reset-password");
 
       setMessage(response?.data?.message);
       setSeverity(true);
@@ -102,15 +103,7 @@ function ForgotPasswordModal({ handleForgotClose }) {
 
   return (
     <Box sx={style}>
-      <Grid
-        container
-        direction="row"
-        justifyContent="flex-end"
-        alignItems="center"
-        sx={{ pr: 0, mb: 2 }}
-      >
-        <CloseIcon onClick={handleForgotClose} sx={{ cursor: "pointer" }} />
-      </Grid>
+      <BaseCloseButton handleClose={handleForgotClose}/>
       <Box sx={{ width: "100%" }}>
         <Grid
           container

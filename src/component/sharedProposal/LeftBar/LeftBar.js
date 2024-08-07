@@ -1,4 +1,4 @@
-import * as React from "react";
+import React, { useEffect, useState } from "react";
 import PropTypes from "prop-types";
 import Box from "@mui/material/Box";
 import Divider from "@mui/material/Divider";
@@ -15,7 +15,7 @@ import ListItemText from "@mui/material/ListItemText";
 
 import Image from "next/image";
 import Link from "next/link";
-import { Avatar, Grid, ListItemButton, Typography } from "@mui/material";
+import { Avatar, Grid, ListItemButton, Stack, Typography } from "@mui/material";
 import SettingsOutlinedIcon from "@mui/icons-material/SettingsOutlined";
 import LogoutOutlinedIcon from "@mui/icons-material/LogoutOutlined";
 import InsertDriveFileOutlinedIcon from "@mui/icons-material/InsertDriveFileOutlined";
@@ -29,20 +29,24 @@ import HelpOutlineOutlinedIcon from "@mui/icons-material/HelpOutlineOutlined";
 import StarBorderOutlinedIcon from "@mui/icons-material/StarBorderOutlined";
 import PersonOutlineOutlinedIcon from "@mui/icons-material/PersonOutlineOutlined";
 import ArticleOutlinedIcon from "@mui/icons-material/ArticleOutlined";
+import PaidIcon from "@mui/icons-material/Paid";
+import AddBusinessIcon from "@mui/icons-material/AddBusiness";
 import { useRouter } from "next/router";
 import logo from "../../../../public/Images/logo.png";
 import person from "../../../../public/Images/person.png";
 import { createTheme, CssBaseline, ThemeProvider } from "@mui/material";
-import { useEffect } from "react";
-import { useState } from "react";
+
 import { useSession, signIn, signOut } from "next-auth/react";
 import pt from "locales/pt";
 import en from "locales/en";
 import { _imageURL } from "consts";
-
+import ChevronRightIcon from "@mui/icons-material/ChevronRight";
+import useCurrentUser from "@/hooks/useCurrentUser";
+import { clearAllCookies } from "@/utils/clearCookies";
 function LeftBar(props) {
   const router = useRouter();
-  const { data: session } = useSession();
+  // const { data: session } = useSession();
+  const currentUser = useCurrentUser();
 
   const myLoader = ({ src }) => {
     return `${_imageURL}/${src}`;
@@ -65,35 +69,55 @@ function LeftBar(props) {
 
   const handleLogout = () => {
     localStorage.clear();
+    sessionStorage.clear();
+    clearAllCookies();
     signOut({
       callbackUrl: "/",
     });
   };
 
-  const data = [
+  const Tab = [
     {
       icon: <CampaignOutlinedIcon />,
       label: t["Properties"],
-      route: "my_properties",
+      route: "my-properties",
+      visible: ["admin", "broker", "buyer", "owner"]
     },
     {
       icon: <ArticleOutlinedIcon />,
       label: t["Proposals"],
       route: "proposals",
+      visible: ["admin", "broker", "buyer", "owner"]
     },
     {
       icon: <StarBorderOutlinedIcon />,
       label: t["Schedules"],
       route: "schedules",
+      visible: ["admin", "broker", "buyer", "owner"]
     },
     {
       icon: <PersonOutlineOutlinedIcon />,
       label: t["Brokers"],
       route: "brokers",
+      visible: ["admin", "broker", "buyer", "owner"]
     },
-    { icon: <HelpOutlineOutlinedIcon />, label: "FAQ", route: "faq" },
-    { icon: <InputOutlinedIcon />, label: t["Leave"], route: "" },
+    {
+      icon: <AddBusinessIcon />,
+      label: t["Add company"],
+      route: "add-company",
+      visible: ["admin"]
+    },
+    {
+      icon: <PaidIcon />,
+      label: t["Financial"],
+      route: "financial",
+      visible: ["admin", "broker", "buyer", "owner"]
+    },
+    { icon: <HelpOutlineOutlinedIcon />, label: "FAQ", route: "faq",visible: ["admin", "broker", "buyer", "owner"] },
+    { icon: <InputOutlinedIcon />, label: t["Leave"], route: "",visible: ["admin", "broker", "buyer", "owner"] },
   ];
+
+  const data = Tab?.filter((item) => item?.visible?.includes(currentUser?.roles[0]?.slug))
 
   // const [selectedLabel, setSelectedLabel] = useState("properties");
   // console.log(selectedLabel);
@@ -114,13 +138,12 @@ function LeftBar(props) {
 
   const [selectedLabel, setSelectedLabel] = React.useState("");
 
-  React.useEffect(() => {
-    // console.log(router.pathname)
+  useEffect(() => {
     const name = router.pathname.split("/")[1];
     setSelectedLabel(name);
-  }, [router.isReady]);
+  }, [router.pathname]);
 
-  const handleListItemClick = (event, index, leftData) => {
+  const handleListItemClick = (index, leftData) => {
     setSelectedIndex(index);
     router.push(`/${leftData.route}`);
   };
@@ -149,35 +172,57 @@ function LeftBar(props) {
                 }}
               >
                 <Box sx={{ cursor: "pointer" }}>
-                  <Image height={30} width={120} src={logo} alt="logo" />
+                  <Image height={35} width={130} src={logo} alt="logo" />
                 </Box>
               </a>
             </Link>
             <Box sx={{ mt: 2 }}>
-              {session?.user?.userImage != "undefined" ? (
+              {currentUser?.attachments?.length > 0 ? (
                 <Image
                   loader={myLoader}
                   height={70}
                   width={70}
-                  src={session?.user?.userImage}
+                  src={`${currentUser?.attachments[0]?.file_path}`}
                   alt="logo"
+                  objectFit="cover"
                 />
               ) : (
                 <Avatar />
               )}
             </Box>
-            <Typography
-              variant="p"
-              sx={{
-                color: "#002152",
-                fontWeight: "600",
-                fontSize: "16px",
-                lineHeight: "22px",
-                mt: 2,
-              }}
-            >
-              {session?.user?.name}
-            </Typography>
+            <Link href="/profile">
+              <a
+                style={{
+                  textDecoration: "none",
+                  listStyle: "none",
+                  backgroundColor: "#F2F5F6",
+                  borderRadius: "4px",
+                  padding: "4px 10px 4px 16px",
+                  marginTop: "8px",
+                }}
+              >
+                <Stack direction="row">
+                  <Typography
+                    variant="p"
+                    sx={{
+                      color: "#7450F0",
+                      fontWeight: "600",
+                      fontSize: "16px",
+                      lineHeight: "22px",
+
+                      textTransform: "capitalize",
+                    }}
+                  >
+                    {currentUser?.name}
+                  </Typography>
+                  <ChevronRightIcon
+                    sx={{
+                      color: "#003357",
+                    }}
+                  />
+                </Stack>
+              </a>
+            </Link>
             <Typography
               variant="p"
               sx={{
@@ -188,7 +233,7 @@ function LeftBar(props) {
                 mt: 2,
               }}
             >
-              {session?.user?.userEmail}
+              {currentUser?.email}
             </Typography>
           </Grid>
         </Box>
@@ -200,12 +245,12 @@ function LeftBar(props) {
           {data?.map((leftData, index) => (
             <Link key={index} href={`/${leftData?.route}`}>
               <ListItemButton
-                className="btn-leftbar"
+                // className="btn-leftbar"
                 selected={selectedLabel === leftData.route}
                 onClick={
-                  index === 5
+                  index === (data?.length - 1)
                     ? handleLogout
-                    : (event) => handleListItemClick(event, index, leftData)
+                    : () => handleListItemClick(index, leftData)
                 }
                 to={`/${leftData?.route}`}
                 sx={{
@@ -215,7 +260,7 @@ function LeftBar(props) {
                   "&:hover": {
                     borderRight: "3px solid #7450F0",
                   },
-                  "&.Mui-selected": {
+                  "&.MuiListItemButton-root.Mui-selected": {
                     borderRight: "3px solid #7450F0",
                   },
                 }}

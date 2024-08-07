@@ -1,54 +1,53 @@
-import { Box, Grid, Pagination, Skeleton, Stack } from "@mui/material";
+import {
+  Box,
+  Grid,
+  LinearProgress,
+  Pagination,
+  Skeleton,
+  Stack,
+} from "@mui/material";
 import React, { useEffect } from "react";
 import AcceptedCard from "../acceptedCard/AcceptedCard";
 import { useRouter } from "next/router";
 import { useDispatch, useSelector } from "react-redux";
 import { findPropertyData } from "../../../redux/property/actions";
+import { useGetPropertyQuery } from "@/queries/useGetPropertyQuery";
 
 function Accepted({ languageName }) {
-  const dispatch = useDispatch();
+
+  console.log('hhh')
   const router = useRouter();
   const { query } = router;
-
-  const [page, setPage] = React.useState(+query?.page || 1);
+  const [page, setPage] = React.useState(1);
 
   useEffect(() => {
-    dispatch(
-      findPropertyData({
-        ...query,
-        status: "approved",
-        page: query?.page ? query?.page : 1,
-        per_page: 9,
-        proposal_status: "accepted",
-      })
-    );
-  }, [dispatch, query]);
+    setPage(+query?.page);
+  }, [query]);
 
-  const acceptedProperty = useSelector((state) => state.property.propertyData);
-
-  const Loading = useSelector((state) => state.property.loading);
+  const {
+    data: acceptedProperty,
+    isLoading: Loading,
+    refetch,
+    isFetched,
+    isFetching,
+  } = useGetPropertyQuery({
+    ...query,
+    proposal_status:'accepted',
+    status: "approved",
+    page: page || 1,
+    per_page: 9,
+  });
 
   const handlePageChange = (event, value) => {
     setPage(value);
-    dispatch(
-      findPropertyData({
-        status: "approved",
-        page: value,
-        per_page: 9,
-        proposal_status: "accepted",
-      })
-    );
     router.replace({
-      pathname: "/proposals",
-      query: {
-        ...router.query,
-        page: value,
-        per_page: 9,
-        proposal_status: "accepted",
-      },
+      query: { ...router.query, page: value },
     });
-    // setData(datas.slice(firstIndex + pageSize * (value - 1), pageSize * value));
   };
+
+  useEffect(() => {
+    refetch();
+  }, [page, query, refetch]);
 
   if (Loading) {
     return (
@@ -65,11 +64,19 @@ function Accepted({ languageName }) {
       </Grid>
     );
   }
+
+  if (isFetched && isFetching) {
+    return (
+      <Box sx={{ width: "100%" }}>
+        <LinearProgress />
+      </Box>
+    );
+  }
   return (
     <Box>
       <Grid container spacing={2}>
         {acceptedProperty?.data?.map((data, index) => (
-          <Grid key={data?.id} item xs={12} sm={12} md={12} lg={4} xl={4}>
+          <Grid key={data?.id} item xs={12} sm={12} md={12} lg={4} xl={4} >
             <AcceptedCard propertyData={data} languageName={languageName} />
           </Grid>
         ))}

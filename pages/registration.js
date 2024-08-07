@@ -7,7 +7,6 @@ import {
   Grid,
   InputAdornment,
   Snackbar,
-  TextField,
   Typography,
 } from "@mui/material";
 import Head from "next/head";
@@ -16,7 +15,6 @@ import GoogleIcon from "@mui/icons-material/Google";
 import FacebookOutlinedIcon from "@mui/icons-material/FacebookOutlined";
 import ArrowBackIosNewOutlinedIcon from "@mui/icons-material/ArrowBackIosNewOutlined";
 import Image from "next/image";
-import Link from "next/link";
 import BaseTextField from "../src/component/reuseable/baseTextField/BaseTextField";
 import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import NoEncryptionOutlinedIcon from "@mui/icons-material/NoEncryptionOutlined";
@@ -25,16 +23,33 @@ import { useForm, Controller } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as Yup from "yup";
 import BaseOutlinedPhoneInput from "../src/component/reuseable/baseOutlinedPhoneInput/BaseOutlinedPhoneInput";
-import { emailVerifyApi, registrationApi, userDetailsApi } from "../src/api";
-import { signIn } from "next-auth/react";
+import { omitEmpties, registrationApi } from "../src/api";
 import { useRouter } from "next/router";
-import GetCookie from "@/hooks/getCookie";
 import en from "locales/en";
 import pt from "locales/pt";
+import { _baseURL } from "consts";
 
-export default function Registration({ language }) {
+import SetCookie from "@/hooks/setCookie";
+import BaseButton from "@/component/reuseable/baseButton/BaseButton";
+import toast from "react-hot-toast";
+
+export default function Registration({ language, handleLoginOpen }) {
   const router = useRouter();
+  console.log("🟥 ~ Registration ~ router:", router);
   const { query } = router;
+  const {
+    user_type,
+    brl_value,
+    property_id,
+    type,
+    date,
+    time,
+    payment_type,
+    cash_amount,
+    payment_per_installment,
+    no_of_installment,
+  } = query;
+
   const [myValue, setMyValue] = useState(language || "pt");
   const t = myValue === "en" ? en : pt;
   const validationSchema = Yup.object().shape({
@@ -45,12 +60,13 @@ export default function Registration({ language }) {
       .matches(/.+@.+\.[A-Za-z]+$/, t["Email is invalid"]),
     password: Yup.string()
       .required(t["Password is required"])
-      .min(6, t["Password must be at least 6 characters"])
+      .min(8, t["Password must be at least 8 characters"])
       .max(40, t["Password must not exceed 40 characters"]),
   });
 
   const {
     register,
+    reset,
     watch,
     control,
     setError,
@@ -74,57 +90,33 @@ export default function Registration({ language }) {
     setSuccessSnackbarOpen(false);
   };
 
-  const UserRoleData = [
-    {
-      name: t["Buyer"],
-      value: 4,
-    },
-    {
-      name: t["Owner"],
-      value: 3,
-    },
-    {
-      name: t["Broker"],
-      value: 2,
-    },
-  ];
-
-  // useEffect(() => {
-  //   const getData = async () => {
-  //     if (query?.token) {
-  //       const [err, resp] = await emailVerifyApi(query?.token);
-  //       if (!err) {
-  //         router.push("/broker_registration");
-  //         // localStorage.setItem("token", resp?.data?.token);
-  //         // const [error, response] = await userDetailsApi();
-  //         // if (!error) {
-  //         //   return signIn("credentials", {
-  //         //     userId: response.data.user.id,
-  //         //     userEmail: response.data.user.email,
-  //         //     name: response.data.user.name,
-  //         //     phone: response.data.user.phone,
-  //         //     status: response.data.user.status,
-  //         //     role: response.data.user.roles[0].slug,
-  //         //     roleId: response.data.user.roles[0].id,
-  //         //     permissions: JSON.stringify(
-  //         //       response.data.user.roles[0].permissions
-  //         //     ),
-  //         //     callbackUrl:
-  //         //       response.data.user.roles[0].slug === "buyer"
-  //         //         ? "/"
-  //         //         : "/my_properties",
-  //         //   });
-  //         // }
-  //       }
-  //     } else {
-  //       return;
-  //     }
-  //   };
-  //   getData();
-  // }, [query?.token, router]);
+  const handleSocialLogin = (provider) => {
+    if (type === "schedule") {
+      SetCookie(
+        "role_id",
+        user_type === "broker" ? 2 : user_type === "owner" ? 3 : 4
+      );
+      SetCookie("date", date);
+      SetCookie("type", type);
+      SetCookie("time", time);
+      SetCookie("property_id", property_id);
+    } else {
+      SetCookie(
+        "role_id",
+        user_type === "broker" ? 2 : user_type === "owner" ? 3 : 4
+      );
+      SetCookie("payment_type", payment_type);
+      SetCookie("brl_value", brl_value);
+      SetCookie("cash_amount", cash_amount);
+      SetCookie("payment_per_installment", payment_per_installment);
+      SetCookie("no_of_installment", no_of_installment);
+      SetCookie("type", type);
+      SetCookie("property_id", property_id);
+    }
+    window.location.replace(`${_baseURL}/api/redirect/${provider}`);
+  };
 
   const [activeBtn, setActiveBtn] = useState(4);
-  const [disableBtn, setDisableBtn] = useState(true);
 
   const [showPass, setShowPass] = React.useState(false);
   const handleClickShowPassword = () => {
@@ -147,26 +139,6 @@ export default function Registration({ language }) {
   const allValues = watch();
 
   useEffect(() => {
-    if (
-      allValues.email &&
-      allValues.phone &&
-      allValues.password &&
-      allValues.name
-    ) {
-      setDisableBtn(false);
-    }
-
-    if (
-      allValues.email === "" ||
-      allValues.phone === "" ||
-      allValues.password === "" ||
-      allValues.name === ""
-    ) {
-      setDisableBtn(true);
-    }
-  }, [allValues]);
-
-  useEffect(() => {
     if (activeBtn === 2) {
       localStorage.setItem(
         "broker_registration",
@@ -178,38 +150,52 @@ export default function Registration({ language }) {
   const onSubmit = async (data) => {
     setLoading(true);
 
-    const allData = {
+    const allData = omitEmpties({
       ...data,
-      role_id: activeBtn,
-      redirect_url: window.location.href,
-    };
+      role_id: user_type === "broker" ? 2 : user_type === "owner" ? 3 : 4,
+      type: type,
+      date: date,
+      time: time,
+      cash_amount: cash_amount,
+      brl_value: brl_value,
+      payment_type: payment_type,
+      payment_per_installment: payment_per_installment,
+      no_of_installment: no_of_installment,
+      property_id: property_id,
+      redirect_url: `${window.location.origin}/user-loading`,
+    });
 
     const [errorToken, responseToken] = await registrationApi(allData);
     setLoading(false);
     if (!errorToken) {
-      // console.log("pp", responseToken);
-      setSuccessMessage(responseToken?.data?.message);
-      handleClickSuccessSnackbar();
-      localStorage.setItem("registration_id", responseToken?.data?.user?.id);
-      localStorage.setItem("user_role", responseToken?.data?.userRole);
-      localStorage.setItem("Reg_user_name", data?.name);
-      router.push("/broker_registration");
+      if (responseToken?.data?.userRole === "buyer") {
+        toast.success(responseToken?.data?.message, {
+          duration: 15000, // Duration in milliseconds (5000 ms = 5 seconds)
+        });
+      } else {
+        localStorage.setItem("registration_id", responseToken?.data?.user?.id);
+        localStorage.setItem("user_role", responseToken?.data?.userRole);
+        localStorage.setItem("Reg_user_name", data?.name);
+        router.replace({
+          pathname: "/other-information",
+        });
+      }
     } else {
       const errors = errorToken?.response?.data?.errors ?? {};
       Object.entries(errors).forEach(([name, messages]) => {
         setError(name, { type: "manual", message: messages[0] });
       });
-
-      // handleClickSnackbar();
       setLoading(false);
-      setMessage(errorToken?.response?.data?.message);
+      toast.error(errorToken?.response?.data?.message, {
+        duration: 15000, // Duration in milliseconds (5000 ms = 5 seconds)
+      });
     }
   };
 
   return (
     <div>
       <Head>
-        <title>Lokkan</title>
+        <title>Lokkan - A imobiliária digital</title>
         <meta name="description" content="Generated by create next app" />
         <link rel="icon" href="/negotiate.png" />
       </Head>
@@ -225,30 +211,23 @@ export default function Registration({ language }) {
                 alignItems="flex-start"
                 sx={{ py: 4 }}
               >
-                <Link href="/">
-                  <a
-                    style={{
-                      textDecoration: "none",
-                      listStyle: "none",
-                      width: "100%",
+                <Button
+                  sx={{ textTransform: "none" }}
+                  onClick={() => router.back()}
+                >
+                  <ArrowBackIosNewOutlinedIcon sx={{ color: "#7450F0" }} />
+                  <Typography
+                    variant="p"
+                    sx={{
+                      color: "#7450F0",
+                      fontSize: "14px",
+                      fontWeight: "600",
+                      lineHeight: "17px",
                     }}
                   >
-                    <Button sx={{ textTransform: "none" }}>
-                      <ArrowBackIosNewOutlinedIcon sx={{ color: "#7450F0" }} />
-                      <Typography
-                        variant="p"
-                        sx={{
-                          color: "#7450F0",
-                          fontSize: "14px",
-                          fontWeight: "600",
-                          lineHeight: "17px",
-                        }}
-                      >
-                        {t["Cancel registration"]}
-                      </Typography>
-                    </Button>
-                  </a>
-                </Link>
+                    {t["Cancel registration"]}
+                  </Typography>
+                </Button>
                 <Container maxWidth="xs">
                   <form onSubmit={handleSubmit(onSubmit)}>
                     <Grid
@@ -282,7 +261,6 @@ export default function Registration({ language }) {
                             field.onChange(e.target.value);
                           }}
                           name={"name"}
-                          // error={errors.email ? true : false}
                         />
                       )}
                     />
@@ -324,7 +302,6 @@ export default function Registration({ language }) {
                             field.onChange(e.target.value);
                           }}
                           name={"email"}
-                          // error={errors.email ? true : false}
                         />
                       )}
                     />
@@ -379,12 +356,6 @@ export default function Registration({ language }) {
                       {errors.phone?.message}
                     </Typography>
 
-                    {/* <BaseTextField
-                    fullWidth
-                    size={"small"}
-                    placeholder={"Phone"}
-                    type={"number"}
-                  /> */}
                     <Grid
                       container
                       direction="row"
@@ -418,8 +389,6 @@ export default function Registration({ language }) {
                           onChange={(e) => {
                             field.onChange(e.target.value);
                           }}
-                          // value={field.value}
-                          // error={errors.password ? true : false}
                           InputProps={{
                             endAdornment: (
                               <InputAdornment
@@ -448,181 +417,49 @@ export default function Registration({ language }) {
 
                     <Grid
                       container
-                      direction="row"
-                      justifyContent="flex-start"
-                      alignItems="flex-start"
-                      sx={{ mt: 3, mb: 1 }}
-                    >
-                      <Typography
-                        variant="p"
-                        sx={{
-                          color: "#253858",
-                          fontSize: "14px",
-                          fontWeight: "400",
-                          lineHeight: "16px",
-                        }}
-                      >
-                        {t["Profile"]}
-                      </Typography>
-                    </Grid>
-                    <Grid
-                      container
-                      // direction="row"
-                      // justifyContent="flex-start"
-                      // alignItems="flex-start"
-                      // gap={2}
+                      justifyContent="center"
+                      alignItems="center"
                       spacing={1}
+                      mt={5}
                     >
-                      {UserRoleData?.map((data, index) => (
-                        <Grid item xs={4} key={index}>
-                          <Button
-                            onClick={() => setActiveBtn(data.value)}
-                            sx={{
-                              width: "100%",
-                              background: `${
-                                activeBtn === data.value ? "#0362F0" : "#F2F5F6"
-                              }`,
-                              borderRadius: "152px",
-                              color: `${
-                                activeBtn === data.value ? "#ffffff" : "#002152"
-                              }`,
-                              fontSize: {
-                                xs: "12px",
-                                sm: "13px",
-                                md: "16px",
-                                lg: "13px",
-                                xl: "16px",
-                              },
-                              fontWeight: "400",
-                              lineHeight: "22px",
-                              textTransform: "none",
-                              px: {
-                                xs: 0,
-                                sm: 2,
-                                md: 2,
-                                lg: 2,
-                                xl: 2,
-                              },
-                              py: 1,
-                              "&:hover": {
-                                width: "100%",
-                                background: "#0362F0",
-                                borderRadius: "152px",
-                                color: "#ffffff",
-                                fontSize: {
-                                  xs: "12px",
-                                  sm: "13px",
-                                  md: "16px",
-                                  lg: "13px",
-                                  xl: "16px",
-                                },
-                                fontWeight: "400",
-                                lineHeight: "22px",
-                                textTransform: "none",
-                                px: {
-                                  xs: 0,
-                                  sm: 2,
-                                  md: 2,
-                                  lg: 2,
-                                  xl: 2,
-                                },
-                                py: 1,
-                              },
-                            }}
-                          >
-                            {data.name}
-                          </Button>
-                        </Grid>
-                      ))}
-
-                      {/* <Grid item xs={4}>
-                        <Link href="/broker_registration">
-                          <Button
-                            disabled={disableBtn}
-                            onClick={() => setActiveBtn(2)}
-                            sx={{
-                              width: "100%",
-                              background: `${
-                                activeBtn === 2 ? "#0362F0" : "#F2F5F6"
-                              }`,
-                              borderRadius: "152px",
-                              color: `${
-                                activeBtn === 2 ? "#ffffff" : "#002152"
-                              }`,
-                              borderRadius: "152px",
-
-                              fontSize: {
-                                xs: "12px",
-                                sm: "13px",
-                                md: "16px",
-                                lg: "13px",
-                                xl: "16px",
-                              },
-                              fontWeight: "400",
-                              lineHeight: "22px",
-                              textTransform: "none",
-                              px: {
-                                xs: 0,
-                                sm: 2,
-                                md: 2,
-                                lg: 2,
-                                xl: 2,
-                              },
-                              py: 1,
-                              "&:hover": {
-                                width: "100%",
-                                background: "#0362F0",
-                                borderRadius: "152px",
-                                color: "#ffffff",
-                                fontSize: {
-                                  xs: "12px",
-                                  sm: "13px",
-                                  md: "16px",
-                                  lg: "13px",
-                                  xl: "16px",
-                                },
-                                fontWeight: "400",
-                                lineHeight: "22px",
-                                textTransform: "none",
-                                px: {
-                                  xs: 0,
-                                  sm: 2,
-                                  md: 2,
-                                  lg: 2,
-                                  xl: 2,
-                                },
-                                py: 1,
-                              },
-                            }}
-                          >
-                            {t["Broker"]}
-                          </Button>
-                        </Link>
-                      </Grid> */}
+                      <Grid item xs={12} sm={12} md={12} lg={6} xl={6}>
+                        <BaseButton
+                          sx="error"
+                          color="error"
+                          variant="outlined"
+                          fullWidth
+                          handleFunction={() => {
+                            reset();
+                            router.replace("/");
+                          }}
+                        >
+                          {t["Cancel"]}
+                        </BaseButton>
+                      </Grid>
+                      <Grid item xs={12} sm={12} md={12} lg={6} xl={6}>
+                        <BaseButton
+                          type="submit"
+                          fullWidth
+                          custom_sx={{
+                            background:
+                              "linear-gradient(270deg, #1DEECB 1.2%, #00C1B4 98.7%)",
+                            boxShadow: "0px 4px 34px rgba(0, 0, 0, 0.08)",
+                            borderRadius: "4px",
+                            color: "#ffffff",
+                            fontSize: "16px",
+                            lineHeight: "22px",
+                            fontWeight: "600",
+                            textTransform: "none",
+                            py: 1,
+                          }}
+                        >
+                          {loading && (
+                            <CircularProgress size={22} color="inherit" />
+                          )}
+                          {!loading && t["Register"]}
+                        </BaseButton>
+                      </Grid>
                     </Grid>
-
-                    <Button
-                      type="submit"
-                      fullWidth
-                      sx={{
-                        background:
-                          "linear-gradient(270deg, #1DEECB 1.2%, #00C1B4 98.7%)",
-                        boxShadow: "0px 4px 34px rgba(0, 0, 0, 0.08)",
-                        borderRadius: "4px",
-                        color: "#ffffff",
-                        fontSize: "16px",
-                        lineHeight: "22px",
-                        fontWeight: "600",
-                        mt: 3,
-                        textTransform: "none",
-                        py: 1,
-                      }}
-                    >
-                      {loading && (
-                        <CircularProgress size={22} color="inherit" />
-                      )}
-                      {!loading && t["Register"]}
-                    </Button>
                   </form>
                   <Grid
                     container
@@ -653,6 +490,7 @@ export default function Registration({ language }) {
                             width: "100%",
                           },
                         }}
+                        onClick={() => handleSocialLogin("google")}
                       >
                         <GoogleIcon sx={{ color: "#ffffff" }} />
                         <Typography
@@ -693,6 +531,7 @@ export default function Registration({ language }) {
                             width: "100%",
                           },
                         }}
+                        onClick={() => handleSocialLogin("facebook")}
                       >
                         <FacebookOutlinedIcon sx={{ color: "#ffffff" }} />
                         <Typography
@@ -712,6 +551,32 @@ export default function Registration({ language }) {
                         >
                           Login with Facebook
                         </Typography>
+                      </Button>
+                    </Grid>
+                  </Grid>
+                  <Grid container>
+                    <Grid item xs={12}>
+                      <Button
+                        fullWidth
+                        sx={{
+                          background:
+                            "linear-gradient(270deg, #0ea5e9 1.2%, #083344 98.7%)",
+                          boxShadow: "0px 4px 34px rgba(0, 0, 0, 0.08)",
+                          borderRadius: "4px",
+                          color: "#ffffff",
+                          fontSize: "16px",
+                          lineHeight: "22px",
+                          fontWeight: "600",
+                          mt: 5,
+                          textTransform: "none",
+                          py: 1,
+                        }}
+                        onClick={() => {
+                          router.replace({ pathname: "/" });
+                          handleLoginOpen();
+                        }}
+                      >
+                        Entrar
                       </Button>
                     </Grid>
                   </Grid>
@@ -765,13 +630,4 @@ export default function Registration({ language }) {
       </main>
     </div>
   );
-}
-
-export async function getServerSideProps(context) {
-  const cookies = context.req.cookies["language"] || "pt";
-  return {
-    props: {
-      language: cookies,
-    },
-  };
 }

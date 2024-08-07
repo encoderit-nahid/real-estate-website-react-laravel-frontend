@@ -2,8 +2,10 @@ import {
   Box,
   Button,
   CircularProgress,
+  Divider,
   FormControl,
   Grid,
+  Stack,
   TextField,
   Typography,
 } from "@mui/material";
@@ -23,32 +25,11 @@ import { findFeatureData } from "../../../redux/features/actions";
 import en from "locales/en";
 import pt from "locales/pt";
 import { useSession } from "next-auth/react";
+import BaseAutocomplete from "@/component/reuseable/baseAutocomplete/BaseAutocomplete";
+import BaseCancelButton from "@/component/reuseable/button/BaseCancelButton";
+import BaseButton from "@/component/reuseable/baseButton/BaseButton";
+import { useRouter } from "next/router";
 
-const PropertyFeature = [
-  "close to the metro",
-  "close to hospital",
-  "silent street",
-  "accept anials",
-  "close to restaurants",
-  "new property",
-  "close to gyms",
-  "close to pharmacies",
-
-  "gas shower",
-  "glass box",
-  "hot tub",
-  "service room",
-  "service bathroom",
-  "removable extra room",
-  "gourmet balcony",
-  "private pool",
-  "barbecue grill",
-  "football field",
-  "lake",
-  "heated pool",
-  "fireplace",
-  "furnish",
-];
 function Features({
   featuretypes,
   setFeatureTypes,
@@ -56,19 +37,23 @@ function Features({
   languageName,
   handleNext,
   handleBack,
+  reset,
+  replace,
 }) {
   const t = languageName === "en" ? en : pt;
-
+  const router = useRouter()
+  const [featureSelectData, setFeatureSelectData] = useState(null);
   const { data: session } = useSession();
   const [item, setItem] = useState("");
   const dispatch = useDispatch();
   useEffect(() => {
-    dispatch(findButtonData());
+    dispatch(findFeatureData());
   }, [dispatch]);
 
-  const featureData = useSelector((state) => state.featureButton?.buttonData);
+  const featureData = useSelector((state) => state.feature.featureData);
+  console.log({ featureData });
 
-  const loading = useSelector((state) => state.featureButton?.loading);
+  const loading = useSelector((state) => state.feature?.loading);
 
   useEffect(() => {
     if (featuretypes.length > 0) {
@@ -78,14 +63,12 @@ function Features({
 
   const handleAddFeature = async () => {
     if (item.length > 0) {
-      await dispatch(featureDataCreate({ name: item, type: "feature" }));
-      await dispatch(findButtonData());
+      await dispatch(
+        featureDataCreate({ name: item, type: featureSelectData?.name })
+      );
+      await dispatch(findFeatureData());
     }
   };
-
-  const FeatureAddLoading = useSelector(
-    (state) => state?.featureButton?.buttonData
-  );
 
   const [disableBtn, setDisableBtn] = useState(true);
   useEffect(() => {
@@ -102,22 +85,39 @@ function Features({
       <Grid
         container
         direction="row"
-        justifyContent="flex-start"
+        justifyContent="space-between"
         alignItems="flex-start"
       >
-        <Image height={40} width={40} src={buildingImage} alt="building" />
-        <Typography
-          variant="p"
-          sx={{
-            color: "#002152",
-            fontSize: "24px",
-            fontWeight: "700",
-            lineHeight: "32px",
-            ml: 1,
+        <Stack
+          direction="row"
+          justifyContent="space-between"
+          alignItems="flex-start"
+        >
+          <Image height={40} width={40} src={buildingImage} alt="building" />
+          <Typography
+            variant="p"
+            sx={{
+              color: "#002152",
+              fontSize: "24px",
+              fontWeight: "700",
+              lineHeight: "32px",
+              ml: 1,
+            }}
+          >
+            {t["Features"]}
+          </Typography>
+        </Stack>
+
+        <BaseButton
+          color="error"
+          sx="error"
+          variant="outlined"
+          handleFunction={() => {
+              router.back()
           }}
         >
-          {t["Features"]}
-        </Typography>
+          {t["Cancel"]}
+        </BaseButton>
       </Grid>
       <Box sx={{ mt: 2 }}>
         <Typography
@@ -144,67 +144,119 @@ function Features({
         </Grid>
       ) : (
         <Grid container spacing={1} sx={{ mt: 2 }}>
-          {featureData?.features?.map((data, index) => (
-            <Grid item xs={4} sm={4} md={4} lg={3} xl={3} key={index}>
-              <Button
-                onClick={() => {
-                  if (!featuretypes?.includes(data.id)) {
-                    setFeatureTypes((current) => [...current, data.id]);
-                  } else {
-                    const newArray = featuretypes?.filter(
-                      (value) => value !== data.id
-                    );
-                    setFeatureTypes(newArray);
-                  }
-                }}
+          {Object.keys(featureData).map((key, index) => (
+            <Box key={index} sx={{ width: "100%" }}>
+              <Typography
+                variant="p"
                 sx={{
-                  background: `${
-                    featuretypes?.includes(data.id) ? "#7450F0" : "transparent"
-                  }`,
-                  borderRadius: "56px",
-                  width: "100%",
-                  color: `${
-                    featuretypes?.includes(data.id) ? "#ffffff" : "#32414C"
-                  }`,
-                  border: `${
-                    featuretypes?.includes(data.id) ? "" : "1px solid #9FAAB1"
-                  }`,
-                  fontSize: {
-                    xs: "12px",
-                    sm: "13px",
-                    md: "16px",
-                    lg: "13px",
-                    xl: "16px",
-                  },
-                  fontWeight: "400",
-                  lineHeight: "22px",
-                  textTransform: "none",
-                  px: { xs: 0, sm: 2, md: 2, lg: 2, xl: 2 },
-                  py: 1,
-                  "&:hover": {
-                    background: "#7450F0",
-                    borderRadius: "56px",
-                    color: "#ffffff",
-                    border: `${index === 0 ? "" : "1px solid #9FAAB1"}`,
-                    width: "100%",
-                    fontSize: {
-                      xs: "12px",
-                      sm: "13px",
-                      md: "16px",
-                      lg: "13px",
-                      xl: "16px",
-                    },
-                    fontWeight: "400",
-                    lineHeight: "22px",
-                    textTransform: "none",
-                    px: { xs: 0, sm: 2, md: 2, lg: 2, xl: 2 },
-                    py: 1,
-                  },
+                  color: "#4B4B66",
+                  fontSize: "16px",
+                  fontWeight: "600",
+                  lineHeight: "19px",
                 }}
               >
-                {data?.name?.slice(0, 20)}
-              </Button>
-            </Grid>
+                {
+                  t[
+                    (key === "condominium" ||
+                      key === "accessibility" ||
+                      key === "amenities" ||
+                      key === "appliances" ||
+                      key === "room" ||
+                      key === "rooms" ||
+                      key === "sorrounding" ||
+                      key === "wellbeing" ||
+                      key === "feature") &&
+                      key
+                  ]
+                }
+              </Typography>
+              <Grid
+                container
+                direction="row"
+                justifyContent="flex-start"
+                alignItems="flex-start"
+                gap={1}
+                sx={{ mt: 2 }}
+              >
+                {(key === "condominium" ||
+                  key === "accessibility" ||
+                  key === "amenities" ||
+                  key === "appliances" ||
+                  key === "rooms" ||
+                  key === "room" ||
+                  key === "sorrounding" ||
+                  key === "wellbeing" ||
+                  key === "feature") &&
+                  featureData[key].map((data, index) => (
+                    <Button
+                      key={index}
+                      onClick={() => {
+                        if (!featuretypes?.includes(data.id)) {
+                          setFeatureTypes((current) => [...current, data.id]);
+                        } else {
+                          const newArray = featuretypes?.filter(
+                            (value) => value !== data.id
+                          );
+                          setFeatureTypes(newArray);
+                        }
+                      }}
+                      sx={{
+                        background: `${
+                          featuretypes?.includes(data.id)
+                            ? "#7450F0"
+                            : "transparent"
+                        }`,
+                        borderRadius: "56px",
+                        // width: "100%",
+                        color: `${
+                          featuretypes?.includes(data.id)
+                            ? "#FFFFFF"
+                            : "#32414C"
+                        }`,
+                        border: `${
+                          featuretypes?.includes(data.id)
+                            ? ""
+                            : "1px solid #9FAAB1"
+                        }`,
+                        fontSize: {
+                          xs: "12px",
+                          sm: "13px",
+                          md: "16px",
+                          lg: "13px",
+                          xl: "16px",
+                        },
+                        fontWeight: "400",
+                        lineHeight: "22px",
+                        textTransform: "none",
+                        px: { xs: 0, sm: 2, md: 2, lg: 2, xl: 2 },
+                        py: 1,
+                        "&:hover": {
+                          background: "#7450F0",
+                          borderRadius: "56px",
+                          color: "#FFFFFF",
+                          border: `${index === 0 ? "" : "1px solid #9FAAB1"}`,
+                          // width: "100%",
+                          fontSize: {
+                            xs: "12px",
+                            sm: "13px",
+                            md: "16px",
+                            lg: "13px",
+                            xl: "16px",
+                          },
+                          fontWeight: "400",
+                          lineHeight: "22px",
+                          textTransform: "none",
+                          px: { xs: 0, sm: 2, md: 2, lg: 2, xl: 2 },
+                          py: 1,
+                        },
+                      }}
+                    >
+                      {data?.name?.slice(0, 20)}
+                    </Button>
+                  ))}
+              </Grid>
+              <Divider sx={{ mt: 1, mb: 1 }} />
+            </Box>
           ))}
         </Grid>
       )}
@@ -225,9 +277,20 @@ function Features({
           sx={{ mt: 3 }}
         >
           <BaseTextField
-            sx={{ width: "50%" }}
+            sx={{ width: "35%" }}
             placeholder={t["Add feature"]}
             onChange={(e) => setItem(e.target.value)}
+          />
+          <BaseAutocomplete
+            //   sx={{ margin: "0.6vh 0" }}
+            options={featureTypeData || []}
+            getOptionLabel={(option) => option.name || ""}
+            sx={{ ml: 1, width: "35%" }}
+            isOptionEqualToValue={(option, value) => option.id === value.id}
+            size={"large"}
+            placeholder={"Feature Type"}
+            onChange={(e, v, r, d) => setFeatureSelectData(v)}
+            value={featureSelectData}
           />
           <Button
             onClick={handleAddFeature}
@@ -254,60 +317,43 @@ function Features({
         justifyContent="flex-end"
         alignItems="center"
         sx={{ mt: 2, mb: 2 }}
+        spacing={1}
       >
-        <Button
-          color="inherit"
-          onClick={handleBack}
-          // disabled={activeStep === 0}
-          sx={{
-            mr: 1,
-            border: "1px solid #002152",
-            borderRadius: "4px",
-            px: 2,
-            py: 1,
-            color: "#002152",
-            fontSize: "16px",
-            fontWeight: "600",
-            lineHeight: "22px",
-            textTransform: "none",
-          }}
-        >
-          {t["come back"]}
-        </Button>
-
-        <Button
-          onClick={handleNext}
-          disabled={disableBtn}
-          sx={{
-            background: "#7450F0",
-            borderRadius: "4px",
-            px: 2,
-            py: 1,
-            color: "#ffffff",
-            fontSize: "16px",
-            fontWeight: "600",
-            lineHeight: "22px",
-            textTransform: "none",
-            boxShadow: "0px 4px 8px rgba(81, 51, 182, 0.32)",
-            "&:hover": {
-              background: "#7450F0",
-              borderRadius: "4px",
-              px: 2,
-              py: 1,
-              color: "#ffffff",
-              fontSize: "16px",
-              fontWeight: "600",
-              lineHeight: "22px",
-              textTransform: "none",
-              boxShadow: "0px 4px 8px rgba(81, 51, 182, 0.32)",
-            },
-          }}
-        >
-          {t["Next"]}
-        </Button>
+        <Grid item xs={2}>
+          <BaseButton
+            handleFunction={handleBack}
+            // disabled={activeStep === 0}
+            fullWidth
+            sx="outlined"
+          >
+            {t["come back"]}
+          </BaseButton>
+        </Grid>
+        <Grid item xs={2}>
+          <BaseButton
+            handleFunction={handleNext}
+            disabled={disableBtn}
+            fullWidth
+            sx="secondary"
+          >
+            {t["Next"]}
+          </BaseButton>
+        </Grid>
       </Grid>
     </Box>
   );
 }
 
 export default Features;
+
+const featureTypeData = [
+  { id: 1, name: "condominium" },
+  { id: 2, name: "accessibility" },
+  { id: 3, name: "amenities" },
+  { id: 4, name: "appliances" },
+  { id: 5, name: "room" },
+  { id: 6, name: "sorrounding" },
+  { id: 7, name: "wellbeing" },
+  { id: 8, name: "feature" },
+  { id: 9, name: "rooms" },
+];

@@ -3,6 +3,7 @@ import {
   Box,
   Button,
   Grid,
+  Stack,
   TextField,
   Typography,
 } from "@mui/material";
@@ -25,6 +26,9 @@ import { useRouter } from "next/router";
 import en from "locales/en";
 import pt from "locales/pt";
 import { useSession } from "next-auth/react";
+import { getVideoIdFromLink } from "@/utils/getVideoIdFromLink";
+import BaseCancelButton from "@/component/reuseable/button/BaseCancelButton";
+import BaseButton from "@/component/reuseable/baseButton/BaseButton";
 
 const baseStyle = {
   flex: 1,
@@ -62,6 +66,10 @@ function PhotosAndVideos({
   errors,
   files,
   setFiles,
+  videoFiles,
+  setVideoFiles,
+  setDeletedContent,
+  deletedContent,
   imageError,
   imageErrorMessage,
   fields,
@@ -71,9 +79,11 @@ function PhotosAndVideos({
   languageName,
   handleNext,
   handleBack,
+  reset,
+  replace,
 }) {
   const dispatch = useDispatch();
-  const { query } = useRouter();
+  const router = useRouter();
   const { data: session } = useSession();
   const t = languageName === "en" ? en : pt;
   useEffect(() => {
@@ -107,9 +117,21 @@ function PhotosAndVideos({
     },
   });
 
-  const handleDelete = (index) => {
+  const handleDelete = (index, file) => {
     const filterItem = files.filter((file, fileIndex) => fileIndex !== index);
     setFiles(filterItem);
+    if (file?.id) {
+      setDeletedContent((prevData) => [...prevData, file?.id]);
+    }
+  };
+  const handleDeleteVideo = (index, file) => {
+    const filterItem = videoFiles.filter(
+      (file, fileIndex) => fileIndex !== index
+    );
+    setVideoFiles(filterItem);
+    if (file?.id) {
+      setDeletedContent((prevData) => [...prevData, file?.id]);
+    }
   };
 
   const style = useMemo(
@@ -143,27 +165,45 @@ function PhotosAndVideos({
     }
   }, [files]);
 
+  console.log({ videoFiles });
+
   return (
     <Box sx={{ mt: 4 }}>
       <Grid
         container
         direction="row"
-        justifyContent="flex-start"
+        justifyContent="space-between"
         alignItems="flex-start"
       >
-        <Image height={40} width={40} src={orionImage} alt="orion" />
-        <Typography
-          variant="p"
-          sx={{
-            color: "#002152",
-            fontSize: "24px",
-            fontWeight: "700",
-            lineHeight: "32px",
-            ml: 1,
+        <Stack
+          direction="row"
+          justifyContent="space-between"
+          alignItems="flex-start"
+        >
+          <Image height={40} width={40} src={orionImage} alt="orion" />
+          <Typography
+            variant="p"
+            sx={{
+              color: "#002152",
+              fontSize: "24px",
+              fontWeight: "700",
+              lineHeight: "32px",
+              ml: 1,
+            }}
+          >
+            {t["Photos and videos"]}
+          </Typography>
+        </Stack>
+        <BaseButton
+          color="error"
+          sx="error"
+          variant="outlined"
+          handleFunction={() => {
+            router.back()
           }}
         >
-          {t["Photos and videos"]}
-        </Typography>
+          {t["Cancel"]}
+        </BaseButton>
       </Grid>
       <Box sx={{ mt: 3 }}>
         <Typography
@@ -254,8 +294,9 @@ function PhotosAndVideos({
                       height: "3vh",
                       width: "3vh",
                       paddingY: "3px",
+                      cursor: "pointer",
                     }}
-                    onClick={() => handleDelete(index)}
+                    onClick={() => handleDelete(index, file)}
                   />
                 </Grid>
                 <Image
@@ -280,7 +321,7 @@ function PhotosAndVideos({
                 <Controller
                   name={`title_${index}`}
                   control={control}
-                  defaultValue={photoType[0] || file.photo_type}
+                  defaultValue={photoType[1] || file.photo_type}
                   render={({ field }) => (
                     <BaseAutocomplete
                       //   sx={{ margin: "0.6vh 0" }}
@@ -316,7 +357,7 @@ function PhotosAndVideos({
           {`${t["videos of the property"]}:`}
         </Typography>
       </Box>
-      {fields?.map((item, index) => (
+      {/* {fields?.map((item, index) => (
         <Grid
           key={item.id}
           container
@@ -349,28 +390,7 @@ function PhotosAndVideos({
               />
             )}
           />
-          {/* <Controller
-            name={`videos[${index}].title`}
-            control={control}
-            defaultValue={videoType[0] || {}}
-            render={({ field }) => (
-              <BaseAutocomplete
-                //   sx={{ margin: "0.6vh 0" }}
-                options={videoType || []}
-                getOptionLabel={(option) => option.name || ""}
-                sx={{ width: "20%", ml: 1, mr: 1 }}
-                isOptionEqualToValue={(option, value) =>
-                  option.slug === value.slug
-                }
-                size={"medium"}
-                placeholder={t["Convenient"]}
-                onChange={(e, v, r, d) => {
-                  field.onChange(v);
-                }}
-                value={field.value}
-              />
-            )}
-          /> */}
+
           {index === fields?.length - 1 && (
             <Button
               sx={{
@@ -423,65 +443,133 @@ function PhotosAndVideos({
             </Grid>
           </Grid>
         </Grid>
-      ))}
-      {session?.user.role !== "owner" ? (
+      ))} */}
+
+      <Grid
+        container
+        direction="row"
+        justifyContent="flex-start"
+        alignItems="flex-start"
+        sx={{ mt: 1 }}
+      >
+        <Controller
+          name={`videos_url`}
+          control={control}
+          defaultValue={""}
+          render={({ field }) => (
+            <BaseTextField
+              sx={{
+                width: "50%",
+
+                "& .MuiOutlinedInput-root": {
+                  // - The Input-root, inside the TextField-root
+                  "& fieldset": {
+                    borderRadius: "4px 0px 0px 4px", // - The <fieldset> inside the Input-root
+                    // - Set the Input border
+                  },
+                },
+              }}
+              size={"medium"}
+              placeholder={t["paste the url of the video"]}
+              onChange={field.onChange}
+              value={field.value}
+            />
+          )}
+        />
+
+        <Button
+          sx={{
+            backgroundColor: "#DBE1E5",
+            py: 2,
+            borderRadius: "0px 4px 4px 0px",
+            "&:hover": {
+              backgroundColor: "#DBE1E5",
+              py: 2,
+              borderRadius: "0px 4px 4px 0px",
+            },
+          }}
+          onClick={() => {
+            if (!allValues.videos_url) {
+              return;
+            }
+            setVideoFiles([...videoFiles, { url: allValues.videos_url }]);
+          }}
+        >
+          <AddOutlinedIcon sx={{ color: "#002152" }} />
+        </Button>
+      </Grid>
+      {videoFiles?.length > 0 && (
+        <Grid container spacing={1} sx={{ mt: 3 }}>
+          {videoFiles?.map((file, index) => (
+            <Grid item xs={12} sm={12} md={4} lg={3} xl={3} key={index}>
+              <Box
+                sx={{
+                  p: 2,
+                  boxSizing: "border-box",
+                  border: "1px solid #DBE1E5",
+                  borderRadius: "6px",
+                }}
+              >
+                <Grid
+                  container
+                  direction="row"
+                  justifyContent="flex-end"
+                  alignItems="flex-start"
+                >
+                  <DeleteOutlineOutlinedIcon
+                    sx={{
+                      background: "#F44336",
+                      color: "#ffffff",
+                      borderRadius: "50%",
+                      height: "3vh",
+                      width: "3vh",
+                      paddingY: "3px",
+                      mb: 0.5,
+                      cursor: "pointer",
+                    }}
+                    onClick={() => handleDeleteVideo(index, file)}
+                  />
+                </Grid>
+                <iframe
+                  title="YouTube Video"
+                  height={150}
+                  width={200}
+                  src={`https://www.youtube.com/embed/${getVideoIdFromLink(
+                    file?.url
+                  )}?autoplay=1`}
+                  frameborder="0"
+                  allowfullscreen
+                ></iframe>
+              </Box>
+            </Grid>
+          ))}
+        </Grid>
+      )}
+
+      {session?.user?.role !== "owner" ? (
         <Grid
           container
           direction="row"
           justifyContent="flex-end"
           alignItems="center"
           sx={{ mt: 2, mb: 2 }}
+          spacing={1}
         >
-          <Button
-            color="inherit"
-            onClick={handleBack}
-            // disabled={activeStep === 0}
-            sx={{
-              mr: 1,
-              border: "1px solid #002152",
-              borderRadius: "4px",
-              px: 2,
-              py: 1,
-              color: "#002152",
-              fontSize: "16px",
-              fontWeight: "600",
-              lineHeight: "22px",
-              textTransform: "none",
-            }}
-          >
-            {t["come back"]}
-          </Button>
-
-          <Button
-            onClick={handleNext}
-            disabled={disableBtn}
-            sx={{
-              background: "#7450F0",
-              borderRadius: "4px",
-              px: 2,
-              py: 1,
-              color: "#ffffff",
-              fontSize: "16px",
-              fontWeight: "600",
-              lineHeight: "22px",
-              textTransform: "none",
-              boxShadow: "0px 4px 8px rgba(81, 51, 182, 0.32)",
-              "&:hover": {
-                background: "#7450F0",
-                borderRadius: "4px",
-                px: 2,
-                py: 1,
-                color: "#ffffff",
-                fontSize: "16px",
-                fontWeight: "600",
-                lineHeight: "22px",
-                textTransform: "none",
-                boxShadow: "0px 4px 8px rgba(81, 51, 182, 0.32)",
-              },
-            }}
-          >
-            {t["Next"]}
-          </Button>
+          <Grid item xs={2}>
+            <BaseButton handleFunction={handleBack} fullWidth sx="outlined">
+              {t["come back"]}
+            </BaseButton>
+          </Grid>
+          <Grid item xs={2}>
+            <BaseButton
+              handleFunction={handleNext}
+              disabled={disableBtn}
+              fullWidth
+              sx="secondary"
+            >
+              {t["Next"]}
+            </BaseButton>
+          </Grid>
         </Grid>
       ) : (
         ""

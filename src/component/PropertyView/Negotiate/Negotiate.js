@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import {
   Button,
   Grid,
@@ -21,7 +21,7 @@ import ScheduleModal from "../scheduleModal/ScheduleModal";
 import BaseTextField from "../../reuseable/baseTextField/BaseTextField";
 import { useSession, signIn, signOut } from "next-auth/react";
 import BaseTextArea from "../../reuseable/baseTextArea/BaseTextArea";
-import { formatISO } from "date-fns";
+import { addDays, formatISO } from "date-fns";
 import { DateTimePicker } from "@mui/x-date-pickers";
 import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
 
@@ -30,6 +30,15 @@ import { createScheduleApi } from "../../../api";
 import { ptBR } from "date-fns/locale";
 import en from "locales/en";
 import pt from "locales/pt";
+import { Router, useRouter } from "next/router";
+import BaseWhatsappButton from "@/component/reuseable/baseWhatsappButton/BaseWhatsappButton";
+import BaseValueField from "@/component/reuseable/baseValueField/BaseValueFiled";
+import { formatBrCurrency } from "@/utils/formatBrCurrency";
+import { reverseBrCurrencyFormat } from "@/utils/reverseBrCurrencyFormat";
+import { formatBrazilianCurrency } from "@/utils/useUtilities";
+import { Element } from "react-scroll";
+import toast from "react-hot-toast";
+import { isValidDate } from "@/utils/dateValidate";
 
 function Negotiate({
   handleProposalOpen,
@@ -40,11 +49,17 @@ function Negotiate({
   singlePropertyData,
   handleLoginOpen,
   singlePropertyId,
+  content,
   languageName,
 }) {
   // const [date, setDate] = React.useState(dayjs("2022-04-07"));
   const t = languageName === "en" ? en : pt;
-  const [value, setValue] = React.useState(new Date());
+ 
+  const [value, setValue] = React.useState(new Date(dayjs().add(6, 'hour').toDate()));
+
+
+
+  const router = useRouter();
 
   const [brlValue, setBrlValue] = useState("");
   const [condition, setCondition] = useState("");
@@ -59,9 +74,10 @@ function Negotiate({
   const handleClose = () => setScheduleModalOpen(false);
 
   const handleToSchedule = async () => {
+    if(isValidDate(dayjs(value).format("DD-MM-YYYY"))){
     setLoading(true);
     const dateString = dayjs(value, "YYYY-MM-DD+h:mm").format("YYYY-MM-DD");
-    const timeString = dayjs(value, "YYYY-MM-DD+h:mm").format("HH:mm:00");
+    const timeString = dayjs(value, "YYYY-MM-DD+h:mm").format("HH:mm");
     const allData = {
       date: dateString,
       time: timeString,
@@ -75,8 +91,50 @@ function Negotiate({
       setScheduleModalOpen(true);
     } else {
       const errors = error?.response?.data?.errors ?? {};
+      toast.error('Há algo errado. verifique seu back-end')
     }
+  }
+  else{
+    toast.error('A data da programação é inválida')
+  }
   };
+
+  const handleProposal = useCallback(() => {
+    if (brlValue) {
+      // !session
+      //   ? router.replace({
+      //       pathname: "/registration",
+      //       query: {
+      //         user_type: "buyer",
+      //         brl_value: reverseBrCurrencyFormat(brlValue),
+      //         property_id: singlePropertyId,
+      //         type: "proposal",
+      //       },
+      //     })
+      //   :
+      handleProposalOpen();
+    }
+  }, [handleProposalOpen, brlValue]);
+
+  const handleSchedule = useCallback(() => {
+    const dateString = dayjs(value, "YYYY-MM-DD+h:mm").format("YYYY-MM-DD");
+    const timeString = dayjs(value, "YYYY-MM-DD+h:mm").format("HH:mm");
+    !session
+      ? router.replace({
+          pathname: "/registration",
+          query: {
+            user_type: "buyer",
+            date: dateString,
+            time: timeString,
+            property_id: singlePropertyId,
+            type: "schedule",
+          },
+        })
+      : handleToSchedule();
+  }, [session, router, value]);
+
+  const [error, setError] = useState('');
+
 
   return (
     <Box
@@ -105,58 +163,65 @@ function Negotiate({
           variant="p"
           sx={{ fontSize: "14px", fontWeight: "700", color: "#1A1859" }}
         >
-          {`${parseInt(singlePropertyData?.property?.brl_rent.replaceAll(".00","").replaceAll(".","").replaceAll("R$","")).toLocaleString("pt-BR",{ style: 'currency', currency: 'BRL' })}`}
+          {formatBrazilianCurrency(singlePropertyData?.property?.brl_rent)}
         </Typography>
       </Grid>
       <Box sx={{ borderBottom: "1px dashed #D3D3DF" }}></Box>
-      <Grid
-        container
-        direction="row"
-        justifyContent="space-between"
-        alignItems="center"
-        sx={{ px: 4, py: 1 }}
-      >
-        <Typography
-          variant="p"
-          sx={{ fontSize: "14px", fontWeight: "400", color: "#1A1859" }}
+      {singlePropertyData?.property?.condominium && (
+        <Grid
+          container
+          direction="row"
+          justifyContent="space-between"
+          alignItems="center"
+          sx={{ px: 4, py: 1 }}
         >
-          {t["Condominium"]}
-        </Typography>
-        <Typography
-          variant="p"
-          sx={{ fontSize: "14px", fontWeight: "700", color: "#1A1859" }}
-        >
-          {`${parseInt(singlePropertyData?.property?.condominium.replaceAll(".00","").replaceAll(".","").replaceAll("R$","")).toLocaleString("pt-BR",{ style: 'currency', currency: 'BRL' })}`}
-        </Typography>
-      </Grid>
+          <Typography
+            variant="p"
+            sx={{ fontSize: "14px", fontWeight: "400", color: "#1A1859" }}
+          >
+            {t["Condominium"]}
+          </Typography>
+
+          <Typography
+            variant="p"
+            sx={{ fontSize: "14px", fontWeight: "700", color: "#1A1859" }}
+          >
+            {formatBrazilianCurrency(singlePropertyData?.property?.condominium)}
+          </Typography>
+        </Grid>
+      )}
       <Box sx={{ borderBottom: "1px dashed #D3D3DF" }}></Box>
-      <Grid
-        container
-        direction="row"
-        justifyContent="space-between"
-        alignItems="center"
-        sx={{ px: 4, py: 1 }}
-      >
-        <Typography
-          variant="p"
-          sx={{ fontSize: "14px", fontWeight: "400", color: "#1A1859" }}
+      {singlePropertyData?.property?.brl_iptu && (
+        <Grid
+          container
+          direction="row"
+          justifyContent="space-between"
+          alignItems="center"
+          sx={{ px: 4, py: 1 }}
         >
-          IPTU
-        </Typography>
-        <Typography
-          variant="p"
-          sx={{ fontSize: "14px", fontWeight: "700", color: "#1A1859" }}
-        >
-          {`${parseInt(singlePropertyData?.property?.brl_iptu.replaceAll(".00","").replaceAll(".","").replaceAll("R$","")).toLocaleString("pt-BR",{ style: 'currency', currency: 'BRL' })}`}
-        </Typography>
-      </Grid>
+          <Typography
+            variant="p"
+            sx={{ fontSize: "14px", fontWeight: "400", color: "#1A1859" }}
+          >
+            IPTU
+          </Typography>
+          <Typography
+            variant="p"
+            sx={{ fontSize: "14px", fontWeight: "700", color: "#1A1859" }}
+          >
+            {formatBrazilianCurrency(singlePropertyData?.property?.brl_iptu)}
+          </Typography>
+        </Grid>
+      )}
       <Grid
         container
         direction="column"
         justifyContent="center"
         alignItems="center"
         sx={{ mt: 1, px: 4 }}
+        gap={1}
       >
+        <BaseWhatsappButton content={content} />
         <Button
           variant="contained"
           color="primary"
@@ -168,7 +233,6 @@ function Negotiate({
             textTransform: "none",
             background: "#0E97F7",
             borderRadius: "4px",
-            mb: 1,
             // mb: 2,
             "&:hover": {
               fontSize: "16px",
@@ -249,14 +313,15 @@ function Negotiate({
           >
             {t["Proposal"]}
           </Typography>
-          <BaseTextField
+          <BaseValueField
             size={"small"}
             type={"number"}
             placeholder={"R$"}
             value={brlValue}
             onChange={(e) => {
-              setBrlValue(e.target.value);
-              localStorage.setItem("brl", e.target.value);
+              const value = e.target.value;
+              setBrlValue(value);
+              localStorage.setItem("brl", value);
             }}
           />
           <Button
@@ -322,53 +387,56 @@ function Negotiate({
                 py: 1,
               },
             }}
-            onClick={!session ? handleLoginOpen : handleProposalOpen}
+            onClick={handleProposal}
           >
             {t["Submit proposal"]}
           </Button>
         </Grid>
       )}
       <Box sx={{ border: "1px dashed #D3D3DF", mt: 1 }}></Box>
-      <Grid
-        container
-        direction="row"
-        justifyContent="space-between"
-        alignItems="center"
-        sx={{ px: 4, py: 1 }}
-      >
-        <Button
-          disabled={
-            session?.user?.role === "broker" || session?.user?.role === "owner"
-          }
-          variant="contained"
-          color="secondary"
-          fullWidth
-          sx={{
-            mt: 1,
-            px: 4,
-            fontSize: "16px",
-            fontWeight: "600",
-            textTransform: "none",
-            background: "#7450F0",
-            borderRadius: "4px",
-            // mb: 2,
-            "&:hover": {
+      <Element name="schedule_visit">
+        <Grid
+          container
+          direction="row"
+          justifyContent="space-between"
+          alignItems="center"
+          sx={{ px: 4, py: 1 }}
+        >
+          <Button
+            disabled={
+              session?.user?.role === "broker" ||
+              session?.user?.role === "owner"
+            }
+            variant="contained"
+            color="secondary"
+            fullWidth
+            sx={{
+              mt: 1,
+              px: 4,
               fontSize: "16px",
               fontWeight: "600",
               textTransform: "none",
               background: "#7450F0",
               borderRadius: "4px",
-              px: 4,
-            },
-          }}
-          onClick={() => {
-            setNegotiate(false);
-            setSchedule(true);
-          }}
-        >
-          {t["Schedule visit"]}
-        </Button>
-      </Grid>
+              // mb: 2,
+              "&:hover": {
+                fontSize: "16px",
+                fontWeight: "600",
+                textTransform: "none",
+                background: "#7450F0",
+                borderRadius: "4px",
+                px: 4,
+              },
+            }}
+            onClick={() => {
+              setNegotiate(false);
+              setSchedule(true);
+            }}
+          >
+            {t["Schedule visit"]}
+          </Button>
+        </Grid>
+      </Element>
       {schedule && (
         <Box sx={{ mt: 1 }}>
           <Box
@@ -384,12 +452,24 @@ function Negotiate({
                 <DateTimePicker
                   inputFormat="dd/MM/yyyy hh:mm a"
                   value={value}
-                  onChange={(val) => setValue(val)}
+                  onChange={(val) => {
+                    if (val < new Date()) {
+                      setError('A data e a hora selecionadas não podem estar no passado');
+                    } else {
+                      setError('');
+                      setValue(val);
+                    }
+                  }}
+                 
+                  minDateTime={new Date()}
+              
                   renderInput={(params) => (
                     <TextField
                       {...params}
                       size="small"
                       variant="outlined"
+                      error={!!error}
+                      helperText={error}
                       InputProps={{
                         ...params.InputProps,
                       }}
@@ -407,7 +487,7 @@ function Negotiate({
             sx={{ px: 4, py: 1 }}
           >
             <Button
-              onClick={!session ? handleLoginOpen : handleToSchedule}
+              onClick={handleSchedule}
               variant="contained"
               color="secondary"
               fullWidth

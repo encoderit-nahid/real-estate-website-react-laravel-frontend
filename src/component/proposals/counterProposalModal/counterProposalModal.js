@@ -15,11 +15,10 @@ import {
   Typography,
 } from "@mui/material";
 import loginImage from "../../../../public/Images/login.png";
-import React from "react";
+import React, { Fragment } from "react";
 import Image from "next/image";
 import BaseButton from "../../reuseable/button/BaseButton";
 import Link from "next/link";
-import CloseIcon from "@mui/icons-material/Close";
 import rentImage from "../../../../public/Images/rentImage.png";
 import avatar from "../../../../public/Images/AvatarPendant.png";
 import { useState } from "react";
@@ -34,6 +33,11 @@ import { useSession } from "next-auth/react";
 import { createProposalApi } from "../../../api";
 import en from "locales/en";
 import pt from "locales/pt";
+import BaseCloseButton from "@/component/reuseable/baseCloseButton/BaseCloseButton";
+import { formatBrazilianCurrency } from "@/utils/useUtilities";
+import BaseValueField from "@/component/reuseable/baseValueField/BaseValueFiled";
+import { reverseBrCurrencyFormat } from "@/utils/reverseBrCurrencyFormat";
+import { _imageURL } from "consts";
 
 const style = {
   position: "absolute",
@@ -53,13 +57,13 @@ const style = {
 };
 
 const validationSchemaCash = Yup.object().shape({
-  total_amount: Yup.number().required("valor é obrigatório"),
+  total_amount: Yup.string().required("nome é obrigatório"),
 });
 
 const validationSchemaInstallment = Yup.object().shape({
-  total_amount: Yup.number().required("nome é obrigatório"),
-  cash_amount: Yup.number().required("valor é obrigatório"),
-  payment_per_installment: Yup.number().required("valor é obrigatório"),
+  total_amount: Yup.string().required("nome é obrigatório"),
+  cash_amount: Yup.string().required("valor é obrigatório"),
+  payment_per_installment: Yup.string().required("valor é obrigatório"),
   no_of_installment: Yup.number().required("valor é obrigatório"),
 });
 
@@ -96,12 +100,18 @@ function CounterProposalModal({
 
   const onSubmit = async (data) => {
     setLoading(true);
+    data.total_amount = reverseBrCurrencyFormat(data.total_amount);
+    data.cash_amount = reverseBrCurrencyFormat(data.cash_amount);
+    data.payment_per_installment = reverseBrCurrencyFormat(
+      data.payment_per_installment
+    );
     const allData = {
       ...data,
       user_id: session?.user?.userId,
       payment_type: (cash && "cash") || (installment && "installment"),
       property_id: propertyData?.id,
       proposal_type: "counter",
+      counter_proposal_to: proposalData?.id
     };
 
     const [error, response] = await createProposalApi(allData);
@@ -115,6 +125,10 @@ function CounterProposalModal({
         setError(name, { type: "manual", message: messages[0] });
       });
     }
+  };
+
+  const myLoader = ({ src }) => {
+    return `${_imageURL}/${src}`;
   };
 
   return (
@@ -137,7 +151,7 @@ function CounterProposalModal({
         >
           {t["Counter proposal"]}
         </Typography>
-        <CloseIcon onClick={handleCounterProposalClose} />
+        <BaseCloseButton handleClose={handleCounterProposalClose} />
       </Grid>
 
       <Box
@@ -155,7 +169,13 @@ function CounterProposalModal({
           <ListItem sx={{ margin: 0, paddingY: "1px" }}>
             <ListItemAvatar>
               <Avatar>
-                <Image src={avatar} alt="avatar" />
+                <Image
+                  loader={myLoader}
+                  src={proposalData?.user?.attachments[0]?.file_path}
+                  alt="avatar"
+                  width={50}
+                  height={50}
+                />
               </Avatar>
             </ListItemAvatar>
             <ListItemText
@@ -204,7 +224,7 @@ function CounterProposalModal({
               fontWeight: "700",
             }}
           >
-            {`${parseInt(proposalData?.total_amount.replaceAll(".00","").replaceAll(".","").replaceAll("R$","")).toLocaleString("pt-BR",{ style: 'currency', currency: 'BRL' })}`}
+            {formatBrazilianCurrency(proposalData?.total_amount)}
           </Typography>
         </Grid>
         <Divider sx={{ mx: 2 }} />
@@ -238,6 +258,111 @@ function CounterProposalModal({
             {proposalData?.payment_type}
           </Typography>
         </Grid>
+        {proposalData?.cash_amount && (
+          <Fragment>
+            <Grid
+              container
+              direction="row"
+              justifyContent="space-between"
+              alignItems="center"
+              sx={{ px: 2, py: 1 }}
+            >
+              <Typography
+                variant="p"
+                sx={{
+                  color: "#1A1859",
+                  fontSize: "14px",
+                  lineHeight: "28px",
+                  fontWeight: "400",
+                }}
+              >
+                Valor a vista
+              </Typography>
+              <Typography
+                variant="p"
+                sx={{
+                  color: "#1A1859",
+                  fontSize: "14px",
+                  lineHeight: "28px",
+                  fontWeight: "700",
+                }}
+              >
+                {formatBrazilianCurrency(proposalData?.cash_amount)}
+              </Typography>
+            </Grid>
+            <Divider sx={{ mx: 2 }} />
+          </Fragment>
+        )}
+        {proposalData?.payment_per_installment && (
+          <Fragment>
+            <Grid
+              container
+              direction="row"
+              justifyContent="space-between"
+              alignItems="center"
+              sx={{ px: 2, py: 1 }}
+            >
+              <Typography
+                variant="p"
+                sx={{
+                  color: "#1A1859",
+                  fontSize: "14px",
+                  lineHeight: "28px",
+                  fontWeight: "400",
+                }}
+              >
+                Valor a prazo
+              </Typography>
+              <Typography
+                variant="p"
+                sx={{
+                  color: "#1A1859",
+                  fontSize: "14px",
+                  lineHeight: "28px",
+                  fontWeight: "700",
+                }}
+              >
+                {formatBrazilianCurrency(proposalData?.payment_per_installment)}
+              </Typography>
+            </Grid>
+            <Divider sx={{ mx: 2 }} />
+          </Fragment>
+        )}
+        {proposalData?.no_of_installment && (
+          <Fragment>
+            <Grid
+              container
+              direction="row"
+              justifyContent="space-between"
+              alignItems="center"
+              sx={{ px: 2, py: 1 }}
+            >
+              <Typography
+                variant="p"
+                sx={{
+                  color: "#1A1859",
+                  fontSize: "14px",
+                  lineHeight: "28px",
+                  fontWeight: "400",
+                }}
+              >
+                Numero de parcelas
+              </Typography>
+              <Typography
+                variant="p"
+                sx={{
+                  color: "#1A1859",
+                  fontSize: "14px",
+                  lineHeight: "28px",
+                  fontWeight: "700",
+                }}
+              >
+                {proposalData?.no_of_installment}
+              </Typography>
+            </Grid>
+            <Divider sx={{ mx: 2 }} />
+          </Fragment>
+        )}
       </Box>
       <Box sx={{ mt: 1 }}>
         <Typography
@@ -312,18 +437,14 @@ function CounterProposalModal({
             control={control}
             defaultValue={""}
             render={({ field }) => (
-              <BaseTextField
+              <BaseValueField
                 size={"small"}
                 placeholder={t["Total amount"]}
                 variant={"outlined"}
-                type={"number"}
                 name={"total_amount"}
                 value={field.value}
                 onChange={(e) => {
                   field.onChange(e.target.value);
-                }}
-                onBlur={(e) => {
-                  field.onChange(parseInt(e.target.value.replaceAll(".","").replaceAll("R$","").replaceAll(",00","")).toLocaleString("pt-BR",{ style: 'currency', currency: 'BRL' }));
                 }}
               />
             )}
@@ -341,18 +462,15 @@ function CounterProposalModal({
                 name="cash_amount"
                 control={control}
                 render={({ field }) => (
-                  <BaseTextField
+                  <BaseValueField
                     size={"small"}
                     placeholder={t["Cash value"]}
-                    type={"number"}
                     sx={{ mt: 2 }}
                     variant={"outlined"}
+                    value={field.value}
                     name={"cash_amount"}
                     onChange={(e) => {
                       field.onChange(e.target.value);
-                    }}
-                    onBlur={(e) => {
-                      field.onChange(parseInt(e.target.value.replaceAll(".","").replaceAll("R$","").replaceAll(",00","")).toLocaleString("pt-BR",{ style: 'currency', currency: 'BRL' }));
                     }}
                   />
                 )}
@@ -368,13 +486,13 @@ function CounterProposalModal({
                 name="payment_per_installment"
                 control={control}
                 render={({ field }) => (
-                  <BaseTextField
+                  <BaseValueField
                     size={"small"}
                     placeholder={t["Term value"]}
-                    type={"number"}
                     sx={{ mt: 2 }}
                     variant={"outlined"}
                     name={"payment_per_installment"}
+                    value={field.value}
                     onChange={(e) => {
                       field.onChange(e.target.value);
                     }}
@@ -448,6 +566,7 @@ function CounterProposalModal({
             direction="row"
             justifyContent="flex-end"
             alignItems="flex-end"
+            gap={1}
             sx={{ mt: 2, px: 2, pb: 3 }}
           >
             <Button

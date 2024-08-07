@@ -1,133 +1,183 @@
-import { Box, Button, Grid, Typography } from "@mui/material";
+import BaseWhatsappButton from "@/component/reuseable/baseWhatsappButton/BaseWhatsappButton";
+import { formatBrazilianCurrency } from "@/utils/useUtilities";
+import { Box, Button, Grid, Stack, Typography } from "@mui/material";
 import en from "locales/en";
 import pt from "locales/pt";
 import { useSession } from "next-auth/react";
 import React from "react";
-
+import { Link as ScrollLink } from "react-scroll";
 function AmountView({
   setNegotiate,
   setSchedule,
   singlePropertyData,
+  handleProposalOpen,
+
   languageName,
+  content,
 }) {
   const t = languageName === "en" ? en : pt;
   const { data: session } = useSession();
   return (
-    <Grid
-      container
-      spacing={2}
+    <Stack
+      spacing={3}
       sx={{
         background: "#ffffff",
         boxShadow: "0px 4px 34px rgba(0, 0, 0, 0.08)",
         borderRadius: "8px",
         ml: 0,
         px: 4,
-        pt: 4,
-        pb: 6,
+        width: "100%",
+        py: 6,
       }}
+      direction={{
+        xs: "column",
+        md: "row",
+      }}
+      alignItems={"center"}
+      justifyContent={"space-between"}
     >
-      <Grid item xs={12} sm={12} md={12} xl={3} lg={3}>
-        <Grid
-          container
-          direction="column"
-          justifyContent="flex-start"
-          alignItems="flex-start"
-        >
-          <Typography
-            variant="p"
+      <Stack
+        spacing={3}
+        direction={{
+          xs: "column",
+          md: "row",
+        }}
+        sx={{
+          flex: 1,
+          // bgcolor: "red",
+        }}
+        alignItems={"center"}
+        justifyContent={"center"}
+      >
+        {+singlePropertyData?.property?.brl_rent > 0 && (
+          <Stack
+            direction="column"
+            justifyContent="center"
+            alignItems="center"
             sx={{
-              fontSize: "16px",
-              fontWeight: "400",
-              color: "#1A1859",
+              flex: 1,
+              // bgcolor: "red",
             }}
           >
-            {t["sale value"]}
-          </Typography>
-          <Typography
-            variant="p"
+            <Typography
+              variant="p"
+              sx={{
+                fontSize: "16px",
+                fontWeight: "400",
+                color: "#1A1859",
+              }}
+            >
+              {t["sale value"]}
+            </Typography>
+            <Typography
+              variant="p"
+              sx={{
+                fontSize: "24px",
+                fontWeight: "800",
+                color: "#1A1859",
+              }}
+            >
+              {formatBrazilianCurrency(singlePropertyData?.property?.brl_rent)}
+            </Typography>
+          </Stack>
+        )}
+
+        {+singlePropertyData?.property?.condominium > 0 && (
+          <Stack
+            direction="column"
+            justifyContent="center"
+            alignItems="center"
             sx={{
-              fontSize: "24px",
-              fontWeight: "800",
-              color: "#1A1859",
+              flex: 1,
+              // bgcolor: "red",
             }}
           >
-            {`${parseInt(singlePropertyData?.property?.brl_rent.replaceAll(".00","").replaceAll(".","").replaceAll("R$","")).toLocaleString("pt-BR",{ style: 'currency', currency: 'BRL' })}`}
-          </Typography>
-        </Grid>
-      </Grid>
-      <Grid item xs={6} sm={6} md={6} xl={3} lg={3}>
-        <Grid
-          container
-          direction="column"
-          justifyContent="flex-start"
-          alignItems="flex-start"
-        >
-          <Typography
-            variant="p"
+            <Typography
+              variant="p"
+              sx={{
+                fontSize: "16px",
+                fontWeight: "400",
+                color: "#1A1859",
+              }}
+            >
+              {t["Condominium"]}
+            </Typography>
+            <Typography
+              variant="p"
+              sx={{
+                fontSize: "24px",
+                fontWeight: "800",
+                color: "#1A1859",
+              }}
+            >
+              {formatBrazilianCurrency(
+                singlePropertyData?.property?.condominium
+              )}
+            </Typography>
+          </Stack>
+        )}
+
+        {+singlePropertyData?.property?.brl_iptu > 0 && (
+          <Stack
+            direction="column"
+            justifyContent="center"
+            alignItems="center"
             sx={{
-              fontSize: "16px",
-              fontWeight: "400",
-              color: "#1A1859",
+              flex: 1,
+              // bgcolor: "red",
             }}
           >
-            {t["Condominium"]}
-          </Typography>
-          <Typography
-            variant="p"
-            sx={{
-              fontSize: "24px",
-              fontWeight: "800",
-              color: "#1A1859",
-            }}
-          >
-            {`${parseInt(singlePropertyData?.property?.condominium.replaceAll(".00","").replaceAll(".","").replaceAll("R$","")).toLocaleString("pt-BR",{ style: 'currency', currency: 'BRL' })}`}
-          </Typography>
-        </Grid>
-      </Grid>
-      <Grid item xs={6} sm={6} md={6} xl={3} lg={3}>
-        <Grid
-          container
-          direction="column"
-          justifyContent="flex-start"
-          alignItems="flex-start"
-        >
-          <Typography
-            variant="p"
-            sx={{
-              fontSize: "16px",
-              fontWeight: "400",
-              color: "#1A1859",
-            }}
-          >
-            IPTU
-          </Typography>
-          <Typography
-            variant="p"
-            sx={{
-              fontSize: "24px",
-              fontWeight: "800",
-              color: "#1A1859",
-            }}
-          >
-            {`${parseInt(singlePropertyData?.property?.brl_iptu.replaceAll(".00","").replaceAll(".","").replaceAll("R$","")).toLocaleString("pt-BR",{ style: 'currency', currency: 'BRL' })}`}
-          </Typography>
-        </Grid>
-      </Grid>
-      <Grid item xs={6} sm={6} md={6} xl={3} lg={3}>
-        <Grid
-          container
-          direction="column"
-          justifyContent="flex-start"
-          alignItems="flex-start"
-        >
-          <Button
-            disabled={
-              session?.user?.role === "broker" ||
-              session?.user?.role === "owner"
-            }
-            variant="contained"
-            color="primary"
-            sx={{
+            <Typography
+              variant="p"
+              sx={{
+                fontSize: "16px",
+                fontWeight: "400",
+                color: "#1A1859",
+              }}
+            >
+              IPTU
+            </Typography>
+            <Typography
+              variant="p"
+              sx={{
+                fontSize: "24px",
+                fontWeight: "800",
+                color: "#1A1859",
+              }}
+            >
+              {formatBrazilianCurrency(singlePropertyData?.property?.brl_iptu)}
+            </Typography>
+          </Stack>
+        )}
+      </Stack>
+      <Stack
+        direction="column"
+        justifyContent="flex-start"
+        alignItems="flex-start"
+        sx={{
+          display: {
+            xs: "none",
+            sm: "flex",
+          },
+        }}
+        spacing={1}
+      >
+        <BaseWhatsappButton content={content} />
+        <Button
+          disabled={
+            session?.user?.role === "broker" || session?.user?.role === "owner"
+          }
+          variant="contained"
+          color="primary"
+          sx={{
+            px: 4,
+            fontSize: "16px",
+            fontWeight: "600",
+            textTransform: "none",
+            minWidth: "195px",
+            background: "#0E97F7",
+            borderRadius: "4px",
+            "&: hover": {
               px: 4,
               fontSize: "16px",
               fontWeight: "600",
@@ -135,24 +185,17 @@ function AmountView({
               minWidth: "195px",
               background: "#0E97F7",
               borderRadius: "4px",
-              "&: hover": {
-                px: 4,
-                fontSize: "16px",
-                fontWeight: "600",
-                textTransform: "none",
-                minWidth: "195px",
-                background: "#0E97F7",
-                borderRadius: "4px",
-              },
-            }}
-            onClick={() => {
-              setNegotiate(true);
-              setSchedule(false);
-            }}
-          >
-            {t["Negotiate"]}
-          </Button>
-
+            },
+          }}
+          onClick={() => {
+            setNegotiate(true);
+            setSchedule(false);
+            handleProposalOpen();
+          }}
+        >
+          {t["Negotiate"]}
+        </Button>
+        <ScrollLink to="schedule_visit" smooth={true} duration={500}>
           <Button
             disabled={
               session?.user?.role === "broker" ||
@@ -161,7 +204,6 @@ function AmountView({
             variant="contained"
             color="secondary"
             sx={{
-              mt: 1,
               px: 4,
               fontSize: "16px",
               fontWeight: "600",
@@ -182,13 +224,16 @@ function AmountView({
             onClick={() => {
               setSchedule(true);
               setNegotiate(false);
+              // if (window.scrollY < 500) {
+              //   window.scrollBy({ top: 500, left: 0, behavior: "smooth" });
+              // }
             }}
           >
             {t["Schedule visit"]}
           </Button>
-        </Grid>
-      </Grid>
-    </Grid>
+        </ScrollLink>
+      </Stack>
+    </Stack>
   );
 }
 

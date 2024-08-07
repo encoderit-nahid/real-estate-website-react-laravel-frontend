@@ -1,4 +1,9 @@
-import { contractDetailsApi, createSignatureApi } from "../../api";
+import toast from "react-hot-toast";
+import {
+  contractDetailsApi,
+  contractSignApi,
+  createSignatureApi,
+} from "../../api";
 import * as Types from "./types";
 
 const contactDetailsRequest = (data) => {
@@ -28,6 +33,13 @@ const signatureCreate = (data) => {
   };
 };
 
+const signatureUpdate = (data) => {
+  return {
+    type: Types.CONTACT_DETAILS_SIGNATURE_UPDATE,
+    payload: data,
+  };
+};
+
 // feature action
 export const findContractDetailsData = (id) => async (dispatch) => {
   dispatch(contactDetailsRequest());
@@ -46,15 +58,45 @@ export const findContractDetailsData = (id) => async (dispatch) => {
 
 //ADD
 
-export const signatureAddData = (body) => async (dispatch) => {
+export const signatureAddData = (body,signIds) => async (dispatch) => {
   const [error, response] = await createSignatureApi(body);
-
+  
   if (!error) {
     // dispatch(contactDetailsSuccess(response?.data));
-    dispatch(signatureCreate(response?.data?.users));
+    console.log({response})
+  const isIncluded = signIds.some(obj => obj.id === response?.data?.users?.id);
+  console.log(isIncluded)
+   if(isIncluded){
+    dispatch(signatureUpdate({contract_sign_id: response?.data?.users?.id, status: response?.data?.users?.is_signed, name: response?.data?.users?.name}));
+   }
+   else{
+       dispatch(signatureCreate(response?.data?.users));
+   }
   } else {
-    const errorMassage =
-      error?.response?.data?.data || error?.response?.data?.status;
-    // toast.error(errorMassage);
+    console.log({error})
+    if(error?.response?.status === 422) {
+      toast.error("não relacionado com esta propriedade")
+    }
+    else{
+      toast.error("há algo errado")
+    }
   }
+};
+
+export const signatureUpdateData = (body,setSwitchLoading) => async (dispatch) => {
+  const [error, resp] = await contractSignApi(body);
+  setSwitchLoading(false)
+  if (!error) {
+    console.log({resp})
+    dispatch(signatureUpdate(body));
+  }
+
+  // if (!error) {
+  //   // dispatch(contactDetailsSuccess(response?.data));
+  //   dispatch(signatureCreate(response?.data?.users));
+  // } else {
+  //   const errorMassage =
+  //     error?.response?.data?.data || error?.response?.data?.status;
+  //   // toast.error(errorMassage);
+  // }
 };

@@ -11,6 +11,7 @@ function BaseDateField({
   value,
   placeholder,
   name,
+  onBlur,
   size,
   error,
   sx,

@@ -12,14 +12,14 @@ module.exports = {
   staticPageGenerationTimeout: 1000,
   output: "standalone",
   i18n: {
-    locales: ["en", "fr"],
+    locales: ["en", "pt"],
     defaultLocale: "en",
   },
   images: {
     remotePatterns: [
       {
-        protocol: "http",
-        hostname: "http://192.168.50.70",
+        protocol: "https",
+        hostname: "https://api.lokkan.com.br/storage",
       },
     ],
   },

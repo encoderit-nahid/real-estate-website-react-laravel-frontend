@@ -1,16 +1,11 @@
 import axios from "axios";
 import { _baseURL } from "../../consts";
+import { signOut } from "next-auth/react";
 
 const baseURL = `${_baseURL}/api`;
 
-const baseCEP = `https://viacep.com.br/`;
-
 export const apiInstance = axios.create({
   baseURL: baseURL,
-});
-
-export const apiInstanceCEP = axios.create({
-  baseURL: baseCEP,
 });
 apiInstance.interceptors.request.use((config) => {
   const token = localStorage.getItem("token");
@@ -19,13 +14,38 @@ apiInstance.interceptors.request.use((config) => {
   return config;
 });
 
-const omitEmpties = (obj) => {
+// Add a response interceptor
+apiInstance.interceptors.response.use(
+  (response) => response,
+  (error) => {
+    if (error.response && error.response.status === 401) {
+      // If 401, log out the user
+      signOut({ callbackUrl: '/api/auth/signin' });
+    }
+    return Promise.reject(error);
+  }
+);
+
+export const omitEmpties = (obj) => {
   return Object.entries(obj).reduce((carry, [key, value]) => {
     if (![null, undefined, "", []].includes(value)) {
       carry[key] = value;
     }
     return carry;
   }, {});
+};
+
+export const socialLoginApi = async (paramsData, provider) => {
+  try {
+    const responseAuth = await apiInstance.get(`/${provider}/callback`, {
+      params: {
+        ...paramsData,
+      },
+    });
+    return [false, responseAuth];
+  } catch (errorAuth) {
+    return [errorAuth, null];
+  }
 };
 
 //login
@@ -68,7 +88,7 @@ export const languageChangeApi = async (language) => {
   }
 };
 
-//reset_password
+//reset-password
 export const resetPasswordApi = async (body) => {
   try {
     const responseReset = await apiInstance.post(`/password/reset`, body);
@@ -114,8 +134,18 @@ export const userInfoRegistrationApi = async (body) => {
 
 //user_details_with_token;
 export const userDetailsApi = async () => {
+  const token = localStorage.getItem("token");
+  if (!token) {
+    return;
+  }
   try {
     const response = await apiInstance.get(`auth-user`);
+    console.log("🟥 ~ userDetailsApi ~ response:", response);
+    // localStorage.setItem("additional_info", response?.data?.additional_info);
+    localStorage.setItem("wishList", response?.data?.wishlists);
+    localStorage.setItem("projectWishList", response?.data?.project_wishlists);
+    localStorage.setItem("brokerWishList", response?.data?.broker_wishlists);
+    localStorage.setItem("user", JSON.stringify(response?.data?.user));
     return [false, response];
   } catch (error) {
     return [error, null];
@@ -133,9 +163,12 @@ export const stateApi = async () => {
 };
 
 //find_property_type
-export const propertyTypeApi = async () => {
+export const propertyTypeApi = async (category) => {
+  const params = { category };
   try {
-    const response = await apiInstance.get(`property/property-type`);
+    const response = await apiInstance.get(`property/property-type`, {
+      params,
+    });
     return [false, response];
   } catch (error) {
     return [error, null];
@@ -209,6 +242,14 @@ export const createProjectApi = async (body) => {
     return [error, null];
   }
 };
+export const updateProjectApi = async (body) => {
+  try {
+    const response = await apiInstance.post(`project/update`, body);
+    return [false, response];
+  } catch (error) {
+    return [error, null];
+  }
+};
 
 //photo_type
 export const photoTypeApi = async (type) => {
@@ -276,7 +317,7 @@ export const propertyStatusApi = async (body) => {
   }
 };
 
-//include_proposal_create
+//include-proposal_create
 export const proposalCreateApi = async (body) => {
   try {
     const response = await apiInstance.post(`proposal/store`, body);
@@ -306,7 +347,7 @@ export const featureCreateApi = async (body) => {
   }
 };
 
-//create_new_property
+//create_new-property
 export const propertyCreateApi = async (body) => {
   try {
     const response = await apiInstance.post(`property/store`, body);
@@ -316,7 +357,7 @@ export const propertyCreateApi = async (body) => {
   }
 };
 
-//update_new_property
+//update_new-property
 export const propertyUpdateApi = async (body) => {
   try {
     const response = await apiInstance.post(`property/update`, body);
@@ -375,7 +416,7 @@ export const contractDownloadApi = async (id) => {
 //contract_download
 export const certificateDownloadApi = async (id, certificate_type_id) => {
   try {
-    const response = await apiInstance.get(`contract/download`, {
+    const response = await apiInstance.get(`contract/certificate/download`, {
       params: {
         id: id,
         certificate_type_id: certificate_type_id,
@@ -553,6 +594,16 @@ export const cancelScheduleApi = async (body) => {
   }
 };
 
+//complete_schedule
+export const completeScheduleApi = async (body) => {
+  try {
+    const response = await apiInstance.post(`/schedule/completed`, body);
+    return [false, response];
+  } catch (error) {
+    return [error, null];
+  }
+};
+
 //get_broker
 export const getBrokerApi = async (query) => {
   try {
@@ -722,14 +773,52 @@ export const NotificationReadApi = async (id) => {
   }
 };
 
-
-//buscarCEP
-export const buscaCEP = async (cep) => {
+//readNotification
+export const MakeFavouriteApi = async (propertyId) => {
   try {
-    const response = await apiInstanceCEP.get(`ws/${cep}/json/`);
+    const response = await apiInstance.get(`property/wishlist/${propertyId}`);
+    // console.log(response)
+    return [false, response];
+  } catch (error) {
+    return [error, null];
+  }
+};
+export const MakeFavouriteProjectApi = async (projectId) => {
+  try {
+    const response = await apiInstance.get(`project/wishlist/${projectId}`);
+    // console.log(response)
+    return [false, response];
+  } catch (error) {
+    return [error, null];
+  }
+};
+export const MakeFavouriteBrokerApi = async (projectId) => {
+  try {
+    const response = await apiInstance.get(
+      `users/broker-wishlist/${projectId}`
+    );
+    // console.log(response)
     return [false, response];
   } catch (error) {
     return [error, null];
   }
 };
 
+//buyer-registered
+export const IsBuyerRegisteredApi = async () => {
+  try {
+    const response = await apiInstance.get(`is-buyer-registered`);
+    return [false, response];
+  } catch (error) {
+    return [error, null];
+  }
+};
+
+export const getAddressData = async (zipCode) => {
+  try {
+    const response = await axios.get(`/api/getCep?cep=${zipCode}`);
+    return [false, response];
+  } catch (error) {
+    return [error, null];
+  }
+};

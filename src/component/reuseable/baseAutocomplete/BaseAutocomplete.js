@@ -9,11 +9,12 @@ function BaseAutocomplete({
   value,
   onChange,
   getOptionLabel,
+  label,
   isOptionEqualToValue,
+  inputTextColor,
   defaultValue,
-  estado,
-  desabilitado,
-  referencia
+  inputValue,
+  onInputChange,
 }) {
   return (
     <Autocomplete
@@ -28,9 +29,23 @@ function BaseAutocomplete({
       onChange={onChange}
       defaultValue={defaultValue}
       value={value}
-      disabled={desabilitado}
+      inputValue={inputValue}
+      onInputChange={onInputChange}
       renderInput={(params) => (
-        <TextField {...params} inputRef={estado} placeholder={placeholder} ref={referencia} disabled={desabilitado} />
+        <TextField
+          {...params}
+          placeholder={placeholder}
+          {...params}
+          label={label}
+          InputProps={{
+            ...params.InputProps,
+            sx: inputTextColor, // Change input text color
+          }}
+          InputLabelProps={{
+            ...params.InputLabelProps,
+            sx: inputTextColor, // Change label color
+          }}
+        />
       )}
     />
   );

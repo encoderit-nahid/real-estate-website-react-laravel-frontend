@@ -89,7 +89,11 @@ function BuyerStep() {
         </Grid>
         <Grid item xs={12} sm={12} md={6} lg={6} xl={6}>
           <FormControl variant="outlined" sx={{ width: "100%" }}>
-            <BaseOutlinedCpfInput placeholder={"CPF"} size={"medium"} />
+            <BaseOutlinedCpfInput
+              placeholder={"CPF"}
+              size={"medium"}
+              // onBlur={() => trigger("cpf")}
+            />
           </FormControl>
         </Grid>
       </Grid>

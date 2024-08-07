@@ -11,16 +11,22 @@ import media from "../../../../public/Images/Media.png";
 import Image from "next/image";
 import { _baseURL, _imageURL } from "../../../../consts";
 import Link from "next/link";
+import { formatBrazilianCurrency } from "@/utils/useUtilities";
+import pt from "locales/pt";
 
 function SaleCard({ singlePropertyData }) {
+  const filterData = singlePropertyData?.attachments?.filter(
+    (data) => data?.title === "cover_photo"
+  );
   const myLoader = ({ src }) => {
-    const filterData = singlePropertyData?.attachments?.filter(
-      (data) => data?.title === "logo"
-    );
-    return `${_imageURL}/${filterData?.[0]?.file_path}`;
+    return `${_imageURL}/${src}`;
   };
+  const t = pt;
   return (
-    <Link href={`/property_view/${singlePropertyData?.id}`}>
+    <Link
+      href={`/visualizacao-da-propriedade/${singlePropertyData?.id}/${singlePropertyData?.property_title}`}
+      as={`/visualizacao-da-propriedade/${singlePropertyData.id}/${singlePropertyData?.property_title}`}
+    >
       <a
         style={{
           textDecoration: "none",
@@ -37,7 +43,7 @@ function SaleCard({ singlePropertyData }) {
         >
           <Image
             loader={myLoader}
-            src={`${singlePropertyData?.attachments?.[0]?.file_path}`}
+            src={`${filterData?.[0]?.file_path}`}
             height={250}
             width={300}
             alt="media"
@@ -56,7 +62,7 @@ function SaleCard({ singlePropertyData }) {
                 mr: 1,
               }}
             >
-              {singlePropertyData?.ad_type}
+              {t[singlePropertyData?.ad_type]}
             </Button>
             <Typography
               variant="h1"
@@ -68,7 +74,7 @@ function SaleCard({ singlePropertyData }) {
                 mt: 1,
               }}
             >
-              {`${parseInt(singlePropertyData?.brl_rent.replaceAll(".00","").replaceAll(".","").replaceAll("R$","")).toLocaleString("pt-BR",{ style: 'currency', currency: 'BRL' })}`}
+              {formatBrazilianCurrency(singlePropertyData?.brl_rent)}
             </Typography>
             <Typography
               variant="h1"

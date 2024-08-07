@@ -23,10 +23,10 @@ const propertyTypeFailed = (err) => {
 }
 
 // order action
-export const findPropertyTypeData = () => async (dispatch) => {
+export const findPropertyTypeData = (category) => async (dispatch) => {
 	dispatch(propertyTypeRequest())
 
-	const [error, response] = await propertyTypeApi()
+	const [error, response] = await propertyTypeApi(category)
 
 	if (!error) {
 		dispatch(propertyTypeSuccess(response?.data?.propertyType))

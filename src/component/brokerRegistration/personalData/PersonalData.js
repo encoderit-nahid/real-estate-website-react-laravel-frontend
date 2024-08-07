@@ -1,9 +1,12 @@
 import {
+  Avatar,
   Box,
   Button,
   Divider,
   FormControl,
   Grid,
+  ListItemAvatar,
+  Rating,
   TextField,
   Typography,
 } from "@mui/material";
@@ -18,7 +21,26 @@ import BaseDateField from "../../reuseable/baseDateField/BaseDateField";
 import { formatISO } from "date-fns";
 import en from "locales/en";
 import pt from "locales/pt";
-import { useMemo } from "react";
+import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
+import SwipeableDrawer from "@mui/material/SwipeableDrawer";
+import List from "@mui/material/List";
+import ListItem from "@mui/material/ListItem";
+
+import ListItemText from "@mui/material/ListItemText";
+
+import { InputAdornment, IconButton } from "@mui/material";
+import SearchIcon from "@mui/icons-material/Search";
+import BorderColorOutlinedIcon from "@mui/icons-material/BorderColorOutlined";
+import { _imageURL } from "consts";
+import { useGetAllReferralBrokerQuery } from "@/queries/useGetAllReferralBrokerQuery";
+import { debounce } from "@/utils/debounce";
+import { omitEmpties } from "@/api";
+import BaseButton from "@/component/reuseable/baseButton/BaseButton";
+// import useCurrentUser from "@/hooks/useCurrentUser";
+
+import useRequiredFieldsToDisableButton from "@/hooks/useRequiredFieldsToDisableButton";
+import BaseCloseButton from "@/component/reuseable/baseCloseButton/BaseCloseButton";
+import triggerValidation from "@/hooks/triggerValidation";
 
 function PersonalData({
   handleNext,
@@ -26,29 +48,41 @@ function PersonalData({
   errors,
   allValues,
   languageName,
+  selectedBroker,
+  setSelectedBroker,
   activeStep,
+  reset,
+  replace,
+  trigger,
 }) {
-  //rg
-  const [rgValue, setRGValue] = useState("");
-  const [rgValid, setRGValid] = useState(false);
-  const handleRGValidation = (e) => {
-    setRGValid(/^W(\d(\d(\d[A-Z]?)?)?$)/.test(e.target.value));
-    setRGValue(e.target.value);
-  };
-
   const [preview, setPreview] = useState();
 
   const t = languageName === "en" ? en : pt;
+  // const currentUser = useCurrentUser();
 
-  // const userRole = localStorage.getItem("user_role");
+  const userRole = localStorage.getItem("user_role");
 
-  const [userRole, setUserRole] = useState("");
+  const [searchValue, setSearchValue] = useState(null);
+
+  const {
+    data: brokerUserData,
+    isLoading: brokerLoading,
+    refetch,
+    isFetched,
+    isFetching,
+  } = useGetAllReferralBrokerQuery(
+    omitEmpties({
+      user_type: userRole === "broker" ? "broker" : null,
+      status: "active",
+      name: searchValue,
+    })
+  );
 
   useEffect(() => {
-    // Perform localStorage action
-    const role = localStorage.getItem("user_role");
-    setUserRole(role);
-  }, []);
+    if (searchValue !== null) {
+      refetch();
+    }
+  }, [searchValue, refetch]);
 
   // create a preview as a side effect, whenever selected file is changed
   useEffect(() => {
@@ -64,32 +98,197 @@ function PersonalData({
     return () => URL.revokeObjectURL(objectUrl);
   }, [allValues.image]);
 
-  const [disableBtn, setDisableBtn] = useState(true);
-  useEffect(() => {
+  // const [disableBtn, setDisableBtn] = useState(true);
+  // const requiredFields = {
+  //   broker: ["full_name", "cpf_number", "rg_number", "dob", "description"],
+  //   owner: ["full_name", "cpf_number", "rg_number", "dob"],
+  // };
+  const requiredFields =
+    userRole === "broker"
+      ? [
+          "full_name",
+          "cpf_number",
+          "rg_number",
+          "dob",
+          "description",
+          "creci_number",
+        ]
+      : ["full_name", "cpf_number", "rg_number", "dob"];
+  const [disableBtn, setDisableBtn] = useRequiredFieldsToDisableButton(
+    requiredFields,
+    allValues
+  );
+  // async function triggerValidation() {
+  //   try {
+  //     const data = await Promise.all(
+  //       requiredFields.map(async (field) => {
+  //         try {
+  //           const response = await trigger(field);
+  //           return response;
+  //         } catch (error) {
+  //           console.error(error);
+  //           return false;
+  //         }
+  //       })
+  //     );
+  //     const allTrue = data.every((result) => result === true);
+  //     console.log("🟥 ~ triggerValidation ~ allTrue:", allTrue);
+  //     return allTrue;
+  //   } catch (error) {
+  //     console.error("Error in triggerValidation:", error);
+  //     return false;
+  //   }
+  // }
+  const [state, setState] = React.useState({
+    top: false,
+    left: false,
+    bottom: false,
+    right: false,
+  });
+
+  const toggleDrawer = (anchor, open) => (event) => {
+    console.log("🟥 ~ toggleDrawer ");
     if (
-      allValues?.full_name != null &&
-      allValues?.cpf_number != null &&
-      allValues?.rg_number != null &&
-      allValues?.dob != null
+      event &&
+      event.type === "keydown" &&
+      (event.key === "Tab" || event.key === "Shift")
     ) {
-      setDisableBtn(false);
+      return;
     }
-    if (
-      allValues?.full_name === "" ||
-      allValues?.cpf_number === "" ||
-      allValues?.rg_number === "" ||
-      allValues?.dob === ""
-    ) {
-      setDisableBtn(true);
-    }
-  }, [allValues]);
+
+    setState({ ...state, [anchor]: open });
+  };
+
+  const myLoader = ({ src }) => {
+    return `${_imageURL}/${src}`;
+  };
+
+  const handleSearchBroker = (e) => {
+    setSearchValue(e.target.value);
+    refetch({});
+  };
+
+  const debouncedHandleChangeBroker = debounce(handleSearchBroker);
+
+  const list = (anchor) => (
+    <Box
+      sx={{ width: anchor === "top" || anchor === "bottom" ? "auto" : 380 }}
+      role="presentation"
+      // onClick={toggleDrawer(anchor, false)}
+      // onKeyDown={toggleDrawer(anchor, false)}
+    >
+      <Grid
+        container
+        direction="row"
+        justifyContent="space-between"
+        alignItems="center"
+        sx={{ mt: 2, px: 2 }}
+      >
+        <Typography
+          variant="p"
+          sx={{
+            color: "#1A1859",
+            fontSize: "24px",
+            lineHeight: "32px",
+            fontWeight: "700",
+          }}
+        >
+          {t["Select broker"]}
+        </Typography>
+        <BaseCloseButton handleClose={toggleDrawer("right", false)} />
+      </Grid>
+      <Box sx={{ px: 2, mt: 1 }}>
+        <TextField
+          variant="outlined"
+          placeholder={t["Search by broker name"]}
+          size="small"
+          onChange={debouncedHandleChangeBroker}
+          fullWidth
+          InputProps={{
+            endAdornment: (
+              <InputAdornment position="end">
+                <IconButton edge="end" aria-label="Search by broker name">
+                  <SearchIcon />
+                </IconButton>
+              </InputAdornment>
+            ),
+          }}
+        />
+      </Box>
+      <Box sx={{ px: 2 }}>
+        <List
+          sx={{
+            width: "100%",
+            bgcolor: "background.paper",
+          }}
+        >
+          {brokerUserData?.data?.users?.data?.map((brokerInfo, index) => (
+            <Box
+              key={index}
+              onClick={(event) => {
+                setSelectedBroker(brokerInfo);
+                toggleDrawer("right", false)(event);
+              }}
+            >
+              <ListItem
+                sx={{
+                  background: `${
+                    selectedBroker?.id === brokerInfo?.id
+                      ? "#bae6fd"
+                      : "#ffffff"
+                  }`,
+                  "&:hover": {
+                    background: "#bae6fd",
+                  },
+                }}
+              >
+                <ListItemAvatar>
+                  {brokerInfo?.attachments[0]?.file_path ? (
+                    <Image
+                      loader={myLoader}
+                      src={`${brokerInfo?.attachments[0]?.file_path}`}
+                      alt="brokerImahe"
+                      height={70}
+                      width={70}
+                      style={{ borderRadius: "50px" }}
+                    />
+                  ) : (
+                    <Avatar />
+                  )}
+                </ListItemAvatar>
+                <ListItemText
+                  primary={
+                    <Typography
+                      variant="body1"
+                      sx={{
+                        fontSize: "16px",
+                        fontWeight: 700,
+                        lineHeight: "22px",
+                        color: "#002152",
+                      }}
+                    >
+                      {brokerInfo?.name}
+                    </Typography>
+                  }
+                  secondary={
+                    <Rating name="size-large" defaultValue={4} readOnly />
+                  }
+                />
+              </ListItem>
+              <Divider />
+            </Box>
+          ))}
+        </List>
+      </Box>
+    </Box>
+  );
 
   return (
     <Box sx={{ mt: 4 }}>
       <Grid
         container
         direction="row"
-        justifyContent="flex-start"
+        justifyContent="space-between"
         alignItems="center"
       >
         <Typography
@@ -103,46 +302,31 @@ function PersonalData({
         >
           {t["Personal data"]}
         </Typography>
+        <BaseButton
+          type="button"
+          variant="outlined"
+          color="error"
+          sx="error"
+          handleFunction={() => {
+            reset();
+            replace("/");
+          }}
+        >
+          {t["Cancel"]}
+        </BaseButton>
       </Grid>
 
-      <Grid container spacing={1} sx={{ mt: 2 }}>
+      <Grid container spacing={3} sx={{ mt: 2 }}>
         <Grid item xs={12} sm={12} md={3}>
           <Box
             sx={{
-              height: {
-                xs: "20vh",
-                sm: "20vh",
-                md: "20vh",
-                lg: "25vh",
-                xl: "20vh",
-              },
-              width: {
-                xs: "100%",
-                sm: "100%",
-
-                md: "20vh",
-                lg: "25vh",
-                xl: "20vh",
-              },
               border: "1px dashed #DBE1E5",
-              p: 1,
+              background: "#F2F5F6",
+              borderRadius: "4px",
+              pt: 3,
             }}
           >
-            <Box
-              sx={{
-                background: "#F2F5F6",
-                borderRadius: "4px",
-                px: 1,
-                py: 2,
-                height: {
-                  xs: "17.5vh",
-                  sm: "17.5vh",
-                  md: "17.5vh",
-                  lg: "22vh",
-                  xl: "17.5vh",
-                },
-              }}
-            >
+            <Box>
               <Grid
                 container
                 direction="column"
@@ -173,7 +357,7 @@ function PersonalData({
                   variant="contained"
                   component="label"
                   sx={{
-                    mt: 1,
+                    mt: 3,
                     background: "#0362F0",
                     borderRadius: "4px",
                     fontSize: "14px",
@@ -227,7 +411,6 @@ function PersonalData({
             direction="row"
             justifyContent="flex-start"
             alignItems="flex-start"
-            sx={{ mb: 1, ml: { xxl: 4 } }}
           >
             <Typography
               variant="p"
@@ -249,7 +432,6 @@ function PersonalData({
             render={({ field }) => (
               <BaseTextField
                 size={"small"}
-                sx={{ ml: { xxl: 4 } }}
                 placeholder={t["Full Name"]}
                 // sx={{ mb: 2 }}
                 onChange={(e) => {
@@ -263,7 +445,7 @@ function PersonalData({
           <Typography
             variant="inherit"
             color="textSecondary"
-            sx={{ color: "#b91c1c", ml: { xxl: 4 } }}
+            sx={{ color: "#b91c1c" }}
           >
             {errors.full_name?.message}
           </Typography>
@@ -272,7 +454,7 @@ function PersonalData({
             direction="row"
             justifyContent="flex-start"
             alignItems="flex-start"
-            sx={{ mb: 1, mt: 1, ml: { xxl: 4 } }}
+            sx={{ mb: 1, mt: 1 }}
           >
             <Typography
               variant="p"
@@ -303,7 +485,7 @@ function PersonalData({
               <BaseTextField
                 size={"small"}
                 placeholder={t["Social Name"]}
-                sx={{ mb: 1, ml: { xxl: 4 } }}
+                sx={{ mb: 1 }}
                 onChange={(e) => {
                   field.onChange(e.target.value);
                 }}
@@ -312,6 +494,56 @@ function PersonalData({
               />
             )}
           />
+          {/* Description */}
+          {userRole === "broker" && (
+            <>
+              <Grid
+                container
+                direction="row"
+                justifyContent="flex-start"
+                alignItems="flex-start"
+              >
+                <Typography
+                  variant="p"
+                  sx={{
+                    color: "#253858",
+                    fontSize: "14px",
+                    fontWeight: "400",
+                    lineHeight: "16px",
+                  }}
+                >
+                  {t["Description"]}
+                  <span style={{ color: "#E63333" }}>*</span>
+                </Typography>
+              </Grid>
+              <Controller
+                name="description"
+                control={control}
+                defaultValue={""}
+                render={({ field }) => (
+                  <BaseTextField
+                    size={"small"}
+                    placeholder={t["Description"]}
+                    // sx={{ mb: 2 }}
+                    onChange={(e) => {
+                      field.onChange(e.target.value);
+                    }}
+                    name={"description"}
+                    value={field.value}
+                    multiline={true}
+                  />
+                )}
+              />
+              <Typography
+                variant="inherit"
+                color="textSecondary"
+                sx={{ color: "#b91c1c" }}
+              >
+                {errors.description?.message}
+              </Typography>
+            </>
+          )}
+          {/* Description */}
         </Grid>
       </Grid>
       <Box sx={{ mt: 3 }}>
@@ -336,7 +568,8 @@ function PersonalData({
                   lineHeight: "16px",
                 }}
               >
-                CRECI number<span style={{ color: "#E63333" }}>*</span>
+                {t["CRECI Number"]}
+                <span style={{ color: "#E63333" }}>*</span>
               </Typography>
             </Grid>
             <Controller
@@ -347,12 +580,17 @@ function PersonalData({
                 <BaseTextField
                   size={"small"}
                   type={"number"}
-                  placeholder={"CRECI Number"}
+                  autoComplete={"new-Text"}
+                  placeholder={t["CRECI Number"]}
                   onChange={(e) => {
-                    field.onChange(e.target.value);
+                    if (e.target.value.length <= 6) {
+                      field.onChange(e.target.value);
+                    }
                   }}
                   value={field.value}
                   name={"creci_number"}
+                  max
+                  onBlur={() => trigger("creci_number")}
                 />
               )}
             />
@@ -398,6 +636,8 @@ function PersonalData({
                   }}
                   name={"cpf_number"}
                   value={field.value}
+                  onBlur={() => trigger("cpf_number")}
+
                   // error={errors.cpf_number ? true : false}
                 />
               )}
@@ -449,6 +689,8 @@ function PersonalData({
                   }}
                   name={"RG_number"}
                   value={field.value}
+                  onBlur={() => trigger("rg_number")}
+
                   // error={errors?.rg_number ? true : false}
                 />
               )}
@@ -509,17 +751,141 @@ function PersonalData({
             {errors?.dob?.message}
           </Typography>
         </Grid>
+        {userRole === "broker" && (
+          <Grid container spacing={1} sx={{ mt: 2 }}>
+            <Grid item xs={12} sm={12} md={selectedBroker ? 12 : 6}>
+              <Grid
+                container
+                direction="row"
+                justifyContent="flex-start"
+                alignItems="flex-start"
+                sx={{ mb: 1 }}
+              >
+                <Typography
+                  variant="p"
+                  sx={{
+                    color: "#253858",
+                    fontSize: "14px",
+                    fontWeight: "400",
+                    lineHeight: "16px",
+                  }}
+                >
+                  {t["Name of broker you referred"]}
+                </Typography>
+              </Grid>
+              {selectedBroker ? (
+                <Box
+                  sx={{
+                    border: "1px solid #000F1A",
+                    borderRadius: "4px",
+                    padding: "8px 16px 8px 16px",
+                  }}
+                >
+                  <Grid
+                    container
+                    direction="row"
+                    justifyContent="space-between"
+                    alignItems="center"
+                  >
+                    <List>
+                      <ListItem>
+                        <ListItemAvatar>
+                          {selectedBroker?.attachments[0]?.file_path ? (
+                            <Image
+                              loader={myLoader}
+                              src={`${selectedBroker?.attachments[0]?.file_path}`}
+                              alt="brokerImahe"
+                              height={70}
+                              width={70}
+                              style={{ borderRadius: "50px" }}
+                            />
+                          ) : (
+                            <Avatar />
+                          )}
+                        </ListItemAvatar>
+                        <ListItemText
+                          primary={
+                            <Typography
+                              variant="body1"
+                              sx={{
+                                fontSize: "16px",
+                                fontWeight: 700,
+                                lineHeight: "22px",
+                                color: "#002152",
+                              }}
+                            >
+                              {selectedBroker?.name}
+                            </Typography>
+                          }
+                          secondary={
+                            <Rating
+                              name="size-large"
+                              defaultValue={4}
+                              readOnly
+                            />
+                          }
+                        />
+                      </ListItem>
+                    </List>
+                    <BorderColorOutlinedIcon
+                      onClick={toggleDrawer("right", true)}
+                    />
+                    <SwipeableDrawer
+                      anchor={"right"}
+                      open={state["right"]}
+                      onClose={toggleDrawer("right", false)}
+                      onOpen={toggleDrawer("right", true)}
+                    >
+                      {list("right")}
+                    </SwipeableDrawer>
+                  </Grid>
+                </Box>
+              ) : (
+                <Box
+                  sx={{
+                    border: "1px solid #000F1A",
+                    borderRadius: "4px",
+                    padding: "8px 16px 8px 16px",
+                  }}
+                >
+                  <Grid
+                    container
+                    direction="row"
+                    justifyContent="space-between"
+                    alignItems="center"
+                  >
+                    <Typography
+                      variant="p"
+                      sx={{
+                        fontSize: "14px",
+                        fontWeight: "400",
+                        lineHeight: "24px",
+                        color: "#253858",
+                      }}
+                    >
+                      {t["Select broker"]}
+                    </Typography>
+                    <ArrowForwardIcon onClick={toggleDrawer("right", true)} />
+                    <SwipeableDrawer
+                      anchor={"right"}
+                      open={state["right"]}
+                      onClose={toggleDrawer("right", false)}
+                      onOpen={toggleDrawer("right", true)}
+                    >
+                      {list("right")}
+                    </SwipeableDrawer>
+                  </Grid>
+                </Box>
+              )}
+            </Grid>
+          </Grid>
+        )}
 
         <Grid container spacing={1} sx={{ mt: 2, mb: 5 }}>
-          <Grid item xs={6} sm={6} md={6}>
-            <Button
-              color="inherit"
+          <Grid item xs={3} sx={{ ml: "auto" }}>
+            <BaseButton
               disabled={activeStep === 0}
-              // onClick={handleBack}
-              sx={{
-                //   mr: 1,
-                //   border: "1px solid #002152",
-                //   borderRadius: "4px",
+              custom_sx={{
                 background: "#ffffff",
                 px: 2,
                 py: 1,
@@ -531,40 +897,21 @@ function PersonalData({
               }}
             >
               {t["Come back"]}
-            </Button>
+            </BaseButton>
           </Grid>
-          <Grid item xs={6} sm={6} md={6}>
-            <Button
-              onClick={handleNext}
+          <Grid item xs={3}>
+            <BaseButton
+              handleFunction={async () => {
+                if (await triggerValidation(requiredFields, trigger)) {
+                  handleNext();
+                }
+              }}
               disabled={disableBtn}
               fullWidth
-              sx={{
-                background: "#00C1B4",
-                boxShadow: "0px 4px 34px rgba(0, 0, 0, 0.08)",
-                borderRadius: "4px",
-                color: "#ffffff",
-                fontSize: "16px",
-                lineHeight: "22px",
-                fontWeight: "600",
-                //   mt: 3,
-                textTransform: "none",
-                py: 1,
-                "&:hover": {
-                  background: "#00C1B4",
-                  boxShadow: "0px 4px 34px rgba(0, 0, 0, 0.08)",
-                  borderRadius: "4px",
-                  color: "#ffffff",
-                  fontSize: "16px",
-                  lineHeight: "22px",
-                  fontWeight: "600",
-                  // mt: 3,
-                  textTransform: "none",
-                  py: 1,
-                },
-              }}
+              sx="success"
             >
               {t["Continue"]}
-            </Button>
+            </BaseButton>
           </Grid>
         </Grid>
       </Grid>

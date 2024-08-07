@@ -14,19 +14,22 @@ import { useForm, Controller } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as Yup from "yup";
 import BaseTextField from "../../reuseable/baseTextField/BaseTextField";
-import { createProposalApi } from "../../../api";
+import { createProposalApi, omitEmpties } from "../../../api";
 import { useSession } from "next-auth/react";
 import en from "locales/en";
 import pt from "locales/pt";
+import BaseValueField from "@/component/reuseable/baseValueField/BaseValueFiled";
+import { reverseBrCurrencyFormat } from "@/utils/reverseBrCurrencyFormat";
+import { useRouter } from "next/router";
 
 const validationSchemaCash = Yup.object().shape({
-  total_amount: Yup.number().required("valor é obrigatório"),
+  total_amount: Yup.string().required("valor é obrigatório"),
 });
 
 const validationSchemaInstallment = Yup.object().shape({
-  total_amount: Yup.number().required("nome é obrigatório"),
-  cash_amount: Yup.number().required("valor é obrigatório"),
-  payment_per_installment: Yup.number().required("valor é obrigatório"),
+  total_amount: Yup.string().required("nome é obrigatório"),
+  cash_amount: Yup.string().required("valor é obrigatório"),
+  payment_per_installment: Yup.string().required("valor é obrigatório"),
   no_of_installment: Yup.number().required("valor é obrigatório"),
 });
 
@@ -52,6 +55,8 @@ function ProposalStep({
   const t = languageName === "en" ? en : pt;
 
   const { data: session } = useSession();
+
+  const router = useRouter();
 
   const isStepOptional = (step) => {
     return step === 1;
@@ -86,35 +91,55 @@ function ProposalStep({
 
   const onSubmit = async (data) => {
     const conditions = localStorage.getItem("condition") || null;
-
+    data.total_amount = reverseBrCurrencyFormat(data.total_amount);
+    data.cash_amount = reverseBrCurrencyFormat(data.cash_amount);
+    data.payment_per_installment = reverseBrCurrencyFormat(
+      data.payment_per_installment
+    );
     setLoading(true);
-    const allData = {
+    const allData = omitEmpties({
       ...data,
       user_id: session?.user?.userId,
       payment_type: (cash && "cash") || (installment && "installment"),
       property_id: singlePropertyId,
       proposal_type: "general",
-      condition: conditions !== null && conditions,
-    };
+      condition: conditions,
+    });
 
-    const [error, response] = await createProposalApi(allData);
-    setLoading(false);
-    if (!error) {
-      let newSkipped = skipped;
-      if (isStepSkipped(activeStep)) {
-        newSkipped = new Set(newSkipped.values());
-        newSkipped.delete(activeStep);
-      }
-      setActiveStep((prevActiveStep) => prevActiveStep + 1);
-      setSkipped(newSkipped);
-      localStorage.removeItem("brl");
-      localStorage.removeItem("condition");
-    } else {
-      const errors = error?.response?.data?.errors ?? {};
-
-      Object.entries(errors).forEach(([name, messages]) => {
-        setError(name, { type: "manual", message: messages[0] });
+    if (!session) {
+      router.replace({
+        pathname: "/registration",
+        query: omitEmpties({
+          user_type: "buyer",
+          brl_value: data.total_amount,
+          property_id: singlePropertyId,
+          type: "proposal",
+          payment_type: (cash && "cash") || (installment && "installment"),
+          cash_amount: data?.cash_amount,
+          payment_per_installment: data?.payment_per_installment,
+          no_of_installment: data?.no_of_installment,
+        }),
       });
+    } else {
+      const [error, response] = await createProposalApi(allData);
+      setLoading(false);
+      if (!error) {
+        let newSkipped = skipped;
+        if (isStepSkipped(activeStep)) {
+          newSkipped = new Set(newSkipped.values());
+          newSkipped.delete(activeStep);
+        }
+        setActiveStep((prevActiveStep) => prevActiveStep + 1);
+        setSkipped(newSkipped);
+        localStorage.removeItem("brl");
+        localStorage.removeItem("condition");
+      } else {
+        const errors = error?.response?.data?.errors ?? {};
+
+        Object.entries(errors).forEach(([name, messages]) => {
+          setError(name, { type: "manual", message: messages[0] });
+        });
+      }
     }
   };
 
@@ -194,7 +219,7 @@ function ProposalStep({
             control={control}
             defaultValue={amount}
             render={({ field }) => (
-              <BaseTextField
+              <BaseValueField
                 size={"small"}
                 placeholder={t["Total amount"]}
                 variant={"outlined"}
@@ -222,13 +247,14 @@ function ProposalStep({
                 name="cash_amount"
                 control={control}
                 render={({ field }) => (
-                  <BaseTextField
+                  <BaseValueField
                     size={"small"}
                     placeholder={t["Cash value"]}
                     type={"number"}
                     sx={{ mt: 2 }}
                     variant={"outlined"}
                     name={"cash_amount"}
+                    value={field.value}
                     onChange={(e) => {
                       field.onChange(e.target.value);
                     }}
@@ -249,13 +275,14 @@ function ProposalStep({
                 name="payment_per_installment"
                 control={control}
                 render={({ field }) => (
-                  <BaseTextField
+                  <BaseValueField
                     size={"small"}
                     placeholder={t["Term value"]}
                     type={"number"}
                     sx={{ mt: 2 }}
                     variant={"outlined"}
                     name={"payment_per_installment"}
+                    value={field.value}
                     onChange={(e) => {
                       field.onChange(e.target.value);
                     }}

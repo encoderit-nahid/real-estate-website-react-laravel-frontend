@@ -8,6 +8,8 @@ import dayjs from "dayjs";
 import { useSession } from "next-auth/react";
 import en from "locales/en";
 import pt from "locales/pt";
+import { formatBrazilianCurrency } from "@/utils/useUtilities";
+import { usePropertyDeleteMutation } from "@/queries/usePropertyDeleteMutation";
 
 const omitEmpties = (obj) => {
   return Object.entries(obj).reduce((carry, [key, value]) => {
@@ -18,11 +20,35 @@ const omitEmpties = (obj) => {
   }, {});
 };
 
-function RentCard({ propertyData, languageName }) {
+function RentCard({
+  propertyData,
+  languageName,
+  page,
+  loadingRefetch,
+  refetch,
+}) {
   const t = languageName === "en" ? en : pt;
   const [progress, setProgress] = React.useState(87);
 
   const { data: session } = useSession();
+
+  const mutation = usePropertyDeleteMutation(page);
+
+  const handleDeleteProperty = (id, event) => {
+    event.preventDefault();
+    const body = {
+      property_id: id,
+    };
+    mutation.mutate(body, {
+      onError(error) {
+        console.log(error);
+      },
+      onSuccess: async (data) => {
+        await refetch();
+        await loadingRefetch();
+      },
+    });
+  };
 
   const myLoader = ({ src }) => {
     return `${_imageURL}/${src}`;
@@ -126,7 +152,7 @@ function RentCard({ propertyData, languageName }) {
                     fontWeight: "400",
                   }}
                 >
-                  {propertyData?.ad_type}
+                  {t[propertyData?.ad_type]}
                 </Button>
                 {propertyData?.status === "approved" && (
                   <Button
@@ -191,7 +217,20 @@ function RentCard({ propertyData, languageName }) {
                 mt: 1,
               }}
             >
-              {`${parseInt(propertyData?.brl_rent.replaceAll(".00","").replaceAll(".","").replaceAll("R$","")).toLocaleString("pt-BR",{ style: 'currency', currency: 'BRL' })}`}
+              {propertyData?.property_title.length > 30
+                ? `${propertyData?.property_title.slice(0, 30)}...`
+                : propertyData?.property_title}
+            </Typography>
+            <Typography
+              variant="p"
+              sx={{
+                fontSize: "16px",
+                fontWeight: "600",
+                color: "#0E97F7",
+                mt: 1,
+              }}
+            >
+              {formatBrazilianCurrency(propertyData?.brl_rent)}
             </Typography>
             <Typography
               variant="p"
@@ -223,7 +262,7 @@ function RentCard({ propertyData, languageName }) {
             <Box sx={{ mt: 1, mb: { xs: 0, sm: 0, md: 0, lg: 2, xl: 2 } }}>
               <Link
                 href={{
-                  pathname: "/my_properties/include_proposal",
+                  pathname: "/my-properties/include-proposal",
                   query: omitEmpties({
                     property_id: propertyData?.id,
                   }),
@@ -269,11 +308,11 @@ function RentCard({ propertyData, languageName }) {
                 </Button>
                 {/* </a> */}
               </Link>
-              {(parseInt(session?.user?.userId) === propertyData?.user?.id ||
+              {(parseInt(session?.user?.userId) === propertyData?.owner_id ||
                 session?.user?.role === "admin") && (
                 <Link
                   href={{
-                    pathname: "/my_properties/new_property",
+                    pathname: "/my-properties/new-property",
                     query: omitEmpties({
                       property_id: propertyData?.id,
                     }),
@@ -306,6 +345,38 @@ function RentCard({ propertyData, languageName }) {
                     {t["Edit"]}
                   </Button>
                 </Link>
+              )}
+              {(parseInt(session?.user?.userId) === propertyData?.owner_id ||
+                session?.user?.role === "admin") && (
+                <Button
+                  sx={{
+                    color: "red",
+                    fontSize: "14px",
+                    lineHeight: "18px",
+                    fontWeight: "600",
+                    border: "1px solid red",
+                    borderRadius: "4px",
+                    //   padding: "8px 20px",
+                    textTransform: "none",
+                    ml: 1,
+                    "&:hover": {
+                      color: "red",
+                      fontSize: "14px",
+                      lineHeight: "18px",
+                      fontWeight: "600",
+                      border: "1px solid red",
+                      borderRadius: "4px",
+                      //   padding: "8px 20px",
+                      textTransform: "none",
+                      ml: 1,
+                    },
+                  }}
+                  onClick={(event) =>
+                    handleDeleteProperty(propertyData?.id, event)
+                  }
+                >
+                  Excluir
+                </Button>
               )}
             </Box>
           </Grid>

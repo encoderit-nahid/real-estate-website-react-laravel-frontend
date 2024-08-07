@@ -17,6 +17,11 @@ import BaseTextField from "../../reuseable/baseTextField/BaseTextField";
 import BaseAutocomplete from "../../reuseable/baseAutocomplete/BaseAutocomplete";
 import en from "locales/en";
 import pt from "locales/pt";
+import BaseHomeButton from "@/component/reuseable/button/BaseHomeButton";
+import { formatBrazilianCurrency } from "@/utils/useUtilities";
+import BaseOutlinedAreaInput from "@/component/reuseable/baseOutlinedAreaInput/BaseOutlinedAreaInput";
+import { useRouter } from "next/router";
+import { reverseBrCurrencyFormat } from "@/utils/reverseBrCurrencyFormat";
 
 // const AutoComplete = styled(Autocomplete)`
 //   & .MuiInputBase-input {
@@ -33,19 +38,27 @@ const omitEmpties = (obj) => {
   }, {});
 };
 
-function FulfillDream({ languageName }) {
-  const [value, setValue] = useState(null);
+function FulfillDream({ languageName, setKnowMoreModal }) {
+  const [value, setValue] = useState("");
+
+  const router = useRouter();
 
   const t = languageName === "en" ? en : pt;
 
   const [locationName, setLocationName] = useState(null);
 
   const handleValueChange = (v) => {
-    setValue(v);
+    v != null && setValue(v);
   };
 
   const handleLocationChange = (e) => {
     setLocationName(e.target.value);
+  };
+  const [inputValue, setInputValue] = useState("");
+
+  const handleInputChange = (event, newInputValue) => {
+    const formattedValue = formatBrazilianCurrency(newInputValue);
+    setInputValue(formattedValue);
   };
 
   return (
@@ -53,48 +66,37 @@ function FulfillDream({ languageName }) {
       container
       direction="column"
       justifyContent="center"
-      alignItems="flex-start"
-      sx={{ ml: 3, mt: { xs: 3, sm: 3, md: 15, lg: 15, xl: 15 } }}
+      alignItems="center"
+      sx={{ height: "75vh" }}
     >
-      <Typography
-        variant="h1"
-        sx={{
-          color: "#1A1859",
-          fontSize: {
-            xs: "56px",
-            sm: "56px",
-            md: "56px",
-            lg: "72px",
-            xl: "72px",
-          },
-          fontWeight: "800",
-        }}
-      >
-        {t["Make your"]}
-      </Typography>
-      <Typography
-        variant="h1"
-        sx={{
-          color: "#1A1859",
-          fontSize: {
-            xs: "56px",
-            sm: "56px",
-            md: "56px",
-            lg: "72px",
-            xl: "72px",
-          },
-          fontWeight: "800",
-        }}
-      >
-        {t["Dream!"]}
-      </Typography>
       <BaseTextField
         fullWidth
-        label={t["Location"]}
+        label={"Onde você quer um imóvel?"}
         placeholder={"procure por rua, bairro ou cidade"}
+        InputLabelProps={{
+          sx: {
+            color: "#ffffff", // Change label color here
+          },
+        }}
         sx={{
           mt: 4,
-          width: { xs: "90%", sm: "90%", md: "90%", xl: "90%", lg: "75%" },
+          width: { xs: "90%", sm: "90%", md: "50%", xl: "30%", lg: "35%" },
+          "& .MuiOutlinedInput-root": {
+            "& fieldset": {
+              borderColor: "#ffffff",
+              borderRadius: "25px",
+            },
+          },
+          "&:hover": {
+            "& .MuiOutlinedInput-root": {
+              "& fieldset": {
+                borderColor: "#0362F0",
+              },
+            },
+          },
+        }}
+        inputProps={{
+          style: { color: "#ffffff" }, // Change placeholder color here
         }}
         onChange={(e) => handleLocationChange(e)}
         InputProps={{
@@ -105,53 +107,121 @@ function FulfillDream({ languageName }) {
           ),
         }}
       />
-
       <BaseAutocomplete
         options={valueUpto || []}
+        label={"Faixa de preço"}
         getOptionLabel={(option) => option.label || ""}
         sx={{
           mt: 4,
-          width: { xs: "90%", sm: "90%", md: "90%", xl: "90%", lg: "75%" },
+          width: { xs: "90%", sm: "90%", md: "50%", xl: "30%", lg: "35%" },
+          "& .MuiOutlinedInput-root": {
+            "& fieldset": {
+              borderColor: "#ffffff", // Change border color here
+              borderRadius: "25px",
+            },
+          },
+          "& .MuiSvgIcon-root": {
+            color: "#ffffff", // Change arrow icon color here
+          },
+          "&:hover": {
+            "& .MuiOutlinedInput-root": {
+              "& fieldset": {
+                borderColor: "#0362F0",
+              },
+            },
+          },
         }}
-        isOptionEqualToValue={(option, value) => option.value === value.value}
+        isOptionEqualToValue={(option, value) => option.label === value.value}
         size={"medium"}
         placeholder={t["Value up to"]}
         onChange={(e, v, r, d) => handleValueChange(v)}
         value={value}
+        inputValue={inputValue}
+        onInputChange={handleInputChange}
+        inputTextColor={{ color: "#ffffff" }}
       />
-      <Link
-        href={{
-          pathname: "/search_real_estate",
-          query: omitEmpties({
-            status: "approved",
-            location: locationName && locationName,
-            value_up_to: value && value.label,
-            page: 1,
-            per_page: 9,
-          }),
-        }}
-      >
-        <a
-          style={{
-            textDecoration: "none",
-            listStyle: "none",
-            width: "100%",
-          }}
-        >
-          <BaseButton
-            name={t["search real estate"]}
-            width={{
-              xs: "90%",
-              sm: "90%",
-              md: "90%",
-              xl: "90%",
-              lg: "75%",
+      {/* <Autocomplete
+        getOptionLabel={(option) => option.label || ""}
+        options={valueUpto || []}
+        inputValue={inputValue}
+        onInputChange={handleInputChange}
+        renderInput={(params) => (
+          <TextField
+            {...params}
+            label={"Faixa de preço"}
+            variant="outlined"
+            sx={{
+              color: "#ffffff",
             }}
-            fontSize={"24px"}
-            margin={"4vh 0 0 0"}
+            InputLabelProps={{ sx: { color: "#ffffff" } }}
           />
-        </a>
-      </Link>
+        )}
+        sx={{
+          mt: 4,
+          width: { xs: "90%", sm: "90%", md: "50%", xl: "30%", lg: "35%" },
+          "& .MuiOutlinedInput-root": {
+            "& fieldset": {
+              borderColor: "#ffffff", // Change border color here
+              borderRadius: "25px",
+            },
+          },
+          "& .MuiSvgIcon-root": {
+            color: "#ffffff", // Change arrow icon color here
+          },
+          "&:hover": {
+            "& .MuiOutlinedInput-root": {
+              "& fieldset": {
+                borderColor: "#0362F0",
+                color: "#ffffff",
+              },
+            },
+          },
+        }}
+      />
+     */}
+
+      <BaseButton
+        name={t["search real estate"]}
+        width={{
+          xs: "90%",
+          sm: "90%",
+          md: "50%",
+          xl: "30%",
+          lg: "35%",
+        }}
+        fontSize={"24px"}
+        borderRadius={"25px"}
+        margin={"4vh 0 0 0"}
+        handleFunction={() =>
+          router.push({
+            pathname: "/buscar-imoveis",
+            query: omitEmpties({
+              status: "approved",
+              location: locationName && locationName,
+              value_up_to: value && reverseBrCurrencyFormat(value.label),
+              page: 1,
+              per_page: 9,
+            }),
+          })
+        }
+      />
+
+      <BaseHomeButton
+        name={"Saiba mais"}
+        width={{
+          xs: "90%",
+          sm: "90%",
+          md: "50%",
+          xl: "30%",
+          lg: "35%",
+        }}
+        fontSize={"20px"}
+        borderRadius={"25px"}
+        margin={"4vh 0 0 0"}
+        color={"#ffffff"}
+        background={"transparent"}
+        handleFunction={() => setKnowMoreModal(true)}
+      />
     </Grid>
   );
 }
@@ -159,11 +229,11 @@ function FulfillDream({ languageName }) {
 export default FulfillDream;
 
 const valueUpto = [
-  { label: "5000", id: 1 },
-  { label: "10000", id: 2 },
-  { label: "15000", id: 3 },
-  { label: "20000", id: 4 },
-  { label: "25000", id: 5 },
-  { label: "30000", id: 6 },
-  { label: "35000", id: 7 },
+  { label: "R$ 100.000,00", id: 1 },
+  { label: "R$ 200.000,00", id: 2 },
+  { label: "R$ 300.000,00", id: 3 },
+  { label: "R$ 500.000,00", id: 4 },
+  { label: "R$ 700.000,00", id: 5 },
+  { label: "R$ 1.000.000,00", id: 6 },
+  { label: "R$ 10.000.000,00", id: 7 },
 ];

@@ -1,17 +1,24 @@
 import "../styles/globals.css";
 import "@fontsource/lato";
-
 import { createTheme, CssBaseline, ThemeProvider } from "@mui/material";
-import React, { useState } from "react";
-import { SessionProvider } from "next-auth/react";
+import React, { useEffect, useState } from "react";
+import { getSession, SessionProvider } from "next-auth/react";
 import { Provider } from "react-redux";
 import { configureStore } from "../src/redux/store";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
+import { Toaster } from "react-hot-toast";
+import {
+  QueryCache,
+  QueryClient,
+  QueryClientProvider,
+} from "@tanstack/react-query";
 import { useRouter } from "next/router";
 import { _gaId } from "consts";
+import MainLayout from "@/component/layout/Main/MainLayout";
+import AppLayout from "@/component/layout/App/AppLayout";
 
-function MyApp({ Component, pageProps: { session, ...pageProps } }) {
+function MyApp({ Component, pageProps: { session, language, ...pageProps } }) {
   const theme = createTheme({
     typography: {
       fontFamily: ["Lato", "sans-serif", "Inter"].join(","),
@@ -47,31 +54,75 @@ function MyApp({ Component, pageProps: { session, ...pageProps } }) {
     };
   }, [router.events]);
 
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+
+  useEffect(() => {
+    const checkSession = async () => {
+      const session = await getSession();
+      setIsLoggedIn(!!session);
+    };
+    checkSession();
+  }, []);
+
+  const getLayout = () => {
+    if (
+      isLoggedIn &&
+      (router.pathname.includes("/my-properties") ||
+        router.pathname.includes("/proposals") ||
+        router.pathname.includes("/schedules") ||
+        router.pathname.includes("/brokers") ||
+        router.pathname.includes("/faq") ||
+        router.pathname.includes("/add-company"))
+      // router.pathname.includes("/profile")
+    ) {
+      return AppLayout;
+    }
+    return MainLayout;
+  };
+
+  const Layout = getLayout();
+
+  const queryClient = new QueryClient({
+    defaultOptions: {
+      queries: {
+        retry: false,
+        refetchOnmount: false,
+        refetchOnReconnect: false,
+        refetchOnWindowFocus: false,
+        staleTime: 5 * 60 * 1000,
+      },
+    },
+    queryCache: new QueryCache({
+      onError(error, query) {
+        query.meta?.onError?.(error);
+      },
+      onSuccess(data, query) {
+        query.meta?.onSuccess?.(data);
+      },
+    }),
+  });
+
   return (
     <ThemeProvider theme={theme}>
       <CssBaseline />
       <SessionProvider session={session} refetchInterval={5 * 60}>
-        <Provider store={configureStore()}>
-          <Component
-            {...pageProps}
-            loginOpen={loginOpen}
-            setLoginOpen={setLoginOpen}
-            handleLoginClose={handleLoginClose}
-            handleLoginOpen={handleLoginOpen}
-          />
-        </Provider>
+        <QueryClientProvider client={queryClient}>
+          <Provider store={configureStore()}>
+            <Layout language={language}>
+              <Component
+                {...pageProps}
+                loginOpen={loginOpen}
+                setLoginOpen={setLoginOpen}
+                handleLoginClose={handleLoginClose}
+                handleLoginOpen={handleLoginOpen}
+              />
+              <Toaster />
+            </Layout>
+          </Provider>
+        </QueryClientProvider>
       </SessionProvider>
     </ThemeProvider>
   );
 }
 
 export default MyApp;
-// import { useRouter } from "next/router";
-// import { useEffect } from "react";
-// import "@fontsource/tajawal";
-
-// function MyApp({ Component, pageProps }) {
-//   return <Component {...pageProps} />;
-// }
-
-// export default MyApp;

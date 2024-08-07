@@ -1,4 +1,12 @@
-import { Box, Button, Grid, Pagination, Skeleton, Stack } from "@mui/material";
+import {
+  Box,
+  Button,
+  Grid,
+  LinearProgress,
+  Pagination,
+  Skeleton,
+  Stack,
+} from "@mui/material";
 import React, { useEffect } from "react";
 import PendantsCard from "../pendantsCard/PendantsCard";
 import { useDispatch, useSelector } from "react-redux";
@@ -7,53 +15,65 @@ import { useRouter } from "next/router";
 import { Language } from "@mui/icons-material";
 import { useSession } from "next-auth/react";
 import dayjs from "dayjs";
+import { useGetPropertyQuery } from "@/queries/useGetPropertyQuery";
 
-function Pendants({ languageName }) {
+function Pendants({ languageName, loadingRefetch }) {
   const dispatch = useDispatch();
   const router = useRouter();
   const { query } = router;
 
   const { data: session } = useSession();
 
-  const [page, setPage] = React.useState(+query?.page || 1);
+  // const [page, setPage] = React.useState(+query?.page || 1);
 
-  useEffect(() => {
-    dispatch(
-      findPropertyData({
-        ...query,
-        status: "approved",
-        page: query?.page ? query?.page : 1,
-        per_page: 9,
-        proposal_status: "pending",
-      })
-    );
-  }, [dispatch, query]);
+  // useEffect(() => {
+  //   dispatch(
+  //     findPropertyData({
+  //       ...query,
+  //       status: "approved",
+  //       page: query?.page ? query?.page : 1,
+  //       per_page: 9,
+  //       proposal_status: "pending",
+  //     })
+  //   );
+  // }, [dispatch, query]);
 
-  const pendingProperty = useSelector((state) => state.property.propertyData);
+  // const pendingProperty = useSelector((state) => state.property.propertyData);
   // console.log({ pendingProperty });
   // const timeString = dayjs(
   //   "2023-06-14T07:36:38.000000Z",
   //   "YYYY-MM-DD+h:mm"
   // ).format("HH:mm:00");
 
-  const Loading = useSelector((state) => state.property.loading);
+  const [page, setPage] = React.useState(1);
+  useEffect(() => {
+    setPage(+query?.page);
+  }, [query]);
+
+  const {
+    data: pendingProperty,
+    isLoading: Loading,
+    refetch,
+    isFetched,
+    isFetching,
+  } = useGetPropertyQuery({
+    ...query,
+    proposal_status: "pending",
+    status: "approved",
+    page: page || 1,
+    per_page: 9,
+  });
 
   const handlePageChange = (event, value) => {
     setPage(value);
-    dispatch(
-      findPropertyData({
-        status: "approved",
-        page: value,
-        per_page: 9,
-        proposal_status: "pending",
-      })
-    );
     router.replace({
-      pathname: "/proposals",
-      query: { ...router.query, page: value, per_page: 9 },
+      query: { ...router.query, page: value },
     });
-    // setData(datas.slice(firstIndex + pageSize * (value - 1), pageSize * value));
   };
+
+  useEffect(() => {
+    refetch();
+  }, [page, query, refetch]);
 
   if (Loading) {
     return (
@@ -70,12 +90,25 @@ function Pendants({ languageName }) {
       </Grid>
     );
   }
+
+  if (isFetched && isFetching) {
+    return (
+      <Box sx={{ width: "100%" }}>
+        <LinearProgress />
+      </Box>
+    );
+  }
   return (
     <Box>
       <Grid container spacing={2}>
         {pendingProperty?.data?.map((data, index) => (
           <Grid key={index} item xs={12} sm={12} md={12} lg={4} xl={4}>
-            <PendantsCard propertyData={data} languageName={languageName} />
+            <PendantsCard
+              propertyData={data}
+              languageName={languageName}
+              refetch={refetch}
+              loadingRefetch={loadingRefetch}
+            />
           </Grid>
         ))}
       </Grid>

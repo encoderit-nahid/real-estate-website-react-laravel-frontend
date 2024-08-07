@@ -7,20 +7,26 @@ import Box from "@mui/material/Box";
 import Image from "next/image";
 import home from "../../../../public/Images/Rectangle 1814.svg";
 import photos from "../../../../public/Images/photos.svg";
+// import AspectRatio from "@mui/joy/AspectRatio";
+
 import AutoAwesomeMotionOutlinedIcon from "@mui/icons-material/AutoAwesomeMotionOutlined";
 import RedoOutlinedIcon from "@mui/icons-material/RedoOutlined";
 import CabinOutlinedIcon from "@mui/icons-material/CabinOutlined";
 import MapOutlinedIcon from "@mui/icons-material/MapOutlined";
 import SignpostOutlinedIcon from "@mui/icons-material/SignpostOutlined";
-import ReactPannellum, { getConfig } from "react-pannellum";
 import BaseGoogleMap from "../../IAmOwner/map/BaseGoogleMap";
 import { Grid } from "@mui/material";
 import { _baseURL, _imageURL } from "../../../../consts";
 import BaseStreetView from "../../reuseable/baseStreetView/BaseStreetView";
+import OndemandVideoOutlinedIcon from "@mui/icons-material/OndemandVideoOutlined";
 import { useEffect } from "react";
 import { useState } from "react";
 import en from "locales/en";
 import pt from "locales/pt";
+import VideoCarousel from "../VideoCarousel/VideoCarousel";
+import { getVideoIdFromLink } from "@/utils/getVideoIdFromLink";
+import ImageCarousel from "../ImageCarousel/ImageCarousel";
+import useWindowDimensions from "@/hooks/useCurrentDisplaySize";
 
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
@@ -33,13 +39,7 @@ function TabPanel(props) {
       aria-labelledby={`vertical-tab-${index}`}
       {...other}
     >
-      {value === index && (
-        <Box>
-          <Typography component={"span"} variant={"body2"}>
-            {children}
-          </Typography>
-        </Box>
-      )}
+      {value === index && <Box>{children}</Box>}
     </div>
   );
 }
@@ -63,15 +63,27 @@ function SliderView({
   selectImage,
   addressData,
   languageName,
+  videos,
+  images,
   others,
 }) {
   const t = languageName === "en" ? en : pt;
 
   const [value, setValue] = React.useState(0);
+  const { width, height } = useWindowDimensions();
 
-  //   function get_url_extension( selectImage ) {
-  //     return selectImage.split(/[#?]/)[0].split('.').pop().trim();
-  // }
+  const videoIds = videos?.map((data) => {
+    console.log({ data });
+    const videoId = getVideoIdFromLink(data?.file_path);
+    return videoId;
+  });
+
+  const imageUrls = images?.map((data) => {
+    return data?.file_path;
+  });
+
+  // console.log({ videoIds });
+  // const videoLinks = ["P5VnLiGUmtY", "6MrCy95f93M", "5zWTInJqD5k"];
 
   const handleChange = (event, newValue) => {
     setValue(+newValue);
@@ -95,9 +107,9 @@ function SliderView({
     autoLoad: true,
   };
   const style = {
-    width: "850px",
-    height: "450px",
-    // background: "#000000",
+    width: "100ppx",
+    height: "800px",
+    background: "#000000",
   };
 
   const handleTabClick = (data) => {
@@ -114,6 +126,7 @@ function SliderView({
         bgcolor: "background.paper",
         display: "flex",
         // height: 224,
+        width: "100%",
       }}
     >
       <Tabs
@@ -123,7 +136,8 @@ function SliderView({
         value={value}
         onChange={handleChange}
         aria-label="Vertical tabs example"
-        sx={{ width: { md: "35%", lg: "25%", xl: "20%", xxl: "15%" } }}
+
+        // sx={{ width: { md: "35%", lg: "25%", xl: "20%", xxl: "15%" } }}
         // sx={{ borderRight: 1, borderColor: "divider" }}
       >
         <Tab
@@ -132,10 +146,11 @@ function SliderView({
             fontSize: "14px",
             color: "#4B4B66",
             fontWeight: "400",
-            px: 3,
+            // backgroundColor: "#000",
+            // px: 3,
             py: 2,
             textTransform: "none",
-            width: `${value === 2 ? "20vh" : "20vh"}`,
+            // width: `${value === 0 ? "20vh" : "20vh"}`,
             boxShadow: `${
               value === 0 ? "0px 4px 24px rgba(69, 38, 177, 0.13)" : ""
             }`,
@@ -145,13 +160,19 @@ function SliderView({
                 ? "polygon(0% 0%, 90% 0, 100% 50%, 91% 100%, 0% 100%)"
                 : ""
             }`,
+            justifyContent: "flex-start",
+
             borderRight: `${value === 0 ? "2px solid #F9F9FB" : ""}`,
             borderBottom: `${value === 0 ? "2px solid #F9F9FB" : ""}`,
             borderTop: `${value === 0 ? "2px solid #F9F9FB" : ""}`,
+
+            // pl: 5,
           }}
           icon={
             <AutoAwesomeMotionOutlinedIcon
-              sx={{ color: `${value === 0 ? "#0E97F7" : ""}` }}
+              sx={{
+                color: `${value === 0 ? "#0E97F7" : ""}`,
+              }}
             />
           }
           // icon={<Image src={photos} alt="photos" />}
@@ -159,7 +180,7 @@ function SliderView({
           iconPosition="start"
           {...a11yProps(0)}
         />
-        <Tab
+        {/* <Tab
           sx={{
             fontSize: "14px",
             color: "#4B4B66",
@@ -167,7 +188,7 @@ function SliderView({
             px: 3,
             py: 2,
             textTransform: "none",
-            width: `${value === 2 ? "20vh" : "20vh"}`,
+            width: `${value === 1 ? "20vh" : "20vh"}`,
             boxShadow: `${
               value === 1 ? "0px 4px 24px rgba(69, 38, 177, 0.13)" : ""
             }`,
@@ -190,38 +211,41 @@ function SliderView({
           }
           iconPosition="start"
           {...a11yProps(1)}
-        />
+        /> */}
         <Tab
           sx={{
             fontSize: "14px",
             color: "#4B4B66",
             fontWeight: "400",
-            px: 3,
+            justifyContent: "flex-start",
+            // px: 3,
             py: 2,
             textTransform: "none",
-            width: `${value === 2 ? "20vh" : "20vh"}`,
+            // width: `${value === 1 ? "20vh" : "20vh"}`,
             boxShadow: `${
-              value === 2 ? "0px 4px 24px rgba(69, 38, 177, 0.13)" : ""
+              value === 1 ? "0px 4px 24px rgba(69, 38, 177, 0.13)" : ""
             }`,
-            borderLeft: `${value === 2 ? "2px solid #0E97F7" : ""}`,
+            borderLeft: `${value === 1 ? "2px solid #0E97F7" : ""}`,
             clipPath: `${
-              value === 2
+              value === 1
                 ? "polygon(0% 0%, 90% 0, 100% 50%, 91% 100%, 0% 100%)"
                 : ""
             }`,
-            borderRight: `${value === 2 ? "2px solid #F9F9FB" : ""}`,
-            borderBottom: `${value === 2 ? "2px solid #F9F9FB" : ""}`,
-            borderTop: `${value === 2 ? "2px solid #F9F9FB" : ""}`,
+            borderRight: `${value === 1 ? "2px solid #F9F9FB" : ""}`,
+            borderBottom: `${value === 1 ? "2px solid #F9F9FB" : ""}`,
+            borderTop: `${value === 1 ? "2px solid #F9F9FB" : ""}`,
+
+            // pl: 5,
           }}
           icon={
             <CabinOutlinedIcon
-              sx={{ color: `${value === 2 ? "#0E97F7" : ""}` }}
+              sx={{ color: `${value === 1 ? "#0E97F7" : ""}` }}
             />
           }
           iconPosition="start"
           onClick={() => handleTabClick("condominium")}
           label={t["Condominium"]}
-          {...a11yProps(2)}
+          {...a11yProps(1)}
         />
         {others === true && (
           <Tab
@@ -229,10 +253,48 @@ function SliderView({
               fontSize: "14px",
               color: "#4B4B66",
               fontWeight: "400",
-              px: 3,
+              // px: 3,
               py: 2,
               textTransform: "none",
-              width: `${value === 3 ? "20vh" : "20vh"}`,
+              // width: `${value === 2 ? "20vh" : "20vh"}`,
+              justifyContent: "flex-start",
+              boxShadow: `${
+                value === 2 ? "0px 4px 24px rgba(69, 38, 177, 0.13)" : ""
+              }`,
+              borderLeft: `${value === 2 ? "2px solid #0E97F7" : ""}`,
+              clipPath: `${
+                value === 2
+                  ? "polygon(0% 0%, 90% 0, 100% 50%, 91% 100%, 0% 100%)"
+                  : ""
+              }`,
+              borderRight: `${value === 2 ? "2px solid #F9F9FB" : ""}`,
+              borderBottom: `${value === 2 ? "2px solid #F9F9FB" : ""}`,
+              borderTop: `${value === 2 ? "2px solid #F9F9FB" : ""}`,
+
+              // pl: 5,
+            }}
+            label={t["Location"]}
+            icon={
+              <MapOutlinedIcon
+                sx={{ color: `${value === 2 ? "#0E97F7" : ""}` }}
+              />
+            }
+            onClick={() => handleTabClick("location")}
+            iconPosition="start"
+            {...a11yProps(2)}
+          />
+        )}
+        {others === true && (
+          <Tab
+            sx={{
+              fontSize: "14px",
+              color: "#4B4B66",
+              fontWeight: "400",
+              // px: 3,
+              py: 2,
+              textTransform: "none",
+              justifyContent: "flex-start",
+              // width: `${value === 3 ? "20vh" : "20vh"}`,
               boxShadow: `${
                 value === 3 ? "0px 4px 24px rgba(69, 38, 177, 0.13)" : ""
               }`,
@@ -245,69 +307,80 @@ function SliderView({
               borderRight: `${value === 3 ? "2px solid #F9F9FB" : ""}`,
               borderBottom: `${value === 3 ? "2px solid #F9F9FB" : ""}`,
               borderTop: `${value === 3 ? "2px solid #F9F9FB" : ""}`,
-            }}
-            label={t["Location"]}
-            icon={
-              <MapOutlinedIcon
-                sx={{ color: `${value === 3 ? "#0E97F7" : ""}` }}
-              />
-            }
-            onClick={() => handleTabClick("location")}
-            iconPosition="start"
-            {...a11yProps(3)}
-          />
-        )}
-        {others === true && (
-          <Tab
-            sx={{
-              fontSize: "14px",
-              color: "#4B4B66",
-              fontWeight: "400",
-              px: 3,
-              py: 2,
-              textTransform: "none",
-              width: `${value === 4 ? "20vh" : "20vh"}`,
-              boxShadow: `${
-                value === 4 ? "0px 4px 24px rgba(69, 38, 177, 0.13)" : ""
-              }`,
-              borderLeft: `${value === 4 ? "2px solid #0E97F7" : ""}`,
-              clipPath: `${
-                value === 4
-                  ? "polygon(0% 0%, 90% 0, 100% 50%, 91% 100%, 0% 100%)"
-                  : ""
-              }`,
-              borderRight: `${value === 4 ? "2px solid #F9F9FB" : ""}`,
-              borderBottom: `${value === 4 ? "2px solid #F9F9FB" : ""}`,
-              borderTop: `${value === 4 ? "2px solid #F9F9FB" : ""}`,
+              textWrap: "nowrap",
+
+              // pl: 5,
             }}
             icon={
               <SignpostOutlinedIcon
-                sx={{ color: `${value === 4 ? "#0E97F7" : ""}` }}
+                sx={{ color: `${value === 3 ? "#0E97F7" : ""}` }}
               />
             }
             iconPosition="start"
             label={t["Street view"]}
             onClick={() => handleTabClick("street_view")}
-            {...a11yProps(4)}
+            {...a11yProps(3)}
           />
         )}
+
+        <Tab
+          label={t["Video"]}
+          sx={{
+            fontSize: "14px",
+            color: "#4B4B66",
+            fontWeight: "400",
+            // px: 3,
+            py: 2,
+            textTransform: "none",
+            justifyContent: "flex-start",
+            // width: `${value === 4 ? "20vh" : "20vh"}`,
+            boxShadow: `${
+              value === 4 ? "0px 4px 24px rgba(69, 38, 177, 0.13)" : ""
+            }`,
+            borderLeft: `${value === 4 ? "2px solid #0E97F7" : ""}`,
+            clipPath: `${
+              value === 4
+                ? "polygon(0% 0%, 90% 0, 100% 50%, 91% 100%, 0% 100%)"
+                : ""
+            }`,
+            borderRight: `${value === 4 ? "2px solid #F9F9FB" : ""}`,
+            borderBottom: `${value === 4 ? "2px solid #F9F9FB" : ""}`,
+            borderTop: `${value === 4 ? "2px solid #F9F9FB" : ""}`,
+
+            // pl: 5,
+          }}
+          icon={
+            <OndemandVideoOutlinedIcon
+              sx={{ color: `${value === 4 ? "#0E97F7" : ""}` }}
+            />
+          }
+          // icon={<Image src={photos} alt="photos" />}
+          onClick={() => handleTabClick("videos")}
+          iconPosition="start"
+          {...a11yProps(4)}
+        />
       </Tabs>
       <TabPanel value={value} index={0}>
         {selectImage != null ? (
-          <Image
-            loader={myLoader}
-            src={`${selectImage}`}
-            alt="home"
-            width={800}
-            height={400}
-          />
+          <Box
+            sx={{
+              aspectRatio: "2 / 1",
+
+              width: `${width - 300}px`,
+            }}
+          >
+            <ImageCarousel imageUrls={imageUrls} imagesPerSlide={1} />
+          </Box>
         ) : (
-          <Grid
-            container
-            direction="row"
-            justifyContent="center"
-            alignItems="center"
-            sx={{ height: "30vh", paddingLeft: "25vh" }}
+          <Box
+            sx={{
+              background: "#f1f1f1",
+              aspectRatio: "2 / 1",
+              width: `${width - 300}px`,
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+            }}
           >
             <Typography
               variant="p"
@@ -319,29 +392,20 @@ function SliderView({
             >
               nenhuma imagem encontrada
             </Typography>
-          </Grid>
+          </Box>
         )}
       </TabPanel>
+
       <TabPanel value={value} index={1}>
-        {selectImage != null &&
-        selectImage?.split(/[#?]/)[0].split(".").pop().trim() !== "webp" ? (
-          <div key={selectImage}>
-            {/* {`${_baseURL}/storage/${selectImage}`}
-						<Image
-							loader={myLoader}
-							src={`${_baseURL}/storage/${selectImage}`}
-							alt="home"
-							width={800}
-							height={400}
-						/> */}
-            <ReactPannellum
-              id="1"
-              sceneId="firstScene"
-              imageSource={`${_imageURL}/${selectImage}`}
-              config={config}
-              // style={style}
-            />
-          </div>
+        {selectImage != null ? (
+          <Box
+            sx={{
+              aspectRatio: "2 / 1",
+              width: `${width - 300}px`,
+            }}
+          >
+            <ImageCarousel imageUrls={imageUrls} imagesPerSlide={1} />
+          </Box>
         ) : (
           <Grid
             container
@@ -364,47 +428,35 @@ function SliderView({
         )}
       </TabPanel>
       <TabPanel value={value} index={2}>
-        {selectImage != null ? (
-          <Image
-            loader={myLoader}
-            src={`${selectImage}`}
-            alt="home"
-            width={800}
-            height={400}
-          />
-        ) : (
-          <Grid
-            container
-            direction="row"
-            justifyContent="center"
-            alignItems="center"
-            sx={{ height: "30vh", paddingLeft: "25vh" }}
-          >
-            <Typography
-              variant="p"
-              sx={{
-                color: " #7450F0",
-                fontWeight: "600",
-                fontSize: "20px",
-              }}
-            >
-              nenhuma imagem encontrada
-            </Typography>
-          </Grid>
-        )}
+        <Box
+          sx={{
+            aspectRatio: "2 / 1",
+            width: `${width - 300}px`,
+          }}
+        >
+          <BaseGoogleMap markersData={markersData} />
+        </Box>
       </TabPanel>
       <TabPanel value={value} index={3}>
-        <BaseGoogleMap
-          height={"59vh"}
-          width={"55vw"}
-          markersData={markersData}
-        />
+        <Box
+          sx={{
+            aspectRatio: "2 / 1",
+            width: `${width - 300}px`,
+          }}
+        >
+          <BaseStreetView addressData={addressData} />
+        </Box>
       </TabPanel>
       <TabPanel value={value} index={4}>
-        {/* <Typography variant="p" sx={{ visibility: "hidden", width: "100%" }}>
-          dfsfffffffffffffffffffffffdsfffffffffffffffffffffffffffffffffffdsdsdsdsdsdsdsdsdsdsdsdsdsdsdsdsfsdfsdfsd
-        </Typography> */}
-        <BaseStreetView addressData={addressData} />
+        <Box
+          sx={{
+            aspectRatio: "2 / 1",
+            backgroundColor: "#F1F1F1",
+            width: `${width - 300}px`,
+          }}
+        >
+          <VideoCarousel videoLinks={videoIds} ratio="2 / 1" />
+        </Box>
       </TabPanel>
     </Box>
   );

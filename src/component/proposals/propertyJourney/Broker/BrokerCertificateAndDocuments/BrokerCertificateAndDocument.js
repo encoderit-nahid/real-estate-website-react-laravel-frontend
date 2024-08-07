@@ -37,6 +37,7 @@ import en from "locales/en";
 import pt from "locales/pt";
 import { useRouter } from "next/router";
 import MuiAlert from "@mui/material/Alert";
+import BaseButton from "@/component/reuseable/baseButton/BaseButton";
 
 const Alert = React.forwardRef(function Alert(props, ref) {
   return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
@@ -121,22 +122,50 @@ function BrokerCertificateAndDocument({
       <Grid
         container
         direction="row"
-        justifyContent="flex-start"
+        justifyContent="space-between"
         alignItems="flex-start"
       >
-        <Image height={40} width={60} src={certificate} alt="handshake" />
-        <Typography
-          variant="p"
+        <Box
           sx={{
-            color: "#002152",
-            fontSize: "24px",
-            fontWeight: "700",
-            lineHeight: "32px",
-            ml: 1,
+            display: "flex",
+            alignItems: "center",
           }}
         >
-          {t["Certificates and documents"]}
-        </Typography>
+          <Image height={40} width={60} src={certificate} alt="handshake" />
+          <Typography
+            variant="p"
+            sx={{
+              color: "#002152",
+              fontSize: "24px",
+              fontWeight: "700",
+              lineHeight: "32px",
+              ml: 1,
+            }}
+          >
+            {t["Certificates and documents"]}
+          </Typography>
+        </Box>
+        <Box>
+          <BaseButton
+            type="button"
+            variant="outlined"
+            color="error"
+            sx="error"
+            handleFunction={() => {
+              router.replace({
+                pathname:"/proposals",
+                query: {
+                  proposal_status:"accepted",
+                  status: "approved",
+                  page: 1,
+                  per_page: 9
+                }
+              });
+            }}
+          >
+            {t["Cancel"]}
+          </BaseButton>
+        </Box>
       </Grid>
       <Box sx={{ mt: { xs: 2, sm: 2, md: 2, lg: 4 } }}>
         <Grid container spacing={2}>
@@ -154,7 +183,7 @@ function BrokerCertificateAndDocument({
             </Grid>
           )}
           <Grid item xs={12} sm={12} md={12} lg={8}>
-            <Grid
+            {/* <Grid
               container
               direction="row"
               justifyContent="space-between"
@@ -205,7 +234,7 @@ function BrokerCertificateAndDocument({
                   />
                 </FormControl>
               )}
-            </Grid>
+            </Grid> */}
             <Grid container spacing={3}>
               {Loading
                 ? [0, 1, 2].map((data, index) => (
@@ -228,33 +257,25 @@ function BrokerCertificateAndDocument({
                     </Grid>
                   ))
                 : allCertificateData?.map((data, index) => (
-                    <Grid
-                      key={data?.id}
-                      item
-                      xs={12}
-                      sm={12}
-                      md={12}
-                      lg={6}
-                      sx={{ mt: 1 }}
-                    >
+                    <Grid key={data?.id} item xs={12} sm={12} md={12} lg={6}>
                       <Box
-                        onClick={() => {
-                          if (!certificateTypes?.includes(data.id)) {
-                            if (session?.user?.role === "buyer") {
-                              setCertificateTypes((current) => [
-                                ...current,
-                                data.id,
-                              ]);
-                            }
-                          } else {
-                            const newArray = certificateTypes?.filter(
-                              (value) => value !== data.id
-                            );
-                            if (session?.user?.role === "buyer") {
-                              setCertificateTypes(newArray);
-                            }
-                          }
-                        }}
+                        // onClick={() => {
+                        //   if (!certificateTypes?.includes(data.id)) {
+                        //     if (session?.user?.role === "buyer") {
+                        //       setCertificateTypes((current) => [
+                        //         ...current,
+                        //         data.id,
+                        //       ]);
+                        //     }
+                        //   } else {
+                        //     const newArray = certificateTypes?.filter(
+                        //       (value) => value !== data.id
+                        //     );
+                        //     if (session?.user?.role === "buyer") {
+                        //       setCertificateTypes(newArray);
+                        //     }
+                        //   }
+                        // }}
                         sx={{
                           background: `${
                             certificateTypes?.includes(data.id)
@@ -300,7 +321,7 @@ function BrokerCertificateAndDocument({
                     </Grid>
                   ))}
             </Grid>
-            {session?.user?.role === "buyer" && (
+            {/* {session?.user?.role === "buyer" && (
               <Grid
                 container
                 direction="row"
@@ -330,7 +351,7 @@ function BrokerCertificateAndDocument({
                   {!loading && t["requested documents"]}
                 </Button>
               </Grid>
-            )}
+            )} */}
           </Grid>
         </Grid>
         <Grid

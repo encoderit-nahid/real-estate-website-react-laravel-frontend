@@ -11,11 +11,16 @@ function BaseTextField({
   type,
   sx,
   InputProps,
+  InputLabelProps,
+  inputProps,
+  autoComplete,
   error,
   required,
-  desabilitado,
-  referencia,
-  onBlur
+  multiline,
+  disabled,
+  helperText,
+  onBlur,
+  defaultValue,
 }) {
   return (
     <TextField
@@ -23,18 +28,23 @@ function BaseTextField({
       size={size}
       label={label}
       type={type}
+      InputLabelProps={InputLabelProps}
+      inputProps={inputProps}
       placeholder={placeholder}
+      autoComplete={autoComplete}
       value={value}
       onChange={onChange}
-      onBlur={onBlur}
       name={name}
       variant="outlined"
       sx={sx}
+      disabled={disabled}
       InputProps={InputProps}
       error={error}
+      multiline={multiline}
       required={required}
-      disabled={desabilitado}
-      inputRef={referencia}
+      helperText={helperText}
+      onBlur={onBlur}
+      defaultValue={defaultValue}
     />
   );
 }

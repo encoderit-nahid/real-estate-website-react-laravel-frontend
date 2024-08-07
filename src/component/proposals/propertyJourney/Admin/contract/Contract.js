@@ -26,6 +26,7 @@ import en from "locales/en";
 import pt from "locales/pt";
 import { useRouter } from "next/router";
 import MuiAlert from "@mui/material/Alert";
+import BaseButton from "@/component/reuseable/baseButton/BaseButton";
 
 const Alert = React.forwardRef(function Alert(props, ref) {
   return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
@@ -104,22 +105,50 @@ function Contract({
       <Grid
         container
         direction="row"
-        justifyContent="flex-start"
+        justifyContent="space-between"
         alignItems="flex-start"
       >
-        <Image height={40} width={60} src={handshake} alt="handshake" />
-        <Typography
-          variant="p"
+        <Box
           sx={{
-            color: "#002152",
-            fontSize: "24px",
-            fontWeight: "700",
-            lineHeight: "32px",
-            ml: 1,
+            display: "flex",
+            alignItems: "center",
           }}
         >
-          {t["Digital contract"]}
-        </Typography>
+          <Image height={40} width={60} src={handshake} alt="handshake" />
+          <Typography
+            variant="p"
+            sx={{
+              color: "#002152",
+              fontSize: "24px",
+              fontWeight: "700",
+              lineHeight: "32px",
+              ml: 1,
+            }}
+          >
+            {t["Digital contract"]}
+          </Typography>
+        </Box>
+        <Box>
+          <BaseButton
+            type="button"
+            variant="outlined"
+            color="error"
+            sx="error"
+            handleFunction={() => {
+              router.replace({
+                pathname:"/proposals",
+                query: {
+                  proposal_status:"accepted",
+                  status: "approved",
+                  page: 1,
+                  per_page: 9
+                }
+              });
+            }}
+          >
+            {t["Cancel"]}
+          </BaseButton>
+        </Box>
       </Grid>
       <Box sx={{ mt: { xs: 2, sm: 2, md: 2, lg: 4 } }}>
         <Grid container spacing={2}>
@@ -255,7 +284,7 @@ function Contract({
                       25
                     )}
                   </Typography>
-                  <Typography
+                  {/* <Typography
                     variant="h1"
                     sx={{
                       color: "#6C7A84",
@@ -266,9 +295,9 @@ function Contract({
                     }}
                   >
                     {`${t["subscriptions"]} (2/5)`}
-                  </Typography>
+                  </Typography> */}
                 </Box>
-                <Box sx={{ width: "100%", px: 2, my: 1 }}>
+                {/* <Box sx={{ width: "100%", px: 2, my: 1 }}>
                   <LinearProgress
                     sx={{
                       "& .MuiLinearProgress-barColorPrimary": {
@@ -284,7 +313,7 @@ function Contract({
                     variant="determinate"
                     value={progress}
                   />
-                </Box>
+                </Box> */}
                 <Grid container spacing={2} sx={{ px: 2, my: 1 }}>
                   <Grid item xs={12} sm={12} md={12} lg={6}>
                     <Button
@@ -306,7 +335,7 @@ function Contract({
                         textTransform: "none",
                       }}
                     >
-                      Download
+                        Baixar
                     </Button>
                   </Grid>
                   <Grid item xs={12} sm={12} md={12} lg={6}>
@@ -378,7 +407,7 @@ function Contract({
           alignItems="center"
           sx={{ mt: 2, mb: 2 }}
         >
-          <Button
+          {/* <Button
             color="inherit"
             onClick={handleBack}
             // disabled={activeStep === 0}
@@ -396,7 +425,7 @@ function Contract({
             }}
           >
             {t["come back"]}
-          </Button>
+          </Button> */}
 
           <Button
             onClick={handleContractNext}

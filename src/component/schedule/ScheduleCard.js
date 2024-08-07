@@ -12,15 +12,21 @@ import EmailOutlinedIcon from "@mui/icons-material/EmailOutlined";
 import PhoneEnabledOutlinedIcon from "@mui/icons-material/PhoneEnabledOutlined";
 import dayjs from "dayjs";
 import { useDispatch } from "react-redux";
-import { cancelSchedule } from "../../redux/schedules/actions";
+import {
+  cancelSchedule,
+  completeSchedule,
+} from "../../redux/schedules/actions";
 import { _baseURL, _imageURL } from "../../../consts";
 import en from "locales/en";
 import pt from "locales/pt";
 import { useSession } from "next-auth/react";
+import { useRouter } from "next/router";
+import { formatBrazilianCurrency } from "@/utils/useUtilities";
 
 function ScheduleCard({ data, languageName }) {
   const t = languageName === "en" ? en : pt;
   const [loading, setLoading] = useState(false);
+  const [compelteLoading, setCompleteLoading] = useState(false);
   const { data: session } = useSession();
   const dispatch = useDispatch();
   const handleCancelSchedule = (id) => {
@@ -32,6 +38,15 @@ function ScheduleCard({ data, languageName }) {
     setLoading(false);
   };
 
+  const handleCompleteSchedule = (id) => {
+    setCompleteLoading(true);
+    const data = {
+      schedule_id: id,
+    };
+    dispatch(completeSchedule(data));
+    setCompleteLoading(false);
+  };
+
   const myLoader = ({ src }) => {
     return `${_imageURL}/${src}`;
   };
@@ -39,15 +54,13 @@ function ScheduleCard({ data, languageName }) {
   const [pastedObject, setPastedObject] = useState(null);
 
   const handleCopy = (data) => {
-    const copiedString = JSON.stringify({
-      aluguel: data?.property?.brl_rent,
-      "hora criada": data?.property?.created_at,
-      endereço: data?.property?.address?.address,
-      "nome do comprador": data?.buyer?.name,
-      "e-mail do comprador": data?.buyer?.email,
-      "telefone do Comprador": data?.buyer?.phone,
-      observação: data?.buyer?.observation,
-    });
+    const copiedString =
+      `aluguel: ${data?.property?.brl_rent}\n` +
+      `hora criada: ${data?.property?.created_at}\n` +
+      `endereço: ${data?.property?.address?.address}\n` +
+      `nome do comprador: ${data?.buyer?.name}\n` +
+      `e-mail do comprador: ${data?.buyer?.email}\n` +
+      `telefone do Comprador: ${data?.buyer?.phone}\n`;
     navigator.clipboard
       .writeText(copiedString)
       .then(() => {
@@ -94,6 +107,8 @@ function ScheduleCard({ data, languageName }) {
     };
   }, []);
 
+  const router = useRouter();
+
   return (
     <Container maxWidth="xl" sx={{ marginTop: 5 }}>
       <Box
@@ -106,18 +121,30 @@ function ScheduleCard({ data, languageName }) {
       >
         <Grid container spacing={{ xs: 0, sm: 0, md: 0, lg: 2, xl: 2, xxl: 2 }}>
           <Grid item xs={12} sm={12} md={12} lg={4} className="rentImage">
-            <Box>
+            <Box
+              sx={{
+                cursor: "pointer",
+                width: "100%",
+                height: "100%",
+                position: "relative",
+              }}
+              onClick={() =>
+                router.push({
+                  pathname: `/visualizacao-da-propriedade/${data?.property?.id}/${data?.property?.property_title}`,
+                })
+              }
+            >
               <Image
                 loader={myLoader}
                 src={`${data?.property?.attachments?.[0]?.file_path}`}
-                height={220}
-                width={300}
+                layout="fill"
+                objectFit="cover"
                 alt="rentImage"
               />
             </Box>
           </Grid>
           <Grid item xs={12} sm={12} md={12} lg={8}>
-            <Grid container spacing={1}>
+            <Grid container spacing={10}>
               <Grid item xs={12} sm={12} md={12} lg={4}>
                 <Grid
                   container
@@ -161,7 +188,7 @@ function ScheduleCard({ data, languageName }) {
                       lineHeight: "32px",
                     }}
                   >
-                    {`${parseInt(data?.property?.brl_rent.replaceAll(".00","").replaceAll(".","").replaceAll("R$","")).toLocaleString("pt-BR",{ style: 'currency', currency: 'BRL' })}`}
+                    {formatBrazilianCurrency(data?.property?.brl_rent)}
                   </Typography>
                   <Typography
                     variant="h6"
@@ -432,6 +459,30 @@ function ScheduleCard({ data, languageName }) {
               }}
               sx={{ ml: { xs: 1, sm: 1, md: 1, lg: 0 } }}
             >
+              <Button
+                disabled={session?.user?.role === "broker"}
+                onClick={() => handleCompleteSchedule(data?.id)}
+                variant="outlined"
+                sx={{
+                  borderColor: "#047857",
+                  color: "#047857",
+                  textTransform: "none",
+                  fontSize: "16px",
+                  fontWeight: "600",
+                  lineHeight: "22px",
+                  mt: { xs: 3, sm: 3, md: 3, lg: 0, xl: 3 },
+                  mb: 1,
+                  "&:hover": {
+                    borderColor: "#047857",
+                    color: "#047857",
+                  },
+                }}
+              >
+                {compelteLoading && (
+                  <CircularProgress size={22} color="inherit" />
+                )}
+                {!compelteLoading && "Visita completa"}
+              </Button>
               <Button
                 disabled={session?.user?.role === "broker"}
                 onClick={() => handleCancelSchedule(data?.id)}

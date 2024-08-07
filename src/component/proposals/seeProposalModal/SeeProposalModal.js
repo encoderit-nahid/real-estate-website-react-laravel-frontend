@@ -5,6 +5,7 @@ import {
   CircularProgress,
   Divider,
   Grid,
+  IconButton,
   List,
   ListItem,
   ListItemAvatar,
@@ -13,11 +14,10 @@ import {
   Typography,
 } from "@mui/material";
 import loginImage from "../../../../public/Images/login.png";
-import React from "react";
+import React, { Fragment } from "react";
 import Image from "next/image";
 import BaseButton from "../../reuseable/button/BaseButton";
 import Link from "next/link";
-import CloseIcon from "@mui/icons-material/Close";
 import rentImage from "../../../../public/Images/rentImage.png";
 import avatar from "../../../../public/Images/AvatarPendant.png";
 import BaseModal from "../../reuseable/baseModal/BaseModal";
@@ -31,6 +31,8 @@ import { propertyAcceptData } from "../../../redux/proposalAccept/actions";
 import { useDispatch, useSelector } from "react-redux";
 import en from "locales/en";
 import pt from "locales/pt";
+import BaseCloseButton from "@/component/reuseable/baseCloseButton/BaseCloseButton";
+import { formatBrazilianCurrency } from "@/utils/useUtilities";
 
 const style = {
   position: "absolute",
@@ -108,7 +110,7 @@ function SeeProposalModal({
         >
           {t["Confirm"]}
         </Typography>
-        <CloseIcon onClick={handleSeeProposalClose} />
+        <BaseCloseButton handleClose={handleSeeProposalClose} />
       </Grid>
       <Box
         sx={{
@@ -168,7 +170,7 @@ function SeeProposalModal({
                       fontWeight: "400",
                     }}
                   >
-                    {propertyData?.ad_type}
+                    {t[propertyData?.ad_type]}
                   </Button>
                   <Button
                     sx={{
@@ -196,7 +198,7 @@ function SeeProposalModal({
                   fontWeight: "500",
                 }}
               >
-                {`${parseInt(propertyData?.brl_rent.replaceAll(".00","").replaceAll(".","").replaceAll("R$","")).toLocaleString("pt-BR",{ style: 'currency', currency: 'BRL' })}`}
+                {formatBrazilianCurrency(propertyData?.brl_rent)}
               </Typography>
               <Typography
                 variant="p"
@@ -290,7 +292,7 @@ function SeeProposalModal({
             fontWeight: "700",
           }}
         >
-          {`${parseInt(proposalData?.total_amount.replaceAll(".00","").replaceAll(".","").replaceAll("R$","")).toLocaleString("pt-BR",{ style: 'currency', currency: 'BRL' })}`}
+          {formatBrazilianCurrency(proposalData?.total_amount)}
         </Typography>
       </Grid>
       <Divider sx={{ mx: 2 }} />
@@ -325,6 +327,111 @@ function SeeProposalModal({
         </Typography>
       </Grid>
       <Divider sx={{ mx: 2 }} />
+      {proposalData?.cash_amount && (
+        <Fragment>
+          <Grid
+            container
+            direction="row"
+            justifyContent="space-between"
+            alignItems="center"
+            sx={{ px: 2, py: 1 }}
+          >
+            <Typography
+              variant="p"
+              sx={{
+                color: "#1A1859",
+                fontSize: "14px",
+                lineHeight: "28px",
+                fontWeight: "400",
+              }}
+            >
+              Valor a vista
+            </Typography>
+            <Typography
+              variant="p"
+              sx={{
+                color: "#1A1859",
+                fontSize: "14px",
+                lineHeight: "28px",
+                fontWeight: "700",
+              }}
+            >
+              {formatBrazilianCurrency(proposalData?.cash_amount)}
+            </Typography>
+          </Grid>
+          <Divider sx={{ mx: 2 }} />
+        </Fragment>
+      )}
+      {proposalData?.payment_per_installment && (
+        <Fragment>
+          <Grid
+            container
+            direction="row"
+            justifyContent="space-between"
+            alignItems="center"
+            sx={{ px: 2, py: 1 }}
+          >
+            <Typography
+              variant="p"
+              sx={{
+                color: "#1A1859",
+                fontSize: "14px",
+                lineHeight: "28px",
+                fontWeight: "400",
+              }}
+            >
+              Valor a prazo
+            </Typography>
+            <Typography
+              variant="p"
+              sx={{
+                color: "#1A1859",
+                fontSize: "14px",
+                lineHeight: "28px",
+                fontWeight: "700",
+              }}
+            >
+              {formatBrazilianCurrency(proposalData?.payment_per_installment)}
+            </Typography>
+          </Grid>
+          <Divider sx={{ mx: 2 }} />
+        </Fragment>
+      )}
+      {proposalData?.no_of_installment && (
+        <Fragment>
+          <Grid
+            container
+            direction="row"
+            justifyContent="space-between"
+            alignItems="center"
+            sx={{ px: 2, py: 1 }}
+          >
+            <Typography
+              variant="p"
+              sx={{
+                color: "#1A1859",
+                fontSize: "14px",
+                lineHeight: "28px",
+                fontWeight: "400",
+              }}
+            >
+              Numero de parcelas
+            </Typography>
+            <Typography
+              variant="p"
+              sx={{
+                color: "#1A1859",
+                fontSize: "14px",
+                lineHeight: "28px",
+                fontWeight: "700",
+              }}
+            >
+              {proposalData?.no_of_installment}
+            </Typography>
+          </Grid>
+          <Divider sx={{ mx: 2 }} />
+        </Fragment>
+      )}
       <Grid container spacing={1} sx={{ px: 1, mt: 3, mb: 2 }}>
         <Grid item xs={12} sm={12} md={12} lg={3}>
           <Button
