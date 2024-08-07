@@ -144,7 +144,7 @@ function ScheduleCard({ data, languageName }) {
             </Box>
           </Grid>
           <Grid item xs={12} sm={12} md={12} lg={8}>
-            <Grid container spacing={1}>
+            <Grid container spacing={10}>
               <Grid item xs={12} sm={12} md={12} lg={4}>
                 <Grid
                   container
