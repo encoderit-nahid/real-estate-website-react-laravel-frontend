@@ -4,9 +4,8 @@ import { useQuery } from "@tanstack/react-query";
 export const useGetPropertyCountQuery = () => {
   return useQuery({
     queryKey: ["/count-property"],
-    // refetchOnMount: true,
     retry: 2,
-    // refetchOnWindowFocus: true,
+    refetchOnWindowFocus: true,
     refetchOnMount: true,
     keepPreviousData: true,
     staleTime: 0,

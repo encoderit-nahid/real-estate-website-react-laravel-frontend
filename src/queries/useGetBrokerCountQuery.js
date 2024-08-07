@@ -6,7 +6,7 @@ export const useGetBrokerCountQuery = () => {
     queryKey: ["/count-broker"],
     retry: 2,
     refetchOnMount: true,
-    // refetchOnWindowFocus: true,
+    refetchOnWindowFocus: true,
     keepPreviousData: true,
     staleTime: 0,
     queryFn: async () => {

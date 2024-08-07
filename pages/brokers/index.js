@@ -7,6 +7,7 @@ import Typography from "@mui/material/Typography";
 import Box from "@mui/material/Box";
 import {
   Button,
+  CircularProgress,
   Container,
   Grid,
   IconButton,
@@ -103,6 +104,22 @@ export default function Brokers({ language }) {
   // useEffect(() => {
   //   console.log("🟥 ~ Brokers ~ value:", value);
   // }, [value]);
+
+  if (isFetched && isFetching) {
+    return (
+      <Container maxWidth="md" sx={{ px: 2, py: 0 }}>
+      <Grid
+        container
+        direction="row"
+        justifyContent="center"
+        alignItems="center"
+        sx={{ height: "100vh" }}
+      >
+        <CircularProgress size="8rem" />
+      </Grid>
+    </Container>
+    );
+  }
 
   return (
     <Box

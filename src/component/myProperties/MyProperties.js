@@ -6,6 +6,7 @@ import Tab from "@mui/material/Tab";
 import Box from "@mui/material/Box";
 import {
   Button,
+  CircularProgress,
   Container,
   Grid,
   ListItem,
@@ -133,6 +134,22 @@ export default function MyProperties({ language }) {
     );
     loadingRefetch()
   };
+
+  if (isFetched && isFetching) {
+    return (
+      <Container maxWidth="md" sx={{ px: 2, py: 0 }}>
+      <Grid
+        container
+        direction="row"
+        justifyContent="center"
+        alignItems="center"
+        sx={{ height: "100vh" }}
+      >
+        <CircularProgress size="8rem" />
+      </Grid>
+    </Container>
+    );
+  }
 
   return (
     <Box

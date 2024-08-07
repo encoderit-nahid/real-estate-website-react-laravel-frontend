@@ -6,7 +6,7 @@ export const useGetBrokerDataQuery = (params) => {
     queryKey: ["/get-broker"],
     // enabled: !!q,'
     retry: 2,
-    // refetchOnWindowFocus: true,
+    refetchOnWindowFocus: true,
     refetchOnMount: true,
     keepPreviousData: true,
     staleTime: 0,

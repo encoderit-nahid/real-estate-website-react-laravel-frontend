@@ -6,7 +6,7 @@ export const useGetAllProjectsQuery = (params) => {
     queryKey: ["/get-all-projects"],
     // enabled: !!q,'
     retry: 2,
-    // refetchOnWindowFocus: true,
+    refetchOnWindowFocus: true,
     refetchOnMount: true,
     keepPreviousData: true,
     staleTime: 0,
