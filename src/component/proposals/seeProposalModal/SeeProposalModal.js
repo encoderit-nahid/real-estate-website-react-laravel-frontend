@@ -56,6 +56,8 @@ function SeeProposalModal({
   propertyData,
   proposalData,
   languageName,
+  handleProposalAccept,
+  handleProposalRefuse,
 }) {
   const dispatch = useDispatch();
 
@@ -69,19 +71,19 @@ function SeeProposalModal({
   const [refuseId, setRefuseId] = useState("");
   const { query } = useRouter();
 
-  const handleProposalRefuse = (id) => {
-    setRefuseId(id);
-    dispatch(proposalRefuseData(propertyData?.id, id));
-    dispatch(findPropertyData(query));
-  };
+  // const handleProposalRefuse = (id) => {
+  //   setRefuseId(id);
+  //   dispatch(proposalRefuseData(propertyData?.id, id));
+  //   dispatch(findPropertyData(query));
+  // };
 
-  const handleProposalAccept = (id) => {
-    setAcceptId(id);
-    dispatch(
-      propertyAcceptData({ property_id: propertyData?.id, proposal_id: id })
-    );
-    handleSeeProposalClose(true);
-  };
+  // const handleProposalAccept = (id) => {
+  //   setAcceptId(id);
+  //   dispatch(
+  //     propertyAcceptData({ property_id: propertyData?.id, proposal_id: id })
+  //   );
+  //   handleSeeProposalClose(true);
+  // };
 
   const acceptLoading = useSelector((state) => state?.propertyAccept?.loading);
   const refuseLoading = useSelector((state) => state?.proposalRefuse?.loading);

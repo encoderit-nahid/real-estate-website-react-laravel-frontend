@@ -453,6 +453,8 @@ function PendantsCard({ propertyData, languageName, refetch, loadingRefetch }) {
                 propertyData={propertyData}
                 proposalData={selectProposal}
                 languageName={languageName}
+                handleProposalAccept={handleProposalAccept}
+                handleProposalRefuse={handleProposalRefuse}
               />
             </>
           </Tooltip>

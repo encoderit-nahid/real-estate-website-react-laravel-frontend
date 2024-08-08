@@ -5,8 +5,10 @@ import submitProposal from "../../../../public/Images/submit_proposal.png";
 import Link from "next/link";
 import en from "locales/en";
 import pt from "locales/pt";
+import { useRouter } from "next/router";
 
 function ProposalSentModal({ handleClose, languageName }) {
+  const router = useRouter()
   const t = languageName === "en" ? en : pt;
   const style = {
     position: "absolute",
@@ -23,6 +25,11 @@ function ProposalSentModal({ handleClose, languageName }) {
     overflowY: "scroll",
     px: 3,
     py: 2,
+  };
+
+  const goBack = () => {
+    handleClose()
+    router.back();
   };
   return (
     <Box sx={style}>
@@ -55,9 +62,8 @@ function ProposalSentModal({ handleClose, languageName }) {
             {t["proposal sent"]}
           </Typography>
         </Grid>
-        <Link href="/my-properties">
           <Button
-            // onClick={handleClose}
+            onClick={goBack}
             fullWidth
             sx={{
               mt: 1,
@@ -73,7 +79,6 @@ function ProposalSentModal({ handleClose, languageName }) {
           >
             {t["Close"]}
           </Button>
-        </Link>
       </Box>
     </Box>
   );
