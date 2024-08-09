@@ -1343,7 +1343,7 @@ function SearchList({ propertyData, language, handleLoginOpen }) {
         />
         <Stack spacing={2} sx={{ marginY: 8 }}>
           <Pagination
-            count={Math.ceil(propertyData?.properties?.total / 9) || 4}
+            count={Math.ceil(propertyData?.properties?.total / 12) || 1}
             page={page}
             onChange={handlePageChange}
             variant="outlined"
