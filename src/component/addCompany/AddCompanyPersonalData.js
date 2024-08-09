@@ -860,6 +860,46 @@ function AddCompanyPersonalData({
             </Typography>
           </Stack>
         </Grid>
+        <Grid item xs={12}>
+          <Stack direction={"column"} spacing={1}>
+            <Typography
+              variant="p"
+              sx={{
+                color: "#253858",
+                fontSize: "14px",
+                fontWeight: "400",
+                lineHeight: "16px",
+              }}
+            >
+              {t["Email"]}
+              <span style={{ color: "#E63333" }}>*</span>
+            </Typography>
+            <Controller
+              name="email"
+              control={control}
+              defaultValue={""}
+              render={({ field }) => (
+                <BaseTextField
+                  size={"small"}
+                  placeholder={t["Email"]}
+                  // sx={{ mb: 2 }}
+                  onChange={(e) => {
+                    field.onChange(e.target.value);
+                  }}
+                  name={"name"}
+                  value={field.value}
+                />
+              )}
+            />
+            <Typography
+              variant="inherit"
+              color="textSecondary"
+              sx={{ color: "#b91c1c" }}
+            >
+              {errors.email?.message}
+            </Typography>
+          </Stack>
+        </Grid>
         <Grid item xs={6}>
           <Stack direction={"column"} spacing={1}>
             <Typography
