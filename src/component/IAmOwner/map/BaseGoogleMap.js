@@ -10,6 +10,7 @@ import {
 } from "@react-google-maps/api";
 import { Box } from "@mui/material";
 import { _baseMAP } from "../../../../consts";
+import mapImage from "../../../../public/Images/mapIcon.svg"
 
 const GoogleMapOptions = {
   tilt: 0,
@@ -114,7 +115,10 @@ const BaseMap = ({ height, width, markersData }) => {
           key={id}
           position={{ lat: +address?.latitude, lng: +address?.longitude }}
           onClick={() => handleActiveMarker(id)}
-          icon={"/Images/mapIcon.png"}
+          icon={{
+            url: mapImage.src, // Ensure the path is resolved correctly
+            scaledSize: new window.google.maps.Size(100, 100), // Adjust size as needed
+          }}
           // icon={{
           //   // path: google.maps.SymbolPath.CIRCLE,
           //   url: require("../../../../public/Images/mapIcon.svg"),
