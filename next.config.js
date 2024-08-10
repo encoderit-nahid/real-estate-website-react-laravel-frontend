@@ -13,7 +13,8 @@ module.exports = {
   output: "standalone",
   i18n: {
     locales: ["en", "pt"],
-    defaultLocale: "en",
+    defaultLocale: "pt",
+    fallbackLng: 'pt', // Fallback language
   },
   images: {
     remotePatterns: [
