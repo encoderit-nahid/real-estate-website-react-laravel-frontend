@@ -544,7 +544,6 @@ export default function NewProperty({ language }) {
         setSentModalOpen(true);
       } else {
         setLoading(false)
-        const errors = error?.response?.data?.errors ?? {};
         if(error.response.status === 500){
           toast.error(error?.response?.data?.message,{
             duration: 20000, 
@@ -575,7 +574,6 @@ export default function NewProperty({ language }) {
         setSentModalOpen(true);
       } else {
         setLoading(false);
-        const errors = error?.response?.data?.errors ?? {};
         if(error.response.status === 500){
           toast.error(error?.response?.data?.message,{
             duration: 20000, 
