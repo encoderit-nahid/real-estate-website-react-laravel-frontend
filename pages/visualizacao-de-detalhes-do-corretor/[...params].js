@@ -75,15 +75,15 @@ export default function BrokerDetails({
 }) {
   const ratingCount = () => {
     let total = 0;
-    singleBrokerData.broker.broker_ratings.forEach((item) => {
-      total = total + item.count;
+    singleBrokerData?.broker.broker_ratings?.forEach((item) => {
+      total = total + item?.count;
     });
     return total;
   };
   const rating = () => {
     let total = 0;
-    singleBrokerData.broker.broker_ratings.forEach((item) => {
-      total = total + item.rating;
+    singleBrokerData?.broker.broker_ratings?.forEach((item) => {
+      total = total + item?.rating;
     });
     return total;
   };
@@ -315,12 +315,12 @@ export default function BrokerDetails({
                   <StarIcon sx={{ fontSize: 50, color: "#FFAB00" }} />
                 </Stack>
                 <Stack direction="column" spacing={1} sx={{ width: "100%" }}>
-                  {singleBrokerData.broker.broker_ratings.map(
+                  {singleBrokerData?.broker.broker_ratings?.map(
                     (broker_rating, i) => (
                       <BaseLinearRating
                         key={i}
-                        count={broker_rating.rating}
-                        percentage={avgRating(broker_rating.count)}
+                        count={broker_rating?.rating}
+                        percentage={avgRating(broker_rating?.count)}
                       />
                     )
                   )}
