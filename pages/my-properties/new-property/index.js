@@ -553,9 +553,6 @@ export default function NewProperty({ language }) {
         if(error.response.status === 400){
           toast.error("favor fornecer cartório e número de registro")
         }
-        Object.entries(errors).forEach(([name, messages]) => {
-          setError(name, { type: "manual", message: messages[0] });
-        });
       }
     } else {
       const [error, response] = await propertyCreateApi(formData);
@@ -587,9 +584,6 @@ export default function NewProperty({ language }) {
         if(error.response.status === 400){
           toast.error("favor fornecer cartório e número de registro")
         }
-        Object.entries(errors).forEach(([name, messages]) => {
-          setError(name, { type: "manual", message: messages[0] });
-        });
       }
     }
   };
