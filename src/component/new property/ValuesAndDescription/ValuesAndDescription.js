@@ -320,7 +320,7 @@ function ValuesAndDescription({
                   mb: 1,
                 }}
               >
-                {`${t["Land area"]}m² `}
+                {`${t["Land area"]} m² `}
                 <span style={{ color: "#E63333" }}>*</span>
               </Typography>
             </Grid>
