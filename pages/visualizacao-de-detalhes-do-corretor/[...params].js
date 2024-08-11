@@ -1,39 +1,39 @@
-import dynamic from "next/dynamic";
-import PropTypes from "prop-types";
-import Tabs from "@mui/material/Tabs";
-import Tab from "@mui/material/Tab";
-import Typography from "@mui/material/Typography";
-import Box from "@mui/material/Box";
-import { Grid, Stack } from "@mui/material";
-import { useEffect, useState } from "react";
-import { useRouter } from "next/router";
-import { _baseURL, _imageURL } from "../../consts";
-import { userDetailsApi } from "@/api";
-import en from "locales/en";
-import pt from "locales/pt";
-import StarIcon from "@mui/icons-material/Star";
-import BaseLinearRating from "@/component/reuseable/baseLinearRating/BaseLinearRating";
-import PropertyList from "@/component/IAmOwner/propertyList/PropertyList";
-import BaseButton from "@/component/reuseable/button/BaseButton";
-import { useSession } from "next-auth/react";
-import Head from "next/head";
+import dynamic from 'next/dynamic'
+import PropTypes from 'prop-types'
+import Tabs from '@mui/material/Tabs'
+import Tab from '@mui/material/Tab'
+import Typography from '@mui/material/Typography'
+import Box from '@mui/material/Box'
+import { Grid, Stack } from '@mui/material'
+import { useEffect, useState } from 'react'
+import { useRouter } from 'next/router'
+import { _baseURL, _imageURL } from '../../consts'
+import { userDetailsApi } from '@/api'
+import en from 'locales/en'
+import pt from 'locales/pt'
+import StarIcon from '@mui/icons-material/Star'
+import BaseLinearRating from '@/component/reuseable/baseLinearRating/BaseLinearRating'
+import PropertyList from '@/component/IAmOwner/propertyList/PropertyList'
+import BaseButton from '@/component/reuseable/button/BaseButton'
+import { useSession } from 'next-auth/react'
+import Head from 'next/head'
 // import Navbar from "@/component/shared/Navbar/Navbar";
 // import NavBar from "@/component/sharedProposal/NavBar/NavBar";
 
-const Navbar = dynamic(() => import("@/component/shared/Navbar/Navbar"), {
+const Navbar = dynamic(() => import('@/component/shared/Navbar/Navbar'), {
   ssr: false,
-});
+})
 
 const BrokerInformation = dynamic(
-  () => import("@/component/brokers/Information/BrokerInformation"),
-  { ssr: false }
-);
-const drawerWidth = 240;
+  () => import('@/component/brokers/Information/BrokerInformation'),
+  { ssr: false },
+)
+const drawerWidth = 240
 const myLoader = ({ src }) => {
-  return `${_imageURL}/${src}`;
-};
+  return `${_imageURL}/${src}`
+}
 function TabPanel(props) {
-  const { children, value, index, ...other } = props;
+  const { children, value, index, ...other } = props
 
   return (
     <div
@@ -49,20 +49,20 @@ function TabPanel(props) {
         </Box>
       )}
     </div>
-  );
+  )
 }
 
 TabPanel.propTypes = {
   children: PropTypes.node,
   index: PropTypes.number.isRequired,
   value: PropTypes.number.isRequired,
-};
+}
 
 function a11yProps(index) {
   return {
     id: `simple-tab-${index}`,
-    "aria-controls": `simple-tabpanel-${index}`,
-  };
+    'aria-controls': `simple-tabpanel-${index}`,
+  }
 }
 
 export default function BrokerDetails({
@@ -74,44 +74,44 @@ export default function BrokerDetails({
   singleBrokerData,
 }) {
   const ratingCount = () => {
-    let total = 0;
+    let total = 0
     singleBrokerData?.broker.broker_ratings?.forEach((item) => {
-      total = total + item?.count;
-    });
-    return total;
-  };
+      total = total + item?.count
+    })
+    return total
+  }
   const rating = () => {
-    let total = 0;
+    let total = 0
     singleBrokerData?.broker.broker_ratings?.forEach((item) => {
-      total = total + item?.rating;
-    });
-    return total;
-  };
-  const totalRating = rating();
-  const totalRatingCount = ratingCount();
+      total = total + item?.rating
+    })
+    return total
+  }
+  const totalRating = rating()
+  const totalRatingCount = ratingCount()
   const avgRating = (count = 0) => {
-    return (count / totalRatingCount) * 100;
-  };
-  console.log("🟥 ~ BrokerDetails ~ singleBrokerData:", singleBrokerData);
-  const router = useRouter();
-  const { query } = router;
-  const { params } = query;
-  const [id] = params || [];
+    return (count / totalRatingCount) * 100
+  }
+  console.log('🟥 ~ BrokerDetails ~ singleBrokerData:', singleBrokerData)
+  const router = useRouter()
+  const { query } = router
+  const { params } = query
+  const [id] = params || []
 
-  const [value, setValue] = useState(0);
+  const [value, setValue] = useState(0)
 
-  const { data: session } = useSession();
+  const { data: session } = useSession()
 
   useEffect(() => {
-    userDetailsApi();
-  }, []);
+    userDetailsApi()
+  }, [])
 
-  const [myValue, setMyValue] = useState(language || "pt");
-  const t = myValue === "en" ? en : pt;
+  const [myValue, setMyValue] = useState(language || 'pt')
+  const t = myValue === 'en' ? en : pt
 
   const handleChange = (event, newValue) => {
-    setValue(newValue);
-  };
+    setValue(newValue)
+  }
 
   return (
     <div>
@@ -174,8 +174,8 @@ export default function BrokerDetails({
         <Box
           sx={{
             flexGrow: 1,
-            background: "#F2F5F6",
-            minHeight: "100vh",
+            background: '#F2F5F6',
+            minHeight: '100vh',
             // paddingTop: { xs: 6, sm: 6, md: 6, lg: 3, xl: 3 },
           }}
         >
@@ -196,30 +196,30 @@ export default function BrokerDetails({
               <Typography
                 variant="p"
                 sx={{
-                  color: "#002152",
-                  fontSize: "24px",
-                  fontWeight: "700",
-                  lineHeight: "32px",
+                  color: '#002152',
+                  fontSize: '24px',
+                  fontWeight: '700',
+                  lineHeight: '32px',
                   ml: { xs: 4, sm: 4, md: 0, lg: 0, xl: 0 },
                   mt: { xs: 1, sm: 1, md: 0, lg: 0, xl: 0 },
                 }}
               >
-                {t["Broker"]}
+                {t['Broker']}
               </Typography>
               <BaseButton
                 custom_sx={{
-                  background: "#ffffff",
+                  background: '#ffffff',
                   px: 2,
                   py: 1,
-                  color: "#4B4B66",
-                  fontSize: "16px",
-                  fontWeight: "600",
-                  lineHeight: "22px",
-                  textTransform: "none",
+                  color: '#4B4B66',
+                  fontSize: '16px',
+                  fontWeight: '600',
+                  lineHeight: '22px',
+                  textTransform: 'none',
                 }}
-                name={t["Come back"]}
+                name={t['Come back']}
                 handleFunction={() =>
-                  session ? router.replace("/brokers") : router.replace("/")
+                  session ? router.replace('/brokers') : router.replace('/')
                 }
               />
             </Grid>
@@ -228,9 +228,9 @@ export default function BrokerDetails({
               container
               spacing={2}
               sx={{
-                backgroundColor: "white",
-                borderRadius: "8px 8px 0 0",
-                padding: "32px 24px 0 24px",
+                backgroundColor: 'white',
+                borderRadius: '8px 8px 0 0',
+                padding: '32px 24px 0 24px',
                 mt: 1,
               }}
             >
@@ -252,19 +252,19 @@ export default function BrokerDetails({
                   aria-label="full width tabs example"
                 >
                   <Tab
-                    label={t["Properties"]}
+                    label={t['Properties']}
                     sx={{
-                      fontWeight: "600",
-                      textTransform: "uppercase",
+                      fontWeight: '600',
+                      textTransform: 'uppercase',
                     }}
                     {...a11yProps(0)}
                     color="primary"
                   />
                   <Tab
-                    label={t["assessments"]}
+                    label={t['assessments']}
                     sx={{
-                      fontWeight: "600",
-                      textTransform: "uppercase",
+                      fontWeight: '600',
+                      textTransform: 'uppercase',
                     }}
                     color="primary"
                     {...a11yProps(1)}
@@ -286,35 +286,35 @@ export default function BrokerDetails({
             </TabPanel>
             <TabPanel value={value} index={1}>
               <Stack
-                direction={{ xs: "column", lg: "row" }}
+                direction={{ xs: 'column', lg: 'row' }}
                 alignItems="center"
-                justifyContent={"center"}
+                justifyContent={'center'}
               >
                 <Stack
-                  direction={"row"}
+                  direction={'row'}
                   alignItems="center"
-                  justifyContent={"center"}
+                  justifyContent={'center'}
                   spacing={3}
-                  sx={{ width: "100%" }}
+                  sx={{ width: '100%' }}
                 >
                   {totalRatingCount > 0 ? (
                     <Typography
                       variant="h1"
-                      style={{ fontStyle: "italic", fontWeight: "bolder" }}
+                      style={{ fontStyle: 'italic', fontWeight: 'bolder' }}
                     >
                       {(totalRating / totalRatingCount).toFixed(2)}
                     </Typography>
                   ) : (
                     <Typography
                       variant="h4"
-                      style={{ color: "gray", letterSpacing: "0.5px" }}
+                      style={{ color: 'gray', letterSpacing: '0.5px' }}
                     >
-                      No rating available
+                      Nenhuma classificação disponível
                     </Typography>
                   )}
-                  <StarIcon sx={{ fontSize: 50, color: "#FFAB00" }} />
+                  <StarIcon sx={{ fontSize: 50, color: '#FFAB00' }} />
                 </Stack>
-                <Stack direction="column" spacing={1} sx={{ width: "100%" }}>
+                <Stack direction="column" spacing={1} sx={{ width: '100%' }}>
                   {singleBrokerData?.broker.broker_ratings?.map(
                     (broker_rating, i) => (
                       <BaseLinearRating
@@ -322,7 +322,7 @@ export default function BrokerDetails({
                         count={broker_rating?.rating}
                         percentage={avgRating(broker_rating?.count)}
                       />
-                    )
+                    ),
                   )}
                 </Stack>
               </Stack>
@@ -331,21 +331,21 @@ export default function BrokerDetails({
         </Box>
       </main>
     </div>
-  );
+  )
 }
 export async function getServerSideProps(context) {
-  const { params } = context.query;
-  const [id] = params || [];
-  const base_url = process.env.NEXT_PUBLIC_API_URL;
-  const res = await fetch(`${base_url}/api/broker/details/${id}`);
-  const singleBrokerData = await res.json();
+  const { params } = context.query
+  const [id] = params || []
+  const base_url = process.env.NEXT_PUBLIC_API_URL
+  const res = await fetch(`${base_url}/api/broker/details/${id}`)
+  const singleBrokerData = await res.json()
 
-  const cookies = context.req.cookies["language"];
+  const cookies = context.req.cookies['language']
 
-  console.log("single", singleBrokerData);
+  console.log('single', singleBrokerData)
   return {
     props: {
       singleBrokerData: singleBrokerData,
     },
-  };
+  }
 }
