@@ -289,6 +289,7 @@ export default function NewProperty({ language }) {
       setValue("owner_name", singleData?.property_owner?.name);
       setValue("owner_rg", singleData?.property_owner?.rg);
       setValue("owner_cpf", singleData?.property_owner?.cpf);
+      setMaritalStatus(singleData?.property_owner?.marital_status)
       setValue("owner_spouse_name", singleData?.property_owner?.spouse_name);
       setValue("owner_spouse_rg", singleData?.property_owner?.spouse_rg);
       setValue("owner_spouse_cpf", singleData?.property_owner?.spouse_cpf);
