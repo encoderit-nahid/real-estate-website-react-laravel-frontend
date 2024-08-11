@@ -223,6 +223,9 @@ export default function NewProperty({ language }) {
     }
   });
 
+  const [single, setSingle] = useState(false);
+  const [married, setMarried] = useState(true);
+
   console.log({ singleData });
 
   useEffect(() => {
@@ -290,6 +293,8 @@ export default function NewProperty({ language }) {
       setValue("owner_rg", singleData?.property_owner?.rg);
       setValue("owner_cpf", singleData?.property_owner?.cpf);
       setMaritalStatus(singleData?.property_owner?.marital_status)
+      setSingle(singleData?.property_owner?.marital_status === "Married" ? false : true)
+      setMarried(singleData?.property_owner?.marital_status === "Married" ? true : false)
       setValue("owner_spouse_name", singleData?.property_owner?.spouse_name);
       setValue("owner_spouse_rg", singleData?.property_owner?.spouse_rg);
       setValue("owner_spouse_cpf", singleData?.property_owner?.spouse_cpf);
@@ -592,8 +597,7 @@ export default function NewProperty({ language }) {
     return totalImages > 0 ? (uploadedCount / totalImages) * 100 : 0;
   };
 
-  const [single, setSingle] = useState(false);
-  const [married, setMarried] = useState(true);
+ 
 
   const [disableBtn, setDisableBtn] = useState(true);
   useEffect(() => {
