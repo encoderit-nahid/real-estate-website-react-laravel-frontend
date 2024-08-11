@@ -490,7 +490,7 @@ export default function NewProperty({ language }) {
     });
 
     const ownerData = omitEmpties({
-      maritalStatus: maritalStatus,
+      marital_status: maritalStatus,
       name: data?.owner_name,
       rg: data?.owner_rg,
       cpf: data?.owner_cpf,
