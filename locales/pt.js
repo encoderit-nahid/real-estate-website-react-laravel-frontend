@@ -138,7 +138,7 @@ export default {
   Proposals: "Propostas",
   Schedules: "Agendamento",
   Brokers: "Corretores de imóveis",
-  FAQ: "FAQ",
+  FAQ: "Perguntas frequentes",
   Leave: "Sair",
   Releases: "Lançamentos",
   Third: "Terceiros",
@@ -485,4 +485,6 @@ export default {
   Financial: "Financeiro",
   "No comment available": "Nenhum comentário",
   "Validate documents": "Validar documento",
+  Photo: "Foto",
+  "Cover photo": "Foto da capa",
 };

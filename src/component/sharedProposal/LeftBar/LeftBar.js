@@ -81,43 +81,55 @@ function LeftBar(props) {
       icon: <CampaignOutlinedIcon />,
       label: t["Properties"],
       route: "my-properties",
-      visible: ["admin", "broker", "buyer", "owner"]
+      visible: ["admin", "broker", "buyer", "owner"],
     },
     {
       icon: <ArticleOutlinedIcon />,
       label: t["Proposals"],
       route: "proposals",
-      visible: ["admin", "broker", "buyer", "owner"]
+      visible: ["admin", "broker", "buyer", "owner"],
     },
     {
       icon: <StarBorderOutlinedIcon />,
       label: t["Schedules"],
       route: "schedules",
-      visible: ["admin", "broker", "buyer", "owner"]
+      visible: ["admin", "broker", "buyer", "owner"],
     },
     {
       icon: <PersonOutlineOutlinedIcon />,
       label: t["Brokers"],
       route: "brokers",
-      visible: ["admin", "broker", "buyer", "owner"]
+      visible: ["admin", "broker", "buyer", "owner"],
     },
     {
       icon: <AddBusinessIcon />,
       label: t["Add company"],
       route: "add-company",
-      visible: ["admin"]
+      visible: ["admin"],
     },
     {
       icon: <PaidIcon />,
       label: t["Financial"],
       route: "financial",
-      visible: ["admin", "broker", "buyer", "owner"]
+      visible: ["admin", "broker", "buyer", "owner"],
     },
-    { icon: <HelpOutlineOutlinedIcon />, label: "FAQ", route: "faq",visible: ["admin", "broker", "buyer", "owner"] },
-    { icon: <InputOutlinedIcon />, label: t["Leave"], route: "",visible: ["admin", "broker", "buyer", "owner"] },
+    {
+      icon: <HelpOutlineOutlinedIcon />,
+      label: "Perguntas frequentes",
+      route: "faq",
+      visible: ["admin", "broker", "buyer", "owner"],
+    },
+    {
+      icon: <InputOutlinedIcon />,
+      label: t["Leave"],
+      route: "",
+      visible: ["admin", "broker", "buyer", "owner"],
+    },
   ];
 
-  const data = Tab?.filter((item) => item?.visible?.includes(currentUser?.roles[0]?.slug))
+  const data = Tab?.filter((item) =>
+    item?.visible?.includes(currentUser?.roles[0]?.slug)
+  );
 
   // const [selectedLabel, setSelectedLabel] = useState("properties");
   // console.log(selectedLabel);
@@ -248,7 +260,7 @@ function LeftBar(props) {
                 // className="btn-leftbar"
                 selected={selectedLabel === leftData.route}
                 onClick={
-                  index === (data?.length - 1)
+                  index === data?.length - 1
                     ? handleLogout
                     : () => handleListItemClick(index, leftData)
                 }

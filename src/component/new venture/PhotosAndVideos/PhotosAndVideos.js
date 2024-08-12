@@ -198,7 +198,7 @@ function PhotosAndVideos({
           sx="error"
           variant="outlined"
           handleFunction={() => {
-            router.back()
+            router.back();
           }}
         >
           {t["Cancel"]}
@@ -320,12 +320,12 @@ function PhotosAndVideos({
                 <Controller
                   name={`title_${index}`}
                   control={control}
-                  defaultValue={photoType[1] || file.photo_type}
+                  defaultValue={photoType[0] || file.photo_type}
                   render={({ field }) => (
                     <BaseAutocomplete
                       //   sx={{ margin: "0.6vh 0" }}
                       options={photoType || []}
-                      getOptionLabel={(option) => option.name || ""}
+                      getOptionLabel={(option) => t[option.name] || ""}
                       sx={{ mt: 2 }}
                       isOptionEqualToValue={(option, value) =>
                         option.id === value.id

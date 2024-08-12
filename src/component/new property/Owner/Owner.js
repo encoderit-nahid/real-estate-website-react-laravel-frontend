@@ -80,9 +80,9 @@ function Owner({
   trigger,
 }) {
   const t = languageName === "en" ? en : pt;
-  const router = useRouter()
+  const router = useRouter();
   const dispatch = useDispatch();
-  const {query} = router
+  const { query } = router;
   const { data: session } = useSession();
   const onDrop = (acceptedFiles) => {
     acceptedFiles.map((file) =>
@@ -191,7 +191,7 @@ function Owner({
           sx="error"
           variant="outlined"
           handleFunction={() => {
-            router.back()
+            router.back();
           }}
         >
           {t["Cancel"]}
@@ -1006,7 +1006,6 @@ function Owner({
               }}
             >
               {t["documents"]}
-              <span style={{ color: "#E63333" }}>*</span>
             </Typography>
           </Grid>
           <Controller
@@ -1021,7 +1020,7 @@ function Owner({
                   option.year === value.year
                 }
                 size={"medium"}
-                placeholder={`${t["documents"]}*`}
+                placeholder={`${t["documents"]}`}
                 onChange={(e, v, r, d) => field.onChange(v)}
                 value={field.value}
               />
@@ -1054,7 +1053,6 @@ function Owner({
               }}
             >
               {t["registry office"]}
-              <span style={{ color: "#E63333" }}>*</span>
             </Typography>
           </Grid>
           <Controller
@@ -1064,7 +1062,7 @@ function Owner({
             render={({ field }) => (
               <BaseTextField
                 size={"medium"}
-                placeholder={`${t["registry office"]}*`}
+                placeholder={`${t["registry office"]}`}
                 onChange={(e) => {
                   field.onChange(e.target.value);
                 }}
@@ -1100,7 +1098,6 @@ function Owner({
               }}
             >
               {t["registration number"]}
-              <span style={{ color: "#E63333" }}>*</span>
             </Typography>
           </Grid>
           <Controller
@@ -1110,7 +1107,7 @@ function Owner({
             render={({ field }) => (
               <BaseTextField
                 size={"medium"}
-                placeholder={`${t["registration number"]}*`}
+                placeholder={`${t["registration number"]}`}
                 onChange={(e) => {
                   field.onChange(e.target.value);
                 }}

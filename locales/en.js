@@ -461,4 +461,6 @@ export default {
   Financial: "Financial",
   "No comment available": "No comment available",
   "Validate documents": "Validate documents",
+  "Photo": "Photo",
+  "Cover photo": "Cover photo",
 };

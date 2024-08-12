@@ -297,7 +297,7 @@ function Navbar({
           </Grid>
           {language && (
             <Typography variant="p" sx={{ marginLeft: "3vh" }}>
-              <FormControl fullWidth size="small">
+              <FormControl fullWidth size="small" sx={{ display: "none" }}>
                 <InputLabel id="demo-simple-select-label">Select</InputLabel>
                 <Select
                   labelId="demo-simple-select-label"
