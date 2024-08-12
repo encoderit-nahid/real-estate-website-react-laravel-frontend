@@ -292,9 +292,13 @@ export default function NewProperty({ language }) {
       setValue("owner_name", singleData?.property_owner?.name);
       setValue("owner_rg", singleData?.property_owner?.rg);
       setValue("owner_cpf", singleData?.property_owner?.cpf);
-      setMaritalStatus(singleData?.property_owner?.marital_status)
-      setSingle(singleData?.property_owner?.marital_status === "Married" ? false : true)
-      setMarried(singleData?.property_owner?.marital_status === "Married" ? true : false)
+      setMaritalStatus(singleData?.property_owner?.marital_status || "Single");
+      setSingle(
+        singleData?.property_owner?.marital_status === "Married" ? false : true
+      );
+      setMarried(
+        singleData?.property_owner?.marital_status === "Married" ? true : false
+      );
       setValue("owner_spouse_name", singleData?.property_owner?.spouse_name);
       setValue("owner_spouse_rg", singleData?.property_owner?.spouse_rg);
       setValue("owner_spouse_cpf", singleData?.property_owner?.spouse_cpf);
@@ -549,14 +553,14 @@ export default function NewProperty({ language }) {
         setUploadComplete(true);
         setSentModalOpen(true);
       } else {
-        setLoading(false)
-        if(error.response.status === 500){
-          toast.error(error?.response?.data?.message,{
-            duration: 20000, 
-          })
+        setLoading(false);
+        if (error.response.status === 500) {
+          toast.error(error?.response?.data?.message, {
+            duration: 20000,
+          });
         }
-        if(error.response.status === 400){
-          toast.error("favor fornecer cartório e número de registro")
+        if (error.response.status === 400) {
+          toast.error("favor fornecer cartório e número de registro");
         }
       }
     } else {
@@ -580,13 +584,13 @@ export default function NewProperty({ language }) {
         setSentModalOpen(true);
       } else {
         setLoading(false);
-        if(error.response.status === 500){
-          toast.error(error?.response?.data?.message,{
-            duration: 20000, 
-          })
+        if (error.response.status === 500) {
+          toast.error(error?.response?.data?.message, {
+            duration: 20000,
+          });
         }
-        if(error.response.status === 400){
-          toast.error("favor fornecer cartório e número de registro")
+        if (error.response.status === 400) {
+          toast.error("favor fornecer cartório e número de registro");
         }
       }
     }
@@ -596,8 +600,6 @@ export default function NewProperty({ language }) {
     const totalImages = files.length;
     return totalImages > 0 ? (uploadedCount / totalImages) * 100 : 0;
   };
-
- 
 
   const [disableBtn, setDisableBtn] = useState(true);
   useEffect(() => {
