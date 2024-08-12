@@ -117,7 +117,7 @@ function ContractModal({
       handleClose();
       // setSentModalOpen(true);
     } else {
-      toast.error('O documento do contrato é obrigatório')
+      toast.error("O documento do contrato é obrigatório");
     }
   };
 
@@ -163,7 +163,7 @@ function ContractModal({
               sm: "50vh",
               md: "50vh",
               lg: "60vh",
-              xl: "50vh",
+              xl: "60vh",
             },
           }}
         >
