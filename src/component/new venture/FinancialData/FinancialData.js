@@ -4,10 +4,10 @@ import React, { useEffect } from "react";
 import ventureImage from "../../../../public/Images/certidoes.png";
 import { useDropzone } from "react-dropzone";
 import { useMemo } from "react";
-import BaseTextField from "../../reuseable/baseTextField/BaseTextField";
+import BaseTextField from "@/component/reuseable/baseTextField/BaseTextField";
 import { Controller } from "react-hook-form";
 import DeleteOutlineOutlinedIcon from "@mui/icons-material/DeleteOutlineOutlined";
-import BaseAutocomplete from "../../reuseable/baseAutocomplete/BaseAutocomplete";
+import BaseAutocomplete from "@/component//reuseable/baseAutocomplete/BaseAutocomplete";
 import en from "locales/en";
 import pt from "locales/pt";
 import BaseButton from "@/component/reuseable/baseButton/BaseButton";
@@ -58,7 +58,7 @@ function FinancialData({
 }) {
   const t = languageName === "en" ? en : pt;
 
-  const router = useRouter()
+  const router = useRouter();
 
   console.log({ allValues });
 
@@ -140,7 +140,7 @@ function FinancialData({
           sx="error"
           variant="outlined"
           handleFunction={() => {
-            router.back()
+            router.back();
           }}
         >
           {t["Cancel"]}

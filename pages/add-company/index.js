@@ -49,6 +49,8 @@ import BaseButton from "@/component/reuseable/baseButton/BaseButton";
 import { useRouter } from "next/router";
 import useRequiredFieldsToDisableButton from "@/hooks/useRequiredFieldsToDisableButton";
 import triggerValidation from "@/hooks/triggerValidation";
+import { useAddCompanyMutation } from "@/queries/useAddCompanyMutation";
+import toast from "react-hot-toast";
 
 const aboutLokkanData = [
   "Indicação de amigo",
@@ -175,7 +177,7 @@ export default function AddCompany({
           value && ["image/jpeg", "image/png", "image/jpg"].includes(value.type)
         );
       }),
-    full_name: Yup.string().required(t["Full Name is required"]),
+    name: Yup.string().required(t["Full Name is required"]),
     dob: Yup.string()
       .required(t["Date of Birth number is required"])
       .optional(),
@@ -232,6 +234,8 @@ export default function AddCompany({
   });
   console.log("🟥 ~ errors:", errors);
 
+  const mutation = useAddCompanyMutation();
+
   const allValues = watch();
   const { replace } = useRouter();
   const requiredFields = {
@@ -245,7 +249,7 @@ export default function AddCompany({
     // ],
     legal_person: [
       "image",
-      "full_name",
+      "name",
       "state_registration",
       "cnpj",
       "corporate_reason",
@@ -273,81 +277,32 @@ export default function AddCompany({
     }
   }, [errors]);
 
-  const onSubmit = async (data) => {
-    console.log("🟥 ~ onSubmit ~ data:", {
-      ...data,
-      type: addType,
-      // person_type: addPerson,
-    });
-    // setLoading(true);
-    // const previousFieldData = JSON.parse(
-    //   localStorage.getItem("broker_registration")
-    // );
-
-    // const registrationId = localStorage.getItem("registration_id");
-
-    // const additionalInfoData = omitEmpties({
-    //   full_name: data.full_name,
-    //   description: data.description,
-    //   creci_number: data.creci_number,
-    //   cpf: data.cpf_number,
-    //   rg: data.rg_number,
-    //   dob: dayjs(data.dob).format("YYYY-MM-DD"),
-    //   social_name: data.social_name,
-    //   broker_type: actingPreferenceBtn,
-    //   referred_from: aboutLokkanBtn,
-    //   broker_referral_id: selectedBroker?.id,
-    // });
-    // const addressData = omitEmpties({
-    //   zip_code: data.zip_code,
-    //   address: data.address,
-    //   number: data.number,
-    //   neighbourhood: data.neighbourhood,
-    //   add_on: data.add_on,
-    //   city: data.city,
-    //   state_id: data.state.id,
-    // });
-
-    // const firstPartData = omitEmpties({
-    //   image: data.image,
-    //   user_id: registrationId,
-    //   broker_url: window.location.origin,
-    //   redirect_url: `${window.location.origin}/user-loading`,
-    // });
-
-    // const requireData = {
-    //   ...firstPartData,
-    //   additional_info: additionalInfoData,
-    //   address: addressData,
-    // };
-
-    // console.log(requireData);
-
-    // const formData = serialize(requireData, { indices: true });
-    // const [error, responseToken] = await userInfoRegistrationApi(formData);
-
-    // setLoading(false);
-    // if (!error) {
-    //   setSentModalOpen(true);
-    //   setSuccessMessage(responseToken?.data?.message);
-    //   handleClickSuccessSnackbar();
-    //   localStorage.removeItem("Reg_user_name");
-    //   localStorage.removeItem("user_role");
-    //   localStorage.removeItem("registration_id");
-    // } else {
-    //   const errors = error?.response?.data?.errors ?? {};
-
-    //   Object.entries(errors).forEach(([name, messages]) => {
-    //     setError(name, { type: "manual", message: messages[0] });
-    //   });
-    //   // setLoading(false);
-    // }
+  const transformData = (data) => {
+    return Object.keys(data).reduce((acc, key) => {
+      if (key === "state") {
+        acc["state_id"] = data[key].id;
+      } else {
+        acc[key] = data[key];
+      }
+      return acc;
+    }, {});
   };
 
-  useEffect(() => {
-    const user_name = localStorage.getItem("Reg_user_name") || "";
-    setValue("full_name", user_name);
-  }, [setValue]);
+  const onSubmit = async (data) => {
+    setLoading(true);
+    const body = transformData(data);
+    const formData = serialize({ ...body, type: addType }, { indices: true });
+    mutation.mutate(formData, {
+      onError(error) {
+        setLoading(false);
+        toast.error("Algo deu errado. Empresa criada falhou");
+      },
+      onSuccess: async (data) => {
+        setLoading(false);
+        toast.success("Empresa criada com sucesso");
+      },
+    });
+  };
 
   return (
     <Box

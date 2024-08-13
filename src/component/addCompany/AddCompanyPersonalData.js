@@ -711,7 +711,7 @@ function AddCompanyPersonalData({
                 render={({ field }) => (
                   <BaseTextField
                     size={"small"}
-                    placeholder={t["CNPJ"]}
+                    placeholder={"CNPJ"}
                     // sx={{ mb: 2 }}
                     onChange={(e) => {
                       field.onChange(e.target.value);
@@ -835,7 +835,7 @@ function AddCompanyPersonalData({
               <span style={{ color: "#E63333" }}>*</span>
             </Typography>
             <Controller
-              name="full_name"
+              name="name"
               control={control}
               defaultValue={""}
               render={({ field }) => (
@@ -846,7 +846,7 @@ function AddCompanyPersonalData({
                   onChange={(e) => {
                     field.onChange(e.target.value);
                   }}
-                  name={"full_name"}
+                  name={"name"}
                   value={field.value}
                 />
               )}
@@ -856,7 +856,7 @@ function AddCompanyPersonalData({
               color="textSecondary"
               sx={{ color: "#b91c1c" }}
             >
-              {errors.full_name?.message}
+              {errors.name?.message}
             </Typography>
           </Stack>
         </Grid>
