@@ -10,7 +10,7 @@ import {
 } from "@react-google-maps/api";
 import { Box } from "@mui/material";
 import { _baseMAP } from "../../../../consts";
-import mapImage from "../../../../public/Images/mapIcon.svg"
+import mapImage from "../../../../public/Images/mapIcon.svg";
 
 const GoogleMapOptions = {
   tilt: 0,
@@ -26,6 +26,8 @@ const BaseMap = ({ height, width, markersData }) => {
   const [defaultZoom] = useState(12);
   const [mapZoom, setMapZoom] = useState(map?.getZoom());
   const [geocoder, setGeocoder] = useState(null);
+
+  console.log({ markersData });
 
   // const handleOnLoad = (map) => {
   //   const geocoder = new window.google.maps.Geocoder();
@@ -71,8 +73,8 @@ const BaseMap = ({ height, width, markersData }) => {
   const [center, setCenter] = useState(() => {
     // if (innerValue?.geometry?.location) return innerValue?.geometry?.location;
     return {
-      lat: +markersData?.properties?.data[0]?.address?.latitude,
-      lng: +markersData?.properties?.data[0]?.address?.longitude,
+      lat: +markersData?.properties?.data[0]?.address?.latitude || -23.5702073,
+      lng: +markersData?.properties?.data[0]?.address?.longitude || -46.6591174,
     };
   });
 
