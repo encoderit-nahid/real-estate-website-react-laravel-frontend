@@ -61,6 +61,7 @@ function CertificateModal({
   handleClose,
   certificateData,
   singlePropertyData,
+  uploadCount,
   languageName,
 }) {
   const t = languageName === "en" ? en : pt;
@@ -146,6 +147,7 @@ function CertificateModal({
       certificate_file: files[files.length - 1],
       certificate_type_id: certificateData?.tag?.id,
       remarks: comment,
+      send_email: +uploadCount + 1 === 10 ? true : false,
     });
 
     const formData = serialize(requireData, { indices: true });
@@ -157,7 +159,7 @@ function CertificateModal({
       handleClose();
       // setSentModalOpen(true);
     } else {
-        toast.error('O documento certificado é obrigatório')
+      toast.error("O documento certificado é obrigatório");
     }
   };
   return (

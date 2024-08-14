@@ -150,13 +150,13 @@ function CertificatesAndDocuments({
             sx="error"
             handleFunction={() => {
               router.replace({
-                pathname:"/proposals",
+                pathname: "/proposals",
                 query: {
-                  proposal_status:"accepted",
+                  proposal_status: "accepted",
                   status: "approved",
                   page: 1,
-                  per_page: 9
-                }
+                  per_page: 9,
+                },
               });
             }}
           >
@@ -551,6 +551,7 @@ function CertificatesAndDocuments({
               certificateData={certificateData}
               singlePropertyData={singlePropertyData}
               languageName={languageName}
+              uploadCount={uploadCount}
             />
           </>
         </Tooltip>
