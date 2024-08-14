@@ -147,7 +147,7 @@ function CertificateModal({
       certificate_file: files[files.length - 1],
       certificate_type_id: certificateData?.tag?.id,
       remarks: comment,
-      send_email: +uploadCount + 1 === 10 ? true : false,
+      send_email: +uploadCount + 1 === 10 ? 1 : 0,
     });
 
     const formData = serialize(requireData, { indices: true });
