@@ -80,7 +80,7 @@ const BrokerInformation = ({
                 color: "#6C7A84",
               }}
             >
-              {singleBrokerData.broker.additional_info.creci_number}
+              {singleBrokerData?.broker?.additional_info?.creci_number}
             </span>
           </Typography>
           <Typography
@@ -92,21 +92,22 @@ const BrokerInformation = ({
               color: "#6C7A84",
             }}
           >
-            {avgRating > 0 ? avgRating : 0}{" "}
+            {(+singleBrokerData?.broker?.user_reviews_avg_rating ?? 0).toFixed(1)}
             <span
               style={{
                 fontSize: "14px",
                 fontWeight: 400,
                 lineHeight: "18px",
                 color: "#6C7A84",
+                marginLeft:"5px"
               }}
             >
-              ({totalRatingCount} {t["reviews"]})
+              ({singleBrokerData?.broker?.user_reviews_count} {t["reviews"]})
             </span>
           </Typography>
           <Rating
             name="size-large"
-            defaultValue={avgRating}
+            defaultValue={Math.round(singleBrokerData?.broker?.user_reviews_avg_rating)}
             readOnly
             precision={0.5}
           />
@@ -130,10 +131,10 @@ const BrokerInformation = ({
                     lineHeight: "22px",
                   }}
                 >
-                  {singleBrokerData.broker.name}
+                  {singleBrokerData?.broker?.name}
                 </Typography>
                 <BaseWhatsappButton
-                  content={`Corretor nome :  ${singleBrokerData.broker.name}, CRECI : ${singleBrokerData.broker.additional_info.creci_number}`}
+                  content={`Corretor nome :  ${singleBrokerData?.broker?.name}, CRECI : ${singleBrokerData?.broker.additional_info?.creci_number}`}
                 />
               </Stack>
               <Stack direction="row" alignItems={"center"} spacing={1}>
@@ -162,7 +163,7 @@ const BrokerInformation = ({
                 letterSpacing: "0.5px",
               }}
             >
-              {singleBrokerData.broker?.additional_info?.description}
+              {singleBrokerData?.broker?.additional_info?.description}
             </Typography>
           </Grid>
           {/* <Grid item xs={12}>

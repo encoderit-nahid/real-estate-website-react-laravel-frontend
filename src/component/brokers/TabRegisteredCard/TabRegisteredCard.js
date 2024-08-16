@@ -118,20 +118,26 @@ function TabRegisteredCard({
                     color: "#6C7A84",
                   }}
                 >
-                  0
+                    {(+brokerInfo?.user_reviews_avg_rating ?? 0).toFixed(1)}
                   <span
                     style={{
                       fontSize: "14px",
                       fontWeight: 400,
                       lineHeight: "18px",
                       color: "#6C7A84",
+                      marginLeft:"5px"
                     }}
                   >
-                    (0 reviews)
+                    {`(${brokerInfo?.user_reviews_count || 0} reviews)`}
                   </span>
                 </Typography>
               }
-              secondary={<Rating name="size-large"  readOnly />}
+              secondary={ <Rating
+                name="size-large"
+                defaultValue={brokerInfo?.user_reviews_avg_rating}
+                readOnly
+                precision={0.5}
+              />}
             />
           </ListItem>
         </Box>

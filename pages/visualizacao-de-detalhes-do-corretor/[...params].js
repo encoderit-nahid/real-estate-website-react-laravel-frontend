@@ -4,7 +4,7 @@ import Tabs from '@mui/material/Tabs'
 import Tab from '@mui/material/Tab'
 import Typography from '@mui/material/Typography'
 import Box from '@mui/material/Box'
-import { Grid, Stack } from '@mui/material'
+import { Grid, Rating, Stack } from '@mui/material'
 import { useEffect, useState } from 'react'
 import { useRouter } from 'next/router'
 import { _baseURL, _imageURL } from '../../consts'
@@ -73,25 +73,25 @@ export default function BrokerDetails({
   language,
   singleBrokerData,
 }) {
-  const ratingCount = () => {
-    let total = 0
-    singleBrokerData?.broker.broker_ratings?.forEach((item) => {
-      total = total + item?.count
-    })
-    return total
-  }
-  const rating = () => {
-    let total = 0
-    singleBrokerData?.broker.broker_ratings?.forEach((item) => {
-      total = total + item?.rating
-    })
-    return total
-  }
-  const totalRating = rating()
-  const totalRatingCount = ratingCount()
-  const avgRating = (count = 0) => {
-    return (count / totalRatingCount) * 100
-  }
+  // const ratingCount = () => {
+  //   let total = 0
+  //   singleBrokerData?.broker.broker_ratings?.forEach((item) => {
+  //     total = total + item?.count
+  //   })
+  //   return total
+  // }
+  // const rating = () => {
+  //   let total = 0
+  //   singleBrokerData?.broker.broker_ratings?.forEach((item) => {
+  //     total = total + item?.rating
+  //   })
+  //   return total
+  // }
+  // const totalRating = rating()
+  // const totalRatingCount = ratingCount()
+  // const avgRating = (count = 0) => {
+  //   return (count / totalRatingCount) * 100
+  // }
   console.log('🟥 ~ BrokerDetails ~ singleBrokerData:', singleBrokerData)
   const router = useRouter()
   const { query } = router
@@ -239,8 +239,6 @@ export default function BrokerDetails({
                 query={query}
                 handleLoginOpen={handleLoginOpen}
                 singleBrokerData={singleBrokerData}
-                totalRatingCount={totalRatingCount}
-                avgRating={(totalRating / totalRatingCount).toFixed(2)}
               />
               <Grid item xs={12}>
                 <Tabs
@@ -297,12 +295,16 @@ export default function BrokerDetails({
                   spacing={3}
                   sx={{ width: '100%' }}
                 >
-                  {totalRatingCount > 0 ? (
+                  {(
+                    +singleBrokerData?.broker?.user_reviews_avg_rating ?? 0
+                  ).toFixed(1) > 0 ? (
                     <Typography
                       variant="h1"
                       style={{ fontStyle: 'italic', fontWeight: 'bolder' }}
                     >
-                      {(totalRating / totalRatingCount).toFixed(2)}
+                      {(
+                        +singleBrokerData?.broker?.user_reviews_avg_rating ?? 0
+                      ).toFixed(1)}
                     </Typography>
                   ) : (
                     <Typography
@@ -312,7 +314,15 @@ export default function BrokerDetails({
                       Nenhuma classificação disponível
                     </Typography>
                   )}
-                  <StarIcon sx={{ fontSize: 50, color: '#FFAB00' }} />
+                  <Rating
+                    name="size-large"
+                    defaultValue={Math.round(
+                      singleBrokerData?.broker?.user_reviews_avg_rating,
+                    )}
+                    readOnly
+                    precision={0.5}
+                    size="large"
+                  />
                 </Stack>
                 <Stack direction="column" spacing={1} sx={{ width: '100%' }}>
                   {singleBrokerData?.broker.broker_ratings?.map(
