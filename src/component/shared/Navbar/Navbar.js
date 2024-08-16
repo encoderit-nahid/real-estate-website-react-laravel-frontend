@@ -189,7 +189,7 @@ function Navbar({
                 </Link>
               ))}
               <BaseButton
-                name={!session ? t["login"] : session?.user?.name}
+                name={!session ? t["login"] : currentUser?.name}
                 margin={"0 0 0 1vh"}
                 handleFunction={!session ? handleLoginOpen : handleClick}
               />

@@ -322,22 +322,22 @@ export default function NewProperty({ language }) {
       );
       setValue(
         "owner_registration_number",
-        +singleData?.property_owner?.registry[0]?.registry_number
+        singleData?.property_owner?.registry[0]?.registry_number ? +singleData?.property_owner?.registry[0]?.registry_number : ''
       );
       setValue("owner_documnentation", {
         label: singleData?.property_owner?.registry[0]?.title,
         year: "2009",
       });
 
-      setValue("registry", singleData?.registry?.[0]?.registry_office);
-      setValue(
-        "registration_number",
-        +singleData?.registry?.[0]?.registry_number
-      );
-      setValue("documentation", {
-        label: singleData?.registry?.[0]?.title,
-        year: "2009",
-      });
+      // setValue("registry", singleData?.registry?.[0]?.registry_office);
+      // setValue(
+      //   "registration_number",
+      //   +singleData?.registry?.[0]?.registry_number
+      // );
+      // setValue("documentation", {
+      //   label: singleData?.registry?.[0]?.title,
+      //   year: "2009",
+      // });
     }
   }, [query?.property_id, setValue, singleData]);
 
@@ -487,7 +487,7 @@ export default function NewProperty({ language }) {
       zip_code: data?.zip_code,
       address: data?.address,
       city: data?.city,
-      state_id: data?.state?.id,
+      state_id: data?.state?.id || 26,
       number: data?.number,
       neighbourhood: data?.neighbourhood,
       complement: data?.complement,
@@ -515,7 +515,7 @@ export default function NewProperty({ language }) {
       zip_code: data?.owner_zip_code,
       address: data?.owner_address,
       city: data?.owner_city,
-      state_id: data?.owner_state?.id,
+      state_id: data?.owner_state?.id || 26,
       number: data?.number,
       neighbourhood: data?.neighbourhood,
       complement: data?.complement,

@@ -1,5 +1,5 @@
 import dynamic from "next/dynamic";
-const ResponsiveDrawer = dynamic(() => import("@/component/sharedProposal/ResponsiveDrawer/ResponsiveDrawer"));
+const ResponsiveDrawer = dynamic(() => import("@/component/sharedProposal/ResponsiveDrawer/ResponsiveDrawer"), {ssr: false});
 import { Box } from "@mui/material";
 import Head from "next/head";
 
