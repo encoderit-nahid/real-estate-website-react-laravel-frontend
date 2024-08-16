@@ -127,9 +127,9 @@ function LeftBar(props) {
     },
   ];
 
-  const data = Tab?.filter((item) =>
+  const data = currentUser?.roles ? Tab?.filter((item) =>
     item?.visible?.includes(currentUser?.roles[0]?.slug)
-  );
+  ) :[];
 
   // const [selectedLabel, setSelectedLabel] = useState("properties");
   // console.log(selectedLabel);

@@ -322,22 +322,22 @@ export default function NewProperty({ language }) {
       );
       setValue(
         "owner_registration_number",
-        +singleData?.property_owner?.registry[0]?.registry_number
+        singleData?.property_owner?.registry[0]?.registry_number ? +singleData?.property_owner?.registry[0]?.registry_number : ''
       );
       setValue("owner_documnentation", {
         label: singleData?.property_owner?.registry[0]?.title,
         year: "2009",
       });
 
-      setValue("registry", singleData?.registry?.[0]?.registry_office);
-      setValue(
-        "registration_number",
-        +singleData?.registry?.[0]?.registry_number
-      );
-      setValue("documentation", {
-        label: singleData?.registry?.[0]?.title,
-        year: "2009",
-      });
+      // setValue("registry", singleData?.registry?.[0]?.registry_office);
+      // setValue(
+      //   "registration_number",
+      //   +singleData?.registry?.[0]?.registry_number
+      // );
+      // setValue("documentation", {
+      //   label: singleData?.registry?.[0]?.title,
+      //   year: "2009",
+      // });
     }
   }, [query?.property_id, setValue, singleData]);
 
