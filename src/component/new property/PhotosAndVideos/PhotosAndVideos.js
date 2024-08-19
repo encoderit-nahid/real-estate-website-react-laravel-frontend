@@ -114,6 +114,7 @@ function PhotosAndVideos({
     accept: {
       "image/jpeg": [],
       "image/png": [],
+      "image/webp": [],
     },
   });
 

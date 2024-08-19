@@ -31,6 +31,7 @@ function BaseAutocomplete({
       value={value}
       inputValue={inputValue}
       onInputChange={onInputChange}
+      freeSolo
       renderInput={(params) => (
         <TextField
           {...params}

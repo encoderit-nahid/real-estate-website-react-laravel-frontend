@@ -12,7 +12,7 @@ import React, { useEffect, useState } from "react";
 import buildingImage from "../../../../public/Images/buildingRed.png";
 import AddOutlinedIcon from "@mui/icons-material/AddOutlined";
 import { useDispatch, useSelector } from "react-redux";
-
+import DeleteOutlinedIcon from "@mui/icons-material/DeleteOutlined";
 import BaseTextField from "../../reuseable/baseTextField/BaseTextField";
 import { findFeatureData } from "../../../redux/features/actions";
 import en from "locales/en";
@@ -22,6 +22,8 @@ import BaseAutocomplete from "@/component/reuseable/baseAutocomplete/BaseAutocom
 import { featureDataCreate } from "@/redux/featureWithoutGroup/actions";
 import BaseButton from "@/component/reuseable/baseButton/BaseButton";
 import { useRouter } from "next/router";
+import { useFeatureTypeDeleteMutation } from "@/queries/useFeatureTypeDeleteMutation";
+import { useGetFeatureTypesQuery } from "@/queries/useGetFetaureTypesQuery";
 
 function Features({
   featuretypes,
@@ -45,6 +47,8 @@ function Features({
   const featureData = useSelector((state) => state.feature.featureData);
 
   const loading = useSelector((state) => state.feature?.loading);
+  const { data: featureTypesData, refetch } = useGetFeatureTypesQuery();
+  console.log({ featureTypesData });
 
   useEffect(() => {
     if (featuretypes.length > 0) {
@@ -52,13 +56,40 @@ function Features({
     }
   }, [featuretypes, errors]);
 
+  const [inputValue, setInputValue] = useState(null);
+
+  const handleInputChange = (event) => {
+    setInputValue(event.target.value);
+  };
+
   const handleAddFeature = async () => {
     if (item.length > 0) {
       await dispatch(
-        featureDataCreate({ name: item, type: featureSelectData?.name })
+        featureDataCreate({
+          name: item,
+          type: inputValue ? inputValue : featureSelectData,
+        })
       );
       await dispatch(findFeatureData());
+      await refetch();
     }
+  };
+
+  const mutation = useFeatureTypeDeleteMutation();
+
+  const handleDeleteFeature = (key) => {
+    const body = {
+      type: key,
+    };
+    mutation.mutate(body, {
+      onError(error) {
+        console.log(error);
+      },
+      onSuccess: async (data) => {
+        await dispatch(findFeatureData());
+        await refetch();
+      },
+    });
   };
 
   const FeatureAddLoading = useSelector(
@@ -105,7 +136,7 @@ function Features({
         </Stack>
         <BaseButton
           handleFunction={() => {
-           router.back()
+            router.back();
           }}
           sx="error"
           color="error"
@@ -140,31 +171,29 @@ function Features({
       ) : (
         <Grid container spacing={1} sx={{ mt: 2 }}>
           {Object.keys(featureData).map((key, index) => (
-            <Box key={index}>
-              <Typography
-                variant="p"
-                sx={{
-                  color: "#4B4B66",
-                  fontSize: "16px",
-                  fontWeight: "600",
-                  lineHeight: "19px",
-                }}
+            <Box key={index} sx={{ width: "100%" }}>
+              <Grid
+                container
+                direction="row"
+                justifyContent="space-between"
+                alignItems="center"
               >
-                {
-                  t[
-                    (key === "condominium" ||
-                      key === "accessibility" ||
-                      key === "amenities" ||
-                      key === "appliances" ||
-                      key === "room" ||
-                      key === "rooms" ||
-                      key === "sorrounding" ||
-                      key === "wellbeing" ||
-                      key === "feature") &&
-                      key
-                  ]
-                }
-              </Typography>
+                <Typography
+                  variant="p"
+                  sx={{
+                    color: "#4B4B66",
+                    fontSize: "16px",
+                    fontWeight: "600",
+                    lineHeight: "19px",
+                  }}
+                >
+                  {key}
+                </Typography>
+                <DeleteOutlinedIcon
+                  sx={{ color: "red", cursor: "pointer" }}
+                  onClick={() => handleDeleteFeature(key)}
+                />
+              </Grid>
               <Grid
                 container
                 direction="row"
@@ -173,46 +202,53 @@ function Features({
                 gap={1}
                 sx={{ mt: 2 }}
               >
-                {(key === "condominium" ||
-                  key === "accessibility" ||
-                  key === "amenities" ||
-                  key === "appliances" ||
-                  key === "room" ||
-                  key === "rooms" ||
-                  key === "sorrounding" ||
-                  key === "wellbeing" ||
-                  key === "feature") &&
-                  featureData[key].map((data, index) => (
-                    <Button
-                      key={index}
-                      onClick={() => {
-                        if (!featuretypes?.includes(data.id)) {
-                          setFeatureTypes((current) => [...current, data.id]);
-                        } else {
-                          const newArray = featuretypes?.filter(
-                            (value) => value !== data.id
-                          );
-                          setFeatureTypes(newArray);
-                        }
-                      }}
-                      sx={{
-                        background: `${
-                          featuretypes?.includes(data.id)
-                            ? "#7450F0"
-                            : "transparent"
-                        }`,
+                {featureData[key].map((data, index) => (
+                  <Button
+                    key={index}
+                    onClick={() => {
+                      if (!featuretypes?.includes(data.id)) {
+                        setFeatureTypes((current) => [...current, data.id]);
+                      } else {
+                        const newArray = featuretypes?.filter(
+                          (value) => value !== data.id
+                        );
+                        setFeatureTypes(newArray);
+                      }
+                    }}
+                    sx={{
+                      background: `${
+                        featuretypes?.includes(data.id)
+                          ? "#7450F0"
+                          : "transparent"
+                      }`,
+                      borderRadius: "56px",
+                      // width: "100%",
+                      color: `${
+                        featuretypes?.includes(data.id) ? "#FFFFFF" : "#32414C"
+                      }`,
+                      border: `${
+                        featuretypes?.includes(data.id)
+                          ? ""
+                          : "1px solid #9FAAB1"
+                      }`,
+                      fontSize: {
+                        xs: "12px",
+                        sm: "13px",
+                        md: "16px",
+                        lg: "13px",
+                        xl: "16px",
+                      },
+                      fontWeight: "400",
+                      lineHeight: "22px",
+                      textTransform: "none",
+                      px: { xs: 0, sm: 2, md: 2, lg: 2, xl: 2 },
+                      py: 1,
+                      "&:hover": {
+                        background: "#7450F0",
                         borderRadius: "56px",
+                        color: "#FFFFFF",
+                        border: `${index === 0 ? "" : "1px solid #9FAAB1"}`,
                         // width: "100%",
-                        color: `${
-                          featuretypes?.includes(data.id)
-                            ? "#FFFFFF"
-                            : "#32414C"
-                        }`,
-                        border: `${
-                          featuretypes?.includes(data.id)
-                            ? ""
-                            : "1px solid #9FAAB1"
-                        }`,
                         fontSize: {
                           xs: "12px",
                           sm: "13px",
@@ -225,30 +261,12 @@ function Features({
                         textTransform: "none",
                         px: { xs: 0, sm: 2, md: 2, lg: 2, xl: 2 },
                         py: 1,
-                        "&:hover": {
-                          background: "#7450F0",
-                          borderRadius: "56px",
-                          color: "#FFFFFF",
-                          border: `${index === 0 ? "" : "1px solid #9FAAB1"}`,
-                          // width: "100%",
-                          fontSize: {
-                            xs: "12px",
-                            sm: "13px",
-                            md: "16px",
-                            lg: "13px",
-                            xl: "16px",
-                          },
-                          fontWeight: "400",
-                          lineHeight: "22px",
-                          textTransform: "none",
-                          px: { xs: 0, sm: 2, md: 2, lg: 2, xl: 2 },
-                          py: 1,
-                        },
-                      }}
-                    >
-                      {data?.name?.slice(0, 20)}
-                    </Button>
-                  ))}
+                      },
+                    }}
+                  >
+                    {data?.name?.slice(0, 20)}
+                  </Button>
+                ))}
               </Grid>
               <Divider sx={{ mt: 1, mb: 1 }} />
             </Box>
@@ -278,13 +296,13 @@ function Features({
           />
           <BaseAutocomplete
             //   sx={{ margin: "0.6vh 0" }}
-            options={featureTypeData || []}
-            getOptionLabel={(option) => option.name || ""}
+            options={featureTypesData || []}
             sx={{ ml: 1, width: "35%" }}
-            isOptionEqualToValue={(option, value) => option.id === value.id}
+            isOptionEqualToValue={(option, value) => option === value}
             size={"large"}
             placeholder={"Feature Type"}
             onChange={(e, v, r, d) => setFeatureSelectData(v)}
+            onInputChange={handleInputChange}
             value={featureSelectData}
           />
           <Button

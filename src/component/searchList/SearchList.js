@@ -1057,7 +1057,7 @@ function SearchList({ propertyData, language, handleLoginOpen }) {
               </Grid>
             </Grid>
           </Box>
-          {/* <Divider sx={{ mt: 1, mb: 1 }} /> */}
+          <Divider sx={{ mt: 1, mb: 1 }} />
           {Object.keys(featureData).map((key, index) => (
             <Box key={index}>
               <Typography
@@ -1069,20 +1069,7 @@ function SearchList({ propertyData, language, handleLoginOpen }) {
                   lineHeight: "19px",
                 }}
               >
-                {
-                  t[
-                    (key === "condominium" ||
-                      key === "accessibility" ||
-                      key === "amenities" ||
-                      key === "appliances" ||
-                      key === "room" ||
-                      key === "rooms" ||
-                      key === "sorrounding" ||
-                      key === "wellbeing" ||
-                      key === "feature") &&
-                      key
-                  ]
-                }
+                {key}
               </Typography>
               <Grid
                 container
@@ -1092,68 +1079,57 @@ function SearchList({ propertyData, language, handleLoginOpen }) {
                 gap={1}
                 sx={{ mt: 2 }}
               >
-                {(key === "condominium" ||
-                  key === "accessibility" ||
-                  key === "amenities" ||
-                  key === "appliances" ||
-                  key === "rooms" ||
-                  key === "room" ||
-                  key === "sorrounding" ||
-                  key === "wellbeing" ||
-                  key === "feature") &&
-                  featureData[key].map((data, index) => (
-                    <Button
-                      key={index}
-                      onClick={() => {
-                        if (!featuretypes?.includes(data.id)) {
-                          setFeatureTypes((current) => [...current, data.id]);
-                        } else {
-                          const newArray = featuretypes?.filter(
-                            (value) => value !== data.id
-                          );
-                          setFeatureTypes(newArray);
-                        }
-                      }}
-                      sx={{
-                        background: `${
-                          featuretypes?.includes(data.id)
-                            ? "#7450F0"
-                            : "transparent"
-                        }`,
+                {featureData[key].map((data, index) => (
+                  <Button
+                    key={index}
+                    onClick={() => {
+                      if (!featuretypes?.includes(data.id)) {
+                        setFeatureTypes((current) => [...current, data.id]);
+                      } else {
+                        const newArray = featuretypes?.filter(
+                          (value) => value !== data.id
+                        );
+                        setFeatureTypes(newArray);
+                      }
+                    }}
+                    sx={{
+                      background: `${
+                        featuretypes?.includes(data.id)
+                          ? "#7450F0"
+                          : "transparent"
+                      }`,
+                      borderRadius: "56px",
+                      // width: "100%",
+                      color: `${
+                        featuretypes?.includes(data.id) ? "#ffffff" : "#32414C"
+                      }`,
+                      border: `${
+                        featuretypes?.includes(data.id)
+                          ? ""
+                          : "1px solid #9FAAB1"
+                      }`,
+                      fontSize: {
+                        xs: "12px",
+                        sm: "13px",
+                        md: "14px",
+                        lg: "13px",
+                        xl: "14px",
+                      },
+                      fontWeight: "400",
+                      lineHeight: "17px",
+                      textTransform: "none",
+                      px: { xs: 0, sm: 1, md: 1, lg: 1, xl: 1 },
+                      py: 1,
+                      "&:hover": {
+                        background: "#7450F0",
                         borderRadius: "56px",
-                        // width: "100%",
-                        color: `${
-                          featuretypes?.includes(data.id)
-                            ? "#ffffff"
-                            : "#32414C"
-                        }`,
-                        border: `${
-                          featuretypes?.includes(data.id)
-                            ? ""
-                            : "1px solid #9FAAB1"
-                        }`,
-                        fontSize: {
-                          xs: "12px",
-                          sm: "13px",
-                          md: "14px",
-                          lg: "13px",
-                          xl: "14px",
-                        },
-                        fontWeight: "400",
-                        lineHeight: "17px",
-                        textTransform: "none",
-                        px: { xs: 0, sm: 1, md: 1, lg: 1, xl: 1 },
-                        py: 1,
-                        "&:hover": {
-                          background: "#7450F0",
-                          borderRadius: "56px",
-                          color: "#ffffff",
-                        },
-                      }}
-                    >
-                      {data.name}
-                    </Button>
-                  ))}
+                        color: "#ffffff",
+                      },
+                    }}
+                  >
+                    {data.name}
+                  </Button>
+                ))}
               </Grid>
               <Divider sx={{ mt: 1, mb: 1 }} />
             </Box>
