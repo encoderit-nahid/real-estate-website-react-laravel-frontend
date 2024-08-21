@@ -3,7 +3,7 @@ const Navbar = dynamic(() => import("@/component/shared/Navbar/Navbar"), {
   ssr: false,
 });
 import KeyboardBackspaceIcon from "@mui/icons-material/KeyboardBackspace";
-
+import CloudDownloadOutlinedIcon from "@mui/icons-material/CloudDownloadOutlined";
 import Head from "next/head";
 import {
   Box,
@@ -129,6 +129,28 @@ export default function ProjectView({
 
   console.log({ singleProjectData });
   console.log({ seoImage });
+
+  const handleDownload = (file_path) => {
+    const filePath = `${_imageURL}/${file_path}`;
+
+    const newTab = window.open(filePath, "_blank");
+
+    // Check if the tab was successfully opened
+    if (newTab) {
+      // Optionally trigger the download in the new tab
+      newTab.onload = () => {
+        const link = newTab.document.createElement("a");
+        link.href = filePath;
+        link.download = filePath.split("/").pop();
+        newTab.document.body.appendChild(link);
+        link.click();
+        newTab.document.body.removeChild(link);
+        newTab.close(); // Close the new tab after download if desired
+      };
+    } else {
+      alert("Please allow popups for this website");
+    }
+  };
 
   return (
     <div>
@@ -567,6 +589,67 @@ export default function ProjectView({
             )}
           </Grid>
         </Box>
+        {singleProjectData?.project?.documents?.length > 0 && (
+          <Box sx={{ mx: { lg: 3 } }}>
+            <Box sx={{ background: "#F9F9FB", px: 3, py: 2, mt: { lg: 2 } }}>
+              <Typography
+                variant="p"
+                sx={{
+                  color: "#1A1859",
+                  fontWeight: "700",
+                  fontSize: "18px",
+                  textTransform: "capitalize",
+                }}
+              >
+                Documentos
+              </Typography>
+
+              <Grid container spacing={1} sx={{ mt: 1 }}>
+                {singleProjectData?.project?.documents?.map((file, index) => (
+                  <Grid item xs={12} sm={12} md={4} lg={3} xl={3} key={index}>
+                    <Box
+                      sx={{
+                        p: 2,
+                        boxSizing: "border-box",
+                        border: "1px solid #DBE1E5",
+                        borderRadius: "6px",
+                      }}
+                    >
+                      <Grid
+                        container
+                        direction="row"
+                        justifyContent="flex-end"
+                        alignItems="flex-start"
+                      >
+                        <CloudDownloadOutlinedIcon
+                          sx={{
+                            background: "#F44336",
+                            color: "#ffffff",
+                            borderRadius: "50%",
+                            height: "3vh",
+                            width: "3vh",
+                            paddingY: "3px",
+                            cursor: "pointer",
+                          }}
+                          onClick={() =>
+                            handleDownload(file?.attachments[0]?.file_path)
+                          }
+                        />
+                      </Grid>
+
+                      <Typography
+                        variant="p"
+                        sx={{ color: "#38bdf8", fontWeight: "600" }}
+                      >
+                        {file?.name?.slice(0, 15) || file?.title?.slice(0, 15)}
+                      </Typography>
+                    </Box>
+                  </Grid>
+                ))}
+              </Grid>
+            </Box>
+          </Box>
+        )}
 
         {singleProjectData?.propject_wise_properties.length > 0 && (
           <Box>

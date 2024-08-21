@@ -29,6 +29,7 @@ import BaseCancelButton from "@/component/reuseable/button/BaseCancelButton";
 import BaseButton from "@/component/reuseable/baseButton/BaseButton";
 import { getAddressData } from "@/api";
 import { useRouter } from "next/router";
+import BaseOutlinedPhoneInput from "@/component/reuseable/baseOutlinedPhoneInput/BaseOutlinedPhoneInput";
 
 const baseStyle = {
   flex: 1,
@@ -350,6 +351,46 @@ function Owner({
               {errors?.owner_email?.message}
             </Typography>
           </FormControl>
+        </Grid>
+      </Grid>
+      <Grid spacing={1} sx={{ mt: 1 }}>
+        <Grid item xs={12}>
+          <Grid
+            item
+            xs={12}
+            direction="row"
+            justifyContent="flex-start"
+            alignItems="flex-start"
+          >
+            <Typography
+              variant="p"
+              sx={{
+                color: "#253858",
+                fontSize: "14px",
+                fontWeight: "400",
+                lineHeight: "16px",
+                mb: 1,
+              }}
+            >
+              Phone
+            </Typography>
+          </Grid>
+          <Controller
+            name="owner_phone"
+            control={control}
+            render={({ field }) => (
+              <BaseOutlinedPhoneInput
+                size={"large"}
+                placeholder={t["Phone"]}
+                onChange={(e) => {
+                  field.onChange(e.target.value);
+                }}
+                name={"owner_phone"}
+                value={field.value}
+                error={errors.owner_phone ? true : false}
+              />
+            )}
+          />
         </Grid>
       </Grid>
       <Grid container spacing={1} sx={{ mt: 1 }}>
@@ -1215,6 +1256,7 @@ function Owner({
                       height: "3vh",
                       width: "3vh",
                       paddingY: "3px",
+                      cursor: "pointer",
                     }}
                     onClick={() => handleDelete(index)}
                   />

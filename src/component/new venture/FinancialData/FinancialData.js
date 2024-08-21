@@ -420,6 +420,7 @@ function FinancialData({
                           height: "3vh",
                           width: "3vh",
                           paddingY: "3px",
+                          cursor: "pointer",
                         }}
                         onClick={() => handleDelete(index)}
                       />

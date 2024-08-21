@@ -136,6 +136,8 @@ export default function NewVenture({ language, session }) {
   const [uploadComplete, setUploadComplete] = useState(false);
   const [uploadedCount, setUploadedCount] = useState(0);
 
+  console.log({ singleProjectData });
+
   useEffect(() => {
     if (singleProjectData) {
       console.log("🟥 ~ useEffect ~ singleProjectData:", singleProjectData);
@@ -146,6 +148,7 @@ export default function NewVenture({ language, session }) {
         "neighbourhood",
         singleProjectData?.project?.address?.neighbourhood
       );
+      setDocuments(singleProjectData?.project?.documents);
       setValue("add_on", singleProjectData?.project?.address?.add_on);
       setValue("city", singleProjectData?.project?.address?.city);
       setValue("complement", singleProjectData?.project?.address?.complement);
@@ -217,7 +220,6 @@ export default function NewVenture({ language, session }) {
       }
     });
 
-    
     const filterNewTitleData = [
       ...filterNewImageTitleData,
       ...filterNewVideoTitleData,

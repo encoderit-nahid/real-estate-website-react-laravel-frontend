@@ -261,6 +261,7 @@ export default function NewProperty({ language }) {
       setValue("no_of_parking_spaces", singleData?.no_of_parking_spaces);
       setValue("property_title", singleData?.property_title);
       setValue("owner_email", singleData?.property_owner?.email);
+      setValue("owner_phone", singleData?.property_owner?.phone);
       setValue("email_authorization", singleData?.is_sales_authorized === 1);
       setValue("description", singleData?.property_description || "");
 
@@ -322,7 +323,9 @@ export default function NewProperty({ language }) {
       );
       setValue(
         "owner_registration_number",
-        singleData?.property_owner?.registry[0]?.registry_number ? +singleData?.property_owner?.registry[0]?.registry_number : ''
+        singleData?.property_owner?.registry[0]?.registry_number
+          ? +singleData?.property_owner?.registry[0]?.registry_number
+          : ""
       );
       setValue("owner_documnentation", {
         label: singleData?.property_owner?.registry[0]?.title,
@@ -505,6 +508,7 @@ export default function NewProperty({ language }) {
       rg: data?.owner_rg,
       cpf: data?.owner_cpf,
       email: data?.owner_email,
+      phone: data?.owner_phone,
       spouse_name: data?.owner_spouse_name,
       spouse_rg: data?.owner_spouse_rg,
       spouse_cpf: data?.owner_spouse_cpf,
@@ -614,7 +618,9 @@ export default function NewProperty({ language }) {
       allValues?.owner_number != null &&
       allValues?.owner_neighbourhood != null &&
       allValues?.owner_city != null &&
-      allValues?.owner_state != null
+      allValues?.owner_state != null &&
+      allValues?.owner_email !== null &&
+      allValues?.owner_phone !== null
     ) {
       setDisableBtn(false);
     }
@@ -627,7 +633,9 @@ export default function NewProperty({ language }) {
       allValues?.owner_number === "" ||
       allValues?.owner_neighbourhood === "" ||
       allValues?.owner_city === "" ||
-      allValues?.owner_state === ""
+      allValues?.owner_state === "" ||
+      allValues?.owner_email === "" ||
+      allValues?.owner_phone === ""
     ) {
       setDisableBtn(true);
     }
