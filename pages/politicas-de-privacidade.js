@@ -34,7 +34,12 @@ import CategorySubscribe from "../src/component/category/categorySubscribe/Categ
 import BlogHighlightsCard from "../src/component/blog/blogHighlightsCard/BlogHighlightsCard";
 import PrivacyContent from "../src/component/privacy/privacyContent/PrivacyContent";
 
-function PoliticasDePrivacidade() {
+function PoliticasDePrivacidade({
+  loginOpen,
+  setLoginOpen,
+  handleLoginOpen,
+  handleLoginClose,
+}) {
   const contents = [
     {
       title: " 1. Introdução",
@@ -409,6 +414,10 @@ function PoliticasDePrivacidade() {
         <Navbar
           shape={false}
           paddingY={"1vh"}
+          loginOpen={loginOpen}
+          setLoginOpen={setLoginOpen}
+          handleLoginClose={handleLoginClose}
+          handleLoginOpen={handleLoginOpen}
           language="pt"
           myValue="pt"
           colorLogo

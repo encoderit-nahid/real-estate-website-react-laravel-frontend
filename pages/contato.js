@@ -115,7 +115,12 @@ import PrivacyContent from "../src/component/privacy/privacyContent/PrivacyConte
 import BaseWhatsappButton from "@/component/reuseable/baseWhatsappButton/BaseWhatsappButton";
 import Link from "next/link";
 
-function Contato() {
+function Contato({
+  loginOpen,
+  setLoginOpen,
+  handleLoginOpen,
+  handleLoginClose,
+}) {
   return (
     <div>
       <Head>
@@ -128,6 +133,10 @@ function Contato() {
         <Navbar
           shape={false}
           paddingY={"1vh"}
+          loginOpen={loginOpen}
+          setLoginOpen={setLoginOpen}
+          handleLoginClose={handleLoginClose}
+          handleLoginOpen={handleLoginOpen}
           language="pt"
           myValue="pt"
           colorLogo
