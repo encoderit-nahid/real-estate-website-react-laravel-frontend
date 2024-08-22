@@ -165,7 +165,7 @@ function AddressData({
               control={control}
               render={({ field }) => (
                 <BaseOutlinedZipInput
-                  placeholder={t["Zip code"]}
+                  // placeholder={t["Zip code"]}
                   size={"small"}
                   onChange={(e) => {
                     field.onChange(e.target.value);
@@ -216,7 +216,7 @@ function AddressData({
             render={({ field }) => (
               <BaseTextField
                 size={"small"}
-                placeholder={t["Address"]}
+                // placeholder={t["Address"]}
                 onChange={(e) => {
                   field.onChange(e.target.value);
                 }}
@@ -261,7 +261,7 @@ function AddressData({
             render={({ field }) => (
               <BaseTextField
                 size={"small"}
-                placeholder={t["Number"]}
+                // placeholder={t["Number"]}
                 onChange={(e) => {
                   field.onChange(e.target.value);
                 }}
@@ -310,7 +310,7 @@ function AddressData({
             render={({ field }) => (
               <BaseTextField
                 size={"small"}
-                placeholder={t["Neighborhood"]}
+                // placeholder={t["Neighborhood"]}
                 onChange={(e) => {
                   field.onChange(e.target.value);
                 }}
@@ -366,7 +366,7 @@ function AddressData({
             render={({ field }) => (
               <BaseTextField
                 size={"small"}
-                placeholder={t["Add-on"]}
+                // placeholder={t["Add-on"]}
                 onChange={(e) => {
                   field.onChange(e.target.value);
                 }}
@@ -411,7 +411,7 @@ function AddressData({
                 getOptionLabel={(option) => option.name || ""}
                 isOptionEqualToValue={(option, value) => option.id === value.id}
                 size={"small"}
-                placeholder={t["state"]}
+                // placeholder={t["state"]}
                 onChange={(e, v, r, d) => field.onChange(v)}
                 value={field.value}
               />
@@ -453,7 +453,7 @@ function AddressData({
             render={({ field }) => (
               <BaseTextField
                 size={"small"}
-                placeholder={t["city"]}
+                // placeholder={t["city"]}
                 onChange={(e) => {
                   field.onChange(e.target.value);
                 }}
