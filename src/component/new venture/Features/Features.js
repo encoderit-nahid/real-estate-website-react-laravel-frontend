@@ -105,7 +105,7 @@ function Features({
         </Stack>
         <BaseButton
           handleFunction={() => {
-           router.back()
+            router.back();
           }}
           sx="error"
           color="error"
@@ -279,7 +279,7 @@ function Features({
           <BaseAutocomplete
             //   sx={{ margin: "0.6vh 0" }}
             options={featureTypeData || []}
-            getOptionLabel={(option) => option.name || ""}
+            getOptionLabel={(option) => t[option.name] || ""}
             sx={{ ml: 1, width: "35%" }}
             isOptionEqualToValue={(option, value) => option.id === value.id}
             size={"large"}

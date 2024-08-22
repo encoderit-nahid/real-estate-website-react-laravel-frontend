@@ -487,4 +487,6 @@ export default {
   "Validate documents": "Validar documento",
   Photo: "Foto",
   "Cover photo": "Foto da capa",
+  sorrounding: "Circundante",
+  Sorrounding: "Circundante",
 };

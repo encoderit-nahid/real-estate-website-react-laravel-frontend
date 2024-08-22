@@ -322,6 +322,7 @@ function Owner({
               }}
             >
               E-mail
+              <span style={{ color: "#E63333" }}>*</span>
             </Typography>
           </Grid>
           <FormControl variant="outlined" sx={{ width: "100%" }}>

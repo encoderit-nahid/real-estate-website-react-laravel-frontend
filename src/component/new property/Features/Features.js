@@ -41,7 +41,7 @@ function Features({
   replace,
 }) {
   const t = languageName === "en" ? en : pt;
-  const router = useRouter()
+  const router = useRouter();
   const [featureSelectData, setFeatureSelectData] = useState(null);
   const { data: session } = useSession();
   const [item, setItem] = useState("");
@@ -113,7 +113,7 @@ function Features({
           sx="error"
           variant="outlined"
           handleFunction={() => {
-              router.back()
+            router.back();
           }}
         >
           {t["Cancel"]}
@@ -284,7 +284,7 @@ function Features({
           <BaseAutocomplete
             //   sx={{ margin: "0.6vh 0" }}
             options={featureTypeData || []}
-            getOptionLabel={(option) => option.name || ""}
+            getOptionLabel={(option) => t[option.name] || ""}
             sx={{ ml: 1, width: "35%" }}
             isOptionEqualToValue={(option, value) => option.id === value.id}
             size={"large"}

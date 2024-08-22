@@ -322,7 +322,9 @@ export default function NewProperty({ language }) {
       );
       setValue(
         "owner_registration_number",
-        singleData?.property_owner?.registry[0]?.registry_number ? +singleData?.property_owner?.registry[0]?.registry_number : ''
+        singleData?.property_owner?.registry[0]?.registry_number
+          ? +singleData?.property_owner?.registry[0]?.registry_number
+          : ""
       );
       setValue("owner_documnentation", {
         label: singleData?.property_owner?.registry[0]?.title,
@@ -614,7 +616,8 @@ export default function NewProperty({ language }) {
       allValues?.owner_number != null &&
       allValues?.owner_neighbourhood != null &&
       allValues?.owner_city != null &&
-      allValues?.owner_state != null
+      allValues?.owner_state != null &&
+      allValues?.owner_email != null
     ) {
       setDisableBtn(false);
     }
@@ -627,7 +630,8 @@ export default function NewProperty({ language }) {
       allValues?.owner_number === "" ||
       allValues?.owner_neighbourhood === "" ||
       allValues?.owner_city === "" ||
-      allValues?.owner_state === ""
+      allValues?.owner_state === "" ||
+      allValues?.owner_email === ""
     ) {
       setDisableBtn(true);
     }
