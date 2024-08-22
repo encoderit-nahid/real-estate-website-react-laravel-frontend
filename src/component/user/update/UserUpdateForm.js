@@ -41,12 +41,10 @@ const UserUpdateForm = ({ language }) => {
   const allStateData = useSelector((state) => state.state.stateData);
 
   useEffect(() => {
-    console.log("✅✅ ~ useEffect ~ currentUser:", currentUser);
-
     setValue("user_id", currentUser?.id);
     setValue(
       "image",
-      currentUser?.attachments.length > 0
+      currentUser?.attachments?.length > 0
         ? `${_imageURL}/${currentUser?.attachments[0]?.file_path}`
         : ""
     );
@@ -117,8 +115,7 @@ const UserUpdateForm = ({ language }) => {
       },
     });
   };
-  const userRole = currentUser?.roles[0]?.slug;
-  console.log("🟥 ~ UserUpdateForm ~ userRole:", userRole);
+  const userRole = currentUser?.roles ? currentUser?.roles[0]?.slug : null;
   const t = myValue === "en" ? en : pt;
 
   const validationSchema = Yup.object().shape({
