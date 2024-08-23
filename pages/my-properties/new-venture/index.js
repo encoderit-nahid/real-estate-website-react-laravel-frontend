@@ -15,7 +15,7 @@ import { useRouter } from "next/router";
 import { useEffect } from "react";
 
 import { serialize } from "object-to-formdata";
-import { createProjectApi, updateProjectApi } from "../../../src/api";
+import { createProjectApi, omitEmpties, updateProjectApi } from "../../../src/api";
 import { useDispatch } from "react-redux";
 import { GetPhotoTypeData } from "../../../src/redux/photo/actions";
 const requiredFields = [
@@ -28,6 +28,7 @@ const requiredFields = [
     "number",
     "state",
     "zip_code",
+    "construction_company"
   ],
   ["features"],
   ["images"],
@@ -240,8 +241,9 @@ export default function NewVenture({ language, session }) {
       }
     });
     const newDocuments = documents?.filter((data) => data instanceof File);
-    const requireData = {
+    const requireData = omitEmpties({
       features: featuretypes,
+      user_id: data?.construction_company?.id,
       content_url: newVideoArr,
       description: data?.description?.toString("html"),
       name: data?.name,
@@ -262,7 +264,7 @@ export default function NewVenture({ language, session }) {
         neighbourhood: data?.neighbourhood,
         complement: data?.complement,
       },
-    };
+    });
     const formData = query.project_id
       ? serialize(
           { ...requireData, project_id: query.project_id },

@@ -357,7 +357,7 @@ function Negotiate({
 
           <Button
             disabled={
-              session?.user?.role === "broker" ||
+              session?.user?.role === "broker" || session?.user?.role === "construction_company" ||
               session?.user?.role === "owner"
             }
             fullWidth
@@ -404,7 +404,7 @@ function Negotiate({
         >
           <Button
             disabled={
-              session?.user?.role === "broker" ||
+              session?.user?.role === "broker" || session?.user?.role === "construction_company" ||
               session?.user?.role === "owner"
             }
             variant="contained"

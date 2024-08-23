@@ -29,6 +29,8 @@ import BaseTextArea from "@/component/reuseable/baseTextArea/BaseTextArea";
 import BaseButton from "@/component/reuseable/baseButton/BaseButton";
 import { useRouter } from "next/router";
 import { getAddressData } from "@/api";
+import { useGetCompanyListQuery } from "@/queries/UseGetCompanyListQuery";
+import { useSession } from "next-auth/react";
 
 const BaseTextEditor = dynamic(
   () => import("@/component/reuseable/baseTextEditor/BaseTextEditor"),
@@ -52,11 +54,16 @@ function Address({
   }, [dispatch]);
   const t = languageName === "en" ? en : pt;
 
+  const {data: session} = useSession()
+
   const router = useRouter()
 
   console.log({ allValues });
 
   const allStateData = useSelector((state) => state.state.stateData);
+
+  const {data : companyData} = useGetCompanyListQuery({type:'Construction'})
+  console.log({companyData})
 
   useEffect(() => {
     const getData = async () => {
@@ -212,6 +219,58 @@ function Address({
           </Typography>
         </Grid>
       </Grid>
+{
+  session?.user?.role === "admin" &&
+  <Grid container spacing={1} sx={{ mt: 3 }}>
+  <Grid item xs={12} sm={12} md={12} lg={12}>
+      <Grid
+        item
+        xs={12}
+        direction="row"
+        justifyContent="flex-start"
+        alignItems="flex-start"
+      >
+        <Typography
+          variant="p"
+          sx={{
+            color: "#253858",
+            fontSize: "14px",
+            fontWeight: "400",
+            lineHeight: "16px",
+            mb: 1,
+          }}
+        >
+          empresa de construção
+          <span style={{ color: "#E63333" }}>*</span>
+        </Typography>
+      </Grid>
+      <Controller
+        name="construction_company"
+        control={control}
+        // defaultValue={{}}
+        render={({ field }) => (
+          <BaseAutocomplete
+            //   sx={{ margin: "0.6vh 0" }}
+            options={companyData || []}
+            getOptionLabel={(option) => option?.user?.name || ""}
+            isOptionEqualToValue={(option, value) => option.id === value.id}
+            size={"medium"}
+            placeholder={`empresa de construção*`}
+            onChange={(e, v, r, d) => field.onChange(v)}
+            value={field.value || null}
+          />
+        )}
+      />
+      <Typography
+        variant="inherit"
+        color="textSecondary"
+        sx={{ color: "#b91c1c" }}
+      >
+        {errors.construction_company?.message}
+      </Typography>
+    </Grid>
+    </Grid>
+}
 
       <Grid container spacing={1} sx={{ mt: 3 }}>
         <Grid item xs={12} sm={12} md={12} lg={3}>

@@ -165,7 +165,7 @@ function AmountView({
         <BaseWhatsappButton content={content} />
         <Button
           disabled={
-            session?.user?.role === "broker" || session?.user?.role === "owner"
+            session?.user?.role === "broker" || session?.user?.role === "construction_company" || session?.user?.role === "owner"
           }
           variant="contained"
           color="primary"
@@ -198,7 +198,7 @@ function AmountView({
         <ScrollLink to="schedule_visit" smooth={true} duration={500}>
           <Button
             disabled={
-              session?.user?.role === "broker" ||
+              session?.user?.role === "broker" || session?.user?.role === "construction_company" ||
               session?.user?.role === "owner"
             }
             variant="contained"

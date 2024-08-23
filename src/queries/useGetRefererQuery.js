@@ -1,19 +1,21 @@
 import { apiInstance } from "@/api";
 import { useQuery } from "@tanstack/react-query";
 
-export const useGetFinancialQuery = (params) => {
+export const useGetRefererQuery = (params) => {
   return useQuery({
-    queryKey: [`/get-sold-property`],
+    queryKey: ["/referer"],
     // enabled: !!q,'
     retry: 2,
-    refetchOnWindowFocus: true,
-    refetchOnMount: true,
+    // refetchOnWindowFocus: true,
+    // refetchOnMount: true,
     keepPreviousData: true,
     staleTime: 0,
     // initialData: () => [],
     queryFn: async () => {
       return(
-        await apiInstance.get(`/sold-property`))?.data?.data
-    },
-  });
+        await apiInstance.get(`/referrer-credits`, {
+          params,
+        }))?.data?.data
+      },
+    });
 };

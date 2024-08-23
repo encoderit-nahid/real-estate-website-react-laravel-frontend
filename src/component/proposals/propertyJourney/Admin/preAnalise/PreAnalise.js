@@ -778,6 +778,8 @@ function PreAnalise({
                               disabled={
                                 session?.user?.role === "owner"
                                   ? true
+                                  : session?.user?.role === "construction_company"
+                                  ? true
                                   : session?.user?.role === "broker"
                                   ? true
                                   : false
@@ -831,6 +833,8 @@ function PreAnalise({
                                 session?.user?.role === "owner"
                                   ? true
                                   : session?.user?.role === "broker"
+                                  ? true
+                                  : session?.user?.role === "construction_company"
                                   ? true
                                   : false
                               }

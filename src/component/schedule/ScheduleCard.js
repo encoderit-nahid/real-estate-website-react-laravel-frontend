@@ -460,7 +460,7 @@ function ScheduleCard({ data, languageName }) {
               sx={{ ml: { xs: 1, sm: 1, md: 1, lg: 0 } }}
             >
               <Button
-                disabled={session?.user?.role === "broker"}
+                disabled={session?.user?.role === "broker" || session?.user?.role === "construction_company"}
                 onClick={() => handleCompleteSchedule(data?.id)}
                 variant="outlined"
                 sx={{
@@ -484,7 +484,7 @@ function ScheduleCard({ data, languageName }) {
                 {!compelteLoading && "Visita completa"}
               </Button>
               <Button
-                disabled={session?.user?.role === "broker"}
+                disabled={session?.user?.role === "broker" || session?.user?.role === "construction_company"}
                 onClick={() => handleCancelSchedule(data?.id)}
                 variant="outlined"
                 sx={{

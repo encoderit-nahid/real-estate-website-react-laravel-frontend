@@ -258,7 +258,7 @@ export default function MyProperties({ language }) {
                 </Grid>
               )}
 
-              {session?.user?.role === "admin" && (
+              {(session?.user?.role === "admin" || session?.user?.role === "construction_company" ) && (
                 <Grid item xs={12} md={6}>
                   <BaseButton
                     fullWidth

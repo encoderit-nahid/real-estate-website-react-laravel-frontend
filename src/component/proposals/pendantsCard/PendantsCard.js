@@ -678,7 +678,9 @@ function PendantsCard({ propertyData, languageName, refetch, loadingRefetch }) {
             <Button
               fullWidth
               disabled={
-                session?.user?.role === "broker"
+                session?.user?.role === "broker" 
+                  ? true
+                  : session?.user?.role === "construction_company" 
                   ? true
                   : session?.user?.role === "owner"
                   ? true

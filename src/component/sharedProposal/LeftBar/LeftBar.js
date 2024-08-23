@@ -81,25 +81,25 @@ function LeftBar(props) {
       icon: <CampaignOutlinedIcon />,
       label: t["Properties"],
       route: "my-properties",
-      visible: ["admin", "broker", "buyer", "owner"],
+      visible: ["admin", "broker", "buyer", "owner","construction_company"],
     },
     {
       icon: <ArticleOutlinedIcon />,
       label: t["Proposals"],
       route: "proposals",
-      visible: ["admin", "broker", "buyer", "owner"],
+      visible: ["admin", "broker", "buyer", "owner","construction_company"],
     },
     {
       icon: <StarBorderOutlinedIcon />,
       label: t["Schedules"],
       route: "schedules",
-      visible: ["admin", "broker", "buyer", "owner"],
+      visible: ["admin", "broker", "buyer", "owner","construction_company"],
     },
     {
       icon: <PersonOutlineOutlinedIcon />,
       label: t["Brokers"],
       route: "brokers",
-      visible: ["admin", "broker", "buyer", "owner"],
+      visible: ["admin", "broker", "buyer", "owner","construction_company"],
     },
     {
       icon: <AddBusinessIcon />,
@@ -111,19 +111,19 @@ function LeftBar(props) {
       icon: <PaidIcon />,
       label: t["Financial"],
       route: "financial",
-      visible: ["admin", "broker", "buyer", "owner"],
+      visible: ["admin", "broker", "buyer", "owner","construction_company"],
     },
     {
       icon: <HelpOutlineOutlinedIcon />,
       label: "Perguntas frequentes",
       route: "faq",
-      visible: ["admin", "broker", "buyer", "owner"],
+      visible: ["admin", "broker", "buyer", "owner","construction_company"],
     },
     {
       icon: <InputOutlinedIcon />,
       label: t["Leave"],
       route: "",
-      visible: ["admin", "broker", "buyer", "owner"],
+      visible: ["admin", "broker", "buyer", "owner","construction_company"],
     },
   ];
 

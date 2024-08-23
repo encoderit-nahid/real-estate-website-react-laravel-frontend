@@ -105,6 +105,8 @@ export default function IncludeProposal({ language }) {
   const steps =
     session?.user?.role === "broker"
       ? [t["Proposal values"], t["Buyer data"]]
+      : session?.user?.role === "construction_company" 
+      ? [t["Proposal values"], t["Buyer data"]]
       : session?.user?.role === "admin"
       ? [t["Proposal values"], t["Buyer data"]]
       : [t["Proposal values"]];
@@ -324,7 +326,7 @@ export default function IncludeProposal({ language }) {
                 >
                   {activeStep === steps.length - 1 && (
                     <Grid container spacing={1} sx={{ mt: 2, mb: 5 }}>
-                      {session?.user?.role === "broker" ||
+                      {session?.user?.role === "broker" || session?.user?.role === "construction_company" ||
                       session?.user?.role === "admin" ? (
                         <Grid item xs={6} sm={6} md={6}>
                           <Button
