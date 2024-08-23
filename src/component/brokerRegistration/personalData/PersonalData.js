@@ -432,7 +432,7 @@ function PersonalData({
             render={({ field }) => (
               <BaseTextField
                 size={"small"}
-                placeholder={t["Full Name"]}
+                // placeholder={t["Full Name"]}
                 // sx={{ mb: 2 }}
                 onChange={(e) => {
                   field.onChange(e.target.value);
@@ -484,7 +484,7 @@ function PersonalData({
             render={({ field }) => (
               <BaseTextField
                 size={"small"}
-                placeholder={t["Social Name"]}
+                // placeholder={t["Social Name"]}
                 sx={{ mb: 1 }}
                 onChange={(e) => {
                   field.onChange(e.target.value);
@@ -523,7 +523,7 @@ function PersonalData({
                 render={({ field }) => (
                   <BaseTextField
                     size={"small"}
-                    placeholder={t["Description"]}
+                    // placeholder={t["Description"]}
                     // sx={{ mb: 2 }}
                     onChange={(e) => {
                       field.onChange(e.target.value);
@@ -580,8 +580,8 @@ function PersonalData({
                 <BaseTextField
                   size={"small"}
                   type={"number"}
-                  autoComplete={"new-Text"}
-                  placeholder={t["CRECI Number"]}
+                  autoComplete={"off"}
+                  // placeholder={t["CR Number"]}
                   onChange={(e) => {
                     if (e.target.value.length <= 6) {
                       field.onChange(e.target.value);
@@ -629,7 +629,7 @@ function PersonalData({
               control={control}
               render={({ field }) => (
                 <BaseOutlinedCpfInput
-                  placeholder={"CPF"}
+                  // placeholder={"CPF"}
                   size={"small"}
                   onChange={(e) => {
                     field.onChange(e.target.value);
@@ -682,7 +682,7 @@ function PersonalData({
               control={control}
               render={({ field }) => (
                 <BaseOutlinedRgInput
-                  placeholder={"RG"}
+                  // placeholder={"RG"}
                   size={"small"}
                   onChange={(e) => {
                     field.onChange(e.target.value);
@@ -731,7 +731,7 @@ function PersonalData({
             defaultValue={formatISO(new Date())}
             render={({ field }) => (
               <BaseDateField
-                placeholder={"Date of Birth"}
+                // placeholder={"Date of Birth"}
                 size={"small"}
                 onChange={(value) => {
                   field.onChange(value);
