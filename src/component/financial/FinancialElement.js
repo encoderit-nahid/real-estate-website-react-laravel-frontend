@@ -1,228 +1,696 @@
-import { Box, Stack, Typography } from '@mui/material'
-import Image from 'next/image'
-import React, { useState } from 'react'
-import BaseFilePicker from '../reuseable/baseFilePicker/BaseFilePicker'
-import { Button } from 'react-scroll'
-import { useFieldArray, useForm } from 'react-hook-form'
+import { Box, Stack, Typography, useMediaQuery, useTheme } from "@mui/material";
+import Image from "next/image";
+import React, { Fragment, useMemo, useState } from "react";
+import BaseFilePicker from "../reuseable/baseFilePicker/BaseFilePicker";
+import { Button } from "react-scroll";
+import { useFieldArray, useForm } from "react-hook-form";
 import homeImage from "../../../public/Images/homeImage.jpg";
-import en from 'locales/en'
-import pt from 'locales/pt'
-import { useGetFinancialQuery } from '@/queries/useGetFinancialQuery'
+import en from "locales/en";
+import pt from "locales/pt";
+import { useGetFinancialQuery } from "@/queries/useGetFinancialQuery";
+import { useSession } from "next-auth/react";
+import { formatBrazilianCurrency } from "@/utils/useUtilities";
+import { _imageURL } from "consts";
+import { useMakePaymentMutation } from "@/queries/useMakePaymentMutation";
+import { serialize } from "object-to-formdata";
 
-function FinancialElement({language}) {
-    const {
-        register,
-        watch,
-        control,
-        handleSubmit,
-        formState: { errors },
-        setError,
-      } = useForm()
-      const { fields, append, remove } = useFieldArray({
-        control,
-        name: 'attachments',
-      })
-      const allValues = watch()
-      const [myValue, setMyValue] = useState(language || "pt");
-      
-      const t = myValue === "en" ? en : pt;
-    
-      const {data: financialData} = useGetFinancialQuery()
-      console.log({financialData})
-    
-      const [files, setFiles] = useState([])
-      const [deletedContent, setDeletedContent] = useState([])
-      const [imageError, setImageError] = useState(false)
-      const [imageErrorMessage, setImageErrorMessage] = useState('')
+function FinancialElement({ language, financialInfo }) {
+  const {
+    register,
+    watch,
+    control,
+    handleSubmit,
+    formState: { errors },
+    setError,
+  } = useForm();
+  const { fields, append, remove } = useFieldArray({
+    control,
+    name: "attachments",
+  });
+  const allValues = watch();
+  const [myValue, setMyValue] = useState(language || "pt");
+
+  const t = myValue === "en" ? en : pt;
+
+  const { data: financialData } = useGetFinancialQuery();
+  console.log({ financialData });
+
+  const [files, setFiles] = useState([]);
+  const [deletedContent, setDeletedContent] = useState([]);
+  const [imageError, setImageError] = useState(false);
+  const [imageErrorMessage, setImageErrorMessage] = useState("");
+
+  console.log({ files });
+
+  const { data: session } = useSession();
+
+  const mutation = useMakePaymentMutation();
+  const handleMakePayment = () => {
+    const requireData = {
+      property_id: financialInfo?.contract?.property_id,
+      document: files[0],
+    };
+    const body = serialize(requireData, { indices: true });
+    mutation.mutate(body, {
+      onError(error) {
+        console.log(error);
+      },
+      onSuccess: async (data) => {
+        console.log({ data });
+      },
+    });
+  };
+
+  const myLoader = ({ src }) => {
+    console.log("🟥 ~ myLoader ~ src:", src);
+    if (
+      src ==
+      "https://broadbits.com/wp-content/themes/ryse/assets/images/no-image/No-Image-Found-400x264.png"
+    ) {
+      return src;
+    }
+    return `${_imageURL}/${src}`;
+  };
+
+  const theme = useTheme();
+  const isSmallScreen = useMediaQuery(theme.breakpoints.down("sm"));
+
+  const calculateData = useMemo(() => {
+    let brokerComission = 0;
+    let lokkanComission = 0;
+    let referrerComission = 0;
+
+    financialInfo?.commissions?.forEach((data) => {
+      if (data?.user_type === "broker") {
+        brokerComission = data?.commission_amount;
+      }
+      if (data?.user_type === "admin") {
+        lokkanComission = data?.commission_amount;
+      }
+      if (data?.user_type === "referrer") {
+        referrerComission = data?.commission_amount;
+      }
+    });
+
+    return {
+      brokerComission,
+      lokkanComission,
+      referrerComission,
+    };
+  }, [financialInfo]);
+
+  console.log({ calculateData });
+
   return (
     <Box
-    sx={{
-      p: '16px',
-      borderRadius: '8px',
-      backgroundColor: 'rgba(255, 255, 255)',
-
-    }}
-  >
-    {/* 👇 */}
-
-    <Stack
-      direction={'row'}
       sx={{
-        border: '1px solid #DBE1E5',
-        borderRadius: '8px',
-        overflow: 'hidden',
+        p: "16px",
+        borderRadius: "8px",
+        backgroundColor: "rgba(255, 255, 255)",
       }}
     >
-      <Image
-        src={homeImage}
-        alt="home"
-        width={'120px'}
-        height={'108px'}
-        objectFit="cover"
-      />
-
-      <Box
+      {/* 👇 */}
+      <Stack
+        direction={"row"}
         sx={{
-          p: 2,
+          border: "1px solid #DBE1E5",
+          borderRadius: "8px",
+          overflow: "hidden",
         }}
       >
-        <Stack direction={'row'} spacing={2}>
-          <Box
-            sx={{
-              px: 1,
-              color: '#7450F0',
-              backgroundColor: '#e3dcfc',
-              width: 'fit-content',
-            }}
-          >
-            {t['sale']}
-          </Box>
-          <Box
-            sx={{
-              px: 1,
-              color: '#114B32',
-              backgroundColor: '#ddf8ed',
-              width: 'fit-content',
-            }}
-          >
-            {t['published']}
-          </Box>
-        </Stack>
-        <Typography
-          sx={{
-            fontSize: '14px',
-            color: '#6C7A84',
-            mt: 1,
-          }}
-        >
-          8502 Preston Rd. Inglewood, <br /> Maine 98380
-        </Typography>
-      </Box>
-    </Stack>
+        <Image
+          loader={myLoader}
+          src={`${
+            financialInfo?.attachments?.find(
+              (attachment) => attachment.title == "cover_photo"
+            )?.file_path ||
+            "https://broadbits.com/wp-content/themes/ryse/assets/images/no-image/No-Image-Found-400x264.png"
+          }`}
+          width={300}
+          height={200}
+          alt="house"
+        />
 
-    {/* 👆 */}
-    <Stack direction={'row'} spacing={3} sx={{ mt: 1 }}>
-      <Box>
-        <Typography
-          sx={{
-            fontSize: '14px',
-            color: '#6C7A84',
-          }}
-        >
-          {t['sale value']}
-        </Typography>
-        <Typography
-          sx={{
-            fontSize: '20px',
-            color: '#1A1859',
-            mt: 1,
-          }}
-        >
-          R$7000,000.00
-        </Typography>
-      </Box>
-      <Box>
-        <Typography
-          sx={{
-            fontSize: '14px',
-            color: '#6C7A84',
-          }}
-        >
-          {t['Commission']}
-        </Typography>
-        <Typography
-          sx={{
-            fontSize: '20px',
-            color: '#1A1859',
-            mt: 1,
-          }}
-        >
-          R$17,000.00
-        </Typography>
-      </Box>
-    </Stack>
-    <Typography
-      sx={{
-        fontSize: '16px',
-        color: '#1A1859',
-        mt: 2,
-      }}
-    >
-      RPA
-    </Typography>
-    {files.length == 0 && (
-      <BaseFilePicker
-        control={control}
-        errors={errors}
-        files={files}
-        setFiles={setFiles}
-        setDeletedContent={setDeletedContent}
-        deletedContent={deletedContent}
-        imageError={imageError}
-        imageErrorMessage={imageErrorMessage}
-        fields={fields}
-        append={append}
-        remove={remove}
-        allValues={allValues}
-        languageName={myValue.toString()}
-        hideTitle
-        hideVideoPicker
-        hidePictureGrid
-        hideVideoGrid
-      />
-    )}
-    {files.length > 0 && (
-      <Box
-        sx={{
-          border: '1px solid #DBE1E5',
-          borderRadius: '8px',
-          p: 2,
-          mt: 1,
-        }}
-      >
         <Box
           sx={{
-            px: 1,
-            color: '#0362F0',
-            backgroundColor: '#E0F2FE',
-            width: 'fit-content',
-            fontSize: '14px',
+            p: 2,
           }}
         >
-          RPA
-        </Box>
-        <Typography
-          sx={{
-            color: '#1A1859',
-            fontSize: '16px',
-            mt: 2,
-          }}
-        >
-          {files[0]?.name}
-        </Typography>
-        <Stack
-          direction={'row'}
-          spacing={1}
-          justifyContent={'flex-end'}
-          m={2}
-        >
-          <Stack direction={'row'} spacing={2}>
-            <Button
-              variant="outlined"
-              color="error"
-              onClick={() => setFiles([])}
+          <Stack direction={"row"} spacing={2}>
+            <Box
+              sx={{
+                px: 1,
+                color: "#7450F0",
+                backgroundColor: "#e3dcfc",
+                width: "fit-content",
+              }}
             >
-              Delete
-            </Button>
-            <Button variant="contained" color="success">
-              To send
-            </Button>
+              {t["sale"]}
+            </Box>
+            <Box
+              sx={{
+                px: 1,
+                color: "#114B32",
+                backgroundColor: "#ddf8ed",
+                width: "fit-content",
+              }}
+            >
+              {t["published"]}
+            </Box>
           </Stack>
-        </Stack>
-      </Box>
-    )}
-  </Box>
-  )
+          <Typography
+            sx={{
+              fontSize: "14px",
+              color: "#6C7A84",
+              mt: 1,
+            }}
+          >
+            {financialInfo?.address?.address}, <br />{" "}
+            {financialInfo?.address?.city}
+          </Typography>
+        </Box>
+      </Stack>
+      {session?.user?.role === "buyer" && (
+        <Box>
+          <Stack
+            direction={isSmallScreen ? "column" : "row"} // Stack direction changes based on screen size
+            justifyContent={isSmallScreen ? "center" : "space-between"}
+            spacing={isSmallScreen ? 2 : 3} // Increase spacing for smaller screens
+            sx={{ mt: 1 }}
+          >
+            <Box sx={{ width: "50%" }}>
+              <Typography
+                sx={{
+                  fontSize: "14px",
+                  color: "#6C7A84",
+                }}
+              >
+                valor de venda
+              </Typography>
+              <Typography
+                sx={{
+                  fontSize: "20px",
+                  color: "#1A1859",
+                  mt: 1,
+                }}
+              >
+                {formatBrazilianCurrency(
+                  financialInfo?.contract?.total_amount || 0
+                )}
+              </Typography>
+            </Box>
+            <Box sx={{ width: "50%" }}>
+              <Typography
+                sx={{
+                  fontSize: "14px",
+                  color: "#6C7A84",
+                }}
+              >
+                Valor da propriedade
+              </Typography>
+              <Typography
+                sx={{
+                  fontSize: "20px",
+                  color: "#1A1859",
+                  mt: 1,
+                }}
+              >
+                {formatBrazilianCurrency(financialInfo?.brl_rent || 0)}
+              </Typography>
+            </Box>
+          </Stack>
+
+          <Stack
+            direction={isSmallScreen ? "column" : "row"}
+            justifyContent={isSmallScreen ? "center" : "space-between"}
+            spacing={isSmallScreen ? 2 : 3}
+            sx={{ mt: 1 }}
+          >
+            <Box sx={{ width: "50%" }}>
+              <Typography
+                sx={{
+                  fontSize: "14px",
+                  color: "#6C7A84",
+                }}
+              >
+                Valor pago
+              </Typography>
+              <Typography
+                sx={{
+                  fontSize: "20px",
+                  color: "#1A1859",
+                  mt: 1,
+                }}
+              >
+                {formatBrazilianCurrency(
+                  (+financialInfo?.contract?.total_amount || 0) -
+                    (+financialInfo?.contract?.remaining_amount || 0)
+                )}
+              </Typography>
+            </Box>
+            <Box sx={{ width: "50%" }}>
+              <Typography
+                sx={{
+                  fontSize: "14px",
+                  color: "#6C7A84",
+                }}
+              >
+                Valor restante
+              </Typography>
+              <Typography
+                sx={{
+                  fontSize: "20px",
+                  color: "#1A1859",
+                  mt: 1,
+                }}
+              >
+                {formatBrazilianCurrency(
+                  financialInfo?.contract?.remaining_amount || 0
+                )}
+              </Typography>
+            </Box>
+          </Stack>
+        </Box>
+      )}
+      {session?.user?.role === "broker" && (
+        <Box>
+          <Stack
+            direction={isSmallScreen ? "column" : "row"} // Stack direction changes based on screen size
+            justifyContent={isSmallScreen ? "center" : "space-between"}
+            spacing={isSmallScreen ? 2 : 3} // Increase spacing for smaller screens
+            sx={{ mt: 1 }}
+          >
+            <Box sx={{ width: "50%" }}>
+              <Typography
+                sx={{
+                  fontSize: "14px",
+                  color: "#6C7A84",
+                }}
+              >
+                valor de venda
+              </Typography>
+              <Typography
+                sx={{
+                  fontSize: "20px",
+                  color: "#1A1859",
+                  mt: 1,
+                }}
+              >
+                {formatBrazilianCurrency(
+                  financialInfo?.contract?.total_amount || 0
+                )}
+              </Typography>
+            </Box>
+            <Box sx={{ width: "50%" }}>
+              <Typography
+                sx={{
+                  fontSize: "14px",
+                  color: "#6C7A84",
+                }}
+              >
+                Comissão
+              </Typography>
+              <Typography
+                sx={{
+                  fontSize: "20px",
+                  color: "#1A1859",
+                  mt: 1,
+                }}
+              >
+                {formatBrazilianCurrency(calculateData?.brokerComission)}
+              </Typography>
+            </Box>
+          </Stack>
+        </Box>
+      )}
+      {session?.user?.role === "owner" && (
+        <Box>
+          <Stack
+            direction={isSmallScreen ? "column" : "row"} // Stack direction changes based on screen size
+            justifyContent={isSmallScreen ? "center" : "space-between"}
+            spacing={isSmallScreen ? 2 : 3} // Increase spacing for smaller screens
+            sx={{ mt: 1 }}
+          >
+            <Box sx={{ width: "50%" }}>
+              <Typography
+                sx={{
+                  fontSize: "14px",
+                  color: "#6C7A84",
+                }}
+              >
+                Valor de venda
+              </Typography>
+              <Typography
+                sx={{
+                  fontSize: "20px",
+                  color: "#1A1859",
+                  mt: 1,
+                }}
+              >
+                {formatBrazilianCurrency(
+                  financialInfo?.contract?.total_amount || 0
+                )}
+              </Typography>
+            </Box>
+            <Box sx={{ width: "50%" }}>
+              <Typography
+                sx={{
+                  fontSize: "14px",
+                  color: "#6C7A84",
+                }}
+              >
+                Valor recebido do comprador
+              </Typography>
+              <Typography
+                sx={{
+                  fontSize: "20px",
+                  color: "#1A1859",
+                  mt: 1,
+                }}
+              >
+                {formatBrazilianCurrency(
+                  financialInfo?.contract?.received_amount || 0
+                )}
+              </Typography>
+            </Box>
+          </Stack>
+
+          <Stack
+            direction={isSmallScreen ? "column" : "row"}
+            justifyContent={isSmallScreen ? "center" : "space-between"}
+            spacing={isSmallScreen ? 2 : 3}
+            sx={{ mt: 1 }}
+          >
+            <Box sx={{ width: "50%" }}>
+              <Typography
+                sx={{
+                  fontSize: "14px",
+                  color: "#6C7A84",
+                }}
+              >
+                Valor da comissão
+              </Typography>
+              <Typography
+                sx={{
+                  fontSize: "20px",
+                  color: "#1A1859",
+                  mt: 1,
+                }}
+              >
+                {formatBrazilianCurrency(
+                  (+financialInfo?.contract?.total_amount * 6) / 100 || 0
+                )}
+              </Typography>
+            </Box>
+            <Box sx={{ width: "50%" }}>
+              <Typography
+                sx={{
+                  fontSize: "14px",
+                  color: "#6C7A84",
+                }}
+              >
+                Valor restante
+              </Typography>
+              <Typography
+                sx={{
+                  fontSize: "20px",
+                  color: "#1A1859",
+                  mt: 1,
+                }}
+              >
+                {formatBrazilianCurrency(
+                  financialInfo?.contract?.remaining_amount || 0
+                )}
+              </Typography>
+            </Box>
+          </Stack>
+        </Box>
+      )}
+      {session?.user?.role === "admin" && (
+        <Box>
+          <Stack
+            direction={isSmallScreen ? "column" : "row"} // Stack direction changes based on screen size
+            justifyContent={isSmallScreen ? "center" : "space-between"}
+            spacing={isSmallScreen ? 2 : 3} // Increase spacing for smaller screens
+            sx={{ mt: 1 }}
+          >
+            <Box sx={{ width: "50%" }}>
+              <Typography
+                sx={{
+                  fontSize: "14px",
+                  color: "#6C7A84",
+                }}
+              >
+                Valor de venda
+              </Typography>
+              <Typography
+                sx={{
+                  fontSize: "20px",
+                  color: "#1A1859",
+                  mt: 1,
+                }}
+              >
+                {formatBrazilianCurrency(
+                  financialInfo?.contract?.total_amount || 0
+                )}
+              </Typography>
+            </Box>
+            <Box sx={{ width: "50%" }}>
+              <Typography
+                sx={{
+                  fontSize: "14px",
+                  color: "#6C7A84",
+                }}
+              >
+                Valor recebido
+              </Typography>
+              <Typography
+                sx={{
+                  fontSize: "20px",
+                  color: "#1A1859",
+                  mt: 1,
+                }}
+              >
+                {formatBrazilianCurrency(
+                  financialInfo?.contract?.received_amount || 0
+                )}
+              </Typography>
+            </Box>
+          </Stack>
+
+          <Stack
+            direction={isSmallScreen ? "column" : "row"}
+            justifyContent={isSmallScreen ? "center" : "space-between"}
+            spacing={isSmallScreen ? 2 : 3}
+            sx={{ mt: 1 }}
+          >
+            <Box sx={{ width: "50%" }}>
+              <Typography
+                sx={{
+                  fontSize: "14px",
+                  color: "#6C7A84",
+                }}
+              >
+                Valor do proprietário
+              </Typography>
+              <Typography
+                sx={{
+                  fontSize: "20px",
+                  color: "#1A1859",
+                  mt: 1,
+                }}
+              >
+                {formatBrazilianCurrency(
+                  (+financialInfo?.contract?.total_amount * 6) / 100 || 0
+                )}
+              </Typography>
+            </Box>
+            <Box sx={{ width: "50%" }}>
+              <Typography
+                sx={{
+                  fontSize: "14px",
+                  color: "#6C7A84",
+                }}
+              >
+                Valor restante
+              </Typography>
+              <Typography
+                sx={{
+                  fontSize: "20px",
+                  color: "#1A1859",
+                  mt: 1,
+                }}
+              >
+                {formatBrazilianCurrency(
+                  financialInfo?.contract?.remaining_amount || 0
+                )}
+              </Typography>
+            </Box>
+          </Stack>
+          <Stack
+            direction={isSmallScreen ? "column" : "row"}
+            justifyContent={isSmallScreen ? "center" : "space-between"}
+            spacing={isSmallScreen ? 2 : 3}
+            sx={{ mt: 1 }}
+          >
+            <Box sx={{ width: "50%" }}>
+              <Typography
+                sx={{
+                  fontSize: "14px",
+                  color: "#6C7A84",
+                }}
+              >
+                Comissão do corretor
+              </Typography>
+              <Typography
+                sx={{
+                  fontSize: "20px",
+                  color: "#1A1859",
+                  mt: 1,
+                }}
+              >
+                {formatBrazilianCurrency(calculateData?.brokerComission)}
+              </Typography>
+            </Box>
+            <Box sx={{ width: "50%" }}>
+              <Typography
+                sx={{
+                  fontSize: "14px",
+                  color: "#6C7A84",
+                }}
+              >
+                Comissão lokkan
+              </Typography>
+              <Typography
+                sx={{
+                  fontSize: "20px",
+                  color: "#1A1859",
+                  mt: 1,
+                }}
+              >
+                {formatBrazilianCurrency(calculateData?.lokkanComission)}
+              </Typography>
+            </Box>
+          </Stack>
+          <Stack
+            direction={isSmallScreen ? "column" : "row"}
+            justifyContent={isSmallScreen ? "center" : "space-between"}
+            spacing={isSmallScreen ? 2 : 3}
+            sx={{ mt: 1 }}
+          >
+            <Box sx={{ width: "50%" }}>
+              <Typography
+                sx={{
+                  fontSize: "14px",
+                  color: "#6C7A84",
+                }}
+              >
+                Comissão de referência
+              </Typography>
+              <Typography
+                sx={{
+                  fontSize: "20px",
+                  color: "#1A1859",
+                  mt: 1,
+                }}
+              >
+                {formatBrazilianCurrency(calculateData?.referrerComission)}
+              </Typography>
+            </Box>
+          </Stack>
+        </Box>
+      )}
+      {((files.length === 0 && session?.user?.role === "admin") ||
+        (files.length === 0 && session?.user?.role === "broker")) && (
+        <Fragment>
+          <Typography
+            sx={{
+              fontSize: "16px",
+              color: "#1A1859",
+              mt: 2,
+            }}
+          >
+            RPA
+          </Typography>
+
+          <BaseFilePicker
+            control={control}
+            errors={errors}
+            files={files}
+            setFiles={setFiles}
+            setDeletedContent={setDeletedContent}
+            deletedContent={deletedContent}
+            imageError={imageError}
+            imageErrorMessage={imageErrorMessage}
+            fields={fields}
+            append={append}
+            remove={remove}
+            allValues={allValues}
+            languageName={myValue.toString()}
+            hideTitle
+            hideVideoPicker
+            hidePictureGrid
+            hideVideoGrid
+          />
+        </Fragment>
+      )}
+      {files?.length > 0 && (
+        <Box
+          sx={{
+            border: "1px solid #DBE1E5",
+            borderRadius: "8px",
+            p: 2,
+            mt: 1,
+            height: "20vh",
+          }}
+        >
+          <Box
+            sx={{
+              px: 1,
+              color: "#0362F0",
+              backgroundColor: "#E0F2FE",
+              width: "fit-content",
+              fontSize: "14px",
+            }}
+          >
+            RPA
+          </Box>
+          <Typography
+            sx={{
+              color: "#1A1859",
+              fontSize: "16px",
+              mt: 2,
+            }}
+          >
+            {files[0].name}
+          </Typography>
+          <Stack
+            direction={"row"}
+            spacing={1}
+            justifyContent={"flex-end"}
+            m={2}
+          >
+            <Stack direction={"row"} spacing={2}>
+              <Button
+                variant="outlined"
+                color="error"
+                onClick={() => setFiles(null)}
+              >
+                Delete
+              </Button>
+              <Button
+                variant="contained"
+                color="success"
+                onClick={handleMakePayment}
+              >
+                To send
+              </Button>
+            </Stack>
+          </Stack>
+        </Box>
+      )}
+    </Box>
+  );
 }
 
-export default FinancialElement
+export default FinancialElement;

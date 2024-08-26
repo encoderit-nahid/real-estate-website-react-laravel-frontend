@@ -108,21 +108,17 @@ function BaseFilePicker({
     accept: {
       "image/jpeg": [],
       "image/png": [],
+      "application/pdf": [],
+      "application/vnd.openxmlformats-officedocument.wordprocessingml.document":
+        [],
+      "application/msword": [],
     },
+    multiple: false, // Allow only one file
   });
 
   const handleDelete = (index, file) => {
     const filterItem = files.filter((file, fileIndex) => fileIndex !== index);
     setFiles(filterItem);
-    if (file?.id) {
-      setDeletedContent((prevData) => [...prevData, file?.id]);
-    }
-  };
-  const handleDeleteVideo = (index, file) => {
-    const filterItem = videoFiles.filter(
-      (file, fileIndex) => fileIndex !== index
-    );
-    setVideoFiles(filterItem);
     if (file?.id) {
       setDeletedContent((prevData) => [...prevData, file?.id]);
     }
@@ -141,25 +137,6 @@ function BaseFilePicker({
   const myLoader = ({ src }) => {
     return `${_imageURL}/${src}`;
   };
-
-  const ThumbnailLoader = ({ src }) => {
-    const match = src.match(/[?&]v=([^&]+)/);
-    const videoId = match ? match[1] : null;
-
-    return `https://img.youtube.com/vi/${videoId}/maxresdefault.jpg`;
-  };
-
-  const [disableBtn, setDisableBtn] = useState(true);
-  useEffect(() => {
-    if (files?.length > 0) {
-      setDisableBtn(false);
-    }
-    if (files?.length < 1) {
-      setDisableBtn(true);
-    }
-  }, [files]);
-
-  console.log({ videoFiles });
 
   return (
     <Box sx={{ mt: hideTitle ? 0 : 4 }}>

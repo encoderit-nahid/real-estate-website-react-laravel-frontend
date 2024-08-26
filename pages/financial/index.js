@@ -12,7 +12,7 @@ import Tab from "@mui/material/Tab";
 import Typography from "@mui/material/Typography";
 import Box from "@mui/material/Box";
 
-import {Container, Grid} from "@mui/material";
+import { Container, Grid } from "@mui/material";
 import { useState } from "react";
 import { useSession } from "next-auth/react";
 import pt from "locales/pt";
@@ -63,7 +63,7 @@ function a11yProps(index) {
 
 export default function Financial({ language }) {
   const [myValue, setMyValue] = useState(language || "pt");
-  
+
   const t = myValue === "en" ? en : pt;
   const { data: session } = useSession();
 
@@ -139,23 +139,26 @@ export default function Financial({ language }) {
                       label={t["sales"]}
                       {...a11yProps(0)}
                     />
-                    <Tab
-                      sx={{
-                        fontWeight: "600",
-                        textTransform: "none",
-                        width: "100%",
-                      }}
-                      label={t["Referral Credits"]}
-                      {...a11yProps(1)}
-                    />
+                    {(session?.user?.role === "admin" ||
+                      session?.user?.role === "broker") && (
+                        <Tab
+                          sx={{
+                            fontWeight: "600",
+                            textTransform: "none",
+                            width: "100%",
+                          }}
+                          label={t["Referral Credits"]}
+                          {...a11yProps(1)}
+                        />
+                      )}
                   </Tabs>
                 </Box>
 
                 <TabPanel value={value} index={0}>
-                      <FinancialCard language={language}/>
+                  <FinancialCard language={language} />
                 </TabPanel>
                 <TabPanel value={value} index={1}>
-                      <RefererTable/>
+                  <RefererTable />
                 </TabPanel>
               </Box>
             </Container>
