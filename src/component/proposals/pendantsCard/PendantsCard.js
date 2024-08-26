@@ -41,6 +41,7 @@ import BaseCloseButton from "@/component/reuseable/baseCloseButton/BaseCloseButt
 import { formatBrazilianCurrency } from "@/utils/useUtilities";
 import { useProposalRefuseMutation } from "@/queries/useProposlaRefuseMutation";
 import { useProposalAcceptMutation } from "@/queries/useProposalAcceptMutation";
+import toast from "react-hot-toast";
 
 const omitEmpties = (obj) => {
   return Object.entries(obj).reduce((carry, [key, value]) => {
@@ -68,8 +69,8 @@ function PendantsCard({ propertyData, languageName, refetch, loadingRefetch }) {
   // const [refuseId, setRefuseId] = useState("");
   // const { query } = useRouter();
 
-  const refuseMutation = useProposalRefuseMutation()
-  const acceptMutation = useProposalAcceptMutation()
+  const refuseMutation = useProposalRefuseMutation();
+  const acceptMutation = useProposalAcceptMutation();
 
   const handleProposalRefuse = (id) => {
     const body = {
@@ -89,12 +90,16 @@ function PendantsCard({ propertyData, languageName, refetch, loadingRefetch }) {
   const handleProposalAccept = async (id) => {
     // setAcceptId(id);
     const body = {
-      property_id: propertyData?.id, 
-      proposal_id: id 
-    }
+      property_id: propertyData?.id,
+      proposal_id: id,
+    };
     acceptMutation.mutate(body, {
       onError(error) {
-        console.log(error);
+        if (error?.response?.status === 422) {
+          toast.error(error?.response?.data?.message);
+        } else {
+          toast.error("Algo deu errado");
+        }
       },
       onSuccess: async (data) => {
         await loadingRefetch();
@@ -678,9 +683,9 @@ function PendantsCard({ propertyData, languageName, refetch, loadingRefetch }) {
             <Button
               fullWidth
               disabled={
-                session?.user?.role === "broker" 
+                session?.user?.role === "broker"
                   ? true
-                  : session?.user?.role === "construction_company" 
+                  : session?.user?.role === "construction_company"
                   ? true
                   : session?.user?.role === "owner"
                   ? true

@@ -85,11 +85,6 @@ function BaseFilePicker({
   const { query } = useRouter();
   const { data: session } = useSession();
   const t = languageName === "en" ? en : pt;
-  useEffect(() => {
-    dispatch(GetPhotoTypeData("property"));
-  }, [dispatch]);
-
-  const photoType = useSelector((state) => state.photoType.photoTypeData);
 
   const onDrop = (acceptedFiles) => {
     acceptedFiles.map((file) =>
