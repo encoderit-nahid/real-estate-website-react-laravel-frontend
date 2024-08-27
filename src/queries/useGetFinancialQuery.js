@@ -12,8 +12,11 @@ export const useGetFinancialQuery = (params) => {
     staleTime: 0,
     // initialData: () => [],
     queryFn: async () => {
-      return(
-        await apiInstance.get(`/sold-property`))?.data?.data
+      return (
+        await apiInstance.get(`/sold-property`, {
+          params,
+        })
+      )?.data?.data;
     },
   });
 };

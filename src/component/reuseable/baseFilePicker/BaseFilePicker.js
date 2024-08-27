@@ -218,7 +218,7 @@ function BaseFilePicker({
             lineHeight: "18px",
           }}
         >
-          {t["select images"]}
+          Selecionar arquivos
         </Button>
         <Typography
           variant="inherit"

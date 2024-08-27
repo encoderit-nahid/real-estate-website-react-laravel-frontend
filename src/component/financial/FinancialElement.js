@@ -1,8 +1,15 @@
-import { Box, Stack, Typography, useMediaQuery, useTheme } from "@mui/material";
+import {
+  Box,
+  Button,
+  CircularProgress,
+  Stack,
+  Typography,
+  useMediaQuery,
+  useTheme,
+} from "@mui/material";
 import Image from "next/image";
 import React, { Fragment, useMemo, useState } from "react";
 import BaseFilePicker from "../reuseable/baseFilePicker/BaseFilePicker";
-import { Button } from "react-scroll";
 import { useFieldArray, useForm } from "react-hook-form";
 import homeImage from "../../../public/Images/homeImage.jpg";
 import en from "locales/en";
@@ -14,7 +21,7 @@ import { _imageURL } from "consts";
 import { useMakePaymentMutation } from "@/queries/useMakePaymentMutation";
 import { serialize } from "object-to-formdata";
 
-function FinancialElement({ language, financialInfo }) {
+function FinancialElement({ language, financialInfo, refetch }) {
   const {
     register,
     watch,
@@ -32,9 +39,6 @@ function FinancialElement({ language, financialInfo }) {
 
   const t = myValue === "en" ? en : pt;
 
-  const { data: financialData } = useGetFinancialQuery();
-  console.log({ financialData });
-
   const [files, setFiles] = useState([]);
   const [deletedContent, setDeletedContent] = useState([]);
   const [imageError, setImageError] = useState(false);
@@ -44,8 +48,10 @@ function FinancialElement({ language, financialInfo }) {
 
   const { data: session } = useSession();
 
+  const [sendLoading, setSendLoading] = useState(false);
   const mutation = useMakePaymentMutation();
   const handleMakePayment = () => {
+    setSendLoading(true);
     const requireData = {
       property_id: financialInfo?.contract?.property_id,
       document: files[0],
@@ -53,10 +59,12 @@ function FinancialElement({ language, financialInfo }) {
     const body = serialize(requireData, { indices: true });
     mutation.mutate(body, {
       onError(error) {
-        console.log(error);
+        toast.error("Falha ao efetuar pagamento");
+        setSendLoading(false);
       },
       onSuccess: async (data) => {
-        console.log({ data });
+        setSendLoading(false);
+        refetch();
       },
     });
   };
@@ -74,6 +82,9 @@ function FinancialElement({ language, financialInfo }) {
 
   const theme = useTheme();
   const isSmallScreen = useMediaQuery(theme.breakpoints.down("sm"));
+
+  const financialStatus = financialInfo?.commissions[0]?.status || "unpaid";
+  const mediaName = financialInfo?.commissions[0]?.media[0]?.name;
 
   const calculateData = useMemo(() => {
     let brokerComission = 0;
@@ -600,8 +611,12 @@ function FinancialElement({ language, financialInfo }) {
           </Stack>
         </Box>
       )}
-      {((files.length === 0 && session?.user?.role === "admin") ||
-        (files.length === 0 && session?.user?.role === "broker")) && (
+      {((files.length === 0 &&
+        session?.user?.role === "admin" &&
+        financialStatus !== "paid") ||
+        (files.length === 0 &&
+          session?.user?.role === "broker" &&
+          financialStatus !== "paid")) && (
         <Fragment>
           <Typography
             sx={{
@@ -634,13 +649,14 @@ function FinancialElement({ language, financialInfo }) {
           />
         </Fragment>
       )}
-      {files?.length > 0 && (
+      {files?.length > 0 && financialStatus !== "paid" && (
         <Box
           sx={{
             border: "1px solid #DBE1E5",
             borderRadius: "8px",
             p: 2,
-            mt: 1,
+            mt: 2,
+            mb: 6,
             height: "20vh",
           }}
         >
@@ -651,11 +667,13 @@ function FinancialElement({ language, financialInfo }) {
               backgroundColor: "#E0F2FE",
               width: "fit-content",
               fontSize: "14px",
+              mb: 2,
             }}
           >
             RPA
           </Box>
           <Typography
+            variant="body1"
             sx={{
               color: "#1A1859",
               fontSize: "16px",
@@ -674,19 +692,57 @@ function FinancialElement({ language, financialInfo }) {
               <Button
                 variant="outlined"
                 color="error"
+                disabled={sendLoading}
                 onClick={() => setFiles(null)}
               >
-                Delete
+                Excluir
               </Button>
               <Button
                 variant="contained"
                 color="success"
+                disabled={sendLoading}
                 onClick={handleMakePayment}
               >
-                To send
+                {sendLoading && <CircularProgress size={22} color="inherit" />}
+                {!sendLoading && "Para enviar"}
               </Button>
             </Stack>
           </Stack>
+        </Box>
+      )}
+      {financialStatus === "paid" && (
+        <Box
+          sx={{
+            border: "1px solid #DBE1E5",
+            borderRadius: "8px",
+            p: 2,
+            mt: 2,
+            mb: 6,
+            height: "20vh",
+          }}
+        >
+          <Box
+            sx={{
+              px: 1,
+              color: "#0362F0",
+              backgroundColor: "#E0F2FE",
+              width: "fit-content",
+              fontSize: "14px",
+              mb: 2,
+            }}
+          >
+            RPA
+          </Box>
+          <Typography
+            variant="body1"
+            sx={{
+              color: "#1A1859",
+              fontSize: "16px",
+              mt: 2,
+            }}
+          >
+            {mediaName}
+          </Typography>
         </Box>
       )}
     </Box>

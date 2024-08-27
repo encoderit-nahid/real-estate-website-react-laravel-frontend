@@ -114,7 +114,7 @@ function TabRegistered({
       </Grid>
       <Stack spacing={2} sx={{ marginY: 8 }}>
         <Pagination
-          count={Math.ceil(+brokerUserData?.data?.users?.total / 9) || 1}
+          count={Math.ceil(+brokerUserData?.data?.users?.total / 12) || 1}
           page={page}
           onChange={handlePageChange}
           variant="outlined"
