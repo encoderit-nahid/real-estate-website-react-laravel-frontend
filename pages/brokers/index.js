@@ -80,9 +80,9 @@ export default function Brokers({ language }) {
     isLoading: countLoading,
     refetch: loadingRefetch,
     isFetching,
-    isFetched
+    isFetched,
   } = useGetBrokerCountQuery();
-  
+
   const brokerCountData = data?.data;
 
   const [value, setValue] = useState(0);
@@ -99,7 +99,7 @@ export default function Brokers({ language }) {
         name: "",
       },
     });
-    loadingRefetch()
+    loadingRefetch();
   };
   // useEffect(() => {
   //   console.log("🟥 ~ Brokers ~ value:", value);
@@ -108,16 +108,16 @@ export default function Brokers({ language }) {
   if (isFetched && isFetching) {
     return (
       <Container maxWidth="md" sx={{ px: 2, py: 0 }}>
-      <Grid
-        container
-        direction="row"
-        justifyContent="center"
-        alignItems="center"
-        sx={{ height: "100vh" }}
-      >
-        <CircularProgress size="8rem" />
-      </Grid>
-    </Container>
+        <Grid
+          container
+          direction="row"
+          justifyContent="center"
+          alignItems="center"
+          sx={{ height: "100vh" }}
+        >
+          <CircularProgress size="8rem" />
+        </Grid>
+      </Container>
     );
   }
 
@@ -152,7 +152,6 @@ export default function Brokers({ language }) {
         >
           {t["Brokers"]}
         </Typography>
-        <Image src={notifyImage} alt="notify" />
       </Grid>
       <Container maxWidth="xl">
         <Box sx={{ width: "100%" }}>

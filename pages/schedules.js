@@ -61,7 +61,6 @@ export default function Schedules({ language }) {
             >
               {t["Schedules"]}
             </Typography>
-            <Image src={notifyImage} alt="notify" />
           </Grid>
           {scheduleData?.data?.map((data, index) => (
             <ScheduleCard
