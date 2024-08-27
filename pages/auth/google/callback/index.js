@@ -23,6 +23,7 @@ export default function Google({
   cashAmount,
   paymentPerInstallment,
   noOfInstallment,
+  observation,
 }) {
   const router = useRouter();
   const { query } = router;
@@ -44,6 +45,7 @@ export default function Google({
         query["cash_amount"] = cashAmount;
         query["payment_per_installment"] = paymentPerInstallment;
         query["no_of_installment"] = noOfInstallment;
+        query["observation"] = observation;
       }
       console.log({ query });
       const [errorAuth, responseAuth] = await socialLoginApi(query, "google");
@@ -146,6 +148,7 @@ export async function getServerSideProps(context) {
     cash_amount,
     payment_per_installment,
     no_of_installment,
+    observation,
   } = context.req.cookies;
 
   return {
@@ -160,6 +163,7 @@ export async function getServerSideProps(context) {
       cashAmount: cash_amount,
       paymentPerInstallment: payment_per_installment,
       noOfInstallment: no_of_installment,
+      observation: observation,
     }, // will be passed to the page component as props
   };
 }

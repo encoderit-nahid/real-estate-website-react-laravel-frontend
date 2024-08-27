@@ -5,19 +5,49 @@ import { useRouter } from "next/router";
 import { useEffect } from "react";
 import { apiInstance, socialLoginApi, userDetailsApi } from "@/api";
 
-export default function Facebook({ roleId }) {
+const clearMultipleCookies = (cookieNames) => {
+  cookieNames.forEach((name) => {
+    clearCookie(name);
+  });
+};
+
+export default function Facebook({
+  roleId,
+  type,
+  date,
+  time,
+  brlValue,
+  propertyId,
+  paymentType,
+  cashAmount,
+  paymentPerInstallment,
+  noOfInstallment,
+  observation,
+}) {
   const router = useRouter();
   const { query } = router;
 
-  console.log({ roleId });
-
-  console.log({ query });
-
   useEffect(() => {
     const getData = async () => {
-      query["role_id"] = roleId;
+      if (type === "schedule") {
+        query["role_id"] = roleId;
+        query["type"] = type;
+        query["date"] = date;
+        query["time"] = time;
+        query["property_id"] = propertyId;
+      } else {
+        query["role_id"] = roleId;
+        query["type"] = type;
+        query["brl_value"] = brlValue;
+        query["property_id"] = propertyId;
+        query["payment_type"] = paymentType;
+        query["cash_amount"] = cashAmount;
+        query["payment_per_installment"] = paymentPerInstallment;
+        query["no_of_installment"] = noOfInstallment;
+        query["observation"] = observation;
+      }
       console.log({ query });
-      const [errorAuth, responseAuth] = await socialLoginApi(query, "google");
+      const [errorAuth, responseAuth] = await socialLoginApi(query, "facebook");
       if (!errorAuth) {
         localStorage.setItem("token", responseAuth?.data?.token);
         apiInstance.defaults.headers.common[
@@ -36,28 +66,43 @@ export default function Facebook({ roleId }) {
             userImage: response?.data?.user?.attachments[0]?.file_path,
             callbackUrl: "/my-properties",
           });
+          clearMultipleCookies([
+            "role_id",
+            "type",
+            "date",
+            "time",
+            "brl_value",
+            "property_id",
+          ]);
         }
       } else {
         console.log(errorAuth?.response);
-        localStorage.setItem(
-          "registration_id",
-          errorAuth?.response?.data?.user?.id
-        );
-        localStorage.setItem(
-          "user_role",
-          errorAuth?.response?.data?.role === "3"
-            ? "owner"
-            : errorAuth?.response?.data?.role === "2"
-            ? "broker"
-            : "buyer"
-        );
-        localStorage.setItem(
-          "Reg_user_name",
-          errorAuth?.response?.data?.user?.name
-        );
-        router.replace({
-          pathname: "/other-information",
-        });
+        if (errorAuth.response.status === 402) {
+          toast.error(errorAuth?.response?.data?.message);
+          router.replace({
+            pathname: "/",
+          });
+        } else {
+          localStorage.setItem(
+            "registration_id",
+            errorAuth?.response?.data?.user?.id
+          );
+          localStorage.setItem(
+            "user_role",
+            errorAuth?.response?.data?.role === "3"
+              ? "owner"
+              : errorAuth?.response?.data?.role === "2"
+              ? "broker"
+              : "buyer"
+          );
+          localStorage.setItem(
+            "Reg_user_name",
+            errorAuth?.response?.data?.user?.name
+          );
+          router.replace({
+            pathname: "/other-information",
+          });
+        }
       }
     };
 
@@ -90,9 +135,34 @@ export default function Facebook({ roleId }) {
 }
 
 export async function getServerSideProps(context) {
-  const cookies = context.req.cookies["role_id"];
+  // const cookies = context.req.cookies["role_id"];
+  const {
+    role_id,
+    type,
+    date,
+    time,
+    brl_value,
+    property_id,
+    payment_type,
+    cash_amount,
+    payment_per_installment,
+    no_of_installment,
+    observation,
+  } = context.req.cookies;
 
   return {
-    props: { roleId: cookies }, // will be passed to the page component as props
+    props: {
+      roleId: role_id,
+      type: type,
+      date: date,
+      time: time,
+      brlValue: brl_value,
+      propertyId: property_id,
+      paymentType: payment_type,
+      cashAmount: cash_amount,
+      paymentPerInstallment: payment_per_installment,
+      noOfInstallment: no_of_installment,
+      observation: observation,
+    }, // will be passed to the page component as props
   };
 }

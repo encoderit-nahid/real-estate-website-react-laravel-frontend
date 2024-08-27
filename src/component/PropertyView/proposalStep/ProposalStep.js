@@ -104,6 +104,7 @@ function ProposalStep({
       property_id: singlePropertyId,
       proposal_type: "general",
       condition: conditions,
+      observation: data?.observation,
     });
 
     if (!session) {
@@ -118,6 +119,7 @@ function ProposalStep({
           cash_amount: data?.cash_amount,
           payment_per_installment: data?.payment_per_installment,
           no_of_installment: data?.no_of_installment,
+          observation: data?.observation,
         }),
       });
     } else {

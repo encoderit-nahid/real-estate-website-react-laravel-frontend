@@ -48,6 +48,7 @@ export default function Registration({ language, handleLoginOpen }) {
     cash_amount,
     payment_per_installment,
     no_of_installment,
+    observation,
   } = query;
 
   const [myValue, setMyValue] = useState(language || "pt");
@@ -112,6 +113,7 @@ export default function Registration({ language, handleLoginOpen }) {
       SetCookie("no_of_installment", no_of_installment);
       SetCookie("type", type);
       SetCookie("property_id", property_id);
+      SetCookie("observation", observation);
     }
     window.location.replace(`${_baseURL}/api/redirect/${provider}`);
   };
@@ -161,6 +163,7 @@ export default function Registration({ language, handleLoginOpen }) {
       payment_type: payment_type,
       payment_per_installment: payment_per_installment,
       no_of_installment: no_of_installment,
+      observation: observation,
       property_id: property_id,
       redirect_url: `${window.location.origin}/user-loading`,
     });
