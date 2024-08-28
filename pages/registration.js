@@ -46,9 +46,13 @@ export default function Registration({ language, handleLoginOpen }) {
     time,
     payment_type,
     cash_amount,
+    model,
+    year,
+    brand,
     payment_per_installment,
     no_of_installment,
     observation,
+    include_vehicle,
   } = query;
 
   const [myValue, setMyValue] = useState(language || "pt");
@@ -114,6 +118,11 @@ export default function Registration({ language, handleLoginOpen }) {
       SetCookie("type", type);
       SetCookie("property_id", property_id);
       SetCookie("observation", observation);
+      SetCookie("model", model),
+        SetCookie("year", year),
+        SetCookie("brand", brand),
+        SetCookie("include_vehicle", include_vehicle),
+        SetCookie("images", localStorage.getItem("file_response"));
     }
     window.location.replace(`${_baseURL}/api/redirect/${provider}`);
   };
@@ -166,12 +175,18 @@ export default function Registration({ language, handleLoginOpen }) {
       observation: observation,
       property_id: property_id,
       redirect_url: `${window.location.origin}/user-loading`,
+      images: JSON.parse(localStorage?.getItem("file_response")),
+      model: model,
+      year: year,
+      brand: brand,
+      include_vehicle: +include_vehicle,
     });
 
     const [errorToken, responseToken] = await registrationApi(allData);
     setLoading(false);
     if (!errorToken) {
       if (responseToken?.data?.userRole === "buyer") {
+        localStorage.clear();
         toast.success(responseToken?.data?.message, {
           duration: 15000, // Duration in milliseconds (5000 ms = 5 seconds)
         });

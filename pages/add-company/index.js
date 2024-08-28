@@ -84,7 +84,7 @@ export default function AddCompany({
   const t = myValue === "en" ? en : pt;
 
   // const [addPerson, setAddPerson] = useState("Physical person");
-  const [addType, setAddType] = useState("Car");
+  const [addType, setAddType] = useState("car");
 
   const steps = [t["Personal data"], t["Address"]];
 

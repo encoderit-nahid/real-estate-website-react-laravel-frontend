@@ -165,8 +165,8 @@ function AddCompanyPersonalData({
           <Box sx={{ mt: 1 }}>
             <Grid container spacing={1}>
               {[
-                { name: "Car", slug: t["Car"] },
-                { name: "Construction", slug: t["Construction"] },
+                { name: "car", slug: t["Car"] },
+                { name: "construction", slug: t["Construction"] },
               ].map((data, index) => (
                 <Grid item xs={6} key={index}>
                   <Button

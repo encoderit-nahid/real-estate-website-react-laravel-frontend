@@ -23,6 +23,10 @@ export default function Facebook({
   paymentPerInstallment,
   noOfInstallment,
   observation,
+  model,
+  year,
+  brand,
+  images,
 }) {
   const router = useRouter();
   const { query } = router;
@@ -45,6 +49,10 @@ export default function Facebook({
         query["payment_per_installment"] = paymentPerInstallment;
         query["no_of_installment"] = noOfInstallment;
         query["observation"] = observation;
+        query["model"] = model;
+        query["brand"] = brand;
+        query["year"] = year;
+        query["images"] = images;
       }
       console.log({ query });
       const [errorAuth, responseAuth] = await socialLoginApi(query, "facebook");
@@ -148,6 +156,10 @@ export async function getServerSideProps(context) {
     payment_per_installment,
     no_of_installment,
     observation,
+    model,
+    year,
+    brand,
+    images,
   } = context.req.cookies;
 
   return {
@@ -163,6 +175,10 @@ export async function getServerSideProps(context) {
       paymentPerInstallment: payment_per_installment,
       noOfInstallment: no_of_installment,
       observation: observation,
+      model: model,
+      year: year,
+      brand: brand,
+      images: images,
     }, // will be passed to the page component as props
   };
 }

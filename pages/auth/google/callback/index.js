@@ -5,12 +5,35 @@ import { useRouter } from "next/router";
 import { useEffect } from "react";
 import { apiInstance, socialLoginApi, userDetailsApi } from "@/api";
 import toast from "react-hot-toast";
+import Cookies from "js-cookie";
+
+const clearCookie = (name) => {
+  Cookies.remove(name);
+};
 
 const clearMultipleCookies = (cookieNames) => {
   cookieNames.forEach((name) => {
     clearCookie(name);
   });
 };
+
+const clearData = [
+  "roleId",
+  "type",
+  "date",
+  "time",
+  "brlValue",
+  "propertyId",
+  "paymentType",
+  "cashAmount",
+  "paymentPerInstallment",
+  "noOfInstallment",
+  "observation",
+  "model",
+  "year",
+  "brand",
+  "images",
+];
 
 export default function Google({
   roleId,
@@ -24,6 +47,10 @@ export default function Google({
   paymentPerInstallment,
   noOfInstallment,
   observation,
+  model,
+  year,
+  brand,
+  images,
 }) {
   const router = useRouter();
   const { query } = router;
@@ -46,10 +73,22 @@ export default function Google({
         query["payment_per_installment"] = paymentPerInstallment;
         query["no_of_installment"] = noOfInstallment;
         query["observation"] = observation;
+        query["model"] = model;
+        query["brand"] = brand;
+        query["year"] = year;
+        query["images"] = images;
       }
       console.log({ query });
       const [errorAuth, responseAuth] = await socialLoginApi(query, "google");
       if (!errorAuth) {
+        clearMultipleCookies([
+          "role_id",
+          "type",
+          "date",
+          "time",
+          "brl_value",
+          "property_id",
+        ]);
         localStorage.setItem("token", responseAuth?.data?.token);
         apiInstance.defaults.headers.common[
           "Authorization"
@@ -67,17 +106,10 @@ export default function Google({
             userImage: response?.data?.user?.attachments[0]?.file_path,
             callbackUrl: "/my-properties",
           });
-          clearMultipleCookies([
-            "role_id",
-            "type",
-            "date",
-            "time",
-            "brl_value",
-            "property_id",
-          ]);
         }
       } else {
         console.log(errorAuth?.response);
+        clearMultipleCookies(clearData);
         if (errorAuth.response.status === 402) {
           toast.error(errorAuth?.response?.data?.message);
           router.replace({
@@ -149,6 +181,10 @@ export async function getServerSideProps(context) {
     payment_per_installment,
     no_of_installment,
     observation,
+    model,
+    year,
+    brand,
+    images,
   } = context.req.cookies;
 
   return {
@@ -164,6 +200,10 @@ export async function getServerSideProps(context) {
       paymentPerInstallment: payment_per_installment,
       noOfInstallment: no_of_installment,
       observation: observation,
+      model: model,
+      year: year,
+      brand: brand,
+      images: images,
     }, // will be passed to the page component as props
   };
 }
