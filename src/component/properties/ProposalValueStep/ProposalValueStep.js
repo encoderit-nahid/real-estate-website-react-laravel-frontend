@@ -1,12 +1,13 @@
 import {
   Box,
   Button,
+  Divider,
   Grid,
   TextField,
   TextareaAutosize,
   Typography,
 } from "@mui/material";
-import React, { useState } from "react";
+import React, { Fragment, useEffect, useState } from "react";
 import PropertyCard from "../PropertyCard/PropertyCard";
 import Image from "next/image";
 import proposeImage from "../../../../public/Images/proposal_modal.png";
@@ -15,6 +16,7 @@ import { Controller } from "react-hook-form";
 import en from "locales/en";
 import pt from "locales/pt";
 import BaseValueField from "@/component/reuseable/baseValueField/BaseValueFiled";
+import BaseMultipleImagePicker from "@/component/reuseable/baseMultipleImagePicker/BaseMultipleImagePicker";
 
 function ProposalValueStep({
   cash,
@@ -23,11 +25,23 @@ function ProposalValueStep({
   setInstallment,
   control,
   errors,
+  watch,
   propertyData,
   srcImage,
+  files,
+  setFiles,
+  isUploading,
+  setIsUploading,
+  fileResponse,
+  setFileResponse,
   languageName,
+  vehicleAdd,
+  setVehicleAdd,
+  disabled,
+  setDisabled,
 }) {
   const t = languageName === "en" ? en : pt;
+
   return (
     <Box sx={{ mt: 4 }}>
       {/* <PropertyCard srcImage={srcImage} /> */}
@@ -300,6 +314,165 @@ function ProposalValueStep({
               </Grid>
             </Grid>
           </Box>
+        )}
+
+        <Divider sx={{ my: 2 }} />
+        <Grid container>
+          <Typography variant="p">
+            Deseja incluir veículo como forma de pagamento?
+          </Typography>
+        </Grid>
+
+        <Box sx={{ mt: 1 }}>
+          <Grid container spacing={1}>
+            {[
+              { value: 1, slug: "Sim" },
+              { value: 0, slug: "Não" },
+            ].map((data, index) => (
+              <Grid item xs={6} sm={6} md={6} lg={4} key={index}>
+                <Button
+                  onClick={() => setVehicleAdd(data?.value)}
+                  sx={{
+                    width: "100%",
+                    background:
+                      vehicleAdd === data?.value ? "#0362F0" : "#F2F5F6",
+                    borderRadius: "152px",
+                    color: vehicleAdd === data?.value ? "#ffffff" : "#002152",
+                    fontSize: {
+                      xs: "12px",
+                      sm: "13px",
+                      md: "16px",
+                      lg: "13px",
+                      xl: "16px",
+                    },
+                    fontWeight: "400",
+                    lineHeight: "22px",
+                    textTransform: "none",
+                    px: { xs: 0, sm: 2, md: 2, lg: 2, xl: 2 },
+                    py: 1,
+                    "&:hover": {
+                      width: "100%",
+                      background: "#0362F0",
+                      borderRadius: "152px",
+                      color: "#ffffff",
+                      fontSize: {
+                        xs: "12px",
+                        sm: "13px",
+                        md: "16px",
+                        lg: "13px",
+                        xl: "16px",
+                      },
+                      fontWeight: "400",
+                      lineHeight: "22px",
+                      textTransform: "none",
+                      px: {
+                        xs: 0,
+                        sm: 2,
+                        md: 2,
+                        lg: 2,
+                        xl: 2,
+                      },
+                      py: 1,
+                    },
+                  }}
+                >
+                  {data?.slug}
+                </Button>
+              </Grid>
+            ))}
+          </Grid>
+        </Box>
+        {vehicleAdd === 1 && (
+          <Fragment>
+            <Grid container spacing={2} sx={{ mt: 1 }}>
+              <Grid item xs={12} sm={12} md={12} lg={4}>
+                <Controller
+                  name="brand"
+                  control={control}
+                  render={({ field }) => (
+                    <BaseTextField
+                      size={"large"}
+                      placeholder={"Brand"}
+                      variant={"outlined"}
+                      name={"brand"}
+                      value={field.value}
+                      onChange={(e) => {
+                        field.onChange(e.target.value);
+                      }}
+                    />
+                  )}
+                />
+                <Typography
+                  variant="inherit"
+                  color="textSecondary"
+                  sx={{ color: "#b91c1c" }}
+                >
+                  {errors.brand?.message}
+                </Typography>
+              </Grid>
+              <Grid item xs={12} sm={12} md={12} lg={4}>
+                <Controller
+                  name="model"
+                  control={control}
+                  render={({ field }) => (
+                    <BaseTextField
+                      size={"large"}
+                      placeholder={"Model"}
+                      variant={"outlined"}
+                      name={"model"}
+                      value={field.value}
+                      onChange={(e) => {
+                        field.onChange(e.target.value);
+                      }}
+                    />
+                  )}
+                />
+                <Typography
+                  variant="inherit"
+                  color="textSecondary"
+                  sx={{ color: "#b91c1c" }}
+                >
+                  {errors.model?.message}
+                </Typography>
+              </Grid>
+              <Grid item xs={12} sm={12} md={12} lg={4}>
+                <Controller
+                  name="year"
+                  control={control}
+                  render={({ field }) => (
+                    <BaseTextField
+                      size={"large"}
+                      placeholder={"Year"}
+                      variant={"outlined"}
+                      name={"year"}
+                      value={field.value}
+                      onChange={(e) => {
+                        field.onChange(e.target.value);
+                      }}
+                    />
+                  )}
+                />
+                <Typography
+                  variant="inherit"
+                  color="textSecondary"
+                  sx={{ color: "#b91c1c" }}
+                >
+                  {errors.year?.message}
+                </Typography>
+              </Grid>
+            </Grid>
+
+            <Box sx={{ width: "100%", mb: 2 }}>
+              <BaseMultipleImagePicker
+                files={files}
+                setFiles={setFiles}
+                languageName={"pt"}
+                isUploading={isUploading}
+                setIsUploading={setIsUploading}
+                setFileResponse={setFileResponse}
+              />
+            </Box>
+          </Fragment>
         )}
       </Box>
     </Box>

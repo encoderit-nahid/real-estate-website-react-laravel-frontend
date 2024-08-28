@@ -103,6 +103,8 @@ function ProposalStep({
       } else {
         setDisabled(false);
       }
+    } else {
+      setDisabled(false);
     }
   }, [allValues, vehicleAdd]);
 

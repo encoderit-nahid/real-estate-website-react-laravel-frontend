@@ -98,18 +98,18 @@ export default function IncludeProposal({ language }) {
     { stage: t["My Properties"], route: "" },
   ];
 
-
-  const router = useRouter()
+  const router = useRouter();
   const { query } = router;
 
-  const steps =
-    session?.user?.role === "broker"
-      ? [t["Proposal values"], t["Buyer data"]]
-      : session?.user?.role === "construction_company" 
-      ? [t["Proposal values"], t["Buyer data"]]
-      : session?.user?.role === "admin"
-      ? [t["Proposal values"], t["Buyer data"]]
-      : [t["Proposal values"]];
+  // const steps =
+  //   session?.user?.role === "broker"
+  //     ? [t["Proposal values"], t["Buyer data"]]
+  //     : session?.user?.role === "construction_company"
+  //     ? [t["Proposal values"], t["Buyer data"]]
+  //     : session?.user?.role === "admin"
+  //     ? [t["Proposal values"], t["Buyer data"]]
+  //     : [t["Proposal values"]];
+  const steps = [t["proposal values"]];
 
   useEffect(() => {
     dispatch(findSinglePropertyData(query?.property_id));
@@ -196,6 +196,27 @@ export default function IncludeProposal({ language }) {
     setActiveStep(0);
   };
 
+  const [files, setFiles] = useState([]);
+  const [isUploading, setIsUploading] = useState(false); // State to disable buttons
+
+  const [fileResponse, setFileResponse] = useState([]);
+
+  const [vehicleAdd, setVehicleAdd] = useState(0);
+
+  const [disabled, setDisabled] = useState(false);
+
+  useEffect(() => {
+    if (vehicleAdd === 1) {
+      if (!allValues?.brand || !allValues?.model || !allValues?.year) {
+        setDisabled(true);
+      } else {
+        setDisabled(false);
+      }
+    } else {
+      setDisabled(false);
+    }
+  }, [allValues, vehicleAdd]);
+
   const [sentModalOpen, setSentModalOpen] = useState(false);
   const handleOpen = () => setSentModalOpen(true);
   const handleClose = () => setSentModalOpen(false);
@@ -217,7 +238,12 @@ export default function IncludeProposal({ language }) {
       cash_amount: data?.cash_amount,
       payment_per_installment: data?.payment_per_installment,
       no_of_installment: data?.no_of_installment,
-      observation: data?.observation
+      observation: data?.observation,
+      model: data?.model,
+      year: data?.year,
+      brand: data?.brand,
+      images: fileResponse?.length > 0 ? fileResponse : null,
+      include_vehicle: vehicleAdd,
     });
 
     const [error, response] = await proposalCreateApi(requireData);
@@ -295,7 +321,18 @@ export default function IncludeProposal({ language }) {
                     errors={errors}
                     propertyData={propertyData}
                     srcImage={srcImage}
+                    watch={watch}
                     languageName={myValue.toString()}
+                    files={files}
+                    setFiles={setFiles}
+                    fileResponse={fileResponse}
+                    setFileResponse={setFileResponse}
+                    vehicleAdd={vehicleAdd}
+                    setVehicleAdd={setVehicleAdd}
+                    isUploading={isUploading}
+                    setIsUploading={setIsUploading}
+                    disabled={disabled}
+                    setDisabled={setDisabled}
                   />
                 ) : (
                   <BuyerDataStep
@@ -326,7 +363,8 @@ export default function IncludeProposal({ language }) {
                 >
                   {activeStep === steps.length - 1 && (
                     <Grid container spacing={1} sx={{ mt: 2, mb: 5 }}>
-                      {session?.user?.role === "broker" || session?.user?.role === "construction_company" ||
+                      {session?.user?.role === "broker" ||
+                      session?.user?.role === "construction_company" ||
                       session?.user?.role === "admin" ? (
                         <Grid item xs={6} sm={6} md={6}>
                           <Button
@@ -351,26 +389,25 @@ export default function IncludeProposal({ language }) {
                         </Grid>
                       ) : (
                         <Grid item xs={6} sm={6} md={6}>
-               
-                              <Button
-                                color="inherit"
-                                // disabled={activeStep === 0}
-                                onClick={goBack}
-                                sx={{
-                                  mr: 1,
-                                  border: "1px solid #002152",
-                                  borderRadius: "4px",
-                                  px: 2,
-                                  py: 1,
-                                  color: "#002152",
-                                  fontSize: "16px",
-                                  fontWeight: "600",
-                                  lineHeight: "22px",
-                                  textTransform: "none",
-                                }}
-                              >
-                                {t["Come back"]}
-                              </Button>
+                          <Button
+                            color="inherit"
+                            // disabled={activeStep === 0}
+                            onClick={goBack}
+                            sx={{
+                              mr: 1,
+                              border: "1px solid #002152",
+                              borderRadius: "4px",
+                              px: 2,
+                              py: 1,
+                              color: "#002152",
+                              fontSize: "16px",
+                              fontWeight: "600",
+                              lineHeight: "22px",
+                              textTransform: "none",
+                            }}
+                          >
+                            {t["Come back"]}
+                          </Button>
                         </Grid>
                       )}
 
@@ -378,6 +415,7 @@ export default function IncludeProposal({ language }) {
                         <Box display="flex" justifyContent="flex-end">
                           <Button
                             type="submit"
+                            disabled={isUploading || disabled}
                             sx={{
                               background: "#7450F0",
                               borderRadius: "4px",
@@ -420,33 +458,30 @@ export default function IncludeProposal({ language }) {
                     </Grid>
                   )}
 
-                  {activeStep === 0 &&
+                  {/* {activeStep === 0 &&
                     (session?.user?.role === "broker" ||
                       session?.user?.role === "admin") && (
                       <Grid container spacing={1} sx={{ mt: 2, mb: 5 }}>
                         <Grid item xs={6} sm={6} md={6}>
-                   
-                            <Button
-                              color="inherit"
-                              // disabled={activeStep === 0}
-                              onClick={goBack}
-
-                              sx={{
-                                mr: 1,
-                                border: "1px solid #002152",
-                                borderRadius: "4px",
-                                px: 2,
-                                py: 1,
-                                color: "#002152",
-                                fontSize: "16px",
-                                fontWeight: "600",
-                                lineHeight: "22px",
-                                textTransform: "none",
-                              }}
-                            >
-                              {t["Cancel"]}
-                            </Button>
-              
+                          <Button
+                            color="inherit"
+                            // disabled={activeStep === 0}
+                            onClick={goBack}
+                            sx={{
+                              mr: 1,
+                              border: "1px solid #002152",
+                              borderRadius: "4px",
+                              px: 2,
+                              py: 1,
+                              color: "#002152",
+                              fontSize: "16px",
+                              fontWeight: "600",
+                              lineHeight: "22px",
+                              textTransform: "none",
+                            }}
+                          >
+                            {t["Cancel"]}
+                          </Button>
                         </Grid>
                         <Grid item xs={6} sm={6} md={6}>
                           <Box display="flex" justifyContent="flex-end">
@@ -484,7 +519,7 @@ export default function IncludeProposal({ language }) {
                           </Box>
                         </Grid>
                       </Grid>
-                    )}
+                    )} */}
                 </Grid>
               </form>
             </Fragment>

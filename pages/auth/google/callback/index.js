@@ -81,14 +81,7 @@ export default function Google({
       console.log({ query });
       const [errorAuth, responseAuth] = await socialLoginApi(query, "google");
       if (!errorAuth) {
-        clearMultipleCookies([
-          "role_id",
-          "type",
-          "date",
-          "time",
-          "brl_value",
-          "property_id",
-        ]);
+        clearMultipleCookies(clearData);
         localStorage.setItem("token", responseAuth?.data?.token);
         apiInstance.defaults.headers.common[
           "Authorization"
@@ -108,7 +101,6 @@ export default function Google({
           });
         }
       } else {
-        console.log(errorAuth?.response);
         clearMultipleCookies(clearData);
         if (errorAuth.response.status === 402) {
           toast.error(errorAuth?.response?.data?.message);

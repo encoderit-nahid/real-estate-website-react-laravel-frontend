@@ -2,18 +2,22 @@ import {
   Box,
   Container,
   Grid,
+  InputAdornment,
   LinearProgress,
   Pagination,
   Skeleton,
   Stack,
+  TextField,
 } from "@mui/material";
-import React from "react";
+import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useRouter } from "next/router";
 import { useEffect } from "react";
 import Link from "next/link";
 import { useGetPropertyQuery } from "@/queries/useGetPropertyQuery";
 import RentCard from "@/component/reuseable/rentCard/RentCard";
+import SearchIcon from "@mui/icons-material/Search"; // Import the search icon
+import { debounce } from "@/utils/debounce";
 
 const drawerWidth = 240;
 
@@ -22,6 +26,7 @@ function ViewProperty() {
   const { query } = router;
 
   const [page, setPage] = React.useState(1);
+  const [searchTerm, setSearchTerm] = useState(query?.all || "");
 
   useEffect(() => {
     setPage(+query?.page);
@@ -37,6 +42,7 @@ function ViewProperty() {
     project_id: query?.project_id,
     page: page,
     per_page: 9,
+    all: searchTerm,
   });
 
   const handlePageChange = (event, value) => {
@@ -48,7 +54,15 @@ function ViewProperty() {
 
   useEffect(() => {
     refetch();
-  }, [page, refetch]);
+  }, [page, searchTerm, refetch]);
+
+  const handleSearchChange = (event) => {
+    console.log(event.target.value);
+    setSearchTerm(event.target.value);
+    router.replace({
+      query: { ...router.query, all: event.target.value, page: 1 }, // Update the query with 'all' key and reset page
+    });
+  };
 
   if (Loading) {
     return (
@@ -97,7 +111,23 @@ function ViewProperty() {
         paddingBottom: { xs: 3, sm: 3, md: 3, lg: 4, xl: 3 },
       }}
     >
-      <Container maxWidth="xl">
+      <Container maxWidth="xl" sx={{ mt: 5 }}>
+        <TextField
+          label="Search"
+          variant="outlined"
+          fullWidth
+          size="small"
+          value={searchTerm}
+          onChange={handleSearchChange}
+          sx={{ mb: 4 }}
+          InputProps={{
+            startAdornment: (
+              <InputAdornment position="start">
+                <SearchIcon />
+              </InputAdornment>
+            ),
+          }}
+        />
         <Grid container spacing={4}>
           {thirdProperty?.data?.map((data, index) => (
             <Grid
