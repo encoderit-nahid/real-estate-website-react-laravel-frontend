@@ -1,5 +1,6 @@
 import {
   Box,
+  Button,
   CircularProgress,
   Container,
   Grid,
@@ -30,6 +31,12 @@ function ViewProperty() {
   const [page, setPage] = React.useState(1);
   const [searchTerm, setSearchTerm] = useState(query?.all || "");
 
+  // useEffect(() => {
+  //   if (query?.all) {
+  //     setSearchTerm(query?.all);
+  //   }
+  // }, [query?.all]);
+
   useEffect(() => {
     setPage(+query?.page);
   }, [query]);
@@ -58,15 +65,16 @@ function ViewProperty() {
     refetch();
   }, [page, searchTerm, refetch]);
 
-  const handleSearchChange = (event) => {
-    console.log(event.target.value);
-    setSearchTerm(event.target.value);
+  const debouncedHandleSearch = debounce((e) => {
+    setSearchTerm(e.target.value);
     router.replace({
-      query: { ...router.query, all: event.target.value, page: 1 }, // Update the query with 'all' key and reset page
+      query: { ...router.query, all: e.target.value, page: 1 }, // Update the query with 'all' key and reset page
     });
-  };
+  }, 1000);
 
-  const debounceSearchChange = debounce(handleSearchChange);
+  const handleSearchChange = (value) => {
+    debouncedHandleSearch(value);
+  };
 
   if (Loading) {
     return (
@@ -111,6 +119,10 @@ function ViewProperty() {
     );
   }
 
+  const goBack = () => {
+    router.back();
+  };
+
   return (
     <Box
       sx={{
@@ -124,22 +136,50 @@ function ViewProperty() {
       }}
     >
       <Container maxWidth="xl" sx={{ mt: 5 }}>
-        <TextField
-          variant="outlined"
-          // placeholder={t["Search by broker name"]}
-          size="small"
-          onChange={debounceSearchChange}
-          fullWidth
-          InputProps={{
-            endAdornment: (
-              <InputAdornment position="end">
-                <IconButton edge="end" aria-label="Search by broker name">
-                  <SearchIcon />
-                </IconButton>
-              </InputAdornment>
-            ),
-          }}
-        />
+        <Grid container spacing={2}>
+          <Grid item xs={4} sm={4} lg={3} xl={2}>
+            <Button
+              color="inherit"
+              fullWidth
+              // disabled={activeStep === 0}
+              onClick={goBack}
+              sx={{
+                mr: 1,
+                border: "1px solid #002152",
+                borderRadius: "4px",
+                px: 2,
+                py: 1,
+                color: "#002152",
+                fontSize: "16px",
+                fontWeight: "600",
+                lineHeight: "22px",
+                textTransform: "none",
+              }}
+            >
+              voltar
+            </Button>
+          </Grid>
+          <Grid item xs={8} sm={8} lg={9} xl={10}>
+            <TextField
+              variant="outlined"
+              defaultValue={searchTerm}
+              sx={{ mb: 4 }}
+              placeholder={"procurar"}
+              size="small"
+              onChange={handleSearchChange}
+              fullWidth
+              InputProps={{
+                endAdornment: (
+                  <InputAdornment position="end">
+                    <IconButton edge="end" aria-label="Search by broker name">
+                      <SearchIcon />
+                    </IconButton>
+                  </InputAdornment>
+                ),
+              }}
+            />
+          </Grid>
+        </Grid>
         <Grid container spacing={4}>
           {thirdProperty?.data?.map((data, index) => (
             <Grid
