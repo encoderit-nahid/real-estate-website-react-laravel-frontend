@@ -107,7 +107,7 @@ export default function BrokerReview({ languageName }) {
                       variant="contained"
                       color="primary"
                       onClick={handleSubmit}
-                      style={{ marginRight: "10px" }}
+                      sx={{ textTransform: "none", mr: 2 }}
                     >
                       {loading && (
                         <CircularProgress size={22} color="inherit" />
@@ -119,6 +119,7 @@ export default function BrokerReview({ languageName }) {
                       variant="outlined"
                       color="secondary"
                       onClick={handleSkip}
+                      sx={{ textTransform: "none" }}
                     >
                       Pular
                     </Button>
