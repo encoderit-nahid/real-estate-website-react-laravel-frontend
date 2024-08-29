@@ -5,11 +5,34 @@ import { useRouter } from "next/router";
 import { useEffect } from "react";
 import { apiInstance, socialLoginApi, userDetailsApi } from "@/api";
 
+const clearCookie = (name) => {
+  Cookies.remove(name);
+};
+
 const clearMultipleCookies = (cookieNames) => {
   cookieNames.forEach((name) => {
     clearCookie(name);
   });
 };
+
+const clearData = [
+  "roleId",
+  "type",
+  "date",
+  "time",
+  "brlValue",
+  "propertyId",
+  "paymentType",
+  "cashAmount",
+  "paymentPerInstallment",
+  "noOfInstallment",
+  "observation",
+  "model",
+  "year",
+  "brand",
+  "images",
+  "include_vehicle",
+];
 
 export default function Facebook({
   roleId,
@@ -27,6 +50,7 @@ export default function Facebook({
   year,
   brand,
   images,
+  include_vehicle,
 }) {
   const router = useRouter();
   const { query } = router;
@@ -53,10 +77,12 @@ export default function Facebook({
         query["brand"] = brand;
         query["year"] = year;
         query["images"] = images;
+        query["include_vehicle"] = include_vehicle;
       }
       console.log({ query });
       const [errorAuth, responseAuth] = await socialLoginApi(query, "facebook");
       if (!errorAuth) {
+        clearMultipleCookies(clearData);
         localStorage.setItem("token", responseAuth?.data?.token);
         apiInstance.defaults.headers.common[
           "Authorization"
@@ -74,17 +100,9 @@ export default function Facebook({
             userImage: response?.data?.user?.attachments[0]?.file_path,
             callbackUrl: "/my-properties",
           });
-          clearMultipleCookies([
-            "role_id",
-            "type",
-            "date",
-            "time",
-            "brl_value",
-            "property_id",
-          ]);
         }
       } else {
-        console.log(errorAuth?.response);
+        clearMultipleCookies(clearData);
         if (errorAuth.response.status === 402) {
           toast.error(errorAuth?.response?.data?.message);
           router.replace({
@@ -160,6 +178,7 @@ export async function getServerSideProps(context) {
     year,
     brand,
     images,
+    include_vehicle,
   } = context.req.cookies;
 
   return {
@@ -179,6 +198,7 @@ export async function getServerSideProps(context) {
       year: year,
       brand: brand,
       images: images,
+      include_vehicle: include_vehicle,
     }, // will be passed to the page component as props
   };
 }

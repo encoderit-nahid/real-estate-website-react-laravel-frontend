@@ -1,7 +1,9 @@
 import {
   Box,
+  CircularProgress,
   Container,
   Grid,
+  IconButton,
   InputAdornment,
   LinearProgress,
   Pagination,
@@ -64,9 +66,11 @@ function ViewProperty() {
     });
   };
 
+  const debounceSearchChange = debounce(handleSearchChange);
+
   if (Loading) {
     return (
-      <Container maxWidth="xl">
+      <Container maxWidth="xl" sx={{ mt: 5 }}>
         <Grid container spacing={4}>
           {[0, 1, 2, 3].map((data, index) => (
             <Grid
@@ -93,9 +97,17 @@ function ViewProperty() {
 
   if (isFetched && isFetching) {
     return (
-      <Box sx={{ width: "100%" }}>
-        <LinearProgress />
-      </Box>
+      <Container maxWidth="md" sx={{ px: 2, py: 0 }}>
+        <Grid
+          container
+          direction="row"
+          justifyContent="center"
+          alignItems="center"
+          sx={{ height: "100vh" }}
+        >
+          <CircularProgress size="8rem" />
+        </Grid>
+      </Container>
     );
   }
 
@@ -113,17 +125,17 @@ function ViewProperty() {
     >
       <Container maxWidth="xl" sx={{ mt: 5 }}>
         <TextField
-          label="Search"
           variant="outlined"
-          fullWidth
+          // placeholder={t["Search by broker name"]}
           size="small"
-          value={searchTerm}
-          onChange={handleSearchChange}
-          sx={{ mb: 4 }}
+          onChange={debounceSearchChange}
+          fullWidth
           InputProps={{
-            startAdornment: (
-              <InputAdornment position="start">
-                <SearchIcon />
+            endAdornment: (
+              <InputAdornment position="end">
+                <IconButton edge="end" aria-label="Search by broker name">
+                  <SearchIcon />
+                </IconButton>
               </InputAdornment>
             ),
           }}

@@ -33,6 +33,7 @@ const clearData = [
   "year",
   "brand",
   "images",
+  "include_vehicle",
 ];
 
 export default function Google({
@@ -51,6 +52,7 @@ export default function Google({
   year,
   brand,
   images,
+  include_vehicle,
 }) {
   const router = useRouter();
   const { query } = router;
@@ -77,6 +79,7 @@ export default function Google({
         query["brand"] = brand;
         query["year"] = year;
         query["images"] = images;
+        query["include_vehicle"] = include_vehicle;
       }
       console.log({ query });
       const [errorAuth, responseAuth] = await socialLoginApi(query, "google");
@@ -176,6 +179,7 @@ export async function getServerSideProps(context) {
     model,
     year,
     brand,
+    include_vehicle,
     images,
   } = context.req.cookies;
 
@@ -196,6 +200,7 @@ export async function getServerSideProps(context) {
       year: year,
       brand: brand,
       images: images,
+      include_vehicle: include_vehicle,
     }, // will be passed to the page component as props
   };
 }
